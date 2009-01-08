@@ -8,7 +8,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
+    <summary>Integrating the launch with the launching application. This is used to handle for instance startup notification and launching the new application on the same screen as the launching window.</summary>
     <remarks>To be added.</remarks>
     <since version="Gtk# 2.14" />
   </Docs>
@@ -18,8 +18,8 @@
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Creates a new application launch context.</summary>
+        <remarks>This is not normally used, instead you instantiate a subclass of this, such as <see cref="T:Gdk.AppLaunchContext" />.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -65,11 +65,11 @@
         <Parameter Name="files" Type="GLib.List" />
       </Parameters>
       <Docs>
-        <param name="info">To be added.</param>
-        <param name="files">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="info">A <see cref="T:GLib.AppInfo" />.</param>
+        <param name="files">A <see cref="T:GLib.List" /> of <see cref="T:GLib.File" />.</param>
+        <summary>Gets the display string for the display.</summary>
+        <returns>A display string for the display.</returns>
+        <remarks>This is used to ensure new applications are started on the same display as the launching application.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -84,11 +84,11 @@
         <Parameter Name="files" Type="GLib.List" />
       </Parameters>
       <Docs>
-        <param name="info">To be added.</param>
-        <param name="files">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="info">A <see cref="T:GLib.AppInfo" />.</param>
+        <param name="files">A <see cref="T:GLib.List" /> of <see cref="T:GLib.File" />.</param>
+        <summary>Initiates startup notification for the application.</summary>
+        <returns>The DESKTOP_STARTUP_ID for the launched operation, if supported. </returns>
+        <remarks>Startup notification IDs are defined in the FreeDesktop.Org Startup Notifications standard (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -115,9 +115,9 @@
         <Parameter Name="startup_notify_id" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="startup_notify_id">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="startup_notify_id">The startup notification id that was returned by <see cref="M:GLib.AppLaunchContext.GetStartupNotifyId" />.</param>
+        <summary>Called when an application has failed to launch.</summary>
+        <remarks>Called when an application has failed to launch, so that it can cancel the application startup notification started in <see cref="M:AppLaunchContext.GetStartupNotifyId" />.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>

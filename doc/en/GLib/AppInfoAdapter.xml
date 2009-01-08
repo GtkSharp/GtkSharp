@@ -15,7 +15,8 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>To be added.</summary>
+    <summary>
+      <see cref="T:GLib.AppInfoAdapter" />: an implementation of the <see cref="T:GLib.AppInfo" /> interface.</summary>
     <remarks>To be added.</remarks>
     <since version="Gtk# 2.14" />
   </Docs>
@@ -67,9 +68,14 @@
       </Parameters>
       <Docs>
         <param name="content_type">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Adds a content type to the application.</summary>
+        <returns>Always returns True. Throw a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>
+          <para>Adds a content type to the application information to indicate the application is capable of opening files with the given content type.</para>
+          <para>
+This method always returns True, or throw a <see cref="T:GLib.GException" /> if something went wrong.
+</para>
+        </remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -80,9 +86,9 @@
         <ReturnType>GLib.List</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>A list of all the applications currently registered on this system.</summary>
+        <value>A <see cref="T:GLib.List" /> of <see cref="T:GLib.AppInfo" /></value>
+        <remarks>For desktop files, this includes applications that have NoDisplay=true set or are excluded from display by means of OnlyShowIn or NotShowIn. See <see cref="M:GLib.AppInfo.ShouldShow" />. The returned list does not include applications which have the Hidden key set.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -93,8 +99,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>If a supported content type can be removed from an application. </summary>
+        <value>True if it is possible to remove supported content types from the application, False if not.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -127,8 +133,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>An human-readable description of an installed application.</summary>
+        <value>A string containing a description of the application, or null if none.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -171,8 +177,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The executable's name for the installed application.</summary>
+        <value>A string containing the AppInfo's application binary's name.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -187,9 +193,11 @@
         <Parameter Name="content_type" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="content_type">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="content_type">The content type to find a <see cref="T:GLib.AppInfo" /> for.</param>
+        <summary>Gets an array of all <see cref="T:GLib.AppInfo" /> for a given content type.
+
+</summary>
+        <returns>An array of <see cref="T:GLib.AppInfo" /> for given content_type, or null on error.</returns>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -205,10 +213,10 @@
         <Parameter Name="must_support_uris" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="content_type">To be added.</param>
-        <param name="must_support_uris">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="content_type">The content type to find a <see cref="T:GLib.AppInfo" /> for.</param>
+        <param name="must_support_uris">If True, the <see cref="GLib.AppInfo" /> is expected to support URIs.</param>
+        <summary>Gets the <see cref="T:GLib.AppInfo" /> that correspond to a given content type.</summary>
+        <returns>A <see cref="T:GLib.AppInfo" /> for given content_type or null on error.</returns>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -223,10 +231,10 @@
         <Parameter Name="uri_scheme" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="uri_scheme">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="uri_scheme">A string containing a URI scheme.</param>
+        <summary>Gets the default application for launching applications using this URI scheme.</summary>
+        <returns>A <see cref="T:GLib.AppInfo" /> for given uri_scheme or null on error. </returns>
+        <remarks>A URI scheme is the initial part of the URI, up to but not including the ':', e.g. "http", "ftp" or "sip".</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -299,8 +307,8 @@
         <ReturnType>GLib.Icon</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The <see cref="T:GLib.Icon" /> for the application.</summary>
+        <value>The default <see cref="T:GLib.Icon" /> for the application.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -312,9 +320,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The ID of an application.</summary>
+        <value>A string containing the application's ID.</value>
+        <remarks>An id is a string that identifies the application. The exact format of the id is platform depenedent. For instance, on Unix, this is the desktop file id from the xdg menu specification.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -342,11 +350,16 @@
         <Parameter Name="launch_context" Type="GLib.AppLaunchContext" />
       </Parameters>
       <Docs>
-        <param name="files">To be added.</param>
-        <param name="launch_context">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="files">A <see cref="T:GLib.List" /> of <see cref="T:GLib.File" /> objects, or null to launch the application without arguments.</param>
+        <param name="launch_context">An <see cref="T:GLib.AppLauchContext" />, or null.</param>
+        <summary>Launches the application.</summary>
+        <returns>Always returns True. Throws a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>
+          <para>Launches the application. Passes files to the launched application as arguments, using the optional launch_context to get information about the details of the launcher (like what screen it is on). Throws a <see cref="T:GLib.GException" /> on error.</para>
+          <para>To lauch the application without arguments pass a null files list.</para>
+          <para>Note that even if the launch is successful the application launched can fail to start if it runs into problems during startup. There is no way to detect this.</para>
+          <para>Some URIs can be changed when passed through a <see cref="T:GLib.File" /> (for instance unsupported uris with strange formats like mailto:), so if you have a textual uri you want to pass in as argument, consider using <see cref="M:GLib.AppInfo.LaunchUris" /> instead.</para>
+        </remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -361,11 +374,11 @@
         <Parameter Name="launch_context" Type="GLib.AppLaunchContext" />
       </Parameters>
       <Docs>
-        <param name="uri">To be added.</param>
-        <param name="launch_context">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="uri">The uri to show.</param>
+        <param name="launch_context">An optional <see cref="T:GLib.AppLaunchContext" />, or null. </param>
+        <summary>Utility function that launches the default application registered to handle the specified uri.</summary>
+        <returns>Always returns True. Throws a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>Synchronous I/O is done on the uri to detect the type of the file if required.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -380,11 +393,15 @@
         <Parameter Name="launch_context" Type="GLib.AppLaunchContext" />
       </Parameters>
       <Docs>
-        <param name="uris">To be added.</param>
-        <param name="launch_context">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="uris">A <see cref="T:GLib.List" /> of <see cref="T:System.String" /> containing URIs to launch, or null.</param>
+        <param name="launch_context">A <see cref="T:GLib.AppLaunchContext" />, or null.</param>
+        <summary>Launches the application.</summary>
+        <returns>Always returns True. Throws a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>
+          <para>Launches the application. Passes uris to the launched application as arguments, using the optional launch_context to get information about the details of the launcher (like what screen it is on). On error, throws a <see cref="T:GLib.GException" /></para>
+          <para>To lauch the application without arguments pass a null uris list.</para>
+          <para>Note that even if the launch is successful the application launched can fail to start if it runs into problems during startup. There is no way to detect this.</para>
+        </remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -395,8 +412,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The name of the installed application.</summary>
+        <value>A <see cref="T:System.String" /> containing the name of the application.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -411,10 +428,10 @@
         <Parameter Name="content_type" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="content_type">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="content_type">A <see cref="T:System.String" /> containing a content type. On Unix, content types are mimetypes, so "image/jpeg" is a valid content type.</param>
+        <summary>Removes a supported type from an application, if possible.</summary>
+        <returns>Always returns True. Throws a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>This method always returns True, but throws on any error. Checking <see cref="M:GLib.AppInfo.CanRemoveSupportsType" /> first will avoid some exceptions, but that doesn't mean it won't throw at all.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -428,10 +445,10 @@
         <Parameter Name="extension" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="extension">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="extension">A <see cref="T:System.String" /> containing the file extension (without the dot).</param>
+        <summary>Sets the application as the default handler for the given file extension. </summary>
+        <returns>Always returns True. Throws a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>This method always returns True, or throw a <see cref="T:GLib.GException" /> if something went wrong.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -445,10 +462,10 @@
         <Parameter Name="content_type" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="content_type">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="content_type">A <see cref="T:System.String" /> containing the content type.</param>
+        <summary>Sets the application as the default handler for a given type</summary>
+        <returns>Always returns True. Throws a <see cref="T:Glib.GException" /> if something went wrong.</returns>
+        <remarks>This method always returns True, or throw a <see cref="T:GLib.GException" /> if something went wrong.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -459,8 +476,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>If the application info should be shown in menus that list available applications.</summary>
+        <value>True if the application should be shown, False otherwise.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -472,8 +489,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>If the application accepts files as arguments.</summary>
+        <value>True if the application supports files.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -485,8 +502,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>If the application supports reading files and directories from URIs.</summary>
+        <value>True if the application supports URIs.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
