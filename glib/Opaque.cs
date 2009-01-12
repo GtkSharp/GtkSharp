@@ -44,6 +44,9 @@ namespace GLib {
 
 		public static Opaque GetOpaque (IntPtr o, Type type, bool owned)
 		{
+			if (o == IntPtr.Zero)
+				return null;
+
 			Opaque opaque = (Opaque)Activator.CreateInstance (type, new object[] { o });
 			if (owned) {
 				if (opaque.owned) {
