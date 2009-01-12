@@ -20,14 +20,18 @@ case "$host" in
 		WIN64DEFINES="-define:WIN64LONGS"
 		platform_win32=yes
 		AC_DEFINE(PLATFORM_WIN32,1,[Platform is Win32])
-		CC="gcc -mno-cygwin -g"
-		HOST_CC="gcc"
+		if test "x$cross_compiling" = "xno"; then
+			CC="gcc -mno-cygwin -g"
+			HOST_CC="gcc"
+		fi
 		;;
 	*-*-mingw*|*-*-cygwin*)
 		platform_win32=yes
 		AC_DEFINE(PLATFORM_WIN32,1,[Platform is Win32])
-		CC="gcc -mno-cygwin -g"
-		HOST_CC="gcc"
+		if test "x$cross_compiling" = "xno"; then
+			CC="gcc -mno-cygwin -g"
+			HOST_CC="gcc"
+		fi
 		;;
 	*)
 		platform_win32=no

@@ -31,15 +31,21 @@ foreach $arg (@ARGV) {
 	}
 }
 
+if (`which ildasm 2> /dev/null`) {
+	$dasm = "ildasm /out:";
+} else {
+	$dasm = "monodis --output=";
+}
+
 if ($assembly =~ /(.*)\.dll/) {
 	$basename = $1;
-	`ildasm $assembly /out:$basename.raw`;
+	`$dasm$basename.raw $assembly`;
 	open(INFILE, $basename . ".raw") || die "Couldn't open $basename.raw\n";
 	open(OUTFILE, "> $basename.il") || die "Couldn't open $basename.il\n";
 	while ($line = <INFILE>) {
 		$insert = 1 if ($line =~ /\.custom instance void .*GLib\.CDeclCallbackAttribute/);
 
-		if ($insert && $line =~ /(.*)\s+(Invoke\(.*)/) {
+		if ($insert && $line =~ /(.*)\s+(Invoke\s*\(.*)/) {
 			print OUTFILE "$1 modopt([mscorlib]System.Runtime.CompilerServices.CallConvCdecl) $2";
 			$insert = 0;
 			next;
