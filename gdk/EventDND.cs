@@ -1,8 +1,8 @@
 // Gdk.EventDND.cs - Custom dnd event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,41 +26,56 @@ namespace Gdk {
 
 	public class EventDND : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_dnd_get_time (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_dnd_get_context (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern short gtksharp_gdk_event_dnd_get_x_root (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern short gtksharp_gdk_event_dnd_get_y_root (IntPtr evt);
-
 		public EventDND (IntPtr raw) : base (raw) {} 
 
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public IntPtr context;
+			public uint time;
+			public short x_root;
+			public short y_root;
+		}
+
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
+
 		public DragContext Context {
-			get {
-				return GLib.Object.GetObject (gtksharp_gdk_event_dnd_get_context (Handle)) as DragContext;
+			get { return GLib.Object.GetObject (Native.context, false) as DragContext; }
+			set {
+				NativeStruct native = Native;
+				native.context = value == null ? IntPtr.Zero : value.Handle;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public uint Time {
-			get {
-				return gtksharp_gdk_event_dnd_get_time (Handle);
+			get { return Native.time; }
+			set {
+				NativeStruct native = Native;
+				native.time = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public short XRoot {
-			get {
-				return gtksharp_gdk_event_dnd_get_x_root (Handle);
+			get { return Native.x_root; }
+			set {
+				NativeStruct native = Native;
+				native.x_root = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public short YRoot {
-			get {
-				return gtksharp_gdk_event_dnd_get_y_root (Handle);
+			get { return Native.y_root; }
+			set {
+				NativeStruct native = Native;
+				native.y_root = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

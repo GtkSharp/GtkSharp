@@ -3,8 +3,6 @@ lib_LTLIBRARIES = libgdksharpglue-2.la
 libgdksharpglue_2_la_SOURCES =	\
 	dragcontext.c		\
 	device.c		\
-	event.c			\
-	selection.c		\
 	vmglueheaders.h		\
 	windowmanager.c
 

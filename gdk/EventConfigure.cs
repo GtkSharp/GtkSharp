@@ -1,8 +1,8 @@
 // Gdk.EventConfigure.cs - Custom configure event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,41 +26,56 @@ namespace Gdk {
 
 	public class EventConfigure : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern int gtksharp_gdk_event_configure_get_x (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern int gtksharp_gdk_event_configure_get_y (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern int gtksharp_gdk_event_configure_get_width (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern int gtksharp_gdk_event_configure_get_height (IntPtr evt);
-
 		public EventConfigure (IntPtr raw) : base (raw) {} 
 
-		public int X {
-			get {
-				return gtksharp_gdk_event_configure_get_x (Handle);
-			}
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public int x;
+			public int y;
+			public int width;
+			public int height;
 		}
 
-		public int Y {
-			get {
-				return gtksharp_gdk_event_configure_get_y (Handle);
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
+
+		public int Height {
+			get { return Native.height; }
+			set {
+				NativeStruct native = Native;
+				native.height = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public int Width {
-			get {
-				return gtksharp_gdk_event_configure_get_width (Handle);
+			get { return Native.width; }
+			set {
+				NativeStruct native = Native;
+				native.width = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
-		public int Height {
-			get {
-				return gtksharp_gdk_event_configure_get_height (Handle);
+		public int X {
+			get { return Native.x; }
+			set {
+				NativeStruct native = Native;
+				native.x = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public int Y {
+			get { return Native.y; }
+			set {
+				NativeStruct native = Native;
+				native.y = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

@@ -1,8 +1,8 @@
 // Gdk.EventFocus.cs - Custom focus event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,14 +26,26 @@ namespace Gdk {
 
 	public class EventFocus : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern short gtksharp_gdk_event_focus_get_in (IntPtr evt);
-
 		public EventFocus (IntPtr raw) : base (raw) {} 
 
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public short _in;
+		}
+
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
+
 		public bool In {
-			get {
-				return gtksharp_gdk_event_focus_get_in (Handle) == 0 ? false : true;
+			get { return Native._in != 0; }
+			set {
+				NativeStruct native = Native;
+				native._in = (short) (value ? 1 : 0);
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

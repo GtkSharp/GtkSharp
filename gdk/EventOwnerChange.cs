@@ -2,7 +2,7 @@
 //
 // Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2008 Novell, Inc.
+// Copyright (c) 2008-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -73,20 +73,20 @@ namespace Gdk {
 			}
 		}
 
-		public uint Time {
-			get { return Native.time; }
-			set {
-				NativeStruct native = Native;
-				native.time = value;
-				Marshal.StructureToPtr (native, Handle, false);
-			}
-		}
-
 		public uint SelectionTime {
 			get { return Native.selection_time; }
 			set {
 				NativeStruct native = Native;
 				native.selection_time = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public uint Time {
+			get { return Native.time; }
+			set {
+				NativeStruct native = Native;
+				native.time = value;
 				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}

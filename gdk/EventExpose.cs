@@ -1,8 +1,8 @@
 // Gdk.EventExpose.cs - Custom expose event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,32 +26,46 @@ namespace Gdk {
 
 	public class EventExpose : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_expose_get_area (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_expose_get_region (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern int gtksharp_gdk_event_expose_get_count (IntPtr evt);
-
 		public EventExpose (IntPtr raw) : base (raw) {} 
 
-		public Rectangle Area {
-			get {
-				return (Gdk.Rectangle) Marshal.PtrToStructure (gtksharp_gdk_event_expose_get_area (Handle), typeof (Gdk.Rectangle));
-			}
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public Rectangle area;
+			public IntPtr region;
+			public int count;
 		}
 
-		public int Count {
-			get {
-				return gtksharp_gdk_event_expose_get_count (Handle);
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
+
+		public Rectangle Area {
+			get { return Native.area; }
+			set {
+				NativeStruct native = Native;
+				native.area = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public Region Region {
-			get {
-				return new Region (gtksharp_gdk_event_expose_get_region (Handle));
+			get { return GLib.Opaque.GetOpaque (Native.region, typeof (Region), false) as Region; }
+			set {
+				NativeStruct native = Native;
+				native.region = value == null ? IntPtr.Zero : value.Handle;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public int Count {
+			get { return Native.count; }
+			set {
+				NativeStruct native = Native;
+				native.count = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

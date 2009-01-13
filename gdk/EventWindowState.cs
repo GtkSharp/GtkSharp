@@ -1,8 +1,8 @@
 // Gdk.EventWindowState.cs - Custom WindowState event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,23 +26,36 @@ namespace Gdk {
 
 	public class EventWindowState : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern WindowState gtksharp_gdk_event_window_state_get_changed_mask (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern WindowState gtksharp_gdk_event_window_state_get_new_window_state (IntPtr evt);
-
 		public EventWindowState (IntPtr raw) : base (raw) {} 
 
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public WindowState changed_mask;
+			public WindowState new_window_state;
+		}
+
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
+
 		public WindowState ChangedMask {
-			get {
-				return gtksharp_gdk_event_window_state_get_changed_mask (Handle);
+			get { return Native.changed_mask; }
+			set {
+				NativeStruct native = Native;
+				native.changed_mask = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public WindowState NewWindowState {
-			get {
-				return gtksharp_gdk_event_window_state_get_new_window_state (Handle);
+			get { return Native.new_window_state; }
+			set {
+				NativeStruct native = Native;
+				native.new_window_state = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

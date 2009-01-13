@@ -1,8 +1,8 @@
 // Gdk.EventCrossing.cs - Custom crossing event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,95 +26,116 @@ namespace Gdk {
 
 	public class EventCrossing : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_crossing_get_time (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern double gtksharp_gdk_event_crossing_get_x (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern double gtksharp_gdk_event_crossing_get_y (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern double gtksharp_gdk_event_crossing_get_x_root (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern double gtksharp_gdk_event_crossing_get_y_root (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_crossing_get_state (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_crossing_get_subwindow (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern CrossingMode gtksharp_gdk_event_crossing_get_mode (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern NotifyType gtksharp_gdk_event_crossing_get_detail (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern bool gtksharp_gdk_event_crossing_get_focus (IntPtr evt);
-
 		public EventCrossing (IntPtr raw) : base (raw) {} 
 
-		public uint Time {
-			get {
-				return gtksharp_gdk_event_crossing_get_time (Handle);
-			}
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public IntPtr subwindow;
+			public uint time;
+			public double x;
+			public double y;
+			public double x_root;
+			public double y_root;
+			public CrossingMode mode;
+			public NotifyType detail;
+			public bool focus;
+			public uint state;
 		}
 
-		public ModifierType State {
-			get {
-				return (ModifierType) gtksharp_gdk_event_crossing_get_state (Handle);
-			}
-		}
-
-		public double X {
-			get {
-				return gtksharp_gdk_event_crossing_get_x (Handle);
-			}
-		}
-
-		public double Y {
-			get {
-				return gtksharp_gdk_event_crossing_get_y (Handle);
-			}
-		}
-
-		public double XRoot {
-			get {
-				return gtksharp_gdk_event_crossing_get_x_root (Handle);
-			}
-		}
-
-		public double YRoot {
-			get {
-				return gtksharp_gdk_event_crossing_get_y_root (Handle);
-			}
-		}
-
-		public Window Subwindow {
-			get {
-				return GLib.Object.GetObject (gtksharp_gdk_event_crossing_get_subwindow (Handle)) as Window;
-			}
-		}
-
-		public CrossingMode Mode {
-			get {
-				return gtksharp_gdk_event_crossing_get_mode (Handle);
-			}
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
 		}
 
 		public NotifyType Detail {
-			get {
-				return gtksharp_gdk_event_crossing_get_detail (Handle);
+			get { return Native.detail; }
+			set {
+				NativeStruct native = Native;
+				native.detail = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public bool Focus {
-			get {
-				return gtksharp_gdk_event_crossing_get_focus (Handle);
+			get { return Native.focus; }
+			set {
+				NativeStruct native = Native;
+				native.focus = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public CrossingMode Mode {
+			get { return Native.mode; }
+			set {
+				NativeStruct native = Native;
+				native.mode = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public ModifierType State {
+			get { return (ModifierType) Native.state; }
+			set {
+				NativeStruct native = Native;
+				native.state = (uint) value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public Window SubWindow {
+			get { return GLib.Object.GetObject (Native.subwindow, false) as Window; }
+			set {
+				NativeStruct native = Native;
+				native.subwindow = value == null ? IntPtr.Zero : value.Handle;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public uint Time {
+			get { return Native.time; }
+			set {
+				NativeStruct native = Native;
+				native.time = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public double X {
+			get { return Native.x; }
+			set {
+				NativeStruct native = Native;
+				native.x = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public double XRoot {
+			get { return Native.x_root; }
+			set {
+				NativeStruct native = Native;
+				native.x_root = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public double Y {
+			get { return Native.y; }
+			set {
+				NativeStruct native = Native;
+				native.y = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public double YRoot {
+			get { return Native.y_root; }
+			set {
+				NativeStruct native = Native;
+				native.y_root = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

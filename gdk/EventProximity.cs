@@ -1,8 +1,8 @@
 // Gdk.EventProximity.cs - Custom proximity event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,23 +26,36 @@ namespace Gdk {
 
 	public class EventProximity : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_proximity_get_time (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_proximity_get_device (IntPtr evt);
-
 		public EventProximity (IntPtr raw) : base (raw) {} 
 
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public uint time;
+			public IntPtr device;
+		}
+
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
+
 		public Device Device {
-			get {
-				return GLib.Object.GetObject (gtksharp_gdk_event_proximity_get_device (Handle)) as Device;
+			get { return GLib.Object.GetObject (Native.device, false) as Device; }
+			set {
+				NativeStruct native = Native;
+				native.device = value == null ? IntPtr.Zero : value.Handle;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public uint Time {
-			get {
-				return gtksharp_gdk_event_proximity_get_time (Handle);
+			get { return Native.time; }
+			set {
+				NativeStruct native = Native;
+				native.time = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

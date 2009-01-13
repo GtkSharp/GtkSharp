@@ -1,8 +1,8 @@
 // Gdk.EventSetting.cs - Custom Setting event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,23 +26,37 @@ namespace Gdk {
 
 	public class EventSetting : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern SettingAction gtksharp_gdk_event_setting_get_action (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_setting_get_name (IntPtr evt);
-
 		public EventSetting (IntPtr raw) : base (raw) {} 
 
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public SettingAction action;
+			public IntPtr name;
+		}
+
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
+
 		public SettingAction Action {
-			get {
-				return gtksharp_gdk_event_setting_get_action (Handle);
+			get { return Native.action; }
+			set {
+				NativeStruct native = Native;
+				native.action = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public string Name {
-			get {
-				return GLib.Marshaller.Utf8PtrToString (gtksharp_gdk_event_setting_get_name (Handle));
+			get { return GLib.Marshaller.Utf8PtrToString (Native.name); }
+			set {
+				NativeStruct native = Native;
+				GLib.Marshaller.Free (native.name);
+				native.name = GLib.Marshaller.StringToPtrGStrdup (value);
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

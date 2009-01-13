@@ -1,8 +1,8 @@
 // Gdk.EventVisibility.cs - Custom visibility event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,14 +26,26 @@ namespace Gdk {
 
 	public class EventVisibility : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern VisibilityState gtksharp_gdk_event_visibility_get_state (IntPtr evt);
-
 		public EventVisibility (IntPtr raw) : base (raw) {} 
 
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public VisibilityState state;
+		}
+
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
+
 		public VisibilityState State {
-			get {
-				return gtksharp_gdk_event_visibility_get_state (Handle);
+			get { return Native.state; }
+			set {
+				NativeStruct native = Native;
+				native.state = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

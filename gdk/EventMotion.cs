@@ -1,8 +1,8 @@
 // Gdk.EventMotion.cs - Custom motion event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,92 +26,115 @@ namespace Gdk {
 
 	public class EventMotion : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_motion_get_time (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern double gtksharp_gdk_event_motion_get_x (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern double gtksharp_gdk_event_motion_get_y (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern double gtksharp_gdk_event_motion_get_x_root (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern double gtksharp_gdk_event_motion_get_y_root (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_motion_get_state (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern ushort gtksharp_gdk_event_motion_get_is_hint (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_motion_get_device (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_motion_get_axes (IntPtr evt);
-
 		public EventMotion (IntPtr raw) : base (raw) {} 
 
-		public uint Time {
-			get {
-				return gtksharp_gdk_event_motion_get_time (Handle);
-			}
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public uint time;
+			public double x;
+			public double y;
+			public IntPtr axes;
+			public uint state;
+			public short is_hint;
+			public IntPtr device;
+			public double x_root;
+			public double y_root;
 		}
 
-		public ModifierType State {
-			get {
-				return (ModifierType) gtksharp_gdk_event_motion_get_state (Handle);
-			}
-		}
-
-		public double X {
-			get {
-				return gtksharp_gdk_event_motion_get_x (Handle);
-			}
-		}
-
-		public double Y {
-			get {
-				return gtksharp_gdk_event_motion_get_y (Handle);
-			}
-		}
-
-		public double XRoot {
-			get {
-				return gtksharp_gdk_event_motion_get_x_root (Handle);
-			}
-		}
-
-		public double YRoot {
-			get {
-				return gtksharp_gdk_event_motion_get_y_root (Handle);
-			}
-		}
-
-		public bool IsHint {
-			get {
-				return gtksharp_gdk_event_motion_get_is_hint (Handle) == 0 ? false : true;
-			}
-		}
-
-		public Device Device {
-			get {
-				return GLib.Object.GetObject (gtksharp_gdk_event_motion_get_device (Handle)) as Device;
-			}
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
 		}
 
 		public double[] Axes {
 			get {
 				double[] result = null;
-				IntPtr axes = gtksharp_gdk_event_motion_get_axes (Handle);
+				IntPtr axes = Native.axes;
 				if (axes != IntPtr.Zero) {
 					result = new double [Device.NumAxes];
 					Marshal.Copy (axes, result, 0, result.Length);
 				}
 				return result;
+			}
+			set {
+				NativeStruct native = Native;
+				if (native.axes == IntPtr.Zero || value.Length != Device.NumAxes)
+					throw new InvalidOperationException ();
+				Marshal.Copy (value, 0, native.axes, value.Length);
+			}
+		}
+
+		public Device Device {
+			get { return GLib.Object.GetObject (Native.device, false) as Device; }
+			set {
+				NativeStruct native = Native;
+				native.device = value == null ? IntPtr.Zero : value.Handle;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public bool IsHint {
+			get { return Native.is_hint != 0; }
+			set {
+				NativeStruct native = Native;
+				native.is_hint = (short) (value ? 1 : 0);
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public ModifierType State {
+			get { return (ModifierType) Native.state; }
+			set {
+				NativeStruct native = Native;
+				native.state = (uint) value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public uint Time {
+			get { return Native.time; }
+			set {
+				NativeStruct native = Native;
+				native.time = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public double X {
+			get { return Native.x; }
+			set {
+				NativeStruct native = Native;
+				native.x = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public double XRoot {
+			get { return Native.x_root; }
+			set {
+				NativeStruct native = Native;
+				native.x_root = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public double Y {
+			get { return Native.y; }
+			set {
+				NativeStruct native = Native;
+				native.y = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public double YRoot {
+			get { return Native.y_root; }
+			set {
+				NativeStruct native = Native;
+				native.y_root = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

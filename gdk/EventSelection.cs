@@ -1,8 +1,8 @@
 // Gdk.EventSelection.cs - Custom selection event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,50 +26,67 @@ namespace Gdk {
 
 	public class EventSelection : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_selection_get_time (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_selection_get_selection (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_selection_get_target (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern IntPtr gtksharp_gdk_event_selection_get_property (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_selection_get_requestor (IntPtr evt);
-
 		public EventSelection (IntPtr raw) : base (raw) {} 
 
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public IntPtr selection;
+			public IntPtr target;
+			public IntPtr property;
+			public uint time;
+			public uint requestor;
+		}
+
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
+
 		public Atom Property {
-			get {
-				return new Atom (gtksharp_gdk_event_selection_get_property (Handle));
-			}
-		}
-
-		public Atom Selection {
-			get {
-				return new Atom (gtksharp_gdk_event_selection_get_selection (Handle));
-			}
-		}
-
-		public Atom Target {
-			get {
-				return new Atom (gtksharp_gdk_event_selection_get_target (Handle));
+			get { return GLib.Opaque.GetOpaque (Native.property, typeof (Atom), false) as Atom; }
+			set {
+				NativeStruct native = Native;
+				native.property = value == null ? IntPtr.Zero : value.Handle;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public uint Requestor {
-			get {
-				return gtksharp_gdk_event_selection_get_requestor (Handle);
+			get { return Native.requestor; }
+			set {
+				NativeStruct native = Native;
+				native.requestor = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public Atom Selection {
+			get { return GLib.Opaque.GetOpaque (Native.selection, typeof (Atom), false) as Atom; }
+			set {
+				NativeStruct native = Native;
+				native.selection = value == null ? IntPtr.Zero : value.Handle;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public Atom Target {
+			get { return GLib.Opaque.GetOpaque (Native.target, typeof (Atom), false) as Atom; }
+			set {
+				NativeStruct native = Native;
+				native.target = value.Handle;
+				native.target = value == null ? IntPtr.Zero : value.Handle;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public uint Time {
-			get {
-				return gtksharp_gdk_event_selection_get_time (Handle);
+			get { return Native.time; }
+			set {
+				NativeStruct native = Native;
+				native.time = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}

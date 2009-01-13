@@ -1,8 +1,8 @@
 // Gdk.EventKey.cs - Custom key event wrapper 
 //
-// Author:  Mike Kestner <mkestner@ximian.com>
+// Author:  Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,56 +26,72 @@ namespace Gdk {
 
 	public class EventKey : Event {
 
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_key_get_time (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_key_get_state (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern uint gtksharp_gdk_event_key_get_keyval (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern ushort gtksharp_gdk_event_key_get_hardware_keycode (IntPtr evt);
-
-		[DllImport("gdksharpglue-2")]
-		static extern byte gtksharp_gdk_event_key_get_group (IntPtr evt);
-
 		public EventKey (IntPtr raw) : base (raw) {} 
 
-		public uint Time {
-			get {
-				return gtksharp_gdk_event_key_get_time (Handle);
-			}
+		[StructLayout (LayoutKind.Sequential)]
+		struct NativeStruct {
+			EventType type;
+			IntPtr window;
+			sbyte send_event;
+			public uint time;
+			public uint state;
+			public uint keyval;
+			int length;
+			IntPtr _string;
+			public ushort hardware_keycode;
+			public byte group;
 		}
 
-		public ModifierType State {
-			get {
-				return (ModifierType) gtksharp_gdk_event_key_get_state (Handle);
-			}
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
 		}
 
-		public Key Key {
-			get {
-				return (Key) gtksharp_gdk_event_key_get_keyval (Handle);
-			}
-		}
-
-		public uint KeyValue {
-			get {
-				return gtksharp_gdk_event_key_get_keyval (Handle);
+		public byte Group {
+			get { return Native.group; }
+			set {
+				NativeStruct native = Native;
+				native.group = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
 		public ushort HardwareKeycode {
-			get {
-				return gtksharp_gdk_event_key_get_hardware_keycode (Handle);
+			get { return Native.hardware_keycode; }
+			set {
+				NativeStruct native = Native;
+				native.hardware_keycode = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 
-		public byte Group {
-			get {
-				return gtksharp_gdk_event_key_get_group (Handle);
+		public Key Key {
+			get { return (Key) KeyValue; }
+		}
+
+		public uint KeyValue {
+			get { return Native.keyval; }
+			set {
+				NativeStruct native = Native;
+				native.keyval = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public ModifierType State {
+			get { return (ModifierType) Native.state; }
+			set {
+				NativeStruct native = Native;
+				native.state = (uint) value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public uint Time {
+			get { return Native.time; }
+			set {
+				NativeStruct native = Native;
+				native.time = value;
+				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
 	}
