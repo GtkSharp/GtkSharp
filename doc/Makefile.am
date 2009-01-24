@@ -31,7 +31,9 @@ monodoc_DATA=$(TARGETS)
 
 assemble: gtk-sharp-docs.zip gtk-sharp-docs.tree
 
-gtk-sharp-docs.zip gtk-sharp-docs.tree: $(srcdir)/en/*/*.xml $(srcdir)/en/*.xml
+gtk-sharp-docs.tree: gtk-sharp-docs.zip
+
+gtk-sharp-docs.zip: $(srcdir)/en/*/*.xml $(srcdir)/en/*.xml
 	$(MDOC) assemble -o gtk-sharp-docs $(srcdir)/en
 
 get-assemblies:

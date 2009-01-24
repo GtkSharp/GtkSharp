@@ -46,12 +46,11 @@ $(SNK): $(top_srcdir)/$(SNK)
 AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
 	cp $(top_builddir)/AssemblyInfo.cs .
 
-$(POLICY_ASSEMBLIES): $(top_builddir)/policy.config $(SNK)
-	@for i in $(POLICY_VERSIONS); do	\
-	  echo "Creating policy.$$i.$(ASSEMBLY)";	\
-	  sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$$i/" $(top_builddir)/policy.config > policy.$$i.config;	\
-	  $(AL) -link:policy.$$i.config -out:policy.$$i.$(ASSEMBLY) -keyfile:$(SNK);	\
-	done
+policy.%.config: $(top_builddir)/policy.config
+	sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$*/" $(top_builddir)/policy.config > $@
+
+$(POLICY_ASSEMBLIES) : policy.%.$(ASSEMBLY): policy.%.config $(SNK)
+	$(AL) -link:policy.$*.config -out:$@ -keyfile:$(SNK)
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 build_references = $(addprefix /r:, $(references)) $(MONO_CAIRO_LIBS)

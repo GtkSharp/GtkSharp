@@ -102,12 +102,11 @@ $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
 	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 	$(GAPI_CDECL_INSERT)
 
-$(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk
-	@for i in $(POLICY_VERSIONS); do	\
-	  echo "Creating policy.$$i.$(ASSEMBLY)";	\
-	  sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$$i/" $(top_builddir)/policy.config > policy.$$i.config;	\
-	  $(AL) -link:policy.$$i.config -out:policy.$$i.$(ASSEMBLY) -keyfile:gtk-sharp.snk;	\
-	done
+policy.%.config: $(top_builddir)/policy.config
+	sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$*/" $(top_builddir)/policy.config > $@
+
+$(POLICY_ASSEMBLIES) : policy.%.$(ASSEMBLY): policy.%.config gtk-sharp.snk
+	$(AL) -link:policy.$*.config -out:$@ -keyfile:gtk-sharp.snk
 
 install-data-local:
 	@if test -n '$(TARGET)'; then							\
