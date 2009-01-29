@@ -88,32 +88,10 @@ namespace GLib {
 			}
 		}       
 
-		class FinalizeInfo {
-			Type type;
-			IntPtr native;
-			bool owned;
-
-			public FinalizeInfo (Type type, IntPtr native, bool owned)
-			{
-				this.type = type;
-				this.native = native;
-				this.owned = owned;
-			}
-
-			public bool Handler ()
-			{
-				Opaque inst = GetOpaque (native, type, owned);
-				inst.Dispose ();
-				return false;
-			}
-		}
-
 		~Opaque ()
 		{
-			if (_obj == IntPtr.Zero)
-				return;
-			FinalizeInfo info = new FinalizeInfo (GetType(), _obj, owned);
-			Timeout.Add (50, new TimeoutHandler (info.Handler));
+			// for compat.  All subclasses should have
+			// generated finalizers if needed now.
 		}
 
 		public virtual void Dispose ()
