@@ -11,7 +11,7 @@ namespace TestGio
 			VolumeMonitor monitor = VolumeMonitor.Default;
 			Console.WriteLine ("Volumes:");
 			foreach (Volume v in monitor.Volumes)
-				Console.WriteLine ("\t{0}", v);
+				Console.WriteLine ("\t{0}", v.Name);
 			Console.WriteLine ("\nMounts:");
 			foreach (Mount m in monitor.Mounts) {
 				Console.WriteLine ("\tName:{0}, UUID:{1}, root:{2}, CanUnmount: {3}", m.Name, m.Uuid, m.Root, m.CanUnmount);
@@ -23,8 +23,8 @@ namespace TestGio
 					Console.WriteLine ("\t\tDrive:{0}", d.Name);
 			}
 			Console.WriteLine ("\nConnectedDrives:");
-			foreach (object o in monitor.ConnectedDrives)
-				Console.WriteLine ("\t{0}", o);
+			foreach (Drive d in monitor.ConnectedDrives)
+				Console.WriteLine ("\t{0}, HasVolumes:{1}", d.Name, d.HasVolumes);
 		}
 	}
 }
