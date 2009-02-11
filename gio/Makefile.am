@@ -15,6 +15,7 @@ sources =			\
 	GioStream.cs
 
 customs =			\
+	AppInfoAdapter.custom	\
 	File.custom		\
 	FileAdapter.custom	\
 	FileEnumerator.custom
