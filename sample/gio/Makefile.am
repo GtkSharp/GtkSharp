@@ -1,4 +1,4 @@
-TARGETS = AppInfo.exe 
+TARGETS = AppInfo.exe Volume.exe
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -12,8 +12,9 @@ noinst_SCRIPTS = $(TARGETS)
 CLEANFILES = $(TARGETS) $(DEBUGS)
 
 .cs.exe: $(assemblies)
-	$(CSC) /out:$@ $(references) $<
+	$(CSC) /debug /out:$@ $(references) $<
 
 EXTRA_DIST = 				\
-	AppInfo.cs
+	AppInfo.cs			\
+	Volume.cs
 
