@@ -23,7 +23,7 @@ namespace TestGio
 			Console.WriteLine ("{0}:\t{1}", app_info.Name, app_info.Description);
 
 			Console.WriteLine ("All installed AppInfos:");
-			foreach (AppInfo appinfo in AppInfoAdapter.All)
+			foreach (AppInfo appinfo in AppInfoAdapter.GetAll ())
 				Console.WriteLine ("\t{0}: {1} ", appinfo.Name, appinfo.Executable);
 		}
 	}
