@@ -10,12 +10,16 @@
   <attr path="/api/namespace/interface[@cname='GAppInfo']/method[@name='ShouldShow']" name="name">GetShouldShow</attr>
   <attr path="/api/namespace/interface[@cname='GAppInfo']/method[@name='SupportsFiles']" name="name">GetSupportsFiles</attr>
   <attr path="/api/namespace/interface[@cname='GAppInfo']/method[@name='SupportsUris']" name="name">GetSupportsUris</attr>
+  <attr path="/api/namespace/interface[@cname='GDrive']" name="consume_only">1</attr>
   <attr path="/api/namespace/interface[@cname='GFile']/method[@name='GetParseName']" name="name">GetParsedName</attr>
   <attr path="/api/namespace/interface[@cname='GFile']/method[@name='GetUri']" name="hidden">1</attr>
   <attr path="/api/namespace/interface[@cname='GLoadableIcon']/method[@name='LoadAsync']/*/*[@type='GAsyncReadyCallback']" name="scope">async</attr>
-  <attr path="/api/namespace/interface[@cname='GVolume']/method[@name='GetMount']" name="name">GetMountInstance</attr>
+  <attr path="/api/namespace/interface[@cname='GMount']" name="consume_only">1</attr>
+  <attr path="/api/namespace/interface[@cname='GMount']/method[@name='CanUnmount']" name="name">GetCanUnmount</attr>
   <attr path="/api/namespace/interface[@cname='GSeekable']/method[@cname='g_seekable_can_seek']" name="name">GetCanSeek</attr>
   <attr path="/api/namespace/interface[@cname='GSeekable']/method[@cname='g_seekable_tell']" name="name">GetPosition</attr>
+  <attr path="/api/namespace/interface[@cname='GVolume']" name="consume_only">1</attr>
+  <attr path="/api/namespace/interface[@cname='GVolume']/method[@name='GetMount']" name="name">GetMountInstance</attr>
   <attr path="/api/namespace/object/method/*/*[@type='GAsyncReadyCallback']" name="scope">async</attr>
   <add-node path="/api/namespace/object[@cname='GFileEnumerator']"><implements><interface name="IEnumerable" /></implements></add-node>
   <attr path="/api/namespace/object[@cname='GFileInfo']/method[@cname='g_file_info_get_attribute_int64']" name="name">GetAttributeLong</attr>
@@ -43,5 +47,10 @@
   <attr path="/api/namespace/object[@cname='GSimpleAsyncResult']/constructor[@cname='g_simple_async_result_new_error']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GSimpleAsyncResult']/method[@name='SetError']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GThemedIcon']/method[@name='GetNames']/return-type" name="null_term_array">1</attr> 
+  <attr path="/api/namespace/object[@cname='GVolumeMonitor']/method[@name='Get']" name="name">GetDefault</attr>
+  <attr path="/api/namespace/object[@cname='GVolumeMonitor']/method[@name='GetMounts']/return-type" name="element_type">GMount*</attr>
+  <attr path="/api/namespace/object[@cname='GVolumeMonitor']/method[@name='GetMounts']/return-type" name="owned">true</attr>
+  <attr path="/api/namespace/object[@cname='GVolumeMonitor']/method[@name='GetVolumes']/return-type" name="element_type">GVolume*</attr>
+  <attr path="/api/namespace/object[@cname='GVolumeMonitor']/method[@name='GetVolumes']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/struct[@cname='GFileAttributeInfoList']/field[@name='Infos']" name="array">1</attr>
 </metadata>
