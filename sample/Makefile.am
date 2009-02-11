@@ -1,4 +1,4 @@
-SUBDIRS = test GtkDemo pixmaps valtest opaquetest
+SUBDIRS = test GtkDemo pixmaps valtest opaquetest gio gtk-gio
 
 if ENABLE_MONO_CAIRO
 cairo_ref=-r:$(top_builddir)/cairo/Mono.Cairo.dll

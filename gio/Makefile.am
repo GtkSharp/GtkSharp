@@ -11,7 +11,6 @@ glue_includes = gio/gio.h
 POLICY_VERSIONS=
 
 sources =			\
-	AppInfoFactory.cs	\
 	FileFactory.cs		\
 	GioStream.cs
 
