@@ -6,6 +6,7 @@ assemblies = 					\
 	$(top_builddir)/glib/glib-sharp.dll 	\
 	$(top_builddir)/gtk/gtk-sharp.dll 	\
 	$(top_builddir)/gio/gio-sharp.dll 	\
+	$(top_builddir)/atk/gdk-sharp.dll	\
 	$(top_builddir)/atk/atk-sharp.dll
 
 references=$(addprefix /r:, $(assemblies))
