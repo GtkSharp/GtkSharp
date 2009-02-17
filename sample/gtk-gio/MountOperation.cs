@@ -46,7 +46,7 @@ public class TestMount
 		Window w = new Window ("test");
 		operation = new Gtk.MountOperation (w);
 		Button b = new Button ("Mount");
-		b.Clicked += HandleButtonClicked;
+		b.Clicked += new EventHandler (HandleButtonClicked);
 		b.Show ();
 		w.Add (b);
 		w.Show ();
@@ -56,7 +56,7 @@ public class TestMount
 	static void HandleButtonClicked (object sender, EventArgs args)
 	{
 		System.Console.WriteLine ("clicked");
-		file.MountEnclosingVolume (0, operation, null, HandleMountFinished);
+		file.MountEnclosingVolume (0, operation, null, new GLib.AsyncReadyCallback (HandleMountFinished));
 	}
 
 	static void HandleMountFinished (GLib.Object sender, GLib.AsyncResult result)

@@ -42,12 +42,14 @@ namespace GLib {
 		public Value (GLib.GType gtype)
 		{
 			type = IntPtr.Zero;
+			padding = new Padding ();
 			g_value_init (ref this, gtype.Val);
 		}
 
 		public Value (object obj)
 		{
 			type = IntPtr.Zero;
+			padding = new Padding ();
 
 			GType gtype = (GType) obj.GetType ();
 			g_value_init (ref this, gtype.Val);
@@ -98,6 +100,7 @@ namespace GLib {
 		public Value (EnumWrapper wrap, string type_name)
 		{
 			type = IntPtr.Zero;
+			padding = new Padding ();
 			g_value_init (ref this, GType.FromName (type_name).Val);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
@@ -130,6 +133,7 @@ namespace GLib {
 		public Value (Opaque val, string type_name)
 		{
 			type = IntPtr.Zero;
+			padding = new Padding ();
 			g_value_init (ref this, GType.FromName (type_name).Val);
 			g_value_set_boxed (ref this, val.Handle);
 		}
@@ -147,6 +151,7 @@ namespace GLib {
 		public Value (GLib.Object obj, string prop_name)
 		{
 			type = IntPtr.Zero;
+			padding = new Padding ();
 			InitForProperty (obj, prop_name);
 		}
 
@@ -154,6 +159,7 @@ namespace GLib {
 		public Value (GLib.Object obj, string prop_name, EnumWrapper wrap)
 		{
 			type = IntPtr.Zero;
+			padding = new Padding ();
 			InitForProperty (obj.NativeType, prop_name);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
@@ -165,6 +171,7 @@ namespace GLib {
 		public Value (IntPtr obj, string prop_name, Opaque val)
 		{
 			type = IntPtr.Zero;
+			padding = new Padding ();
 			InitForProperty (GLib.Object.GetObject (obj), prop_name);
 			g_value_set_boxed (ref this, val.Handle);
 		}
