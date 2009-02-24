@@ -30,26 +30,38 @@ namespace GLib {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct Value : IDisposable {
 
-		[StructLayout(LayoutKind.Sequential, Size=16)]
+		[StructLayout(LayoutKind.Explicit)]
 		struct Padding {
+			[FieldOffset (0)] int v_int;
+			[FieldOffset (0)] uint v_uint;
+			[FieldOffset (0)] int v_long;
+			[FieldOffset (0)] uint v_ulong;
+			[FieldOffset (0)] long v_int64;
+			[FieldOffset (0)] ulong v_uint64;
+			[FieldOffset (0)] float v_float;
+			[FieldOffset (0)] double v_double;
+			[FieldOffset (0)] IntPtr v_pointer;
 		}
 
 		IntPtr type;
-		Padding padding;
+		Padding pad1;
+		Padding pad2;
 
 		public static Value Empty;
 
 		public Value (GLib.GType gtype)
 		{
 			type = IntPtr.Zero;
-			padding = new Padding ();
+			pad1 = new Padding ();
+			pad2 = new Padding ();
 			g_value_init (ref this, gtype.Val);
 		}
 
 		public Value (object obj)
 		{
 			type = IntPtr.Zero;
-			padding = new Padding ();
+			pad1 = new Padding ();
+			pad2 = new Padding ();
 
 			GType gtype = (GType) obj.GetType ();
 			g_value_init (ref this, gtype.Val);
@@ -100,7 +112,8 @@ namespace GLib {
 		public Value (EnumWrapper wrap, string type_name)
 		{
 			type = IntPtr.Zero;
-			padding = new Padding ();
+			pad1 = new Padding ();
+			pad2 = new Padding ();
 			g_value_init (ref this, GType.FromName (type_name).Val);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
@@ -133,7 +146,8 @@ namespace GLib {
 		public Value (Opaque val, string type_name)
 		{
 			type = IntPtr.Zero;
-			padding = new Padding ();
+			pad1 = new Padding ();
+			pad2 = new Padding ();
 			g_value_init (ref this, GType.FromName (type_name).Val);
 			g_value_set_boxed (ref this, val.Handle);
 		}
@@ -151,7 +165,8 @@ namespace GLib {
 		public Value (GLib.Object obj, string prop_name)
 		{
 			type = IntPtr.Zero;
-			padding = new Padding ();
+			pad1 = new Padding ();
+			pad2 = new Padding ();
 			InitForProperty (obj, prop_name);
 		}
 
@@ -159,7 +174,8 @@ namespace GLib {
 		public Value (GLib.Object obj, string prop_name, EnumWrapper wrap)
 		{
 			type = IntPtr.Zero;
-			padding = new Padding ();
+			pad1 = new Padding ();
+			pad2 = new Padding ();
 			InitForProperty (obj.NativeType, prop_name);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
@@ -171,7 +187,8 @@ namespace GLib {
 		public Value (IntPtr obj, string prop_name, Opaque val)
 		{
 			type = IntPtr.Zero;
-			padding = new Padding ();
+			pad1 = new Padding ();
+			pad2 = new Padding ();
 			InitForProperty (GLib.Object.GetObject (obj), prop_name);
 			g_value_set_boxed (ref this, val.Handle);
 		}
