@@ -32,9 +32,9 @@ namespace Gtk {
 		{
 			TreeViewColumn col = (Gtk.TreeViewColumn) GLib.Object.GetObject(tree_column);
 			CellRenderer renderer = (Gtk.CellRenderer) GLib.Object.GetObject(cell);
-			NodeStore store = (NodeStore) GLib.Object.GetObject(tree_model);
+			NodeStore.NodeStoreImplementor store = (NodeStore.NodeStoreImplementor) GLib.Object.GetObject(tree_model);
 			TreeIter iter = TreeIter.New (iter_ptr);
-			managed (col,  renderer,  store.GetNode (iter));
+			managed (col, renderer, store.GetNode (iter));
 		}
 
 		internal GtkSharp.CellLayoutDataFuncNative NativeDelegate;

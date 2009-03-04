@@ -43,7 +43,7 @@ namespace Gtk {
 		
 		public bool NodeIsSelected (ITreeNode node)
 		{
-			return selection.IterIsSelected (NodeView.NodeStore.GetIter (node));
+			return selection.IterIsSelected (NodeView.NodeStore.Implementor.GetIter (node));
 		}
 
 		public bool PathIsSelected (TreePath path)
@@ -58,7 +58,7 @@ namespace Gtk {
 
 		public void SelectNode (ITreeNode node)
 		{
-			selection.SelectIter (NodeView.NodeStore.GetIter (node));
+			selection.SelectIter (NodeView.NodeStore.Implementor.GetIter (node));
 		}
 
 		public void SelectPath (TreePath path)
@@ -68,8 +68,8 @@ namespace Gtk {
 
 		public void SelectRange (ITreeNode begin_node, ITreeNode end_node)
 		{
-			TreePath begin = NodeView.NodeStore.GetPath (begin_node);
-			TreePath end = NodeView.NodeStore.GetPath (end_node);
+			TreePath begin = NodeView.NodeStore.Implementor.GetPath (begin_node);
+			TreePath end = NodeView.NodeStore.Implementor.GetPath (end_node);
 
 			selection.SelectRange (begin, end);
 		}
@@ -81,7 +81,7 @@ namespace Gtk {
 
 		public void UnselectNode (ITreeNode node)
 		{
-			selection.UnselectIter (NodeView.NodeStore.GetIter (node));
+			selection.UnselectIter (NodeView.NodeStore.Implementor.GetIter (node));
 		}
 
 		public void UnselectPath (TreePath path) 
@@ -96,8 +96,8 @@ namespace Gtk {
 
 		public void UnselectRange (ITreeNode begin_node, ITreeNode end_node)
 		{
-			TreePath begin = NodeView.NodeStore.GetPath (begin_node);
-			TreePath end = NodeView.NodeStore.GetPath (end_node);
+			TreePath begin = NodeView.NodeStore.Implementor.GetPath (begin_node);
+			TreePath end = NodeView.NodeStore.Implementor.GetPath (end_node);
 
 			selection.UnselectRange (begin, end);
 		}

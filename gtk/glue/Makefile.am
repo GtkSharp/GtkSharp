@@ -5,7 +5,6 @@ libgtksharpglue_2_la_SOURCES =	\
 	cellrenderer.c		\
 	clipboard.c		\
 	container.c		\
-	nodestore.c		\
 	object.c		\
 	selectiondata.c		\
 	statusicon.c		\

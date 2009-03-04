@@ -3,6 +3,7 @@
 // Author: Mike Kestner  <mkestner@novell.com>
 //
 // Copyright (c) 2003-2005 Novell, Inc.
+// Copyright (c) 2009 Christian Hoff
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -27,171 +28,227 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public class NodeStore : GLib.Object, IEnumerable {
+		internal readonly NodeStoreImplementor Implementor;
 
-        	class IDHashtable : Hashtable {
-                	class IDComparer : IComparer {
-                        	public int Compare (object x, object y)
-                        	{
-                                	if ((int) x == (int) y)
-                                        	return 0;
-                                	else
-                                        	return 1;
-                        	}
-                	}
+		public NodeStore (Type node_type)
+		{
+			Implementor = new NodeStoreImplementor (node_type);
+		}
 
-                	class IDHashCodeProvider : IHashCodeProvider {
-				public int GetHashCode (object o)
-				{
-					return (int) o;
+		// Redirect calls to implementor class
+		public ITreeNode GetNode (TreePath path) { return Implementor.GetNode (path); }
+		public void AddNode (ITreeNode node) { Implementor.AddNode (node); }
+		public void AddNode (ITreeNode node, int position) { Implementor.AddNode (node, position); }
+		public void RemoveNode (ITreeNode node) { Implementor.RemoveNode (node); }
+		public void Clear () { Implementor.Clear (); }
+		public IEnumerator GetEnumerator () { return Implementor.GetEnumerator (); }
+
+		internal class NodeStoreImplementor : GLib.Object, TreeModelImplementor, IEnumerable {
+			TreeModelAdapter model_adapter;
+ 			GLib.GType[] ctypes; 
+			MemberInfo [] getters;
+			int n_cols;
+			bool list_only = false;
+			ArrayList nodes = new ArrayList ();
+
+			public readonly int Stamp;
+
+			public NodeStoreImplementor (Type node_type)
+			{
+				// Create a random stamp for the iters
+				Random RandomStampGen = new Random ();
+				this.Stamp = RandomStampGen.Next (int.MinValue, int.MaxValue);
+
+				ScanType (node_type);
+
+				model_adapter = new Gtk.TreeModelAdapter (this);
+			}
+
+			void ScanType (Type type)
+			{
+				TreeNodeAttribute tna = (TreeNodeAttribute) Attribute.GetCustomAttribute (type, typeof (TreeNodeAttribute), false);
+				if (tna != null)
+					list_only = tna.ListOnly;
+			
+				ArrayList minfos = new ArrayList ();
+			
+				foreach (PropertyInfo pi in type.GetProperties ())
+					foreach (TreeNodeValueAttribute attr in pi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false))
+						minfos.Add (pi);
+			
+				foreach (FieldInfo fi in type.GetFields ())
+					foreach (TreeNodeValueAttribute attr in fi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false))
+						minfos.Add (fi);
+
+				n_cols = minfos.Count;
+ 				ctypes = new GLib.GType [n_cols];
+ 				getters = new MemberInfo [n_cols];
+
+				foreach (MemberInfo mi in minfos) {
+					foreach (TreeNodeValueAttribute attr in mi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false)) {
+						int col = attr.Column;
+
+						if (getters [col] != null)
+							throw new Exception (String.Format ("You have two TreeNodeValueAttributes with the Column={0}", col));
+					
+						getters [col] = mi;
+						Type t = mi is PropertyInfo ? ((PropertyInfo) mi).PropertyType
+					                            : ((FieldInfo) mi).FieldType;
+						ctypes [col] = (GLib.GType) t;
+					}
 				}
 			}
 
-                	public IDHashtable () : base (new IDHashCodeProvider (), new IDComparer ()) {}
-        	}
-
-		[GLib.CDeclCallback]
-		delegate int GetFlagsDelegate ();
-		[GLib.CDeclCallback]
-		delegate int GetNColumnsDelegate ();
-		[GLib.CDeclCallback]
-		delegate IntPtr GetColumnTypeDelegate (int col);
-		[GLib.CDeclCallback]
-		delegate bool GetNodeDelegate (out int node_idx, IntPtr path);
-		[GLib.CDeclCallback]
-		delegate IntPtr GetPathDelegate (int node_idx);
-		[GLib.CDeclCallback]
-		delegate void GetValueDelegate (int node_idx, int col, ref GLib.Value val);
-		[GLib.CDeclCallback]
-		delegate bool NextDelegate (ref int node_idx);
-		[GLib.CDeclCallback]
-		delegate bool ChildrenDelegate (out int child, int parent);
-		[GLib.CDeclCallback]
-		delegate bool HasChildDelegate (int node_idx);
-		[GLib.CDeclCallback]
-		delegate int NChildrenDelegate (int node_idx);
-		[GLib.CDeclCallback]
-		delegate bool NthChildDelegate (out int child, int parent, int n);
-		[GLib.CDeclCallback]
-		delegate bool ParentDelegate (out int parent, int child);
-
-		[StructLayout(LayoutKind.Sequential)]
-		struct TreeModelIfaceDelegates  {
-			public GetFlagsDelegate get_flags;
-			public GetNColumnsDelegate get_n_columns;
-			public GetColumnTypeDelegate get_column_type;
-			public GetNodeDelegate get_node;
-			public GetPathDelegate get_path;
-			public GetValueDelegate get_value;
-			public NextDelegate next;
-			public ChildrenDelegate children;
-			public HasChildDelegate has_child;
-			public NChildrenDelegate n_children;
-			public NthChildDelegate nth_child;
-			public ParentDelegate parent;
-		}
-
-		Hashtable node_hash = new IDHashtable ();
- 		GLib.GType[] ctypes; 
-		MemberInfo [] getters;
-		int n_cols;
-		bool list_only = false;
-		ArrayList nodes = new ArrayList ();
-		TreeModelIfaceDelegates tree_model_iface;
-
-		int get_flags_cb ()
-		{
-			TreeModelFlags result = TreeModelFlags.ItersPersist;
-			if (list_only)
-				result |= TreeModelFlags.ListOnly;
-			return (int) result;
-		}
-
-		int get_n_columns_cb ()
-		{
-			return n_cols;
-		}
-
-		IntPtr get_column_type_cb (int col)
-		{
-			try {
-				return ctypes [col].Val;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			public TreeModelFlags Flags {
+				get {
+					TreeModelFlags result = TreeModelFlags.ItersPersist;
+					if (list_only)
+						result |= TreeModelFlags.ListOnly;
+					return result;
+				}
 			}
 
-			return IntPtr.Zero;
-		}
+			public int NColumns {
+				get {
+					return n_cols;
+				}
+			}
 
-		bool get_node_cb (out int node_idx, IntPtr path)
-		{
-			try {
-				if (path == IntPtr.Zero)
+			public GLib.GType GetColumnType (int col)
+			{
+				return ctypes [col];
+			}
+
+#region Gtk.TreePath handling
+			internal TreePath GetPath (ITreeNode node)
+			{
+				TreePath path = new TreePath ();
+				int idx;
+
+				while (node.Parent != null) {
+					idx = node.Parent.IndexOf (node);
+					if (idx < 0) throw new Exception ("Badly formed tree");
+					path.PrependIndex (idx);
+					node = node.Parent;
+				}
+				idx = Nodes.IndexOf (node);
+				if (idx < 0) throw new Exception ("Node not found in Nodes list");
+				path.PrependIndex (idx);
+
+				path.Owned = false;
+				return path;
+			}
+
+			public ITreeNode GetNode (TreePath path)
+			{
+				if (path == null)
+					throw new ArgumentNullException ();
+
+				int[] indices = path.Indices;
+
+				if (indices[0] >= Nodes.Count)
+					return null;
+
+				ITreeNode node = Nodes [indices [0]] as ITreeNode;
+				int i;
+				for (i = 1; i < path.Depth; i++) {
+					if (indices [i] >= node.ChildCount)
+						return null;
+
+					node = node [indices [i]];
+				}
+
+				return node;
+			}
+#endregion
+
+#region Gtk.TreeIter handling
+			ArrayList gc_handles = new ArrayList ();
+
+			public override void Dispose ()
+			{
+				// Free all the GCHandles pointing to the iters since they won't be garbage collected
+				foreach (System.Runtime.InteropServices.GCHandle handle in gc_handles)
+					handle.Free ();
+
+				base.Dispose ();
+			}
+
+			internal void GetIter (ITreeNode node, ref TreeIter iter)
+			{
+				if (node == null)
+					throw new ArgumentNullException ("node");
+
+				iter.Stamp = this.Stamp;
+				GCHandle gch = GCHandle.Alloc (node);
+				iter.UserData = (IntPtr) gch;
+				gc_handles.Add (gch);
+			}
+
+			public TreeIter GetIter (ITreeNode node)
+			{
+				Gtk.TreeIter result = Gtk.TreeIter.Zero;
+				GetIter (node, ref result);
+
+				return result;
+			}
+
+			public ITreeNode GetNode (TreeIter iter)
+			{
+				if (iter.Stamp != this.Stamp)
+					throw new InvalidOperationException (String.Format ("iter belongs to a different model; it's stamp is not equal to the stamp of this model({0})", this.Stamp.ToString ()));
+
+				System.Runtime.InteropServices.GCHandle gch = (System.Runtime.InteropServices.GCHandle) iter.UserData;
+				return gch.Target as ITreeNode;
+			}
+
+			void TreeModelImplementor.RefNode (Gtk.TreeIter iter) { }
+			void TreeModelImplementor.UnrefNode (Gtk.TreeIter iter) { }
+#endregion
+
+			public bool GetIter (out TreeIter iter, TreePath path)
+			{
+				if (path == null)
 					throw new ArgumentNullException ("path");
-
-				TreePath treepath = new TreePath (path);
-				node_idx = -1;
-
-				ITreeNode node = GetNodeAtPath (treepath);
-				if (node == null)
+			
+				ITreeNode node = GetNode (path);
+				if (node == null) {
+					iter = TreeIter.Zero;
 					return false;
-
-				node_idx = node.ID;
-				node_hash [node.ID] = node;
-				return true;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+				} else {
+					iter = GetIter (node);
+					return true;
+				}
 			}
-			node_idx = -1;
-			return false;
-		}
 
-		IntPtr get_path_cb (int node_idx)
-		{
-			try {
-				ITreeNode node = node_hash [node_idx] as ITreeNode;
-				if (node == null) throw new Exception ("Invalid Node ID");
-
-				return GetPath (node).Handle;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			public Gtk.TreePath GetPath (TreeIter iter)
+			{
+				return GetPath (GetNode (iter));
 			}
-			return IntPtr.Zero;
-		}
 
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_init (ref GLib.Value val, IntPtr type);
+			public void GetValue (Gtk.TreeIter iter, int col, ref GLib.Value val)
+			{
+				ITreeNode node = GetNode (iter);
+				val.Init (ctypes [col]);
 
-		void get_value_cb (int node_idx, int col, ref GLib.Value val)
-		{
-			try {
-				ITreeNode node = node_hash [node_idx] as ITreeNode;
-				if (node == null)
-					return;
-				g_value_init (ref val, ctypes [col].Val);
 				object col_val;
 				if (getters [col] is PropertyInfo)
 					col_val = ((PropertyInfo) getters [col]).GetValue (node, null);
 				else
 					col_val = ((FieldInfo) getters [col]).GetValue (node);
 				val.Val = col_val;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
-		}
 
-		bool next_cb (ref int node_idx)
-		{
-			try {
-				ITreeNode node = node_hash [node_idx] as ITreeNode;
-				if (node == null)
-					return false;
+			public bool IterNext (ref TreeIter iter)
+			{
+				ITreeNode node = GetNode (iter);
 
 				int idx;
 				if (node.Parent == null)
 					idx = Nodes.IndexOf (node);
 				else
 					idx = node.Parent.IndexOf (node);
-			
+
 				if (idx < 0) throw new Exception ("Node not found in Nodes list");
 
 				if (node.Parent == null) {
@@ -203,361 +260,158 @@ namespace Gtk {
 						return false;
 					node = node.Parent [idx];
 				}
-				node_hash [node.ID] = node;
-				node_idx = node.ID;
+
+				GetIter (node, ref iter);
 				return true;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
-			return false;
-		}
 
-		bool children_cb (out int child_idx, int parent)
-		{
-			try {
-				child_idx = -1;
-				ITreeNode node;
+			public bool IterChildren (out Gtk.TreeIter first_child, Gtk.TreeIter parent)
+			{
+				first_child = Gtk.TreeIter.Zero;
 
-				if (parent == -1) {
+				if (parent.Equals (TreeIter.Zero)) {
 					if (Nodes.Count <= 0)
 						return false;
-					node = Nodes [0] as ITreeNode;
-					child_idx = node.ID;
-					node_hash [node.ID] = node;
-					return true;
+					first_child = GetIter (Nodes [0] as ITreeNode);
+				} else {
+					ITreeNode node = GetNode (parent);
+					if (node.ChildCount <= 0)
+						return false;
+
+					first_child = GetIter (node [0]);
 				}
-				
-				node = node_hash [parent] as ITreeNode;
-				if (node == null || node.ChildCount <= 0)
-					return false;
-
-				ITreeNode child = node [0];
-				node_hash [child.ID] = child;
-				child_idx = child.ID;
 				return true;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
-			child_idx = -1;
-			return false;
-		}
 
-		bool has_child_cb (int node_idx)
-		{
-			try {
-				ITreeNode node = node_hash [node_idx] as ITreeNode;
-				if (node == null || node.ChildCount <= 0)
-					return false;
-
-				return true;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			public bool IterHasChild (Gtk.TreeIter iter)
+			{
+				return IterNChildren (iter) > 0;
 			}
-			return false;
-		}
 
-		int n_children_cb (int node_idx)
-		{
-			try {
-				if (node_idx == -1)
+			public int IterNChildren (Gtk.TreeIter iter)
+			{
+				if (iter.Equals (TreeIter.Zero))
 					return Nodes.Count;
-				
-				ITreeNode node = node_hash [node_idx] as ITreeNode;
-				if (node == null || node.ChildCount <= 0)
-					return 0;
-
-				return node.ChildCount;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+				else
+					return GetNode (iter).ChildCount;
 			}
-			return 0;
-		}
 
-		bool nth_child_cb (out int child_idx, int parent, int n)
-		{
-			child_idx = -1;
-			try {
-				ITreeNode node;
+			public bool IterNthChild (out Gtk.TreeIter child, Gtk.TreeIter parent, int n)
+			{
+				child = TreeIter.Zero;
 
-				if (parent == -1) {
+				if (parent.Equals (TreeIter.Zero)) {
 					if (Nodes.Count <= n)
 						return false;
-					node = Nodes [n] as ITreeNode;
-					child_idx = node.ID;
-					node_hash [node.ID] = node;
+					child = GetIter (Nodes [n] as ITreeNode);
+				} else {
+					ITreeNode parent_node = GetNode (parent);
+					if (parent_node.ChildCount <= n)
+						return false;
+					child = GetIter (parent_node [n]);
+				}
+				return true;
+			}
+
+			public bool IterParent (out Gtk.TreeIter parent, Gtk.TreeIter child)
+			{
+				parent = TreeIter.Zero;
+				ITreeNode child_node = GetNode (child);
+
+				if (child_node.Parent == null)
+					return false;
+				else {
+					parent = GetIter (child_node.Parent);
 					return true;
 				}
-				
-				node = node_hash [parent] as ITreeNode;
-				if (node == null || node.ChildCount <= n)
-					return false;
-
-				ITreeNode child = node [n];
-				node_hash [child.ID] = child;
-				child_idx = child.ID;
-				return true;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
-			return false;
-		}
 
-		bool parent_cb (out int parent_idx, int child)
-		{
-			parent_idx = -1;
-			try {
-				ITreeNode node = node_hash [child] as ITreeNode;
-				if (node == null || node.Parent == null)
-					return false;
-
-				node_hash [node.Parent.ID] = node.Parent;
-				parent_idx = node.Parent.ID;
-				return true;
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
-			}
-			return false;
-		}
-
-		[DllImport("gtksharpglue-2")]
-		static extern void gtksharp_node_store_set_tree_model_callbacks (IntPtr raw, ref TreeModelIfaceDelegates cbs);
-
-		private void BuildTreeModelIface ()
-		{
-			tree_model_iface.get_flags = new GetFlagsDelegate (get_flags_cb);
-			tree_model_iface.get_n_columns = new GetNColumnsDelegate (get_n_columns_cb);
-			tree_model_iface.get_column_type = new GetColumnTypeDelegate (get_column_type_cb);
-			tree_model_iface.get_node = new GetNodeDelegate (get_node_cb);
-			tree_model_iface.get_path = new GetPathDelegate (get_path_cb);
-			tree_model_iface.get_value = new GetValueDelegate (get_value_cb);
-			tree_model_iface.next = new NextDelegate (next_cb);
-			tree_model_iface.children = new ChildrenDelegate (children_cb);
-			tree_model_iface.has_child = new HasChildDelegate (has_child_cb);
-			tree_model_iface.n_children = new NChildrenDelegate (n_children_cb);
-			tree_model_iface.nth_child = new NthChildDelegate (nth_child_cb);
-			tree_model_iface.parent = new ParentDelegate (parent_cb);
-
-			gtksharp_node_store_set_tree_model_callbacks (Handle, ref tree_model_iface);
-		}
-
-		public NodeStore (Type node_type) : base (IntPtr.Zero)
-		{
-			CreateNativeObject (new string [0], new GLib.Value [0]);
-			ScanType (node_type);
-			BuildTreeModelIface ();
-		}
-
-		void ScanType (Type type)
-		{
-			TreeNodeAttribute tna = (TreeNodeAttribute) Attribute.GetCustomAttribute (type, typeof (TreeNodeAttribute), false);
-			if (tna != null)
-				list_only = tna.ListOnly;
-			
-			ArrayList minfos = new ArrayList ();
-			
-			foreach (PropertyInfo pi in type.GetProperties ())
-				foreach (TreeNodeValueAttribute attr in pi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false))
-					minfos.Add (pi);
-			
-			foreach (FieldInfo fi in type.GetFields ())
-				foreach (TreeNodeValueAttribute attr in fi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false))
-					minfos.Add (fi);
-			
- 			ctypes = new GLib.GType [minfos.Count];
- 			getters = new MemberInfo [minfos.Count];
-
-			foreach (MemberInfo mi in minfos) {
-				foreach (TreeNodeValueAttribute attr in mi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false)) {
-					int col = attr.Column;
-
-					if (getters [col] != null)
-						throw new Exception (String.Format ("You have two TreeNodeValueAttributes with the Column={0}", col));
-					
-					getters [col] = mi;
-					Type t = mi is PropertyInfo ? ((PropertyInfo) mi).PropertyType
-					                            : ((FieldInfo) mi).FieldType;
-					ctypes [col] = (GLib.GType) t;
+			private IList Nodes {
+				get {
+					return nodes as IList;
 				}
 			}
-		}
 
-		private IList Nodes {
-			get {
-				return nodes as IList;
+			private void changed_cb (object o, EventArgs args)
+			{
+				ITreeNode node = o as ITreeNode;
+				model_adapter.EmitRowChanged (GetPath (node), GetIter (node));
 			}
-		}							
 
-		[DllImport("gtksharpglue-2")]
-		static extern void gtksharp_node_store_emit_row_changed (IntPtr handle, IntPtr path, int node_idx);
+			private void EmitRowInserted (ITreeNode node)
+			{
+				model_adapter.EmitRowInserted (GetPath (node), GetIter (node));
+				for (int i = 0; i < node.ChildCount; i++)
+					EmitRowInserted (node [i]);
+			}
 
-		private void changed_cb (object o, EventArgs args)
-		{
-			ITreeNode node = o as ITreeNode;
-			gtksharp_node_store_emit_row_changed (Handle, get_path_cb (node.ID), node.ID);
-		}
+			private void child_added_cb (object sender, ITreeNode child)
+			{
+				AddNodeInternal (child);
+				EmitRowInserted (child);
+			}
 
-		[DllImport("gtksharpglue-2")]
-		static extern void gtksharp_node_store_emit_row_inserted (IntPtr handle, IntPtr path, int node_idx);
-
-		private void EmitRowInserted (ITreeNode node)
-		{
-			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node.ID), node.ID);
-			for (int i = 0; i < node.ChildCount; i++)
-				EmitRowInserted (node [i]);
-		}
-
-		private void child_added_cb (object o, ITreeNode child)
-		{
-			AddNodeInternal (child);
-			EmitRowInserted (child);
-		}
-
-		[DllImport("gtksharpglue-2")]
-		static extern void gtksharp_node_store_emit_row_deleted (IntPtr handle, IntPtr path);
-
-		[DllImport("gtksharpglue-2")]
-		static extern void gtksharp_node_store_emit_row_has_child_toggled (IntPtr handle, IntPtr path, int node_idx);
-
-		private void RemoveNodeInternal (ITreeNode node)
-		{
-			node_hash.Remove (node.ID);
-			for (int i = 0; i < node.ChildCount; i++)
-				RemoveNodeInternal (node [i]);
-		}
-
-		private void child_deleted_cb (object o, ITreeNode child, int idx)
-		{
-			ITreeNode node = o as ITreeNode;
+			private void child_deleted_cb (object sender, ITreeNode child, int idx)
+			{
+				ITreeNode node = sender as ITreeNode;
 			
-			TreePath path = new TreePath (get_path_cb (node.ID));
-			TreePath child_path = path.Copy ();
-			child_path.AppendIndex (idx);
+				TreePath path = GetPath (node);
+				TreePath child_path = path.Copy ();
+				child_path.AppendIndex (idx);
 
-			RemoveNodeInternal (child);
+				model_adapter.EmitRowDeleted (child_path);
 
-			gtksharp_node_store_emit_row_deleted (Handle, child_path.Handle);
-
-			if (node.ChildCount <= 0)
-				gtksharp_node_store_emit_row_has_child_toggled (Handle, get_path_cb (node.ID), node.ID);
-		}
-
-		private void AddNodeInternal (ITreeNode node)
-		{
-			node_hash [node.ID] = node;
-
-			node.Changed += new EventHandler (changed_cb);
-			node.ChildAdded += new TreeNodeAddedHandler (child_added_cb);
-			node.ChildRemoved += new TreeNodeRemovedHandler (child_deleted_cb);
-
-			for (int i = 0; i < node.ChildCount; i++)
-				AddNodeInternal (node [i]);
-		}
-
-		public void AddNode (ITreeNode node)
-		{
-			nodes.Add (node);
-			AddNodeInternal (node);
-			EmitRowInserted (node);
-		}
-
-		public void AddNode (ITreeNode node, int position)
-		{
-			nodes.Insert (position, node);
-			AddNodeInternal (node);
-			EmitRowInserted (node);
-		}
-
-		public void RemoveNode (ITreeNode node)
-		{
-			int idx = nodes.IndexOf (node);
-			if (idx < 0)
-				return;
-			nodes.Remove (node);
-			RemoveNodeInternal (node);
-
-			TreePath path = new TreePath ();
-			path.AppendIndex (idx);
-
-			gtksharp_node_store_emit_row_deleted (Handle, path.Handle);
-		}
-
-		public void Clear ()
-		{
-			while (nodes.Count > 0)
-				RemoveNode ((ITreeNode)nodes [0]);
-			
-		}
-		
-		private ITreeNode GetNodeAtPath (TreePath path)
-		{
-			int[] indices = path.Indices;
-
-			if (indices[0] >= Nodes.Count)
-				return null;
-
-			ITreeNode node = Nodes [indices [0]] as ITreeNode;
-			int i;
-			for (i = 1; i < path.Depth; i++) {
-				if (indices [i] >= node.ChildCount)
-					return null;
-
-				node = node [indices [i]];
+				if (node.ChildCount <= 0)
+					model_adapter.EmitRowHasChildToggled (GetPath (node), GetIter (node));
 			}
 
-			return node;
-		}
+			private void AddNodeInternal (ITreeNode node)
+			{
+				node.Changed += new EventHandler (changed_cb);
+				node.ChildAdded += new TreeNodeAddedHandler (child_added_cb);
+				node.ChildRemoved += new TreeNodeRemovedHandler (child_deleted_cb);
 
-		public ITreeNode GetNode (TreePath path)
-		{
-			if (path == null)
-				throw new ArgumentNullException ();
-
-			return GetNodeAtPath (path);
-		}
-
-		internal ITreeNode GetNode (TreeIter iter)
-		{
-			return node_hash [(int) iter.UserData] as ITreeNode;
-		}
-
-		internal TreePath GetPath (ITreeNode node)
-		{
-			TreePath path = new TreePath ();
-			int idx;
-
-			while (node.Parent != null) {
-				idx = node.Parent.IndexOf (node);
-				if (idx < 0) throw new Exception ("Badly formed tree");
-				path.PrependIndex (idx);
-				node = node.Parent;
+				for (int i = 0; i < node.ChildCount; i++)
+					AddNodeInternal (node [i]);
 			}
-			idx = Nodes.IndexOf (node);
-			if (idx < 0) throw new Exception ("Node not found in Nodes list");
-			path.PrependIndex (idx);
 
-			path.Owned = false;
-			return path;
-		}
+			public void AddNode (ITreeNode node)
+			{
+				nodes.Add (node);
+				AddNodeInternal (node);
+				EmitRowInserted (node);
+			}
 
-		internal TreeIter GetIter (ITreeNode node)
-		{
-			TreeIter iter = new TreeIter ();
-			iter.UserData = new IntPtr (node.ID);
-			return iter;
-		}
+			public void AddNode (ITreeNode node, int position)
+			{
+				nodes.Insert (position, node);
+				AddNodeInternal (node);
+				EmitRowInserted (node);
+			}
 
-		[DllImport("gtksharpglue-2")]
-		static extern IntPtr gtksharp_node_store_get_type ();
-		
-		public static new GLib.GType GType {
-			get {
-				return new GLib.GType (gtksharp_node_store_get_type ());
+			public void RemoveNode (ITreeNode node)
+			{
+				int idx = nodes.IndexOf (node);
+				if (idx < 0)
+					return;
+				nodes.Remove (node);
+
+				TreePath path = new TreePath ();
+				path.AppendIndex (idx);
+
+				model_adapter.EmitRowDeleted (path);
+			}
+
+			public void Clear ()
+			{
+				while (nodes.Count > 0)
+					RemoveNode ((ITreeNode)nodes [0]);
+			}
+
+			public IEnumerator GetEnumerator ()
+			{
+				return nodes.GetEnumerator ();
 			}
 		}
-
-		public IEnumerator GetEnumerator ()
-		{
-			return nodes.GetEnumerator ();
-		}
-	}
+	}	
 }

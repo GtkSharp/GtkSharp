@@ -30,19 +30,12 @@ namespace Gtk {
 		NodeStore store;
 		NodeSelection selection;
 
-		public NodeView (NodeStore store) : base (IntPtr.Zero)
+		public NodeView (NodeStore store) : base (store == null ? null : new Gtk.TreeModelAdapter (store.Implementor))
 		{
-			string[] names = { "model" };
-			GLib.Value[] vals =  { new GLib.Value (store) };
-			CreateNativeObject (names, vals);
-			vals [0].Dispose ();
 			this.store = store;
 		}
 
 		public NodeView () : base () {}
-
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_set_model(IntPtr raw, IntPtr model);
 
 		public NodeStore NodeStore {
 			get {
@@ -50,7 +43,7 @@ namespace Gtk {
 			}
 			set {
 				store = value;
-				gtk_tree_view_set_model (Handle, store == null ? IntPtr.Zero : store.Handle);
+				this.Model = store == null ? null : new Gtk.TreeModelAdapter (store.Implementor);
 			}
 		}
 
