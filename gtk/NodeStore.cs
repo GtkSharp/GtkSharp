@@ -28,20 +28,57 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public class NodeStore : GLib.Object, IEnumerable {
-		internal readonly NodeStoreImplementor Implementor;
+
+		NodeStoreImplementor implementor;
 
 		public NodeStore (Type node_type)
 		{
-			Implementor = new NodeStoreImplementor (node_type);
+			implementor = new NodeStoreImplementor (node_type);
 		}
 
-		// Redirect calls to implementor class
-		public ITreeNode GetNode (TreePath path) { return Implementor.GetNode (path); }
-		public void AddNode (ITreeNode node) { Implementor.AddNode (node); }
-		public void AddNode (ITreeNode node, int position) { Implementor.AddNode (node, position); }
-		public void RemoveNode (ITreeNode node) { Implementor.RemoveNode (node); }
-		public void Clear () { Implementor.Clear (); }
-		public IEnumerator GetEnumerator () { return Implementor.GetEnumerator (); }
+		internal TreeModelAdapter Adapter {
+			get { return new TreeModelAdapter (implementor); }
+		}
+
+		internal TreeIter GetIter (ITreeNode node)
+		{
+			return implementor.GetIter (node);
+		}
+
+		internal TreePath GetPath (ITreeNode node)
+		{
+			return implementor.GetPath (node);
+		}
+
+		public ITreeNode GetNode (TreePath path) 
+		{ 
+			return implementor.GetNode (path); 
+		}
+
+		public void AddNode (ITreeNode node) 
+		{ 
+			implementor.AddNode (node); 
+		}
+
+		public void AddNode (ITreeNode node, int position) 
+		{ 
+			implementor.AddNode (node, position); 
+		}
+
+		public void RemoveNode (ITreeNode node) 
+		{ 
+			implementor.RemoveNode (node); 
+		}
+
+		public void Clear () 
+		{ 
+			implementor.Clear (); 
+		}
+
+		public IEnumerator GetEnumerator () 
+		{ 
+			return implementor.GetEnumerator (); 
+		}
 
 		internal class NodeStoreImplementor : GLib.Object, TreeModelImplementor, IEnumerable {
 			TreeModelAdapter model_adapter;
