@@ -49,88 +49,61 @@
 			return result;
 		}
 
-		[DllImport ("gdksharpglue-2")]
-		static extern IntPtr gtksharp_get_gdk_net_supported ();
-
 		public static Gdk.Atom[] SupportedWindowManagerHints {
 			get {
-				IntPtr raw_ret = gtksharp_get_gdk_net_supported ();
-				if (raw_ret == IntPtr.Zero)
-					return new Gdk.Atom [0];
-				GLib.List list = new GLib.List (raw_ret, typeof (Gdk.Atom));
-				Gdk.Atom[] atoms = new Gdk.Atom [list.Count];
-				for (int i = 0; i < list.Count; i++)
-					atoms [i] = list [i] as Gdk.Atom;
+				Gdk.Atom[] atoms;
+				if (!Gdk.Property.Get (Screen.Default.RootWindow, Atom.Intern ("_NET_SUPPORTED", false), false, out atoms))
+					throw new ApplicationException ("Unable to get _NET_SUPPORTED property");
 
 				return atoms;
 			}
 		}
 
-		[DllImport ("gdksharpglue-2")]
-		static extern IntPtr gtksharp_get_gdk_net_client_list (out int count);
-
 		public static Gdk.Window[] WindowManagerClientWindows {
 			get {
-				int count;
-				IntPtr raw_ret = gtksharp_get_gdk_net_client_list (out count);
-				if (raw_ret == IntPtr.Zero)
-					return new Gdk.Window [0];
-				Gdk.Window [] windows = new Gdk.Window [count];
-				int offset = 0;
-				for (int i = 0; i < count; i++) {
-					int windowID = Marshal.ReadInt32 (raw_ret, offset);
-					Console.WriteLine ("WinID: {0}", windowID);
-					offset += IntPtr.Size;
-					windows [i] = Gdk.Window.ForeignNew ((uint) windowID);
-				}
+				Gdk.Window [] windows;
+				if (!Gdk.Property.Get (Screen.Default.RootWindow, Atom.Intern ("_NET_CLIENT_LIST", false), false, out windows))
+					throw new ApplicationException ("Unable to get _NET_CLIENT_LIST property");
+
 				return windows;
 			}
 		}
 
-		[DllImport ("gdksharpglue-2")]
-		static extern int gtksharp_get_gdk_net_number_of_desktops ();
-
 		public static int NumberOfDesktops {
 			get {
-				return gtksharp_get_gdk_net_number_of_desktops ();
+				int[] data;
+				if (!Gdk.Property.Get (Screen.Default.RootWindow, Atom.Intern ("_NET_NUMBER_OF_DESKTOPS", false), false, out data))
+					throw new ApplicationException ("Unable to get _NET_NUMBER_OF_DESKTOPS property");
+
+				return data [0];
 			}
 		}
-
-		[DllImport ("gdksharpglue-2")]
-		static extern int gtksharp_get_gdk_net_current_desktop ();
 
 		public static int CurrentDesktop {
 			get {
-				return gtksharp_get_gdk_net_current_desktop ();
+				int[] data;
+				if (!Gdk.Property.Get (Screen.Default.RootWindow, Atom.Intern ("_NET_CURRENT_DESKTOP", false), false, out data))
+					throw new ApplicationException ("Unable to get _NET_CURRENT_DESKTOP property");
+
+				return data [0];
 			}
 		}
-
-		[DllImport ("gdksharpglue-2")]
-		static extern uint gtksharp_get_gdk_net_active_window ();
 
 		public static Gdk.Window ActiveWindow {
 			get {
-				uint windowID = gtksharp_get_gdk_net_active_window ();
-				if (windowID == 0)
-					return Gdk.Global.DefaultRootWindow;
-				Console.WriteLine ("Active Window ID: {0}", windowID);
-				Gdk.Window window = Gdk.Window.ForeignNew (windowID);
-				return window;
+				Gdk.Window [] windows;
+				if (!Gdk.Property.Get (Screen.Default.RootWindow, Atom.Intern ("_NET_ACTIVE_WINDOW", false), false, out windows))
+					throw new ApplicationException ("Unable to get _NET_ACTIVE_WINDOW property");
+
+				return windows [0];
 			}
 		}
 
-		[DllImport ("gdksharpglue-2")]
-		static extern IntPtr gtksharp_get_gdk_net_workarea ();
-
 		public static Gdk.Rectangle[] DesktopWorkareas {
 			get {
-				IntPtr raw_ret = gtksharp_get_gdk_net_workarea ();
-				if (raw_ret == IntPtr.Zero)
-					return new Gdk.Rectangle [0];
-				GLib.List list = new GLib.List (raw_ret, typeof (Gdk.Rectangle));
-				Gdk.Rectangle[] workareas = new Gdk.Rectangle [list.Count];
-				for (int i = 0; i < list.Count; i++)
-					workareas [i] = (Gdk.Rectangle) list [i];
+				Gdk.Rectangle[] workareas;
+				if (!Gdk.Property.Get (Screen.Default.RootWindow, Atom.Intern ("_NET_WORKAREA", false), false, out workareas))
+					throw new ApplicationException ("Unable to get _NET_WORKAREA property");
 
 				return workareas;
 			}
