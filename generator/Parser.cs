@@ -28,7 +28,8 @@ namespace GtkSharp.Generation {
 	using System.Xml;
 
 	public class Parser  {
-		
+		const int curr_parser_version = 1;
+
 		private XmlDocument Load (string filename)
 		{
 			XmlDocument doc = new XmlDocument ();
@@ -58,6 +59,20 @@ namespace GtkSharp.Generation {
 				Console.WriteLine ("No Namespaces found.");
 				return null;
 			}
+
+			int parser_version;
+			if (root.HasAttribute ("parser_version")) {
+				try {
+					parser_version = int.Parse (root.GetAttribute ("parser_version"));
+				} catch {
+					Console.WriteLine ("ERROR: Unable to parse parser_version attribute value \"{0}\" to a number. Input file {1} will be ignored", root.GetAttribute ("parser_version"), filename);
+					return null;
+				}
+			} else
+				parser_version = 1;
+
+			if (parser_version > curr_parser_version)
+				Console.WriteLine ("WARNING: The input file {0} was created by a parser that was released after this version of the generator. Consider updating the code generator if you experience problems.", filename);
 
 			ArrayList gens = new ArrayList ();
 

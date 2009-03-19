@@ -49,6 +49,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public int ParserVersion {
+			get {
+				XmlElement root = elem.OwnerDocument.DocumentElement;	
+				return root.HasAttribute ("parser_version") ? int.Parse (root.GetAttribute ("parser_version")) : 1;
+			}
+		}
+
 		public bool IsInternal {
 			get {
 				if (elem.HasAttribute ("internal")) {

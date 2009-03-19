@@ -22,6 +22,7 @@
 # Boston, MA 02111-1307, USA.
 ##############################################################
 
+$parser_version = 1;
 $debug=$ENV{'GAPI_DEBUG'};
 
 use XML::LibXML;
@@ -43,9 +44,13 @@ if (-e $ARGV[1]) {
 	#parse existing file and get root node.
 	$doc = XML::LibXML->new->parse_file($ARGV[1]);
 	$root = $doc->getDocumentElement();
+	if ($root->getAttribute ('parser_version') != $parser_version) {
+		die "The version of the file does not match the version of the parser";
+	}
 } else {
 	$doc = XML::LibXML::Document->new();
 	$root = $doc->createElement('api');
+	$root->setAttribute('parser_version', $parser_version);
 	$doc->setDocumentElement($root);
 	$warning_node = XML::LibXML::Comment->new ("\n\n        This file was automatically generated.\n        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.\n\n");
 	$root->appendChild($warning_node);
