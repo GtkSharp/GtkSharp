@@ -108,6 +108,7 @@ customs = 				\
 	StockItem.custom		\
 	Style.custom			\
 	Table.custom			\
+	Target.custom			\
 	TargetEntry.custom		\
 	TargetList.custom		\
 	TargetPair.custom		\

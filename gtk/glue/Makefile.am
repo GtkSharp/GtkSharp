@@ -9,7 +9,6 @@ libgtksharpglue_2_la_SOURCES =	\
 	selectiondata.c		\
 	statusicon.c		\
 	style.c			\
-	targetlist.c		\
 	vmglueheaders.h		\
 	widget.c
 
