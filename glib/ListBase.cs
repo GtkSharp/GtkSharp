@@ -183,7 +183,7 @@ namespace GLib {
 		[DllImport ("libglib-2.0-0.dll")]
 		static extern void g_free (IntPtr item);
 
-		[DllImport ("libglib-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll")]
 		static extern void g_object_unref (IntPtr item);
 
 		public void Empty ()
