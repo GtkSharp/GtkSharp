@@ -80,18 +80,6 @@ namespace GtkSharp.Generation {
 					}
 					glue_sw.WriteLine ("");
 				}
-				glue_sw.WriteLine ("const gchar *__prefix = \"__gtksharp_\";\n");
-				glue_sw.WriteLine ("#define HAS_PREFIX(a) (*((guint64 *)(a)) == *((guint64 *) __prefix))\n");
-				glue_sw.WriteLine ("static GObjectClass *");
-				glue_sw.WriteLine ("get_threshold_class (GObject *obj)");
-				glue_sw.WriteLine ("{");
-				glue_sw.WriteLine ("\tGType gtype = G_TYPE_FROM_INSTANCE (obj);");
-				glue_sw.WriteLine ("\twhile (HAS_PREFIX (g_type_name (gtype)))");
-				glue_sw.WriteLine ("\t\tgtype = g_type_parent (gtype);");
-				glue_sw.WriteLine ("\tGObjectClass *klass = g_type_class_peek (gtype);");
-				glue_sw.WriteLine ("\tif (klass == NULL) klass = g_type_class_ref (gtype);");
-				glue_sw.WriteLine ("\treturn klass;");
-				glue_sw.WriteLine ("}\n");
 				glue_enabled = true;
 			}
 		}

@@ -45,6 +45,7 @@ namespace GtkSharp.Generation {
 			// Simple easily mapped types
 			AddType (new SimpleGen ("void", "void", String.Empty));
 			AddType (new SimpleGen ("gpointer", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("AtkFunction", "IntPtr", "IntPtr.Zero")); // function definition used for padding
 			AddType (new SimpleGen ("gboolean", "bool", "false"));
 			AddType (new SimpleGen ("gint", "int", "0"));
 			AddType (new SimpleGen ("guint", "uint", "0"));
@@ -121,7 +122,7 @@ namespace GtkSharp.Generation {
 			AddType (new MarshalGen ("gunichar", "char", "uint", "GLib.Marshaller.CharToGUnichar ({0})", "GLib.Marshaller.GUnicharToChar ({0})"));
 			AddType (new MarshalGen ("time_t", "System.DateTime", "IntPtr", "GLib.Marshaller.DateTimeTotime_t ({0})", "GLib.Marshaller.time_tToDateTime ({0})"));
 			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
-			AddType (new MarshalGen ("GType", "GLib.GType", "IntPtr", "{0}.Val", "new GLib.GType({0})"));
+			AddType (new MarshalGen ("GType", "GLib.GType", "IntPtr", "{0}.Val", "new GLib.GType({0})", "GLib.GType.None"));
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
 			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify", "null"));
 

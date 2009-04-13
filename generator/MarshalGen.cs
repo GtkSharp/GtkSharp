@@ -29,13 +29,15 @@ namespace GtkSharp.Generation {
 		string call_fmt;
 		string from_fmt;
 
-		public MarshalGen (string ctype, string type, string mtype, string call_fmt, string from_fmt) : base (ctype, type, "null")
+		public MarshalGen (string ctype, string type, string mtype, string call_fmt, string from_fmt, string default_value) : base (ctype, type, default_value)
 		{
 			this.mtype = mtype;
 			this.call_fmt = call_fmt;
 			this.from_fmt = from_fmt;
 		}
 		
+		public MarshalGen (string ctype, string type, string mtype, string call_fmt, string from_fmt) : this (ctype, type, mtype, call_fmt, from_fmt, "null") { }
+
 		public override string MarshalType {
 			get {
 				return mtype;

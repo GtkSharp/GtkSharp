@@ -32,13 +32,13 @@ namespace GtkSharp.Generation {
 		public VMSignature (Parameters parms) 
 		{
 			bool has_cb = parms.HideData;
-			for (int i = 1; i < parms.Count; i++) {
+			for (int i = 0; i < parms.Count; i++) {
 				Parameter p = parms [i];
 
-				if (i > 1 && p.IsLength && parms [i - 1].IsString)
+				if (i > 0 && p.IsLength && parms [i - 1].IsString)
 					continue;
 
-				if (p.IsCount && ((i > 1 && parms [i - 1].IsArray) || (i < parms.Count - 1 && parms [i + 1].IsArray)))
+				if (p.IsCount && ((i > 0 && parms [i - 1].IsArray) || (i < parms.Count - 1 && parms [i + 1].IsArray)))
 					continue;
 
 				has_cb = has_cb || p.Generatable is CallbackGen;
@@ -53,6 +53,22 @@ namespace GtkSharp.Generation {
 
 				this.parms.Add (p);
 			}
+		}
+
+		public string GetCallString (bool use_place_holders)
+		{
+			if (parms.Count == 0)
+				return "";
+
+			string[] result = new string [parms.Count];
+			int i = 0;
+			foreach (Parameter p in parms) {
+				result [i] = p.PassAs != "" ? p.PassAs + " " : "";
+				result [i] += use_place_holders ? "{" + i + "}" : p.Name;
+				i++;
+			}
+
+			return String.Join (", ", result);
 		}
 
 		public override string ToString ()

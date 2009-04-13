@@ -30,27 +30,22 @@ namespace GtkSharp.Generation {
 	public class InterfaceGen : ObjectBase {
 
 		bool consume_only;
-		ArrayList vms = new ArrayList ();
-		ArrayList members = new ArrayList ();
 
-		public InterfaceGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
+		public InterfaceGen (XmlElement ns, XmlElement elem) : base (ns, elem, true) 
 		{
 			consume_only = elem.HasAttribute ("consume_only");
 			foreach (XmlNode node in elem.ChildNodes) {
-				switch (node.Name) {
-				case "virtual_method":
-					VirtualMethod vm = new VirtualMethod (node as XmlElement, this);
-					vms.Add (vm);
-					members.Add (vm);
-					break;
+				if (!(node is XmlElement)) continue;
+				XmlElement member = (XmlElement) node;
+
+				switch (member.Name) {
 				case "signal":
-					object sig = sigs [(node as XmlElement).GetAttribute ("name")];
+					object sig = sigs [member.GetAttribute ("name")];
 					if (sig == null)
 						sig = new Signal (node as XmlElement, this);
-					members.Add (sig);
 					break;
 				default:
-					if (!IsNodeNameHandled (node.Name))
+					if (!base.IsNodeNameHandled (node.Name))
 						Console.WriteLine ("Unexpected node " + node.Name + " in " + CName);
 					break;
 				}
@@ -85,48 +80,16 @@ namespace GtkSharp.Generation {
 			return base.ValidateForSubclass ();
 		}
 
-		string IfaceName {
-			get {
-				return Name + "Iface";
-			}
-		}
-
-		void GenerateIfaceStruct (StreamWriter sw)
-		{
-			sw.WriteLine ("\t\tstatic " + IfaceName + " iface;");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tstruct " + IfaceName + " {");
-			sw.WriteLine ("\t\t\tpublic IntPtr gtype;");
-			sw.WriteLine ("\t\t\tpublic IntPtr itype;");
-			sw.WriteLine ();
-
-			foreach (object member in members) {
-				if (member is Signal) {
-					Signal sig = member as Signal;
-					sw.WriteLine ("\t\t\tpublic IntPtr {0};", sig.CName.Replace ("\"", "").Replace ("-", "_"));
-				} else if (member is VirtualMethod) {
-					VirtualMethod vm = member as VirtualMethod;
-					bool has_target = methods [vm.Name] != null;
-					if (!has_target)
-						Console.WriteLine ("Interface " + QualifiedName + " virtual method " + vm.Name + " has no matching method to invoke.");
-					string type = has_target && vm.IsValid ? vm.Name + "Delegate" : "IntPtr";
-					sw.WriteLine ("\t\t\tpublic " + type + " " + vm.CName + ";");
-				}
-			}
-
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
-		}
-
 		void GenerateStaticCtor (StreamWriter sw)
 		{
+			sw.WriteLine ("\t\tstatic {0} iface;", class_struct_name);
+			sw.WriteLine ();
 			sw.WriteLine ("\t\tstatic " + Name + "Adapter ()");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tGLib.GType.Register (_gtype, typeof({0}Adapter));", Name);
-			foreach (VirtualMethod vm in vms) {
-				bool has_target = methods [vm.Name] != null;
-				if (has_target && vm.IsValid)
-					sw.WriteLine ("\t\t\tiface.{0} = new {1}Delegate ({1}Callback);", vm.CName, vm.Name);
+			foreach (InterfaceVM vm in interface_vms) {
+				if (vm.IsValid)
+					sw.WriteLine ("\t\t\tiface.{0} = new {0}NativeDelegate ({0}_cb);", vm.Name);
 			}
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
@@ -134,11 +97,14 @@ namespace GtkSharp.Generation {
 
 		void GenerateInitialize (StreamWriter sw)
 		{
-			sw.WriteLine ("\t\tstatic void Initialize (IntPtr ifaceptr, IntPtr data)");
+			sw.WriteLine ("\t\tstatic int class_offset = 2 * IntPtr.Size;"); // Class size of GTypeInterface struct
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tstatic void Initialize (IntPtr ptr, IntPtr data)");
 			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\t" + IfaceName + " native_iface = (" + IfaceName + ") Marshal.PtrToStructure (ifaceptr, typeof (" + IfaceName + "));");
-			foreach (VirtualMethod vm in vms)
-				sw.WriteLine ("\t\t\tnative_iface." + vm.CName + " = iface." + vm.CName + ";");
+			sw.WriteLine ("\t\t\tIntPtr ifaceptr = new IntPtr (ptr.ToInt64 () + class_offset);");
+			sw.WriteLine ("\t\t\t{0} native_iface = ({0}) Marshal.PtrToStructure (ifaceptr, typeof ({0}));", class_struct_name);
+			foreach (InterfaceVM vm in interface_vms)
+				sw.WriteLine ("\t\t\tnative_iface." + vm.Name + " = iface." + vm.Name + ";");
 			sw.WriteLine ("\t\t\tMarshal.StructureToPtr (native_iface, ifaceptr, false);");
 			sw.WriteLine ("\t\t\tGCHandle gch = (GCHandle) data;");
 			sw.WriteLine ("\t\t\tgch.Free ();");
@@ -148,13 +114,10 @@ namespace GtkSharp.Generation {
 
 		void GenerateCallbacks (StreamWriter sw)
 		{
-			foreach (VirtualMethod vm in vms) {
-				if (methods [vm.Name] != null) {
-					sw.WriteLine ();
-					vm.GenerateCallback (sw);
+			foreach (InterfaceVM vm in interface_vms) {
+				vm.GenerateCallback (sw, null);
 				}
 			}
-		}
 
 		void GenerateCtors (StreamWriter sw)
 		{
@@ -174,6 +137,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t}");
 				sw.WriteLine ();
 			}
+
 			sw.WriteLine ("\t\tpublic " + Name + "Adapter (IntPtr handle)");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tif (!_gtype.IsInstance (handle))");
@@ -262,7 +226,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 
 			if (!IsConsumeOnly) {
-				GenerateIfaceStruct (sw);
+				GenerateClassStruct (sw);
 				GenerateStaticCtor (sw);
 				GenerateCallbacks (sw);
 				GenerateInitialize (sw);
@@ -315,9 +279,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t" + access + " interface " + Name + "Implementor : GLib.IWrapper {");
 			sw.WriteLine ();
 			Hashtable vm_table = new Hashtable ();
-			foreach (VirtualMethod vm in vms)
+			foreach (InterfaceVM vm in interface_vms) {
 				vm_table [vm.Name] = vm;
-			foreach (VirtualMethod vm in vms) {
+			}
+			foreach (InterfaceVM vm in interface_vms) {
 				if (vm_table [vm.Name] == null)
 					continue;
 				else if (!vm.IsValid) {
@@ -325,7 +290,7 @@ namespace GtkSharp.Generation {
 					continue;
 				} else if (vm.IsGetter || vm.IsSetter) {
 					string cmp_name = (vm.IsGetter ? "Set" : "Get") + vm.Name.Substring (3);
-					VirtualMethod cmp = vm_table [cmp_name] as VirtualMethod;
+					InterfaceVM cmp = vm_table [cmp_name] as InterfaceVM;
 					if (cmp != null && (cmp.IsGetter || cmp.IsSetter)) {
 						if (vm.IsSetter)
 							cmp.GenerateDeclaration (sw, vm);

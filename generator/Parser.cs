@@ -28,7 +28,7 @@ namespace GtkSharp.Generation {
 	using System.Xml;
 
 	public class Parser  {
-		const int curr_parser_version = 1;
+		const int curr_parser_version = 2;
 
 		private XmlDocument Load (string filename)
 		{

@@ -21,64 +21,6 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-
-		[DllImport("atksharpglue-2")]
-		static extern int atksharp_misc_override_threads_enter (IntPtr type, ThreadDelegate cb);
-		
-		[GLib.CDeclCallback]
-		delegate void ThreadDelegate (IntPtr raw);
-		
-		static ThreadDelegate ThreadsEnterCallback;
-		
-		static void ThreadsEnter_cb (IntPtr raw)
-		{
-			try {
-				Atk.Misc __obj = GLib.Object.GetObject (raw, false) as Atk.Misc;
-				__obj.OnThreadsEnter ();
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-		
-		static void OverrideThreadsEnter (GLib.GType gtype)
-		{
-			if (ThreadsEnterCallback == null)
-				ThreadsEnterCallback = new ThreadDelegate (ThreadsEnter_cb);
-			atksharp_misc_override_threads_enter (gtype.Val, ThreadsEnterCallback);
-		}
-		
-		[GLib.DefaultSignalHandler (Type=typeof (Atk.Misc), ConnectionMethod="OverrideThreadsEnter")]
-		protected virtual void OnThreadsEnter () 
-		{
-		}
-
-		[DllImport("atksharpglue-2")]
-		static extern int atksharp_misc_override_threads_leave (IntPtr type, ThreadDelegate cb);
-		
-		static ThreadDelegate ThreadsLeaveCallback;
-		
-		static void ThreadsLeave_cb (IntPtr raw)
-		{
-			try {
-				Atk.Misc __obj = GLib.Object.GetObject (raw, false) as Atk.Misc;
-				__obj.OnThreadsLeave ();
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-		
-		static void OverrideThreadsLeave (GLib.GType gtype)
-		{
-			if (ThreadsLeaveCallback == null)
-				ThreadsLeaveCallback = new ThreadDelegate (ThreadsLeave_cb);
-			atksharp_misc_override_threads_leave (gtype.Val, ThreadsLeaveCallback);
-		}
-		
-		[GLib.DefaultSignalHandler (Type=typeof (Atk.Misc), ConnectionMethod="OverrideThreadsLeave")]
-		protected virtual void OnThreadsLeave () 
-		{
-		}
-
 		[DllImport("atksharpglue-2")]
 		static extern void atksharp_misc_set_singleton_instance (IntPtr misc);
 		

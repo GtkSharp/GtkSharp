@@ -23,11 +23,7 @@
 
 void atksharp_util_override_add_global_event_listener (gpointer cb);
 void atksharp_util_override_remove_global_event_listener (gpointer cb);
-void atksharp_util_override_add_key_event_listener (gpointer cb);
 void atksharp_util_override_remove_key_event_listener (gpointer cb);
-void atksharp_util_override_get_root (gpointer cb);
-void atksharp_util_override_get_toolkit_name (gpointer cb);
-void atksharp_util_override_get_toolkit_version (gpointer cb);
 
 void
 atksharp_util_override_add_global_event_listener (gpointer cb)
@@ -48,15 +44,6 @@ atksharp_util_override_remove_global_event_listener (gpointer cb)
 }
 
 void
-atksharp_util_override_add_key_event_listener (gpointer cb)
-{
-	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
-	if (!klass)
-		klass = g_type_class_ref (ATK_TYPE_UTIL);
-	((AtkUtilClass *) klass)->add_key_event_listener = cb;
-}
-
-void
 atksharp_util_override_remove_key_event_listener (gpointer cb)
 {
 	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
@@ -65,30 +52,4 @@ atksharp_util_override_remove_key_event_listener (gpointer cb)
 	((AtkUtilClass *) klass)->remove_key_event_listener = cb;
 }
 
-void
-atksharp_util_override_get_root (gpointer cb)
-{
-	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
-	if (!klass)
-		klass = g_type_class_ref (ATK_TYPE_UTIL);
-	((AtkUtilClass *) klass)->get_root = cb;
-}
-
-void
-atksharp_util_override_get_toolkit_name (gpointer cb)
-{
-	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
-	if (!klass)
-		klass = g_type_class_ref (ATK_TYPE_UTIL);
-	((AtkUtilClass *) klass)->get_toolkit_name = cb;
-}
-
-void
-atksharp_util_override_get_toolkit_version (gpointer cb)
-{
-	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
-	if (!klass)
-		klass = g_type_class_ref (ATK_TYPE_UTIL);
-	((AtkUtilClass *) klass)->get_toolkit_version = cb;
-}
 

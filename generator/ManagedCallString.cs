@@ -33,9 +33,9 @@ namespace GtkSharp.Generation {
 		string user_data_param = null;
 		string destroy_param = null;
 
-		public ManagedCallString (Parameters parms, bool drop_first)
+		public ManagedCallString (Parameters parms)
 		{
-			for (int i = drop_first ? 1 : 0; i < parms.Count; i ++) {
+			for (int i = 0; i < parms.Count; i ++) {
 				Parameter p = parms [i];
 				if (p.IsLength && i > 0 && parms [i-1].IsString) 
 					continue;

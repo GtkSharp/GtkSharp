@@ -3,10 +3,7 @@ lib_LTLIBRARIES = libatksharpglue-2.la
 libatksharpglue_2_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libatksharpglue_2_la_SOURCES = 	\
-	hyperlink.c \
 	misc.c			\
-	object.c		\
-	object_factory.c		\
 	util.c			\
 	vmglueheaders.h
 

@@ -82,7 +82,7 @@ namespace GtkSharp.Generation {
 		}
 
 		IGeneratable igen;
-		IGeneratable IGen {
+		public IGeneratable IGen {
 			get {
 				if (igen == null)
 					igen = SymbolTable.Table [CType];

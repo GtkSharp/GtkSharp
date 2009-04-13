@@ -22,17 +22,20 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+		[Obsolete ("Replaced by OnGetSize for implementations and GetSize(..., out Gdk.Rectangle bounds) for callers.")]
 		public override void GetSize (Gtk.Widget widget, ref Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height) 
 		{
-			CellRenderer.InternalGetSize (Gtk.CellRendererToggle.GType, this, widget, ref cell_area, out x_offset, out y_offset, out width, out height);
+			base.GetSize (widget, ref cell_area, out x_offset, out y_offset, out width, out height);
 		}
 
+		[Obsolete ("Replaced by OnRender for subclass overrides and Render (Widget ...) for callers.")]
 		protected override void Render (Gdk.Drawable window, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, Gtk.CellRendererState flags)
 		{
-			CellRenderer.InternalRender (Gtk.CellRendererToggle.GType, this, window, widget, background_area, cell_area, expose_area, flags);
+			base.Render (window, widget, background_area, cell_area, expose_area, flags);
 		}
 
+		[Obsolete ("Replaced by OnStartEditing for subclass overrides and StartEditing (Gtk.Widget ...) for callers.")]
 		public override Gtk.CellEditable StartEditing(Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags) 
 		{
-			return Gtk.CellRenderer.InternalStartEditing (Gtk.CellRendererToggle.GType, this, evnt, widget, path, ref background_area, ref cell_area, flags);
+			return base.StartEditing (evnt, widget, path, background_area, cell_area, flags);
 		}

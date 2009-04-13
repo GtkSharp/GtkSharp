@@ -207,7 +207,7 @@ namespace GtkSharp.Generation {
 			GenInvoker (gen_info, sw);
 			sw.WriteLine ("\tinternal class " + Name + "Wrapper {");
 			sw.WriteLine ();
-			ManagedCallString call = new ManagedCallString (parms, false);
+			ManagedCallString call = new ManagedCallString (parms);
 			sw.WriteLine ("\t\tpublic " + retval.MarshalType + " NativeCallback (" + parms.ImportSignature + ")");
 			sw.WriteLine ("\t\t{");
 			string unconditional = call.Unconditional ("\t\t\t");

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<api parser_version="1">
+<api parser_version="2">
   <!--
 
         This file was automatically generated.
@@ -203,29 +203,59 @@
       </parameters>
     </callback>
     <interface name="AppInfo" cname="GAppInfo">
+      <class_struct cname="GAppInfoIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="dup" />
+        <method vm="equal" />
+        <method vm="get_id" />
+        <method vm="get_name" />
+        <method vm="get_description" />
+        <method vm="get_executable" />
+        <method vm="get_icon" />
+        <method vm="launch" />
+        <method vm="supports_uris" />
+        <method vm="supports_files" />
+        <method vm="launch_uris" />
+        <method vm="should_show" />
+        <method vm="set_as_default_for_type" />
+        <method vm="set_as_default_for_extension" />
+        <method vm="add_supports_type" />
+        <method vm="can_remove_supports_type" />
+        <method vm="remove_supports_type" />
+      </class_struct>
       <virtual_method name="Dup" cname="dup">
         <return-type type="GAppInfo*" />
-        <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Equal" cname="equal">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GAppInfo*" name="appinfo1" />
           <parameter type="GAppInfo*" name="appinfo2" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetId" cname="get_id">
+        <return-type type="char*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetName" cname="get_name">
+        <return-type type="char*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetDescription" cname="get_description">
+        <return-type type="char*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetExecutable" cname="get_executable">
+        <return-type type="char*" />
+        <parameters />
+      </virtual_method>
       <virtual_method name="GetIcon" cname="get_icon">
         <return-type type="GIcon*" />
-        <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Launch" cname="launch">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
           <parameter type="GList*" name="filenames" />
           <parameter type="GAppLaunchContext*" name="launch_context" />
           <parameter type="GError**" name="error" />
@@ -233,20 +263,15 @@
       </virtual_method>
       <virtual_method name="SupportsUris" cname="supports_uris">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="SupportsFiles" cname="supports_files">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="LaunchUris" cname="launch_uris">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
           <parameter type="GList*" name="uris" />
           <parameter type="GAppLaunchContext*" name="launch_context" />
           <parameter type="GError**" name="error" />
@@ -254,14 +279,11 @@
       </virtual_method>
       <virtual_method name="ShouldShow" cname="should_show">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="SetAsDefaultForType" cname="set_as_default_for_type">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
           <parameter type="const-char*" name="content_type" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -269,7 +291,6 @@
       <virtual_method name="SetAsDefaultForExtension" cname="set_as_default_for_extension">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
           <parameter type="const-char*" name="extension" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -277,21 +298,17 @@
       <virtual_method name="AddSupportsType" cname="add_supports_type">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
           <parameter type="const-char*" name="content_type" />
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
       <virtual_method name="CanRemoveSupportsType" cname="can_remove_supports_type">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="RemoveSupportsType" cname="remove_supports_type">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GAppInfo*" name="appinfo" />
           <parameter type="const-char*" name="content_type" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -420,17 +437,18 @@
       </method>
     </interface>
     <interface name="AsyncResult" cname="GAsyncResult">
+      <class_struct cname="GAsyncResultIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="get_user_data" />
+        <method vm="get_source_object" />
+      </class_struct>
       <virtual_method name="GetUserData" cname="get_user_data">
         <return-type type="gpointer" />
-        <parameters>
-          <parameter type="GAsyncResult*" name="async_result" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetSourceObject" cname="get_source_object">
         <return-type type="GObject*" />
-        <parameters>
-          <parameter type="GAsyncResult*" name="async_result" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <method name="GetSourceObject" cname="g_async_result_get_source_object">
         <return-type type="GObject*" />
@@ -443,10 +461,13 @@
       </method>
     </interface>
     <interface name="DesktopAppInfoLookup" cname="GDesktopAppInfoLookup">
+      <class_struct cname="GDesktopAppInfoLookupIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="get_default_for_uri_scheme" />
+      </class_struct>
       <virtual_method name="GetDefaultForUriScheme" cname="get_default_for_uri_scheme">
         <return-type type="GAppInfo*" />
         <parameters>
-          <parameter type="GDesktopAppInfoLookup*" name="lookup" />
           <parameter type="const-char*" name="uri_scheme" />
         </parameters>
       </virtual_method>
@@ -461,82 +482,78 @@
       </method>
     </interface>
     <interface name="Drive" cname="GDrive">
+      <class_struct cname="GDriveIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method signal_vm="changed" />
+        <method signal_vm="disconnected" />
+        <method signal_vm="eject_button" />
+        <method vm="get_name" />
+        <method vm="get_icon" />
+        <method vm="has_volumes" />
+        <method vm="get_volumes" />
+        <method vm="is_media_removable" />
+        <method vm="has_media" />
+        <method vm="is_media_check_automatic" />
+        <method vm="can_eject" />
+        <method vm="can_poll_for_media" />
+        <method vm="eject" />
+        <method vm="eject_finish" />
+        <method vm="poll_for_media" />
+        <method vm="poll_for_media_finish" />
+        <method vm="get_identifier" />
+        <method vm="enumerate_identifiers" />
+      </class_struct>
       <signal name="Changed" cname="changed" when="LAST" field_name="changed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </signal>
       <signal name="Disconnected" cname="disconnected" when="LAST" field_name="disconnected">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </signal>
       <signal name="EjectButton" cname="eject-button" when="LAST" field_name="eject_button">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </signal>
       <virtual_method name="GetName" cname="get_name">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetIcon" cname="get_icon">
         <return-type type="GIcon*" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="HasVolumes" cname="has_volumes">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetVolumes" cname="get_volumes">
         <return-type type="GList*" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="IsMediaRemovable" cname="is_media_removable">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="HasMedia" cname="has_media">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="IsMediaCheckAutomatic" cname="is_media_check_automatic">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="CanEject" cname="can_eject">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="CanPollForMedia" cname="can_poll_for_media">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Eject" cname="eject">
         <return-type type="void" />
         <parameters>
-          <parameter type="GDrive*" name="drive" />
           <parameter type="GMountUnmountFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -546,7 +563,6 @@
       <virtual_method name="EjectFinish" cname="eject_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GDrive*" name="drive" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -554,7 +570,6 @@
       <virtual_method name="PollForMedia" cname="poll_for_media">
         <return-type type="void" />
         <parameters>
-          <parameter type="GDrive*" name="drive" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
           <parameter type="gpointer" name="user_data" />
@@ -563,7 +578,6 @@
       <virtual_method name="PollForMediaFinish" cname="poll_for_media_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GDrive*" name="drive" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -571,15 +585,12 @@
       <virtual_method name="GetIdentifier" cname="get_identifier">
         <return-type type="char*" />
         <parameters>
-          <parameter type="GDrive*" name="drive" />
           <parameter type="const-char*" name="kind" />
         </parameters>
       </virtual_method>
       <virtual_method name="EnumerateIdentifiers" cname="enumerate_identifiers">
         <return-type type="char**" />
-        <parameters>
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <method name="CanEject" cname="g_drive_can_eject">
         <return-type type="gboolean" />
@@ -653,99 +664,158 @@
       </method>
     </interface>
     <interface name="File" cname="GFile">
+      <class_struct cname="GFileIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="dup" />
+        <method vm="hash" />
+        <method vm="equal" />
+        <method vm="is_native" />
+        <method vm="has_uri_scheme" />
+        <method vm="get_uri_scheme" />
+        <method vm="get_basename" />
+        <method vm="get_path" />
+        <method vm="get_uri" />
+        <method vm="get_parse_name" />
+        <method vm="get_parent" />
+        <method vm="prefix_matches" />
+        <method vm="get_relative_path" />
+        <method vm="resolve_relative_path" />
+        <method vm="get_child_for_display_name" />
+        <method vm="enumerate_children" />
+        <method vm="enumerate_children_async" />
+        <method vm="enumerate_children_finish" />
+        <method vm="query_info" />
+        <method vm="query_info_async" />
+        <method vm="query_info_finish" />
+        <method vm="query_filesystem_info" />
+        <method vm="query_filesystem_info_async" />
+        <method vm="query_filesystem_info_finish" />
+        <method vm="find_enclosing_mount" />
+        <method vm="find_enclosing_mount_async" />
+        <method vm="find_enclosing_mount_finish" />
+        <method vm="set_display_name" />
+        <method vm="set_display_name_async" />
+        <method vm="set_display_name_finish" />
+        <method vm="query_settable_attributes" />
+        <method vm="_query_settable_attributes_async" />
+        <method vm="_query_settable_attributes_finish" />
+        <method vm="query_writable_namespaces" />
+        <method vm="_query_writable_namespaces_async" />
+        <method vm="_query_writable_namespaces_finish" />
+        <method vm="set_attribute" />
+        <method vm="set_attributes_from_info" />
+        <method vm="set_attributes_async" />
+        <method vm="set_attributes_finish" />
+        <method vm="read_fn" />
+        <method vm="read_async" />
+        <method vm="read_finish" />
+        <method vm="append_to" />
+        <method vm="append_to_async" />
+        <method vm="append_to_finish" />
+        <method vm="create" />
+        <method vm="create_async" />
+        <method vm="create_finish" />
+        <method vm="replace" />
+        <method vm="replace_async" />
+        <method vm="replace_finish" />
+        <method vm="delete_file" />
+        <method vm="_delete_file_async" />
+        <method vm="_delete_file_finish" />
+        <method vm="trash" />
+        <method vm="_trash_async" />
+        <method vm="_trash_finish" />
+        <method vm="make_directory" />
+        <method vm="_make_directory_async" />
+        <method vm="_make_directory_finish" />
+        <method vm="make_symbolic_link" />
+        <method vm="_make_symbolic_link_async" />
+        <method vm="_make_symbolic_link_finish" />
+        <method vm="copy" />
+        <method vm="copy_async" />
+        <method vm="copy_finish" />
+        <method vm="move" />
+        <method vm="_move_async" />
+        <method vm="_move_finish" />
+        <method vm="mount_mountable" />
+        <method vm="mount_mountable_finish" />
+        <method vm="unmount_mountable" />
+        <method vm="unmount_mountable_finish" />
+        <method vm="eject_mountable" />
+        <method vm="eject_mountable_finish" />
+        <method vm="mount_enclosing_volume" />
+        <method vm="mount_enclosing_volume_finish" />
+        <method vm="monitor_dir" />
+        <method vm="monitor_file" />
+      </class_struct>
       <virtual_method name="Dup" cname="dup">
         <return-type type="GFile*" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Hash" cname="hash">
         <return-type type="guint" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Equal" cname="equal">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file1" />
           <parameter type="GFile*" name="file2" />
         </parameters>
       </virtual_method>
       <virtual_method name="IsNative" cname="is_native">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="HasUriScheme" cname="has_uri_scheme">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="uri_scheme" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetUriScheme" cname="get_uri_scheme">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetBasename" cname="get_basename">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetPath" cname="get_path">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetUri" cname="get_uri">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetParseName" cname="get_parse_name">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetParent" cname="get_parent">
         <return-type type="GFile*" />
-        <parameters>
-          <parameter type="GFile*" name="file" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="PrefixMatches" cname="prefix_matches">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="prefix" />
           <parameter type="GFile*" name="file" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetRelativePath" cname="get_relative_path">
         <return-type type="char*" />
         <parameters>
-          <parameter type="GFile*" name="parent" />
           <parameter type="GFile*" name="descendant" />
         </parameters>
       </virtual_method>
       <virtual_method name="ResolveRelativePath" cname="resolve_relative_path">
         <return-type type="GFile*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="relative_path" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetChildForDisplayName" cname="get_child_for_display_name">
         <return-type type="GFile*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="display_name" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -753,7 +823,6 @@
       <virtual_method name="EnumerateChildren" cname="enumerate_children">
         <return-type type="GFileEnumerator*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="attributes" />
           <parameter type="GFileQueryInfoFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -763,7 +832,6 @@
       <virtual_method name="EnumerateChildrenAsync" cname="enumerate_children_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="attributes" />
           <parameter type="GFileQueryInfoFlags" name="flags" />
           <parameter type="int" name="io_priority" />
@@ -775,7 +843,6 @@
       <virtual_method name="EnumerateChildrenFinish" cname="enumerate_children_finish">
         <return-type type="GFileEnumerator*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -783,7 +850,6 @@
       <virtual_method name="QueryInfo" cname="query_info">
         <return-type type="GFileInfo*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="attributes" />
           <parameter type="GFileQueryInfoFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -793,7 +859,6 @@
       <virtual_method name="QueryInfoAsync" cname="query_info_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="attributes" />
           <parameter type="GFileQueryInfoFlags" name="flags" />
           <parameter type="int" name="io_priority" />
@@ -805,7 +870,6 @@
       <virtual_method name="QueryInfoFinish" cname="query_info_finish">
         <return-type type="GFileInfo*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -813,7 +877,6 @@
       <virtual_method name="QueryFilesystemInfo" cname="query_filesystem_info">
         <return-type type="GFileInfo*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="attributes" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -822,7 +885,6 @@
       <virtual_method name="QueryFilesystemInfoAsync" cname="query_filesystem_info_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="attributes" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -833,7 +895,6 @@
       <virtual_method name="QueryFilesystemInfoFinish" cname="query_filesystem_info_finish">
         <return-type type="GFileInfo*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -841,7 +902,6 @@
       <virtual_method name="FindEnclosingMount" cname="find_enclosing_mount">
         <return-type type="GMount*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -849,7 +909,6 @@
       <virtual_method name="FindEnclosingMountAsync" cname="find_enclosing_mount_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -859,7 +918,6 @@
       <virtual_method name="FindEnclosingMountFinish" cname="find_enclosing_mount_finish">
         <return-type type="GMount*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -867,7 +925,6 @@
       <virtual_method name="SetDisplayName" cname="set_display_name">
         <return-type type="GFile*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="display_name" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -876,7 +933,6 @@
       <virtual_method name="SetDisplayNameAsync" cname="set_display_name_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="display_name" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -887,7 +943,6 @@
       <virtual_method name="SetDisplayNameFinish" cname="set_display_name_finish">
         <return-type type="GFile*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -895,35 +950,32 @@
       <virtual_method name="QuerySettableAttributes" cname="query_settable_attributes">
         <return-type type="GFileAttributeInfoList*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
-      <virtual_method name="QuerySettableAttributesAsync" cname="_query_settable_attributes_async">
+      <virtual_method name="QuerySettableAttributesAsync" cname="_query_settable_attributes_async" shared="true">
         <return-type type="void" />
       </virtual_method>
-      <virtual_method name="QuerySettableAttributesFinish" cname="_query_settable_attributes_finish">
+      <virtual_method name="QuerySettableAttributesFinish" cname="_query_settable_attributes_finish" shared="true">
         <return-type type="void" />
       </virtual_method>
       <virtual_method name="QueryWritableNamespaces" cname="query_writable_namespaces">
         <return-type type="GFileAttributeInfoList*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
-      <virtual_method name="QueryWritableNamespacesAsync" cname="_query_writable_namespaces_async">
+      <virtual_method name="QueryWritableNamespacesAsync" cname="_query_writable_namespaces_async" shared="true">
         <return-type type="void" />
       </virtual_method>
-      <virtual_method name="QueryWritableNamespacesFinish" cname="_query_writable_namespaces_finish">
+      <virtual_method name="QueryWritableNamespacesFinish" cname="_query_writable_namespaces_finish" shared="true">
         <return-type type="void" />
       </virtual_method>
       <virtual_method name="SetAttribute" cname="set_attribute">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="attribute" />
           <parameter type="GFileAttributeType" name="type" />
           <parameter type="gpointer" name="value_p" />
@@ -935,7 +987,6 @@
       <virtual_method name="SetAttributesFromInfo" cname="set_attributes_from_info">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GFileInfo*" name="info" />
           <parameter type="GFileQueryInfoFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -945,7 +996,6 @@
       <virtual_method name="SetAttributesAsync" cname="set_attributes_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GFileInfo*" name="info" />
           <parameter type="GFileQueryInfoFlags" name="flags" />
           <parameter type="int" name="io_priority" />
@@ -957,7 +1007,6 @@
       <virtual_method name="SetAttributesFinish" cname="set_attributes_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GFileInfo**" name="info" />
           <parameter type="GError**" name="error" />
@@ -966,7 +1015,6 @@
       <virtual_method name="ReadFn" cname="read_fn">
         <return-type type="GFileInputStream*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -974,7 +1022,6 @@
       <virtual_method name="ReadAsync" cname="read_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -984,7 +1031,6 @@
       <virtual_method name="ReadFinish" cname="read_finish">
         <return-type type="GFileInputStream*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -992,7 +1038,6 @@
       <virtual_method name="AppendTo" cname="append_to">
         <return-type type="GFileOutputStream*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GFileCreateFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -1001,7 +1046,6 @@
       <virtual_method name="AppendToAsync" cname="append_to_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GFileCreateFlags" name="flags" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -1012,7 +1056,6 @@
       <virtual_method name="AppendToFinish" cname="append_to_finish">
         <return-type type="GFileOutputStream*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -1020,7 +1063,6 @@
       <virtual_method name="Create" cname="create">
         <return-type type="GFileOutputStream*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GFileCreateFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -1029,7 +1071,6 @@
       <virtual_method name="CreateAsync" cname="create_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GFileCreateFlags" name="flags" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -1040,7 +1081,6 @@
       <virtual_method name="CreateFinish" cname="create_finish">
         <return-type type="GFileOutputStream*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -1048,7 +1088,6 @@
       <virtual_method name="Replace" cname="replace">
         <return-type type="GFileOutputStream*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="etag" />
           <parameter type="gboolean" name="make_backup" />
           <parameter type="GFileCreateFlags" name="flags" />
@@ -1059,7 +1098,6 @@
       <virtual_method name="ReplaceAsync" cname="replace_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="etag" />
           <parameter type="gboolean" name="make_backup" />
           <parameter type="GFileCreateFlags" name="flags" />
@@ -1072,7 +1110,6 @@
       <virtual_method name="ReplaceFinish" cname="replace_finish">
         <return-type type="GFileOutputStream*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -1080,64 +1117,59 @@
       <virtual_method name="DeleteFile" cname="delete_file">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
-      <virtual_method name="DeleteFileAsync" cname="_delete_file_async">
+      <virtual_method name="DeleteFileAsync" cname="_delete_file_async" shared="true">
         <return-type type="void" />
       </virtual_method>
-      <virtual_method name="DeleteFileFinish" cname="_delete_file_finish">
+      <virtual_method name="DeleteFileFinish" cname="_delete_file_finish" shared="true">
         <return-type type="void" />
       </virtual_method>
       <virtual_method name="Trash" cname="trash">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
-      <virtual_method name="TrashAsync" cname="_trash_async">
+      <virtual_method name="TrashAsync" cname="_trash_async" shared="true">
         <return-type type="void" />
       </virtual_method>
-      <virtual_method name="TrashFinish" cname="_trash_finish">
+      <virtual_method name="TrashFinish" cname="_trash_finish" shared="true">
         <return-type type="void" />
       </virtual_method>
       <virtual_method name="MakeDirectory" cname="make_directory">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
-      <virtual_method name="MakeDirectoryAsync" cname="_make_directory_async">
+      <virtual_method name="MakeDirectoryAsync" cname="_make_directory_async" shared="true">
         <return-type type="void" />
       </virtual_method>
-      <virtual_method name="MakeDirectoryFinish" cname="_make_directory_finish">
+      <virtual_method name="MakeDirectoryFinish" cname="_make_directory_finish" shared="true">
         <return-type type="void" />
       </virtual_method>
       <virtual_method name="MakeSymbolicLink" cname="make_symbolic_link">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="const-char*" name="symlink_value" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
-      <virtual_method name="MakeSymbolicLinkAsync" cname="_make_symbolic_link_async">
+      <virtual_method name="MakeSymbolicLinkAsync" cname="_make_symbolic_link_async" shared="true">
         <return-type type="void" />
       </virtual_method>
-      <virtual_method name="MakeSymbolicLinkFinish" cname="_make_symbolic_link_finish">
+      <virtual_method name="MakeSymbolicLinkFinish" cname="_make_symbolic_link_finish" shared="true">
         <return-type type="void" />
       </virtual_method>
       <virtual_method name="Copy" cname="copy">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="source" />
           <parameter type="GFile*" name="destination" />
           <parameter type="GFileCopyFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -1149,7 +1181,6 @@
       <virtual_method name="CopyAsync" cname="copy_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="source" />
           <parameter type="GFile*" name="destination" />
           <parameter type="GFileCopyFlags" name="flags" />
           <parameter type="int" name="io_priority" />
@@ -1163,7 +1194,6 @@
       <virtual_method name="CopyFinish" cname="copy_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -1171,7 +1201,6 @@
       <virtual_method name="Move" cname="move">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="source" />
           <parameter type="GFile*" name="destination" />
           <parameter type="GFileCopyFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -1180,16 +1209,15 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
-      <virtual_method name="MoveAsync" cname="_move_async">
+      <virtual_method name="MoveAsync" cname="_move_async" shared="true">
         <return-type type="void" />
       </virtual_method>
-      <virtual_method name="MoveFinish" cname="_move_finish">
+      <virtual_method name="MoveFinish" cname="_move_finish" shared="true">
         <return-type type="void" />
       </virtual_method>
       <virtual_method name="MountMountable" cname="mount_mountable">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GMountMountFlags" name="flags" />
           <parameter type="GMountOperation*" name="mount_operation" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -1200,7 +1228,6 @@
       <virtual_method name="MountMountableFinish" cname="mount_mountable_finish">
         <return-type type="GFile*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -1208,7 +1235,6 @@
       <virtual_method name="UnmountMountable" cname="unmount_mountable">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GMountUnmountFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -1218,7 +1244,6 @@
       <virtual_method name="UnmountMountableFinish" cname="unmount_mountable_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -1226,7 +1251,6 @@
       <virtual_method name="EjectMountable" cname="eject_mountable">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GMountUnmountFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -1236,7 +1260,6 @@
       <virtual_method name="EjectMountableFinish" cname="eject_mountable_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -1244,7 +1267,6 @@
       <virtual_method name="MountEnclosingVolume" cname="mount_enclosing_volume">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFile*" name="location" />
           <parameter type="GMountMountFlags" name="flags" />
           <parameter type="GMountOperation*" name="mount_operation" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -1255,7 +1277,6 @@
       <virtual_method name="MountEnclosingVolumeFinish" cname="mount_enclosing_volume_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFile*" name="location" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -1263,7 +1284,6 @@
       <virtual_method name="MonitorDir" cname="monitor_dir">
         <return-type type="GFileMonitor*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GFileMonitorFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -1272,7 +1292,6 @@
       <virtual_method name="MonitorFile" cname="monitor_file">
         <return-type type="GFileMonitor*" />
         <parameters>
-          <parameter type="GFile*" name="file" />
           <parameter type="GFileMonitorFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -1981,16 +2000,18 @@
       </method>
     </interface>
     <interface name="Icon" cname="GIcon">
+      <class_struct cname="GIconIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="hash" />
+        <method vm="equal" />
+      </class_struct>
       <virtual_method name="Hash" cname="hash">
         <return-type type="guint" />
-        <parameters>
-          <parameter type="GIcon*" name="icon" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Equal" cname="equal">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GIcon*" name="icon1" />
           <parameter type="GIcon*" name="icon2" />
         </parameters>
       </virtual_method>
@@ -2011,10 +2032,15 @@
       </method>
     </interface>
     <interface name="LoadableIcon" cname="GLoadableIcon">
+      <class_struct cname="GLoadableIconIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="load" />
+        <method vm="load_async" />
+        <method vm="load_finish" />
+      </class_struct>
       <virtual_method name="Load" cname="load">
         <return-type type="GInputStream*" />
         <parameters>
-          <parameter type="GLoadableIcon*" name="icon" />
           <parameter type="int" name="size" />
           <parameter type="char**" name="type" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -2024,7 +2050,6 @@
       <virtual_method name="LoadAsync" cname="load_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GLoadableIcon*" name="icon" />
           <parameter type="int" name="size" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -2034,7 +2059,6 @@
       <virtual_method name="LoadFinish" cname="load_finish">
         <return-type type="GInputStream*" />
         <parameters>
-          <parameter type="GLoadableIcon*" name="icon" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="char**" name="type" />
           <parameter type="GError**" name="error" />
@@ -2071,70 +2095,71 @@
       </method>
     </interface>
     <interface name="Mount" cname="GMount">
+      <class_struct cname="GMountIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method signal_vm="changed" />
+        <method signal_vm="unmounted" />
+        <method vm="get_root" />
+        <method vm="get_name" />
+        <method vm="get_icon" />
+        <method vm="get_uuid" />
+        <method vm="get_volume" />
+        <method vm="get_drive" />
+        <method vm="can_unmount" />
+        <method vm="can_eject" />
+        <method vm="unmount" />
+        <method vm="unmount_finish" />
+        <method vm="eject" />
+        <method vm="eject_finish" />
+        <method vm="remount" />
+        <method vm="remount_finish" />
+        <method vm="guess_content_type" />
+        <method vm="guess_content_type_finish" />
+        <method vm="guess_content_type_sync" />
+      </class_struct>
       <signal name="Changed" cname="changed" when="LAST" field_name="changed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </signal>
       <signal name="Unmounted" cname="unmounted" when="LAST" field_name="unmounted">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </signal>
       <virtual_method name="GetRoot" cname="get_root">
         <return-type type="GFile*" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetName" cname="get_name">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetIcon" cname="get_icon">
         <return-type type="GIcon*" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetUuid" cname="get_uuid">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetVolume" cname="get_volume">
         <return-type type="GVolume*" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetDrive" cname="get_drive">
         <return-type type="GDrive*" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="CanUnmount" cname="can_unmount">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="CanEject" cname="can_eject">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GMount*" name="mount" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Unmount" cname="unmount">
         <return-type type="void" />
         <parameters>
-          <parameter type="GMount*" name="mount" />
           <parameter type="GMountUnmountFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -2144,7 +2169,6 @@
       <virtual_method name="UnmountFinish" cname="unmount_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GMount*" name="mount" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -2152,7 +2176,6 @@
       <virtual_method name="Eject" cname="eject">
         <return-type type="void" />
         <parameters>
-          <parameter type="GMount*" name="mount" />
           <parameter type="GMountUnmountFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -2162,7 +2185,6 @@
       <virtual_method name="EjectFinish" cname="eject_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GMount*" name="mount" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -2170,7 +2192,6 @@
       <virtual_method name="Remount" cname="remount">
         <return-type type="void" />
         <parameters>
-          <parameter type="GMount*" name="mount" />
           <parameter type="GMountMountFlags" name="flags" />
           <parameter type="GMountOperation*" name="mount_operation" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -2181,7 +2202,6 @@
       <virtual_method name="RemountFinish" cname="remount_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GMount*" name="mount" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -2189,7 +2209,6 @@
       <virtual_method name="GuessContentType" cname="guess_content_type">
         <return-type type="void" />
         <parameters>
-          <parameter type="GMount*" name="mount" />
           <parameter type="gboolean" name="force_rescan" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -2199,7 +2218,6 @@
       <virtual_method name="GuessContentTypeFinish" cname="guess_content_type_finish">
         <return-type type="gchar**" />
         <parameters>
-          <parameter type="GMount*" name="mount" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -2207,7 +2225,6 @@
       <virtual_method name="GuessContentTypeSync" cname="guess_content_type_sync">
         <return-type type="gchar**" />
         <parameters>
-          <parameter type="GMount*" name="mount" />
           <parameter type="gboolean" name="force_rescan" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -2315,22 +2332,25 @@
       </method>
     </interface>
     <interface name="Seekable" cname="GSeekable">
+      <class_struct cname="GSeekableIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="tell" />
+        <method vm="can_seek" />
+        <method vm="seek" />
+        <method vm="can_truncate" />
+        <method vm="truncate_fn" />
+      </class_struct>
       <virtual_method name="Tell" cname="tell">
         <return-type type="goffset" />
-        <parameters>
-          <parameter type="GSeekable*" name="seekable" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="CanSeek" cname="can_seek">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GSeekable*" name="seekable" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Seek" cname="seek">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GSeekable*" name="seekable" />
           <parameter type="goffset" name="offset" />
           <parameter type="GSeekType" name="type" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -2339,14 +2359,11 @@
       </virtual_method>
       <virtual_method name="CanTruncate" cname="can_truncate">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GSeekable*" name="seekable" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="TruncateFn" cname="truncate_fn">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GSeekable*" name="seekable" />
           <parameter type="goffset" name="offset" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -2383,64 +2400,65 @@
       </method>
     </interface>
     <interface name="Volume" cname="GVolume">
+      <class_struct cname="GVolumeIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method signal_vm="changed" />
+        <method signal_vm="removed" />
+        <method vm="get_name" />
+        <method vm="get_icon" />
+        <method vm="get_uuid" />
+        <method vm="get_drive" />
+        <method vm="get_mount" />
+        <method vm="can_mount" />
+        <method vm="can_eject" />
+        <method vm="mount_fn" />
+        <method vm="mount_finish" />
+        <method vm="eject" />
+        <method vm="eject_finish" />
+        <method vm="get_identifier" />
+        <method vm="enumerate_identifiers" />
+        <method vm="should_automount" />
+        <method vm="get_activation_root" />
+      </class_struct>
       <signal name="Changed" cname="changed" when="LAST" field_name="changed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </signal>
       <signal name="Removed" cname="removed" when="LAST" field_name="removed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </signal>
       <virtual_method name="GetName" cname="get_name">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetIcon" cname="get_icon">
         <return-type type="GIcon*" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetUuid" cname="get_uuid">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetDrive" cname="get_drive">
         <return-type type="GDrive*" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetMount" cname="get_mount">
         <return-type type="GMount*" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="CanMount" cname="can_mount">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="CanEject" cname="can_eject">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="MountFn" cname="mount_fn">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolume*" name="volume" />
           <parameter type="GMountMountFlags" name="flags" />
           <parameter type="GMountOperation*" name="mount_operation" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -2451,7 +2469,6 @@
       <virtual_method name="MountFinish" cname="mount_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GVolume*" name="volume" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -2459,7 +2476,6 @@
       <virtual_method name="Eject" cname="eject">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolume*" name="volume" />
           <parameter type="GMountUnmountFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -2469,7 +2485,6 @@
       <virtual_method name="EjectFinish" cname="eject_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GVolume*" name="volume" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -2477,27 +2492,20 @@
       <virtual_method name="GetIdentifier" cname="get_identifier">
         <return-type type="char*" />
         <parameters>
-          <parameter type="GVolume*" name="volume" />
           <parameter type="const-char*" name="kind" />
         </parameters>
       </virtual_method>
       <virtual_method name="EnumerateIdentifiers" cname="enumerate_identifiers">
         <return-type type="char**" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="ShouldAutomount" cname="should_automount">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetActivationRoot" cname="get_activation_root">
         <return-type type="GFile*" />
-        <parameters>
-          <parameter type="GVolume*" name="volume" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <method name="CanEject" cname="g_volume_can_eject">
         <return-type type="gboolean" />
@@ -2573,6 +2581,9 @@
       </method>
     </interface>
     <object name="IOModule" cname="GIOModule" parent="GTypeModule">
+      <class_struct cname="GIOModuleClass">
+        <field name="ParentClass" cname="parent_class" type="GTypeModuleClass" />
+      </class_struct>
       <method name="GetType" cname="g_io_module_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -2589,11 +2600,21 @@
       </method>
     </object>
     <object name="AppLaunchContext" cname="GAppLaunchContext" parent="GObject">
+      <class_struct cname="GAppLaunchContextClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="get_display" />
+        <method vm="get_startup_notify_id" />
+        <method vm="launch_failed" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GAppLaunchContextPrivate*" />
       <virtual_method name="GetDisplay" cname="get_display">
         <return-type type="char*" />
         <parameters>
-          <parameter type="GAppLaunchContext*" name="context" />
           <parameter type="GAppInfo*" name="info" />
           <parameter type="GList*" name="files" />
         </parameters>
@@ -2601,7 +2622,6 @@
       <virtual_method name="GetStartupNotifyId" cname="get_startup_notify_id">
         <return-type type="char*" />
         <parameters>
-          <parameter type="GAppLaunchContext*" name="context" />
           <parameter type="GAppInfo*" name="info" />
           <parameter type="GList*" name="files" />
         </parameters>
@@ -2609,9 +2629,23 @@
       <virtual_method name="LaunchFailed" cname="launch_failed">
         <return-type type="void" />
         <parameters>
-          <parameter type="GAppLaunchContext*" name="context" />
           <parameter type="const-char*" name="startup_notify_id" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <method name="GetDisplay" cname="g_app_launch_context_get_display">
         <return-type type="char*" />
@@ -2639,12 +2673,22 @@
       <constructor cname="g_app_launch_context_new" />
     </object>
     <object name="BufferedInputStream" cname="GBufferedInputStream" parent="GFilterInputStream">
+      <class_struct cname="GBufferedInputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GFilterInputStreamClass" />
+        <method vm="fill" />
+        <method vm="fill_async" />
+        <method vm="fill_finish" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GBufferedInputStreamPrivate*" />
       <property name="BufferSize" cname="buffer-size" type="guint" readable="true" writeable="true" construct="true" />
       <virtual_method name="Fill" cname="fill">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GBufferedInputStream*" name="stream" />
           <parameter type="gssize" name="count" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -2653,7 +2697,6 @@
       <virtual_method name="FillAsync" cname="fill_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GBufferedInputStream*" name="stream" />
           <parameter type="gssize" name="count" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -2664,10 +2707,24 @@
       <virtual_method name="FillFinish" cname="fill_finish">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GBufferedInputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <method name="Fill" cname="g_buffered_input_stream_fill">
         <return-type type="gssize" />
@@ -2743,9 +2800,20 @@
       </method>
     </object>
     <object name="BufferedOutputStream" cname="GBufferedOutputStream" parent="GFilterOutputStream">
+      <class_struct cname="GBufferedOutputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GFilterOutputStreamClass" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GBufferedOutputStreamPrivate*" />
       <property name="BufferSize" cname="buffer-size" type="guint" readable="true" writeable="true" construct="true" />
       <property name="AutoGrow" cname="auto-grow" type="gboolean" readable="true" writeable="true" />
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetAutoGrow" cname="g_buffered_output_stream_get_auto_grow">
         <return-type type="gboolean" />
       </method>
@@ -2780,12 +2848,34 @@
       </method>
     </object>
     <object name="Cancellable" cname="GCancellable" parent="GObject">
+      <class_struct cname="GCancellableClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method signal_vm="cancelled" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <signal name="Cancelled" cname="cancelled" when="LAST" field_name="cancelled">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GCancellable*" name="cancellable" />
-        </parameters>
+        <parameters />
       </signal>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="Cancel" cname="g_cancellable_cancel">
         <return-type type="void" />
       </method>
@@ -2819,9 +2909,32 @@
       </method>
     </object>
     <object name="DataInputStream" cname="GDataInputStream" parent="GBufferedInputStream">
+      <class_struct cname="GDataInputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GBufferedInputStreamClass" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GDataInputStreamPrivate*" />
       <property name="ByteOrder" cname="byte-order" type="GDataStreamByteOrder" readable="true" writeable="true" />
       <property name="NewlineType" cname="newline-type" type="GDataStreamNewlineType" readable="true" writeable="true" />
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetByteOrder" cname="g_data_input_stream_get_byte_order">
         <return-type type="GDataStreamByteOrder" />
       </method>
@@ -2916,8 +3029,31 @@
       </method>
     </object>
     <object name="DataOutputStream" cname="GDataOutputStream" parent="GFilterOutputStream">
+      <class_struct cname="GDataOutputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GFilterOutputStreamClass" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GDataOutputStreamPrivate*" />
       <property name="ByteOrder" cname="byte-order" type="GDataStreamByteOrder" readable="true" writeable="true" />
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetByteOrder" cname="g_data_output_stream_get_byte_order">
         <return-type type="GDataStreamByteOrder" />
       </method>
@@ -3001,6 +3137,9 @@
       </method>
     </object>
     <object name="DesktopAppInfo" cname="GDesktopAppInfo" parent="GObject">
+      <class_struct cname="GDesktopAppInfoClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <implements>
         <interface cname="GAppInfo" />
       </implements>
@@ -3033,6 +3172,9 @@
       </method>
     </object>
     <object name="Emblem" cname="GEmblem" parent="GObject">
+      <class_struct cname="GEmblemClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <property name="Origin" cname="origin" type="GEmblemOrigin" readable="true" writeable="true" construct-only="true" />
       <property name="Icon" cname="icon" type="GObject" readable="true" writeable="true" construct-only="true" />
       <implements>
@@ -3060,6 +3202,9 @@
       </constructor>
     </object>
     <object name="EmblemedIcon" cname="GEmblemedIcon" parent="GObject">
+      <class_struct cname="GEmblemedIconClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <implements>
         <interface cname="GIcon" />
       </implements>
@@ -3086,12 +3231,26 @@
       </constructor>
     </object>
     <object name="FilenameCompleter" cname="GFilenameCompleter" parent="GObject">
+      <class_struct cname="GFilenameCompleterClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method signal_vm="got_completion_data" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+      </class_struct>
       <signal name="GotCompletionData" cname="got-completion-data" when="LAST" field_name="got_completion_data">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GFilenameCompleter*" name="filename_completer" />
-        </parameters>
+        <parameters />
       </signal>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetCompletionSuffix" cname="g_filename_completer_get_completion_suffix">
         <return-type type="char*" />
         <parameters>
@@ -3116,12 +3275,27 @@
       </method>
     </object>
     <object name="FileEnumerator" cname="GFileEnumerator" parent="GObject">
+      <class_struct cname="GFileEnumeratorClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="next_file" />
+        <method vm="close_fn" />
+        <method vm="next_files_async" />
+        <method vm="next_files_finish" />
+        <method vm="close_async" />
+        <method vm="close_finish" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+        <method vm="_g_reserved6" />
+        <method vm="_g_reserved7" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GFileEnumeratorPrivate*" />
       <property name="Container" cname="container" type="GFile" writeable="true" construct-only="true" />
       <virtual_method name="NextFile" cname="next_file">
         <return-type type="GFileInfo*" />
         <parameters>
-          <parameter type="GFileEnumerator*" name="enumerator" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -3129,7 +3303,6 @@
       <virtual_method name="CloseFn" cname="close_fn">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFileEnumerator*" name="enumerator" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -3137,7 +3310,6 @@
       <virtual_method name="NextFilesAsync" cname="next_files_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFileEnumerator*" name="enumerator" />
           <parameter type="int" name="num_files" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -3148,7 +3320,6 @@
       <virtual_method name="NextFilesFinish" cname="next_files_finish">
         <return-type type="GList*" />
         <parameters>
-          <parameter type="GFileEnumerator*" name="enumerator" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -3156,7 +3327,6 @@
       <virtual_method name="CloseAsync" cname="close_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFileEnumerator*" name="enumerator" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -3166,10 +3336,30 @@
       <virtual_method name="CloseFinish" cname="close_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFileEnumerator*" name="enumerator" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved6" cname="_g_reserved6" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved7" cname="_g_reserved7" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <method name="Close" cname="g_file_enumerator_close">
         <return-type type="gboolean" />
@@ -3238,6 +3428,9 @@
       </method>
     </object>
     <object name="FileIcon" cname="GFileIcon" parent="GObject">
+      <class_struct cname="GFileIconClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <property name="File" cname="file" type="GFile" readable="true" writeable="true" construct-only="true" />
       <implements>
         <interface cname="GIcon" />
@@ -3256,6 +3449,9 @@
       </constructor>
     </object>
     <object name="FileInfo" cname="GFileInfo" parent="GObject">
+      <class_struct cname="GFileInfoClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <method name="ClearStatus" cname="g_file_info_clear_status">
         <return-type type="void" />
       </method>
@@ -3557,23 +3753,32 @@
       </method>
     </object>
     <object name="FileInputStream" cname="GFileInputStream" parent="GInputStream">
+      <class_struct cname="GFileInputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GInputStreamClass" />
+        <method vm="tell" />
+        <method vm="can_seek" />
+        <method vm="seek" />
+        <method vm="query_info" />
+        <method vm="query_info_async" />
+        <method vm="query_info_finish" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GFileInputStreamPrivate*" />
       <virtual_method name="Tell" cname="tell">
         <return-type type="goffset" />
-        <parameters>
-          <parameter type="GFileInputStream*" name="stream" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="CanSeek" cname="can_seek">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GFileInputStream*" name="stream" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Seek" cname="seek">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFileInputStream*" name="stream" />
           <parameter type="goffset" name="offset" />
           <parameter type="GSeekType" name="type" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -3583,7 +3788,6 @@
       <virtual_method name="QueryInfo" cname="query_info">
         <return-type type="GFileInfo*" />
         <parameters>
-          <parameter type="GFileInputStream*" name="stream" />
           <parameter type="char*" name="attributes" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -3592,7 +3796,6 @@
       <virtual_method name="QueryInfoAsync" cname="query_info_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFileInputStream*" name="stream" />
           <parameter type="char*" name="attributes" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -3603,10 +3806,24 @@
       <virtual_method name="QueryInfoFinish" cname="query_info_finish">
         <return-type type="GFileInfo*" />
         <parameters>
-          <parameter type="GFileInputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <implements>
         <interface cname="GSeekable" />
@@ -3641,24 +3858,46 @@
       </method>
     </object>
     <object name="FileMonitor" cname="GFileMonitor" parent="GObject">
+      <class_struct cname="GFileMonitorClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method signal_vm="changed" />
+        <method vm="cancel" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GFileMonitorPrivate*" />
       <signal name="Changed" cname="changed" when="LAST" field_name="changed">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFileMonitor*" name="monitor" />
           <parameter type="GFile*" name="file" />
           <parameter type="GFile*" name="other_file" />
           <parameter type="GFileMonitorEvent" name="event_type" />
         </parameters>
       </signal>
-      <virtual_method name="Cancel" cname="cancel">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GFileMonitor*" name="monitor" />
-        </parameters>
-      </virtual_method>
       <property name="RateLimit" cname="rate-limit" type="gint" readable="true" writeable="true" />
       <property name="Cancelled" cname="cancelled" type="gboolean" readable="true" />
+      <virtual_method name="Cancel" cname="cancel">
+        <return-type type="gboolean" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="Cancel" cname="g_file_monitor_cancel">
         <return-type type="gboolean" />
       </method>
@@ -3702,23 +3941,35 @@
       </method>
     </object>
     <object name="FileOutputStream" cname="GFileOutputStream" parent="GOutputStream">
+      <class_struct cname="GFileOutputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GOutputStreamClass" />
+        <method vm="tell" />
+        <method vm="can_seek" />
+        <method vm="seek" />
+        <method vm="can_truncate" />
+        <method vm="truncate_fn" />
+        <method vm="query_info" />
+        <method vm="query_info_async" />
+        <method vm="query_info_finish" />
+        <method vm="get_etag" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GFileOutputStreamPrivate*" />
       <virtual_method name="Tell" cname="tell">
         <return-type type="goffset" />
-        <parameters>
-          <parameter type="GFileOutputStream*" name="stream" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="CanSeek" cname="can_seek">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GFileOutputStream*" name="stream" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="Seek" cname="seek">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFileOutputStream*" name="stream" />
           <parameter type="goffset" name="offset" />
           <parameter type="GSeekType" name="type" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -3727,14 +3978,11 @@
       </virtual_method>
       <virtual_method name="CanTruncate" cname="can_truncate">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GFileOutputStream*" name="stream" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="TruncateFn" cname="truncate_fn">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GFileOutputStream*" name="stream" />
           <parameter type="goffset" name="size" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -3743,7 +3991,6 @@
       <virtual_method name="QueryInfo" cname="query_info">
         <return-type type="GFileInfo*" />
         <parameters>
-          <parameter type="GFileOutputStream*" name="stream" />
           <parameter type="char*" name="attributes" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -3752,7 +3999,6 @@
       <virtual_method name="QueryInfoAsync" cname="query_info_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GFileOutputStream*" name="stream" />
           <parameter type="char*" name="attributes" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -3763,16 +4009,28 @@
       <virtual_method name="QueryInfoFinish" cname="query_info_finish">
         <return-type type="GFileInfo*" />
         <parameters>
-          <parameter type="GFileOutputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="GError**" name="error" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetEtag" cname="get_etag">
         <return-type type="char*" />
-        <parameters>
-          <parameter type="GFileOutputStream*" name="stream" />
-        </parameters>
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <implements>
         <interface cname="GSeekable" />
@@ -3810,8 +4068,23 @@
       </method>
     </object>
     <object name="FilterInputStream" cname="GFilterInputStream" parent="GInputStream">
+      <class_struct cname="GFilterInputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GInputStreamClass" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+      </class_struct>
       <field name="BaseStream" cname="base_stream" type="GInputStream*" />
       <property name="BaseStream" cname="base-stream" type="GInputStream" readable="true" writeable="true" construct-only="true" />
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetBaseStream" cname="g_filter_input_stream_get_base_stream">
         <return-type type="GInputStream*" />
       </method>
@@ -3820,8 +4093,23 @@
       </method>
     </object>
     <object name="FilterOutputStream" cname="GFilterOutputStream" parent="GOutputStream">
+      <class_struct cname="GFilterOutputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GOutputStreamClass" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+      </class_struct>
       <field name="BaseStream" cname="base_stream" type="GOutputStream*" />
       <property name="BaseStream" cname="base-stream" type="GOutputStream" readable="true" writeable="true" construct-only="true" />
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetBaseStream" cname="g_filter_output_stream_get_base_stream">
         <return-type type="GOutputStream*" />
       </method>
@@ -3830,11 +4118,27 @@
       </method>
     </object>
     <object name="InputStream" cname="GInputStream" parent="GObject">
+      <class_struct cname="GInputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="read_fn" />
+        <method vm="skip" />
+        <method vm="close_fn" />
+        <method vm="read_async" />
+        <method vm="read_finish" />
+        <method vm="skip_async" />
+        <method vm="skip_finish" />
+        <method vm="close_async" />
+        <method vm="close_finish" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GInputStreamPrivate*" />
       <virtual_method name="ReadFn" cname="read_fn">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -3844,7 +4148,6 @@
       <virtual_method name="Skip" cname="skip">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="gsize" name="count" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -3853,7 +4156,6 @@
       <virtual_method name="CloseFn" cname="close_fn">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -3861,7 +4163,6 @@
       <virtual_method name="ReadAsync" cname="read_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="int" name="io_priority" />
@@ -3873,7 +4174,6 @@
       <virtual_method name="ReadFinish" cname="read_finish">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -3881,7 +4181,6 @@
       <virtual_method name="SkipAsync" cname="skip_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="gsize" name="count" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -3892,7 +4191,6 @@
       <virtual_method name="SkipFinish" cname="skip_finish">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -3900,7 +4198,6 @@
       <virtual_method name="CloseAsync" cname="close_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -3910,10 +4207,24 @@
       <virtual_method name="CloseFinish" cname="close_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GInputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <method name="ClearPending" cname="g_input_stream_clear_pending">
         <return-type type="void" />
@@ -4020,20 +4331,52 @@
       </method>
     </object>
     <object name="LocalDirectoryMonitor" cname="GLocalDirectoryMonitor" parent="GFileMonitor">
+      <class_struct cname="GLocalDirectoryMonitorClass">
+        <field name="ParentClass" cname="parent_class" type="GFileMonitorClass" />
+        <field name="MountNotify" cname="mount_notify" type="gboolean" />
+        <method vm="is_supported" />
+      </class_struct>
       <field name="Dirname" cname="dirname" type="gchar*" />
       <field name="MountMonitor" cname="mount_monitor" type="GUnixMountMonitor*" />
       <field name="WasMounted" cname="was_mounted" type="gboolean" />
       <property name="Dirname" cname="dirname" type="gchar*" writeable="true" construct-only="true" />
-      <virtual_method name="IsSupported" cname="is_supported">
+      <virtual_method name="IsSupported" cname="is_supported" shared="true">
         <return-type type="gboolean" />
       </virtual_method>
       <method name="GetType" cname="g_local_directory_monitor_get_type" shared="true">
         <return-type type="GType" />
       </method>
     </object>
-    <object name="LocalFileEnumerator" cname="GLocalFileEnumerator" parent="GFileEnumerator" />
+    <object name="LocalFileEnumerator" cname="GLocalFileEnumerator" parent="GFileEnumerator">
+      <class_struct cname="GLocalFileEnumeratorClass">
+        <field name="ParentClass" cname="parent_class" type="GFileEnumeratorClass" />
+      </class_struct>
+    </object>
     <object name="MemoryInputStream" cname="GMemoryInputStream" parent="GInputStream">
+      <class_struct cname="GMemoryInputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GInputStreamClass" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GMemoryInputStreamPrivate*" />
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <implements>
         <interface cname="GSeekable" />
       </implements>
@@ -4058,7 +4401,30 @@
       </constructor>
     </object>
     <object name="MemoryOutputStream" cname="GMemoryOutputStream" parent="GOutputStream">
+      <class_struct cname="GMemoryOutputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GOutputStreamClass" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GMemoryOutputStreamPrivate*" />
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <implements>
         <interface cname="GSeekable" />
       </implements>
@@ -4084,11 +4450,28 @@
       </constructor>
     </object>
     <object name="MountOperation" cname="GMountOperation" parent="GObject">
+      <class_struct cname="GMountOperationClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method signal_vm="ask_password" />
+        <method signal_vm="ask_question" />
+        <method signal_vm="reply" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+        <method vm="_g_reserved6" />
+        <method vm="_g_reserved7" />
+        <method vm="_g_reserved8" />
+        <method vm="_g_reserved9" />
+        <method vm="_g_reserved10" />
+        <method vm="_g_reserved11" />
+        <method vm="_g_reserved12" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GMountOperationPrivate*" />
       <signal name="AskPassword" cname="ask-password" when="LAST" field_name="ask_password">
         <return-type type="void" />
         <parameters>
-          <parameter type="GMountOperation*" name="op" />
           <parameter type="const-char*" name="message" />
           <parameter type="const-char*" name="default_user" />
           <parameter type="const-char*" name="default_domain" />
@@ -4098,7 +4481,6 @@
       <signal name="AskQuestion" cname="ask-question" when="LAST" field_name="ask_question">
         <return-type type="void" />
         <parameters>
-          <parameter type="GMountOperation*" name="op" />
           <parameter type="const-char*" name="message" />
           <parameter type="const-char*" array="true" name="choices" />
         </parameters>
@@ -4106,7 +4488,6 @@
       <signal name="Reply" cname="reply" when="LAST" field_name="reply">
         <return-type type="void" />
         <parameters>
-          <parameter type="GMountOperation*" name="op" />
           <parameter type="GMountOperationResult" name="result" />
         </parameters>
       </signal>
@@ -4116,6 +4497,42 @@
       <property name="Domain" cname="domain" type="gchar*" readable="true" writeable="true" />
       <property name="PasswordSave" cname="password-save" type="GPasswordSave" readable="true" writeable="true" />
       <property name="Choice" cname="choice" type="gint" readable="true" writeable="true" />
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved6" cname="_g_reserved6" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved7" cname="_g_reserved7" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved8" cname="_g_reserved8" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved9" cname="_g_reserved9" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved10" cname="_g_reserved10" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved11" cname="_g_reserved11" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved12" cname="_g_reserved12" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetAnonymous" cname="g_mount_operation_get_anonymous">
         <return-type type="gboolean" />
       </method>
@@ -4182,7 +4599,11 @@
       </method>
     </object>
     <object name="NativeVolumeMonitor" cname="GNativeVolumeMonitor" parent="GVolumeMonitor">
-      <virtual_method name="GetMountForMountPath" cname="get_mount_for_mount_path">
+      <class_struct cname="GNativeVolumeMonitorClass">
+        <field name="ParentClass" cname="parent_class" type="GVolumeMonitorClass" />
+        <method vm="get_mount_for_mount_path" />
+      </class_struct>
+      <virtual_method name="GetMountForMountPath" cname="get_mount_for_mount_path" shared="true">
         <return-type type="GMount*" />
         <parameters>
           <parameter type="const-char*" name="mount_path" />
@@ -4194,11 +4615,33 @@
       </method>
     </object>
     <object name="OutputStream" cname="GOutputStream" parent="GObject">
+      <class_struct cname="GOutputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="write_fn" />
+        <method vm="splice" />
+        <method vm="flush" />
+        <method vm="close_fn" />
+        <method vm="write_async" />
+        <method vm="write_finish" />
+        <method vm="splice_async" />
+        <method vm="splice_finish" />
+        <method vm="flush_async" />
+        <method vm="flush_finish" />
+        <method vm="close_async" />
+        <method vm="close_finish" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+        <method vm="_g_reserved6" />
+        <method vm="_g_reserved7" />
+        <method vm="_g_reserved8" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GOutputStreamPrivate*" />
       <virtual_method name="WriteFn" cname="write_fn">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="const-void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -4208,7 +4651,6 @@
       <virtual_method name="Splice" cname="splice">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="GInputStream*" name="source" />
           <parameter type="GOutputStreamSpliceFlags" name="flags" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -4218,7 +4660,6 @@
       <virtual_method name="Flush" cname="flush">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -4226,7 +4667,6 @@
       <virtual_method name="CloseFn" cname="close_fn">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -4234,7 +4674,6 @@
       <virtual_method name="WriteAsync" cname="write_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="const-void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="int" name="io_priority" />
@@ -4246,7 +4685,6 @@
       <virtual_method name="WriteFinish" cname="write_finish">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -4254,7 +4692,6 @@
       <virtual_method name="SpliceAsync" cname="splice_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="GInputStream*" name="source" />
           <parameter type="GOutputStreamSpliceFlags" name="flags" />
           <parameter type="int" name="io_priority" />
@@ -4266,7 +4703,6 @@
       <virtual_method name="SpliceFinish" cname="splice_finish">
         <return-type type="gssize" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -4274,7 +4710,6 @@
       <virtual_method name="FlushAsync" cname="flush_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -4284,7 +4719,6 @@
       <virtual_method name="FlushFinish" cname="flush_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
@@ -4292,7 +4726,6 @@
       <virtual_method name="CloseAsync" cname="close_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -4302,10 +4735,33 @@
       <virtual_method name="CloseFinish" cname="close_finish">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GOutputStream*" name="stream" />
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved6" cname="_g_reserved6" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved7" cname="_g_reserved7" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved8" cname="_g_reserved8" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <method name="ClearPending" cname="g_output_stream_clear_pending">
         <return-type type="void" />
@@ -4437,6 +4893,9 @@
       </method>
     </object>
     <object name="SimpleAsyncResult" cname="GSimpleAsyncResult" parent="GObject">
+      <class_struct cname="GSimpleAsyncResultClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <implements>
         <interface cname="GAsyncResult" />
       </implements>
@@ -4553,6 +5012,9 @@
       </method>
     </object>
     <object name="ThemedIcon" cname="GThemedIcon" parent="GObject">
+      <class_struct cname="GThemedIconClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <property name="Name" cname="name" type="gchar*" writeable="true" construct-only="true" />
       <property name="Names" cname="names" type="GStrv" readable="true" writeable="true" construct-only="true" />
       <property name="UseDefaultFallbacks" cname="use-default-fallbacks" type="gboolean" readable="true" writeable="true" construct-only="true" />
@@ -4595,32 +5057,87 @@
       </method>
     </object>
     <object name="Vfs" cname="GVfs" parent="GObject">
+      <class_struct cname="GVfsClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="is_active" />
+        <method vm="get_file_for_path" />
+        <method vm="get_file_for_uri" />
+        <method vm="get_supported_uri_schemes" />
+        <method vm="parse_name" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+        <method vm="_g_reserved6" />
+        <method vm="_g_reserved7" />
+        <method vm="_g_reserved8" />
+        <method vm="_g_reserved9" />
+        <method vm="_g_reserved10" />
+        <method vm="_g_reserved11" />
+        <method vm="_g_reserved12" />
+      </class_struct>
       <virtual_method name="IsActive" cname="is_active">
         <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GVfs*" name="vfs" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetFileForPath" cname="get_file_for_path">
         <return-type type="GFile*" />
         <parameters>
-          <parameter type="GVfs*" name="vfs" />
           <parameter type="const-char*" name="path" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetFileForUri" cname="get_file_for_uri">
         <return-type type="GFile*" />
         <parameters>
-          <parameter type="GVfs*" name="vfs" />
           <parameter type="const-char*" name="uri" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GetSupportedUriSchemes" cname="get_supported_uri_schemes">
+        <return-type type="const-*" />
+        <parameters />
       </virtual_method>
       <virtual_method name="ParseName" cname="parse_name">
         <return-type type="GFile*" />
         <parameters>
-          <parameter type="GVfs*" name="vfs" />
           <parameter type="const-char*" name="parse_name" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved6" cname="_g_reserved6" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved7" cname="_g_reserved7" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved8" cname="_g_reserved8" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved9" cname="_g_reserved9" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved10" cname="_g_reserved10" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved11" cname="_g_reserved11" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved12" cname="_g_reserved12" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <method name="GetDefault" cname="g_vfs_get_default" shared="true">
         <return-type type="GVfs*" />
@@ -4657,126 +5174,156 @@
       </method>
     </object>
     <object name="VolumeMonitor" cname="GVolumeMonitor" parent="GObject">
+      <class_struct cname="GVolumeMonitorClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method signal_vm="volume_added" />
+        <method signal_vm="volume_removed" />
+        <method signal_vm="volume_changed" />
+        <method signal_vm="mount_added" />
+        <method signal_vm="mount_removed" />
+        <method signal_vm="mount_pre_unmount" />
+        <method signal_vm="mount_changed" />
+        <method signal_vm="drive_connected" />
+        <method signal_vm="drive_disconnected" />
+        <method signal_vm="drive_changed" />
+        <method vm="is_supported" />
+        <method vm="get_connected_drives" />
+        <method vm="get_volumes" />
+        <method vm="get_mounts" />
+        <method vm="get_volume_for_uuid" />
+        <method vm="get_mount_for_uuid" />
+        <method vm="adopt_orphan_mount" />
+        <method signal_vm="drive_eject_button" />
+        <method vm="_g_reserved1" />
+        <method vm="_g_reserved2" />
+        <method vm="_g_reserved3" />
+        <method vm="_g_reserved4" />
+        <method vm="_g_reserved5" />
+        <method vm="_g_reserved6" />
+        <method vm="_g_reserved7" />
+      </class_struct>
       <field name="Priv" cname="priv" type="gpointer" />
       <signal name="VolumeAdded" cname="volume-added" when="LAST" field_name="volume_added">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GVolume*" name="volume" />
         </parameters>
       </signal>
       <signal name="VolumeRemoved" cname="volume-removed" when="LAST" field_name="volume_removed">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GVolume*" name="volume" />
         </parameters>
       </signal>
       <signal name="VolumeChanged" cname="volume-changed" when="LAST" field_name="volume_changed">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GVolume*" name="volume" />
         </parameters>
       </signal>
       <signal name="MountAdded" cname="mount-added" when="LAST" field_name="mount_added">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GMount*" name="mount" />
         </parameters>
       </signal>
       <signal name="MountRemoved" cname="mount-removed" when="LAST" field_name="mount_removed">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GMount*" name="mount" />
         </parameters>
       </signal>
       <signal name="MountPreUnmount" cname="mount-pre-unmount" when="LAST" field_name="mount_pre_unmount">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GMount*" name="mount" />
         </parameters>
       </signal>
       <signal name="MountChanged" cname="mount-changed" when="LAST" field_name="mount_changed">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GMount*" name="mount" />
         </parameters>
       </signal>
       <signal name="DriveConnected" cname="drive-connected" when="LAST" field_name="drive_connected">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GDrive*" name="drive" />
         </parameters>
       </signal>
       <signal name="DriveDisconnected" cname="drive-disconnected" when="LAST" field_name="drive_disconnected">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GDrive*" name="drive" />
         </parameters>
       </signal>
       <signal name="DriveChanged" cname="drive-changed" when="LAST" field_name="drive_changed">
         <return-type type="void" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="GDrive*" name="drive" />
         </parameters>
       </signal>
-      <virtual_method name="IsSupported" cname="is_supported">
+      <signal name="DriveEjectButton" cname="drive-eject-button" when="LAST" field_name="drive_eject_button">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GDrive*" name="drive" />
+        </parameters>
+      </signal>
+      <virtual_method name="IsSupported" cname="is_supported" shared="true">
         <return-type type="gboolean" />
       </virtual_method>
       <virtual_method name="GetConnectedDrives" cname="get_connected_drives">
         <return-type type="GList*" />
-        <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetVolumes" cname="get_volumes">
         <return-type type="GList*" />
-        <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetMounts" cname="get_mounts">
         <return-type type="GList*" />
-        <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetVolumeForUuid" cname="get_volume_for_uuid">
         <return-type type="GVolume*" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="const-char*" name="uuid" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetMountForUuid" cname="get_mount_for_uuid">
         <return-type type="GMount*" />
         <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
           <parameter type="const-char*" name="uuid" />
         </parameters>
       </virtual_method>
-      <virtual_method name="AdoptOrphanMount" cname="adopt_orphan_mount">
+      <virtual_method name="AdoptOrphanMount" cname="adopt_orphan_mount" shared="true">
         <return-type type="GVolume*" />
         <parameters>
           <parameter type="GMount*" name="mount" />
           <parameter type="GVolumeMonitor*" name="volume_monitor" />
         </parameters>
       </virtual_method>
-      <signal name="DriveEjectButton" cname="drive-eject-button" when="LAST" field_name="drive_eject_button">
+      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GVolumeMonitor*" name="volume_monitor" />
-          <parameter type="GDrive*" name="drive" />
-        </parameters>
-      </signal>
+      </virtual_method>
+      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved3" cname="_g_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved4" cname="_g_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved5" cname="_g_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved6" cname="_g_reserved6" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GReserved7" cname="_g_reserved7" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="AdoptOrphanMount" cname="g_volume_monitor_adopt_orphan_mount" shared="true">
         <return-type type="GVolume*" />
         <parameters>

@@ -1,10 +1,11 @@
-#!/usr/bin/perl
+#!/bin/sh
 #
 # gapi-cdecl-insert : Inserts il into an assembly for CDecl callback delegates.
 #
-# Authors: Mike Kestner <mkestner@novell.com>
+# Author: Christian Hoff <christian_hoff@gmx.net>
 #
 # Copyright (c) 2005 Novell, Inc.
+# Copyright (c) 2009 Christian Hoff
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 2 of the GNU General Public
@@ -20,45 +21,47 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-die "Usage: gapi-cdecl-insert [--keyfile=<file>] <assembly_path>\n" if ($ARGV > 2);
-foreach $arg (@ARGV) {
-	if ($arg =~ /--keyfile=(.*)/) {
-		$key = $1;
-	} elsif (-e $arg) {
-		$assembly = $arg;
-	} else {
-		die "Usage: gapi-cdecl-insert [--keyfile=<file>] <assembly_path>\n";
-	}
-}
+usage="Usage: gapi-cdecl-insert [--keyfile=<file>] <assembly_path>";
+while [ $1 ]; do
+	arg=`expr "$1" : '--keyfile=\(.*\)'`
+	if [ $? -eq 0 ]; then # check whether "expr" has returned an error code
+		if [ -z $keyfile ]; then
+			keyfile=$arg
+		else
+			echo -e "--keyfile option cannot be defined multiple times\n${usage}"
+		fi
+	else
+		if [ -z $assembly ]; then
+			assembly=$1
+		else
+			echo -e "Only one input file allowed\n${usage}"
+			exit 1
+		fi
+	fi
+	shift # Replaces $1 with next param
+done
+if [ -n "$keyfile" -a ! -r "$keyfile" ]; then
+	echo -e "${0}: ERROR: Assembly key file \"$keyfile\" does not exist"
+	exit 2
+fi
+if [ ! -r "$assembly" ]; then
+	echo -e "${0}: ERROR: Assembly \"$assembly\" does not exist"
+	exit 3
+fi
 
-if (`which ildasm 2> /dev/null`) {
-	$dasm = "ildasm /out:";
-} else {
-	$dasm = "monodis --output=";
-}
+echo -e "${0}: Executing ildasm"
+echo `ildasm ${assembly} /out:${assembly}.raw`
 
-if ($assembly =~ /(.*)\.dll/) {
-	$basename = $1;
-	`$dasm$basename.raw $assembly`;
-	open(INFILE, $basename . ".raw") || die "Couldn't open $basename.raw\n";
-	open(OUTFILE, "> $basename.il") || die "Couldn't open $basename.il\n";
-	while ($line = <INFILE>) {
-		$insert = 1 if ($line =~ /\.custom instance void .*GLib\.CDeclCallbackAttribute/);
+echo -e "${0}: Parsing generated IL"
+sed 's/^[ \t]*\.custom instance void .*GLib\.CDeclCallbackAttribute::\.ctor.*$/.custom instance void [mscorlib]System\.Runtime\.InteropServices\.UnmanagedFunctionPointerAttribute::\.ctor\(valuetype [mscorlib]System\.Runtime\.InteropServices\.CallingConvention\) = \( 01 00 02 00 00 00 00 00 \) /' < ${assembly}.raw > ${assembly}.il
 
-		if ($insert && $line =~ /(.*)\s+(Invoke\s*\(.*)/) {
-			print OUTFILE "$1 modopt([mscorlib]System.Runtime.CompilerServices.CallConvCdecl) $2";
-			$insert = 0;
-			next;
-		}
-		print OUTFILE $line;
-	}
-	`ilasm /DLL /QUIET $basename.il`;
-	`sn -R $assembly gtk-sharp.snk` if ($key);
-	unlink "$basename.raw";
-	unlink "$basename.il";
-	unlink "$basename.res";
-} else {
-	print "This script only works for dlls.\nUsage: gapi-cdecl-insert [--keyfile=<file>] <dll_path>\n";
-}
-
-
+rm "$assembly"
+echo -e "${0}: Executing ilasm"
+if [ -z $keyfile ]; then
+	echo `ilasm /quiet /dll /output=${assembly} /resource=${assembly}.res ${assembly}.il`
+else
+	echo `ilasm /quiet /dll /output=${assembly} /resource=${assembly}.res /key=${keyfile} ${assembly}.il`
+fi
+rm "${assembly}.raw"
+rm "${assembly}.il"
+rm "${assembly}.res"

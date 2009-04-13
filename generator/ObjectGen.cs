@@ -32,17 +32,15 @@ namespace GtkSharp.Generation {
 
 		private ArrayList custom_attrs = new ArrayList();
 		private ArrayList strings = new ArrayList();
-		private ArrayList vm_nodes = new ArrayList();
 		private Hashtable childprops = new Hashtable();
 		private static Hashtable dirs = new Hashtable ();
 
-		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
+		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem, false) 
 		{
 			foreach (XmlNode node in elem.ChildNodes) {
-				string name;
-
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
+				if (member.HasAttribute ("hidden") && member.GetAttribute ("hidden") == "1") continue;
 
 				switch (node.Name) {
 				case "callback":
@@ -53,16 +51,12 @@ namespace GtkSharp.Generation {
 					custom_attrs.Add (member.InnerXml);
 					break;
 
-				case "virtual_method":
-					Statistics.IgnoreCount++;
-					break;
-
 				case "static-string":
 					strings.Add (node);
 					break;
 
 				case "childprop":
-					name = member.GetAttribute ("name");
+					string name = member.GetAttribute ("name");
 					while (childprops.ContainsKey (name))
 						name += "mangled";
 					childprops.Add (name, new ChildProperty (member, this));
@@ -184,7 +178,7 @@ namespace GtkSharp.Generation {
 			bool has_sigs = (sigs != null && sigs.Count > 0);
 			if (!has_sigs) {
 				foreach (string iface in interfaces) {
-					ClassBase igen = table.GetClassGen (iface);
+					InterfaceGen igen = table.GetClassGen (iface) as InterfaceGen;
 					if (igen != null && igen.Signals != null) {
 						has_sigs = true;
 						break;
@@ -196,15 +190,7 @@ namespace GtkSharp.Generation {
 				GenSignals (gen_info, null);
 			}
 
-			if (vm_nodes.Count > 0) {
-				if (gen_info.GlueEnabled) {
-					GenVirtualMethods (gen_info);
-				} else {
-					Statistics.VMIgnored = true;
-					Statistics.ThrottledCount += vm_nodes.Count;
-				}
-			}
-
+			GenClassMembers (gen_info, cs_parent);
 			GenMethods (gen_info, null, null);
 			
 			if (interfaces.Count != 0) {
@@ -226,10 +212,11 @@ namespace GtkSharp.Generation {
 				foreach (string iface in interfaces) {
 					if (Parent != null && Parent.Implements (iface))
 						continue;
-					ClassBase igen = table.GetClassGen (iface);
+					InterfaceGen igen = table.GetClassGen (iface) as InterfaceGen;
 					igen.GenMethods (gen_info, collisions, this);
 					igen.GenProperties (gen_info, this);
 					igen.GenSignals (gen_info, this);
+					igen.GenVirtualMethods (gen_info, this);
 				}
 			}
 
@@ -310,37 +297,41 @@ namespace GtkSharp.Generation {
 			
 		}
 
-		private void GenVMGlue (GenerationInfo gen_info, XmlElement elem)
+		void GenClassMembers (GenerationInfo gen_info, string cs_parent)
 		{
-			StreamWriter sw = gen_info.GlueWriter;
+			GenVirtualMethods (gen_info, null);
 
-			string vm_name = elem.GetAttribute ("cname");
-			string method = gen_info.GluelibName + "_" + NS + Name + "_override_" + vm_name;
+			if (class_struct_name == null || this.ParserVersion == 1) return;
+			StreamWriter sw = gen_info.Writer;
+			GenerateClassStruct (sw);
+			if (cs_parent == "")
+				sw.WriteLine ("\t\tstatic uint class_offset = 0;");
+			else
+				sw.WriteLine ("\t\tstatic uint class_offset = ((GLib.GType) typeof ({0})).ClassSize;", cs_parent);
+			sw.WriteLine ("\t\tstatic Hashtable class_structs;");
 			sw.WriteLine ();
-			sw.WriteLine ("void " + method + " (GType type, gpointer cb);");
+			sw.WriteLine ("\t\tstatic {0} GetClassStruct (GLib.GType gtype, bool use_cache)", class_struct_name);
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tif (class_structs == null)");
+			sw.WriteLine ("\t\t\t\tclass_structs = new Hashtable ();");
 			sw.WriteLine ();
-			sw.WriteLine ("void");
-			sw.WriteLine (method + " (GType type, gpointer cb)");
-			sw.WriteLine ("{");
-			sw.WriteLine ("\t{0} *klass = ({0} *) g_type_class_peek (type);", NS + Name + "Class");
-			sw.WriteLine ("\tklass->" + vm_name + " = cb;");
-			sw.WriteLine ("}");
-		}
-
-		static bool vmhdrs_needed = true;
-
-		private void GenVirtualMethods (GenerationInfo gen_info)
-		{
-			if (vmhdrs_needed) {
-				gen_info.GlueWriter.WriteLine ("#include <glib-object.h>");
-				gen_info.GlueWriter.WriteLine ("#include \"vmglueheaders.h\"");
-				gen_info.GlueWriter.WriteLine ();
-				vmhdrs_needed = false;
-			}
-
-			foreach (XmlElement elem in vm_nodes) {
-				GenVMGlue (gen_info, elem);
-			}
+			sw.WriteLine ("\t\t\tif (use_cache && class_structs.Contains (gtype))");
+			sw.WriteLine ("\t\t\t\treturn ({0}) class_structs [gtype];", class_struct_name);
+			sw.WriteLine ("\t\t\telse {");
+			sw.WriteLine ("\t\t\t\tIntPtr class_ptr = new IntPtr (gtype.ClassPtr.ToInt64 () + class_offset);");
+			sw.WriteLine ("\t\t\t\t{0} class_struct = ({0}) Marshal.PtrToStructure (class_ptr, typeof ({0}));", class_struct_name);
+			sw.WriteLine ("\t\t\t\tif (use_cache)");
+			sw.WriteLine ("\t\t\t\t\tclass_structs.Add (gtype, class_struct);");
+			sw.WriteLine ("\t\t\t\treturn class_struct;");
+			sw.WriteLine ("\t\t\t}");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tstatic void OverrideClassStruct (GLib.GType gtype, {0} class_struct)", class_struct_name);
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tIntPtr class_ptr = new IntPtr (gtype.ClassPtr.ToInt64 () + class_offset);");
+			sw.WriteLine ("\t\t\tMarshal.StructureToPtr (class_struct, class_ptr, false);");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
 		}
 
 		/* Keep this in sync with the one in glib/GType.cs */

@@ -32,7 +32,6 @@ namespace GtkSharp.Generation {
 	public abstract class ClassBase : GenBase {
 		protected Hashtable props = new Hashtable();
 		protected Hashtable fields = new Hashtable();
-		protected Hashtable sigs = new Hashtable();
 		protected Hashtable methods = new Hashtable();
 		protected ArrayList interfaces = new ArrayList();
 		protected ArrayList managed_interfaces = new ArrayList();
@@ -46,12 +45,6 @@ namespace GtkSharp.Generation {
 		public Hashtable Methods {
 			get {
 				return methods;
-			}
-		}	
-
-		public Hashtable Signals {
-			get {
-				return sigs;
 			}
 		}	
 
@@ -107,13 +100,6 @@ namespace GtkSharp.Generation {
 					fields.Add (name, new ObjectField (member, this));
 					break;
 
-				case "signal":
-					name = member.GetAttribute("name");
-					while (sigs.ContainsKey(name))
-						name += "mangled";
-					sigs.Add (name, new Signal (member, this));
-					break;
-
 				case "implements":
 					ParseImplements (member);
 					break;
@@ -130,8 +116,6 @@ namespace GtkSharp.Generation {
 
 		public override bool Validate ()
 		{
-			if (Parent != null && !Parent.ValidateForSubclass ())
-				return false;
 			foreach (string iface in interfaces) {
 				InterfaceGen igen = SymbolTable.Table[iface] as InterfaceGen;
 				if (igen == null) {
@@ -154,16 +138,6 @@ namespace GtkSharp.Generation {
 			}
 			foreach (Property prop in invalids)
 				props.Remove (prop.Name);
-			invalids.Clear ();
-
-			foreach (Signal sig in sigs.Values) {
-				if (!sig.Validate ()) {
-					Console.WriteLine ("in type " + QualifiedName);
-					invalids.Add (sig);
-				}
-			}
-			foreach (Signal sig in invalids)
-				sigs.Remove (sig.Name);
 			invalids.Clear ();
 
 			foreach (ObjectField field in fields.Values) {
@@ -199,23 +173,6 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		public virtual bool ValidateForSubclass ()
-		{
-			ArrayList invalids = new ArrayList ();
-
-			foreach (Signal sig in sigs.Values) {
-				if (!sig.Validate ()) {
-					Console.WriteLine ("in type " + QualifiedName);
-					invalids.Add (sig);
-				}
-			}
-			foreach (Signal sig in invalids)
-				sigs.Remove (sig.Name);
-			invalids.Clear ();
-
-			return true;
-		}
-
 		public bool IsDeprecated {
 			get {
 				return deprecated;
@@ -238,7 +195,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected bool IsNodeNameHandled (string name)
+		protected virtual bool IsNodeNameHandled (string name)
 		{
 			switch (name) {
 			case "method":
@@ -262,15 +219,6 @@ namespace GtkSharp.Generation {
 
 			foreach (Property prop in props.Values)
 				prop.Generate (gen_info, "\t\t", implementor);
-		}
-
-		public void GenSignals (GenerationInfo gen_info, ClassBase implementor)
-		{		
-			if (sigs == null)
-				return;
-
-			foreach (Signal sig in sigs.Values)
-				sig.Generate (gen_info, implementor);
 		}
 
 		protected void GenFields (GenerationInfo gen_info)
@@ -339,11 +287,6 @@ namespace GtkSharp.Generation {
 			return (Property) props[name];
 		}
 
-		public Signal GetSignal (string name)
-		{
-			return (Signal) sigs[name];
-		}
-
 		public Method GetMethodRecursively (string name)
 		{
 			return GetMethodRecursively (name, false);
@@ -378,33 +321,6 @@ namespace GtkSharp.Generation {
 			while (klass != null && p == null) {
 				p = (Property) klass.GetProperty (name);
 				klass = klass.Parent;
-			}
-
-			return p;
-		}
-
-		public Signal GetSignalRecursively (string name)
-		{
-			return GetSignalRecursively (name, false);
-		}
-		
-		public virtual Signal GetSignalRecursively (string name, bool check_self)
-		{
-			Signal p = null;
-			if (check_self)
-				p = GetSignal (name);
-			if (p == null && Parent != null) 
-				p = Parent.GetSignalRecursively (name, true);
-			
-			if (check_self && p == null) {
-				foreach (string iface in interfaces) {
-					ClassBase igen = SymbolTable.Table.GetClassGen (iface);
-					if (igen == null)
-						continue;
-					p = igen.GetSignalRecursively (name, true);
-					if (p != null)
-						break;
-				}
 			}
 
 			return p;

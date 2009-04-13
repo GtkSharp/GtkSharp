@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<api parser_version="1">
+<api parser_version="2">
   <!--
 
         This file was automatically generated.
@@ -309,6 +309,9 @@
       </method>
     </object>
     <object name="Context" cname="PangoContext" parent="GObject">
+      <class_struct cname="PangoContextClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <method name="GetBaseDir" cname="pango_context_get_base_dir">
         <return-type type="PangoDirection" />
       </method>
@@ -576,6 +579,9 @@
       </method>
     </object>
     <object name="Layout" cname="PangoLayout" parent="GObject">
+      <class_struct cname="PangoLayoutClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <method name="ContextChanged" cname="pango_layout_context_changed">
         <return-type type="void" />
       </method>
@@ -853,6 +859,23 @@
       </method>
     </object>
     <object name="Renderer" cname="PangoRenderer" parent="GObject">
+      <class_struct cname="PangoRendererClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="draw_glyphs" />
+        <method vm="draw_rectangle" />
+        <method vm="draw_error_underline" />
+        <method vm="draw_shape" />
+        <method vm="draw_trapezoid" />
+        <method vm="draw_glyph" />
+        <method vm="part_changed" />
+        <method vm="begin" />
+        <method vm="end" />
+        <method vm="prepare_run" />
+        <method vm="draw_glyph_item" />
+        <method vm="_pango_reserved2" />
+        <method vm="_pango_reserved3" />
+        <method vm="_pango_reserved4" />
+      </class_struct>
       <field name="Underline" cname="underline" type="PangoUnderline" />
       <field name="Strikethrough" cname="strikethrough" type="gboolean" />
       <field name="ActiveCount" cname="active_count" type="int" />
@@ -861,7 +884,6 @@
       <virtual_method name="DrawGlyphs" cname="draw_glyphs">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
           <parameter type="PangoFont*" name="font" />
           <parameter type="PangoGlyphString*" name="glyphs" />
           <parameter type="int" name="x" />
@@ -871,7 +893,6 @@
       <virtual_method name="DrawRectangle" cname="draw_rectangle">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
           <parameter type="PangoRenderPart" name="part" />
           <parameter type="int" name="x" />
           <parameter type="int" name="y" />
@@ -882,7 +903,6 @@
       <virtual_method name="DrawErrorUnderline" cname="draw_error_underline">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
           <parameter type="int" name="x" />
           <parameter type="int" name="y" />
           <parameter type="int" name="width" />
@@ -892,7 +912,6 @@
       <virtual_method name="DrawShape" cname="draw_shape">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
           <parameter type="PangoAttrShape*" name="attr" />
           <parameter type="int" name="x" />
           <parameter type="int" name="y" />
@@ -901,7 +920,6 @@
       <virtual_method name="DrawTrapezoid" cname="draw_trapezoid">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
           <parameter type="PangoRenderPart" name="part" />
           <parameter type="double" name="y1_" />
           <parameter type="double" name="x11" />
@@ -914,7 +932,6 @@
       <virtual_method name="DrawGlyph" cname="draw_glyph">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
           <parameter type="PangoFont*" name="font" />
           <parameter type="PangoGlyph" name="glyph" />
           <parameter type="double" name="x" />
@@ -924,38 +941,40 @@
       <virtual_method name="PartChanged" cname="part_changed">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
           <parameter type="PangoRenderPart" name="part" />
         </parameters>
       </virtual_method>
       <virtual_method name="Begin" cname="begin">
         <return-type type="void" />
-        <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="End" cname="end">
         <return-type type="void" />
-        <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="PrepareRun" cname="prepare_run">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
           <parameter type="PangoLayoutRun*" name="run" />
         </parameters>
       </virtual_method>
       <virtual_method name="DrawGlyphItem" cname="draw_glyph_item">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRenderer*" name="renderer" />
           <parameter type="const-char*" name="text" />
           <parameter type="PangoGlyphItem*" name="glyph_item" />
           <parameter type="int" name="x" />
           <parameter type="int" name="y" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="PangoReserved2" cname="_pango_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="PangoReserved3" cname="_pango_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="PangoReserved4" cname="_pango_reserved4" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <method name="Activate" cname="pango_renderer_activate">
         <return-type type="void" />

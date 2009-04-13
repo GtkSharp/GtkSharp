@@ -27,10 +27,9 @@ namespace GtkSharp.Generation {
 
 	public abstract class MethodBase  {
 
-		XmlElement elem;
+		protected XmlElement elem;
 		protected ClassBase container_type;
-		Parameters parms;
-		bool is_static = false;
+		protected Parameters parms;
 		string mods = String.Empty;
 		string name;
 		private string protection = "public";
@@ -77,7 +76,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string CName {
+		public virtual string CName {
 			get {
 				return SymbolTable.Table.MangleName (elem.GetAttribute ("cname"));
 			}
@@ -109,10 +108,9 @@ namespace GtkSharp.Generation {
 
 		public bool IsStatic {
 			get {
-				return is_static;
+				return parms.Static;
 			}
 			set {
-				is_static = value;
 				parms.Static = value;
 			}
 		}
@@ -148,7 +146,8 @@ namespace GtkSharp.Generation {
 				return parms;
 			}
 		}
-	
+
+	
 		public string Protection {
 			get { return protection; }
 			set { protection = value; }

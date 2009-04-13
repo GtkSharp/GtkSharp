@@ -21,29 +21,6 @@
 
 #include <atk/atk.h>
 
-
-void atksharp_misc_override_threads_enter (GType gtype, gpointer cb);
-
-void 
-atksharp_misc_override_threads_enter (GType gtype, gpointer cb)
-{
-	AtkMiscClass *klass = g_type_class_peek (gtype);
-	if (!klass)
-		klass = g_type_class_ref (gtype);
-	((AtkMiscClass *) klass)->threads_enter = cb;
-}
-
-void atksharp_misc_override_threads_leave (GType gtype, gpointer cb);
-
-void 
-atksharp_misc_override_threads_leave (GType gtype, gpointer cb)
-{
-	AtkMiscClass *klass = g_type_class_peek (gtype);
-	if (!klass)
-		klass = g_type_class_ref (gtype);
-	((AtkMiscClass *) klass)->threads_leave = cb;
-}
-
 void atksharp_misc_set_singleton_instance (AtkMisc *misc);
 
 void 

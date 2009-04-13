@@ -3,6 +3,7 @@
 // Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2003-2004 Novell, Inc.
+// Copyright (c) 2009 Christian Hoff
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -26,86 +27,92 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	// FIXME: handle static VMs
-	public class VirtualMethod : MethodBase  {
+	public abstract class VirtualMethod : MethodBase  {
+		protected ReturnValue retval;
+		protected ManagedCallString call;
 		
-		XmlElement elem;
-		ReturnValue retval;
-		Parameters parms;
+		protected string modifiers = "";
 
-		public VirtualMethod (XmlElement elem, ClassBase container_type) : base (elem, container_type)
+		public VirtualMethod (XmlElement elem, ObjectBase container_type) : base (elem, container_type)
 		{
-			this.elem = elem;
-			retval = new ReturnValue (elem ["return-type"]);
-			parms = new Parameters (elem["parameters"]);
-			parms.HideData = true;
-		}
-
-		public bool IsGetter {
-			get {
-				return HasGetterName && ((!retval.IsVoid && parms.Count == 1) || (retval.IsVoid && parms.Count == 2 && parms [1].PassAs == "out"));
+			if (container_type.ParserVersion == 1) {
+				// The old pre 2.14 parser didn't drop the 1st parameter in all <signal> and <virtual_method> elements
+				parms = new Parameters (elem ["parameters"], true);
 			}
+			retval = new ReturnValue (elem ["return-type"]);
 		}
 	
-		public bool IsSetter {
-			get {
-				if (!HasSetterName || !retval.IsVoid)
-					return false;
-
-				if (parms.Count == 2 || (parms.Count == 4 && parms [1].Scope == "notified"))
-					return true;
-				else
-					return false;
-			}
-		}
- 
 		public string MarshalReturnType {
 			get {
 				return SymbolTable.Table.GetToNativeReturnType (elem["return-type"].GetAttribute("type"));
 			}
 		}
 
-		public void GenerateCallback (StreamWriter sw)
+		protected abstract string CallString {
+			get;
+		}
+
+		VMSignature signature;
+		protected VMSignature Signature {
+			get {
+				if (signature == null)
+					signature = new VMSignature (parms);
+
+				return signature;
+			}
+		}
+
+		/* Creates a callback method which invokes the corresponding virtual method
+		* @implementor is the class that implements the virtual method(e.g. the class that derives from an interface) or NULL if containing and declaring type are equal
+		*/
+		public void GenerateCallback (StreamWriter sw, ClassBase implementor)
 		{
 			if (!Validate ())
 				return;
 
-			ManagedCallString call = new ManagedCallString (parms, true);
-			string type = parms [0].CSType + "Implementor";
-			string name = parms [0].Name;
-			string call_string = "__obj." + Name + " (" + call + ")";
-			if (IsGetter)
-				call_string = "__obj." + (Name.StartsWith ("Get") ? Name.Substring (3) : Name);
-			else if (IsSetter)
-				call_string = "__obj." + Name.Substring (3) + " = " + call;
+			string native_signature = "";
+			if (!IsStatic) {
+				native_signature += "IntPtr inst";
+				if (parms.Count > 0)
+					native_signature += ", ";
+			}
+			if (parms.Count > 0)
+				native_signature += parms.ImportSignature;
 
 			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
-			sw.WriteLine ("\t\tdelegate " + MarshalReturnType + " " + Name + "Delegate (" + parms.ImportSignature + ");");
+			sw.WriteLine ("\t\tdelegate {0} {1}NativeDelegate ({2});", MarshalReturnType, this.Name, native_signature);
 			sw.WriteLine ();
-			sw.WriteLine ("\t\tstatic " + MarshalReturnType + " " + Name + "Callback (" + parms.ImportSignature + ")");
+			sw.WriteLine ("\t\tstatic {0} {1}_cb ({2})", MarshalReturnType, this.Name, native_signature);
 			sw.WriteLine ("\t\t{");
 			string unconditional = call.Unconditional ("\t\t\t");
 			if (unconditional.Length > 0)
 				sw.WriteLine (unconditional);
 			sw.WriteLine ("\t\t\ttry {");
-			sw.WriteLine ("\t\t\t\t" + type + " __obj = GLib.Object.GetObject (" + name + ", false) as " + type + ";");
+
+			if (!this.IsStatic) {
+				string type;
+				if (implementor != null)
+					type = implementor.QualifiedName;
+				else if (this.container_type is InterfaceGen)
+					type = this.container_type.Name + "Implementor"; // We are in an interface/adaptor, invoke the method in the implementor class
+				else
+					type = this.container_type.Name;
+
+				sw.WriteLine ("\t\t\t\t{0} __obj = GLib.Object.GetObject (inst, false) as {0};", type);
+			}
+
 			sw.Write (call.Setup ("\t\t\t\t"));
-			if (retval.IsVoid) { 
-				if (IsGetter) {
-					Parameter p = parms [1];
-					string out_name = p.Name;
-					if (p.MarshalType != p.CSType)
-						out_name = "my" + out_name;
-					sw.WriteLine ("\t\t\t\t" + out_name + " = " + call_string + ";");
-				} else
-					sw.WriteLine ("\t\t\t\t" + call_string + ";");
-			} else
-				sw.WriteLine ("\t\t\t\t" + retval.CSType + " __result = " + call_string + ";");
-			bool fatal = parms.HasOutParam || !retval.IsVoid;
+			sw.Write ("\t\t\t\t");
+			if (!retval.IsVoid)
+				sw.Write (retval.CSType + " __result = ");
+			if (!this.IsStatic)
+				sw.Write ("__obj.");
+			sw.WriteLine (this.CallString + ";");
 			sw.Write (call.Finish ("\t\t\t\t"));
 			if (!retval.IsVoid)
 				sw.WriteLine ("\t\t\t\treturn " + retval.ToNative ("__result") + ";");
 
+			bool fatal = parms.HasOutParam || !retval.IsVoid;
 			sw.WriteLine ("\t\t\t} catch (Exception e) {");
 			sw.WriteLine ("\t\t\t\tGLib.ExceptionManager.RaiseUnhandledException (e, " + (fatal ? "true" : "false") + ");");
 			if (fatal) {
@@ -114,25 +121,13 @@ namespace GtkSharp.Generation {
 			}
 			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
 		}
 
-		public void GenerateDeclaration (StreamWriter sw, VirtualMethod complement)
-		{
-			VMSignature vmsig = new VMSignature (parms);
-			if (IsGetter) {
-				string name = Name.StartsWith ("Get") ? Name.Substring (3) : Name;
-				string type = retval.IsVoid ? parms [1].CSType : retval.CSType;
-				if (complement != null && complement.parms [1].CSType == type)
-					sw.WriteLine ("\t\t" + type + " " + name + " { get; set; }");
-				else {
-					sw.WriteLine ("\t\t" + type + " " + name + " { get; }");
-					if (complement != null)
-						sw.WriteLine ("\t\t" + complement.retval.CSType + " " + complement.Name + " (" + (new VMSignature (complement.parms)) + ");");
-				}
-			} else if (IsSetter) 
-				sw.WriteLine ("\t\t" + parms[1].CSType + " " + Name.Substring (3) + " { set; }");
-			else
-				sw.WriteLine ("\t\t" + retval.CSType + " " + Name + " (" + vmsig + ");");
+		public bool IsValid {
+			get { 
+				return Validate ();
+			}
 		}
 
 		enum ValidState {
@@ -143,25 +138,24 @@ namespace GtkSharp.Generation {
 
 		ValidState vstate = ValidState.Unvalidated;
 
-		public bool IsValid {
-			get { 
-				if (vstate == ValidState.Unvalidated)
-					return Validate ();
-				else
-					return vstate == ValidState.Valid; 
-			}
-		}
-
 		public override bool Validate ()
 		{
-			if (!parms.Validate () || !retval.Validate ()) {
-				Console.Write ("in virtual method " + Name + " ");
-				vstate = ValidState.Invalid;
-				return false;
-			}
+			if (vstate != ValidState.Unvalidated)
+				return vstate == ValidState.Valid;
 
 			vstate = ValidState.Valid;
-			return true;
+			if (!parms.Validate () || !retval.Validate ()) {
+				vstate = ValidState.Invalid;
+			}
+
+			if (vstate == ValidState.Invalid) {
+				Console.WriteLine ("(in virtual method " + container_type.QualifiedName + "." + Name + ")");
+				return false;
+			} else {
+				// The call string has to be created *after* the params have been validated since the Parameters class contains no elements before validation
+				call = new ManagedCallString (parms);
+				return true;
+			}
 		}
 	}
 }

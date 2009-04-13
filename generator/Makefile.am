@@ -13,20 +13,24 @@ sources = 				\
 	CallbackGen.cs			\
 	ChildProperty.cs		\
 	ClassBase.cs			\
+	ClassField.cs			\
 	ClassGen.cs			\
 	CodeGenerator.cs		\
 	ConstFilenameGen.cs		\
 	ConstStringGen.cs		\
 	Ctor.cs				\
+	DefaultSignalHandler.cs		\
 	EnumGen.cs			\
 	FieldBase.cs			\
 	GenBase.cs			\
 	GenerationInfo.cs		\
+	GObjectVM.cs			\
 	HandleBase.cs			\
 	IAccessor.cs			\
 	IGeneratable.cs			\
 	IManualMarshaler.cs		\
 	InterfaceGen.cs			\
+	InterfaceVM.cs			\
 	LPGen.cs			\
 	LPUGen.cs			\
 	ManagedCallString.cs		\

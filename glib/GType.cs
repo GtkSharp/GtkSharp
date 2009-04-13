@@ -255,12 +255,40 @@ namespace GLib {
 			return Marshaller.Utf8PtrToString (g_type_name (val));
 		}
 
-		internal IntPtr ClassPtr {
+		public IntPtr ClassPtr {
 			get {
 				IntPtr klass = g_type_class_peek (val);
 				if (klass == IntPtr.Zero)
 					klass = g_type_class_ref (val);
 				return klass;
+			}
+		}
+
+		public GType BaseType {
+			get {
+				IntPtr parent = g_type_parent (this.Val);
+				if (parent == IntPtr.Zero)
+					return GType.None;
+				else
+					return new GType (parent);
+			}
+		}
+
+		public GType ThresholdType {
+			get {
+				GLib.GType curr_type = this;
+				while (curr_type.ToString ().StartsWith ("__gtksharp_")) {
+					curr_type = curr_type.BaseType;
+				}
+				return curr_type;
+			}
+		}
+
+		public uint ClassSize {
+			get {
+				GTypeQuery query;
+				g_type_query (this.Val, out query);
+				return query.class_size;
 			}
 		}
 
@@ -359,6 +387,9 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_type_name (IntPtr raw);
 		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_type_parent (IntPtr type);
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_type_query (IntPtr type, out GTypeQuery query);
 

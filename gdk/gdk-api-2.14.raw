@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<api parser_version="1">
+<api parser_version="2">
   <!--
 
         This file was automatically generated.
@@ -519,6 +519,9 @@
       </parameters>
     </callback>
     <object name="AppLaunchContext" cname="GdkAppLaunchContext" parent="GAppLaunchContext">
+      <class_struct cname="GdkAppLaunchContextClass">
+        <field name="ParentClass" cname="parent_class" type="GAppLaunchContextClass" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GdkAppLaunchContextPrivate*" />
       <method name="GetType" cname="gdk_app_launch_context_get_type" shared="true">
         <return-type type="GType" />
@@ -562,6 +565,9 @@
       </method>
     </object>
     <object name="Colormap" cname="GdkColormap" parent="GObject">
+      <class_struct cname="GdkColormapClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <field name="Size" cname="size" type="gint" access="public" />
       <field name="Colors" cname="colors" type="GdkColor*" access="public" />
       <field name="Visual" cname="visual" type="GdkVisual*" />
@@ -709,6 +715,14 @@
       </method>
     </object>
     <object name="Display" cname="GdkDisplay" parent="GObject">
+      <class_struct cname="GdkDisplayClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="get_display_name" />
+        <method vm="get_n_screens" />
+        <method vm="get_screen" />
+        <method vm="get_default_screen" />
+        <method signal_vm="closed" />
+      </class_struct>
       <field name="QueuedEvents" cname="queued_events" type="GList*" />
       <field name="QueuedTail" cname="queued_tail" type="GList*" />
       <field name="ButtonClickTime" cname="button_click_time" array_len="2" type="guint32" />
@@ -721,38 +735,30 @@
       <field name="DoubleClickDistance" cname="double_click_distance" type="guint" />
       <field name="ButtonX" cname="button_x" array_len="2" type="gint" />
       <field name="ButtonY" cname="button_y" array_len="2" type="gint" />
+      <signal name="Closed" cname="closed" when="LAST" field_name="closed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="is_error" />
+        </parameters>
+      </signal>
       <virtual_method name="GetDisplayName" cname="get_display_name">
         <return-type type="const-gchar*" />
-        <parameters>
-          <parameter type="GdkDisplay*" name="display" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetNScreens" cname="get_n_screens">
         <return-type type="gint" />
-        <parameters>
-          <parameter type="GdkDisplay*" name="display" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetScreen" cname="get_screen">
         <return-type type="GdkScreen*" />
         <parameters>
-          <parameter type="GdkDisplay*" name="display" />
           <parameter type="gint" name="screen_num" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetDefaultScreen" cname="get_default_screen">
         <return-type type="GdkScreen*" />
-        <parameters>
-          <parameter type="GdkDisplay*" name="display" />
-        </parameters>
+        <parameters />
       </virtual_method>
-      <signal name="Closed" cname="closed" when="LAST" field_name="closed">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GdkDisplay*" name="display" />
-          <parameter type="gboolean" name="is_error" />
-        </parameters>
-      </signal>
       <method name="AddClientMessageFilter" cname="gdk_display_add_client_message_filter">
         <return-type type="void" />
         <parameters>
@@ -929,10 +935,13 @@
       </method>
     </object>
     <object name="DisplayManager" cname="GdkDisplayManager" parent="GObject">
+      <class_struct cname="GdkDisplayManagerClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method signal_vm="display_opened" />
+      </class_struct>
       <signal name="DisplayOpened" cname="display-opened" when="LAST" field_name="display_opened">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDisplayManager*" name="display_manager" />
           <parameter type="GdkDisplay*" name="display" />
         </parameters>
       </signal>
@@ -957,6 +966,9 @@
       </method>
     </object>
     <object name="DragContext" cname="GdkDragContext" parent="GObject">
+      <class_struct cname="GdkDragContextClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <field name="Protocol" cname="protocol" type="GdkDragProtocol" access="public" />
       <field name="IsSource" cname="is_source" type="gboolean" access="public" />
       <field name="SourceWindow" cname="source_window" type="GdkWindow*" access="public" />
@@ -979,10 +991,51 @@
       </method>
     </object>
     <object name="Drawable" cname="GdkDrawable" parent="GObject">
+      <class_struct cname="GdkDrawableClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="create_gc" />
+        <method vm="draw_rectangle" />
+        <method vm="draw_arc" />
+        <method vm="draw_polygon" />
+        <method vm="draw_text" />
+        <method vm="draw_text_wc" />
+        <method vm="draw_drawable" />
+        <method vm="draw_points" />
+        <method vm="draw_segments" />
+        <method vm="draw_lines" />
+        <method vm="draw_glyphs" />
+        <method vm="draw_image" />
+        <method vm="get_depth" />
+        <method vm="get_size" />
+        <method vm="set_colormap" />
+        <method vm="get_colormap" />
+        <method vm="get_visual" />
+        <method vm="get_screen" />
+        <method vm="get_image" />
+        <method vm="get_clip_region" />
+        <method vm="get_visible_region" />
+        <method vm="get_composite_drawable" />
+        <method vm="draw_pixbuf" />
+        <method vm="_copy_to_image" />
+        <method vm="draw_glyphs_transformed" />
+        <method vm="draw_trapezoids" />
+        <method vm="ref_cairo_surface" />
+        <method vm="_gdk_reserved4" />
+        <method vm="_gdk_reserved5" />
+        <method vm="_gdk_reserved6" />
+        <method vm="_gdk_reserved7" />
+        <method vm="_gdk_reserved9" />
+        <method vm="_gdk_reserved10" />
+        <method vm="_gdk_reserved11" />
+        <method vm="_gdk_reserved12" />
+        <method vm="_gdk_reserved13" />
+        <method vm="_gdk_reserved14" />
+        <method vm="_gdk_reserved15" />
+        <method vm="_gdk_reserved16" />
+      </class_struct>
       <virtual_method name="CreateGc" cname="create_gc">
         <return-type type="GdkGC*" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGCValues*" name="values" />
           <parameter type="GdkGCValuesMask" name="mask" />
         </parameters>
@@ -990,7 +1043,6 @@
       <virtual_method name="DrawRectangle" cname="draw_rectangle">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="gboolean" name="filled" />
           <parameter type="gint" name="x" />
@@ -1002,7 +1054,6 @@
       <virtual_method name="DrawArc" cname="draw_arc">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="gboolean" name="filled" />
           <parameter type="gint" name="x" />
@@ -1016,7 +1067,6 @@
       <virtual_method name="DrawPolygon" cname="draw_polygon">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="gboolean" name="filled" />
           <parameter type="GdkPoint*" name="points" />
@@ -1026,7 +1076,6 @@
       <virtual_method name="DrawText" cname="draw_text">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkFont*" name="font" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="gint" name="x" />
@@ -1038,7 +1087,6 @@
       <virtual_method name="DrawTextWc" cname="draw_text_wc">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkFont*" name="font" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="gint" name="x" />
@@ -1050,7 +1098,6 @@
       <virtual_method name="DrawDrawable" cname="draw_drawable">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="GdkDrawable*" name="src" />
           <parameter type="gint" name="xsrc" />
@@ -1064,7 +1111,6 @@
       <virtual_method name="DrawPoints" cname="draw_points">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="GdkPoint*" name="points" />
           <parameter type="gint" name="npoints" />
@@ -1073,7 +1119,6 @@
       <virtual_method name="DrawSegments" cname="draw_segments">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="GdkSegment*" name="segs" />
           <parameter type="gint" name="nsegs" />
@@ -1082,7 +1127,6 @@
       <virtual_method name="DrawLines" cname="draw_lines">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="GdkPoint*" name="points" />
           <parameter type="gint" name="npoints" />
@@ -1091,7 +1135,6 @@
       <virtual_method name="DrawGlyphs" cname="draw_glyphs">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="PangoFont*" name="font" />
           <parameter type="gint" name="x" />
@@ -1102,7 +1145,6 @@
       <virtual_method name="DrawImage" cname="draw_image">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="GdkImage*" name="image" />
           <parameter type="gint" name="xsrc" />
@@ -1115,14 +1157,11 @@
       </virtual_method>
       <virtual_method name="GetDepth" cname="get_depth">
         <return-type type="gint" />
-        <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetSize" cname="get_size">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="gint*" name="width" />
           <parameter type="gint*" name="height" />
         </parameters>
@@ -1130,32 +1169,24 @@
       <virtual_method name="SetColormap" cname="set_colormap">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkColormap*" name="cmap" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetColormap" cname="get_colormap">
         <return-type type="GdkColormap*" />
-        <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetVisual" cname="get_visual">
         <return-type type="GdkVisual*" />
-        <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetScreen" cname="get_screen">
         <return-type type="GdkScreen*" />
-        <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetImage" cname="get_image">
         <return-type type="GdkImage*" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="gint" name="x" />
           <parameter type="gint" name="y" />
           <parameter type="gint" name="width" />
@@ -1164,20 +1195,15 @@
       </virtual_method>
       <virtual_method name="GetClipRegion" cname="get_clip_region">
         <return-type type="GdkRegion*" />
-        <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetVisibleRegion" cname="get_visible_region">
         <return-type type="GdkRegion*" />
-        <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
-        </parameters>
+        <parameters />
       </virtual_method>
       <virtual_method name="GetCompositeDrawable" cname="get_composite_drawable">
         <return-type type="GdkDrawable*" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="gint" name="x" />
           <parameter type="gint" name="y" />
           <parameter type="gint" name="width" />
@@ -1189,7 +1215,6 @@
       <virtual_method name="DrawPixbuf" cname="draw_pixbuf">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="GdkPixbuf*" name="pixbuf" />
           <parameter type="gint" name="src_x" />
@@ -1206,7 +1231,6 @@
       <virtual_method name="CopyToImage" cname="_copy_to_image">
         <return-type type="GdkImage*" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkImage*" name="image" />
           <parameter type="gint" name="src_x" />
           <parameter type="gint" name="src_y" />
@@ -1219,7 +1243,6 @@
       <virtual_method name="DrawGlyphsTransformed" cname="draw_glyphs_transformed">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="PangoMatrix*" name="matrix" />
           <parameter type="PangoFont*" name="font" />
@@ -1231,7 +1254,6 @@
       <virtual_method name="DrawTrapezoids" cname="draw_trapezoids">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
           <parameter type="GdkGC*" name="gc" />
           <parameter type="GdkTrapezoid*" name="trapezoids" />
           <parameter type="gint" name="n_trapezoids" />
@@ -1239,9 +1261,43 @@
       </virtual_method>
       <virtual_method name="RefCairoSurface" cname="ref_cairo_surface">
         <return-type type="cairo_surface_t*" />
-        <parameters>
-          <parameter type="GdkDrawable*" name="drawable" />
-        </parameters>
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GdkReserved4" cname="_gdk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved5" cname="_gdk_reserved5" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved6" cname="_gdk_reserved6" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved7" cname="_gdk_reserved7" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved9" cname="_gdk_reserved9" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved10" cname="_gdk_reserved10" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved11" cname="_gdk_reserved11" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved12" cname="_gdk_reserved12" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved13" cname="_gdk_reserved13" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved14" cname="_gdk_reserved14" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved15" cname="_gdk_reserved15" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved16" cname="_gdk_reserved16" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <method name="DrawArc" cname="gdk_draw_arc">
         <return-type type="void" />
@@ -1624,6 +1680,16 @@
       </method>
     </object>
     <object name="GC" cname="GdkGC" parent="GObject">
+      <class_struct cname="GdkGCClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="get_values" />
+        <method vm="set_values" />
+        <method vm="set_dashes" />
+        <method vm="_gdk_reserved1" />
+        <method vm="_gdk_reserved2" />
+        <method vm="_gdk_reserved3" />
+        <method vm="_gdk_reserved4" />
+      </class_struct>
       <field name="ClipXOrigin" cname="clip_x_origin" type="gint" />
       <field name="ClipYOrigin" cname="clip_y_origin" type="gint" />
       <field name="TsXOrigin" cname="ts_x_origin" type="gint" />
@@ -1632,14 +1698,12 @@
       <virtual_method name="GetValues" cname="get_values">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkGC*" name="gc" />
           <parameter type="GdkGCValues*" name="values" />
         </parameters>
       </virtual_method>
       <virtual_method name="SetValues" cname="set_values">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkGC*" name="gc" />
           <parameter type="GdkGCValues*" name="values" />
           <parameter type="GdkGCValuesMask" name="mask" />
         </parameters>
@@ -1647,11 +1711,22 @@
       <virtual_method name="SetDashes" cname="set_dashes">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkGC*" name="gc" />
           <parameter type="gint" name="dash_offset" />
           <parameter type="gint8" array="true" name="dash_list" />
           <parameter type="gint" name="n" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GdkReserved1" cname="_gdk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved2" cname="_gdk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved3" cname="_gdk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GdkReserved4" cname="_gdk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
       </virtual_method>
       <method name="Copy" cname="gdk_gc_copy">
         <return-type type="void" />
@@ -1829,6 +1904,9 @@
       </method>
     </object>
     <object name="Image" cname="GdkImage" parent="GObject">
+      <class_struct cname="GdkImageClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
       <field name="Type" cname="type" type="GdkImageType" access="public" />
       <field name="Visual" cname="visual" type="GdkVisual*" access="public" />
       <field name="ByteOrder" cname="byte_order" type="GdkByteOrder" access="public" />
@@ -1894,18 +1972,19 @@
       </method>
     </object>
     <object name="Keymap" cname="GdkKeymap" parent="GObject">
+      <class_struct cname="GdkKeymapClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method signal_vm="direction_changed" />
+        <method signal_vm="keys_changed" />
+      </class_struct>
       <field name="Display" cname="display" type="GdkDisplay*" />
       <signal name="DirectionChanged" cname="direction-changed" when="LAST" field_name="direction_changed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GdkKeymap*" name="keymap" />
-        </parameters>
+        <parameters />
       </signal>
       <signal name="KeysChanged" cname="keys-changed" when="LAST" field_name="keys_changed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GdkKeymap*" name="keymap" />
-        </parameters>
+        <parameters />
       </signal>
       <method name="GetDefault" cname="gdk_keymap_get_default" shared="true">
         <return-type type="GdkKeymap*" />
@@ -1962,6 +2041,9 @@
       </method>
     </object>
     <object name="PangoRenderer" cname="GdkPangoRenderer" parent="PangoRenderer">
+      <class_struct cname="GdkPangoRendererClass">
+        <field name="ParentClass" cname="parent_class" type="PangoRendererClass" />
+      </class_struct>
       <field name="Priv" cname="priv" type="GdkPangoRendererPrivate*" />
       <property name="Screen" cname="screen" type="GdkScreen" readable="true" writeable="true" construct-only="true" />
       <method name="GetDefault" cname="gdk_pango_renderer_get_default" shared="true">
@@ -2006,6 +2088,9 @@
       </method>
     </object>
     <object name="Pixmap" cname="GdkPixmap" parent="GObject">
+      <class_struct cname="GdkPixmapObjectClass">
+        <field name="ParentClass" cname="parent_class" type="GdkDrawableClass" />
+      </class_struct>
       <method name="ColormapCreateFromXpm" cname="gdk_pixmap_colormap_create_from_xpm" shared="true">
         <return-type type="GdkPixmap*" />
         <parameters>
@@ -2105,6 +2190,12 @@
       </constructor>
     </object>
     <object name="Screen" cname="GdkScreen" parent="GObject">
+      <class_struct cname="GdkScreenClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method signal_vm="size_changed" />
+        <method signal_vm="composited_changed" />
+        <method signal_vm="monitors_changed" />
+      </class_struct>
       <field name="Closed" cname="closed" bits="1" type="guint" />
       <field name="NormalGcs" cname="normal_gcs" array_len="32" type="GdkGC*" />
       <field name="ExposureGcs" cname="exposure_gcs" array_len="32" type="GdkGC*" />
@@ -2114,21 +2205,15 @@
       <property name="Resolution" cname="resolution" type="gdouble" readable="true" writeable="true" />
       <signal name="SizeChanged" cname="size-changed" when="LAST" field_name="size_changed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GdkScreen*" name="screen" />
-        </parameters>
+        <parameters />
       </signal>
       <signal name="CompositedChanged" cname="composited-changed" when="LAST" field_name="composited_changed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GdkScreen*" name="screen" />
-        </parameters>
+        <parameters />
       </signal>
       <signal name="MonitorsChanged" cname="monitors-changed" when="LAST" field_name="monitors_changed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GdkScreen*" name="screen" />
-        </parameters>
+        <parameters />
       </signal>
       <method name="BroadcastClientMessage" cname="gdk_screen_broadcast_client_message">
         <return-type type="void" />
@@ -2341,6 +2426,9 @@
       </method>
     </object>
     <object name="Window" cname="GdkWindow" parent="GObject">
+      <class_struct cname="GdkWindowObjectClass">
+        <field name="ParentClass" cname="parent_class" type="GdkDrawableClass" />
+      </class_struct>
       <method name="AddFilter" cname="gdk_window_add_filter">
         <return-type type="void" />
         <parameters>
@@ -5457,6 +5545,9 @@
       </method>
     </object>
     <object name="PixbufAniAnim" cname="GdkPixbufAniAnim" parent="GdkPixbufAnimation">
+      <class_struct cname="GdkPixbufAniAnimClass">
+        <field name="ParentClass" cname="parent_class" type="GdkPixbufAnimationClass" />
+      </class_struct>
       <field name="TotalTime" cname="total_time" type="int" />
       <field name="NFrames" cname="n_frames" type="int" />
       <field name="NPixbufs" cname="n_pixbufs" type="int" />
@@ -5470,6 +5561,9 @@
       </method>
     </object>
     <object name="PixbufAniAnimIter" cname="GdkPixbufAniAnimIter" parent="GdkPixbufAnimationIter">
+      <class_struct cname="GdkPixbufAniAnimIterClass">
+        <field name="ParentClass" cname="parent_class" type="GdkPixbufAnimationIterClass" />
+      </class_struct>
       <field name="AniAnim" cname="ani_anim" type="GdkPixbufAniAnim*" />
       <field name="StartTime" cname="start_time" type="GTimeVal" />
       <field name="CurrentTime" cname="current_time" type="GTimeVal" />
@@ -5481,6 +5575,9 @@
       </method>
     </object>
     <object name="PixbufGifAnim" cname="GdkPixbufGifAnim" parent="GdkPixbufAnimation">
+      <class_struct cname="GdkPixbufGifAnimClass">
+        <field name="ParentClass" cname="parent_class" type="GdkPixbufAnimationClass" />
+      </class_struct>
       <field name="NFrames" cname="n_frames" type="int" />
       <field name="TotalTime" cname="total_time" type="int" />
       <field name="Frames" cname="frames" type="GList*" />
@@ -5502,6 +5599,9 @@
       </method>
     </object>
     <object name="PixbufGifAnimIter" cname="GdkPixbufGifAnimIter" parent="GdkPixbufAnimationIter">
+      <class_struct cname="GdkPixbufGifAnimIterClass">
+        <field name="ParentClass" cname="parent_class" type="GdkPixbufAnimationIterClass" />
+      </class_struct>
       <field name="GifAnim" cname="gif_anim" type="GdkPixbufGifAnim*" />
       <field name="StartTime" cname="start_time" type="GTimeVal" />
       <field name="CurrentTime" cname="current_time" type="GTimeVal" />
@@ -5513,25 +5613,28 @@
       </method>
     </object>
     <object name="PixbufLoader" cname="GdkPixbufLoader" parent="GObject">
+      <class_struct cname="GdkPixbufLoaderClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method signal_vm="size_prepared" />
+        <method signal_vm="area_prepared" />
+        <method signal_vm="area_updated" />
+        <method signal_vm="closed" />
+      </class_struct>
       <field name="Priv" cname="priv" type="gpointer" />
       <signal name="SizePrepared" cname="size-prepared" when="LAST" field_name="size_prepared">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkPixbufLoader*" name="loader" />
           <parameter type="int" name="width" />
           <parameter type="int" name="height" />
         </parameters>
       </signal>
       <signal name="AreaPrepared" cname="area-prepared" when="LAST" field_name="area_prepared">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GdkPixbufLoader*" name="loader" />
-        </parameters>
+        <parameters />
       </signal>
       <signal name="AreaUpdated" cname="area-updated" when="LAST" field_name="area_updated">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkPixbufLoader*" name="loader" />
           <parameter type="int" name="x" />
           <parameter type="int" name="y" />
           <parameter type="int" name="width" />
@@ -5540,9 +5643,7 @@
       </signal>
       <signal name="Closed" cname="closed" when="LAST" field_name="closed">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GdkPixbufLoader*" name="loader" />
-        </parameters>
+        <parameters />
       </signal>
       <method name="Close" cname="gdk_pixbuf_loader_close">
         <return-type type="gboolean" />
@@ -5592,6 +5693,9 @@
       </method>
     </object>
     <object name="PixbufSimpleAnim" cname="GdkPixbufSimpleAnim" parent="GdkPixbufAnimation">
+      <class_struct cname="GdkPixbufSimpleAnimClass">
+        <field name="ParentClass" cname="parent_class" type="GdkPixbufAnimationClass" />
+      </class_struct>
       <method name="AddFrame" cname="gdk_pixbuf_simple_anim_add_frame">
         <return-type type="void" />
         <parameters>

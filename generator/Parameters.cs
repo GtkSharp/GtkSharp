@@ -506,12 +506,18 @@ namespace GtkSharp.Generation {
 		
 		ArrayList param_list = new ArrayList ();
 		XmlElement elem;
+		bool first_is_instance;
 
-		public Parameters (XmlElement elem) 
+		public Parameters (XmlElement elem) : this (elem, false) { }
+
+		public Parameters (XmlElement elem, bool first_is_instance) 
 		{
 			if (elem == null)
 				valid = true;
 			this.elem = elem;
+			this.first_is_instance = first_is_instance;
+			if (first_is_instance)
+				is_static = false;
 		}
 
 		public int Count {
@@ -616,7 +622,7 @@ namespace GtkSharp.Generation {
 			if (elem == null)
 				return false;
 
-			for (int i = 0; i < elem.ChildNodes.Count; i++) {
+			for (int i = first_is_instance ? 1 : 0; i < elem.ChildNodes.Count; i++) {
 				XmlElement parm = elem.ChildNodes [i] as XmlElement;
 				if (parm == null || parm.Name != "parameter")
 					continue;
@@ -630,7 +636,7 @@ namespace GtkSharp.Generation {
 
 				if ((p.CSType == "") || (p.Name == "") || 
 				    (p.MarshalType == "") || (SymbolTable.Table.CallByName(p.CType, p.Name) == "")) {
-					Console.Write("Name: " + p.Name + " Type: " + p.CType + " ");
+					Console.Write ("Invalid parameter {0} of type {1}", p.Name, p.CType);
 					Clear ();
 					return false;
 				}
@@ -667,7 +673,7 @@ namespace GtkSharp.Generation {
 				}
 				param_list.Add (p);
 			}
-			
+
 			if (has_cb && Count > 2 && this [Count - 3].Generatable is CallbackGen && this [Count - 2].IsUserData && this [Count - 1].IsDestroyNotify)
 				this [Count - 3].Scope = "notified";
 
