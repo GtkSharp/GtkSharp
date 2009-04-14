@@ -1,7 +1,6 @@
 lib_LTLIBRARIES = libgtksharpglue-2.la
 
 libgtksharpglue_2_la_SOURCES =	\
-	adjustment.c		\
 	cellrenderer.c		\
 	clipboard.c		\
 	container.c		\
