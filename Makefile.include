@@ -61,9 +61,11 @@ else
 GAPI_CDECL_INSERT=
 endif
 
+BUILD_PARAMS=$(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -target:library $(GENERATED_SOURCES) $(build_sources)
+
 $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(GENERATED_SOURCES) $(build_sources)
+	$(CSC) $(build_references) $(BUILD_PARAMS) -out:$(ASSEMBLY)
 	$(GAPI_CDECL_INSERT)
 
 install-data-local:

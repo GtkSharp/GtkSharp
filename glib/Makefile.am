@@ -97,9 +97,21 @@ else
 GAPI_CDECL_INSERT=
 endif
 
+BUILD_PARAMS=$(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -target:library $(references) $(build_sources)
+
 $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
+	$(CSC) $(BUILD_PARAMS) -out:$(ASSEMBLY)
+	$(GAPI_CDECL_INSERT)
+
+MOON_DIR=$(top_builddir)/moonbin/
+MOON_ASSEMBLY=$(MOON_DIR)$(ASSEMBLY)
+
+moonlight: $(MOON_ASSEMBLY)
+
+$(MOON_ASSEMBLY): $(ASSEMBLY)
+	mkdir -p $(MOON_DIR)
+	smcs -define:NET_2_1 $(BUILD_PARAMS) -out:$@
 	$(GAPI_CDECL_INSERT)
 
 policy.%.config: $(top_builddir)/policy.config
