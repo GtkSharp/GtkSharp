@@ -338,6 +338,47 @@ namespace GLib {
 			return strings;
 		}
 
+		object ToRegisteredType () {
+			Type t = GLib.GType.LookupType (type);
+			ConstructorInfo ci = null;
+			
+			try {
+				while (ci == null && t != null) {
+					if (!t.IsAbstract)
+						ci = t.GetConstructor (new Type[] { typeof (GLib.Value) });
+					t = t.BaseType;
+				}
+			} catch (Exception) {
+				ci = null;
+			}
+
+			if (ci == null)
+				throw new Exception ("Unknown type " + new GType (type).ToString ());
+			
+			return ci.Invoke (new object[] {this});
+		}
+
+		void FromRegisteredType (object val) {
+			Type t = GLib.GType.LookupType (type);
+			MethodInfo mi = null;
+			
+			try {
+				while (mi == null && t != null) {
+					mi = t.GetMethod ("SetGValue", new Type[] { typeof (GLib.Value) });
+					if (mi.IsAbstract)
+						mi = null;
+					t = t.BaseType;
+				}
+			} catch (Exception) {
+				mi = null;
+			}
+			
+			if (mi == null)
+				throw new Exception ("Unknown type " + new GType (type).ToString ());
+			
+			mi.Invoke (val, new object[] { this });
+		}
+
 		object ToBoxed ()
 		{
 			IntPtr boxed_ptr = g_value_get_boxed (ref this);
@@ -390,6 +431,8 @@ namespace GLib {
 					return (GLib.Object) this;
 				else if (GType.Is (type, GType.Boxed))
 					return ToBoxed ();
+				else if (GType.LookupType (type) != null)
+					return ToRegisteredType ();
 				else if (type == IntPtr.Zero)
 					return null;
 				else
@@ -452,6 +495,8 @@ namespace GLib {
 					IntPtr buf = Marshaller.StructureToPtrAlloc (value);
 					g_value_set_boxed (ref this, buf);
 					Marshal.FreeHGlobal (buf);
+				} else if (GLib.GType.LookupType (type) != null) {
+					FromRegisteredType (value);
 				} else
 					throw new Exception ("Unknown type " + new GType (type).ToString ());
 			}
