@@ -346,7 +346,8 @@ namespace GLib {
 				while (ci == null && t != null) {
 					if (!t.IsAbstract)
 						ci = t.GetConstructor (new Type[] { typeof (GLib.Value) });
-					t = t.BaseType;
+					if (ci == null)
+						t = t.BaseType;
 				}
 			} catch (Exception) {
 				ci = null;
@@ -364,10 +365,11 @@ namespace GLib {
 			
 			try {
 				while (mi == null && t != null) {
-					mi = t.GetMethod ("SetGValue", new Type[] { typeof (GLib.Value) });
-					if (mi.IsAbstract)
+					mi = t.GetMethod ("SetGValue", new Type[] { Type.GetType ("GLib.Value&") });
+					if (mi != null && (mi.IsAbstract || mi.ReturnType != typeof (void)))
 						mi = null;
-					t = t.BaseType;
+					if (mi == null)
+						t = t.BaseType;
 				}
 			} catch (Exception) {
 				mi = null;
@@ -376,7 +378,9 @@ namespace GLib {
 			if (mi == null)
 				throw new Exception ("Unknown type " + new GType (type).ToString ());
 			
-			mi.Invoke (val, new object[] { this });
+			object[] parameters = new object[] { this };
+			mi.Invoke (val, parameters);
+			this = (GLib.Value) parameters[0];
 		}
 
 		object ToBoxed ()
