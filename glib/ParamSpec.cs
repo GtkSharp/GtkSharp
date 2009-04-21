@@ -30,7 +30,7 @@ namespace GLib {
 		Writable = 1 << 1,
 	}
 
-	internal class ParamSpec {
+	public class ParamSpec {
 
 		IntPtr handle;
 

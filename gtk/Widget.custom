@@ -329,31 +329,39 @@ static void ClassInit (GLib.GType gtype, Type t)
 	GLib.Marshaller.Free (signame);
 }
 
-[DllImport("gtksharpglue-2")]
-static extern bool gtksharp_widget_style_get_property (IntPtr widget, IntPtr property, ref GLib.Value value);
-
-public object StyleGetProperty (string property_name) {
-	GLib.Value value = new GLib.Value ();
-	IntPtr name = GLib.Marshaller.StringToPtrGStrdup (property_name);
-	bool success = gtksharp_widget_style_get_property (Handle, name, ref value);
-	GLib.Marshaller.Free (name);
-
-	if(success) {
-		object ret = value.Val;
-		value.Dispose ();
-		return ret;
+public object StyleGetProperty (string property_name)
+{
+	GLib.Value value;
+	try {
+		value = StyleGetPropertyValue (property_name);
+	} catch (ArgumentException) {
+		return null;
 	}
-		
-	return null;
+	object ret = value.Val;
+	value.Dispose ();
+	return ret;
 }
 
-internal GLib.Value StyleGetPropertyValue (string property_name) {
-	GLib.Value value = new GLib.Value ();
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern IntPtr gtk_widget_class_find_style_property (IntPtr class_ptr, IntPtr property_name);
 
-	IntPtr name = GLib.Marshaller.StringToPtrGStrdup (property_name);
-	gtksharp_widget_style_get_property (Handle, name, ref value);
-	GLib.Marshaller.Free (name);
-	return value;
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern IntPtr gtk_widget_style_get_property (IntPtr inst, IntPtr property_name, ref GLib.Value value);
+
+internal GLib.Value StyleGetPropertyValue (string property_name)
+{
+	IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (property_name);
+	try {
+		IntPtr pspec_ptr = gtk_widget_class_find_style_property (this.LookupGType ().ClassPtr, native_name);
+		if (pspec_ptr == IntPtr.Zero) 
+			throw new ArgumentException (String.Format ("Cannot find style property \"{0}\"", property_name));
+
+		GLib.Value value = new GLib.Value ((new GLib.ParamSpec (pspec_ptr)).ValueType);
+		gtk_widget_style_get_property (Handle, native_name, ref value);
+		return value;
+	} finally {
+		GLib.Marshaller.Free (native_name);
+	}
 }
 
 [DllImport("libgtk-win32-2.0-0.dll")]
