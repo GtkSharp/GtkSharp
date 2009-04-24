@@ -52,6 +52,9 @@ namespace GtkSharp.Generation {
 				if (!IsStatic)
 					return String.Empty;
 
+				if (Name != null && Name != String.Empty)
+					return Name;
+
 				string[] toks = CName.Substring(CName.IndexOf("new")).Split ('_');
 				string result = String.Empty;
 
