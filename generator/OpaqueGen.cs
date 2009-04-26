@@ -69,6 +69,13 @@ namespace GtkSharp.Generation {
 				sw.Write (" : " + cs_parent);
 			else
 				sw.Write (" : GLib.Opaque");
+
+			foreach (string iface in managed_interfaces) {
+				if (Parent != null && Parent.Implements (iface))
+					continue;
+				sw.Write (", " + iface);
+			}
+
 			sw.WriteLine (" {");
 			sw.WriteLine ();
             
