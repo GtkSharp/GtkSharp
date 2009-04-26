@@ -120,6 +120,30 @@ namespace GtkSharp.Parsing {
 				if (!matched)
 					Console.WriteLine ("Warning: <add-node path=\"{0}\"/> matched no nodes", path);
 			}
+			
+			XPathNodeIterator change_node_type_iter = meta_nav.Select ("/metadata/change-node-type");
+			while (change_node_type_iter.MoveNext ()) {
+				string path = change_node_type_iter.Current.GetAttribute ("path", "");
+				XPathNodeIterator api_iter = api_nav.Select (path);
+				bool matched = false;
+				while (api_iter.MoveNext ()) {
+					XmlElement node = ( (IHasXmlNode) api_iter.Current).GetNode () as XmlElement;
+					XmlElement parent = node.ParentNode as XmlElement;
+					XmlElement new_node = api_doc.CreateElement (change_node_type_iter.Current.Value);
+					
+					foreach (XmlNode child in node.ChildNodes)
+						new_node.AppendChild (child.Clone ());
+					foreach (XmlAttribute attribute in node.Attributes)
+						new_node.Attributes.Append ( (XmlAttribute) attribute.Clone ());
+					
+					parent.ReplaceChild (new_node, node);
+					matched = true;
+				}
+				
+				if (!matched)
+					Console.WriteLine ("Warning: <change-node-type path=\"{0}\"/> matched no nodes", path);
+			}
+
 
 			XPathNodeIterator attr_iter = meta_nav.Select ("/metadata/attr");
 			while (attr_iter.MoveNext ()) {
@@ -155,6 +179,24 @@ namespace GtkSharp.Parsing {
 				}
 				if (!matched)
 					Console.WriteLine ("Warning: <move-node path=\"{0}\"/> matched no nodes", path);
+			}
+			
+			XPathNodeIterator remove_attr_iter = meta_nav.Select ("/metadata/remove-attr");
+			while (remove_attr_iter.MoveNext ()) {
+				string path = remove_attr_iter.Current.GetAttribute ("path", "");
+				string name = remove_attr_iter.Current.GetAttribute ("name", "");
+				XPathNodeIterator api_iter = api_nav.Select (path);
+				bool matched = false;
+				
+				while (api_iter.MoveNext ()) {
+					XmlElement node = ( (IHasXmlNode) api_iter.Current).GetNode () as XmlElement;
+					
+					node.RemoveAttribute (name);
+					matched = true;
+				}
+				
+				if (!matched)
+					Console.WriteLine ("Warning: <remove-attr path=\"{0}\"/> matched no nodes", path);
 			}
 
 			if (symbol_doc != null) {
