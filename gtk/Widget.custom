@@ -178,48 +178,85 @@ public bool IsDrawable {
 	}
 }
 
-[DllImport("gtksharpglue-2")]
-static extern int gtksharp_gtk_widget_style_get_int (IntPtr raw, IntPtr name);
-
 public int FocusLineWidth {
 	get {
-		IntPtr name = GLib.Marshaller.StringToPtrGStrdup ("focus-line-width");
-		int result = gtksharp_gtk_widget_style_get_int (Handle, name);
-		GLib.Marshaller.Free (name);
-		return result;
+		return (int) StyleGetProperty ("focus-line-width");
 	}
 }
 
-[DllImport("gtksharpglue-2")]
-static extern int gtksharp_widget_connect_set_scroll_adjustments_signal (IntPtr gtype, SetScrollAdjustmentsDelegate cb);
+struct GClosure {
+	long fields;
+	IntPtr marshaler;
+	IntPtr data;
+	IntPtr notifiers;
+}
 
 [GLib.CDeclCallback]
-delegate void SetScrollAdjustmentsDelegate (IntPtr widget, IntPtr hadj, IntPtr vadj);
+delegate void ClosureMarshal (IntPtr closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data);
 
-static SetScrollAdjustmentsDelegate SetScrollAdjustmentsCallback;
+[DllImport("libgobject-2.0-0.dll")]
+static extern IntPtr g_closure_new_simple (int closure_size, IntPtr dummy);
 
-static void SetScrollAdjustments_cb (IntPtr widget, IntPtr hadj, IntPtr vadj)
+[DllImport("libgobject-2.0-0.dll")]
+static extern void g_closure_set_marshal (IntPtr closure, ClosureMarshal marshaler);
+
+static IntPtr CreateClosure (ClosureMarshal marshaler) {
+	IntPtr raw_closure = g_closure_new_simple (Marshal.SizeOf (typeof (GClosure)), IntPtr.Zero);
+	g_closure_set_marshal (raw_closure, marshaler);
+	return raw_closure;
+}
+
+[DllImport("libgobject-2.0-0.dll")]
+static extern uint g_signal_newv (IntPtr signal_name, IntPtr gtype, GLib.Signal.Flags signal_flags, IntPtr closure, IntPtr accumulator, IntPtr accu_data, IntPtr c_marshaller, IntPtr return_type, uint n_params, [MarshalAs (UnmanagedType.LPArray)] IntPtr[] param_types);
+
+static uint RegisterSignal (string signal_name, GLib.GType gtype, GLib.Signal.Flags signal_flags, GLib.GType return_type, GLib.GType[] param_types, ClosureMarshal marshaler)
+{
+	IntPtr[] native_param_types = new IntPtr [param_types.Length];
+	for (int parm_idx = 0; parm_idx < param_types.Length; parm_idx++)
+		native_param_types [parm_idx] = param_types [parm_idx].Val;
+
+	IntPtr native_signal_name = GLib.Marshaller.StringToPtrGStrdup (signal_name);
+	try {
+		return g_signal_newv (native_signal_name, gtype.Val, signal_flags, CreateClosure (marshaler), IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, return_type.Val, (uint) param_types.Length, native_param_types);
+	} finally {
+		GLib.Marshaller.Free (native_signal_name);
+	}
+}
+
+static void SetScrollAdjustmentsMarshal_cb (IntPtr closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data)
 {
 	try {
-		Widget obj;
+		GLib.Value[] inst_and_params = new GLib.Value [n_param_vals];
+		int gvalue_size = Marshal.SizeOf (typeof (GLib.Value));
+		for (int idx = 0; idx < n_param_vals; idx++)
+			inst_and_params [idx] = (GLib.Value) Marshal.PtrToStructure (new IntPtr (param_values.ToInt64 () + idx * gvalue_size), typeof (GLib.Value));
+
+		Widget inst;
 		try {
-			obj = GLib.Object.GetObject (widget, false) as Widget;
+			inst = inst_and_params [0].Val as Widget;
 		} catch (GLib.MissingIntPtrCtorException) {
 			return;
 		}
-		Gtk.Adjustment h = GLib.Object.GetObject (hadj, false) as Gtk.Adjustment;
-		Gtk.Adjustment v = GLib.Object.GetObject (vadj, false) as Gtk.Adjustment;
-		obj.OnSetScrollAdjustments (h, v);
+		Gtk.Adjustment h = inst_and_params [1].Val as Gtk.Adjustment;
+		Gtk.Adjustment v = inst_and_params [2].Val as Gtk.Adjustment;
+		inst.OnSetScrollAdjustments (h, v);
 	} catch (Exception e) {
 		GLib.ExceptionManager.RaiseUnhandledException (e, false);
 	}
 }
 
+static ClosureMarshal SetScrollAdjustmentsMarshalCallback;
+
+[DllImport("gtksharpglue-2")]
+static extern void gtksharp_widget_class_set_set_scroll_adjustments_signal (IntPtr class_struct, uint signal_id);
+
 static void ConnectSetScrollAdjustments (GLib.GType gtype)
 {
-	if (SetScrollAdjustmentsCallback == null)
-		SetScrollAdjustmentsCallback = new SetScrollAdjustmentsDelegate (SetScrollAdjustments_cb);
-	gtksharp_widget_connect_set_scroll_adjustments_signal (gtype.Val, SetScrollAdjustmentsCallback);
+	if (SetScrollAdjustmentsMarshalCallback == null)
+		SetScrollAdjustmentsMarshalCallback = new ClosureMarshal (SetScrollAdjustmentsMarshal_cb);
+
+	uint signal_id = RegisterSignal ("set_scroll_adjustments", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [] {Adjustment.GType, Adjustment.GType}, SetScrollAdjustmentsMarshalCallback);
+	gtksharp_widget_class_set_set_scroll_adjustments_signal (gtype.ClassPtr, signal_id);
 }
 
 [GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectSetScrollAdjustments")]
@@ -227,34 +264,34 @@ protected virtual void OnSetScrollAdjustments (Gtk.Adjustment hadj, Gtk.Adjustme
 {
 }
 
-[DllImport("gtksharpglue-2")]
-static extern int gtksharp_widget_connect_activate_signal (IntPtr gtype, ActivateDelegate cb);
-
-[GLib.CDeclCallback]
-delegate void ActivateDelegate (IntPtr widget);
-
-static ActivateDelegate ActivateCallback;
-
-static void Activate_cb (IntPtr widget)
+static void ActivateMarshal_cb (IntPtr raw_closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data)
 {
 	try {
-		Widget obj;
+		GLib.Value inst_val = (GLib.Value) Marshal.PtrToStructure (param_values, typeof (GLib.Value));
+		Widget inst;
 		try {
-			obj = GLib.Object.GetObject (widget, false) as Widget;
+			inst = inst_val.Val as Widget;
 		} catch (GLib.MissingIntPtrCtorException) {
 			return;
 		}
-		obj.OnActivate ();
+		inst.OnActivate ();
 	} catch (Exception e) {
 		GLib.ExceptionManager.RaiseUnhandledException (e, false);
 	}
 }
 
+static ClosureMarshal ActivateMarshalCallback;
+
+[DllImport("gtksharpglue-2")]
+static extern void gtksharp_widget_class_set_activate_signal (IntPtr class_struct, uint signal_id);
+
 static void ConnectActivate (GLib.GType gtype)
 {
-	if (ActivateCallback == null)
-		ActivateCallback = new ActivateDelegate (Activate_cb);
-	gtksharp_widget_connect_activate_signal (gtype.Val, ActivateCallback);
+	if (ActivateMarshalCallback == null)
+		ActivateMarshalCallback = new ClosureMarshal (ActivateMarshal_cb);
+
+	uint signal_id = RegisterSignal ("activate_signal", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [0], ActivateMarshalCallback);
+	gtksharp_widget_class_set_activate_signal (gtype.ClassPtr, signal_id);
 }
 
 [GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectActivate")]
@@ -278,55 +315,88 @@ private class BindingInvoker {
 	}
 }
 
-[GLib.CDeclCallback]
-private delegate void BindingHandler (IntPtr handle, IntPtr user_data);
+/* As gtk_binding_entry_add_signall only allows passing long, double and string parameters to the specified signal, we cannot pass a pointer to the BindingInvoker directly
+* to the signal. Instead, the signal takes the index of the BindingInvoker in binding_invokers.
+*/
+static ArrayList binding_invokers;
 
-private static void BindingCallback (IntPtr handle, IntPtr user_data)
+[DllImport("libgobject-2.0-0.dll")]
+static extern int g_value_get_long (ref GLib.Value val);
+
+static void BindingMarshal_cb (IntPtr raw_closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data)
 {
 	try {
-		Widget w = GLib.Object.GetObject (handle, false) as Widget;
-		BindingInvoker invoker = ((GCHandle) user_data).Target as BindingInvoker;
+		GLib.Value[] inst_and_params = new GLib.Value [n_param_vals];
+		int gvalue_size = Marshal.SizeOf (typeof (GLib.Value));
+		for (int idx = 0; idx < n_param_vals; idx++)
+			inst_and_params [idx] = (GLib.Value) Marshal.PtrToStructure (new IntPtr (param_values.ToInt64 () + idx * gvalue_size), typeof (GLib.Value));
+
+		Widget w = inst_and_params [0].Val as Widget;
+		BindingInvoker invoker = binding_invokers [g_value_get_long (ref inst_and_params [1])] as BindingInvoker;
 		invoker.Invoke (w);
 	} catch (Exception e) {
 		GLib.ExceptionManager.RaiseUnhandledException (e, false);
 	}
 }
 
-static BindingHandler binding_delegate;
-static BindingHandler BindingDelegate {
+static ClosureMarshal binding_delegate;
+static ClosureMarshal BindingDelegate {
 	get {
 		if (binding_delegate == null)
-			binding_delegate = new BindingHandler (BindingCallback);
+			binding_delegate = new ClosureMarshal (BindingMarshal_cb);
 		return binding_delegate;
 	}
 }
 
-[DllImport ("gtksharpglue-2")]
-static extern void gtksharp_widget_add_binding_signal (IntPtr gvalue, IntPtr name, BindingHandler handler);
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern IntPtr gtk_binding_set_by_class (IntPtr class_ptr);
 
-[DllImport ("gtksharpglue-2")]
-static extern void gtksharp_widget_register_binding (IntPtr gvalue, IntPtr name, uint key, int mod, IntPtr data);
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern void gtk_binding_entry_add_signall (IntPtr binding_set, uint keyval, Gdk.ModifierType modifiers, IntPtr signal_name, IntPtr binding_args);
+
+[StructLayout(LayoutKind.Sequential)]
+struct GtkBindingArg {
+	public IntPtr arg_type;
+	public GtkBindingArgData data;
+}
+
+[StructLayout(LayoutKind.Explicit)]
+struct GtkBindingArgData {
+#if WIN64LONGS
+	[FieldOffset (0)] [MarshalAs (UnmanagedType.I4)] public int long_data;
+#else
+	[FieldOffset (0)] [MarshalAs (UnmanagedType.SysInt)] public int long_data;
+#endif
+	[FieldOffset (0)] public double double_data;
+	[FieldOffset (0)] public IntPtr string_data;
+}
 
 static void ClassInit (GLib.GType gtype, Type t)
 {
 	object[] attrs = t.GetCustomAttributes (typeof (BindingAttribute), true);
+	if (attrs.Length == 0) return;
 
-	if (attrs.Length == 0)
-		return;
+	string signame = t.Name.Replace (".", "_") + "_bindings";
+	IntPtr native_signame = GLib.Marshaller.StringToPtrGStrdup (signame);
+	RegisterSignal (signame, gtype, GLib.Signal.Flags.RunLast | GLib.Signal.Flags.Action, GLib.GType.None, new GLib.GType[] {GLib.GType.Long}, BindingDelegate);
 
-	IntPtr signame = GLib.Marshaller.StringToPtrGStrdup (t.Name.Replace (".", "_") + "_bindings");
-
-	gtksharp_widget_add_binding_signal (gtype.Val, signame, BindingDelegate);
+	if (binding_invokers == null)
+		binding_invokers = new ArrayList ();
 
 	foreach (BindingAttribute attr in attrs) {
 		System.Reflection.MethodInfo mi = t.GetMethod (attr.Handler, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
 		if (mi == null)
 			throw new Exception ("Instance method " + attr.Handler + " not found in " + t);
 
-		BindingInvoker inv = new BindingInvoker (mi, attr.Parms);
-		gtksharp_widget_register_binding (gtype.Val, signame, (uint) attr.Key, (int) attr.Mod, (IntPtr) GCHandle.Alloc (inv));
+		GtkBindingArg arg = new GtkBindingArg ();
+		arg.arg_type = GLib.GType.Long.Val;
+		arg.data.long_data = binding_invokers.Add (new BindingInvoker (mi, attr.Parms));
+
+		GLib.SList binding_args = new GLib.SList (new object[] {arg}, typeof (GtkBindingArg), false, false);
+		gtk_binding_entry_add_signall (gtk_binding_set_by_class (gtype.ClassPtr), (uint) attr.Key, attr.Mod, native_signame, binding_args.Handle);
+		binding_args.Dispose ();
 	}
-	GLib.Marshaller.Free (signame);
+	GLib.Marshaller.Free (native_signame);
 }
 
 public object StyleGetProperty (string property_name)
