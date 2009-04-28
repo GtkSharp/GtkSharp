@@ -238,8 +238,11 @@ namespace GtkSharp.Generation {
 					if (PassAs != "out")
 						result += " = " + (gen as IManualMarshaler).AllocNative (CallName);
 					return new string [] { result + ";" }; 
-				} else if (PassAs == "out" && CSType != MarshalType)
+				} else if (PassAs == "out" && CSType != MarshalType) {
 					return new string [] { gen.MarshalType + " native_" + CallName + ";" };
+				} else if (PassAs == "ref" && CSType != MarshalType) {
+					return new string [] { gen.MarshalType + " native_" + CallName + " = (" + gen.MarshalType + ") " + CallName + ";" };
+				}
 
 				return new string [0];
 			}
