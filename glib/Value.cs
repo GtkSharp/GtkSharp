@@ -518,7 +518,7 @@ namespace GLib {
 
 		void InitForProperty (Object obj, string name)
 		{
-			GType gtype = Object.LookupGType (obj.GetType ());
+			GType gtype = obj.NativeType;
 			InitForProperty (gtype, name);
 		}
 

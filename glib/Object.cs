@@ -186,7 +186,7 @@ namespace GLib {
 		}
 
 		struct GTypeClass {
-			IntPtr gtype;
+			public IntPtr gtype;
 		}
 
 		struct GObjectClass {
@@ -323,7 +323,9 @@ namespace GLib {
 
 		protected GType LookupGType ()
 		{
-			return LookupGType (GetType ());
+			GTypeInstance obj = (GTypeInstance) Marshal.PtrToStructure (Handle, typeof (GTypeInstance));
+			GTypeClass klass = (GTypeClass) Marshal.PtrToStructure (obj.g_class, typeof (GTypeClass));
+			return new GLib.GType (klass.gtype);
 		}
 
 		protected internal static GType LookupGType (System.Type t)
