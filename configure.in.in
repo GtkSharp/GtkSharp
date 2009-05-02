@@ -63,11 +63,6 @@ AC_HEADER_STDC
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
-if test x$platform_win32 = xyes; then
-   # Get rid of 'cyg' prefixes in library names
-   sed -e "s/\/cyg\//\/\//" libtool > libtool.new; mv libtool.new libtool; chmod 755 libtool
-fi
-
 # not 64 bit clean in cross-compile
 AC_CHECK_SIZEOF(void *, 4)
 
@@ -276,6 +271,11 @@ sample/opaquetest/opaquetest.exe.config
 sample/gio/Makefile
 sample/gtk-gio/Makefile
 ])
+
+if test x$platform_win32 = xyes; then
+   # Get rid of 'cyg' prefixes in library names
+   sed -e "s/\/cyg\//\/\//" libtool > libtool.new; mv libtool.new libtool; chmod 755 libtool
+fi
 
 if test "x$enable_mono_cairo" = "xyes"; then
   cairo_comment="building local copy"
