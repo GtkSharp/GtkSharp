@@ -99,6 +99,7 @@ customs = 				\
 	RadioButton.custom		\
 	RadioMenuItem.custom		\
 	RadioToolButton.custom		\
+	RecentManager.custom		\
 	ScrolledWindow.custom		\
 	SelectionData.custom		\
 	Settings.custom			\
