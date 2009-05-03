@@ -56,6 +56,7 @@ sources =		 			\
 	ObjectManager.cs			\
 	Opaque.cs				\
 	ParamSpec.cs				\
+	Priority.cs				\
 	PropertyAttribute.cs			\
 	PtrArray.cs				\
 	Signal.cs				\

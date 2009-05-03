@@ -1,8 +1,11 @@
 // GLib.Timeout.cs - Timeout class implementation
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author(s):
+//	Mike Kestner <mkestner@speakeasy.net>
+//	Stephane Delcroix <stephane@delcroix.org>
 //
 // Copyright (c) 2002 Mike Kestner
+// Copyright (c) 2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -63,6 +66,20 @@ namespace GLib {
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 
 			p.ID = g_timeout_add (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
+			lock (Source.source_handlers)
+				Source.source_handlers [p.ID] = p;
+
+			return p.ID;
+		}
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern uint g_timeout_add_full (int priority, uint interval, TimeoutHandlerInternal d, IntPtr data, DestroyNotify notify);
+
+		public static uint Add (uint interval, TimeoutHandler hndlr, Priority priority)
+		{
+			TimeoutProxy p = new TimeoutProxy (hndlr);
+
+			p.ID = g_timeout_add_full ((int)priority, interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero, null);
 			lock (Source.source_handlers)
 				Source.source_handlers [p.ID] = p;
 

@@ -1,10 +1,13 @@
 // GLib.Idle.cs - Idle class implementation
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
-//         Rachel Hestilow <hestilow@ximian.com>
+// Author(s):
+//	Mike Kestner <mkestner@speakeasy.net>
+//	Rachel Hestilow <hestilow@ximian.com>
+//	Stephane Delcroix <stephane@delcroix.org>
 //
 // Copyright (c) 2002 Mike Kestner
 // Copyright (c) Rachel Hestilow
+// Copyright (c) 2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -69,6 +72,19 @@ namespace GLib {
 		{
 			IdleProxy p = new IdleProxy (hndlr);
 			p.ID = g_idle_add ((IdleHandlerInternal) p.proxy_handler, IntPtr.Zero);
+			lock (Source.source_handlers)
+				Source.source_handlers [p.ID] = p;
+
+			return p.ID;
+		}
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern uint g_idle_add_full (int priority, IdleHandlerInternal d, IntPtr data, DestroyNotify notify);
+
+		public static uint Add (IdleHandler hndlr, Priority priority)
+		{
+			IdleProxy p = new IdleProxy (hndlr);
+			p.ID = g_idle_add_full ((int)priority, (IdleHandlerInternal)p.proxy_handler, IntPtr.Zero, null);
 			lock (Source.source_handlers)
 				Source.source_handlers [p.ID] = p;
 
