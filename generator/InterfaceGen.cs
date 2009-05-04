@@ -226,7 +226,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 
 			if (!IsConsumeOnly) {
-				GenerateClassStruct (sw);
+				GenerateClassStruct (gen_info);
 				GenerateStaticCtor (sw);
 				GenerateCallbacks (sw);
 				GenerateInitialize (sw);

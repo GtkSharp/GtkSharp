@@ -53,7 +53,7 @@ namespace GtkSharp.Generation {
 		}
 
 		VMSignature signature;
-		protected VMSignature Signature {
+		protected new VMSignature Signature {
 			get {
 				if (signature == null)
 					signature = new VMSignature (parms);

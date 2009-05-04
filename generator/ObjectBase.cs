@@ -30,6 +30,7 @@ namespace GtkSharp.Generation {
 	public abstract class ObjectBase : HandleBase {
 		bool is_interface;
 		protected string class_struct_name = null;
+		bool class_fields_valid; // false if the class structure contains a bitfield or fields of unknown types
 		ArrayList class_members = new ArrayList ();
 		protected ArrayList class_fields = new ArrayList ();
 		// The default handlers of these signals need to be overridden with g_signal_override_class_closure
@@ -107,7 +108,7 @@ namespace GtkSharp.Generation {
 					break;
 				case "field":
 					if (node_idx == 0) continue; // Parent class
-					ClassField field = new ClassField (member);
+					ClassField field = new ClassField (member, this);
 					class_fields.Add (field);
 					class_members.Add (field);
 					break;
@@ -165,9 +166,22 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected void GenerateClassStruct (StreamWriter sw)
+		public bool CanGenerateClassStruct {
+			get {
+				/* Generation of interface class structs was already supported by version 2.12 of the GAPI parser. Their layout was determined by the order
+				* in which the signal and virtual_method elements appeared in the XML. However, we cannot use that approach for old GObject class structs 
+				* as they may contain class fields which don't appear in the old (version 1) API files. There are also cases in which the order of the
+				* <signal> and <virtual_method> elements do not match the struct layout.
+				*/
+				return (is_interface || this.ParserVersion >= 2) && class_fields_valid;
+			}
+		}
+
+		protected void GenerateClassStruct (GenerationInfo gen_info)
 		{
-			if (class_struct_name == null) return;
+			if (class_struct_name == null || !CanGenerateClassStruct) return;
+
+			StreamWriter sw = gen_info.Writer;
 
 			sw.WriteLine ("\t\t[StructLayout (LayoutKind.Sequential)]");
 			sw.WriteLine ("\t\tstruct " + class_struct_name + " {");
@@ -180,7 +194,7 @@ namespace GtkSharp.Generation {
 						sw.WriteLine ("\t\t\tpublic {0}NativeDelegate {0};", vm.Name);
 				} else if (member is ClassField) {
 					ClassField field = member as ClassField;
-					sw.WriteLine ("\t\t\tpublic {0} {1};", field.Generatable.MarshalReturnType, field.Name);
+					field.Generate (gen_info, "\t\t\t");
 				}
 			}
 			sw.WriteLine ("\t\t}");
@@ -253,6 +267,11 @@ namespace GtkSharp.Generation {
 				hidden_vms.Add (invalid_vm);
 			}
 			invalids.Clear ();
+
+			class_fields_valid = true;
+			foreach (ClassField field in class_fields)
+				if (!field.Validate ())
+					class_fields_valid = false;
 			
 			foreach (InterfaceVM vm in interface_vms)
 				if (!vm.Validate ())

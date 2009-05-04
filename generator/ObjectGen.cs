@@ -301,9 +301,9 @@ namespace GtkSharp.Generation {
 		{
 			GenVirtualMethods (gen_info, null);
 
-			if (class_struct_name == null || this.ParserVersion == 1) return;
+			if (class_struct_name == null || !CanGenerateClassStruct) return;
 			StreamWriter sw = gen_info.Writer;
-			GenerateClassStruct (sw);
+			GenerateClassStruct (gen_info);
 			if (cs_parent == "")
 				sw.WriteLine ("\t\tstatic uint class_offset = 0;");
 			else

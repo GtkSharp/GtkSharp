@@ -79,7 +79,7 @@ namespace GtkSharp.Generation {
 
 		VMCodeType CodeType {
 			get {
-				if (container_type.ParserVersion == 1 || force_glue_generation) {
+				if (!(container_type as ObjectBase).CanGenerateClassStruct || force_glue_generation) {
 					if (BlockGlue)
 						return VMCodeType.None;
 					else

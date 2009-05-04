@@ -28,7 +28,7 @@ namespace GtkSharp.Generation {
 	public abstract class FieldBase : PropertyBase {
 		public FieldBase (XmlElement elem, ClassBase container_type) : base (elem, container_type) {}
 
-		public bool Validate ()
+		public virtual bool Validate ()
 		{
 			if (!Ignored && !Hidden && CSType == "") {
 				Console.Write("Field {0} has unknown Type {1} ", Name, CType);

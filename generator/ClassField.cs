@@ -24,26 +24,20 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class ClassField {
-		string name;
-		IGeneratable igen;
+	public class ClassField : StructField {
+		protected new ObjectBase container_type;
 
-		public ClassField (XmlElement elem)
-		{
-			name = elem.GetAttribute ("name");
-			igen = SymbolTable.Table [elem.GetAttribute ("type")];
+		public ClassField (XmlElement elem, ObjectBase container_type) : base (elem, container_type) {
+			this.container_type = container_type;
 		}
 
-		public string Name {
-			get {
-				return name;
+		public override bool Validate () {
+			if (IsBitfield) {
+				Console.WriteLine ("Field {0}.{1} is a bitfield which is not supported yet", container_type.ClassStructName, Name);
+				return false;
 			}
-		}
 
-		public IGeneratable Generatable {
-			get {
-				return igen;
-			}
+			return base.Validate ();
 		}
 	}
 }
