@@ -33,6 +33,12 @@ namespace Gtk {
 		{
 		}
 		
+		static Application ()
+		{
+			if (!GLib.Thread.Supported)
+				GLib.Thread.Init ();
+		}
+		
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_init (ref int argc, ref IntPtr argv);
 
