@@ -92,7 +92,7 @@ namespace GtkSharp.Generation {
 			if (Access != "public")
 				return;
 
-			string prefix = (container_type.NS + "Sharp_" + container_type.NS + "_" + container_type.Name).ToLower ();
+			string prefix = (container_type.NS + "Sharp_" + container_type.NS + "_" + container_type.Name).Replace(".", "__").ToLower ();
 
 			if (IsBitfield) {
 				if (Readable && Getter == null)
