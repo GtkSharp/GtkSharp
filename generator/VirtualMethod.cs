@@ -42,12 +42,6 @@ namespace GtkSharp.Generation {
 			retval = new ReturnValue (elem ["return-type"]);
 		}
 	
-		public string MarshalReturnType {
-			get {
-				return SymbolTable.Table.GetToNativeReturnType (elem["return-type"].GetAttribute("type"));
-			}
-		}
-
 		protected abstract string CallString {
 			get;
 		}
@@ -80,9 +74,9 @@ namespace GtkSharp.Generation {
 				native_signature += parms.ImportSignature;
 
 			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
-			sw.WriteLine ("\t\tdelegate {0} {1}NativeDelegate ({2});", MarshalReturnType, this.Name, native_signature);
+			sw.WriteLine ("\t\tdelegate {0} {1}NativeDelegate ({2});", retval.MarshalType, this.Name, native_signature);
 			sw.WriteLine ();
-			sw.WriteLine ("\t\tstatic {0} {1}_cb ({2})", MarshalReturnType, this.Name, native_signature);
+			sw.WriteLine ("\t\tstatic {0} {1}_cb ({2})", retval.MarshalType, this.Name, native_signature);
 			sw.WriteLine ("\t\t{");
 			string unconditional = call.Unconditional ("\t\t\t");
 			if (unconditional.Length > 0)
