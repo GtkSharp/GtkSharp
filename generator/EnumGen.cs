@@ -43,11 +43,16 @@ namespace GtkSharp.Generation {
 					if (value.EndsWith("U")) {
 						enum_type = " : uint";
 						value = value.TrimEnd('U');
+					} else if (value.EndsWith("L")) {
+						enum_type = " : long";
+						value = value.TrimEnd('L');
 					}
 					result += " = " + value;
 				}
 				members.Add (result + ",");
 			}
+			if (elem.HasAttribute ("enum_type"))
+				enum_type = ": " + elem.GetAttribute ("enum_type");
 		}
 
 		public override bool Validate ()
