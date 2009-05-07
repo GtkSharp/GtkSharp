@@ -36,3 +36,25 @@
 			Raw = gtk_radio_menu_item_new_with_mnemonic (IntPtr.Zero, label_as_native);
 			GLib.Marshaller.Free (label_as_native);
 		}
+
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_radio_menu_item_new_with_mnemonic(IntPtr group, IntPtr label);
+
+		public RadioMenuItem (GLib.SList group, string label) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (RadioMenuItem)) {
+				CreateNativeObject (new string [0], new GLib.Value [0]);
+				AccelLabel al = new AccelLabel ("");
+				al.TextWithMnemonic = label;
+				al.SetAlignment (0.0f, 0.5f);
+				Add (al);
+				al.AccelWidget = this;
+				Group = group;
+				return;
+			}
+			IntPtr native_label = GLib.Marshaller.StringToPtrGStrdup (label);
+			Raw = gtk_radio_menu_item_new_with_mnemonic(group == null ? IntPtr.Zero : group.Handle, native_label);
+			GLib.Marshaller.Free (native_label);
+		}
+
