@@ -93,6 +93,7 @@ customs = 				\
 	MenuItem.custom			\
 	Notebook.custom			\
 	Object.custom			\
+	PaperSize.custom		\
 	Plug.custom			\
 	PrintContext.custom		\
 	Printer.custom			\
