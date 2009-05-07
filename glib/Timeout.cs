@@ -25,6 +25,7 @@
 namespace GLib {
 
 	using System;
+	using System.Collections;
 	using System.Runtime.InteropServices;
 
 	public delegate bool TimeoutHandler ();
@@ -98,6 +99,36 @@ namespace GLib {
 				Source.source_handlers [p.ID] = p;
 
 			return p.ID;
+		}
+
+		public static void Remove (uint id)
+		{
+			Source.Remove (id);
+		}
+		
+		[DllImport("libglib-2.0-0.dll")]
+		static extern bool g_source_remove_by_funcs_user_data (Delegate d, IntPtr data);
+                                                                                
+		public static bool Remove (TimeoutHandler hndlr)
+		{
+			bool result = false;
+			ArrayList keys = new ArrayList ();
+
+			lock (Source.source_handlers) {
+				foreach (uint code in Source.source_handlers.Keys) {
+					TimeoutProxy p = Source.source_handlers [code] as TimeoutProxy;
+				
+					if (p != null && p.real_handler == hndlr) {
+						keys.Add (code);
+						result = g_source_remove_by_funcs_user_data (p.proxy_handler, IntPtr.Zero);
+					}
+				}
+
+				foreach (object key in keys)
+					Source.source_handlers.Remove (key);
+			}
+
+			return result;
 		}
 	}
 }

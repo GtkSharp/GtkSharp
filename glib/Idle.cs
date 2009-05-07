@@ -94,6 +94,11 @@ namespace GLib {
 		[DllImport("libglib-2.0-0.dll")]
 		static extern bool g_source_remove_by_funcs_user_data (Delegate d, IntPtr data);
                                                                                 
+		public static void Remove (uint id)
+		{
+			Source.Remove (id);
+		}
+
 		public static bool Remove (IdleHandler hndlr)
 		{
 			bool result = false;
