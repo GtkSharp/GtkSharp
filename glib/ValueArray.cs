@@ -40,7 +40,7 @@ namespace GLib {
 			handle = g_value_array_new (n_preallocs);
 		}
 
-		internal ValueArray (IntPtr raw)
+		public ValueArray (IntPtr raw)
 		{
 			handle = raw;
 		}
