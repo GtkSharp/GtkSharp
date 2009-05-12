@@ -21,6 +21,7 @@
 namespace Gtk {
 
 	using System;
+	using System.Reflection;
 	using System.Runtime.InteropServices;
 	using Gdk;
 
@@ -37,6 +38,20 @@ namespace Gtk {
 		{
 			if (!GLib.Thread.Supported)
 				GLib.Thread.Init ();
+
+			switch (Environment.OSVersion.Platform) {
+			case PlatformID.Win32NT:
+			case PlatformID.Win32S:
+			case PlatformID.Win32Windows:
+			case PlatformID.WinCE:
+				Assembly assm = Assembly.Load ("System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+				Type swfapp = assm.GetType ("System.Windows.Forms.Application");
+				MethodInfo method = swfapp.GetMethod ("DoEvents", BindingFlags.Public | BindingFlags.Static);
+				method.Invoke (null, null);
+				break;
+			default:
+				break;
+			}
 		}
 		
 		[DllImport("libgtk-win32-2.0-0.dll")]
