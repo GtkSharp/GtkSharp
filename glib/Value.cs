@@ -525,8 +525,13 @@ namespace GLib {
 		void InitForProperty (GType gtype, string name)
 		{
 			IntPtr p_name = Marshaller.StringToPtrGStrdup (name);
-			ParamSpec spec = new ParamSpec (g_object_class_find_property (gtype.ClassPtr, p_name));
+			IntPtr spec_ptr = g_object_class_find_property (gtype.ClassPtr, p_name);
 			Marshaller.Free (p_name);
+
+			if (spec_ptr == IntPtr.Zero)
+				throw new Exception (String.Format ("No property with name '{0}' in type '{1}'", name, gtype.ToString()));
+			
+			ParamSpec spec = new ParamSpec (spec_ptr);
 			g_value_init (ref this, spec.ValueType.Val);
 		}
 
