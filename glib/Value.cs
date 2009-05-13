@@ -393,6 +393,20 @@ namespace GLib {
 			this = (GLib.Value) parameters[0];
 		}
 
+		object ToEnum ()
+		{
+			Type t = GType.LookupType (type);
+			
+			if (t == null) {
+				if (HoldsFlags)
+					return g_value_get_flags (ref this);
+				else
+					return g_value_get_enum (ref this);
+			} else {
+				return (Enum) this;
+			}
+		}
+
 		object ToBoxed ()
 		{
 			IntPtr boxed_ptr = g_value_get_boxed (ref this);
@@ -428,7 +442,7 @@ namespace GLib {
 					return (ulong) this;
 				else if (GType.Is (type, GType.Enum) ||
 					 GType.Is (type, GType.Flags))
-					return (Enum) this;
+					return ToEnum ();
 				else if (type == GType.Float.Val)
 					return (float) this;
 				else if (type == GType.Double.Val)
