@@ -235,5 +235,14 @@ namespace GLib {
 		{
 			return new ValueArray (g_value_array_copy (Handle));
 		}
+
+		[DllImport ("libgobject-2.0-0.dll")]
+		static extern IntPtr g_value_array_get_type ();
+
+		public static GLib.GType GType {
+			get {
+				return new GLib.GType (g_value_array_get_type ());
+			}
+		}
 	}
 }

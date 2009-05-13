@@ -138,6 +138,11 @@ namespace GLib {
 			GLib.Marshaller.Free (native_val);
 		}
 
+		public Value (ValueArray val) : this (ValueArray.GType)
+		{
+			g_value_set_boxed (ref this, val.Handle);
+		}
+
 		public Value (IntPtr val) : this (GType.Pointer)
 		{
 			g_value_set_pointer (ref this, val); 
@@ -297,6 +302,11 @@ namespace GLib {
 			return str == IntPtr.Zero ? null : GLib.Marshaller.Utf8PtrToString (str);
 		}
 
+		public static explicit operator ValueArray (Value val)
+		{
+			return new ValueArray (g_value_get_boxed (ref val));
+		}
+
 		public static explicit operator IntPtr (Value val)
 		{
 			return g_value_get_pointer (ref val);
@@ -429,6 +439,8 @@ namespace GLib {
 					return (IntPtr) this;
 				else if (type == GType.Param.Val)
 					return g_value_get_param (ref this);
+				else if (type == ValueArray.GType.Val)
+					return new ValueArray (g_value_get_boxed (ref this));
 				else if (type == ManagedValue.GType.Val)
 					return ManagedValue.ObjectForWrapper (g_value_get_boxed (ref this));
 				else if (GType.Is (type, GType.Object))
@@ -482,6 +494,8 @@ namespace GLib {
 					g_value_set_pointer (ref this, buf);
 				} else if (type == GType.Param.Val) {
 					g_value_set_param (ref this, (IntPtr) value);
+				} else if (type == ValueArray.GType.Val) {
+					g_value_set_boxed (ref this, ((ValueArray) value).Handle);
 				} else if (type == ManagedValue.GType.Val) {
 					IntPtr wrapper = ManagedValue.WrapObject (value);
 					g_value_set_boxed (ref this, wrapper);
