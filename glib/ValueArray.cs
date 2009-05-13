@@ -157,9 +157,8 @@ namespace GLib {
 
 		public object this [int index] { 
 			get { 
-				GLib.Value val = Value.Empty;
-				Marshal.PtrToStructure (g_value_array_get_nth (Handle, (uint) index), val);
-				return val;
+				IntPtr raw_val = g_value_array_get_nth (Handle, (uint) index);
+				return Marshal.PtrToStructure (raw_val, typeof (GLib.Value));
 			}
 		}
 
