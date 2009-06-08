@@ -179,9 +179,9 @@ namespace GtkSharp.Generation {
 						sw.WriteLine("\t\t\t\targs.Args[" + idx + "] = " + p.FromNative ("arg" + idx)  + ";");
 				}
 				if (igen is StructBase && p.PassAs == "ref")
-					finish += "\t\t\t\tif (arg" + idx + " != IntPtr.Zero) System.Runtime.InteropServices.Marshal.StructureToPtr (args.Args[" + (idx-1) + "], arg" + idx + ", false);\n";
+					finish += "\t\t\t\tif (arg" + idx + " != IntPtr.Zero) System.Runtime.InteropServices.Marshal.StructureToPtr (args.Args[" + idx + "], arg" + idx + ", false);\n";
 				else if (p.PassAs != "")
-					finish += "\t\t\t\targ" + idx + " = " + igen.ToNativeReturn ("((" + p.CSType + ")args.Args[" + (idx - 1) + "])") + ";\n";
+					finish += "\t\t\t\targ" + idx + " = " + igen.ToNativeReturn ("((" + p.CSType + ")args.Args[" + idx + "])") + ";\n";
 			}
 			return finish;
 		}
