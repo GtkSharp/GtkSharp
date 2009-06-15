@@ -363,9 +363,9 @@ struct GtkBindingArg {
 [StructLayout(LayoutKind.Explicit)]
 struct GtkBindingArgData {
 #if WIN64LONGS
-	[FieldOffset (0)] [MarshalAs (UnmanagedType.I4)] public int long_data;
+	[FieldOffset (0)] public int long_data;
 #else
-	[FieldOffset (0)] [MarshalAs (UnmanagedType.SysInt)] public int long_data;
+	[FieldOffset (0)] public IntPtr long_data;
 #endif
 	[FieldOffset (0)] public double double_data;
 	[FieldOffset (0)] public IntPtr string_data;
@@ -390,7 +390,12 @@ static void ClassInit (GLib.GType gtype, Type t)
 
 		GtkBindingArg arg = new GtkBindingArg ();
 		arg.arg_type = GLib.GType.Long.Val;
-		arg.data.long_data = binding_invokers.Add (new BindingInvoker (mi, attr.Parms));
+		int binding_invoker_idx = binding_invokers.Add (new BindingInvoker (mi, attr.Parms));
+#if WIN64LONGS
+	arg.data.long_data = binding_invoker_idx;
+#else
+	arg.data.long_data = new IntPtr (binding_invoker_idx);
+#endif
 
 		GLib.SList binding_args = new GLib.SList (new object[] {arg}, typeof (GtkBindingArg), false, false);
 		gtk_binding_entry_add_signall (gtk_binding_set_by_class (gtype.ClassPtr), (uint) attr.Key, attr.Mod, native_signame, binding_args.Handle);
