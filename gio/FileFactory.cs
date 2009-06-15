@@ -49,11 +49,11 @@ namespace GLib
 		}
 
 		[DllImport ("libgio-2.0-0.dll")]
-		private static extern IntPtr g_file_new_for_commandline_args (string args);
+		private static extern IntPtr g_file_new_for_commandline_arg (string arg);
 
-		public static File NewForCommandlineArgs (string args)
+		public static File NewFromCommandlineArg (string arg)
 		{
-			return GLib.FileAdapter.GetObject (g_file_new_for_commandline_args (args), false) as File;		
+			return GLib.FileAdapter.GetObject (g_file_new_for_commandline_arg (arg), false) as File;
 		}
 	}
 }
