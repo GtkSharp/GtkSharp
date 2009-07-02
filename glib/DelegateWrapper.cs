@@ -69,7 +69,7 @@ namespace GLib {
 			}
 		}
 
-		[CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		private delegate void DestroyNotify (IntPtr data);
 
 		[DllImport("libgobject-2.0-0.dll")]

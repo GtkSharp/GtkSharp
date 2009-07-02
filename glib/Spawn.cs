@@ -60,7 +60,7 @@ namespace GLib {
 
 	public delegate void SpawnChildSetupFunc ();
 
-	[CDeclCallback]
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 	internal delegate void SpawnChildSetupFuncNative (IntPtr gch);
 
 	internal class SpawnChildSetupWrapper {

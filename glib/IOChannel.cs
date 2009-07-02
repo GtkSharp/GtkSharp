@@ -25,7 +25,7 @@ namespace GLibSharp {
 	using System.Runtime.InteropServices;
 	using GLib;
 
-	[CDeclCallback]
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 	internal delegate bool IOFuncNative(IntPtr source, int condition, IntPtr data);
 
 	internal class IOFuncWrapper {

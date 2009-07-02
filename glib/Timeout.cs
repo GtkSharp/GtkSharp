@@ -32,7 +32,7 @@ namespace GLib {
 
 	public class Timeout {
 
-		[CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate bool TimeoutHandlerInternal ();
 
 		internal class TimeoutProxy : SourceProxy {

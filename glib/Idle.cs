@@ -34,7 +34,7 @@ namespace GLib {
 
 	public class Idle {
 
-		[CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate bool IdleHandlerInternal ();
 
 

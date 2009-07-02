@@ -22,7 +22,7 @@
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern uint gtk_input_add_full(int source, int condition, InputFunctionNative function, GtkSharp.CallbackMarshalNative marshal, IntPtr data, GLib.DestroyNotify destroy);
 
-		[GLib.CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void InputFunctionNative(IntPtr data, int source, int condition);
 
 		class InputFunctionWrapper {

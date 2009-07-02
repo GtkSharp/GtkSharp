@@ -257,7 +257,7 @@ namespace GLib {
 			}
 		}
 		
-		[GLib.CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void GetPropertyDelegate (IntPtr GObject, uint property_id, ref GLib.Value value, IntPtr pspec);
 
 		static void GetPropertyCallback (IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
@@ -275,7 +275,7 @@ namespace GLib {
 			}
 		}
 
-		[GLib.CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void SetPropertyDelegate (IntPtr GObject, uint property_id, ref GLib.Value value, IntPtr pspec);
 
 		static void SetPropertyCallback(IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
@@ -475,7 +475,7 @@ namespace GLib {
 			}
 		}
 
-		[CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void NotifyDelegate (IntPtr handle, IntPtr pspec, IntPtr gch);
 
 		void NotifyCallback (IntPtr handle, IntPtr pspec, IntPtr gch)

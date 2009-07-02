@@ -58,9 +58,9 @@ namespace GLib {
 			}
 		}
 
-		[CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate IntPtr CopyFunc (IntPtr gch);
-		[CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void FreeFunc (IntPtr gch);
 		
 		static CopyFunc copy;

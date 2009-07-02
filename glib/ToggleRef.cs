@@ -120,7 +120,7 @@ namespace GLib {
 			}
 		}
 
-		[CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void ToggleNotifyHandler (IntPtr data, IntPtr handle, bool is_last_ref);
 
 		static void RefToggled (IntPtr data, IntPtr handle, bool is_last_ref)

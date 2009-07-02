@@ -55,16 +55,9 @@ $(POLICY_ASSEMBLIES) : policy.%.$(ASSEMBLY): policy.%.config $(SNK)
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 build_references = $(addprefix /r:, $(references)) $(MONO_CAIRO_LIBS)
 
-if PLATFORM_WIN32
-GAPI_CDECL_INSERT=$(top_srcdir)/gapi-cdecl-insert --keyfile=$(SNK) $(ASSEMBLY)
-else
-GAPI_CDECL_INSERT=
-endif
-
 $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
 	@rm -f $(ASSEMBLY).mdb
 	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(GENERATED_SOURCES) $(build_sources)
-	$(GAPI_CDECL_INSERT)
 
 install-data-local:
 	@if test -n '$(pkg)'; then							\

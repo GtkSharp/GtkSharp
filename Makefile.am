@@ -3,7 +3,6 @@ SUBDIRS = sources generator parser glib gio cairo pango atk gdk gtk glade gtkdot
 EXTRA_DIST = 			\
 	mono.snk		\
 	gtk-sharp.snk		\
-	gapi-cdecl-insert	\
 	makefile.win32		\
 	policy.config.in	\
 	AssemblyInfo.cs.in	\

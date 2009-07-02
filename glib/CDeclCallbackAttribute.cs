@@ -23,6 +23,7 @@ namespace GLib {
 
 	using System;
 
+	[Obsolete ("Use System.Runtime.InteropServices.UnmanagedFunctionPointerAttribute instead")]
 	public sealed class CDeclCallbackAttribute : Attribute 
 	{
 	}

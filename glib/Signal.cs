@@ -63,7 +63,7 @@ namespace GLib {
 			public IntPtr param_types;
 		}
 
-		[CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		public delegate bool EmissionHookNative (ref InvocationHint hint, uint n_pvals, IntPtr pvals, IntPtr data);
 
 		public delegate bool EmissionHook (InvocationHint ihint, object[] inst_and_param_values);

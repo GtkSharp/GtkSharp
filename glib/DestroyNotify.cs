@@ -23,7 +23,7 @@ namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 
-	[GLib.CDeclCallback]
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 	public delegate void DestroyNotify (IntPtr data);
 
 	public class DestroyHelper {

@@ -46,7 +46,7 @@
 
 		// We have to implement this VM manually because x_offset, y_offset, width and height params may be NULL and therefore cannot be treated as "out int"
 		// TODO: Implement "nullable" attribute for value type parameters in GAPI
-		[GLib.CDeclCallback]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void OnGetSizeDelegate (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height);
                 
 		static void OnGetSize_cb (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height)

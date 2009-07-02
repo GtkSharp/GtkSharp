@@ -219,7 +219,7 @@ namespace GtkSharp.Generation {
 				native_signature += ", " + CallbackSig;
 			native_signature += ", IntPtr gch";
 
-			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
+			sw.WriteLine ("\t\t[UnmanagedFunctionPointer (CallingConvention.Cdecl)]");
 			sw.WriteLine ("\t\tdelegate {0} {1} ({2});", retval.ToNativeType, DelegateName, native_signature);
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tstatic {0} {1} ({2})", retval.ToNativeType, CallbackName, native_signature);
