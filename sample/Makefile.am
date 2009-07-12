@@ -3,7 +3,7 @@ SUBDIRS = test GtkDemo pixmaps valtest opaquetest gio gtk-gio
 if ENABLE_MONO_CAIRO
 cairo_ref=-r:$(top_builddir)/cairo/Mono.Cairo.dll
 else
-cairo_ref=$(MONO_CAIRO_LIBS)
+cairo_ref=-r:Mono.Cairo
 endif
 
 if ENABLE_GLADE
@@ -80,7 +80,7 @@ glade-viewer.exe: $(srcdir)/GladeViewer.cs $(assemblies)
 	$(CSC)  /out:glade-viewer.exe $(references) $(srcdir)/GladeViewer.cs
 
 glade-test.exe: $(srcdir)/GladeTest.cs $(srcdir)/test.glade $(assemblies)
-	$(CSC)  /resource:$(srcdir)/test.glade,test.glade /out:glade-test.exe $(references) $(srcdir)/GladeTest.cs
+	$(CSC)  /resource:$(srcdir)/test.glade /out:glade-test.exe $(references) $(srcdir)/GladeTest.cs
 
 cairo-sample.exe: $(srcdir)/CairoSample.cs $(assemblies)
 	$(CSC) /out:cairo-sample.exe $(references) $(cairo_ref) $(srcdir)/CairoSample.cs
