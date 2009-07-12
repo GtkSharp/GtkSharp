@@ -262,8 +262,10 @@ namespace GtkSharp.Generation {
 					call_parm += CallName;
 				} else if (gen is IManualMarshaler)
 					call_parm = "native_" + CallName;
+				else if (gen is ObjectBase)
+					call_parm = (gen as ObjectBase).CallByName (CallName, Owned);
 				else
-					call_parm = SymbolTable.Table.CallByName(CType, CallName);
+					call_parm = gen.CallByName (CallName);
 			
 				return call_parm;
 			}
