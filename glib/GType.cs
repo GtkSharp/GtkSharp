@@ -162,7 +162,7 @@ namespace GLib {
 				}
 			}
 
-			throw new ArgumentException ("cname is not in NamespaceType format. GType.Register should be called directly for " + cname);
+			return null;
 		}
 
 		public static explicit operator Type (GType gtype)
@@ -182,6 +182,8 @@ namespace GLib {
 
 			string native_name = Marshaller.Utf8PtrToString (g_type_name (typeid));
 			string type_name = GetQualifiedName (native_name);
+			if (type_name == null)
+				return null;
 			Type result = null;
 			Assembly[] assemblies = (Assembly[]) AppDomain.CurrentDomain.GetAssemblies ().Clone ();
 			foreach (Assembly asm in assemblies) {
