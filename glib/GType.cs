@@ -29,6 +29,8 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 	using System.Text;
 
+	public delegate System.Type TypeResolutionHandler (GLib.GType gtype, string gtype_name);
+
 	[StructLayout(LayoutKind.Sequential)]
 	public struct GType {
 
@@ -175,12 +177,29 @@ namespace GLib {
 			// cctor already calls g_type_init.
 		}
 
+		public static event TypeResolutionHandler ResolveType;
+
 		public static Type LookupType (IntPtr typeid)
 		{
 			if (types.Contains (typeid))
 				return (Type)types[typeid];
 
 			string native_name = Marshaller.Utf8PtrToString (g_type_name (typeid));
+
+			if (ResolveType != null) {
+				GLib.GType gt = new GLib.GType (typeid);
+
+				Delegate[] invocation_list = ResolveType.GetInvocationList ();
+				foreach (Delegate d in invocation_list) {
+					TypeResolutionHandler handler = (TypeResolutionHandler) d;
+					System.Type tmp = handler (gt, native_name);
+					if (tmp != null) {
+						Register (gt, tmp);
+						return tmp;
+					}
+				}
+			}
+
 			string type_name = GetQualifiedName (native_name);
 			if (type_name == null)
 				return null;
