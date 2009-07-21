@@ -40,8 +40,6 @@ namespace GLib {
 
 		protected GInterfaceAdapter ()
 		{
-			info.FinalizeHandler = new GInterfaceFinalizeHandler (Finalize);
-			info.Data = (IntPtr) GCHandle.Alloc (this);
 		}
 
 		protected GInterfaceInitHandler InitHandler {
@@ -56,14 +54,11 @@ namespace GLib {
 
 		internal GInterfaceInfo Info {
 			get {
+				if (info.Data == IntPtr.Zero)
+					info.Data = (IntPtr) GCHandle.Alloc (this);
+
 				return info;
 			}
-		}
-
-		void Finalize (IntPtr iface_ptr, IntPtr data)
-		{
-			GCHandle gch = (GCHandle) data;
-			gch.Free ();
 		}
 	}
 }
