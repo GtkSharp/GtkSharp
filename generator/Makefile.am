@@ -1,8 +1,8 @@
-assemblydir = $(prefix)/lib/gtk-sharp-2.0
+assemblydir = $(prefix)/lib/gapi-3.0
 assembly_DATA = gapi_codegen.exe
-bin_SCRIPTS = gapi2-codegen
+bin_SCRIPTS = gapi3-codegen
 CLEANFILES = gapi_codegen.exe
-DISTCLEANFILES = gapi2-codegen
+DISTCLEANFILES = gapi3-codegen
 
 references =
 

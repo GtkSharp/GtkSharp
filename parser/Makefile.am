@@ -1,11 +1,11 @@
-assemblydir = $(prefix)/lib/gtk-sharp-2.0
+assemblydir = $(prefix)/lib/gapi-3.0
 pkgconfigdir = $(libdir)/pkgconfig
 assembly_DATA = gapi-fixup.exe gapi-parser.exe
-pkgconfig_DATA = gapi-2.0.pc
-bin_SCRIPTS = gapi2-fixup gapi2-parser
+pkgconfig_DATA = gapi-3.0.pc
+bin_SCRIPTS = gapi3-fixup gapi3-parser
 assembly_SCRIPTS = gapi_pp.pl gapi2xml.pl
 CLEANFILES = gapi-fixup.exe gapi-parser.exe
-DISTCLEANFILES = gapi2-fixup gapi2-parser gapi-2.0.pc
+DISTCLEANFILES = gapi3-fixup gapi3-parser gapi-3.0.pc
 
 sources = 				\
 	gapi-fixup.cs			\
@@ -13,14 +13,14 @@ sources = 				\
 
 EXTRA_DIST =					\
 	$(sources)				\
-	gapi2-parser.in				\
+	gapi3-parser.in				\
 	gapi_pp.pl				\
 	gapi2xml.pl				\
-	gapi-2.0.pc.in
+	gapi-3.0.pc.in
 
-gapi-fixup.exe: $(srcdir)/gapi-fixup.cs
+gapi3-fixup.exe: $(srcdir)/gapi-fixup.cs
 	$(CSC) /out:gapi-fixup.exe $(srcdir)/gapi-fixup.cs
 
-gapi-parser.exe: $(srcdir)/gapi-parser.cs
+gapi3-parser.exe: $(srcdir)/gapi-parser.cs
 	$(CSC) /out:gapi-parser.exe $(srcdir)/gapi-parser.cs
 
