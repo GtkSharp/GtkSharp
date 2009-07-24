@@ -18,9 +18,9 @@ EXTRA_DIST =					\
 	gapi2xml.pl				\
 	gapi-3.0.pc.in
 
-gapi3-fixup.exe: $(srcdir)/gapi-fixup.cs
+gapi-fixup.exe: $(srcdir)/gapi-fixup.cs
 	$(CSC) /out:gapi-fixup.exe $(srcdir)/gapi-fixup.cs
 
-gapi3-parser.exe: $(srcdir)/gapi-parser.cs
+gapi-parser.exe: $(srcdir)/gapi-parser.cs
 	$(CSC) /out:gapi-parser.exe $(srcdir)/gapi-parser.cs
 
