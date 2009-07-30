@@ -262,7 +262,7 @@ namespace GtkSharp.Generation {
 
 		void GenerateImplementorIface (GenerationInfo gen_info)
 		{
-			var sw = gen_info.Writer;
+			StreamWriter sw = gen_info.Writer;
 			if (IsConsumeOnly)
 				return;
 
