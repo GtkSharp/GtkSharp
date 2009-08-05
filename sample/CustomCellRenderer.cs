@@ -15,7 +15,8 @@ public class CustomCellRenderer : CellRenderer
 {
 
 	private float percent;
-	
+
+	[GLib.Property ("percent")]
 	public float Percentage
 	{
 		get {
@@ -83,12 +84,6 @@ public class Driver : Gtk.Window
 	}
 
 	ListStore liststore;
-
-	void ProgressData (Gtk.TreeViewColumn tree_column, Gtk.CellRenderer cell, Gtk.TreeModel tree_model, Gtk.TreeIter iter)
-	{
-		float perc = (float) liststore.GetValue (iter, 0);
-		((CustomCellRenderer)cell).Percentage = perc;
-	}
 	
 	public Driver () : base ("CustomCellRenderer")
 	{
@@ -101,11 +96,7 @@ public class Driver : Gtk.Window
 		TreeView view = new TreeView (liststore);
 
 		view.AppendColumn ("Progress", new CellRendererText (), "text", 1);
-		
-		//Note: This *MUST* be done here, as its the only place Progress is
-		//accessible. Maybe there should be an attribute that will do some
-		//magic for you and register a property with the gobject system.
-		view.AppendColumn ("Progress", new CustomCellRenderer (), new TreeCellDataFunc (ProgressData));
+		view.AppendColumn ("Progress", new CustomCellRenderer (), "percent", 0);
 		
 		this.Add (view);
 		this.ShowAll ();
