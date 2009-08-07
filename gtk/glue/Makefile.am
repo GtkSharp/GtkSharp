@@ -2,7 +2,6 @@ lib_LTLIBRARIES = libgtksharpglue-2.la
 
 libgtksharpglue_2_la_SOURCES =	\
 	cellrenderer.c		\
-	clipboard.c		\
 	container.c		\
 	object.c		\
 	statusicon.c		\
