@@ -5,7 +5,6 @@ libgtksharpglue_2_la_SOURCES =	\
 	clipboard.c		\
 	container.c		\
 	object.c		\
-	selectiondata.c		\
 	statusicon.c		\
 	style.c			\
 	vmglueheaders.h		\
