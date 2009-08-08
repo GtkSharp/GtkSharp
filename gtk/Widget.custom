@@ -251,7 +251,7 @@ static void ConnectSetScrollAdjustments (GLib.GType gtype)
 		SetScrollAdjustmentsMarshalCallback = new ClosureMarshal (SetScrollAdjustmentsMarshal_cb);
 
 	uint signal_id = RegisterSignal ("set_scroll_adjustments", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [] {Adjustment.GType, Adjustment.GType}, SetScrollAdjustmentsMarshalCallback);
-	gtksharp_widget_class_set_set_scroll_adjustments_signal (gtype.ClassPtr, signal_id);
+	gtksharp_widget_class_set_set_scroll_adjustments_signal (gtype.GetClassPtr (), signal_id);
 }
 
 [GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectSetScrollAdjustments")]
@@ -286,7 +286,7 @@ static void ConnectActivate (GLib.GType gtype)
 		ActivateMarshalCallback = new ClosureMarshal (ActivateMarshal_cb);
 
 	uint signal_id = RegisterSignal ("activate_signal", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [0], ActivateMarshalCallback);
-	gtksharp_widget_class_set_activate_signal (gtype.ClassPtr, signal_id);
+	gtksharp_widget_class_set_activate_signal (gtype.GetClassPtr (), signal_id);
 }
 
 [GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectActivate")]
@@ -393,7 +393,7 @@ static void ClassInit (GLib.GType gtype, Type t)
 #endif
 
 		GLib.SList binding_args = new GLib.SList (new object[] {arg}, typeof (GtkBindingArg), false, false);
-		gtk_binding_entry_add_signall (gtk_binding_set_by_class (gtype.ClassPtr), (uint) attr.Key, attr.Mod, native_signame, binding_args.Handle);
+		gtk_binding_entry_add_signall (gtk_binding_set_by_class (gtype.GetClassPtr ()), (uint) attr.Key, attr.Mod, native_signame, binding_args.Handle);
 		binding_args.Dispose ();
 	}
 	GLib.Marshaller.Free (native_signame);
@@ -422,7 +422,7 @@ internal GLib.Value StyleGetPropertyValue (string property_name)
 {
 	IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (property_name);
 	try {
-		IntPtr pspec_ptr = gtk_widget_class_find_style_property (this.LookupGType ().ClassPtr, native_name);
+		IntPtr pspec_ptr = gtk_widget_class_find_style_property (this.LookupGType ().GetClassPtr (), native_name);
 		if (pspec_ptr == IntPtr.Zero) 
 			throw new ArgumentException (String.Format ("Cannot find style property \"{0}\"", property_name));
 

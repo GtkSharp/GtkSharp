@@ -211,7 +211,7 @@ namespace GLib {
 
 		static void OverridePropertyHandlers (GType gtype, GetPropertyDelegate get_cb, SetPropertyDelegate set_cb)
 		{
-			IntPtr class_ptr = gtype.ClassPtr;
+			IntPtr class_ptr = gtype.GetClassPtr ();
 			GObjectClass klass = (GObjectClass) Marshal.PtrToStructure (class_ptr, typeof (GObjectClass));
 			klass.get_prop_cb = get_cb;
 			klass.set_prop_cb = set_cb;
@@ -223,7 +223,7 @@ namespace GLib {
 
 		static IntPtr RegisterProperty (GType type, string name, string nick, string blurb, uint property_id, GType property_type, bool can_read, bool can_write)
 		{
-			IntPtr declaring_class = type.ClassPtr;
+			IntPtr declaring_class = type.GetClassPtr ();
 			ParamSpec pspec = new ParamSpec (name, nick, blurb, property_type, can_read, can_write);
 
 			g_object_class_install_property (declaring_class, property_id, pspec.Handle);

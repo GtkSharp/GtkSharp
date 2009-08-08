@@ -167,6 +167,9 @@ AC_SUBST(GENERATED_SOURCES)
 PKG_CHECK_MODULES(MONO_CAIRO, mono-cairo >= $MONO_REQUIRED_VERSION, enable_mono_cairo=no, enable_mono_cairo=yes)
 AC_SUBST(MONO_CAIRO_LIBS)
 
+PKG_CHECK_MODULES(GLIBSHARP2, glib-sharp-2.0, enable_glib2_compat=yes, enable_glib2_compat=no)
+AC_SUBST(GLIBSHARP2_LIBS)
+
 GTK_REQUIRED_VERSION=@GTK_REQUIRED_VERSION@
 GLIB_REQUIRED_VERSION=@GLIB_REQUIRED_VERSION@
 
@@ -214,6 +217,7 @@ AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
 AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
 AM_CONDITIONAL(ENABLE_MONOGETOPTIONS, test "x$has_mono" = "xtrue")
+AM_CONDITIONAL(ENABLE_GLIBSHARP2_COMPAT, test "x$enable_glib2_compat" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -228,6 +232,8 @@ parser/Makefile
 parser/gapi-3.0.pc
 parser/gapi3-fixup
 parser/gapi3-parser
+gapi/Makefile
+gapi/gapi-2.0-compat.pc
 generator/Makefile
 generator/gapi3-codegen
 glib/Makefile

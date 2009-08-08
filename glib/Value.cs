@@ -553,7 +553,7 @@ namespace GLib {
 		void InitForProperty (GType gtype, string name)
 		{
 			IntPtr p_name = Marshaller.StringToPtrGStrdup (name);
-			IntPtr spec_ptr = g_object_class_find_property (gtype.ClassPtr, p_name);
+			IntPtr spec_ptr = g_object_class_find_property (gtype.GetClassPtr (), p_name);
 			Marshaller.Free (p_name);
 
 			if (spec_ptr == IntPtr.Zero)
