@@ -350,12 +350,6 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_object_new (IntPtr gtype, IntPtr dummy);
 
-		[Obsolete]
-		protected Object (GType gtype)
-		{
-			Raw = g_object_new (gtype.Val, IntPtr.Zero);
-		}
-
 		struct GParameter {
 			public IntPtr name;
 			public GLib.Value val;

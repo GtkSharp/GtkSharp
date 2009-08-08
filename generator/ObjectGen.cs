@@ -97,12 +97,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		private bool DisableGTypeCtor {
-			get {
-				return Elem.HasAttribute ("disable_gtype_ctor");
-			}
-		}
-
 		private class DirectoryInfo {
 			public string assembly_name;
 			public Hashtable objects;
@@ -254,10 +248,6 @@ namespace GtkSharp.Generation {
 			if (!Elem.HasAttribute("parent"))
 				return;
 
-			if (!DisableGTypeCtor) {
-				gen_info.Writer.WriteLine("\t\t[Obsolete]");
-				gen_info.Writer.WriteLine("\t\tprotected " + Name + "(GLib.GType gtype) : base(gtype) {}");
-			}
 			gen_info.Writer.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
 			if (ctors.Count == 0 && !DisableVoidCtor) {
 				gen_info.Writer.WriteLine();
