@@ -102,7 +102,7 @@ namespace GtkSharp.Generation {
 					return String.Empty;
 				else if (is_null_term)
 					return "IntPtr";
-				return IGen.MarshalReturnType + (is_array ? "[]" : String.Empty);
+				return IGen.MarshalType + (is_array ? "[]" : String.Empty);
 			}
 		}
 
@@ -110,7 +110,7 @@ namespace GtkSharp.Generation {
 			get {
 				if (IGen == null)
 					return String.Empty;
-				return IGen.ToNativeReturnType + (is_array || is_null_term ? "[]" : String.Empty);
+				return IGen.MarshalType + (is_array || is_null_term ? "[]" : String.Empty);
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace GtkSharp.Generation {
 			else if (is_null_term)
 				return String.Format ("GLib.Marshaller.NullTermPtrToStringArray ({0}, {1})", var, owned ? "true" : "false");
 			else
-				return IGen.FromNativeReturn (var);
+				return IGen.FromNative (var);
 		}
 			
 		public string ToNative (string var)
@@ -151,7 +151,7 @@ namespace GtkSharp.Generation {
 			else if (IGen is OpaqueGen && owned)
 				return var + " == null ? IntPtr.Zero : " + var + ".OwnedCopy";
 			else
-				return IGen.ToNativeReturn (var);
+				return IGen.CallByName (var);
 		}
 
 		public bool Validate ()
