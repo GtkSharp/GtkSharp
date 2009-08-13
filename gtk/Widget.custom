@@ -43,18 +43,10 @@ public Gdk.Rectangle Allocation {
 }
 
 [DllImport ("gtksharpglue-2")]
-static extern IntPtr gtksharp_gtk_widget_get_window (IntPtr widget);
-[DllImport ("gtksharpglue-2")]
 static extern void gtksharp_gtk_widget_set_window (IntPtr widget, IntPtr window);
 public Gdk.Window GdkWindow {
 	get {
-		IntPtr raw_ret = gtksharp_gtk_widget_get_window (Handle);
-
-		if (raw_ret != (IntPtr) 0){
-	 		Gdk.Window ret = (Gdk.Window) GLib.Object.GetObject(raw_ret, false);
-			return ret;
-		}
-		return null;
+		return this.Window;
 	}
 	set {
 		Gdk.Window window = value as Gdk.Window;
@@ -242,16 +234,14 @@ static void SetScrollAdjustmentsMarshal_cb (IntPtr closure, IntPtr return_val, u
 
 static ClosureMarshal SetScrollAdjustmentsMarshalCallback;
 
-[DllImport("gtksharpglue-2")]
-static extern void gtksharp_widget_class_set_set_scroll_adjustments_signal (IntPtr class_struct, uint signal_id);
-
 static void ConnectSetScrollAdjustments (GLib.GType gtype)
 {
 	if (SetScrollAdjustmentsMarshalCallback == null)
 		SetScrollAdjustmentsMarshalCallback = new ClosureMarshal (SetScrollAdjustmentsMarshal_cb);
 
-	uint signal_id = RegisterSignal ("set_scroll_adjustments", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [] {Adjustment.GType, Adjustment.GType}, SetScrollAdjustmentsMarshalCallback);
-	gtksharp_widget_class_set_set_scroll_adjustments_signal (gtype.GetClassPtr (), signal_id);
+	GtkWidgetClass klass = GetClassStruct (gtype, false);
+	klass.SetScrollAdjustmentsSignal = RegisterSignal ("set_scroll_adjustments", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [] {Adjustment.GType, Adjustment.GType}, SetScrollAdjustmentsMarshalCallback);
+	OverrideClassStruct (gtype, klass);
 }
 
 [GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectSetScrollAdjustments")]
@@ -277,16 +267,14 @@ static void ActivateMarshal_cb (IntPtr raw_closure, IntPtr return_val, uint n_pa
 
 static ClosureMarshal ActivateMarshalCallback;
 
-[DllImport("gtksharpglue-2")]
-static extern void gtksharp_widget_class_set_activate_signal (IntPtr class_struct, uint signal_id);
-
 static void ConnectActivate (GLib.GType gtype)
 {
 	if (ActivateMarshalCallback == null)
 		ActivateMarshalCallback = new ClosureMarshal (ActivateMarshal_cb);
 
-	uint signal_id = RegisterSignal ("activate_signal", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [0], ActivateMarshalCallback);
-	gtksharp_widget_class_set_activate_signal (gtype.GetClassPtr (), signal_id);
+	GtkWidgetClass klass = GetClassStruct (gtype, false);
+	klass.ActivateSignal = RegisterSignal ("activate_signal", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [0], ActivateMarshalCallback);
+	OverrideClassStruct (gtype, klass);
 }
 
 [GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectActivate")]
@@ -387,9 +375,9 @@ static void ClassInit (GLib.GType gtype, Type t)
 		arg.arg_type = GLib.GType.Long.Val;
 		int binding_invoker_idx = binding_invokers.Add (new BindingInvoker (mi, attr.Parms));
 #if WIN64LONGS
-	arg.data.long_data = binding_invoker_idx;
+		arg.data.long_data = binding_invoker_idx;
 #else
-	arg.data.long_data = new IntPtr (binding_invoker_idx);
+		arg.data.long_data = new IntPtr (binding_invoker_idx);
 #endif
 
 		GLib.SList binding_args = new GLib.SList (new object[] {arg}, typeof (GtkBindingArg), false, false);

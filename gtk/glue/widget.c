@@ -26,14 +26,8 @@
 
 /* Forward declarations */
 GdkRectangle *gtksharp_gtk_widget_get_allocation (GtkWidget *widget);
-GdkWindow *gtksharp_gtk_widget_get_window (GtkWidget *widget);
 void gtksharp_gtk_widget_set_window (GtkWidget *widget, GdkWindow *window);
 int gtksharp_gtk_widget_get_state (GtkWidget *widget);
-int gtksharp_gtk_widget_get_flags (GtkWidget *widget);
-void gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags);
-int gtksharp_gtk_widget_style_get_int (GtkWidget *widget, const char *name);
-void gtksharp_widget_class_set_set_scroll_adjustments_signal (GtkWidgetClass *klass, guint signal_id);
-void gtksharp_widget_class_set_activate_signal (GtkWidgetClass *klass, guint signal_id);
 int gtksharp_gtk_widget_get_flags (GtkWidget *widget);
 void gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags);
 /* */
@@ -42,12 +36,6 @@ GdkRectangle*
 gtksharp_gtk_widget_get_allocation (GtkWidget *widget)
 {
 	return &widget->allocation;
-}
-
-GdkWindow *
-gtksharp_gtk_widget_get_window (GtkWidget *widget)
-{
-	return widget->window;
 }
 
 void
@@ -74,17 +62,5 @@ void
 gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags)
 {
 	GTK_OBJECT(widget)->flags = flags;
-}
-
-void 
-gtksharp_widget_class_set_set_scroll_adjustments_signal (GtkWidgetClass *klass, guint signal_id)
-{
-	klass->set_scroll_adjustments_signal = signal_id;
-}
-
-void 
-gtksharp_widget_class_set_activate_signal (GtkWidgetClass *klass, guint signal_id)
-{
-	klass->activate_signal = signal_id;
 }
 
