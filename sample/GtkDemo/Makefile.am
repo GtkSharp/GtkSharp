@@ -1,15 +1,15 @@
 if ENABLE_MONO_CAIRO
-local_mono_cairo=$(top_builddir)/cairo/Mono.Cairo.dll
+cairo_ref=$(top_builddir)/cairo/Mono.Cairo.dll
 else
-local_mono_cairo=
+cairo_ref=Mono.Cairo
 endif
 
 assemblies = \
 	$(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.dll \
 	$(top_builddir)/pango/pango-sharp.dll $(top_builddir)/atk/atk-sharp.dll \
-	$(top_builddir)/gdk/gdk-sharp.dll $(top_builddir)/gtk/gtk-sharp.dll $(local_mono_cairo)
+	$(top_builddir)/gdk/gdk-sharp.dll $(top_builddir)/gtk/gtk-sharp.dll
 
-references = $(addprefix /r:, $(assemblies)) /r:Mono.Cairo
+references = $(addprefix /r:, $(assemblies) $(cairo_ref))
 TARGETS = GtkDemo.exe
 DEBUGS = $(addsuffix .mdb, $(TARGETS)) 
 CLEANFILES = $(TARGETS) $(DEBUGS)
