@@ -25,6 +25,21 @@
         <remarks>This is the default constructor for <see cref="T:GLib.MainContext" />.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="Default">
+      <MemberSignature Language="C#" Value="public static GLib.MainContext Default { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.MainContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the default main context.</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+        <since version="Gtk# 2.90" />
+      </Docs>
+    </Member>
     <Member MemberName="Depth">
       <MemberSignature Language="C#" Value="public static int Depth { get; }" />
       <MemberType>Property</MemberType>
@@ -35,6 +50,64 @@
         <summary>Nesting level of the currently executing main loop.</summary>
         <value>A count of main loop levels.</value>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public override bool Equals (object o);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="o" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="o">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.90" />
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~MainContext ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.90" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetHashCode">
+      <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.90" />
+      </Docs>
+    </Member>
+    <Member MemberName="HasPendingEvents">
+      <MemberSignature Language="C#" Value="public bool HasPendingEvents { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Checks if any sources have pending events for the given context.</summary>
+        <value>An object of type <see cref="T:System.Boolean" /></value>
+        <remarks>
+        </remarks>
+        <since version="Gtk# 2.90" />
       </Docs>
     </Member>
     <Member MemberName="Iteration">
@@ -51,19 +124,19 @@
       </Docs>
     </Member>
     <Member MemberName="Iteration">
-      <MemberSignature Language="C#" Value="public static bool Iteration (bool MayBlock);" />
+      <MemberSignature Language="C#" Value="public static bool Iteration (bool may_block);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="MayBlock" Type="System.Boolean" />
+        <Parameter Name="may_block" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="MayBlock">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="may_block">an object of type <see cref="T:System.Boolean" /></param>
         <summary>Runs a single iteration for the given main loop.</summary>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>This involves checking to see if any event sources are ready to be processed, then if no events sources are ready and <paramref name="may_block" /> is <see langword="true" />, waiting for a source to become ready, then dispatching the highest priority events sources that are ready. Note that even when <paramref name="may_block" /> is <see langword="true" />, it is still possible for g_main_context_iteration() to return <see langword="false" />, since the the wait may be interrupted for other reasons than an event source becoming ready.</remarks>
+        <remarks>This is a convenience function for GLib.MainContext.Default.RunIteration(may_block).</remarks>
       </Docs>
     </Member>
     <Member MemberName="Pending">
@@ -76,7 +149,92 @@
       <Docs>
         <summary>Checks if any sources have pending events for the given context.</summary>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks />
+        <remarks>This is a convenince function for GLib.MainContext.Default.HasPendingEvents.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PopThreadDefault">
+      <MemberSignature Language="C#" Value="public void PopThreadDefault ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.90" />
+      </Docs>
+    </Member>
+    <Member MemberName="PushThreadDefault">
+      <MemberSignature Language="C#" Value="public void PushThreadDefault ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.90" />
+      </Docs>
+    </Member>
+    <Member MemberName="RunIteration">
+      <MemberSignature Language="C#" Value="public bool RunIteration ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Runs a single iteration for the given main loop.</summary>
+        <returns>
+          <see langword="true" /> if successful.</returns>
+        <remarks>This is a convenience overload for GLib.MainContext.Default.RunIteration(System.Boolean) with <see langword="false" /> passed in.</remarks>
+        <since version="Gtk# 2.90" />
+      </Docs>
+    </Member>
+    <Member MemberName="RunIteration">
+      <MemberSignature Language="C#" Value="public bool RunIteration (bool may_block);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="may_block" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="may_block">To be added.</param>
+        <summary>Runs a single iteration for the given main loop.</summary>
+        <returns>
+          <see langword="true" /> if successful.</returns>
+        <remarks>This involves checking to see if any event sources are ready to be processed, then if no events sources are ready and <paramref name="may_block" /> is <see langword="true" />, waiting for a source to become ready, then dispatching the highest priority events sources that are ready. Note that even when <paramref name="may_block" /> is <see langword="true" />, it is still possible for g_main_context_iteration() to return <see langword="false" />, since the the wait may be interrupted for other reasons than an event source becoming ready.</remarks>
+        <since version="Gtk# 2.90" />
+      </Docs>
+    </Member>
+    <Member MemberName="ThreadDefault">
+      <MemberSignature Language="C#" Value="public GLib.MainContext ThreadDefault { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.MainContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the default MainContext for the current thread. If none exists, one will be created.</summary>
+        <value>To be added.</value>
+        <remarks>When being called from the Gtk# main loop, returns <see cref="P:GLib.MainContext.Default" />.</remarks>
+        <since version="Gtk# 2.90" />
+      </Docs>
+    </Member>
+    <Member MemberName="Wakeup">
+      <MemberSignature Language="C#" Value="public void Wakeup ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.90" />
       </Docs>
     </Member>
   </Members>

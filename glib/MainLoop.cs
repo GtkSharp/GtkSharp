@@ -28,9 +28,13 @@ namespace GLib {
 		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_main_loop_new (IntPtr context, bool isRunning);
 
-		public MainLoop ()
+		public MainLoop () : this (MainContext.Default) { }
+
+		public MainLoop (MainContext context) : this (context, false) { }
+
+		public MainLoop (MainContext context, bool is_running)
 		{
-			handle = g_main_loop_new (IntPtr.Zero, false);
+			handle = g_main_loop_new (context.Handle, is_running);
 		}
 		
 		[DllImport("libglib-2.0-0.dll")]
@@ -65,6 +69,29 @@ namespace GLib {
 		public void Quit ()
 		{
 			g_main_loop_quit (handle);
+		}
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern IntPtr g_main_loop_get_context (IntPtr loop);
+
+		public MainContext Context {
+			get {
+				return new MainContext (g_main_loop_get_context (handle));
+			}
+		}
+
+
+		public override bool Equals (object o)
+		{
+			if (!(o is MainLoop))
+				return false;
+
+			return handle == (o as MainLoop).handle;
+		}
+
+		public override int GetHashCode ()
+		{
+			return handle.GetHashCode ();
 		}
 	}
 }
