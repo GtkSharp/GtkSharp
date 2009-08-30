@@ -1,17 +1,17 @@
-lib_LTLIBRARIES = libgiosharpglue-2.la
+lib_LTLIBRARIES = libgiosharpglue-3.la
 
-libgiosharpglue_2_la_SOURCES =
+libgiosharpglue_3_la_SOURCES =
 
-nodist_libgiosharpglue_2_la_SOURCES = generated.c
+nodist_libgiosharpglue_3_la_SOURCES = generated.c
 
-libgiosharpglue_2_la_LDFLAGS = -module -avoid-version -no-undefined
+libgiosharpglue_3_la_LDFLAGS = -module -avoid-version -no-undefined
 
-libgiosharpglue_2_la_LIBADD = $(GIO_LIBS)
+libgiosharpglue_3_la_LIBADD = $(GIO_LIBS)
 
 INCLUDES = $(GIO_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
-libgiosharpglue.dll: $(libgiosharpglue_2_la_OBJECTS) libgiosharpglue.rc libgiosharpglue.def
-	./build-dll libgiosharpglue-2 $(VERSION)
+libgiosharpglue.dll: $(libgiosharpglue_3_la_OBJECTS) libgiosharpglue.rc libgiosharpglue.def
+	./build-dll libgiosharpglue-3 $(VERSION)
 
 CLEANFILES = lib*.a lib*.dll
 

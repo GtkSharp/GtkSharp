@@ -3,7 +3,7 @@ SUBDIRS = . glue
 if ENABLE_GLADE
 pkg = glade
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glade-sharp-2.0.pc
+pkgconfig_DATA = glade-sharp-3.0.pc
 else
 pkg = 
 endif
@@ -23,7 +23,7 @@ customs =				\
 	Interface.custom		\
 	XML.custom
 
-add_dist = glade-sharp-2.0.pc.in
+add_dist = glade-sharp-3.0.pc.in
 
 include ../Makefile.include
 

@@ -16,7 +16,7 @@ ASSEMBLIES = 					\
 	lib/vte-sharp.dll			\
 	lib/gtk-dotnet.dll
 
-UPDATER = $(MDOC) update --out=en -pretty --fno-assembly-versions --since="Gtk# 2.14" $(ASSEMBLIES)
+UPDATER = $(MDOC) update --out=en -pretty --fno-assembly-versions --since="Gtk# 3.0" $(ASSEMBLIES)
 
 if ENABLE_MONODOC
 SOURCESDIR=$(prefix)/lib/monodoc/sources
@@ -49,10 +49,10 @@ get-assemblies:
 	cp $(top_builddir)/../gnome-desktop-sharp/*/*.dll.config lib
 
 update: get-assemblies
-	$(MDOC) update --out=en --fno-assembly-versions --since="Gtk# 2.14" $(ASSEMBLIES)
+	$(MDOC) update --out=en --fno-assembly-versions --since="Gtk# 3.0" $(ASSEMBLIES)
 
 update-delete: get-assemblies
-	$(MDOC) update --out=en --fno-assembly-versions --delete --since="Gtk# 2.14" $(ASSEMBLIES)
+	$(MDOC) update --out=en --fno-assembly-versions --delete --since="Gtk# 3.0" $(ASSEMBLIES)
 
 CLEANFILES = gtk-sharp-docs.zip gtk-sharp-docs.tree lib
 

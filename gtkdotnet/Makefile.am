@@ -1,7 +1,7 @@
 if ENABLE_DOTNET
 TARGET = $(ASSEMBLY) $(ASSEMBLY).config
 pkgconfigdir=$(libdir)/pkgconfig
-pkgconfig_DATA=gtk-dotnet-2.0.pc
+pkgconfig_DATA=gtk-dotnet-3.0.pc
 else
 TARGET =
 endif
@@ -26,7 +26,7 @@ build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 EXTRA_DIST =				\
 	$(sources)			\
 	$(ASSEMBLY).config.in		\
-	gtk-dotnet-2.0.pc.in
+	gtk-dotnet-3.0.pc.in
 
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
@@ -34,16 +34,9 @@ gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
 	cp $(top_builddir)/AssemblyInfo.cs .
 
-if PLATFORM_WIN32
-GAPI_CDECL_INSERT=$(top_srcdir)/gapi-cdecl-insert --keyfile=gtk-sharp.snk $(ASSEMBLY)
-else
-GAPI_CDECL_INSERT=
-endif
-
 $(ASSEMBLY): $(build_sources) $(references) gtk-sharp.snk AssemblyInfo.cs
 	@rm -f $(ASSEMBLY).mdb
 	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources)
-	$(GAPI_CDECL_INSERT)
 
 policy.%.config: $(top_builddir)/policy.config
 	sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$*/" $(top_builddir)/policy.config > $@

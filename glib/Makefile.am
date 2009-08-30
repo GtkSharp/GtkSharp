@@ -5,8 +5,8 @@ ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = glib-sharp
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config $(POLICY_ASSEMBLIES)
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glib-sharp-2.0.pc
-gapidir = $(datadir)/gapi-2.0
+pkgconfig_DATA = glib-sharp-3.0.pc
+gapidir = $(datadir)/gapi-3.0
 gapi_DATA = glib-api.xml
 
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk AssemblyInfo.cs $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
@@ -83,7 +83,7 @@ dist_sources = $(sources)
 EXTRA_DIST =				\
 	$(dist_sources)			\
 	$(ASSEMBLY).config.in		\
-	glib-sharp-2.0.pc.in		\
+	glib-sharp-3.0.pc.in		\
 	glib-api.xml
 
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
