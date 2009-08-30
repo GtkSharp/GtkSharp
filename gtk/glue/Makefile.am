@@ -3,7 +3,6 @@ lib_LTLIBRARIES = libgtksharpglue-2.la
 libgtksharpglue_2_la_SOURCES =	\
 	cellrenderer.c		\
 	container.c		\
-	object.c		\
 	style.c			\
 	vmglueheaders.h		\
 	widget.c

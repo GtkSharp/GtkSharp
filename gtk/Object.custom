@@ -132,18 +132,26 @@
 			InternalDestroyed -= NativeDestroyHandler;
 		}
 
-		[DllImport("gtksharpglue-2")]
-		private static extern bool gtksharp_object_is_floating (IntPtr raw);
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern bool g_object_is_floating (IntPtr raw);
 
-		[DllImport("gtksharpglue-2")]
-		private static extern bool gtksharp_object_set_floating (IntPtr raw, bool val);
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_object_force_floating (IntPtr raw);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_object_unref (IntPtr raw);
 
 		public bool IsFloating {
 			get {
-				return gtksharp_object_is_floating (Handle);
+				return g_object_is_floating (Handle);
 			}
 			set {
-				gtksharp_object_set_floating (Handle, value);
+			  	if (value == true) {
+					if (!IsFloating)
+						g_object_force_floating (Handle);
+				} else {
+					g_object_ref_sink (Handle);
+					g_object_unref (Handle);
+				}
 			}
 		}
-
