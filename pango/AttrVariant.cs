@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrVariant : Attribute {
 
-		[DllImport("libpango-1.0-0.dll")]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr pango_attr_variant_new (Pango.Variant variant);
 
 		public AttrVariant (Pango.Variant variant) : this (pango_attr_variant_new (variant)) {}

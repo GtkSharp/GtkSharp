@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrStyle : Attribute {
 
-		[DllImport("libpango-1.0-0.dll")]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr pango_attr_style_new (Pango.Style style);
 
 		public AttrStyle (Pango.Style style) : this (pango_attr_style_new (style)) {}

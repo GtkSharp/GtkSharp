@@ -21,7 +21,7 @@
 
 
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr gtk_icon_theme_list_icons (IntPtr raw, IntPtr context);
 
 		public string[] ListIcons (string context)
@@ -40,13 +40,13 @@
 			return result;
 		}
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern void gtk_icon_theme_get_search_path(IntPtr raw, out IntPtr path, out int n_elements);
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern void gtk_icon_theme_set_search_path(IntPtr raw, IntPtr[] path, int n_elements);
 
-		[DllImport("libglib-2.0-0.dll")]
+		[DllImport ("libglib-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern void g_strfreev (IntPtr mem);
 
                 public string[] SearchPath {
@@ -87,7 +87,7 @@
 		}
 
 #if GTK_SHARP_2_6
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr gtk_icon_theme_get_icon_sizes (IntPtr raw, IntPtr icon_name);
 
 		public int[] GetIconSizes (string icon_name) 

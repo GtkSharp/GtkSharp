@@ -22,7 +22,7 @@
 // Boston, MA 02111-1307, USA.
 
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr gtk_file_chooser_dialog_new(IntPtr title, IntPtr parent, int action, IntPtr nil);
 
 		public FileChooserDialog (string title, Window parent, FileChooserAction action, params object[] button_data) : base (IntPtr.Zero)
@@ -43,7 +43,7 @@
 				AddButton ((string) button_data [i], (int) button_data [i + 1]);
 		}
 		
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr gtk_file_chooser_dialog_new_with_backend(IntPtr title, IntPtr parent, int action, IntPtr backend, IntPtr nil);
 		
 		public FileChooserDialog (string backend, string title, Window parent, FileChooserAction action, params object[] button_data) : base (IntPtr.Zero)

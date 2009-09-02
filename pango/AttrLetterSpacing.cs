@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrLetterSpacing : Attribute {
 
-		[DllImport("libpango-1.0-0.dll")]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr pango_attr_letter_spacing_new (int letter_spacing);
 
 		public AttrLetterSpacing (int letter_spacing) : this (pango_attr_letter_spacing_new (letter_spacing)) {}

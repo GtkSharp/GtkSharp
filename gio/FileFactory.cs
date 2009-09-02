@@ -27,7 +27,7 @@ namespace GLib
 {
 	public class FileFactory
 	{
-		[DllImport ("libgio-2.0-0.dll")]
+		[DllImport ("libgio-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		private static extern IntPtr g_file_new_for_uri (string uri);
 
 		public static File NewForUri (string uri)
@@ -40,7 +40,7 @@ namespace GLib
 			return GLib.FileAdapter.GetObject (g_file_new_for_uri (uri.ToString ()), false) as File;
 		}
 
-		[DllImport ("libgio-2.0-0.dll")]
+		[DllImport ("libgio-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		private static extern IntPtr g_file_new_for_path (string path);
 		
 		public static File NewForPath (string path)
@@ -48,7 +48,7 @@ namespace GLib
 			return GLib.FileAdapter.GetObject (g_file_new_for_path (path), false) as File;	
 		}
 
-		[DllImport ("libgio-2.0-0.dll")]
+		[DllImport ("libgio-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		private static extern IntPtr g_file_new_for_commandline_arg (string arg);
 
 		public static File NewFromCommandlineArg (string arg)

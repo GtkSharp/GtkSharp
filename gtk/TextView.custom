@@ -21,7 +21,7 @@
 // Boston, MA 02111-1307, USA.
 
 		
-		[DllImport ("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr gtk_text_view_new_with_buffer (IntPtr buffer);
 
 		public TextView (TextBuffer buffer) : base (IntPtr.Zero)
@@ -35,7 +35,7 @@
 			Raw = gtk_text_view_new_with_buffer (buffer.Handle);
 		}
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		[UnmanagedFunctionPointer (GLib.Global.CallingConvention)]
 		delegate void MoveFocusSignalDelegate (IntPtr arg0, int arg1, IntPtr gch);
 
 		static void MoveFocusSignalCallback (IntPtr arg0, int arg1, IntPtr gch)
@@ -55,7 +55,7 @@
 			}
 		}
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		[UnmanagedFunctionPointer (GLib.Global.CallingConvention)]
 		delegate void MoveFocusVMDelegate (IntPtr text_view, int direction);
 
 		static MoveFocusVMDelegate MoveFocusVMCallback;

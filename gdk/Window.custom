@@ -24,7 +24,7 @@
 
 	public Window (Gdk.Window parent, Gdk.WindowAttr attributes, Gdk.WindowAttributesType attributes_mask) : this (parent, attributes, (int)attributes_mask) {}
 
-	[DllImport("libgdk-win32-2.0-0.dll")]
+	[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 	static extern IntPtr gdk_window_get_children(IntPtr raw);
 
 	public Window[] Children {
@@ -40,7 +40,7 @@
 		}
 	}
 
-	[DllImport("libgdk-win32-2.0-0.dll")]
+	[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 	static extern void gdk_window_set_icon_list(IntPtr raw, IntPtr pixbufs);
 
 	public Pixbuf[] IconList {
@@ -52,7 +52,7 @@
 		}
 	}
 
-	[DllImport("libgdk-win32-2.0-0.dll")]
+	[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 	static extern IntPtr gdk_window_get_toplevels();
 
 	public static Window[] Toplevels {
@@ -68,10 +68,10 @@
 		}
 	}
 
-	[DllImport("libgobject-2.0-0.dll")]
+	[DllImport ("libgobject-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 	static extern IntPtr g_object_ref (IntPtr raw);
 
-	[DllImport("libgdk-win32-2.0-0.dll")]
+	[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 	static extern void gdk_window_destroy(IntPtr raw);
 
 	public void Destroy () 
@@ -95,10 +95,10 @@
 			gdk_window_clear_area (Handle, rect.X, rect.Y, rect.Width, rect.Height);
 	}
 
-	[DllImport ("libgdk-win32-2.0-0.dll")]
+	[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 	static extern void gdk_window_get_user_data (IntPtr raw, out IntPtr data);
 
-	[DllImport("libgdk-win32-2.0-0.dll")]
+	[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 	static extern void gdk_window_set_user_data(IntPtr raw, IntPtr user_data);
 	public IntPtr UserData {
 		get {
@@ -111,10 +111,10 @@
 		}
 	} 
 
-	[DllImport("libgdk-win32-2.0-0.dll")]
+	[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 	static extern void gdk_window_add_filter (IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
 
-	[DllImport("libgdk-win32-2.0-0.dll")]
+	[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 	static extern void gdk_window_remove_filter (IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
 
 	static Hashtable filter_all_hash;

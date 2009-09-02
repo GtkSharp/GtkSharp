@@ -27,7 +27,7 @@
 		// keep this around so it doesn't get GC'd
 		static GladeSharp.XMLCustomWidgetHandlerWrapper callback_wrapper = null;
 
-		[DllImport("libglade-2.0-0.dll")]
+		[DllImport ("libglade-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern void glade_set_custom_handler (GladeSharp.XMLCustomWidgetHandlerNative handler, IntPtr user_data);
 
 		public static Glade.XMLCustomWidgetHandler CustomHandler { 
@@ -69,7 +69,7 @@
 			}
 		}
 
-		[DllImport("libglade-2.0-0.dll")]
+		[DllImport ("libglade-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr glade_get_widget_name (IntPtr widget);
 
 		static public string GetWidgetName (Gtk.Widget w) {
@@ -82,7 +82,7 @@
 			return ret;
 		}
 
-		[DllImport("libglade-2.0-0.dll")]
+		[DllImport ("libglade-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr glade_get_widget_tree (IntPtr widget);
 
 		static public Glade.XML GetWidgetTree (Gtk.Widget w) {
@@ -93,7 +93,7 @@
 
 		/* a constructor that reads the XML from a Stream */
 
-		[DllImport("libglade-2.0-0.dll")]
+		[DllImport ("libglade-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr glade_xml_new_from_buffer(byte[] buffer, int size, IntPtr root, IntPtr domain);
 
 		public XML (System.IO.Stream s, string root, string domain) : base (IntPtr.Zero)
@@ -182,12 +182,12 @@
 				this.handler_type = type;
 			}
 			
-			[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+			[UnmanagedFunctionPointer (GLib.Global.CallingConvention)]
 			delegate void RawXMLConnectFunc (IntPtr handler_name, IntPtr objekt, 
 						         IntPtr signal_name, IntPtr signal_data, 
 						         IntPtr connect_object, int after, IntPtr user_data);
 			
-			[DllImport("libglade-2.0-0.dll")]
+			[DllImport ("libglade-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 			static extern void glade_xml_signal_autoconnect_full (IntPtr raw, RawXMLConnectFunc func,
 									      IntPtr user_data);
 			
@@ -417,7 +417,7 @@
                                 System.Reflection.Assembly.GetCallingAssembly (), resource_name, root, domain);
                 }
 
-		[DllImport("libglade-2.0-0.dll")]
+		[DllImport ("libglade-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr glade_xml_get_widget_prefix(IntPtr raw, IntPtr name);
 
 		public Gtk.Widget[] GetWidgetPrefix(string name) 

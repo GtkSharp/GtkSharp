@@ -1,3 +1,14 @@
+2009-09-02  Christian Hoff  <christian_hoff@gmx.net>
+
+	* glib/Global.cs: Add a public constant field specifying the
+	calling convention used by GLib and depending libraries.
+	By now it's hardcoded to Cdecl as every non-Win32 runtime
+	should ignore this attribute.
+	* *.cs, *.custom: Use GLib.Global.CallingConvention for both
+	pinvokes and callbacks. Plugs a stack leak on Win32. All
+	pinvokes defaulted to StdCall and thus the stack was never
+	cleaned up.
+
 2009-08-30  Christian Hoff  <christian_hoff@gmx.net>
 
 	Complete the major version jump. Gtk# 3 and 2 are now both

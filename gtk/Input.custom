@@ -19,10 +19,10 @@
 // Boston, MA 02111-1307, USA.
 
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern uint gtk_input_add_full(int source, int condition, InputFunctionNative function, GtkSharp.CallbackMarshalNative marshal, IntPtr data, GLib.DestroyNotify destroy);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		[UnmanagedFunctionPointer (GLib.Global.CallingConvention)]
 		delegate void InputFunctionNative(IntPtr data, int source, int condition);
 
 		class InputFunctionWrapper {

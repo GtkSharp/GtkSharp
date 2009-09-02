@@ -180,10 +180,10 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport ("libglib-2.0-0.dll")]
+		[DllImport ("libglib-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_free (IntPtr item);
 
-		[DllImport ("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_object_unref (IntPtr item);
 
 		public void Empty ()

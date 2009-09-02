@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrShape : Attribute {
 
-		[DllImport("libpango-1.0-0.dll")]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr pango_attr_shape_new (ref Pango.Rectangle ink_rect, ref Pango.Rectangle logical_rect);
 
 		public AttrShape (Pango.Rectangle ink_rect, Pango.Rectangle logical_rect) : this (pango_attr_shape_new (ref ink_rect, ref logical_rect)) {}

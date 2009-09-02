@@ -21,7 +21,7 @@
 // Boston, MA 02111-1307, USA.
 
 		
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr gtk_plug_new(uint socket_id);
 
 		public Plug (uint socket_id) : base (IntPtr.Zero)
@@ -34,7 +34,7 @@
 			Raw = gtk_plug_new(socket_id);
 		}
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr gtk_plug_new_for_display(IntPtr display, uint socket_id);
 
 		public Plug (Gdk.Display display, uint socket_id) : base (IntPtr.Zero)

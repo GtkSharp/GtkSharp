@@ -63,7 +63,7 @@ namespace GLib {
 			public IntPtr param_types;
 		}
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		[UnmanagedFunctionPointer (Global.CallingConvention)]
 		public delegate bool EmissionHookNative (ref InvocationHint hint, uint n_pvals, IntPtr pvals, IntPtr data);
 
 		public delegate bool EmissionHook (InvocationHint ihint, object[] inst_and_param_values);
@@ -388,32 +388,32 @@ namespace GLib {
 			g_signal_override_class_closure (id, gtype.Val, closure);
 		}
 
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern IntPtr g_cclosure_new (Delegate cb, IntPtr data, IntPtr notify);
 
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern IntPtr g_signal_get_invocation_hint (IntPtr instance);
 
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, ref GLib.Value return_value);
 		
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, IntPtr return_value);
 		
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern uint g_signal_lookup (IntPtr name, IntPtr itype);
 		
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_signal_override_class_closure (uint id, IntPtr gtype, IntPtr closure);
 		
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_signal_query (uint signal_id, out Query query);
 
 		//better not to expose g_quark_from_static_string () due to memory allocation issues
-		[DllImport("libglib-2.0-0.dll")]
+		[DllImport ("libglib-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern uint g_quark_from_string (IntPtr str);
 		
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern ulong g_signal_add_emission_hook (uint signal_id, uint gquark_detail, EmissionHookNative hook_func, IntPtr hook_data, IntPtr data_destroy);
 
 	}

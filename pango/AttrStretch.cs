@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrStretch : Attribute {
 
-		[DllImport("libpango-1.0-0.dll")]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern IntPtr pango_attr_stretch_new (Pango.Stretch stretch);
 
 		public AttrStretch (Pango.Stretch stretch) : this (pango_attr_stretch_new (stretch)) {}

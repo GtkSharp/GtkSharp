@@ -28,7 +28,7 @@ namespace Gtk {
 
 		static Hashtable wrappers = new Hashtable ();
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern uint gtk_key_snooper_install (GtkSharp.KeySnoopFuncNative snooper, IntPtr func_data);
 
 		public static uint SnooperInstall (Gtk.KeySnoopFunc snooper) 
@@ -39,7 +39,7 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
 		static extern void gtk_key_snooper_remove (uint snooper_handler_id);
 
 		public static void SnooperRemove (uint snooper_handler_id) 

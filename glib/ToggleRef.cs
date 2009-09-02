@@ -120,7 +120,7 @@ namespace GLib {
 			}
 		}
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		[UnmanagedFunctionPointer (Global.CallingConvention)]
 		delegate void ToggleNotifyHandler (IntPtr data, IntPtr handle, bool is_last_ref);
 
 		static void RefToggled (IntPtr data, IntPtr handle, bool is_last_ref)
@@ -143,16 +143,16 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_object_add_toggle_ref (IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
 
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_object_remove_toggle_ref (IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
 
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern IntPtr g_object_ref (IntPtr raw);
 
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_object_unref (IntPtr raw);
 
 	}

@@ -22,7 +22,7 @@ namespace GLib {
 	public delegate void NotifyHandler (object o, NotifyArgs args);
 
 	public class NotifyArgs : GLib.SignalArgs {
-		[DllImport("libgobject-2.0-0.dll")]
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern IntPtr g_param_spec_get_name (IntPtr pspec);
 
 		public string Property {

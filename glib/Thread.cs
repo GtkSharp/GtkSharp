@@ -28,7 +28,7 @@ namespace GLib
 	{
 		private Thread () {}
 		
-		[DllImport("libgthread-2.0-0.dll")]
+		[DllImport ("libgthread-2.0-0.dll", CallingConvention = Global.CallingConvention)]
 		static extern void g_thread_init (IntPtr i);
 
 		public static void Init ()
