@@ -20,7 +20,7 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool pango_scan_int(IntPtr pos, out int out_param);
 
 		[Obsolete]
@@ -32,7 +32,7 @@
 			return ret;
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool pango_parse_markup (IntPtr markup, int length, uint accel_marker, out IntPtr attr_list_handle, out IntPtr text, out uint accel_char, IntPtr err);
 
 		public static bool ParseMarkup (string markup, char accel_marker, out Pango.AttrList attrs, out string text, out char accel_char)

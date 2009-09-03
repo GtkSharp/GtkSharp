@@ -19,10 +19,10 @@
 // Boston, MA 02111-1307, USA.
 
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
                 static extern void g_free(IntPtr ptr);
 
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gdk_keymap_get_entries_for_keycode(IntPtr raw, uint hardware_keycode, out IntPtr keys, out IntPtr keyvals, out int n_entries);
 
 		public void GetEntriesForKeycode(uint hardware_keycode, out Gdk.KeymapKey[] keys, out uint[] keyvals) 
@@ -47,7 +47,7 @@
 			}
 		}
 
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gdk_keymap_get_entries_for_keyval(IntPtr raw, uint keyval, out IntPtr keys, out int n_keys);
 
 		public KeymapKey[] GetEntriesForKeyval (uint keyval) 

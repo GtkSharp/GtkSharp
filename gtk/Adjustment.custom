@@ -18,7 +18,7 @@
 // Boston, MA 02111-1307, USA.
 //
 
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr gtk_adjustment_new(double value, double lower, double upper, double step_increment, double page_increment, double page_size);
 
 public Adjustment (double value, double lower, double upper, double step_increment, double page_increment, double page_size) : base (IntPtr.Zero)
@@ -37,10 +37,10 @@ public Adjustment (double value, double lower, double upper, double step_increme
 	Raw = gtk_adjustment_new(value, lower, upper, step_increment, page_increment, page_size);
 }
 
-[DllImport ("libgobject-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern void g_object_freeze_notify (IntPtr inst);
 
-[DllImport ("libgobject-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern void g_object_thaw_notify (IntPtr inst);
 
 public void SetBounds (double lower, double upper, double step_increment, double page_increment, double page_size)

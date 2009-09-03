@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrStrikethrough : Attribute {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_strikethrough_new (bool strikethrough);
 
 		public AttrStrikethrough (bool strikethrough) : this (pango_attr_strikethrough_new (strikethrough)) {}

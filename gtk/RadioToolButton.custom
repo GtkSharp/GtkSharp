@@ -21,7 +21,7 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_tool_button_new (IntPtr group);
 
 		public RadioToolButton (GLib.SList group) : base (IntPtr.Zero)
@@ -34,7 +34,7 @@
 			Raw = gtk_radio_tool_button_new(group == null ? IntPtr.Zero : group.Handle);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_tool_button_new_from_stock (IntPtr group, IntPtr stock_id);
 
 		public RadioToolButton (GLib.SList group, string stock_id) : base (IntPtr.Zero)

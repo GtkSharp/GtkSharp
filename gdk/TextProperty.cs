@@ -26,10 +26,10 @@ namespace Gdk {
 
 	public class TextProperty {
 
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_free_text_list(IntPtr ptr);
 
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern int gdk_text_property_to_utf8_list(IntPtr encoding, int format, byte[] text, int length, out IntPtr list);
 
 		public static string[] ToStringList (Gdk.Atom encoding, int format, byte[] text, int length) 
@@ -49,7 +49,7 @@ namespace Gdk {
 			return result;
 		}
 
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern int gdk_text_property_to_utf8_list_for_display(IntPtr display, IntPtr encoding, int format, byte[] text, int length, out IntPtr list);
 
 		public static string[] ToStringListForDisplay (Gdk.Display display, Gdk.Atom encoding, int format, byte[] text, int length) 

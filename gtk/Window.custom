@@ -26,10 +26,10 @@
 			this.Title = title;
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_window_get_default_icon_list();
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_window_set_default_icon_list(IntPtr list);
 
 		public static Gdk.Pixbuf[] DefaultIconList {
@@ -51,10 +51,10 @@
 			}
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_window_get_icon_list(IntPtr raw);
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_window_set_icon_list(IntPtr raw, IntPtr list);
 
 		public Gdk.Pixbuf[] IconList {
@@ -86,7 +86,7 @@
 			}
 		}
 
-		[UnmanagedFunctionPointer (GLib.Global.CallingConvention)]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void MoveFocusSignalDelegate (IntPtr arg0, int arg1, IntPtr gch);
 
 		static void MoveFocusSignalCallback (IntPtr arg0, int arg1, IntPtr gch)
@@ -106,7 +106,7 @@
 			}
 		}
 
-		[UnmanagedFunctionPointer (GLib.Global.CallingConvention)]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void MoveFocusVMDelegate (IntPtr window, int direction);
 
 		static MoveFocusVMDelegate MoveFocusVMCallback;

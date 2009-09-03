@@ -24,7 +24,7 @@ public void DrawRectangle(Gdk.GC gc, bool filled, Gdk.Rectangle area)
 	gdk_draw_rectangle(Handle, gc.Handle, filled, area.X, area.Y, area.Width, area.Height);
 }
 
-[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern void gdk_draw_polygon(IntPtr raw, IntPtr gc, int filled, Gdk.Point[] points, int npoints);
 
 [Obsolete]
@@ -38,7 +38,7 @@ public void DrawPolygon(Gdk.GC gc, bool filled, Gdk.Point[] points)
 	gdk_draw_polygon(Handle, gc.Handle, filled ? 1 : 0, points, points.Length);
 }
 
-[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern void gdk_draw_lines(IntPtr raw, IntPtr gc, Gdk.Point[] points, int npoints);
 
 public void DrawLines(Gdk.GC gc, Gdk.Point[] points)
@@ -46,10 +46,10 @@ public void DrawLines(Gdk.GC gc, Gdk.Point[] points)
 	gdk_draw_lines(Handle, gc.Handle, points, points.Length);
 }
 
-[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr gdk_x11_drawable_get_xdisplay (IntPtr raw);
 
-[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr gdk_x11_drawable_get_xid (IntPtr raw);
 
 #if MANLY_ENOUGH_TO_INCLUDE

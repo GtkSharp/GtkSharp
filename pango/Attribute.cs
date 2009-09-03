@@ -97,7 +97,7 @@ namespace Pango {
 			Dispose ();
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_attribute_destroy (IntPtr raw);
 
 		public void Dispose ()
@@ -153,14 +153,14 @@ namespace Pango {
 			}
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attribute_copy (IntPtr raw);
 
 		public Pango.Attribute Copy () {
 			return GetAttribute (pango_attribute_copy (raw));
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool pango_attribute_equal (IntPtr raw1, IntPtr raw2);
 
 		public bool Equal (Pango.Attribute attr2) {

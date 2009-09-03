@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrBackground : Attribute {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_background_new (ushort red, ushort green, ushort blue);
 
 		public AttrBackground (ushort red, ushort green, ushort blue) : this (pango_attr_background_new (red, green, blue)) {}

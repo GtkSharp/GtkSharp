@@ -26,12 +26,12 @@
 			return GetGeometry (out junk, out area, out orientation);
 		}
 
-		[UnmanagedFunctionPointer (GLib.Global.CallingConvention)]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void MenuPositionFuncNative (IntPtr menu, out int x, out int y, out bool push_in, IntPtr user_data);
 
 		static MenuPositionFuncNative StatusIconPositionMenuFunc = null;
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_menu_popup (IntPtr menu,  IntPtr parent_menu_shell, IntPtr parent_menu_item, MenuPositionFuncNative func, IntPtr data, uint button, uint activate_time);
 
 		public void PresentMenu (Menu menu, uint button, uint activate_time) 

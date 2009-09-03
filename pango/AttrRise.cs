@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrRise : Attribute {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_rise_new (int rise);
 
 		public AttrRise (int rise) : this (pango_attr_rise_new (rise)) {}

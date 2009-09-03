@@ -21,7 +21,7 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr pango_layout_get_lines(IntPtr raw);
 
 public LayoutLine[] Lines {
@@ -37,7 +37,7 @@ public LayoutLine[] Lines {
 	}
 }
 
-[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern void pango_layout_set_markup_with_accel (IntPtr raw, IntPtr markup, int length, uint accel_marker, out uint accel_char);
 
 public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char)
@@ -49,10 +49,10 @@ public void SetMarkupWithAccel (string markup, char accel_marker, out char accel
 	accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
 }
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_free (IntPtr raw);
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_layout_get_log_attrs (IntPtr raw, out IntPtr attrs, out int n_attrs);
 
 		public LogAttr [] LogAttrs {
@@ -73,7 +73,7 @@ public void SetMarkupWithAccel (string markup, char accel_marker, out char accel
 			}
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_layout_set_text (IntPtr raw, IntPtr text, int length);
 
 		public void SetText (string text) 
@@ -83,7 +83,7 @@ public void SetMarkupWithAccel (string markup, char accel_marker, out char accel
 			GLib.Marshaller.Free (native_text);
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_layout_set_markup (IntPtr raw, IntPtr markup, int length);
 
 		public void SetMarkup (string markup) 

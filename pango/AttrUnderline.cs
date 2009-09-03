@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrUnderline : Attribute {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_underline_new (Pango.Underline underline);
 
 		public AttrUnderline (Pango.Underline underline) : this (pango_attr_underline_new (underline)) {}

@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrWeight : Attribute {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_weight_new (Pango.Weight weight);
 
 		public AttrWeight (Pango.Weight weight) : this (pango_attr_weight_new (weight)) {}

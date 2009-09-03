@@ -26,7 +26,7 @@ namespace Gtk {
 
 	public class StockManager {
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_stock_add_static(ref Gtk.StockItem items, uint n_items);
 
 		[Obsolete ("Use StockManager.Add instead")]
@@ -55,7 +55,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_stock_lookup (IntPtr stock_id, out ConstStockItem item);
 
 		public static bool Lookup (string stock_id, ref Gtk.StockItem item) 
@@ -76,10 +76,10 @@ namespace Gtk {
 			return Lookup (stock_id, ref item);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_stock_add(ref Gtk.StockItem item, uint n_items);
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_stock_add(Gtk.StockItem[] items, uint n_items);
 
 		[Obsolete ("Use the StockItem or StockItem[] overload instead.")]

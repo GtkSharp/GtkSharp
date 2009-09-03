@@ -60,7 +60,7 @@ public void AddAccelerator (string accel_signal, AccelGroup accel_group, AccelKe
 
 }
 
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern void gtk_widget_set_state (IntPtr raw, int state);
 
 [DllImport("gtksharpglue-3")]
@@ -178,13 +178,13 @@ struct GClosure {
 	IntPtr notifiers;
 }
 
-[UnmanagedFunctionPointer (GLib.Global.CallingConvention)]
+[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 delegate void ClosureMarshal (IntPtr closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data);
 
-[DllImport ("libgobject-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr g_closure_new_simple (int closure_size, IntPtr dummy);
 
-[DllImport ("libgobject-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern void g_closure_set_marshal (IntPtr closure, ClosureMarshal marshaler);
 
 static IntPtr CreateClosure (ClosureMarshal marshaler) {
@@ -193,7 +193,7 @@ static IntPtr CreateClosure (ClosureMarshal marshaler) {
 	return raw_closure;
 }
 
-[DllImport ("libgobject-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern uint g_signal_newv (IntPtr signal_name, IntPtr gtype, GLib.Signal.Flags signal_flags, IntPtr closure, IntPtr accumulator, IntPtr accu_data, IntPtr c_marshaller, IntPtr return_type, uint n_params, [MarshalAs (UnmanagedType.LPArray)] IntPtr[] param_types);
 
 static uint RegisterSignal (string signal_name, GLib.GType gtype, GLib.Signal.Flags signal_flags, GLib.GType return_type, GLib.GType[] param_types, ClosureMarshal marshaler)
@@ -303,7 +303,7 @@ private class BindingInvoker {
 */
 static ArrayList binding_invokers;
 
-[DllImport ("libgobject-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern int g_value_get_long (ref GLib.Value val);
 
 static void BindingMarshal_cb (IntPtr raw_closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data)
@@ -331,10 +331,10 @@ static ClosureMarshal BindingDelegate {
 	}
 }
 
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr gtk_binding_set_by_class (IntPtr class_ptr);
 
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern void gtk_binding_entry_add_signall (IntPtr binding_set, uint keyval, Gdk.ModifierType modifiers, IntPtr signal_name, IntPtr binding_args);
 
 [StructLayout(LayoutKind.Sequential)]
@@ -400,10 +400,10 @@ public object StyleGetProperty (string property_name)
 	return ret;
 }
 
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr gtk_widget_class_find_style_property (IntPtr class_ptr, IntPtr property_name);
 
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr gtk_widget_style_get_property (IntPtr inst, IntPtr property_name, ref GLib.Value value);
 
 internal GLib.Value StyleGetPropertyValue (string property_name)
@@ -422,7 +422,7 @@ internal GLib.Value StyleGetPropertyValue (string property_name)
 	}
 }
 
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr gtk_widget_list_mnemonic_labels (IntPtr raw);
 
 public Widget[] ListMnemonicLabels ()

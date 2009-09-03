@@ -23,10 +23,10 @@ namespace Pango {
 
 	public class AttrFontDesc : Attribute {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_font_desc_new (IntPtr font_desc);
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_font_description_copy(IntPtr raw);
 
 		public AttrFontDesc (Pango.FontDescription font_desc) : this (pango_attr_font_desc_new (pango_font_description_copy (font_desc.Handle))) {}

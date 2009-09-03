@@ -25,7 +25,7 @@
 		[DllImport("gdksharpglue-3")]
 		static extern DeviceKey gtksharp_gdk_device_get_device_key (IntPtr device, uint axis);
 
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
                 static extern void gdk_device_get_state(IntPtr device, IntPtr window, double [] axes, out int maskAsInt);
 
 		
@@ -44,10 +44,10 @@
 			return gtksharp_gdk_device_get_device_key (Handle, axis);
 		}
 
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
                 static extern void gdk_device_free_history(IntPtr events, int n_events);
 
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
                 static extern bool gdk_device_get_history(IntPtr device, IntPtr window, uint start, uint stop, out IntPtr events, out int n_events);
 
 		public TimeCoord[] GetHistory (Gdk.Window window, uint start, uint stop)

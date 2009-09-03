@@ -53,10 +53,10 @@ public IEnumerable AllChildren {
 	}
 }
 
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern bool gtk_container_get_focus_chain (IntPtr raw, out IntPtr list_ptr);
 
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = GLib.Global.CallingConvention)]
+[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern void gtk_container_set_focus_chain (IntPtr raw, IntPtr list_ptr);
 
 public Widget[] FocusChain {
@@ -90,7 +90,7 @@ static extern void gtksharp_container_override_forall (IntPtr gtype, ForallDeleg
 [DllImport("gtksharpglue-3")]
 static extern void gtksharp_container_invoke_gtk_callback (IntPtr cb, IntPtr handle, IntPtr data);
 
-[UnmanagedFunctionPointer (GLib.Global.CallingConvention)]
+[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 delegate void ForallDelegate (IntPtr container, bool include_internals, IntPtr cb, IntPtr data);
 
 static ForallDelegate ForallOldCallback;
