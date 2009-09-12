@@ -22,7 +22,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe cairo-sample.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
+TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe cairo-sample.exe native-instantiation.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -54,6 +54,9 @@ subclass.exe: $(srcdir)/Subclass.cs $(assemblies)
 
 menu.exe: $(srcdir)/Menu.cs $(assemblies)
 	$(CSC)  /out:menu.exe $(references) $(srcdir)/Menu.cs
+
+native-instantiation.exe: $(srcdir)/NativeInstantiationTest.cs $(assemblies)
+	$(CSC)  /out:native-instantiation.exe $(references) $(srcdir)/NativeInstantiationTest.cs
 
 size.exe: $(srcdir)/Size.cs $(assemblies)
 	$(CSC)  /out:size.exe $(references) $(srcdir)/Size.cs

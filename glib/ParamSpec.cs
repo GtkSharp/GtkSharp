@@ -28,17 +28,18 @@ namespace GLib {
 		None = 0,
 		Readable = 1 << 0,
 		Writable = 1 << 1,
+		Construct = 1 << 2,
+		ConstructOnly = 1 << 3,
 	}
 
 	public class ParamSpec {
 
 		IntPtr handle;
 
-		public ParamSpec (string name, string nick, string blurb, GType type, bool readable, bool writable)
+		public ParamSpec (string name, string nick, string blurb, GType type, bool readable, bool writable) : this (name, nick, blurb, type, (readable ? ParamFlags.Readable : ParamFlags.None) | (writable ? ParamFlags.Writable : ParamFlags.None)) {}
+
+		internal ParamSpec (string name, string nick, string blurb, GType type, ParamFlags pflags)
 		{
-			ParamFlags pflags = ParamFlags.None;
-			if (readable) pflags |= ParamFlags.Readable;
-			if (writable) pflags |= ParamFlags.Writable;
 			int flags = (int) pflags;
 
 			IntPtr p_name = GLib.Marshaller.StringToPtrGStrdup (name);

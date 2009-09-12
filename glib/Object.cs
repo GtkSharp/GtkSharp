@@ -192,7 +192,7 @@ namespace GLib {
 		struct GObjectClass {
 			GTypeClass type_class;
 			IntPtr construct_props;
-			IntPtr constructor_cb;
+			public ConstructorDelegate constructor_cb;
 			public SetPropertyDelegate set_prop_cb;
 			public GetPropertyDelegate get_prop_cb;
 			IntPtr dispose;
@@ -209,13 +209,49 @@ namespace GLib {
 			IntPtr dummy7;
 		}
 
-		static void OverridePropertyHandlers (GType gtype, GetPropertyDelegate get_cb, SetPropertyDelegate set_cb)
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		delegate IntPtr ConstructorDelegate (IntPtr gtype, uint n_construct_properties, IntPtr construct_properties);
+
+		static ConstructorDelegate constructor_handler;
+
+		static ConstructorDelegate ConstructorHandler {
+			get {
+				if (constructor_handler == null)
+					constructor_handler = new ConstructorDelegate (ConstructorCallback);
+				return constructor_handler;
+			}
+		}
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_param_spec_get_name (IntPtr pspec);
+
+		static IntPtr ConstructorCallback (IntPtr gtypeval, uint n_construct_properties, IntPtr construct_properties)
 		{
-			IntPtr class_ptr = gtype.GetClassPtr ();
-			GObjectClass klass = (GObjectClass) Marshal.PtrToStructure (class_ptr, typeof (GObjectClass));
-			klass.get_prop_cb = get_cb;
-			klass.set_prop_cb = set_cb;
-			Marshal.StructureToPtr (klass, class_ptr, false);
+			GType gtype = new GLib.GType (gtypeval);
+			GObjectClass threshold_class = (GObjectClass) Marshal.PtrToStructure (gtype.GetThresholdType ().GetClassPtr (), typeof (GObjectClass));
+			IntPtr raw = threshold_class.constructor_cb (gtypeval, n_construct_properties, construct_properties);
+			bool construct_needed = true;
+			for (int i = 0; i < n_construct_properties; i++) {
+				IntPtr p = new IntPtr (construct_properties.ToInt64 () + i * 2 * IntPtr.Size);
+
+				string prop_name = Marshaller.Utf8PtrToString (g_param_spec_get_name (Marshal.ReadIntPtr (p)));
+				if (prop_name != "gtk-sharp-managed-instance")
+					continue;
+
+				Value val = (Value) Marshal.PtrToStructure (Marshal.ReadIntPtr (p, IntPtr.Size), typeof (Value));
+				if ((IntPtr) val.Val != IntPtr.Zero) {
+					GCHandle gch = (GCHandle) (IntPtr) val.Val;
+					Object o = (GLib.Object) gch.Target;
+					o.Raw = raw;
+					construct_needed = false;
+					break;
+				}
+			}
+
+			if (construct_needed)
+				GetObject (raw, false);
+
+			return raw;
 		}
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -230,22 +266,32 @@ namespace GLib {
 			return pspec.Handle;
 		}
 
-		static void AddProperties (GType gtype, System.Type t)
+		static void AddProperties (GType gtype, System.Type t, bool register_instance_prop)
 		{
 			uint idx = 1;
 			
-			bool handlers_overridden = false;
+			if (register_instance_prop) {
+				IntPtr declaring_class = gtype.GetClassPtr ();
+				ParamSpec pspec = new ParamSpec ("gtk-sharp-managed-instance", "", "", GType.Pointer, ParamFlags.Writable | ParamFlags.ConstructOnly);
+				g_object_class_install_property (declaring_class, idx, pspec.Handle);
+				idx++;				
+			}
+
+			bool handlers_overridden = register_instance_prop;
 			foreach (PropertyInfo pinfo in t.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
 				foreach (object attr in pinfo.GetCustomAttributes (typeof (PropertyAttribute), false)) {
 					if(pinfo.GetIndexParameters().Length > 0)
 						throw(new InvalidOperationException(String.Format("GLib.RegisterPropertyAttribute cannot be applied to property {0} of type {1} because the property expects one or more indexed parameters", pinfo.Name, t.FullName)));
 					
-					PropertyAttribute property_attr = attr as PropertyAttribute;
 					if (!handlers_overridden) {
-						OverridePropertyHandlers (gtype, GetPropertyHandler, SetPropertyHandler);
+						IntPtr class_ptr = gtype.GetClassPtr ();
+						GObjectClass gobject_class = (GObjectClass) Marshal.PtrToStructure (class_ptr, typeof (GObjectClass));
+						gobject_class.get_prop_cb = GetPropertyHandler;
+						gobject_class.set_prop_cb = SetPropertyHandler;
+						Marshal.StructureToPtr (gobject_class, class_ptr, false);
 						handlers_overridden = true;
 					}
-
+					PropertyAttribute property_attr = attr as PropertyAttribute;
 					try {
 						IntPtr param_spec = RegisterProperty (gtype, property_attr.Name, property_attr.Nickname, property_attr.Blurb, idx, (GType) pinfo.PropertyType, pinfo.CanRead, pinfo.CanWrite);
 						Properties.Add (param_spec, pinfo);
@@ -262,6 +308,9 @@ namespace GLib {
 
 		static void GetPropertyCallback (IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
 		{
+			if (!Properties.Contains (param_spec))
+				return;
+
 			GLib.Object obj = GLib.Object.GetObject (handle, false);
 			value.Val = (Properties [param_spec] as PropertyInfo).GetValue (obj, new object [0]);
 		}
@@ -280,6 +329,9 @@ namespace GLib {
 
 		static void SetPropertyCallback(IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
 		{
+			if (!Properties.Contains (param_spec))
+				return;
+
 			GLib.Object obj = GLib.Object.GetObject (handle, false);
 			(Properties [param_spec] as PropertyInfo).SetValue (obj, value.Val, new object [0]);
 		}
@@ -313,13 +365,21 @@ namespace GLib {
 		protected internal static GType RegisterGType (System.Type t)
 		{
 			GType gtype = GType.RegisterGObjectType (t);
-			AddProperties (gtype, t);
+			bool is_first_subclass = gtype.GetBaseType () == gtype.GetThresholdType ();
+			if (is_first_subclass) {
+				IntPtr class_ptr = gtype.GetClassPtr ();
+				GObjectClass gobject_class = (GObjectClass) Marshal.PtrToStructure (class_ptr, typeof (GObjectClass));
+				gobject_class.constructor_cb = ConstructorHandler;
+				gobject_class.get_prop_cb = GetPropertyHandler;
+				gobject_class.set_prop_cb = SetPropertyHandler;
+				Marshal.StructureToPtr (gobject_class, class_ptr, false);
+			}
+			AddProperties (gtype, t, is_first_subclass);
 			ConnectDefaultHandlers (gtype, t);
 			InvokeClassInitializers (gtype, t);
 			AddInterfaces (gtype, t);
 			return gtype;
 		}
-
 
 		protected GType LookupGType ()
 		{
@@ -360,12 +420,24 @@ namespace GLib {
 
 		protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
-			GParameter[] parms = new GParameter [names.Length];
+			GType gtype = LookupGType ();
+			bool is_managed_subclass = gtype.ToString ().StartsWith ("__gtksharp");
+			GParameter[] parms = new GParameter [is_managed_subclass ? names.Length + 1 : names.Length];
 			for (int i = 0; i < names.Length; i++) {
 				parms [i].name = GLib.Marshaller.StringToPtrGStrdup (names [i]);
 				parms [i].val = vals [i];
 			}
-			Raw = g_object_newv (LookupGType ().Val, parms.Length, parms);
+
+			if (is_managed_subclass) {
+				GCHandle gch = GCHandle.Alloc (this);
+				parms[names.Length].name = GLib.Marshaller.StringToPtrGStrdup ("gtk-sharp-managed-instance");
+				parms[names.Length].val = new GLib.Value ((IntPtr) gch);
+				Raw = g_object_newv (gtype.Val, parms.Length, parms);
+				gch.Free ();
+			} else {
+				Raw = g_object_newv (gtype.Val, parms.Length, parms);
+			}
+
 			foreach (GParameter p in parms)
 				GLib.Marshaller.Free (p.name);
 		}
