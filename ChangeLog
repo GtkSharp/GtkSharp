@@ -1,3 +1,12 @@
+2009-09-22  Brad Taylor  <brad@getcoded.net>
+
+	* glib/Idle.cs: 
+	* glib/Timeout.cs: Make sure to remove the unmanaged reference to the
+	delegate when we're disposed or finalized.  In particular, this fixes a
+	problem where GLib.Object's PerformQueuedUnrefs was being called after
+	both the object and the handler had been GC'ed, resulting in a
+	segfault.
+
 2009-09-16  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/Gtk.metadata: hide StatusIcon.GetGeometry for custom impl.

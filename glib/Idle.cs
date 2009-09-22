@@ -45,6 +45,25 @@ namespace GLib {
 				proxy_handler = new IdleHandlerInternal (Handler);
 			}
 
+			~IdleProxy ()
+			{
+				Dispose (false);
+			}
+
+			public void Dispose ()
+			{
+				Dispose (true);
+				GC.SuppressFinalize (this);
+			}
+
+			protected virtual void Dispose (bool disposing)
+			{
+				if (disposing)
+					Remove ();
+				
+				Source.Remove (ID);
+			}
+
 			public bool Handler ()
 			{
 				try {
