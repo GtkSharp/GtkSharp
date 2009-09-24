@@ -303,9 +303,6 @@ private class BindingInvoker {
 */
 static ArrayList binding_invokers;
 
-[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-static extern int g_value_get_long (ref GLib.Value val);
-
 static void BindingMarshal_cb (IntPtr raw_closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data)
 {
 	try {
@@ -315,7 +312,7 @@ static void BindingMarshal_cb (IntPtr raw_closure, IntPtr return_val, uint n_par
 			inst_and_params [idx] = (GLib.Value) Marshal.PtrToStructure (new IntPtr (param_values.ToInt64 () + idx * gvalue_size), typeof (GLib.Value));
 
 		Widget w = inst_and_params [0].Val as Widget;
-		BindingInvoker invoker = binding_invokers [g_value_get_long (ref inst_and_params [1])] as BindingInvoker;
+		BindingInvoker invoker = binding_invokers [(int) (long) inst_and_params [1]] as BindingInvoker;
 		invoker.Invoke (w);
 	} catch (Exception e) {
 		GLib.ExceptionManager.RaiseUnhandledException (e, false);
