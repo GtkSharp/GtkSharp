@@ -39,6 +39,20 @@ namespace GLib {
 			public IntPtr Msg;
 		}
 
+		public int Code {
+			get {
+				GError err = (GError) Marshal.PtrToStructure (errptr, typeof (GError));
+				return err.Code;
+			}
+		}
+
+		public int Domain {
+			get {
+				GError err = (GError) Marshal.PtrToStructure (errptr, typeof (GError));
+				return err.Domain;
+			}
+		}
+
 		public override string Message {
 			get {
 				GError err = (GError) Marshal.PtrToStructure (errptr, typeof (GError));
