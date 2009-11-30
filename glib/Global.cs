@@ -31,6 +31,20 @@ namespace GLib {
 		//this is a static class
 		private Global () {}
 
+		internal static bool IsWindowsPlatform {
+			get {
+				switch (Environment.OSVersion.Platform) {
+				case PlatformID.Win32NT:
+				case PlatformID.Win32S:
+				case PlatformID.Win32Windows:
+				case PlatformID.WinCE:
+					return true;
+				default:
+					return false;
+				}
+			}
+		}
+
 		public static string ProgramName {
 			get {
 				return GLib.Marshaller.PtrToStringGFree(g_get_prgname());

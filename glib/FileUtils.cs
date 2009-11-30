@@ -30,14 +30,22 @@ namespace GLib {
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static bool g_file_get_contents (IntPtr filename, out IntPtr contents, out int length, out IntPtr error);
 
+		[DllImport("libglib-2.0-0.dll")]
+		extern static bool g_file_get_contents_utf8 (IntPtr filename, out IntPtr contents, out int length, out IntPtr error);
+
 		public static string GetFileContents (string filename)
 		{
 			int length;
 			IntPtr contents, error;
 			IntPtr native_filename = Marshaller.StringToPtrGStrdup (filename);
 
-			if (!g_file_get_contents (native_filename, out contents, out length, out error))
-				throw new GException (error);
+			if (Global.IsWindowsPlatform) {
+				if (!g_file_get_contents_utf8 (native_filename, out contents, out length, out error))
+					throw new GException (error);
+			} else {
+				if (!g_file_get_contents (native_filename, out contents, out length, out error))
+					throw new GException (error);
+			}
 
 			Marshaller.Free (native_filename);
 			return Marshaller.Utf8PtrToString (contents);

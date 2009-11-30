@@ -36,15 +36,30 @@ public class FSButton : Gtk.Button {
 	}
 }
 	
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+[DllImport("libgtk-win32-2.0-0.dll")]
 static extern IntPtr gtk_file_selection_get_selections (IntPtr handle);
 
-[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern IntPtr gtk_file_selection_get_selections_utf8 (IntPtr handle);
+
+[DllImport("libglib-2.0-0.dll")]
 static extern void g_strfreev (IntPtr handle);
 
 public string[] Selections {
 	get {
-		IntPtr strv = gtk_file_selection_get_selections (Handle);
+		IntPtr strv;
+
+		switch (Environment.OSVersion.Platform) {
+		case PlatformID.Win32NT:
+		case PlatformID.Win32S:
+		case PlatformID.Win32Windows:
+		case PlatformID.WinCE:
+			strv = gtk_file_selection_get_selections_utf8 (Handle);
+			break;
+		default:
+			strv = gtk_file_selection_get_selections (Handle);
+			break;
+		}
 
 		System.Collections.ArrayList result = new System.Collections.ArrayList ();
 

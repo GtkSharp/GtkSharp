@@ -34,6 +34,7 @@ namespace GtkSharp.Generation {
 		private string call;
 		private bool is_get, is_set;
 		private bool deprecated = false;
+		private bool win32_utf8_variant = false;
 
 		public Method (XmlElement elem, ClassBase container_type) : base (elem, container_type)
 		{
@@ -44,8 +45,17 @@ namespace GtkSharp.Generation {
 				deprecated = attr == "1" || attr == "true";
 			}
 			
+			if (elem.HasAttribute ("win32_utf8_variant")) {
+				string attr = elem.GetAttribute ("win32_utf8_variant");
+				win32_utf8_variant = attr == "1" || attr.ToLower () == "true";
+			}
+
 			if (Name == "GetType")
 				Name = "GetGType";
+		}
+
+		public bool HasWin32Utf8Variant {
+			get { return win32_utf8_variant; }
 		}
 
 		public bool IsDeprecated {
@@ -191,6 +201,15 @@ namespace GtkSharp.Generation {
 			else
 				sw.WriteLine("\t\tstatic extern " + Safety + retval.MarshalType + " " + CName + "(" + import_sig + ");");
 			sw.WriteLine();
+
+			if (HasWin32Utf8Variant) {
+				sw.WriteLine("\t\t[DllImport(\"" + LibraryName + "\")]");
+				if (retval.MarshalType.StartsWith ("[return:"))
+					sw.WriteLine("\t\t" + retval.MarshalType + " static extern " + Safety + retval.CSType + " " + CName + "_utf8(" + import_sig + ");");
+				else
+					sw.WriteLine("\t\tstatic extern " + Safety + retval.MarshalType + " " + CName + "_utf8(" + import_sig + ");");
+				sw.WriteLine();
+			}
 		}
 
 		public void Generate (GenerationInfo gen_info, ClassBase implementor)
@@ -271,12 +290,31 @@ namespace GtkSharp.Generation {
 				Body.InitAccessor (sw, Signature, indent);
 			Body.Initialize(gen_info, is_get, is_set, indent);
 
-			sw.Write(indent + "\t\t\t");
-			if (retval.IsVoid)
-				sw.WriteLine(CName + call + ";");
-			else {
-				sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
-				sw.WriteLine(indent + "\t\t\t" + retval.CSType + " ret = " + retval.FromNative ("raw_ret") + ";");
+			if (HasWin32Utf8Variant) {
+				if (!retval.IsVoid)
+					sw.WriteLine(indent + "\t\t\t" + retval.MarshalType + " raw_ret;");
+				sw.WriteLine(indent + "\t\t\t" + "if (Environment.OSVersion.Platform == PlatformID.Win32NT ||");
+				sw.WriteLine(indent + "\t\t\t" + "    Environment.OSVersion.Platform == PlatformID.Win32S ||");
+				sw.WriteLine(indent + "\t\t\t" + "    Environment.OSVersion.Platform == PlatformID.Win32Windows ||");
+				sw.WriteLine(indent + "\t\t\t" + "    Environment.OSVersion.Platform == PlatformID.WinCE)");
+				if (retval.IsVoid) {
+					sw.WriteLine(indent + "\t\t\t\t" + CName + "_utf8" + call + ";");
+					sw.WriteLine(indent + "\t\t\t" + "else");
+					sw.WriteLine(indent + "\t\t\t\t" + CName + call + ";");
+				} else {
+					sw.WriteLine(indent + "\t\t\t\traw_ret = " + CName + "_utf8" + call + ";");
+					sw.WriteLine(indent + "\t\t\t" + "else");
+					sw.WriteLine(indent + "\t\t\t\traw_ret = " + CName + call + ";");
+					sw.WriteLine(indent + "\t\t\t" + retval.CSType + " ret = " + retval.FromNative ("raw_ret") + ";");
+				}
+			} else {
+				sw.Write(indent + "\t\t\t");
+				if (retval.IsVoid)
+					sw.WriteLine(CName + call + ";");
+				else {
+					sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
+					sw.WriteLine(indent + "\t\t\t" + retval.CSType + " ret = " + retval.FromNative ("raw_ret") + ";");
+				}
 			}
 
 			if (!IsStatic && implementor != null)

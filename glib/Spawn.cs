@@ -113,6 +113,9 @@ namespace GLib {
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_spawn_async (IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, out IntPtr error);
 
+		[DllImport ("libglib-2.0-0.dll")]
+		static extern bool g_spawn_async_utf8 (IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, out IntPtr error);
+
 		public static bool SpawnAsync (string working_directory, string[] argv, string[] envp, SpawnFlags flags, SpawnChildSetupFunc child_setup, out Process child_process)
 		{
 			int pid;
@@ -121,7 +124,13 @@ namespace GLib {
 			IntPtr[] native_argv = Marshaller.StringArrayToNullTermPointer (argv);
 			IntPtr[] native_envp = Marshaller.StringArrayToNullTermPointer (envp);
 			SpawnChildSetupWrapper wrapper = new SpawnChildSetupWrapper (child_setup);
-			bool result = g_spawn_async (native_dir, native_argv, native_envp, (int) flags, wrapper.NativeCallback, wrapper.Data, out pid, out error);
+			bool result;
+
+			if (Global.IsWindowsPlatform)
+				result = g_spawn_async_utf8 (native_dir, native_argv, native_envp, (int) flags, wrapper.NativeCallback, wrapper.Data, out pid, out error);
+			else
+				result = g_spawn_async (native_dir, native_argv, native_envp, (int) flags, wrapper.NativeCallback, wrapper.Data, out pid, out error);
+
 			child_process = new Process (pid);
 			Marshaller.Free (native_dir);
 			Marshaller.Free (native_argv);
@@ -132,6 +141,9 @@ namespace GLib {
 
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_spawn_async_with_pipes (IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, IntPtr stdin, IntPtr stdout, IntPtr stderr, out IntPtr error);
+
+		[DllImport ("libglib-2.0-0.dll")]
+		static extern bool g_spawn_async_with_pipes_utf8 (IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, IntPtr stdin, IntPtr stdout, IntPtr stderr, out IntPtr error);
 
 		public static bool SpawnAsyncWithPipes (string working_directory, string[] argv, string[] envp, SpawnFlags flags, SpawnChildSetupFunc child_setup, out Process child_process, ref int stdin, ref int stdout, ref int stderr)
 		{
@@ -144,7 +156,13 @@ namespace GLib {
 			IntPtr in_ptr = stdin == IgnorePipe ? IntPtr.Zero : Marshal.AllocHGlobal (4);
 			IntPtr out_ptr = stdout == IgnorePipe ? IntPtr.Zero : Marshal.AllocHGlobal (4);
 			IntPtr err_ptr = stderr == IgnorePipe ? IntPtr.Zero : Marshal.AllocHGlobal (4);
-			bool result = g_spawn_async_with_pipes (native_dir, native_argv, native_envp, (int) flags, wrapper.NativeCallback, wrapper.Data, out pid, in_ptr, out_ptr, err_ptr, out error);
+			bool result;
+
+			if (Global.IsWindowsPlatform)
+				result = g_spawn_async_with_pipes_utf8 (native_dir, native_argv, native_envp, (int) flags, wrapper.NativeCallback, wrapper.Data, out pid, in_ptr, out_ptr, err_ptr, out error);
+			else
+				result = g_spawn_async_with_pipes (native_dir, native_argv, native_envp, (int) flags, wrapper.NativeCallback, wrapper.Data, out pid, in_ptr, out_ptr, err_ptr, out error);
+
 			child_process = new Process (pid);
 			if (in_ptr != IntPtr.Zero) {
 				stdin = Marshal.ReadInt32 (in_ptr);
@@ -168,6 +186,9 @@ namespace GLib {
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_spawn_sync (IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
 
+		[DllImport ("libglib-2.0-0.dll")]
+		static extern bool g_spawn_sync_utf8 (IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
+
 		public static bool SpawnSync (string working_directory, string[] argv, string[] envp, SpawnFlags flags, SpawnChildSetupFunc child_setup, out string stdout, out string stderr, out int exit_status)
 		{
 			IntPtr native_stdout, native_stderr, error;
@@ -175,7 +196,13 @@ namespace GLib {
 			IntPtr[] native_argv = Marshaller.StringArrayToNullTermPointer (argv);
 			IntPtr[] native_envp = Marshaller.StringArrayToNullTermPointer (envp);
 			SpawnChildSetupWrapper wrapper = new SpawnChildSetupWrapper (child_setup);
-			bool result = g_spawn_sync (native_dir, native_argv, native_envp, (int) flags, wrapper.NativeCallback, wrapper.Data, out native_stdout, out native_stderr, out exit_status, out error);
+			bool result;
+
+			if (Global.IsWindowsPlatform)
+				result = g_spawn_sync (native_dir, native_argv, native_envp, (int) flags, wrapper.NativeCallback, wrapper.Data, out native_stdout, out native_stderr, out exit_status, out error);
+			else
+				result = g_spawn_sync (native_dir, native_argv, native_envp, (int) flags, wrapper.NativeCallback, wrapper.Data, out native_stdout, out native_stderr, out exit_status, out error);
+
 			Marshaller.Free (native_dir);
 			Marshaller.Free (native_argv);
 			Marshaller.Free (native_envp);
@@ -188,11 +215,20 @@ namespace GLib {
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_spawn_command_line_async (IntPtr cmdline, out IntPtr error);
 
+		[DllImport ("libglib-2.0-0.dll")]
+		static extern bool g_spawn_command_line_async_utf8 (IntPtr cmdline, out IntPtr error);
+
 		public static bool SpawnCommandLineAsync (string command_line)
 		{
 			IntPtr error;
 			IntPtr native_cmd = Marshaller.StringToPtrGStrdup (command_line);
-			bool result = g_spawn_command_line_async (native_cmd, out error);
+			bool result;
+
+			if (Global.IsWindowsPlatform)
+				result = g_spawn_command_line_async_utf8 (native_cmd, out error);
+			else
+				result = g_spawn_command_line_async (native_cmd, out error);
+
 			Marshaller.Free (native_cmd);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return result;
@@ -201,11 +237,20 @@ namespace GLib {
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_spawn_command_line_sync (IntPtr cmdline, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
 
+		[DllImport ("libglib-2.0-0.dll")]
+		static extern bool g_spawn_command_line_sync_utf8 (IntPtr cmdline, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
+
 		public static bool SpawnCommandLineSync (string command_line, out string stdout, out string stderr, out int exit_status)
 		{
 			IntPtr error, native_stdout, native_stderr;
 			IntPtr native_cmd = Marshaller.StringToPtrGStrdup (command_line);
-			bool result = g_spawn_command_line_sync (native_cmd, out native_stdout, out native_stderr, out exit_status, out error);
+			bool result;
+
+			if (Global.IsWindowsPlatform)
+				result = g_spawn_command_line_sync_utf8 (native_cmd, out native_stdout, out native_stderr, out exit_status, out error);
+			else
+				result = g_spawn_command_line_sync (native_cmd, out native_stdout, out native_stderr, out exit_status, out error);
+
 			Marshaller.Free (native_cmd);
 			stdout = Marshaller.PtrToStringGFree (native_stdout);
 			stderr = Marshaller.PtrToStringGFree (native_stderr);

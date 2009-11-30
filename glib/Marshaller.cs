@@ -49,12 +49,21 @@ namespace GLib {
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_filename_to_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
 
+		[DllImport("libglib-2.0-0.dll")]
+		static extern IntPtr g_filename_to_utf8_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
+
 		public static string FilenamePtrToString (IntPtr ptr) 
 		{
 			if (ptr == IntPtr.Zero) return null;
 			
 			IntPtr dummy, error;
-			IntPtr utf8 = g_filename_to_utf8 (ptr, -1, IntPtr.Zero, out dummy, out error);
+			IntPtr utf8;
+
+			if (Global.IsWindowsPlatform)
+				utf8 = g_filename_to_utf8_utf8 (ptr, -1, IntPtr.Zero, out dummy, out error);
+			else
+				utf8 = g_filename_to_utf8 (ptr, -1, IntPtr.Zero, out dummy, out error);
+
 			if (error != IntPtr.Zero)
 				throw new GLib.GException (error);
 			return Utf8PtrToString (utf8);
@@ -117,6 +126,9 @@ namespace GLib {
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_filename_from_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
 
+		[DllImport("libglib-2.0-0.dll")]
+		static extern IntPtr g_filename_from_utf8_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
+
 		public static IntPtr StringToFilenamePtr (string str) 
 		{
 			if (str == null)
@@ -124,7 +136,14 @@ namespace GLib {
 
 			IntPtr dummy, error;
 			IntPtr utf8 = StringToPtrGStrdup (str);
-			IntPtr result = g_filename_from_utf8 (utf8, -1, IntPtr.Zero, out dummy, out error);
+
+			IntPtr result;
+
+			if (Global.IsWindowsPlatform)
+				result = g_filename_from_utf8_utf8 (utf8, -1, IntPtr.Zero, out dummy, out error);
+			else
+				result = g_filename_from_utf8 (utf8, -1, IntPtr.Zero, out dummy, out error);
+
 			g_free (utf8);
 			if (error != IntPtr.Zero)
 				throw new GException (error);
