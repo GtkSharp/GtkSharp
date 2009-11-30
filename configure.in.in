@@ -19,6 +19,7 @@ case "$host" in
 	x86_64-*-mingw*|x86_64-*-cygwin*)
 		WIN64DEFINES="-define:WIN64LONGS"
 		platform_win32=yes
+		AC_MSG_RESULT([yes, 64-bit])
 		AC_DEFINE(PLATFORM_WIN32,1,[Platform is Win32])
 		if test "x$cross_compiling" = "xno"; then
 			CC="gcc -mno-cygwin -g"
@@ -27,6 +28,7 @@ case "$host" in
 		;;
 	*-*-mingw*|*-*-cygwin*)
 		platform_win32=yes
+		AC_MSG_RESULT([yes, 32-bit])
 		AC_DEFINE(PLATFORM_WIN32,1,[Platform is Win32])
 		if test "x$cross_compiling" = "xno"; then
 			CC="gcc -mno-cygwin -g"
@@ -35,6 +37,7 @@ case "$host" in
 		;;
 	*)
 		platform_win32=no
+		AC_MSG_RESULT([no])
 		;;
 esac
 

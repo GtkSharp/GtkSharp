@@ -19,8 +19,8 @@ EXTRA_DIST =					\
 	gapi-3.0.pc.in
 
 gapi-fixup.exe: $(srcdir)/gapi-fixup.cs
-	$(CSC) /out:gapi-fixup.exe $(srcdir)/gapi-fixup.cs
+	$(CSC) $(CSFLAGS) -out:gapi-fixup.exe $(srcdir)/gapi-fixup.cs
 
 gapi-parser.exe: $(srcdir)/gapi-parser.cs
-	$(CSC) /out:gapi-parser.exe $(srcdir)/gapi-parser.cs
+	$(CSC) $(CSFLAGS) -out:gapi-parser.exe $(srcdir)/gapi-parser.cs
 

@@ -9,7 +9,7 @@ assemblies = \
 	$(top_builddir)/pango/pango-sharp.dll $(top_builddir)/atk/atk-sharp.dll \
 	$(top_builddir)/gdk/gdk-sharp.dll $(top_builddir)/gtk/gtk-sharp.dll
 
-references = $(addprefix /r:, $(assemblies) $(cairo_ref))
+references = $(addprefix -r:, $(assemblies) $(cairo_ref))
 TARGETS = GtkDemo.exe
 DEBUGS = $(addsuffix .mdb, $(TARGETS)) 
 CLEANFILES = $(TARGETS) $(DEBUGS)
@@ -76,8 +76,8 @@ image_names = \
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
 build_images = $(addprefix $(srcdir)/, $(images))
-resources = $(addprefix /resource:, $(build_sources), $(build_images))
+resources = $(addprefix -resource:, $(build_sources), $(build_images))
 
 GtkDemo.exe: $(build_sources) $(assemblies)
-	$(CSC) $(CSFLAGS) /out:GtkDemo.exe $(build_sources) $(references) $(resources)
+	$(CSC) $(CSFLAGS) -out:GtkDemo.exe $(build_sources) $(references) $(resources)
 

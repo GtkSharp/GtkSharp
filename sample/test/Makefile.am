@@ -1,7 +1,7 @@
 TARGETS = WidgetViewer.exe 
 
 assemblies=../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
-references = $(addprefix /r:, $(assemblies))
+references = $(addprefix -r:, $(assemblies))
 
 noinst_SCRIPTS = $(TARGETS)
 CLEANFILES = $(TARGETS)
@@ -24,5 +24,5 @@ sources =			\
 build_sources = $(addprefix $(srcdir)/, $(sources))
 
 WidgetViewer.exe: $(build_sources) $(assemblies)
-	$(CSC) /out:WidgetViewer.exe $(references) $(build_sources)
+	$(CSC) $(CSFLAGS) -out:WidgetViewer.exe $(references) $(build_sources)
 

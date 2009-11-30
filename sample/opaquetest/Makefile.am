@@ -2,10 +2,10 @@ noinst_SCRIPTS = opaquetest.exe
 lib_LTLIBRARIES = libopaque.la
 
 assemblies=../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
-references=$(addprefix /r:, $(assemblies))
+references=$(addprefix -r:, $(assemblies))
 
 opaquetest.exe: OpaqueTest.cs generated/*.cs $(assemblies)
-	$(CSC) /out:opaquetest.exe $(references) $(srcdir)/OpaqueTest.cs $(GENERATED_SOURCES)
+	$(CSC) $(CSFLAGS) -out:opaquetest.exe $(references) $(srcdir)/OpaqueTest.cs $(GENERATED_SOURCES)
 
 libopaque_la_SOURCES =	\
 	opaques.c	\
