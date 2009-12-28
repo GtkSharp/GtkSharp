@@ -11,8 +11,8 @@ libglibsharpglue_3_la_LIBADD = $(GLIB_LIBS)
 
 INCLUDES = $(GLIB_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
-libgtksharpglue.dll: $(libgtksharpglue_3_la_OBJECTS) libgtksharpglue.rc libgtksharpglue.def
-	./build-dll libgtksharpglue-3 $(VERSION)
+libglibsharpglue.dll: $(libglibsharpglue_3_la_OBJECTS) libglibsharpglue.rc libglibsharpglue.def
+	./build-dll libglibsharpglue-3 $(VERSION)
 
 CLEANFILES = lib*.a lib*.dll
 
