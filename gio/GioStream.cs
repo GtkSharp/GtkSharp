@@ -218,9 +218,16 @@ namespace GLib
 		{
 			if (!CanSeek || !CanWrite)
 				throw new NotSupportedException ("This stream doesn't support seeking");
+
+			var seekable = stream as Seekable;
+
+			if (!seekable.CanTruncate ())
+				throw new NotSupportedException ("This stream doesn't support truncating");
+
 			if (is_disposed)
 				throw new ObjectDisposedException ("The stream is closed");
-			throw new NotImplementedException ();
+
+			seekable.Truncate (value, null);
 		}
 
 		public override void Close ()
