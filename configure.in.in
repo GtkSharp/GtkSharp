@@ -104,6 +104,9 @@ AC_SUBST(OFF_T_FLAGS)
 
 MONO_REQUIRED_VERSION=@MONO_REQUIRED_VERSION@
 PKG_CHECK_MODULES(MONO_DEPENDENCY, mono >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
+if test "x$has_mono" = "xfalse" ; then
+	PKG_CHECK_MODULES(MONO_DEPENDENCY, mono-2 >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
+fi
 
 AC_PATH_PROG(GACUTIL, gacutil, no)
 if test "x$GACUTIL" = "xno" ; then
