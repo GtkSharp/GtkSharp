@@ -26,7 +26,7 @@
 
 $private_regex = '^#if.*(ENABLE_BACKEND|ENABLE_ENGINE)';
 $eatit_regex = '^#if(.*(__cplusplus|DEBUG|DISABLE_COMPAT|ENABLE_BROKEN)|\s+0\s*$)';
-$ignoreit_regex = '^\s+\*|#ident|#error|#\s*include|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
+$ignoreit_regex = '^\s+\*|#ident|#error|#\s*include|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN|G_GNUC_INTERNAL';
 
 foreach $arg (@ARGV) {
 	if (-d $arg && -e $arg) {
