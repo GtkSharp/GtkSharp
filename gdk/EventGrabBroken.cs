@@ -19,7 +19,6 @@
 // Boston, MA 02111-1307, USA.
 
 
-#if GTK_SHARP_2_8
 namespace Gdk {
 
 	using System;
@@ -71,5 +70,4 @@ namespace Gdk {
 		}
 	}
 }
-#endif
 

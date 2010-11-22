@@ -1,9 +1,8 @@
-SUBDIRS = sources generator parser gapi glib gio cairo pango atk gdk gtk glade gtkdotnet sample doc
+SUBDIRS = sources generator parser glib gio cairo pango atk gdk gtk gtkdotnet sample doc
 
 EXTRA_DIST = 			\
 	mono.snk		\
 	gtk-sharp.snk		\
-	makefile.win32		\
 	policy.config.in	\
 	AssemblyInfo.cs.in	\
 	ChangeLog		\

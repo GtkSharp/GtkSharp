@@ -2,12 +2,12 @@
 AC_INIT(README)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(gtk-sharp, @GTK_SHARP_VERSION@)
+AM_INIT_AUTOMAKE(gtk-sharp, 2.91.0)
 AM_MAINTAINER_MODE
 
-API_VERSION=@ASSEMBLY_VERSION@
+API_VERSION=3.0.0.0
 AC_SUBST(API_VERSION)
-POLICY_VERSIONS="@POLICY_VERSIONS@"
+POLICY_VERSIONS=""
 AC_SUBST(POLICY_VERSIONS)
 
 PACKAGE_VERSION=gtk-sharp-3.0
@@ -80,12 +80,8 @@ AC_ARG_ENABLE(debug, [  --enable-debug          Build debugger (.mdb) files for 
 )
 fi
 
-CSDEFINES='@VERSIONCSDEFINES@'
-CSFLAGS="$DEBUG_FLAGS $CSDEFINES $WIN64DEFINES"
+CSFLAGS="$DEBUG_FLAGS $WIN64DEFINES"
 AC_SUBST(CSFLAGS)
-
-GTK_SHARP_VERSION_CFLAGS='@VERSIONCFLAGS@'
-AC_SUBST(GTK_SHARP_VERSION_CFLAGS)
 
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 if test "x$PKG_CONFIG" = "xno"; then
@@ -102,11 +98,8 @@ AC_CHECK_SIZEOF(off_t)
 OFF_T_FLAGS="-define:OFF_T_$ac_cv_sizeof_off_t"
 AC_SUBST(OFF_T_FLAGS)
 
-MONO_REQUIRED_VERSION=@MONO_REQUIRED_VERSION@
+MONO_REQUIRED_VERSION=2.8
 PKG_CHECK_MODULES(MONO_DEPENDENCY, mono >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
-if test "x$has_mono" = "xfalse" ; then
-	PKG_CHECK_MODULES(MONO_DEPENDENCY, mono-2 >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
-fi
 
 AC_PATH_PROG(GACUTIL, gacutil, no)
 if test "x$GACUTIL" = "xno" ; then
@@ -173,11 +166,8 @@ AC_SUBST(GENERATED_SOURCES)
 PKG_CHECK_MODULES(MONO_CAIRO, mono-cairo >= $MONO_REQUIRED_VERSION, enable_mono_cairo=no, enable_mono_cairo=yes)
 AC_SUBST(MONO_CAIRO_LIBS)
 
-PKG_CHECK_MODULES(GLIBSHARP2, glib-sharp-2.0, enable_glib2_compat=yes, enable_glib2_compat=no)
-AC_SUBST(GLIBSHARP2_LIBS)
-
-GTK_REQUIRED_VERSION=@GTK_REQUIRED_VERSION@
-GLIB_REQUIRED_VERSION=@GLIB_REQUIRED_VERSION@
+GTK_REQUIRED_VERSION=2.14.0
+GLIB_REQUIRED_VERSION=2.14.0
 
 PKG_CHECK_MODULES(GLIB, gobject-2.0 >= $GLIB_REQUIRED_VERSION)
 AC_SUBST(GLIB_CFLAGS)
@@ -199,15 +189,6 @@ PKG_CHECK_MODULES(GTK, gtk+-2.0 >= $GTK_REQUIRED_VERSION)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 
-GLADE_REQUIRED_VERSION=2.3.6
-enable_glade=no
-AC_ARG_ENABLE(glade-sharp, AC_HELP_STRING([--disable-glade-sharp], [Disable glade-sharp bindings]))
-if test "x$enable_glade_sharp" != "xno"; then
-	PKG_CHECK_MODULES(GLADE, libglade-2.0 >= $GLADE_REQUIRED_VERSION, enable_glade=yes, enable_glade=no)
-	AC_SUBST(GLADE_CFLAGS)
-	AC_SUBST(GLADE_LIBS)
-fi
-
 GDK_BACKEND=`pkg-config --variable=target gtk+-2.0`
 AC_SUBST(GDK_BACKEND)
 
@@ -222,11 +203,8 @@ fi
 AC_SUBST(MDOC)
 
 AM_CONDITIONAL(ENABLE_MONO_CAIRO, test "x$enable_mono_cairo" = "xyes")
-AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
 AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
-AM_CONDITIONAL(ENABLE_MONOGETOPTIONS, test "x$has_mono" = "xtrue")
-AM_CONDITIONAL(ENABLE_GLIBSHARP2_COMPAT, test "x$enable_glib2_compat" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -241,8 +219,6 @@ parser/Makefile
 parser/gapi-3.0.pc
 parser/gapi3-fixup
 parser/gapi3-parser
-gapi/Makefile
-gapi/gapi-2.0-compat.pc
 generator/Makefile
 generator/gapi3-codegen
 glib/Makefile
@@ -267,10 +243,6 @@ gtk/Makefile
 gtk/gtk-sharp-3.0.pc
 gtk/gtk-sharp.dll.config
 gtk/glue/Makefile
-glade/Makefile
-glade/glade-sharp.dll.config
-glade/glade-sharp-3.0.pc
-glade/glue/Makefile
 gtkdotnet/Makefile
 gtkdotnet/gtk-dotnet.dll.config
 gtkdotnet/gtk-dotnet-3.0.pc
@@ -306,11 +278,6 @@ echo "   * $CS compiler: $CSC $CSFLAGS"
 echo ""
 echo "   Optional assemblies included in the build:"
 echo ""
-if test "x$enable_glade_sharp" = "xno"; then
-echo "      * glade-sharp.dll: disabled"
-else
-echo "      * glade-sharp.dll: $enable_glade"
-fi
 echo "      * gtk-dotnet.dll: $enable_dotnet"
 echo "      * Mono.Cairo.dll: $cairo_comment"
 echo ""

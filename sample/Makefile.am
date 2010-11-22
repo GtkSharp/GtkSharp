@@ -6,14 +6,6 @@ else
 cairo_ref=-r:Mono.Cairo
 endif
 
-if ENABLE_GLADE
-GLADE_TARGETS=glade-viewer.exe glade-test.exe
-GLADE_ASSEMBLY=../glade/glade-sharp.dll
-else
-GLADE_TARGETS=
-GLADE_ASSEMBLY=
-endif
-
 if ENABLE_DOTNET
 DOTNET_TARGETS=drawing-sample.exe
 DOTNET_ASSEMBLY=../gtkdotnet/gtk-dotnet.dll
@@ -22,7 +14,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe cairo-sample.exe native-instantiation.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
+TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe cairo-sample.exe native-instantiation.exe $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -32,8 +24,7 @@ assemblies = 					\
 	$(top_builddir)/pango/pango-sharp.dll 	\
 	$(top_builddir)/atk/atk-sharp.dll 	\
 	$(top_builddir)/gdk/gdk-sharp.dll 	\
-	$(top_builddir)/gtk/gtk-sharp.dll 	\
-	$(GLADE_ASSEMBLY)
+	$(top_builddir)/gtk/gtk-sharp.dll 
 
 references=$(addprefix -r:, $(assemblies))
 
@@ -78,12 +69,6 @@ nodeviewdemo.exe: $(srcdir)/NodeViewDemo.cs $(assemblies)
 
 treemodeldemo.exe: $(srcdir)/TreeModelDemo.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -out:treemodeldemo.exe $(references) $(srcdir)/TreeModelDemo.cs
-
-glade-viewer.exe: $(srcdir)/GladeViewer.cs $(assemblies)
-	$(CSC) $(CSFLAGS) -out:glade-viewer.exe $(references) $(srcdir)/GladeViewer.cs
-
-glade-test.exe: $(srcdir)/GladeTest.cs $(srcdir)/test.glade $(assemblies)
-	$(CSC) $(CSFLAGS) -resource:$(srcdir)/test.glade -out:glade-test.exe $(references) $(srcdir)/GladeTest.cs
 
 cairo-sample.exe: $(srcdir)/CairoSample.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -out:cairo-sample.exe $(references) $(cairo_ref) $(srcdir)/CairoSample.cs

@@ -15,7 +15,7 @@ DISTCLEANFILES = $(ASSEMBLY).config
 POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
 POLICY_CONFIGS = $(addsuffix .config, $(addprefix policy., $(POLICY_VERSIONS)))
 
-references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../gdk/gdk-sharp.dll
+references = ../glib/glib-sharp.dll ../gio/gio-sharp.dll ../pango/pango-sharp.dll ../gdk/gdk-sharp.dll
 build_references = $(addprefix -r:, $(references)) -r:System.Drawing.dll
 
 sources =		 			\
