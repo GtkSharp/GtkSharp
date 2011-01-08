@@ -36,13 +36,13 @@ namespace GLib
 			g_thread_init (IntPtr.Zero);
 		}
 
-		[DllImport("glibsharpglue-3")]
-		static extern bool glibsharp_g_thread_supported ();
+		[DllImport ("libgthread-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern bool g_thread_get_initialized ();
 
 		public static bool Supported
 		{
 			get {
-				return glibsharp_g_thread_supported ();
+				return g_thread_get_initialized ();
 			}
 		}
 	}

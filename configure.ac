@@ -224,7 +224,6 @@ generator/gapi3-codegen
 glib/Makefile
 glib/glib-sharp-3.0.pc
 glib/glib-sharp.dll.config
-glib/glue/Makefile
 gio/Makefile
 gio/gio-sharp-3.0.pc
 gio/gio-sharp.dll.config
