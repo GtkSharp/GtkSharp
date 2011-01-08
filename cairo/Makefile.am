@@ -1,5 +1,6 @@
 ASSEMBLY_NAME = Mono.Cairo
 ASSEMBLY = $(ASSEMBLY_NAME).dll
+SNK = $(srcdir)/mono.snk
 
 if ENABLE_MONO_CAIRO
 TARGET=$(ASSEMBLY)
@@ -9,7 +10,7 @@ endif
 
 noinst_DATA = $(TARGET)
 
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb mono.snk
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb
 
 sources = \
 	Antialias.cs \
@@ -64,12 +65,9 @@ sources = \
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
 
-mono.snk: $(top_srcdir)/mono.snk
-	cp $(top_srcdir)/mono.snk .
-
-$(ASSEMBLY): $(build_sources) mono.snk
+$(ASSEMBLY): $(build_sources) $(SNK)
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
+	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then							\
@@ -83,5 +81,5 @@ uninstall-local:
 	  $(GACUTIL) -u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;			\
 	fi
 
-EXTRA_DIST = $(sources)
+EXTRA_DIST = $(sources) mono.snk
 

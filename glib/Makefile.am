@@ -1,5 +1,6 @@
 SUBDIRS =
 
+SNK = $(top_srcdir)/gtk-sharp.snk
 TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = glib-sharp
@@ -9,7 +10,7 @@ pkgconfig_DATA = glib-sharp-3.0.pc
 gapidir = $(datadir)/gapi-3.0
 gapi_DATA = glib-api.xml
 
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk AssemblyInfo.cs $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb AssemblyInfo.cs $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
 DISTCLEANFILES = $(ASSEMBLY).config
 
 POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
@@ -86,21 +87,18 @@ EXTRA_DIST =				\
 	glib-sharp-3.0.pc.in		\
 	glib-api.xml
 
-gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
-	cp $(top_srcdir)/gtk-sharp.snk .
-
 AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
 	cp $(top_builddir)/AssemblyInfo.cs .
 
-$(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
+$(ASSEMBLY): $(build_sources) $(SNK) AssemblyInfo.cs
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
+	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 
 policy.%.config: $(top_builddir)/policy.config
 	sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$*/" $(top_builddir)/policy.config > $@
 
-$(POLICY_ASSEMBLIES) : policy.%.$(ASSEMBLY): policy.%.config gtk-sharp.snk
-	$(AL) -link:policy.$*.config -out:$@ -keyfile:gtk-sharp.snk
+$(POLICY_ASSEMBLIES) : policy.%.$(ASSEMBLY): policy.%.config $(SNK)
+	$(AL) -link:policy.$*.config -out:$@ -keyfile:$(SNK)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then							\

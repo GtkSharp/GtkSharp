@@ -6,10 +6,11 @@ else
 TARGET =
 endif
 
+SNK = $(top_srcdir)/gtk-sharp.snk
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = gtk-dotnet
 noinst_DATA = $(ASSEMBLY) $(POLICY_ASSEMBLIES)
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk AssemblyInfo.cs $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb AssemblyInfo.cs $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
 DISTCLEANFILES = $(ASSEMBLY).config
 
 POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
@@ -28,21 +29,18 @@ EXTRA_DIST =				\
 	$(ASSEMBLY).config.in		\
 	gtk-dotnet-3.0.pc.in
 
-gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
-	cp $(top_srcdir)/gtk-sharp.snk .
-
 AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
 	cp $(top_builddir)/AssemblyInfo.cs .
 
-$(ASSEMBLY): $(build_sources) $(references) gtk-sharp.snk AssemblyInfo.cs
+$(ASSEMBLY): $(build_sources) $(references) $(SNK) AssemblyInfo.cs
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources)
+	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources)
 
 policy.%.config: $(top_builddir)/policy.config
 	sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$*/" $(top_builddir)/policy.config > $@
 
-$(POLICY_ASSEMBLIES) : policy.%.$(ASSEMBLY): policy.%.config gtk-sharp.snk
-	$(AL) -link:policy.$*.config -out:$@ -keyfile:gtk-sharp.snk
+$(POLICY_ASSEMBLIES) : policy.%.$(ASSEMBLY): policy.%.config $(SNK)
+	$(AL) -link:policy.$*.config -out:$@ -keyfile:$(SNK)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then							\
