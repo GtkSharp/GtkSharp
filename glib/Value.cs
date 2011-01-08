@@ -44,8 +44,10 @@ namespace GLib {
 		}
 
 		IntPtr type;
+#pragma warning disable 0414
 		Padding pad1;
 		Padding pad2;
+#pragma warning restore 0414
 
 		public static Value Empty;
 
