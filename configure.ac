@@ -73,8 +73,10 @@ CFLAGS="${CFLAGS} -g -Wall -Wunused -Wmissing-prototypes -Wmissing-declarations 
 
 if test "x$enable_maintainer_mode" = "xyes"; then
 DEBUG_FLAGS='-debug'
+RUNTIME_DEBUG_FLAGS=' --debug'
 else
 DEBUG_FLAGS=
+RUNTIME_DEBUG_FLAGS=
 AC_ARG_ENABLE(debug, [  --enable-debug          Build debugger (.mdb) files for dlls],
 	DEBUG_FLAGS='-debug'
 )
@@ -118,7 +120,7 @@ AC_PATH_PROG(RUNTIME, mono, no)
 
 # If mono is found, it's in the path.  Require it to be in the path at runtime as well
 if test "x$RUNTIME" != "no" ; then
-	RUNTIME=mono
+	RUNTIME="mono$RUNTIME_DEBUG_FLAGS"
 fi
 
 AC_PATH_PROG(CSC, gmcs, no)
