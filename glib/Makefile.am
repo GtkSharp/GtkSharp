@@ -76,7 +76,8 @@ sources =		 			\
 	TypeInitializerAttribute.cs		\
 	UnwrappedObject.cs			\
 	ValueArray.cs				\
-	Value.cs
+	Value.cs				\
+	Variant.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 dist_sources = $(sources)

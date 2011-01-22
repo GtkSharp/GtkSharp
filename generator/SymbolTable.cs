@@ -119,6 +119,7 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GList", "GLib.List"));
 			AddType (new ManualGen ("GPtrArray", "GLib.PtrArray"));
 			AddType (new ManualGen ("GSList", "GLib.SList"));
+			AddType (new ManualGen ("GVariant", "GLib.Variant"));
 			AddType (new MarshalGen ("gunichar", "char", "uint", "GLib.Marshaller.CharToGUnichar ({0})", "GLib.Marshaller.GUnicharToChar ({0})"));
 			AddType (new MarshalGen ("time_t", "System.DateTime", "IntPtr", "GLib.Marshaller.DateTimeTotime_t ({0})", "GLib.Marshaller.time_tToDateTime ({0})"));
 			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
