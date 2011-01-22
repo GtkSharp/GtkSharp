@@ -520,7 +520,7 @@ sub addClassElem
 		$fields = $2;
 		$fields =~ s!/\*.*?\*/!!g; # Remove comments
 		foreach $field (split (/;/, $fields)) {
-			if ($field =~ /\s*(G_CONST_RETURN\s+)?(\S+\s*\**)\s*\(\s*\*\s*(\w+)\)\s*(\((.*?)\))?/) {
+			if ($field =~ /\s*(G_CONST_RETURN\s+)?(\S+\s*\**)\s*\(\s*\*\s*(\w+)\s*\)\s*(\((.*?)\))?/) {
 				$ret = $1 . $2; $cname = $3; $parms = $5;
 
 				$class_elem = $doc->createElement('method');
@@ -1042,7 +1042,7 @@ sub addSignalElem
 		my $method = $1;
 		$sig_elem->setAttribute('field_name', $method);
 
-		if ($class =~ /;\s*(\/\*< (public|protected|private) >\s*\*\/)?(G_CONST_RETURN\s+)?(\w+\s*\**)\s*\(\s*\*\s*$method\)\s*\((.*?)\);/) {
+		if ($class =~ /;\s*(\/\*< (public|protected|private) >\s*\*\/)?(G_CONST_RETURN\s+)?(\w+\s*\**)\s*\(\s*\*\s*$method\s*\)\s*\((.*?)\);/) {
 			$ret = $4; $parms = $5;
 			addReturnElem($sig_elem, $ret);
 			if ($parms && ($parms ne "void")) {
