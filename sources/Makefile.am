@@ -3,16 +3,14 @@ EXTRA_DIST =					\
 	sources.xml				\
 	gtk_tree_model_signal_fix.patch
 
-MAJ=2.24
-PT=2.24.0
-TARGET_GTK_VERSION=2.14.3
+TARGET_GTK_VERSION=2.99.0
 
 GTK_DOWNLOADS = \
-	http://ftp.gnome.org/pub/GNOME/platform/$(MAJ)/$(PT)/sources/glib-2.18.1.tar.bz2		\
-	http://ftp.gnome.org/pub/GNOME/platform/$(MAJ)/$(PT)/sources/pango-1.22.0.tar.bz2		\
-	http://ftp.gnome.org/pub/GNOME/platform/$(MAJ)/$(PT)/sources/atk-1.24.0.tar.bz2			\
-	http://ftp.gnome.org/pub/GNOME/platform/$(MAJ)/$(PT)/sources/gtk+-$(TARGET_GTK_VERSION).tar.bz2	\
-	http://ftp.gnome.org/pub/GNOME/platform/$(MAJ)/$(PT)/sources/libglade-2.6.3.tar.bz2
+	http://ftp.gnome.org/pub/GNOME/sources/glib/2.27/glib-2.27.90.tar.bz2			\
+	http://ftp.gnome.org/pub/GNOME/sources/pango/1.28/pango-1.28.3.tar.bz2			\
+	http://ftp.gnome.org/pub/GNOME/sources/atk/1.32/atk-1.32.0.tar.bz2			\
+	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.22/gdk-pixbuf-2.22.1.tar.bz2	\
+	http://ftp.gnome.org/pub/GNOME/sources/gtk+/2.99/gtk+-$(TARGET_GTK_VERSION).tar.bz2
 
 api: 
 	PATH=../parser:$$PATH $(RUNTIME) ../parser/gapi-parser.exe sources.xml
