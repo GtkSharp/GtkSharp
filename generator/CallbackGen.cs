@@ -173,10 +173,10 @@ namespace GtkSharp.Generation {
 			if (retval.IsVoid)
 				sw.WriteLine ("\t\t\t" + call + ";");
 			else
-				sw.WriteLine ("\t\t\t" + retval.CSType + " result = " + retval.FromNative (call) + ";");
+				sw.WriteLine ("\t\t\t" + retval.CSType + " __result = " + retval.FromNative (call) + ";");
 			body.Finish (sw, String.Empty);
 			if (!retval.IsVoid)
-				sw.WriteLine ("\t\t\treturn result;");
+				sw.WriteLine ("\t\t\treturn __result;");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ("\t}");
 			sw.WriteLine ();
