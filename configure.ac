@@ -165,9 +165,6 @@ AC_SUBST(LIB_PREFIX)
 AC_SUBST(LIB_SUFFIX)
 AC_SUBST(GENERATED_SOURCES)
 
-PKG_CHECK_MODULES(MONO_CAIRO, mono-cairo >= $MONO_REQUIRED_VERSION, enable_mono_cairo=no, enable_mono_cairo=yes)
-AC_SUBST(MONO_CAIRO_LIBS)
-
 GTK_REQUIRED_VERSION=2.99.0
 GLIB_REQUIRED_VERSION=2.27.90
 
@@ -204,7 +201,6 @@ else
 fi
 AC_SUBST(MDOC)
 
-AM_CONDITIONAL(ENABLE_MONO_CAIRO, test "x$enable_mono_cairo" = "xyes")
 AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
 
@@ -278,7 +274,6 @@ echo ""
 echo "   Optional assemblies included in the build:"
 echo ""
 echo "      * gtk-dotnet.dll: $enable_dotnet"
-echo "      * Mono.Cairo.dll: $cairo_comment"
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"

@@ -1,15 +1,13 @@
-if ENABLE_MONO_CAIRO
-cairo_ref=$(top_builddir)/cairo/Mono.Cairo.dll
-else
-cairo_ref=Mono.Cairo
-endif
-
 assemblies = \
-	$(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.dll \
-	$(top_builddir)/pango/pango-sharp.dll $(top_builddir)/atk/atk-sharp.dll \
-	$(top_builddir)/gdk/gdk-sharp.dll $(top_builddir)/gtk/gtk-sharp.dll
+	$(top_builddir)/glib/glib-sharp.dll 	\
+	$(top_builddir)/gio/gio-sharp.dll	\
+	$(top_builddir)/cairo/cairo-sharp.dll	\
+	$(top_builddir)/pango/pango-sharp.dll	\
+	$(top_builddir)/atk/atk-sharp.dll	\
+	$(top_builddir)/gdk/gdk-sharp.dll	\
+	$(top_builddir)/gtk/gtk-sharp.dll
 
-references = $(addprefix -r:, $(assemblies) $(cairo_ref))
+references = $(addprefix -r:, $(assemblies)
 TARGETS = GtkDemo.exe
 DEBUGS = $(addsuffix .mdb, $(TARGETS)) 
 CLEANFILES = $(TARGETS) $(DEBUGS)

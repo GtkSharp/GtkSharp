@@ -1,12 +1,8 @@
-ASSEMBLY_NAME = Mono.Cairo
+ASSEMBLY_NAME = cairo-sharp
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 SNK = $(srcdir)/mono.snk
 
-if ENABLE_MONO_CAIRO
 TARGET=$(ASSEMBLY)
-else
-TARGET=
-endif
 
 noinst_DATA = $(TARGET)
 
@@ -48,6 +44,7 @@ sources = \
 	PSSurface.cs \
 	RadialGradient.cs \
 	Rectangle.cs \
+	Region.cs \
 	ScaledFont.cs \
 	SolidPattern.cs \
 	Status.cs \

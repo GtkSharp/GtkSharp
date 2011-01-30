@@ -1,11 +1,5 @@
 SUBDIRS = test GtkDemo pixmaps valtest opaquetest gio gtk-gio
 
-if ENABLE_MONO_CAIRO
-cairo_ref=-r:$(top_builddir)/cairo/Mono.Cairo.dll
-else
-cairo_ref=-r:Mono.Cairo
-endif
-
 if ENABLE_DOTNET
 DOTNET_TARGETS=drawing-sample.exe
 DOTNET_ASSEMBLY=../gtkdotnet/gtk-dotnet.dll
@@ -21,6 +15,7 @@ DEBUGS = $(addsuffix .mdb, $(TARGETS))
 assemblies = 					\
 	$(top_builddir)/glib/glib-sharp.dll 	\
 	$(top_builddir)/gio/gio-sharp.dll 	\
+	$(top_builddir)/cairo/cairo-sharp.dll 	\
 	$(top_builddir)/pango/pango-sharp.dll 	\
 	$(top_builddir)/atk/atk-sharp.dll 	\
 	$(top_builddir)/gdk/gdk-sharp.dll 	\
@@ -71,7 +66,7 @@ treemodeldemo.exe: $(srcdir)/TreeModelDemo.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -out:treemodeldemo.exe $(references) $(srcdir)/TreeModelDemo.cs
 
 cairo-sample.exe: $(srcdir)/CairoSample.cs $(assemblies)
-	$(CSC) $(CSFLAGS) -out:cairo-sample.exe $(references) $(cairo_ref) $(srcdir)/CairoSample.cs
+	$(CSC) $(CSFLAGS) -out:cairo-sample.exe $(references) $(srcdir)/CairoSample.cs
 
 testdnd.exe: $(srcdir)/TestDnd.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -unsafe -out:testdnd.exe $(references) $(srcdir)/TestDnd.cs

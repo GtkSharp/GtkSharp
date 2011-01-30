@@ -1,16 +1,10 @@
 SUBDIRS = . glue
 
-if ENABLE_MONO_CAIRO
-local_mono_cairo=$(top_builddir)/cairo/Mono.Cairo.dll
-else
-local_mono_cairo=
-endif
-
 pkg = gdk
 SYMBOLS = gdk-symbols.xml
-INCLUDE_API = $(srcdir)/../glib/glib-api.xml $(top_builddir)/gio/gio-api.xml $(top_builddir)/pango/pango-api.xml
+INCLUDE_API = $(top_srcdir)/glib/glib-api.xml $(top_srcdir)/cairo/cairo-api.xml $(top_builddir)/gio/gio-api.xml $(top_builddir)/pango/pango-api.xml
 METADATA = Gdk.metadata
-references = $(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.dll $(top_builddir)/pango/pango-sharp.dll $(local_mono_cairo)
+references = $(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.dll $(top_builddir)/pango/pango-sharp.dll $(top_builddir)/cairo/cairo-sharp.dll
 glue_includes = gdk/gdk.h
 
 sources = 			\
@@ -74,4 +68,4 @@ customs = 			\
 
 add_dist = 
 
-include ../Makefile.include
+include $(top_srcdir)/Makefile.include
