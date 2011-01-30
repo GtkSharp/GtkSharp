@@ -218,13 +218,17 @@
       <member cname="PANGO_VARIANT_SMALL_CAPS" name="SmallCaps" />
     </enum>
     <enum name="Weight" cname="PangoWeight" gtype="pango_weight_get_type" type="enum">
+      <member cname="PANGO_WEIGHT_THIN" name="Thin" value="100" />
       <member cname="PANGO_WEIGHT_ULTRALIGHT" name="Ultralight" value="200" />
       <member cname="PANGO_WEIGHT_LIGHT" name="Light" value="300" />
+      <member cname="PANGO_WEIGHT_BOOK" name="Book" value="380" />
       <member cname="PANGO_WEIGHT_NORMAL" name="Normal" value="400" />
+      <member cname="PANGO_WEIGHT_MEDIUM" name="Medium" value="500" />
       <member cname="PANGO_WEIGHT_SEMIBOLD" name="Semibold" value="600" />
       <member cname="PANGO_WEIGHT_BOLD" name="Bold" value="700" />
       <member cname="PANGO_WEIGHT_ULTRABOLD" name="Ultrabold" value="800" />
       <member cname="PANGO_WEIGHT_HEAVY" name="Heavy" value="900" />
+      <member cname="PANGO_WEIGHT_ULTRAHEAVY" name="Ultraheavy" value="1000" />
     </enum>
     <enum name="WrapMode" cname="PangoWrapMode" gtype="pango_wrap_mode_get_type" type="enum">
       <member cname="PANGO_WRAP_WORD" name="Word" />
@@ -549,6 +553,9 @@
       </method>
     </object>
     <object name="FT2FontMap" cname="PangoFT2FontMap" parent="PangoFcFontMap">
+      <class_struct cname="PangoFT2FontMapClass">
+        <field name="ParentClass" cname="parent_class" type="PangoFcFontMapClass" />
+      </class_struct>
       <method name="CreateContext" cname="pango_ft2_font_map_create_context" deprecated="1">
         <return-type type="PangoContext*" />
       </method>
@@ -1094,6 +1101,17 @@
         </parameters>
       </method>
     </object>
+    <struct name="CacheEntry" cname="CacheEntry" opaque="true" />
+    <struct name="EllipsizeState" cname="EllipsizeState" opaque="true" />
+    <struct name="Extents" cname="Extents" opaque="true" />
+    <struct name="FontHashKey" cname="FontHashKey" opaque="true" />
+    <struct name="GlyphInfo" cname="GlyphInfo" opaque="true" />
+    <struct name="ItemProperties" cname="ItemProperties" opaque="true" />
+    <struct name="ItemizeState" cname="ItemizeState" opaque="true" />
+    <struct name="LineIter" cname="LineIter" opaque="true" />
+    <struct name="LineState" cname="LineState" opaque="true" />
+    <struct name="MarkupData" cname="MarkupData" opaque="true" />
+    <struct name="OpenTag" cname="OpenTag" opaque="true" />
     <struct name="Analysis" cname="PangoAnalysis">
       <field name="ShapeEngine" cname="shape_engine" type="PangoEngineShape*" />
       <field name="LangEngine" cname="lang_engine" type="PangoEngineLang*" />
@@ -1307,6 +1325,16 @@
         </parameters>
       </method>
     </struct>
+    <struct name="BlockInfo" cname="PangoBlockInfo" opaque="true" />
+    <struct name="CairoATSUIFontMapClass" cname="PangoCairoATSUIFontMapClass" opaque="true" />
+    <struct name="CairoContextInfo" cname="PangoCairoContextInfo" opaque="true" />
+    <struct name="CairoFcFont" cname="PangoCairoFcFont" opaque="true" />
+    <struct name="CairoFcFontClass" cname="PangoCairoFcFontClass" opaque="true" />
+    <struct name="CairoFcFontMapClass" cname="PangoCairoFcFontMapClass" opaque="true" />
+    <struct name="CairoRendererClass" cname="PangoCairoRendererClass" opaque="true" />
+    <struct name="CairoWin32Font" cname="PangoCairoWin32Font" opaque="true" />
+    <struct name="CairoWin32FontClass" cname="PangoCairoWin32FontClass" opaque="true" />
+    <struct name="CairoWin32FontMapClass" cname="PangoCairoWin32FontMapClass" opaque="true" />
     <boxed name="Color" cname="PangoColor">
       <field name="Red" cname="red" type="guint16" />
       <field name="Green" cname="green" type="guint16" />
@@ -1376,7 +1404,36 @@
       </method>
     </struct>
     <struct name="EngineLang" cname="PangoEngineLang" opaque="true" />
+    <struct name="EnginePair" cname="PangoEnginePair" opaque="true" />
     <struct name="EngineShape" cname="PangoEngineShape" opaque="true" />
+    <struct name="FT2Family" cname="PangoFT2Family" opaque="true" />
+    <struct name="FT2Font" cname="PangoFT2Font" opaque="true">
+      <method name="GetCoverage" cname="pango_ft2_font_get_coverage" deprecated="1" shared="true">
+        <return-type type="PangoCoverage*" />
+        <parameters>
+          <parameter type="PangoFont*" name="font" />
+          <parameter type="PangoLanguage*" name="language" />
+        </parameters>
+      </method>
+      <method name="GetFace" cname="pango_ft2_font_get_face" deprecated="1" shared="true">
+        <return-type type="FT_Face" />
+        <parameters>
+          <parameter type="PangoFont*" name="font" />
+        </parameters>
+      </method>
+      <method name="GetKerning" cname="pango_ft2_font_get_kerning" deprecated="1" shared="true">
+        <return-type type="int" />
+        <parameters>
+          <parameter type="PangoFont*" name="font" />
+          <parameter type="PangoGlyph" name="left" />
+          <parameter type="PangoGlyph" name="right" />
+        </parameters>
+      </method>
+    </struct>
+    <struct name="FT2FontClass" cname="PangoFT2FontClass" opaque="true" />
+    <struct name="FT2GlyphInfo" cname="PangoFT2GlyphInfo" opaque="true" />
+    <struct name="FT2Renderer" cname="PangoFT2Renderer" opaque="true" />
+    <struct name="FT2RendererClass" cname="PangoFT2RendererClass" opaque="true" />
     <boxed name="FontDescription" cname="PangoFontDescription" opaque="true">
       <method name="BetterMatch" cname="pango_font_description_better_match">
         <return-type type="gboolean" />
@@ -1582,6 +1639,13 @@
       </method>
       <method name="Free" cname="pango_glyph_item_free">
         <return-type type="void" />
+      </method>
+      <method name="GetLogicalWidths" cname="pango_glyph_item_get_logical_widths">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="text" />
+          <parameter type="int*" name="logical_widths" />
+        </parameters>
       </method>
       <method name="GetType" cname="pango_glyph_item_get_type" shared="true">
         <return-type type="GType" />
@@ -1943,6 +2007,7 @@
       <field name="IsExpandableSpace" cname="is_expandable_space" bits="1" type="guint" />
       <field name="IsWordBoundary" cname="is_word_boundary" bits="1" type="guint" />
     </struct>
+    <struct name="MapInfo" cname="PangoMapInfo" opaque="true" />
     <boxed name="Matrix" cname="PangoMatrix">
       <field name="Xx" cname="xx" type="double" />
       <field name="Xy" cname="xy" type="double" />
@@ -2015,6 +2080,11 @@
         </parameters>
       </method>
     </boxed>
+    <struct name="Module" cname="PangoModule" opaque="true" />
+    <struct name="ModuleClass" cname="PangoModuleClass" opaque="true" />
+    <struct name="OTInfoClass" cname="PangoOTInfoClass" opaque="true" />
+    <struct name="OTRule" cname="PangoOTRule" opaque="true" />
+    <struct name="OTRulesetClass" cname="PangoOTRulesetClass" opaque="true" />
     <struct name="Rectangle" cname="PangoRectangle">
       <field name="X" cname="x" type="int" />
       <field name="Y" cname="y" type="int" />
@@ -2043,6 +2113,8 @@
         <return-type type="gboolean" />
       </method>
     </struct>
+    <struct name="Submap" cname="PangoSubmap" opaque="true" />
+    <struct name="Tab" cname="PangoTab" opaque="true" />
     <boxed name="TabArray" cname="PangoTabArray" opaque="true">
       <method name="Copy" cname="pango_tab_array_copy">
         <return-type type="PangoTabArray*" owned="true" />
@@ -2104,6 +2176,35 @@
         </parameters>
       </method>
     </boxed>
+    <struct name="WidthIter" cname="PangoWidthIter" opaque="true" />
+    <struct name="Win32Face" cname="PangoWin32Face" opaque="true" />
+    <struct name="Win32Family" cname="PangoWin32Family" opaque="true" />
+    <struct name="Win32Font" cname="PangoWin32Font" opaque="true">
+      <method name="DescriptionFromLogfont" cname="pango_win32_font_description_from_logfont" shared="true">
+        <return-type type="PangoFontDescription*" />
+        <parameters>
+          <parameter type="const-LOGFONTA*" name="lfp" />
+        </parameters>
+      </method>
+      <method name="DescriptionFromLogfontw" cname="pango_win32_font_description_from_logfontw" shared="true">
+        <return-type type="PangoFontDescription*" />
+        <parameters>
+          <parameter type="const-LOGFONTW*" name="lfp" />
+        </parameters>
+      </method>
+      <method name="Logfont" cname="pango_win32_font_logfont" shared="true">
+        <return-type type="LOGFONTA*" />
+        <parameters>
+          <parameter type="PangoFont*" name="font" />
+        </parameters>
+      </method>
+      <method name="Logfontw" cname="pango_win32_font_logfontw" shared="true">
+        <return-type type="LOGFONTW*" />
+        <parameters>
+          <parameter type="PangoFont*" name="font" />
+        </parameters>
+      </method>
+    </struct>
     <struct name="Win32FontCache" cname="PangoWin32FontCache" opaque="true">
       <method name="Free" cname="pango_win32_font_cache_free">
         <return-type type="void" />
@@ -2128,6 +2229,25 @@
         </parameters>
       </method>
     </struct>
+    <struct name="Win32FontClass" cname="PangoWin32FontClass" opaque="true" />
+    <struct name="Win32FontMap" cname="PangoWin32FontMap" opaque="true">
+      <method name="ForDisplay" cname="pango_win32_font_map_for_display" shared="true">
+        <return-type type="PangoFontMap*" />
+      </method>
+      <method name="GetFontCache" cname="pango_win32_font_map_get_font_cache" shared="true">
+        <return-type type="PangoWin32FontCache*" />
+        <parameters>
+          <parameter type="PangoFontMap*" name="font_map" />
+        </parameters>
+      </method>
+    </struct>
+    <struct name="Win32FontMapClass" cname="PangoWin32FontMapClass" opaque="true" />
+    <struct name="Win32GlyphInfo" cname="PangoWin32GlyphInfo" opaque="true" />
+    <struct name="Win32MetricsInfo" cname="PangoWin32MetricsInfo" opaque="true" />
+    <struct name="ParaBreakState" cname="ParaBreakState" opaque="true" />
+    <struct name="ParenStackEntry" cname="ParenStackEntry" opaque="true" />
+    <struct name="Point" cname="Point" opaque="true" />
+    <struct name="RunInfo" cname="RunInfo" opaque="true" />
     <class name="Attr" cname="PangoAttr_">
       <method name="BackgroundNew" cname="pango_attr_background_new" shared="true">
         <return-type type="PangoAttribute*" />
@@ -2310,6 +2430,15 @@
         <return-type type="PangoGravity" />
         <parameters>
           <parameter type="PangoScript" name="script" />
+          <parameter type="PangoGravity" name="base_gravity" />
+          <parameter type="PangoGravityHint" name="hint" />
+        </parameters>
+      </method>
+      <method name="GravityGetForScriptAndWidth" cname="pango_gravity_get_for_script_and_width" shared="true">
+        <return-type type="PangoGravity" />
+        <parameters>
+          <parameter type="PangoScript" name="script" />
+          <parameter type="gboolean" name="wide" />
           <parameter type="PangoGravity" name="base_gravity" />
           <parameter type="PangoGravityHint" name="hint" />
         </parameters>
