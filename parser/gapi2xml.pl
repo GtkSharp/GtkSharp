@@ -110,8 +110,8 @@ while ($line = <STDIN>) {
 			next;
 		}
 		$edefs{$ename} = $edef;
-	} elsif ($line =~ /typedef\s+\w+\s*\**\s*\(\*\s*(\w+)\)\s*\(/) {
-		$fname = $1;
+	} elsif ($line =~ /typedef\s+(const\s+)?\w+\s*\**\s*\(\s*\*\s*(\w+)\s*\)\s*\(/) {
+		$fname = $2;
 		$fdef = "";
 		while ($line !~ /;/) {
 			$fdef .= $line;
