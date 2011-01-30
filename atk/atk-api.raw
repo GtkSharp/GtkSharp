@@ -46,6 +46,7 @@
       <member cname="ATK_RELATION_PARENT_WINDOW_OF" name="ParentWindowOf" />
       <member cname="ATK_RELATION_DESCRIBED_BY" name="DescribedBy" />
       <member cname="ATK_RELATION_DESCRIPTION_FOR" name="DescriptionFor" />
+      <member cname="ATK_RELATION_NODE_PARENT_OF" name="NodeParentOf" />
       <member cname="ATK_RELATION_LAST_DEFINED" name="LastDefined" />
     </enum>
     <enum name="Role" cname="AtkRole" gtype="atk_role_get_type" type="enum">
@@ -2436,6 +2437,26 @@
         <return-type type="void" />
       </method>
     </object>
+    <object name="Plug" cname="AtkPlug" parent="AtkObject">
+      <class_struct cname="AtkPlugClass">
+        <field name="ParentClass" cname="parent_class" type="AtkObjectClass" />
+        <method vm="get_object_id" />
+      </class_struct>
+      <virtual_method name="GetObjectId" cname="get_object_id">
+        <return-type type="gchar*" />
+        <parameters />
+      </virtual_method>
+      <implements>
+        <interface cname="AtkComponent" />
+      </implements>
+      <method name="GetId" cname="atk_plug_get_id">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetType" cname="atk_plug_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="atk_plug_new" />
+    </object>
     <object name="Registry" cname="AtkRegistry" parent="GObject">
       <class_struct cname="AtkRegistryClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
@@ -2495,6 +2516,12 @@
           <parameter type="AtkRelationType" name="relationship" />
         </parameters>
       </constructor>
+      <method name="RemoveTarget" cname="atk_relation_remove_target">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="AtkObject*" name="target" />
+        </parameters>
+      </method>
       <method name="TypeForName" cname="atk_relation_type_for_name" shared="true">
         <return-type type="AtkRelationType" />
         <parameters>
@@ -2565,6 +2592,35 @@
           <parameter type="AtkRelation*" name="relation" />
         </parameters>
       </method>
+    </object>
+    <object name="Socket" cname="AtkSocket" parent="AtkObject">
+      <class_struct cname="AtkSocketClass">
+        <field name="ParentClass" cname="parent_class" type="AtkObjectClass" />
+        <method vm="embed" />
+      </class_struct>
+      <field name="EmbeddedPlugId" cname="embedded_plug_id" type="gchar*" />
+      <virtual_method name="Embed" cname="embed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gchar*" name="plug_id" />
+        </parameters>
+      </virtual_method>
+      <implements>
+        <interface cname="AtkComponent" />
+      </implements>
+      <method name="Embed" cname="atk_socket_embed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gchar*" name="plug_id" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="atk_socket_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="IsOccupied" cname="atk_socket_is_occupied">
+        <return-type type="gboolean" />
+      </method>
+      <constructor cname="atk_socket_new" />
     </object>
     <object name="StateSet" cname="AtkStateSet" parent="GObject">
       <class_struct cname="AtkStateSetClass">
@@ -2706,6 +2762,7 @@
       <field name="OldValue" cname="old_value" type="GValue" />
       <field name="NewValue" cname="new_value" type="GValue" />
     </struct>
+    <struct name="RealStateSet" cname="AtkRealStateSet" opaque="true" />
     <boxed name="Rectangle" cname="AtkRectangle">
       <field name="X" cname="x" type="gint" />
       <field name="Y" cname="y" type="gint" />
@@ -2728,6 +2785,7 @@
       <field name="Width" cname="width" type="gint" />
       <field name="Height" cname="height" type="gint" />
     </struct>
+    <struct name="FocusTracker" cname="FocusTracker" opaque="true" />
     <class name="Global" cname="AtkGlobal">
       <method name="AddFocusTracker" cname="atk_add_focus_tracker" shared="true">
         <return-type type="guint" />
