@@ -151,7 +151,6 @@ namespace Gdk {
 #endif
 			case EventType.Map:
 			case EventType.Unmap:
-			case EventType.NoExpose:
 			case EventType.Delete:
 			case EventType.Destroy:
 			default:

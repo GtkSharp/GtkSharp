@@ -51,8 +51,8 @@ namespace Gdk {
 			}
 		}
 
-		public Region Region {
-			get { return GLib.Opaque.GetOpaque (Native.region, typeof (Region), false) as Region; }
+		public Cairo.Region Region {
+			get { return new Cairo.Region (Native.region); }
 			set {
 				NativeStruct native = Native;
 				native.region = value == null ? IntPtr.Zero : value.Handle;

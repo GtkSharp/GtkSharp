@@ -32,75 +32,6 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_pixbuf_get_from_drawable(IntPtr raw, IntPtr src, IntPtr cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height);
-
-		public Gdk.Pixbuf GetFromDrawable(Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
-			IntPtr raw_ret = gdk_pixbuf_get_from_drawable(Handle, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
-			Gdk.Pixbuf ret;
-			if (raw_ret == IntPtr.Zero)
-				ret = null;
-			else
-				ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret);
-			return ret;
-		}
-
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_pixbuf_get_from_image(IntPtr raw, IntPtr src, IntPtr cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height);
-
-		public Gdk.Pixbuf GetFromImage(Gdk.Image src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
-			IntPtr raw_ret = gdk_pixbuf_get_from_image(Handle, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
-			Gdk.Pixbuf ret;
-			if (raw_ret == IntPtr.Zero)
-				ret = null;
-			else
-				ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret);
-			return ret;
-		}
-
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_pixbuf_render_pixmap_and_mask (IntPtr raw, out IntPtr pixmap_return, out IntPtr mask_return, int alpha_threshold);
-
-		public void RenderPixmapAndMask (out Pixmap pixmap_return, out Pixmap mask_return, int alpha_threshold)
-		{
-			IntPtr mask_handle, pixmap_handle;
-			gdk_pixbuf_render_pixmap_and_mask (Handle, out pixmap_handle, out mask_handle, alpha_threshold);
-			pixmap_return = GLib.Object.GetObject (pixmap_handle) as Pixmap;
-			mask_return = GLib.Object.GetObject (mask_handle) as Pixmap;
-		}
-
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_pixbuf_render_pixmap_and_mask_for_colormap (IntPtr raw, IntPtr colormap, out IntPtr pixmap_return, out IntPtr mask_return, int alpha_threshold);
-
-		public void RenderPixmapAndMaskForColormap (Colormap colormap, out Pixmap pixmap_return, out Pixmap mask_return, int alpha_threshold) 
-		{
-			IntPtr mask_handle, pixmap_handle;
-			gdk_pixbuf_render_pixmap_and_mask_for_colormap (Handle, colormap == null ? IntPtr.Zero : colormap.Handle, out pixmap_handle, out mask_handle, alpha_threshold);
-			pixmap_return = GLib.Object.GetObject (pixmap_handle) as Pixmap;
-			mask_return = GLib.Object.GetObject (mask_handle) as Pixmap;
-		}
-
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_pixbuf_render_threshold_alpha(IntPtr raw, IntPtr bitmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_threshold);
-
-		public void RenderThresholdAlpha(Gdk.Pixmap bitmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_threshold) {
-			gdk_pixbuf_render_threshold_alpha(Handle, bitmap.Handle, src_x, src_y, dest_x, dest_y, width, height, alpha_threshold);
-		}
-
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_pixbuf_render_to_drawable(IntPtr raw, IntPtr drawable, IntPtr gc, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int dither, int x_dither, int y_dither);
-
-		public void RenderToDrawable(Gdk.Drawable drawable, Gdk.GC gc, int src_x, int src_y, int dest_x, int dest_y, int width, int height, Gdk.RgbDither dither, int x_dither, int y_dither) {
-			gdk_pixbuf_render_to_drawable(Handle, drawable.Handle, gc.Handle, src_x, src_y, dest_x, dest_y, width, height, (int) dither, x_dither, y_dither);
-		}
-
-		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_pixbuf_render_to_drawable_alpha(IntPtr raw, IntPtr drawable, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_mode, int alpha_threshold, int dither, int x_dither, int y_dither);
-
-		public void RenderToDrawableAlpha(Gdk.Drawable drawable, int src_x, int src_y, int dest_x, int dest_y, int width, int height, Gdk.PixbufAlphaMode alpha_mode, int alpha_threshold, Gdk.RgbDither dither, int x_dither, int y_dither) {
-			gdk_pixbuf_render_to_drawable_alpha(Handle, drawable.Handle, src_x, src_y, dest_x, dest_y, width, height, (int) alpha_mode, alpha_threshold, (int) dither, x_dither, y_dither);
-		}
-
 		public Pixbuf (System.IO.Stream stream) : base (IntPtr.Zero)
 		{
 			using (PixbufLoader pl = new PixbufLoader (stream)) {
@@ -253,23 +184,6 @@
 			return Copy ();
 		}
 
-
-//
-// These are factory versions of a couple of existing methods, but simplify
-// the process by reducing the number of steps required.  Here a single 
-// operation will create the Pixbuf instead of two
-//
-
-		public static Gdk.Pixbuf FromDrawable (Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
-			IntPtr raw_ret = gdk_pixbuf_get_from_drawable(IntPtr.Zero, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
-			return new Pixbuf (raw_ret);
-		}
-
-		[Obsolete ("Replaced by static FromDrawable method")]
-		public Gdk.Pixbuf CreateFromDrawable (Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
-			IntPtr raw_ret = gdk_pixbuf_get_from_drawable((IntPtr) 0, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
-			return new Pixbuf (raw_ret);
-		}
 
 //
 // the 'Pixels' property

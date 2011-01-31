@@ -1,5 +1,3 @@
-SUBDIRS = . glue
-
 pkg = gdk
 SYMBOLS = gdk-symbols.xml
 INCLUDE_API = $(top_srcdir)/glib/glib-api.xml $(top_srcdir)/cairo/cairo-api.xml $(top_builddir)/gio/gio-api.xml $(top_builddir)/pango/pango-api.xml
@@ -28,6 +26,7 @@ sources = 			\
 	EventVisibility.cs	\
 	EventWindowState.cs	\
 	Key.cs			\
+	Rectangle.cs		\
 	Size.cs			\
 	TextProperty.cs
 
@@ -39,7 +38,6 @@ customs = 			\
 	DeviceAxis.custom	\
 	Display.custom		\
 	DisplayManager.custom	\
-	DragContext.custom	\
 	Drawable.custom		\
 	EdgeTable.custom	\
 	GCValues.custom		\
@@ -58,7 +56,6 @@ customs = 			\
 	Pixdata.custom		\
 	Point.custom		\
 	Property.custom		\
-	Rectangle.custom	\
 	Region.custom		\
 	RgbCmap.custom		\
 	Screen.custom		\
