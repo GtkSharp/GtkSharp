@@ -205,9 +205,9 @@ foreach $fname (@srcs, @privhdrs) {
 	}
 
 	while ($line = <INFILE>) {
-		next if ($line !~ /^(struct|typedef struct.*;|\w+_class_init|\w+_base_init|\w+_get_type\b|G_DEFINE_TYPE_WITH_CODE)/);
+		next if ($line !~ /^(struct|typedef struct.*;|\w+_class_init|\w+_base_init|\w+_get_type\b|G_DEFINE_TYPE_WITH_CODE|G_DEFINE_BOXED_TYPE)/);
 
-		if ($line =~ /^G_DEFINE_TYPE_WITH_CODE/) {
+		if ($line =~ /^G_DEFINE_(TYPE_WITH_CODE|BOXED_TYPE)/) {
 			my $macro;
 			my $parens = 0;
 			do {
