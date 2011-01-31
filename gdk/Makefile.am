@@ -50,7 +50,6 @@ customs = 			\
 	Pixmap.custom		\
 	Pixbuf.custom		\
 	PixbufAnimation.custom	\
-	PixbufFormat.custom	\
 	PixbufFrame.custom	\
 	PixbufLoader.custom	\
 	Pixdata.custom		\
