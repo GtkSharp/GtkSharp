@@ -159,6 +159,8 @@ namespace GtkSharp.Generation {
 		void GenerateGType (StreamWriter sw)
 		{
 			Method m = GetMethod ("GetType");
+			if (m == null)
+				throw new Exception ("Interface " + QualifiedName + " missing GetType method.");
 			m.GenerateImport (sw);
 			sw.WriteLine ("\t\tprivate static GLib.GType _gtype = new GLib.GType ({0} ());", m.CName);
 			sw.WriteLine ();
