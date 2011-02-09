@@ -10,7 +10,7 @@ pkgconfig_DATA = glib-sharp-3.0.pc
 gapidir = $(datadir)/gapi-3.0
 gapi_DATA = glib-api.xml
 
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb AssemblyInfo.cs $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
 DISTCLEANFILES = $(ASSEMBLY).config
 
 POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
@@ -22,7 +22,6 @@ sources =		 			\
 	Argv.cs					\
 	Boxed.cs				\
 	CDeclCallbackAttribute.cs		\
-	ClassInitializerAttribute.cs		\
 	ConnectBeforeAttribute.cs		\
 	DefaultSignalHandlerAttribute.cs	\
 	DelegateWrapper.cs			\
@@ -39,7 +38,6 @@ sources =		 			\
 	GType.cs				\
 	GTypeAttribute.cs			\
 	Idle.cs					\
-	IgnoreClassInitializersAttribute.cs	\
 	InitiallyUnowned.cs			\
 	IOChannel.cs				\
 	IWrapper.cs				\
@@ -79,7 +77,7 @@ sources =		 			\
 	Value.cs				\
 	Variant.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
+build_sources = $(addprefix $(srcdir)/, $(sources)) $(top_builddir)/AssemblyInfo.cs
 dist_sources = $(sources)
 
 EXTRA_DIST =				\
@@ -88,10 +86,7 @@ EXTRA_DIST =				\
 	glib-sharp-3.0.pc.in		\
 	glib-api.xml
 
-AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
-	cp $(top_builddir)/AssemblyInfo.cs .
-
-$(ASSEMBLY): $(build_sources) $(SNK) AssemblyInfo.cs
+$(ASSEMBLY): $(build_sources) $(SNK)
 	@rm -f $(ASSEMBLY).mdb
 	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 

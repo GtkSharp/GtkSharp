@@ -151,7 +151,7 @@ namespace GLib {
 					
 		}
 
-		private static void InvokeClassInitializers (GType gtype, System.Type t)
+		private static void InvokeTypeInitializers (GType gtype, System.Type t)
 		{
 			object[] parms = {gtype, t};
 
@@ -161,16 +161,6 @@ namespace GLib {
 				MethodInfo m = tia.Type.GetMethod (tia.MethodName, flags);
 				if (m != null)
 					m.Invoke (null, parms);
-			}
-
-			for (Type curr = t; curr != typeof(GLib.Object); curr = curr.BaseType) {
- 
-				if (curr.Assembly.IsDefined (typeof (IgnoreClassInitializersAttribute), false))
-					continue;
- 
-				foreach (MethodInfo minfo in curr.GetMethods(flags))
-					if (minfo.IsDefined (typeof (ClassInitializerAttribute), true))
-						minfo.Invoke (null, parms);
 			}
  		}
 		
@@ -376,7 +366,7 @@ namespace GLib {
 			}
 			AddProperties (gtype, t, is_first_subclass);
 			ConnectDefaultHandlers (gtype, t);
-			InvokeClassInitializers (gtype, t);
+			InvokeTypeInitializers (gtype, t);
 			AddInterfaces (gtype, t);
 			return gtype;
 		}
