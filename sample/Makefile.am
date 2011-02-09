@@ -1,4 +1,4 @@
-SUBDIRS = GtkDemo pixmaps valtest opaquetest gio gtk-gio
+# SUBDIRS = GtkDemo pixmaps valtest opaquetest gio gtk-gio
 
 if ENABLE_DOTNET
 DOTNET_TARGETS=drawing-sample.exe
@@ -116,9 +116,6 @@ EXTRA_DIST = 				\
 	ManagedTreeViewDemo.cs		\
 	NodeViewDemo.cs			\
 	GExceptionTest.cs		\
-	GladeViewer.cs			\
-	GladeTest.cs 			\
-	test.glade			\
 	CairoSample.cs			\
 	TestDnd.cs			\
 	CustomCellRenderer.cs		\
