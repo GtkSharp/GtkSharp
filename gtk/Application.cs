@@ -55,10 +55,10 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_init (ref int argc, ref IntPtr argv);
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_init_check (ref int argc, ref IntPtr argv);
 
 		static void SetPrgname ()
@@ -120,7 +120,7 @@ namespace Gtk {
 			return do_init (progname, ref args, true);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_main ();
 
 		public static void Run ()
@@ -128,7 +128,7 @@ namespace Gtk {
 			gtk_main ();
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_events_pending ();
 
 
@@ -137,10 +137,10 @@ namespace Gtk {
 			return gtk_events_pending ();
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_main_iteration ();
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_main_iteration_do (bool blocking);
 
 		public static void RunIteration ()
@@ -153,7 +153,7 @@ namespace Gtk {
 			return gtk_main_iteration_do (blocking);
 		}
 		
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_main_quit ();
 
 		public static void Quit ()
@@ -162,7 +162,7 @@ namespace Gtk {
 		}
 
 
-		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_get_current_event ();
 
 		public static Gdk.Event CurrentEvent {

@@ -51,7 +51,6 @@ customs = 				\
 	Clipboard.custom		\
 	ColorSelection.custom		\
 	ColorSelectionDialog.custom	\
-	Combo.custom			\
 	ComboBox.custom			\
 	ComboBoxEntry.custom		\
 	Container.custom		\
@@ -60,7 +59,6 @@ customs = 				\
 	Entry.custom			\
 	EntryCompletion.custom		\
 	FileChooserDialog.custom	\
-	FileSelection.custom		\
 	Frame.custom			\
 	HBox.custom			\
 	HScale.custom			\
@@ -79,7 +77,6 @@ customs = 				\
 	Menu.custom			\
 	MenuItem.custom			\
 	Notebook.custom			\
-	Object.custom			\
 	PaperSize.custom		\
 	Plug.custom			\
 	PrintContext.custom		\
