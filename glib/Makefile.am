@@ -21,7 +21,6 @@ references =
 sources =		 			\
 	Argv.cs					\
 	Boxed.cs				\
-	CDeclCallbackAttribute.cs		\
 	ConnectBeforeAttribute.cs		\
 	DefaultSignalHandlerAttribute.cs	\
 	DelegateWrapper.cs			\
