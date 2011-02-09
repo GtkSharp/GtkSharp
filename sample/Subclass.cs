@@ -4,8 +4,6 @@
 //
 // (c) 2001-2003 Mike Kestner, Novell, Inc.
 
-[assembly:GLib.IgnoreClassInitializers]
-
 namespace GtkSamples {
 
 	using Gtk;
