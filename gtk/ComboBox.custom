@@ -22,11 +22,12 @@
 
 		public ComboBox (string[] entries) : this (new ListStore (typeof (string)))
 		{
+			ListStore store = Model as ListStore;
 			CellRendererText cell = new CellRendererText ();
 			PackStart (cell, true);
 			SetAttributes (cell, "text", 0);
 			foreach (string entry in entries)
-				AppendText (entry);
+				store.AppendValues (entry);
 		}
 
 		public void SetAttributes (CellRenderer cell, params object[] attrs)

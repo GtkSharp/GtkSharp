@@ -1,4 +1,4 @@
-SUBDIRS = test GtkDemo pixmaps valtest opaquetest gio gtk-gio
+SUBDIRS = GtkDemo pixmaps valtest opaquetest gio gtk-gio
 
 if ENABLE_DOTNET
 DOTNET_TARGETS=drawing-sample.exe

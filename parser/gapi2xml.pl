@@ -165,6 +165,13 @@ while ($line = <STDIN>) {
 		$typefuncs{lc($1)} = $line;
 	} elsif ($line =~ /^G_DEFINE_BOXED_TYPE\s*\(\s*(\w+)/) {
 		$boxdefs{$1} = $line;
+	} elsif ($line =~ /^G_DEFINE_INTERFACE\s*\(\s*(\w+)\s*,\s*(\w+)/) {
+		if (exists($get_types{"$2_get_type"})) {
+			$typedef = $get_types{"$2_get_type"};
+			if (!exists($ifaces{$typedef})) {
+				$ifaces{$typedef} = "$1Interface";
+			}
+		}
 	} elsif ($line =~ /^(deprecated)?(const|G_CONST_RETURN)?\s*(struct\s+)?\w+\s*\**(\s*(const|G_CONST_RETURN)\s*\**)?\s*(\w+)\s*\(/) {
 		$fname = $6;
 		$fdef = "";
@@ -211,12 +218,14 @@ while ($line = <STDIN>) {
 		$boxdefs{$1} = $line;
 	} elsif ($line =~ /^BUILTIN\s*\{\s*\"(\w+)\".*GTK_TYPE_(ENUM|FLAGS)/) {
 		# ignoring these for now.
-	} elsif ($line =~ /^(deprecated)?\#define/) {
+	} elsif ($line =~ /^(deprecated)?\#\s*define/) {
 		my $test_ns = uc ($ns);
-		if ($line =~ /^deprecated\#define\s+(\w+)\s+\"(.*)\"/) {
+		if ($line =~ /^deprecated\#\s*define\s+(\w+)\s+\"(.*)\"/) {
 			$defines{"deprecated$1"} = $2;
-		} elsif ($line =~ /\#define\s+(\w+)\s+\"(.*)\"/) {
+		} elsif ($line =~ /\#\s*define\s+(\w+)\s+\"(.*)\"/) {
 			$defines{$1} = $2;
+		} elsif ($line =~ /\#\s*define\s+(\w+)\s+\(?\s*(\w+_get_type)/) {
+			$get_types{$2} = $1;
 		}
 	} elsif ($line !~ /\/\*/) {
 		print $line;
@@ -324,16 +333,24 @@ foreach $type (sort(keys(%ifaces))) {
 
 	$elem_table{lc($inst)} = $iface_el;
 
-	$classdef = $sdefs{$1} if ($ifacetype =~ /struct\s+(\w+)/);
-	my @signal_vms;
-	if ($initfunc) {
-		@signal_vms = parseInitFunc($iface_el, $initfunc, $classdef);
+	if ($ifacetype =~ /struct\s+(\w+)/) {
+		$classdef = $sdefs{$1};
 	} else {
-		warn "Don't have an init func for $inst.\n" if $debug;
-		# my @signal_vms;
+		$classdef = 0;
 	}
 
-	addClassElem ($iface_el, $classdef, @signal_vms) if ($classdef);
+	if ($classdef) {
+		my @signal_vms;
+		if ($initfunc) {
+			@signal_vms = parseInitFunc($iface_el, $initfunc, $classdef);
+		} else {
+			warn "Don't have an init func for $inst.\n" if $debug;
+			# my @signal_vms;
+		}
+		addClassElem ($iface_el, $classdef, @signal_vms);
+	} else {
+		$iface_el->setAttribute("consume_only", "1");
+	}
 }
 
 

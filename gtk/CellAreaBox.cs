@@ -1,11 +1,7 @@
-// AboutDialog.custom - customizations to Gtk.AboutDialog
-//
-// Authors: Mike Kestner  <mkestner@ximian.com>
-//
-// Copyright (c) 2007 Novell, Inc.
+//  Copyright (c) 2011 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
-// modify it under the terms of version 2 of the Lesser GNU General 
+// modify it under the terms of version 2 of the Lesser GNU General
 // Public License as published by the Free Software Foundation.
 //
 // This program is distributed in the hope that it will be useful,
@@ -18,14 +14,23 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[Obsolete("Use ProgramName instead")]
-		[GLib.Property ("program-name")]
-		public string Name { 
-			get {
-				return ProgramName;
-			}
-			set {
-				ProgramName = value;
+
+using System;
+
+namespace Gtk {
+
+	public partial class CellAreaBox {
+
+		public void SetAttributes (CellRenderer cell, params object[] attrs)
+		{
+			if (attrs.Length % 2 != 0)
+				throw new ArgumentException ("attrs should contain pairs of attribute/col");
+
+			ClearAttributes (cell);
+			for (int i = 0; i < attrs.Length - 1; i += 2) {
+				AddAttribute (cell, (string) attrs [i], (int) attrs [i + 1]);
 			}
 		}
+	}
+}
 

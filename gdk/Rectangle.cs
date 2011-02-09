@@ -232,5 +232,12 @@ namespace Gdk {
 		{
 			return gdk_rectangle_intersect (ref this, ref src, out dest);
 		}
+
+		public static Rectangle New (IntPtr raw)
+		{
+			return (Gdk.Rectangle) Marshal.PtrToStructure (raw, typeof (Gdk.Rectangle));
+		}
+
+		public static Rectangle Zero;
 	}
 }

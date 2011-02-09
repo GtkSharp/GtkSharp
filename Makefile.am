@@ -1,4 +1,4 @@
-SUBDIRS = sources generator parser glib gio cairo pango atk gdk gtk gtkdotnet sample doc
+SUBDIRS = sources generator parser glib gio cairo pango atk gdk gtk gtkdotnet doc
 
 EXTRA_DIST = 			\
 	gtk-sharp.snk		\

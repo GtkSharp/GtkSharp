@@ -29,20 +29,6 @@
 		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_append (IntPtr raw, out TreeIter iter, IntPtr parent);
 
-		[Obsolete ("Replaced by AppendNode")]
-		public TreeIter Append (TreeIter parent) 
-		{
-			TreeIter iter;
-			gtk_tree_store_append (Handle, out iter, ref parent);
-			return iter;
-		}
-
-		[Obsolete ("Replaced by AppendNode")]
-		public void Append (out TreeIter iter) 
-		{
-			gtk_tree_store_append (Handle, out iter, IntPtr.Zero);
-		}
-
 		public TreeIter AppendNode () 
 		{
 			TreeIter iter;
@@ -62,20 +48,6 @@
 
 		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert (IntPtr raw, out TreeIter iter, IntPtr parent, int position);
-
-		[Obsolete ("Replaced by InsertNode")]
-		public TreeIter Insert (TreeIter parent, int position) 
-		{
-			TreeIter iter;
-			gtk_tree_store_insert (Handle, out iter, ref parent, position);
-			return iter;
-		}
-
-		[Obsolete ("Replaced by InsertNode")]
-		public void Insert (out TreeIter iter, int position) 
-		{
-			gtk_tree_store_insert (Handle, out iter, IntPtr.Zero, position);
-		}
 
 		public TreeIter InsertNode (TreeIter parent, int position) 
 		{
@@ -97,20 +69,6 @@
 		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_prepend (IntPtr raw, out TreeIter iter, IntPtr parent);
 
-		[Obsolete ("Replaced by PrependNode")]
-		public TreeIter Prepend(TreeIter parent) 
-		{
-			TreeIter iter;
-			gtk_tree_store_prepend (Handle, out iter, ref parent);
-			return iter;
-		}
-
-		[Obsolete ("Replaced by PrependNode")]
-		public void Prepend (out TreeIter iter) 
-		{
-			gtk_tree_store_append (Handle, out iter, IntPtr.Zero);
-		}
-
 		public TreeIter PrependNode (TreeIter parent) 
 		{
 			TreeIter iter;
@@ -131,20 +89,6 @@
 		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert_before (IntPtr raw, out TreeIter iter, IntPtr parent, ref TreeIter sibling);
 
-		[Obsolete ("Replaced by InsertNodeBefore")]
-		public TreeIter InsertBefore (TreeIter parent, TreeIter sibling) 
-		{
-			TreeIter iter;
-			gtk_tree_store_insert_before (Handle, out iter, ref parent, ref sibling);
-			return iter;
-		}
-
-		[Obsolete ("Replaced by InsertNodeBefore")]
-		public void InsertBefore (out TreeIter iter, TreeIter sibling) 
-		{
-			gtk_tree_store_insert_before (Handle, out iter, IntPtr.Zero, ref sibling);
-		}
-
 		public TreeIter InsertNodeBefore (TreeIter sibling) 
 		{
 			TreeIter iter;
@@ -164,20 +108,6 @@
 
 		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert_after (IntPtr raw, out TreeIter iter, IntPtr parent, ref TreeIter sibling);
-
-		[Obsolete ("Replaced by InsertNodeAfter")]
-		public TreeIter InsertAfter (TreeIter parent, TreeIter sibling) 
-		{
-			TreeIter iter;
-			gtk_tree_store_insert_after (Handle, out iter, ref parent, ref sibling);
-			return iter;
-		}
-
-		[Obsolete ("Replaced by InsertNodeAfter")]
-		public void InsertAfter (out TreeIter iter, TreeIter sibling) 
-		{
-			gtk_tree_store_insert_after (Handle, out iter, IntPtr.Zero, ref sibling);
-		}
 
 		public TreeIter InsertNodeAfter (TreeIter sibling) 
 		{
@@ -377,30 +307,12 @@
 			ColumnTypes = gtypes;
 		}
 
-		[Obsolete ("Replaced by ColumnTypes property.")]
-		public void SetColumnTypes (GLib.GType[] types)
-		{
-			ColumnTypes = types;
-		}
-
 		public object GetValue (Gtk.TreeIter iter, int column) {
 			GLib.Value val = GLib.Value.Empty;
 			GetValue (iter, column, ref val);
 			object ret = val.Val;
 			val.Dispose ();
 			return ret;
-		}
-
-		[Obsolete ("Replaced by SetSortFunc (int, TreeIterCompareFunc) overload.")]
-		public void SetSortFunc (int sort_column_id, TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy) 
-		{
-			SetSortFunc (sort_column_id, sort_func);
-		}
-
-		[Obsolete ("Replaced by DefaultSortFunc property.")]
-		public void SetDefaultSortFunc (TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy) 
-		{
-			DefaultSortFunc = sort_func;
 		}
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
@@ -458,18 +370,9 @@
 			OverrideVirtualMethod (gtype, "rows_reordered", RowsReorderedVMCallback);
 		}
 
-		[Obsolete ("Replaced by int[] new_order overload.")]
-		[GLib.DefaultSignalHandler(Type=typeof(Gtk.TreeStore), ConnectionMethod="OverrideRowsReordered")]
-		protected virtual void OnRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter, out int new_order)
-		{
-			new_order = -1;
-		}
-
 		[GLib.DefaultSignalHandler(Type=typeof(Gtk.TreeStore), ConnectionMethod="OverrideRowsReordered")]
 		protected virtual void OnRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter, int[] new_order)
 		{
-			int dummy;
-			OnRowsReordered (path, iter, out dummy);
 			GLib.Value ret = GLib.Value.Empty;
 			GLib.ValueArray inst_and_params = new GLib.ValueArray (4);
 			GLib.Value[] vals = new GLib.Value [4];

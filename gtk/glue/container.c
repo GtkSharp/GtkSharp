@@ -19,7 +19,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtkcontainer.h>
+#include <gtk/gtk.h>
 
 void gtksharp_container_base_forall (GtkContainer *container, gboolean include_internals, GtkCallback cb, gpointer data);
 

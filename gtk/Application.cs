@@ -25,14 +25,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 	using Gdk;
 
-	public class Application {
-
-		//
-		// Disables creation of instances.
-		//
-		private Application ()
-		{
-		}
+	public partial class Application {
 
 		const int WS_EX_TOOLWINDOW = 0x00000080;
 		const int WS_OVERLAPPEDWINDOW = 0x00CF0000;

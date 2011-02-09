@@ -39,8 +39,6 @@ public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags, params ob
 			Modal = true;
 		if ((flags & DialogFlags.DestroyWithParent) > 0)
 			DestroyWithParent = true;
-		if ((flags & DialogFlags.NoSeparator) > 0)
-			HasSeparator = false;
 	} else {
 		IntPtr native = GLib.Marshaller.StringToPtrGStrdup (title);
 		Raw = gtk_dialog_new_with_buttons (native, parent == null ? IntPtr.Zero : parent.Handle, (int) flags, IntPtr.Zero);

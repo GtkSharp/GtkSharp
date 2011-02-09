@@ -14,6 +14,7 @@ sources = 				\
 	ActionEntry.cs			\
 	Application.cs			\
 	BindingAttribute.cs		\
+	CellAreaBox.cs			\
 	ChildPropertyAttribute.cs	\
 	ITreeNode.cs			\
 	Key.cs				\
@@ -26,14 +27,13 @@ sources = 				\
 	StockManager.cs			\
 	ThreadNotify.cs			\
 	ToggleActionEntry.cs		\
-	Timeout.cs			\
 	TreeEnumerator.cs		\
+	TreeMenu.cs			\
 	TreeNodeAttribute.cs		\
 	TreeNode.cs			\
 	TreeNodeValueAttribute.cs
 
 customs = 				\
-	AboutDialog.custom		\
 	Accel.custom			\
 	AccelKey.custom			\
 	Action.custom			\
@@ -44,13 +44,6 @@ customs = 				\
 	Button.custom			\
 	Calendar.custom			\
 	CellRenderer.custom		\
-	CellRendererAccel.custom	\
-	CellRendererCombo.custom	\
-	CellRendererPixbuf.custom	\
-	CellRendererProgress.custom	\
-	CellRendererSpin.custom		\
-	CellRendererText.custom		\
-	CellRendererToggle.custom	\
 	CellLayout.custom		\
 	CellLayoutAdapter.custom	\
 	CellView.custom			\
@@ -109,14 +102,12 @@ customs = 				\
 	TargetList.custom		\
 	TargetPair.custom		\
 	TextAttributes.custom		\
-	TextAppearance.custom		\
 	TextBuffer.custom		\
 	TextChildAnchor.custom		\
 	TextIter.custom			\
 	TextMark.custom			\
 	TextTag.custom			\
 	TextView.custom			\
-	Toolbar.custom			\
 	TooltipsData.custom		\
 	TreeIter.custom			\
 	TreeModel.custom		\
@@ -125,8 +116,6 @@ customs = 				\
 	TreeModelSort.custom		\
 	TreePath.custom			\
 	TreeSelection.custom		\
-	TreeSortable.custom		\
-	TreeSortableAdapter.custom	\
 	TreeStore.custom		\
 	TreeViewColumn.custom		\
 	TreeView.custom			\

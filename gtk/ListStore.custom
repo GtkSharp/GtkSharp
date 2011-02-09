@@ -21,12 +21,6 @@
 // Boston, MA 02111-1307, USA.
 
 
-		[Obsolete ("Replaced by Reorder (int[]) overload")]
-		public int Reorder ()
-		{
-			return -1;
-		}
-
 		[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_model_iter_children (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
 		public bool IterChildren (out Gtk.TreeIter iter) 
@@ -191,12 +185,6 @@
 			ColumnTypes = gtypes;
 		}
 
-		[Obsolete ("Replaced by ColumnTypes property.")]
-		public void SetColumnTypes (GLib.GType[] types)
-		{
-			ColumnTypes = types;
-		}
-
 		public object GetValue(Gtk.TreeIter iter, int column) 
 		{
 			GLib.Value val = GLib.Value.Empty;
@@ -204,18 +192,6 @@
 			object ret = val.Val;
 			val.Dispose ();
 			return ret;
-		}
-
-		[Obsolete ("Replaced by SetSortFunc (int, TreeIterCompareFunc) overload.")]
-		public void SetSortFunc (int sort_column_id, TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy) 
-		{
-			SetSortFunc (sort_column_id, sort_func);
-		}
-
-		[Obsolete ("Replaced by DefaultSortFunc property.")]
-		public void SetDefaultSortFunc (TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy) 
-		{
-			DefaultSortFunc = sort_func;
 		}
 
 		public IEnumerator GetEnumerator()
@@ -278,18 +254,9 @@
 			OverrideVirtualMethod (gtype, "rows_reordered", RowsReorderedVMCallback);
 		}
 
-		[Obsolete ("Replaced by int[] new_order overload.")]
-		[GLib.DefaultSignalHandler(Type=typeof(Gtk.ListStore), ConnectionMethod="OverrideRowsReordered")]
-		protected virtual void OnRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter, out int new_order)
-		{
-			new_order = -1;
-		}
-
 		[GLib.DefaultSignalHandler(Type=typeof(Gtk.ListStore), ConnectionMethod="OverrideRowsReordered")]
 		protected virtual void OnRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter, int[] new_order)
 		{
-			int dummy;
-			OnRowsReordered (path, iter, out dummy);
 			GLib.Value ret = GLib.Value.Empty;
 			GLib.ValueArray inst_and_params = new GLib.ValueArray (4);
 			GLib.Value[] vals = new GLib.Value [4];

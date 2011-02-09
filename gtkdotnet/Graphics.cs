@@ -48,13 +48,14 @@ namespace Gtk.DotNet {
 		[DllImport ("libgdk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern IntPtr gdk_x11_drawable_get_xid (IntPtr raw);
 		
-		public static System.Drawing.Graphics FromDrawable (Gdk.Drawable drawable)
+		public static System.Drawing.Graphics FromDrawable (Gdk.Window drawable)
 		{
 			return FromDrawable (drawable, true);
 		}
 
-		public static System.Drawing.Graphics FromDrawable(Gdk.Drawable drawable, bool double_buffered)
+		public static System.Drawing.Graphics FromDrawable(Gdk.Window drawable, bool double_buffered)
 		{
+#if FIXME30
 			IntPtr x_drawable;
 			int x_off = 0, y_off = 0;
 			
@@ -65,7 +66,7 @@ namespace Gtk.DotNet {
 				if (drawable is Gdk.Window && double_buffered)
 				    ((Gdk.Window)drawable).GetInternalPaintInfo(out drawable, out x_off, out y_off);
 
-				Gdk.GC gcc = new Gdk.GC(drawable);
+				Cairo.Context gcc = new Gdk.GC(drawable);
 				
 				IntPtr windc = gdk_win32_hdc_get(drawable.Handle, gcc.Handle, 0);
 				
@@ -98,6 +99,9 @@ namespace Gtk.DotNet {
 				
 				return g;
 			}
+#else
+			throw new NotSupportedException ();
+#endif
 		}
 	}
 

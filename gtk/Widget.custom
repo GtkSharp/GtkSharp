@@ -24,24 +24,6 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-public override void Destroy ()
-{
-	base.Destroy ();
-}
-
-protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
-{
-	base.CreateNativeObject (names, vals);
-}
-
-[DllImport("gtksharpglue-3")]
-static extern IntPtr gtksharp_gtk_widget_get_allocation (IntPtr style);
-
-public Gdk.Rectangle Allocation {
-	get { return Gdk.Rectangle.New (gtksharp_gtk_widget_get_allocation (Handle)); }
-	set { SizeAllocate (value); }
-}
-
 [DllImport ("gtksharpglue-3")]
 static extern void gtksharp_gtk_widget_set_window (IntPtr widget, IntPtr window);
 public Gdk.Window GdkWindow {
@@ -58,111 +40,6 @@ public void AddAccelerator (string accel_signal, AccelGroup accel_group, AccelKe
 {
 	this.AddAccelerator (accel_signal, accel_group, (uint) accel_key.Key, accel_key.AccelMods, accel_key.AccelFlags);
 
-}
-
-[DllImport ("libgtk-win32-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-static extern void gtk_widget_set_state (IntPtr raw, int state);
-
-[DllImport("gtksharpglue-3")]
-static extern int gtksharp_gtk_widget_get_state (IntPtr raw);
-
-public Gtk.StateType State {
-	set {
-		gtk_widget_set_state (Handle, (int) value);
-	}
-	get {
-		return (Gtk.StateType) gtksharp_gtk_widget_get_state (Handle);
-	}
-}
-
-[DllImport("gtksharpglue-3")]
-static extern int gtksharp_gtk_widget_get_flags (IntPtr raw);
-
-[DllImport("gtksharpglue-3")]
-static extern void gtksharp_gtk_widget_set_flags (IntPtr raw, int flags);
-
-[Obsolete]
-public int Flags {
-	get {
-		return gtksharp_gtk_widget_get_flags (Handle);
-	}
-	set {
-		gtksharp_gtk_widget_set_flags (Handle, (int) value);
-	}
-}
-
-public WidgetFlags WidgetFlags {
-	get {
-		return (WidgetFlags) gtksharp_gtk_widget_get_flags (Handle);
-	}
-	set {
-		gtksharp_gtk_widget_set_flags (Handle, (int) value);
-	}
-}
-
-public void SetFlag (WidgetFlags flag)
-{
-	Flags |= (int)flag;
-}
-
-public void ClearFlag (WidgetFlags flag)
-{
-	Flags &= ~((int)flag);
-}
-
-public bool IsMapped {
-	get {
-		return ((Flags & (int)Gtk.WidgetFlags.Mapped) != 0);
-	}
-}
-
-public bool IsRealized {
-	get {
-		return ((Flags & (int)Gtk.WidgetFlags.Realized) != 0);
-	}
-}
-
-public bool IsNoWindow {
-	get {
-		return ((Flags & (int)Gtk.WidgetFlags.NoWindow) != 0);
-	}
-}
-
-public bool IsTopLevel {
-	get {
-		return ((Flags & (int)Gtk.WidgetFlags.Toplevel) != 0);
-	}
-}
-
-public bool HasGrab {
-	get {
-		return ((Flags & (int)Gtk.WidgetFlags.HasGrab) != 0);
-	}
-}
-
-public bool IsCompositeChild {
-	get {
-		return ((Flags & (int)Gtk.WidgetFlags.CompositeChild) != 0);
-	}
-}
-
-public bool IsAppPaintable {
-	get {
-		return ((Flags & (int)Gtk.WidgetFlags.AppPaintable) != 0);
-	}
-}
-
-public bool IsDoubleBuffered {
-	get {
-		return ((Flags & (int)Gtk.WidgetFlags.DoubleBuffered) != 0);
-	}
-}
-
-
-public bool IsDrawable {
-	get {
-		return (Visible && IsMapped);
-	}
 }
 
 public int FocusLineWidth {
@@ -208,45 +85,6 @@ static uint RegisterSignal (string signal_name, GLib.GType gtype, GLib.Signal.Fl
 	} finally {
 		GLib.Marshaller.Free (native_signal_name);
 	}
-}
-
-static void SetScrollAdjustmentsMarshal_cb (IntPtr closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data)
-{
-	try {
-		GLib.Value[] inst_and_params = new GLib.Value [n_param_vals];
-		int gvalue_size = Marshal.SizeOf (typeof (GLib.Value));
-		for (int idx = 0; idx < n_param_vals; idx++)
-			inst_and_params [idx] = (GLib.Value) Marshal.PtrToStructure (new IntPtr (param_values.ToInt64 () + idx * gvalue_size), typeof (GLib.Value));
-
-		Widget inst;
-		try {
-			inst = inst_and_params [0].Val as Widget;
-		} catch (GLib.MissingIntPtrCtorException) {
-			return;
-		}
-		Gtk.Adjustment h = inst_and_params [1].Val as Gtk.Adjustment;
-		Gtk.Adjustment v = inst_and_params [2].Val as Gtk.Adjustment;
-		inst.OnSetScrollAdjustments (h, v);
-	} catch (Exception e) {
-		GLib.ExceptionManager.RaiseUnhandledException (e, false);
-	}
-}
-
-static ClosureMarshal SetScrollAdjustmentsMarshalCallback;
-
-static void ConnectSetScrollAdjustments (GLib.GType gtype)
-{
-	if (SetScrollAdjustmentsMarshalCallback == null)
-		SetScrollAdjustmentsMarshalCallback = new ClosureMarshal (SetScrollAdjustmentsMarshal_cb);
-
-	GtkWidgetClass klass = GetClassStruct (gtype, false);
-	klass.SetScrollAdjustmentsSignal = RegisterSignal ("set_scroll_adjustments", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [] {Adjustment.GType, Adjustment.GType}, SetScrollAdjustmentsMarshalCallback);
-	OverrideClassStruct (gtype, klass);
-}
-
-[GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectSetScrollAdjustments")]
-protected virtual void OnSetScrollAdjustments (Gtk.Adjustment hadj, Gtk.Adjustment vadj)
-{
 }
 
 static void ActivateMarshal_cb (IntPtr raw_closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data)
@@ -460,3 +298,141 @@ public void Path (out string path, out string path_reversed)
 	Path (out len, out path, out path_reversed);
 }
 
+
+// Code from Object.custom in 2.x
+// Object is gone in 3.x
+
+		static Hashtable destroy_handlers;
+		static Hashtable DestroyHandlers {
+			get {
+				if (destroy_handlers == null)
+					destroy_handlers = new Hashtable ();
+				return destroy_handlers;
+			}
+		}
+
+		private static void OverrideDestroyed (GLib.GType gtype)
+		{
+			// Do Nothing.  We don't want to hook into the native vtable.
+			// We will manually invoke the VM on signal invocation. The signal
+			// always raises before the default handler because this signal
+			// is RUN_CLEANUP.
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Gtk.Widget), ConnectionMethod="OverrideDestroyed")]
+		protected virtual void OnDestroyed ()
+		{
+			if (DestroyHandlers.Contains (Handle)) {
+				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
+				handler (this, EventArgs.Empty);
+				DestroyHandlers.Remove (Handle);
+			}
+		}
+
+		[GLib.Signal("destroy")]
+		public event EventHandler Destroyed {
+			add {
+				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
+				DestroyHandlers [Handle] = Delegate.Combine (handler, value);
+			}
+			remove {
+				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
+				handler = (EventHandler) Delegate.Remove (handler, value);
+				if (handler != null)
+					DestroyHandlers [Handle] = handler;
+				else
+					DestroyHandlers.Remove (Handle);
+			}
+		}
+
+		event EventHandler InternalDestroyed {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "destroy");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "destroy");
+				sig.RemoveDelegate (value);
+			}
+		}
+
+		static void NativeDestroy (object o, EventArgs args)
+		{
+			Gtk.Widget widget = o as Gtk.Widget;
+			if (widget == null)
+				return;
+			widget.OnDestroyed ();
+		}
+		
+		static EventHandler native_destroy_handler;
+		static EventHandler NativeDestroyHandler {
+			get {
+				if (native_destroy_handler == null)
+					native_destroy_handler = new EventHandler (NativeDestroy);
+				return native_destroy_handler;
+			}
+		}
+
+		protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
+		{
+			base.CreateNativeObject (names, vals);
+		}
+
+		public override void Dispose ()
+		{
+			if (Handle == IntPtr.Zero)
+				return;
+			InternalDestroyed -= NativeDestroyHandler;
+			base.Dispose ();
+		}
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		private static extern void g_object_ref_sink (IntPtr raw);
+
+		protected override IntPtr Raw {
+			get {
+				return base.Raw;
+			}
+			set {
+				if (value != IntPtr.Zero)
+					g_object_ref_sink (value);
+				base.Raw = value;
+				if (value != IntPtr.Zero)
+					InternalDestroyed += NativeDestroyHandler;
+			}
+		}
+
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		private static extern void gtk_widget_destroy (IntPtr raw);
+
+		public virtual void Destroy ()
+		{
+			if (Handle == IntPtr.Zero)
+				return;
+			gtk_widget_destroy (Handle);
+			InternalDestroyed -= NativeDestroyHandler;
+		}
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern bool g_object_is_floating (IntPtr raw);
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void g_object_force_floating (IntPtr raw);
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void g_object_unref (IntPtr raw);
+
+		public bool IsFloating {
+			get {
+				return g_object_is_floating (Handle);
+			}
+			set {
+			  	if (value == true) {
+					if (!IsFloating)
+						g_object_force_floating (Handle);
+				} else {
+					g_object_ref_sink (Handle);
+					g_object_unref (Handle);
+				}
+			}
+		}

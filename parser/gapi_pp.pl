@@ -72,6 +72,8 @@ foreach $fname (@hdrs) {
 			$def = $line;
 			while ($def !~ /\".*\"/) {$def .= ($line = <INFILE>);}
 			print $def;
+		} elsif ($line =~ /#\s*define\s+\w+\s*\(\s*\w+_get_type\s*\(\)\)/) {
+			print $line;
 		} elsif ($line =~ /#\s*define\s+\w+\s*\D+/) {
 			$def = $line;
 			while ($line =~ /\\\n/) {$def .= ($line = <INFILE>);}
@@ -205,9 +207,9 @@ foreach $fname (@srcs, @privhdrs) {
 	}
 
 	while ($line = <INFILE>) {
-		next if ($line !~ /^(struct|typedef struct.*;|\w+_class_init|\w+_base_init|\w+_get_type\b|G_DEFINE_TYPE_WITH_CODE|G_DEFINE_BOXED_TYPE)/);
+		next if ($line !~ /^(struct|typedef struct.*;|\w+_class_init|\w+_base_init|\w+_get_type\b|G_DEFINE_TYPE_WITH_CODE|G_DEFINE_BOXED_TYPE|G_DEFINE_INTERFACE)/);
 
-		if ($line =~ /^G_DEFINE_(TYPE_WITH_CODE|BOXED_TYPE)/) {
+		if ($line =~ /^G_DEFINE_(TYPE_WITH_CODE|BOXED_TYPE|INTERFACE)/) {
 			my $macro;
 			my $parens = 0;
 			do {

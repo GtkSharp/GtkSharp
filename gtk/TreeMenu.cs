@@ -1,7 +1,7 @@
-// Copyright (c) 2011 Novell, Inc.
+//  Copyright (c) 2011 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
-// modify it under the terms of version 2 of the Lesser GNU General 
+// modify it under the terms of version 2 of the Lesser GNU General
 // Public License as published by the Free Software Foundation.
 //
 // This program is distributed in the hope that it will be useful,
@@ -15,8 +15,22 @@
 // Boston, MA 02111-1307, USA.
 
 
-		public TextAppearance Appearance {
-			get { return (TextAppearance) Marshal.PtrToStructure (new IntPtr (Handle.ToInt64 () + 4), typeof (TextAppearance)); }
-			set { Marshal.StructureToPtr (value, new IntPtr (Handle.ToInt64 () + 4), false); }
+using System;
+
+namespace Gtk {
+
+	public partial class TreeMenu {
+
+		public void SetAttributes (CellRenderer cell, params object[] attrs)
+		{
+			if (attrs.Length % 2 != 0)
+				throw new ArgumentException ("attrs should contain pairs of attribute/col");
+
+			ClearAttributes (cell);
+			for (int i = 0; i < attrs.Length - 1; i += 2) {
+				AddAttribute (cell, (string) attrs [i], (int) attrs [i + 1]);
+			}
 		}
+	}
+}
 

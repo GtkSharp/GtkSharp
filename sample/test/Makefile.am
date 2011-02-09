@@ -1,6 +1,14 @@
 TARGETS = WidgetViewer.exe 
 
-assemblies=../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
+assemblies=					\
+	$(top_builddir)/glib/glib-sharp.dll	\
+	$(top_builddir)/gio/gio-sharp.dll	\
+	$(top_builddir)/cairo/cairo-sharp.dll	\
+	$(top_builddir)/pango/pango-sharp.dll	\
+	$(top_builddir)/atk/atk-sharp.dll	\
+	$(top_builddir)/gdk/gdk-sharp.dll	\
+	$(top_builddir)/gtk/gtk-sharp.dll
+
 references = $(addprefix -r:, $(assemblies))
 
 noinst_SCRIPTS = $(TARGETS)
@@ -17,7 +25,6 @@ sources =			\
 	TestDialog.cs 		\
 	TestFlipping.cs 	\
 	TestSizeGroup.cs	\
-	TestCombo.cs 		\
 	TestComboBox.cs		\
 	WidgetViewer.cs
 

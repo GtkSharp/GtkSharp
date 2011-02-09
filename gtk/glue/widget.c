@@ -21,46 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtkbindings.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 
 /* Forward declarations */
-GdkRectangle *gtksharp_gtk_widget_get_allocation (GtkWidget *widget);
-void gtksharp_gtk_widget_set_window (GtkWidget *widget, GdkWindow *window);
-int gtksharp_gtk_widget_get_state (GtkWidget *widget);
-int gtksharp_gtk_widget_get_flags (GtkWidget *widget);
-void gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags);
-/* */
-
-GdkRectangle*
-gtksharp_gtk_widget_get_allocation (GtkWidget *widget)
-{
-	return &widget->allocation;
-}
-
-void
-gtksharp_gtk_widget_set_window (GtkWidget *widget, GdkWindow *window)
-{
-	if (widget->window)
-		g_object_unref (widget->window);
-	widget->window = g_object_ref (window);
-}
-
-int
-gtksharp_gtk_widget_get_state (GtkWidget *widget)
-{
-	return GTK_WIDGET_STATE (widget);
-}
-
-int
-gtksharp_gtk_widget_get_flags (GtkWidget *widget)
-{
-	return GTK_WIDGET_FLAGS (widget);
-}
-
-void
-gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags)
-{
-	GTK_OBJECT(widget)->flags = flags;
-}
 

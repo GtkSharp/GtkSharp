@@ -7,7 +7,7 @@ assemblies = \
 	$(top_builddir)/gdk/gdk-sharp.dll	\
 	$(top_builddir)/gtk/gtk-sharp.dll
 
-references = $(addprefix -r:, $(assemblies)
+references = $(addprefix -r:, $(assemblies))
 TARGETS = GtkDemo.exe
 DEBUGS = $(addsuffix .mdb, $(TARGETS)) 
 CLEANFILES = $(TARGETS) $(DEBUGS)

@@ -21,7 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtkcellrenderer.h>
+#include <gtk/gtk.h>
 
 const gchar *__gtype_prefix = "__gtksharp_";
 #define HAS_PREFIX(a) (*((guint64 *)(a)) == *((guint64 *) __gtype_prefix))

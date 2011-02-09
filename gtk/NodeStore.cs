@@ -302,6 +302,23 @@ namespace Gtk {
 				return true;
 			}
 
+			public bool IterPrevious (ref TreeIter iter)
+			{
+				ITreeNode node = GetNode (iter);
+
+				int idx;
+				if (node.Parent == null)
+					idx = Nodes.IndexOf (node);
+				else
+					idx = node.Parent.IndexOf (node);
+
+				if (idx < 0) throw new Exception ("Node not found in Nodes list");
+				else if (idx == 0) return false;
+				node = node.Parent == null ? Nodes [idx - 1] as ITreeNode : node.Parent [idx - 1];
+				GetIter (node, ref iter);
+				return true;
+			}
+
 			public bool IterChildren (out Gtk.TreeIter first_child, Gtk.TreeIter parent)
 			{
 				first_child = Gtk.TreeIter.Zero;
