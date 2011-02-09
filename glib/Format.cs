@@ -24,7 +24,6 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace GLib {
-#if GTK_SHARP_2_14
 	public class Format {
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_format_size_for_display (long size);
@@ -35,5 +34,4 @@ namespace GLib {
 			return result;
 		}
 	}
-#endif
 }
