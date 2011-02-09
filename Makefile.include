@@ -10,7 +10,7 @@ noinst_DATA = $(TARGET)
 TARGET_API = $(pkg:=-api.xml)
 gapidir = $(datadir)/gapi-3.0
 gapi_DATA = $(TARGET_API)
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLIES) generated-stamp generated/*.cs $(API) glue/generated.c AssemblyInfo.cs $(POLICY_CONFIGS)
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLIES) generated-stamp generated/*.cs $(API) glue/generated.c $(POLICY_CONFIGS)
 DISTCLEANFILES = $(ASSEMBLY).config
 
 POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
@@ -40,16 +40,13 @@ generated-stamp: $(API) $(INCLUDE_API) $(top_builddir)/generator/gapi_codegen.ex
 	--glue-includes=$(glue_includes)						\
 	&& touch generated-stamp
 
-AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
-	cp $(top_builddir)/AssemblyInfo.cs .
-
 policy.%.config: $(top_builddir)/policy.config
 	sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$*/" $(top_builddir)/policy.config > $@
 
 $(POLICY_ASSEMBLIES) : policy.%.$(ASSEMBLY): policy.%.config $(SNK)
 	$(AL) -link:policy.$*.config -out:$@ -keyfile:$(SNK)
 
-build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
+build_sources = $(addprefix $(srcdir)/, $(sources)) $(top_builddir)/AssemblyInfo.cs
 build_references = $(addprefix -r:, $(references)) $(MONO_CAIRO_LIBS)
 
 $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)

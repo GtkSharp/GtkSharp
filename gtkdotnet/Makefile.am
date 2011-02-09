@@ -10,7 +10,7 @@ SNK = $(top_srcdir)/gtk-sharp.snk
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = gtk-dotnet
 noinst_DATA = $(ASSEMBLY) $(POLICY_ASSEMBLIES)
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb AssemblyInfo.cs $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
 DISTCLEANFILES = $(ASSEMBLY).config
 
 POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
@@ -22,17 +22,14 @@ build_references = $(addprefix -r:, $(references)) -r:System.Drawing.dll
 sources =		 			\
 	Graphics.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
+build_sources = $(addprefix $(srcdir)/, $(sources)) $(top_builddir)/AssemblyInfo.cs
 
 EXTRA_DIST =				\
 	$(sources)			\
 	$(ASSEMBLY).config.in		\
 	gtk-dotnet-3.0.pc.in
 
-AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
-	cp $(top_builddir)/AssemblyInfo.cs .
-
-$(ASSEMBLY): $(build_sources) $(references) $(SNK) AssemblyInfo.cs
+$(ASSEMBLY): $(build_sources) $(references) $(SNK)
 	@rm -f $(ASSEMBLY).mdb
 	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources)
 
