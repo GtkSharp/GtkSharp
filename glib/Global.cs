@@ -1,8 +1,9 @@
 // GLib.Global.cs - Global glib properties and methods.
 //
-// Author: Andres G. Aragoneses <aaragoneses@novell.com>
+// Authors: Andres G. Aragoneses <aaragoneses@novell.com>
+//          Stephane Delcroix (stephane@delcroix.org)
 //
-// Copyright (c) 2008 Novell, Inc
+// Copyright (c) 2008 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -78,5 +79,13 @@ namespace GLib {
 
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_get_application_name ();
+
+		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_format_size_for_display (long size);
+		
+		static public string FormatSizeForDisplay (long size)
+		{
+			return Marshaller.PtrToStringGFree (g_format_size_for_display (size));
+		}
 	}
 }
