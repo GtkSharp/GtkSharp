@@ -139,7 +139,7 @@ namespace GtkSamples {
 			DefaultSize = new Gdk.Size (480, 100);
 					
 			HBox hbox = new HBox (false, 4);
-			VBox.PackStart (hbox, true, true, 0);
+			ContentArea.PackStart (hbox, true, true, 0);
 				
 			Gtk.Image icon = new Gtk.Image (Stock.DialogInfo, IconSize.Dialog);
 			hbox.PackStart (icon, false, false, 0);
