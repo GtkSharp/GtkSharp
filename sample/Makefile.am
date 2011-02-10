@@ -8,7 +8,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe cairo-sample.exe native-instantiation.exe $(DOTNET_TARGETS)
+TARGETS = gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe cairo-sample.exe native-instantiation.exe polarfixed.exe custom-widget.exe custom-cellrenderer.exe scribble.exe scribble-xinput.exe $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -43,9 +43,6 @@ menu.exe: $(srcdir)/Menu.cs $(assemblies)
 
 native-instantiation.exe: $(srcdir)/NativeInstantiationTest.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -out:native-instantiation.exe $(references) $(srcdir)/NativeInstantiationTest.cs
-
-size.exe: $(srcdir)/Size.cs $(assemblies)
-	$(CSC) $(CSFLAGS) -out:size.exe $(references) $(srcdir)/Size.cs
 
 scribble.exe: $(srcdir)/Scribble.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -out:scribble.exe $(references) $(srcdir)/Scribble.cs
@@ -107,7 +104,6 @@ EXTRA_DIST = 				\
 	CalendarApp.cs			\
 	Subclass.cs			\
 	Menu.cs				\
-	Size.cs				\
 	Scribble.cs			\
 	ScribbleXInput.cs		\
 	SpawnTests.cs			\
