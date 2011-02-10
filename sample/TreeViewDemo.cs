@@ -109,7 +109,7 @@ namespace GtkSamples {
 				dialog.Response += new ResponseHandler (ResponseCB);
 				dialog.SetDefaultSize (480, 100);
 					
-				VBox vbox = dialog.VBox;
+				Box vbox = dialog.ContentArea;
 				HBox hbox = new HBox (false, 4);
 				vbox.PackStart (hbox, true, true, 0);
 				
