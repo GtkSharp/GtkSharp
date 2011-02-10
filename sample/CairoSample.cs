@@ -133,13 +133,9 @@ class Knockout : DrawingArea
 		circles.Destroy ();
 	}
 
-	protected override bool OnExposeEvent (Gdk.EventExpose e)
+	protected override bool OnDrawn (Cairo.Context ctx)
 	{
-		using (Context cr = Gdk.CairoHelper.Create (e.Window)) {
-			int w, h;
-			e.Window.GetSize (out w, out h);
-			Draw (cr, w, h);
-		}
+		Draw (ctx, Window.Width, Window.Height);
 		return true;
 	}
 
