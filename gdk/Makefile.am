@@ -38,7 +38,6 @@ customs = 			\
 	DeviceAxis.custom	\
 	Display.custom		\
 	DisplayManager.custom	\
-	Drawable.custom		\
 	EdgeTable.custom	\
 	GCValues.custom		\
 	Global.custom		\
@@ -47,7 +46,6 @@ customs = 			\
 	PangoAttrEmbossed.custom\
 	PangoAttrEmbossColor.custom	\
 	PangoAttrStipple.custom \
-	Pixmap.custom		\
 	Pixbuf.custom		\
 	PixbufAnimation.custom	\
 	PixbufFrame.custom	\
