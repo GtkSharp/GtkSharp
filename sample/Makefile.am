@@ -8,7 +8,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe cairo-sample.exe native-instantiation.exe polarfixed.exe custom-widget.exe custom-cellrenderer.exe scribble.exe scribble-xinput.exe $(DOTNET_TARGETS)
+TARGETS = gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe native-instantiation.exe polarfixed.exe # cairo-sample.exe custom-widget.exe custom-cellrenderer.exe scribble.exe scribble-xinput.exe testdnd.exe $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 

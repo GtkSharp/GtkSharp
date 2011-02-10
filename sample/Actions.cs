@@ -313,8 +313,8 @@ namespace GtkSamples {
 		{
 			if (args.Proxy is MenuItem) {
 				actions[args.Proxy] = args.Action;
-				((Item)args.Proxy).Selected += new EventHandler (OnSelect);
-				((Item)args.Proxy).Deselected += new EventHandler (OnDeselect);
+				((MenuItem)args.Proxy).Selected += new EventHandler (OnSelect);
+				((MenuItem)args.Proxy).Deselected += new EventHandler (OnDeselect);
 			}
 		}
 

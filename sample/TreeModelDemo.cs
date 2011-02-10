@@ -215,6 +215,37 @@ namespace GtkSamples {
 			return false;
 		}
 
+		public bool IterPrevious (ref TreeIter iter)
+		{
+			object node = NodeFromIter (iter);
+			if (node == null)
+				return false;
+
+			int idx;
+			if (node is Assembly) {
+				idx = Array.IndexOf (assemblies, node) - 1;
+				if (idx >= 0) {
+					iter = IterFromNode (assemblies [idx]);
+					return true;
+				}
+			} else if (node is Type) {
+				Type[] siblings = (node as Type).Assembly.GetTypes ();
+				idx = Array.IndexOf (siblings, node) - 1;
+				if (idx >= 0) {
+					iter = IterFromNode (siblings [idx]);
+					return true;
+				}
+			} else {
+				MemberInfo[] siblings = (node as MemberInfo).ReflectedType.GetMembers ();
+				idx = Array.IndexOf (siblings, node) - 1;
+				if (idx >= 0) {
+					iter = IterFromNode (siblings [idx]);
+					return true;
+				}
+			}
+			return false;
+		}
+
 		int ChildCount (object node)
 		{
 			if (node is Assembly)

@@ -11,7 +11,7 @@ class PolarFixed : Container {
 	public PolarFixed ()
 	{
 		children = new ArrayList ();
-		WidgetFlags |= WidgetFlags.NoWindow;
+		HasWindow = false;
 	}
 
 	// The child properties object
@@ -112,7 +112,21 @@ class PolarFixed : Container {
 	}
 
 	// Handle size request
-	protected override void OnSizeRequested (ref Requisition req)
+	protected override void OnGetPreferredHeight (out int minimal_height, out int natural_height)
+	{
+		Requisition req = new Requisition ();
+		OnSizeRequested (ref req);
+		minimal_height = natural_height = req.Height;
+	}
+
+	protected override void OnGetPreferredWidth (out int minimal_width, out int natural_width)
+	{
+		Requisition req = new Requisition ();
+		OnSizeRequested (ref req);
+		minimal_width = natural_width = req.Width;
+	}
+
+	void OnSizeRequested (ref Requisition req)
 	{
 		Requisition childReq;
 		int x, y;
@@ -171,7 +185,7 @@ class PolarFixed : Container {
 			allocation.Y = cy - y;
 			allocation.Height = childReq.Height;
 
-			pfc.Child.Allocation = allocation;
+			pfc.Child.SizeAllocate (allocation);
 		}
 	}
 }
