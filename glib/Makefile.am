@@ -67,7 +67,8 @@ sources =		 			\
 	TypeInitializerAttribute.cs		\
 	ValueArray.cs				\
 	Value.cs				\
-	Variant.cs
+	Variant.cs				\
+	VariantType.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) $(top_builddir)/AssemblyInfo.cs
 dist_sources = $(sources)
