@@ -290,11 +290,6 @@ namespace GLib {
 			return GLib.Opaque.GetOpaque (g_value_get_boxed (ref val), (Type) new GType (val.type), false);
 		}
 
-		public static explicit operator GLib.Boxed (Value val)
-		{
-			return new GLib.Boxed (g_value_get_boxed (ref val));
-		}
-
 		public static explicit operator GLib.Object (Value val)
 		{
 			return GLib.Object.GetObject (g_value_get_object (ref val), false);
