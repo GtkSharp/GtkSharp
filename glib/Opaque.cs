@@ -36,12 +36,6 @@ namespace GLib {
 		IntPtr _obj;
 		bool owned;
 
-		[Obsolete ("Use more explicit overload.  This method always returns null")]
-		public static Opaque GetOpaque (IntPtr o)
-		{
-			return null;
-		}
-
 		public static Opaque GetOpaque (IntPtr o, Type type, bool owned)
 		{
 			if (o == IntPtr.Zero)
@@ -87,12 +81,6 @@ namespace GLib {
 				}
 			}
 		}       
-
-		~Opaque ()
-		{
-			// for compat.  All subclasses should have
-			// generated finalizers if needed now.
-		}
 
 		public virtual void Dispose ()
 		{
