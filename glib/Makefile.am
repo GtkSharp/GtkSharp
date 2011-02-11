@@ -69,7 +69,6 @@ sources =		 			\
 	TypeConverter.cs			\
 	TypeFundamentals.cs			\
 	TypeInitializerAttribute.cs		\
-	UnwrappedObject.cs			\
 	ValueArray.cs				\
 	Value.cs				\
 	Variant.cs

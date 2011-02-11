@@ -300,12 +300,6 @@ namespace GLib {
 			return GLib.Object.GetObject (g_value_get_object (ref val), false);
 		}
 
-		[Obsolete ("Replaced by GLib.Object cast")]
-		public static explicit operator GLib.UnwrappedObject (Value val)
-		{
-			return new UnwrappedObject (g_value_get_object (ref val));
-		}
-
 		public static explicit operator string[] (Value val)
 		{
 			IntPtr native_array = g_value_get_boxed (ref val);
