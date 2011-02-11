@@ -902,6 +902,7 @@ sub addParamsElem
 		$parm =~ s/(\w+)\s+const\s*\*/const \1\*/g;
 		$parm =~ s/const\s+/const-/g;
 		$parm =~ s/unsigned\s+/unsigned-/g;
+		$parm =~ s/\bvolatile\s+//g;
 		if ($parm =~ /(.*)\(\s*\**\s*(\w+)\)\s+\((.*)\)/) {
 			my $ret = $1; my $cbn = $2; my $params = $3;
 			my $type = $parent->getAttribute('name') . StudlyCaps($cbn);
