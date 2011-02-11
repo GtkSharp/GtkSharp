@@ -610,6 +610,7 @@ sub addFieldElems
 		}
 		next if ($field !~ /\S/);
 		$field =~ s/GSEAL\s*\((.*)\)/\1/g;
+		$field =~ s/\bvolatile\s+//g;
 		$field =~ s/\s+(\*+)/\1 /g;
 		$field =~ s/(const\s+)?(\w+)\*\s+const\*/const \2\*/g;
 		$field =~ s/(\w+)\s+const\s*\*/const \1\*/g;
