@@ -20,10 +20,8 @@ references =
 
 sources =		 			\
 	Argv.cs					\
-	Boxed.cs				\
 	ConnectBeforeAttribute.cs		\
 	DefaultSignalHandlerAttribute.cs	\
-	DelegateWrapper.cs			\
 	DestroyNotify.cs			\
 	ExceptionManager.cs			\
 	FileUtils.cs				\
@@ -58,7 +56,6 @@ sources =		 			\
 	Signal.cs				\
 	SignalArgs.cs				\
 	SignalAttribute.cs			\
-	SignalCallback.cs			\
 	SignalClosure.cs			\
 	SList.cs				\
 	Source.cs				\
@@ -66,7 +63,6 @@ sources =		 			\
 	Thread.cs				\
 	Timeout.cs				\
 	ToggleRef.cs				\
-	TypeConverter.cs			\
 	TypeFundamentals.cs			\
 	TypeInitializerAttribute.cs		\
 	ValueArray.cs				\
