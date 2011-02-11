@@ -25,7 +25,6 @@ sources =		 			\
 	DefaultSignalHandlerAttribute.cs	\
 	DelegateWrapper.cs			\
 	DestroyNotify.cs			\
-	EnumWrapper.cs				\
 	ExceptionManager.cs			\
 	FileUtils.cs				\
 	GException.cs				\

@@ -110,19 +110,6 @@ namespace GLib {
 			g_value_set_uint64 (ref this, val);
 		}
 
-		[Obsolete ("Replaced by Value(object) constructor")]
-		public Value (EnumWrapper wrap, string type_name)
-		{
-			type = IntPtr.Zero;
-			pad1 = new Padding ();
-			pad2 = new Padding ();
-			g_value_init (ref this, GType.FromName (type_name).Val);
-			if (wrap.flags)
-				g_value_set_flags (ref this, (uint) (int) wrap); 
-			else
-				g_value_set_enum (ref this, (int) wrap); 
-		}
-
 		public Value (float val) : this (GType.Float)
 		{
 			g_value_set_float (ref this, val);
@@ -175,19 +162,6 @@ namespace GLib {
 			pad1 = new Padding ();
 			pad2 = new Padding ();
 			InitForProperty (obj, prop_name);
-		}
-
-		[Obsolete]
-		public Value (GLib.Object obj, string prop_name, EnumWrapper wrap)
-		{
-			type = IntPtr.Zero;
-			pad1 = new Padding ();
-			pad2 = new Padding ();
-			InitForProperty (obj.NativeType, prop_name);
-			if (wrap.flags)
-				g_value_set_flags (ref this, (uint) (int) wrap); 
-			else
-				g_value_set_enum (ref this, (int) wrap); 
 		}
 
 		[Obsolete]
@@ -275,15 +249,6 @@ namespace GLib {
 				return val.GetULongForPlatform ();
 			else
 				return g_value_get_uint64 (ref val);
-		}
-
-		[Obsolete ("Replaced by Enum cast")]
-		public static explicit operator EnumWrapper (Value val)
-		{
-			if (val.HoldsFlags)
-				return new EnumWrapper ((int)g_value_get_flags (ref val), true);
-			else
-				return new EnumWrapper (g_value_get_enum (ref val), false);
 		}
 
 		public static explicit operator Enum (Value val)
