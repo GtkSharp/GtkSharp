@@ -1672,8 +1672,8 @@
       <signal name="InsertText" cname="insert-text" when="LAST" manual="true" field_name="insert_text">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gchar*" name="text" />
-          <parameter type="gint" name="length" />
+          <parameter type="const-gchar*" name="new_text" />
+          <parameter type="gint" name="new_text_length" />
           <parameter type="gint*" name="position" />
         </parameters>
       </signal>
@@ -1691,8 +1691,8 @@
       <virtual_method name="DoInsertText" cname="do_insert_text">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-gchar*" name="text" />
-          <parameter type="gint" name="length" />
+          <parameter type="const-gchar*" name="new_text" />
+          <parameter type="gint" name="new_text_length" />
           <parameter type="gint*" name="position" />
         </parameters>
       </virtual_method>
@@ -4321,6 +4321,10 @@
     <object name="Alignment" cname="GtkAlignment" parent="GtkBin">
       <class_struct cname="GtkAlignmentClass">
         <field name="ParentClass" cname="parent_class" type="GtkBinClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkAlignmentPrivate*" />
       <property name="Xalign" cname="xalign" type="gfloat" readable="true" writeable="true" />
@@ -4331,6 +4335,18 @@
       <property name="BottomPadding" cname="bottom-padding" type="guint" readable="true" writeable="true" />
       <property name="LeftPadding" cname="left-padding" type="guint" readable="true" writeable="true" />
       <property name="RightPadding" cname="right-padding" type="guint" readable="true" writeable="true" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetPadding" cname="gtk_alignment_get_padding">
         <return-type type="void" />
         <parameters>
@@ -4373,7 +4389,7 @@
     <object name="Application" cname="GtkApplication" parent="GApplication">
       <class_struct cname="GtkApplicationClass">
         <field name="ParentClass" cname="parent_class" type="GApplicationClass" />
-        <field name="Padding" cname="padding" type="gpointer" array_len="12" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="16" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkApplicationPrivate*" />
       <method name="AddWindow" cname="gtk_application_add_window">
@@ -4409,6 +4425,7 @@
       </class_struct>
       <field name="Priv" cname="priv" type="GtkAppChooserButtonPrivate*" />
       <property name="" cname="" type="class" />
+      <property name="" cname="" type="class" />
       <signal name="CustomItemActivated" cname="custom-item-activated" when="FIRST" field_name="custom_item_activated">
         <return-type type="void" />
         <parameters>
@@ -4429,6 +4446,9 @@
       <method name="AppendSeparator" cname="gtk_app_chooser_button_append_separator">
         <return-type type="void" />
       </method>
+      <method name="GetHeading" cname="gtk_app_chooser_button_get_heading">
+        <return-type type="const-gchar*" />
+      </method>
       <method name="GetShowDialogItem" cname="gtk_app_chooser_button_get_show_dialog_item">
         <return-type type="gboolean" />
       </method>
@@ -4446,6 +4466,12 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
+      <method name="SetHeading" cname="gtk_app_chooser_button_set_heading">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="heading" />
+        </parameters>
+      </method>
       <method name="SetShowDialogItem" cname="gtk_app_chooser_button_set_show_dialog_item">
         <return-type type="void" />
         <parameters>
@@ -4460,9 +4486,13 @@
       </class_struct>
       <field name="Priv" cname="priv" type="GtkAppChooserDialogPrivate*" />
       <property name="" cname="" type="class" />
+      <property name="" cname="" type="class" />
       <implements>
         <interface cname="GtkAppChooser" />
       </implements>
+      <method name="GetHeading" cname="gtk_app_chooser_dialog_get_heading">
+        <return-type type="const-gchar*" />
+      </method>
       <method name="GetType" cname="gtk_app_chooser_dialog_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -4483,6 +4513,12 @@
           <parameter type="const-gchar*" name="content_type" />
         </parameters>
       </constructor>
+      <method name="SetHeading" cname="gtk_app_chooser_dialog_set_heading">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="heading" />
+        </parameters>
+      </method>
     </object>
     <object name="AppChooserOnlinePk" cname="GtkAppChooserOnlinePk" parent="GObject">
       <class_struct cname="GtkAppChooserOnlinePkClass">
@@ -4597,10 +4633,26 @@
     <object name="Arrow" cname="GtkArrow" parent="GtkMisc">
       <class_struct cname="GtkArrowClass">
         <field name="ParentClass" cname="parent_class" type="GtkMiscClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkArrowPrivate*" />
       <property name="ArrowType" cname="arrow-type" type="GtkArrowType" readable="true" writeable="true" />
       <property name="ShadowType" cname="shadow-type" type="GtkShadowType" readable="true" writeable="true" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetType" cname="gtk_arrow_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -4621,12 +4673,28 @@
     <object name="AspectFrame" cname="GtkAspectFrame" parent="GtkFrame">
       <class_struct cname="GtkAspectFrameClass">
         <field name="ParentClass" cname="parent_class" type="GtkFrameClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkAspectFramePrivate*" />
       <property name="Xalign" cname="xalign" type="gfloat" readable="true" writeable="true" />
       <property name="Yalign" cname="yalign" type="gfloat" readable="true" writeable="true" />
       <property name="Ratio" cname="ratio" type="gfloat" readable="true" writeable="true" />
       <property name="ObeyChild" cname="obey-child" type="gboolean" readable="true" writeable="true" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetType" cname="gtk_aspect_frame_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -4846,8 +4914,24 @@
     <object name="Bin" cname="GtkBin" parent="GtkContainer">
       <class_struct cname="GtkBinClass">
         <field name="ParentClass" cname="parent_class" type="GtkContainerClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkBinPrivate*" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetChild" cname="gtk_bin_get_child">
         <return-type type="GtkWidget*" />
       </method>
@@ -5280,10 +5364,26 @@
     <object name="ButtonBox" cname="GtkButtonBox" parent="GtkBox">
       <class_struct cname="GtkButtonBoxClass">
         <field name="ParentClass" cname="parent_class" type="GtkBoxClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkButtonBoxPrivate*" />
       <property name="LayoutStyle" cname="layout-style" type="GtkButtonBoxStyle" readable="true" writeable="true" />
       <childprop name="Secondary" cname="secondary" type="gboolean" readable="true" writeable="true" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetChildSecondary" cname="gtk_button_box_get_child_secondary">
         <return-type type="gboolean" />
         <parameters>
@@ -5960,9 +6060,6 @@
       <method name="GetRequestMode" cname="gtk_cell_area_get_request_mode">
         <return-type type="GtkSizeRequestMode" />
       </method>
-      <method name="GetStyleDetail" cname="gtk_cell_area_get_style_detail">
-        <return-type type="const-gchar*" />
-      </method>
       <method name="GetType" cname="gtk_cell_area_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -6032,12 +6129,6 @@
           <parameter type="GtkCellRenderer*" name="renderer" />
         </parameters>
       </method>
-      <method name="SetStyleDetail" cname="gtk_cell_area_set_style_detail">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="detail" />
-        </parameters>
-      </method>
       <method name="StopEditing" cname="gtk_cell_area_stop_editing">
         <return-type type="void" />
         <parameters>
@@ -6077,15 +6168,6 @@
       <method name="GetType" cname="gtk_cell_area_box_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <method name="InitGroups" cname="gtk_cell_area_box_init_groups" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GtkCellAreaBoxContext*" name="box_context" />
-          <parameter type="guint" name="n_groups" />
-          <parameter type="gboolean*" name="expand_groups" />
-          <parameter type="gboolean*" name="align_groups" />
-        </parameters>
-      </method>
       <constructor cname="gtk_cell_area_box_new" />
       <method name="PackEnd" cname="gtk_cell_area_box_pack_end">
         <return-type type="void" />
@@ -6109,102 +6191,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gint" name="spacing" />
-        </parameters>
-      </method>
-    </object>
-    <object name="CellAreaBoxContext" cname="GtkCellAreaBoxContext" parent="GtkCellAreaContext">
-      <class_struct cname="GtkCellAreaBoxContextClass">
-        <field name="ParentClass" cname="parent_class" type="GtkCellAreaContextClass" />
-      </class_struct>
-      <field name="Priv" cname="priv" type="GtkCellAreaBoxContextPrivate*" />
-      <method name="Copy" cname="gtk_cell_area_box_context_copy" shared="true">
-        <return-type type="GtkCellAreaBoxContext*" owned="true" />
-        <parameters>
-          <parameter type="GtkCellAreaBox*" name="box" />
-          <parameter type="GtkCellAreaBoxContext*" name="box_context" />
-        </parameters>
-      </method>
-      <method name="GetGroupHeight" cname="gtk_cell_area_box_context_get_group_height">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="group_idx" />
-          <parameter type="gint*" name="minimum_height" />
-          <parameter type="gint*" name="natural_height" />
-        </parameters>
-      </method>
-      <method name="GetGroupHeightForWidth" cname="gtk_cell_area_box_context_get_group_height_for_width">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="group_idx" />
-          <parameter type="gint" name="for_width" />
-          <parameter type="gint*" name="minimum_height" />
-          <parameter type="gint*" name="natural_height" />
-        </parameters>
-      </method>
-      <method name="GetGroupWidth" cname="gtk_cell_area_box_context_get_group_width">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="group_idx" />
-          <parameter type="gint*" name="minimum_width" />
-          <parameter type="gint*" name="natural_width" />
-        </parameters>
-      </method>
-      <method name="GetGroupWidthForHeight" cname="gtk_cell_area_box_context_get_group_width_for_height">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="group_idx" />
-          <parameter type="gint" name="for_height" />
-          <parameter type="gint*" name="minimum_width" />
-          <parameter type="gint*" name="natural_width" />
-        </parameters>
-      </method>
-      <method name="GetHeights" cname="gtk_cell_area_box_context_get_heights">
-        <return-type type="GtkRequestedSize*" />
-        <parameters>
-          <parameter type="gint*" name="n_heights" />
-        </parameters>
-      </method>
-      <method name="GetType" cname="gtk_cell_area_box_context_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <method name="GetWidths" cname="gtk_cell_area_box_context_get_widths">
-        <return-type type="GtkRequestedSize*" />
-        <parameters>
-          <parameter type="gint*" name="n_widths" />
-        </parameters>
-      </method>
-      <method name="PushGroupHeight" cname="gtk_cell_area_box_context_push_group_height">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="group_idx" />
-          <parameter type="gint" name="minimum_height" />
-          <parameter type="gint" name="natural_height" />
-        </parameters>
-      </method>
-      <method name="PushGroupHeightForWidth" cname="gtk_cell_area_box_context_push_group_height_for_width">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="group_idx" />
-          <parameter type="gint" name="for_width" />
-          <parameter type="gint" name="minimum_height" />
-          <parameter type="gint" name="natural_height" />
-        </parameters>
-      </method>
-      <method name="PushGroupWidth" cname="gtk_cell_area_box_context_push_group_width">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="group_idx" />
-          <parameter type="gint" name="minimum_width" />
-          <parameter type="gint" name="natural_width" />
-        </parameters>
-      </method>
-      <method name="PushGroupWidthForHeight" cname="gtk_cell_area_box_context_push_group_width_for_height">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="group_idx" />
-          <parameter type="gint" name="for_height" />
-          <parameter type="gint" name="minimum_width" />
-          <parameter type="gint" name="natural_width" />
         </parameters>
       </method>
     </object>
@@ -6588,6 +6574,13 @@
           <parameter type="gint*" name="y_offset" />
           <parameter type="gint*" name="width" />
           <parameter type="gint*" name="height" />
+        </parameters>
+      </method>
+      <method name="GetState" cname="gtk_cell_renderer_get_state">
+        <return-type type="GtkStateFlags" />
+        <parameters>
+          <parameter type="GtkWidget*" name="widget" />
+          <parameter type="GtkCellRendererState" name="cell_state" />
         </parameters>
       </method>
       <method name="GetType" cname="gtk_cell_renderer_get_type" shared="true">
@@ -7975,6 +7968,9 @@
       <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
         <return-type type="void" />
       </virtual_method>
+      <implements>
+        <interface cname="GtkBuildable" />
+      </implements>
       <method name="Append" cname="gtk_combo_box_text_append">
         <return-type type="void" />
         <parameters>
@@ -8037,7 +8033,6 @@
     <object name="Container" cname="GtkContainer" parent="GtkWidget">
       <class_struct cname="GtkContainerClass">
         <field name="ParentClass" cname="parent_class" type="GtkWidgetClass" />
-        <field name="HandleBorderWidth" cname="handle_border_width" type="unsigned int" bits="1" />
         <method signal_vm="add" />
         <method signal_vm="remove" />
         <method signal_vm="check_resize" />
@@ -8048,6 +8043,7 @@
         <method vm="set_child_property" />
         <method vm="get_child_property" />
         <method vm="get_path_for_child" />
+        <field name="HandleBorderWidth" cname="_handle_border_width" type="unsigned int" bits="1" />
         <method vm="_gtk_reserved1" />
         <method vm="_gtk_reserved2" />
         <method vm="_gtk_reserved3" />
@@ -8080,7 +8076,7 @@
       <signal name="SetFocusChild" cname="set-focus-child" when="FIRST" field_name="set_focus_child">
         <return-type type="void" />
         <parameters>
-          <parameter type="GtkWidget*" name="widget" />
+          <parameter type="GtkWidget*" name="child" />
         </parameters>
       </signal>
       <virtual_method name="Forall" cname="forall">
@@ -8360,8 +8356,24 @@
     <object name="CssProvider" cname="GtkCssProvider" parent="GObject">
       <class_struct cname="GtkCssProviderClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="gpointer" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="ErrorQuark" cname="gtk_css_provider_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
@@ -9723,6 +9735,9 @@
       <class_struct cname="GtkFileFilterClass">
         <field name="ParentClass" cname="parent_class" type="GInitiallyUnownedClass" />
       </class_struct>
+      <implements>
+        <interface cname="GtkBuildable" />
+      </implements>
       <method name="AddCustom" cname="gtk_file_filter_add_custom">
         <return-type type="void" />
         <parameters>
@@ -9773,10 +9788,26 @@
     <object name="Fixed" cname="GtkFixed" parent="GtkContainer">
       <class_struct cname="GtkFixedClass">
         <field name="ParentClass" cname="parent_class" type="GtkContainerClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkFixedPrivate*" />
       <childprop name="X" cname="x" type="gint" readable="true" writeable="true" />
       <childprop name="Y" cname="y" type="gint" readable="true" writeable="true" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetType" cname="gtk_fixed_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -10508,12 +10539,28 @@
       <class_struct cname="GtkIconThemeClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
         <method signal_vm="changed" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkIconThemePrivate*" />
       <signal name="Changed" cname="changed" when="LAST" field_name="changed">
         <return-type type="void" />
         <parameters />
       </signal>
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="AddBuiltinIcon" cname="gtk_icon_theme_add_builtin_icon" shared="true">
         <return-type type="void" />
         <parameters>
@@ -11073,6 +11120,7 @@
       <property name="IconName" cname="icon-name" type="gchar*" readable="true" writeable="true" />
       <property name="Gicon" cname="gicon" type="GIcon" readable="true" writeable="true" />
       <property name="StorageType" cname="storage-type" type="GtkImageType" readable="true" />
+      <property name="UseFallback" cname="use-fallback" type="gboolean" readable="true" writeable="true" />
       <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
         <return-type type="void" />
       </virtual_method>
@@ -12481,7 +12529,7 @@
       <method name="SetActive" cname="gtk_menu_set_active">
         <return-type type="void" />
         <parameters>
-          <parameter type="guint" name="index_" />
+          <parameter type="guint" name="index" />
         </parameters>
       </method>
       <method name="SetMonitor" cname="gtk_menu_set_monitor">
@@ -12906,6 +12954,9 @@
       <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
         <return-type type="void" />
       </virtual_method>
+      <implements>
+        <interface cname="GtkBuildable" />
+      </implements>
       <method name="GetMenu" cname="gtk_menu_tool_button_get_menu">
         <return-type type="GtkWidget*" />
       </method>
@@ -13033,12 +13084,28 @@
     <object name="Misc" cname="GtkMisc" parent="GtkWidget">
       <class_struct cname="GtkMiscClass">
         <field name="ParentClass" cname="parent_class" type="GtkWidgetClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkMiscPrivate*" />
       <property name="Xalign" cname="xalign" type="gfloat" readable="true" writeable="true" />
       <property name="Yalign" cname="yalign" type="gfloat" readable="true" writeable="true" />
       <property name="Xpad" cname="xpad" type="gint" readable="true" writeable="true" />
       <property name="Ypad" cname="ypad" type="gint" readable="true" writeable="true" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="GetAlignment" cname="gtk_misc_get_alignment">
         <return-type type="void" />
         <parameters>
@@ -13074,51 +13141,28 @@
     <object name="ModifierStyle" cname="GtkModifierStyle" parent="GObject">
       <class_struct cname="GtkModifierStyleClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="gpointer" />
       <signal name="Changed" cname="changed" when="LAST">
         <return-type type="void" />
         <parameters />
       </signal>
-      <method name="GetType" cname="gtk_modifier_style_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <method name="MapColor" cname="gtk_modifier_style_map_color">
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
         <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="const-GdkRGBA*" name="color" />
-        </parameters>
-      </method>
-      <constructor cname="gtk_modifier_style_new" />
-      <method name="SetBackgroundColor" cname="gtk_modifier_style_set_background_color">
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GtkStateFlags" name="state" />
-          <parameter type="const-GdkRGBA*" name="color" />
-        </parameters>
-      </method>
-      <method name="SetColor" cname="gtk_modifier_style_set_color">
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GtkStateFlags" name="state" />
-          <parameter type="const-GdkRGBA*" name="color" />
-        </parameters>
-      </method>
-      <method name="SetColorProperty" cname="gtk_modifier_style_set_color_property">
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
         <return-type type="void" />
-        <parameters>
-          <parameter type="GType" name="widget_type" />
-          <parameter type="const-gchar*" name="prop_name" />
-          <parameter type="const-GdkRGBA*" name="color" />
-        </parameters>
-      </method>
-      <method name="SetFont" cname="gtk_modifier_style_set_font">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-PangoFontDescription*" name="font_desc" />
-        </parameters>
-      </method>
+      </virtual_method>
     </object>
     <object name="MountOperation" cname="GtkMountOperation" parent="GMountOperation">
       <class_struct cname="GtkMountOperationClass">
@@ -13555,7 +13599,7 @@
     <object name="NumerableIcon" cname="GtkNumerableIcon" parent="GEmblemedIcon">
       <class_struct cname="GtkNumerableIconClass">
         <field name="ParentClass" cname="parent_class" type="GEmblemedIconClass" />
-        <field name="Padding" cname="padding" type="gpointer" array_len="8" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="16" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkNumerableIconPrivate*" />
       <property name="" cname="" type="class" />
@@ -14005,21 +14049,21 @@
       <method name="Construct" cname="gtk_plug_construct">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkNativeWindow" name="socket_id" />
+          <parameter type="Window" name="socket_id" />
         </parameters>
       </method>
       <method name="ConstructForDisplay" cname="gtk_plug_construct_for_display">
         <return-type type="void" />
         <parameters>
           <parameter type="GdkDisplay*" name="display" />
-          <parameter type="GdkNativeWindow" name="socket_id" />
+          <parameter type="Window" name="socket_id" />
         </parameters>
       </method>
       <method name="GetEmbedded" cname="gtk_plug_get_embedded">
         <return-type type="gboolean" />
       </method>
       <method name="GetId" cname="gtk_plug_get_id">
-        <return-type type="GdkNativeWindow" />
+        <return-type type="Window" />
       </method>
       <method name="GetSocketWindow" cname="gtk_plug_get_socket_window">
         <return-type type="GdkWindow*" />
@@ -14029,13 +14073,13 @@
       </method>
       <constructor cname="gtk_plug_new">
         <parameters>
-          <parameter type="GdkNativeWindow" name="socket_id" />
+          <parameter type="Window" name="socket_id" />
         </parameters>
       </constructor>
       <constructor cname="gtk_plug_new_for_display">
         <parameters>
           <parameter type="GdkDisplay*" name="display" />
-          <parameter type="GdkNativeWindow" name="socket_id" />
+          <parameter type="Window" name="socket_id" />
         </parameters>
       </constructor>
     </object>
@@ -15620,6 +15664,7 @@
       <property name="ShowFillLevel" cname="show-fill-level" type="gboolean" readable="true" writeable="true" />
       <property name="RestrictToFillLevel" cname="restrict-to-fill-level" type="gboolean" readable="true" writeable="true" />
       <property name="FillLevel" cname="fill-level" type="gdouble" readable="true" writeable="true" />
+      <property name="RoundDigits" cname="round-digits" type="gint" readable="true" writeable="true" />
       <virtual_method name="GetRangeBorder" cname="get_range_border">
         <return-type type="void" />
         <parameters>
@@ -15664,6 +15709,9 @@
       </method>
       <method name="GetRestrictToFillLevel" cname="gtk_range_get_restrict_to_fill_level">
         <return-type type="gboolean" />
+      </method>
+      <method name="GetRoundDigits" cname="gtk_range_get_round_digits">
+        <return-type type="gint" />
       </method>
       <method name="GetShowFillLevel" cname="gtk_range_get_show_fill_level">
         <return-type type="gboolean" />
@@ -15741,6 +15789,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="restrict_to_fill_level" />
+        </parameters>
+      </method>
+      <method name="SetRoundDigits" cname="gtk_range_set_round_digits">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="round_digits" />
         </parameters>
       </method>
       <method name="SetShowFillLevel" cname="gtk_range_set_show_fill_level">
@@ -16024,6 +16078,9 @@
       <class_struct cname="GtkRecentFilterClass">
         <field name="ParentClass" cname="parent_class" type="GInitiallyUnownedClass" />
       </class_struct>
+      <implements>
+        <interface cname="GtkBuildable" />
+      </implements>
       <method name="AddAge" cname="gtk_recent_filter_add_age">
         <return-type type="void" />
         <parameters>
@@ -16823,11 +16880,11 @@
       <method name="AddId" cname="gtk_socket_add_id">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkNativeWindow" name="window_id" />
+          <parameter type="Window" name="window" />
         </parameters>
       </method>
       <method name="GetId" cname="gtk_socket_get_id">
-        <return-type type="GdkNativeWindow" />
+        <return-type type="Window" />
       </method>
       <method name="GetPlugWindow" cname="gtk_socket_get_plug_window">
         <return-type type="GdkWindow*" />
@@ -17154,6 +17211,8 @@
         <method signal_vm="query_tooltip" />
         <method vm="__gtk_reserved1" />
         <method vm="__gtk_reserved2" />
+        <method vm="__gtk_reserved3" />
+        <method vm="__gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkStatusIconPrivate*" />
       <property name="Pixbuf" cname="pixbuf" type="GdkPixbuf" readable="true" writeable="true" />
@@ -17219,6 +17278,12 @@
         <return-type type="void" />
       </virtual_method>
       <virtual_method name="_GtkReserved2" cname="__gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="_GtkReserved3" cname="__gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="_GtkReserved4" cname="__gtk_reserved4" shared="true" padding="true">
         <return-type type="void" />
       </virtual_method>
       <method name="GetGeometry" cname="gtk_status_icon_get_geometry">
@@ -17896,6 +17961,10 @@
       <class_struct cname="GtkStyleContextClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
         <method signal_vm="changed" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="gpointer" />
       <signal name="Changed" cname="changed" when="FIRST" field_name="changed">
@@ -17904,6 +17973,18 @@
       </signal>
       <property name="Screen" cname="screen" type="GdkScreen" readable="true" writeable="true" />
       <property name="Direction" cname="direction" type="GtkTextDirection" readable="true" writeable="true" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="AddClass" cname="gtk_style_context_add_class">
         <return-type type="void" />
         <parameters>
@@ -17930,6 +18011,12 @@
         <parameters>
           <parameter type="const-gchar*" name="region_name" />
           <parameter type="GtkRegionFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="CancelAnimations" cname="gtk_style_context_cancel_animations">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gpointer" name="region_id" />
         </parameters>
       </method>
       <method name="Get" cname="gtk_style_context_get">
@@ -18130,6 +18217,14 @@
       <method name="Save" cname="gtk_style_context_save">
         <return-type type="void" />
       </method>
+      <method name="ScrollAnimations" cname="gtk_style_context_scroll_animations">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkWindow*" name="window" />
+          <parameter type="gint" name="dx" />
+          <parameter type="gint" name="dy" />
+        </parameters>
+      </method>
       <method name="SetBackground" cname="gtk_style_context_set_background">
         <return-type type="void" />
         <parameters>
@@ -18177,8 +18272,24 @@
     <object name="StyleProperties" cname="GtkStyleProperties" parent="GObject">
       <class_struct cname="GtkStylePropertiesClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="_gtk_reserved1" />
+        <method vm="_gtk_reserved2" />
+        <method vm="_gtk_reserved3" />
+        <method vm="_gtk_reserved4" />
       </class_struct>
       <field name="Priv" cname="priv" type="gpointer" />
+      <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved2" cname="_gtk_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved3" cname="_gtk_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
       <method name="Clear" cname="gtk_style_properties_clear">
         <return-type type="void" />
       </method>
@@ -18518,21 +18629,21 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GtkTextIter*" name="pos" />
-          <parameter type="const-gchar*" name="text" />
-          <parameter type="gint" name="length" />
+          <parameter type="const-gchar*" name="new_text" />
+          <parameter type="gint" name="new_text_length" />
         </parameters>
       </signal>
       <signal name="InsertPixbuf" cname="insert-pixbuf" when="LAST" field_name="insert_pixbuf">
         <return-type type="void" />
         <parameters>
-          <parameter type="GtkTextIter*" name="pos" />
+          <parameter type="GtkTextIter*" name="iter" />
           <parameter type="GdkPixbuf*" name="pixbuf" />
         </parameters>
       </signal>
       <signal name="InsertChildAnchor" cname="insert-child-anchor" when="LAST" field_name="insert_child_anchor">
         <return-type type="void" />
         <parameters>
-          <parameter type="GtkTextIter*" name="pos" />
+          <parameter type="GtkTextIter*" name="iter" />
           <parameter type="GtkTextChildAnchor*" name="anchor" />
         </parameters>
       </signal>
@@ -18568,16 +18679,16 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GtkTextTag*" name="tag" />
-          <parameter type="const-GtkTextIter*" name="start_char" />
-          <parameter type="const-GtkTextIter*" name="end_char" />
+          <parameter type="const-GtkTextIter*" name="start" />
+          <parameter type="const-GtkTextIter*" name="end" />
         </parameters>
       </signal>
       <signal name="RemoveTag" cname="remove-tag" when="LAST" field_name="remove_tag">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkTextTag*" name="tag" />
-          <parameter type="const-GtkTextIter*" name="start_char" />
-          <parameter type="const-GtkTextIter*" name="end_char" />
+          <parameter type="const-GtkTextIter*" name="start" />
+          <parameter type="const-GtkTextIter*" name="end" />
         </parameters>
       </signal>
       <signal name="BeginUserAction" cname="begin-user-action" when="LAST" field_name="begin_user_action">
@@ -19314,6 +19425,9 @@
       <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
         <return-type type="void" />
       </virtual_method>
+      <implements>
+        <interface cname="GtkBuildable" />
+      </implements>
       <method name="Add" cname="gtk_text_tag_table_add">
         <return-type type="void" />
         <parameters>
@@ -19547,6 +19661,14 @@
       </method>
       <method name="GetBuffer" cname="gtk_text_view_get_buffer">
         <return-type type="GtkTextBuffer*" />
+      </method>
+      <method name="GetCursorLocations" cname="gtk_text_view_get_cursor_locations">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter" />
+          <parameter type="GdkRectangle*" name="strong" />
+          <parameter type="GdkRectangle*" name="weak" />
+        </parameters>
       </method>
       <method name="GetCursorVisible" cname="gtk_text_view_get_cursor_visible">
         <return-type type="gboolean" />
@@ -19845,6 +19967,7 @@
         <method vm="render_handle" />
         <method vm="render_activity" />
         <method vm="render_icon_pixbuf" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="16" />
       </class_struct>
       <field name="Priv" cname="priv" type="gpointer" />
       <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
@@ -22168,6 +22291,17 @@
           <parameter type="GDestroyNotify" name="dnotify" />
         </parameters>
       </method>
+      <method name="IsBlankAtPos" cname="gtk_tree_view_is_blank_at_pos">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+          <parameter type="GtkTreePath**" name="path" />
+          <parameter type="GtkTreeViewColumn**" name="column" />
+          <parameter type="gint*" name="cell_x" />
+          <parameter type="gint*" name="cell_y" />
+        </parameters>
+      </method>
       <method name="IsRubberBandingActive" cname="gtk_tree_view_is_rubber_banding_active">
         <return-type type="gboolean" />
       </method>
@@ -23141,7 +23275,6 @@
         <method signal_vm="proximity_in_event" />
         <method signal_vm="proximity_out_event" />
         <method signal_vm="visibility_notify_event" />
-        <method signal_vm="client_event" />
         <method signal_vm="window_state_event" />
         <method signal_vm="damage_event" />
         <method signal_vm="grab_broken_event" />
@@ -23564,12 +23697,6 @@
           <parameter type="GdkEventVisibility*" name="event" />
         </parameters>
       </signal>
-      <signal name="ClientEvent" cname="client-event" when="LAST" field_name="client_event">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GdkEventClient*" name="event" />
-        </parameters>
-      </signal>
       <signal name="WindowStateEvent" cname="window-state-event" when="LAST" field_name="window_state_event">
         <return-type type="gboolean" />
         <parameters>
@@ -23916,6 +24043,12 @@
       </method>
       <method name="GetDefaultStyle" cname="gtk_widget_get_default_style" deprecated="1" shared="true">
         <return-type type="GtkStyle*" />
+      </method>
+      <method name="GetDeviceEnabled" cname="gtk_widget_get_device_enabled">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkDevice*" name="device" />
+        </parameters>
       </method>
       <method name="GetDeviceEvents" cname="gtk_widget_get_device_events">
         <return-type type="GdkEventMask" />
@@ -24373,7 +24506,7 @@
       <method name="ResetRcStyles" cname="gtk_widget_reset_rc_styles" deprecated="1">
         <return-type type="void" />
       </method>
-      <method name="ResetStyle" cname="gtk_widget_reset_style" deprecated="1">
+      <method name="ResetStyle" cname="gtk_widget_reset_style">
         <return-type type="void" />
       </method>
       <method name="SendExpose" cname="gtk_widget_send_expose">
@@ -24435,6 +24568,13 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GtkTextDirection" name="dir" />
+        </parameters>
+      </method>
+      <method name="SetDeviceEnabled" cname="gtk_widget_set_device_enabled">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkDevice*" name="device" />
+          <parameter type="gboolean" name="enabled" />
         </parameters>
       </method>
       <method name="SetDeviceEvents" cname="gtk_widget_set_device_events">
@@ -24683,7 +24823,7 @@
           <parameter type="GtkRequisition*" name="requisition" />
         </parameters>
       </method>
-      <method name="StyleAttach" cname="gtk_widget_style_attach">
+      <method name="StyleAttach" cname="gtk_widget_style_attach" deprecated="1">
         <return-type type="void" />
       </method>
       <method name="StyleGet" cname="gtk_widget_style_get">
@@ -25215,6 +25355,12 @@
           <parameter type="gboolean" name="value" />
         </parameters>
       </method>
+      <method name="SetHasUserRefCount" cname="gtk_window_set_has_user_ref_count">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="setting" />
+        </parameters>
+      </method>
       <method name="SetIcon" cname="gtk_window_set_icon">
         <return-type type="void" />
         <parameters>
@@ -25419,7 +25565,6 @@
     <struct name="ColorStop" cname="ColorStop" opaque="true" />
     <struct name="CompareInfo" cname="CompareInfo" opaque="true" />
     <struct name="ComparePathData" cname="ComparePathData" opaque="true" />
-    <struct name="CursorInfo" cname="CursorInfo" opaque="true" />
     <struct name="EntryIconInfo" cname="EntryIconInfo" opaque="true" />
     <struct name="FilterElt" cname="FilterElt" opaque="true" />
     <struct name="FilterLevel" cname="FilterLevel" opaque="true" />
@@ -25518,7 +25663,7 @@
           <parameter type="GObject*" name="object" />
         </parameters>
       </method>
-      <method name="AddPath" cname="gtk_binding_set_add_path">
+      <method name="AddPath" cname="gtk_binding_set_add_path" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkPathType" name="path_type" />
@@ -25567,11 +25712,9 @@
       <constructor cname="gtk_border_new" />
     </boxed>
     <struct name="BoxChild" cname="GtkBoxChild" opaque="true" />
-    <struct name="CellAreaBoxAllocation" cname="GtkCellAreaBoxAllocation">
-      <field name="GroupIdx" cname="group_idx" type="gint" />
-      <field name="Position" cname="position" type="gint" />
-      <field name="Size" cname="size" type="gint" />
-    </struct>
+    <struct name="CellAreaBoxContext" cname="GtkCellAreaBoxContext" opaque="true" />
+    <struct name="CellAreaBoxContextClass" cname="GtkCellAreaBoxContextClass" opaque="true" />
+    <struct name="CellEditableEventBox" cname="GtkCellEditableEventBox" opaque="true" />
     <struct name="ComposeTable" cname="GtkComposeTable" opaque="true" />
     <struct name="ComposeTableCompact" cname="GtkComposeTableCompact" opaque="true" />
     <struct name="DeviceGrabInfo" cname="GtkDeviceGrabInfo" opaque="true" />
@@ -25891,30 +26034,12 @@
         </parameters>
       </method>
     </struct>
-    <struct name="ImageAnimationData" cname="GtkImageAnimationData">
-      <field name="Anim" cname="anim" type="GdkPixbufAnimation*" />
-      <field name="Iter" cname="iter" type="GdkPixbufAnimationIter*" />
-      <field name="FrameTimeout" cname="frame_timeout" type="guint" />
-    </struct>
-    <struct name="ImageGIconData" cname="GtkImageGIconData">
-      <field name="Icon" cname="icon" type="GIcon*" />
-      <field name="Pixbuf" cname="pixbuf" type="GdkPixbuf*" />
-      <field name="ThemeChangeId" cname="theme_change_id" type="guint" />
-    </struct>
-    <struct name="ImageIconNameData" cname="GtkImageIconNameData">
-      <field name="IconName" cname="icon_name" type="gchar*" />
-      <field name="Pixbuf" cname="pixbuf" type="GdkPixbuf*" />
-      <field name="ThemeChangeId" cname="theme_change_id" type="guint" />
-    </struct>
-    <struct name="ImageIconSetData" cname="GtkImageIconSetData">
-      <field name="IconSet" cname="icon_set" type="GtkIconSet*" />
-    </struct>
-    <struct name="ImagePixbufData" cname="GtkImagePixbufData">
-      <field name="Pixbuf" cname="pixbuf" type="GdkPixbuf*" />
-    </struct>
-    <struct name="ImageStockData" cname="GtkImageStockData">
-      <field name="StockId" cname="stock_id" type="gchar*" />
-    </struct>
+    <struct name="ImageAnimationData" cname="GtkImageAnimationData" opaque="true" />
+    <struct name="ImageGIconData" cname="GtkImageGIconData" opaque="true" />
+    <struct name="ImageIconNameData" cname="GtkImageIconNameData" opaque="true" />
+    <struct name="ImageIconSetData" cname="GtkImageIconSetData" opaque="true" />
+    <struct name="ImagePixbufData" cname="GtkImagePixbufData" opaque="true" />
+    <struct name="ImageStockData" cname="GtkImageStockData" opaque="true" />
     <struct name="IncrConversion" cname="GtkIncrConversion" opaque="true" />
     <struct name="IncrInfo" cname="GtkIncrInfo" opaque="true" />
     <struct name="KeyHash" cname="GtkKeyHash" opaque="true" />
@@ -26511,15 +26636,13 @@
       </method>
       <constructor cname="gtk_target_entry_new">
         <parameters>
-          <parameter type="const-char*" name="target" />
+          <parameter type="const-gchar*" name="target" />
           <parameter type="guint" name="flags" />
           <parameter type="guint" name="info" />
         </parameters>
       </constructor>
     </boxed>
     <boxed name="TargetList" cname="GtkTargetList" opaque="true">
-      <field name="List" cname="list" type="GList*" access="public" writeable="true" />
-      <field name="RefCount" cname="ref_count" type="guint" access="public" writeable="true" />
       <method name="Add" cname="gtk_target_list_add">
         <return-type type="void" />
         <parameters>
@@ -26591,11 +26714,6 @@
         <return-type type="void" />
       </method>
     </boxed>
-    <struct name="TargetPair" cname="GtkTargetPair">
-      <field name="Target" cname="target" type="GdkAtom" />
-      <field name="Flags" cname="flags" type="guint" />
-      <field name="Info" cname="info" type="guint" />
-    </struct>
     <struct name="TextAppearance" cname="GtkTextAppearance">
       <field name="BgColor" cname="bg_color" type="GdkColor" />
       <field name="FgColor" cname="fg_color" type="GdkColor" />
