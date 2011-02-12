@@ -272,10 +272,10 @@ namespace GtkSharp.Generation {
 
 		void GenerateImplementorIface (GenerationInfo gen_info)
 		{
-			StreamWriter sw = gen_info.Writer;
 			if (IsConsumeOnly)
 				return;
 
+			StreamWriter sw = gen_info.Writer;
 			sw.WriteLine ();
 			sw.WriteLine ("\t[GLib.GInterface (typeof (" + Name + "Adapter))]");
 			string access = IsInternal ? "internal" : "public";

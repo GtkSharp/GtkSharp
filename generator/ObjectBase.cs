@@ -124,9 +124,10 @@ namespace GtkSharp.Generation {
 			VirtualMethod vm;
 			if (is_signal_vm)
 				vm = new DefaultSignalHandler (vm_elem, this);
-			else if (is_interface)
-				vm = new InterfaceVM (vm_elem, methods [vm_elem.GetAttribute ("name")] as Method, this);
-			else
+			else if (is_interface) {
+				string target_name = vm_elem.HasAttribute ("target_method") ? vm_elem.GetAttribute ("target_method") : vm_elem.GetAttribute ("name");
+				vm = new InterfaceVM (vm_elem, methods [target_name] as Method, this);
+			} else
 				vm = new GObjectVM (vm_elem, this);
 
 			if (vm_elem.GetAttribute ("padding") == "true" || vm_elem.GetAttribute ("hidden") == "1")

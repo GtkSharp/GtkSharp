@@ -87,7 +87,7 @@ namespace GtkSharp.Generation {
 
 		public override bool Validate ()
 		{
-			if (target == null) {
+			if (target == null && !(container_type as InterfaceGen).IsConsumeOnly) {
 				Console.WriteLine ("Virtual method {0}->{1} has no matching target to invoke", container_type.CName, CName);
 				return false;
 			}
