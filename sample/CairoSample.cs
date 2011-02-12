@@ -2,22 +2,17 @@ using System;
 using Gtk;
 using Cairo;
 
-class Knockout : DrawingArea
+class CairoSample : DrawingArea
 {
 	static void Main ()
 	{
 		Application.Init ();
-		new Knockout ();
-		Application.Run ();
-	}
-
-	Knockout ()
-	{
-		Window win = new Window ("Cairo with Gtk#");
+		Window win = new Window ("Cairo with Gtk# 3");
 		win.SetDefaultSize (400, 400);
-		win.DeleteEvent += new DeleteEventHandler (OnQuit);
-		win.Add (this);
+		win.DeleteEvent += delegate { Application.Quit (); };
+		win.Add (new CairoSample ());
 		win.ShowAll ();
+		Application.Run ();
 	}
 
 	void OvalPath (Context cr, double xc, double yc, double xr, double yr)
@@ -80,7 +75,7 @@ class Knockout : DrawingArea
 		cr.Fill ();
 
 		cr.Color = new Color (0.0, 0.0, 1.0, alpha);
-    	OvalPath (cr, xc + radius / 3.0 * Math.Cos (Math.PI * (0.5 + 4 / 0.3)), yc - radius / 3.0 * Math.Sin (Math.PI * (0.5 + 4 / 0.3)), subradius, subradius);
+    		OvalPath (cr, xc + radius / 3.0 * Math.Cos (Math.PI * (0.5 + 4 / 0.3)), yc - radius / 3.0 * Math.Sin (Math.PI * (0.5 + 4 / 0.3)), subradius, subradius);
 		cr.Fill ();
 	}
 
@@ -135,13 +130,8 @@ class Knockout : DrawingArea
 
 	protected override bool OnDrawn (Cairo.Context ctx)
 	{
-		Draw (ctx, Window.Width, Window.Height);
+		Draw (ctx, AllocatedWidth, AllocatedHeight);
 		return true;
-	}
-
-	void OnQuit (object sender, DeleteEventArgs e)
-	{
-		Application.Quit ();
 	}
 }
 
