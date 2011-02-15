@@ -1,121 +1,119 @@
-// Scribble.cs - port of Gtk+ scribble demo 
+// Copyright (c) 2011 Novell, Inc.
 //
-// Author: Rachel Hestilow <hestilow@ximian.com> 
-//
-// (c) 2002 Rachel Hestilow
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+using Gtk;
+using Gdk;
+using System;
 
 namespace GtkSamples {
 
-	using Gtk;
-	using Gdk;
-	using System;
-
-	public class Scribble {
-		private static Gtk.DrawingArea darea;
-		private static Gdk.Pixmap pixmap = null;
+	public class ScribbleArea : DrawingArea {
 
 		public static int Main (string[] args)
 		{
 			Application.Init ();
-			Gtk.Window win = new Gtk.Window ("Scribble demo");
-			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
-
-			darea = new Gtk.DrawingArea ();
-			darea.SetSizeRequest (200, 200);
-			win.Add (darea);
-			
-			darea.ExposeEvent += new ExposeEventHandler (ExposeEvent);
-			darea.ConfigureEvent += new ConfigureEventHandler (ConfigureEvent);
-			darea.MotionNotifyEvent += new MotionNotifyEventHandler (MotionNotifyEvent);
-			darea.ButtonPressEvent += new ButtonPressEventHandler (ButtonPressEvent);
-			darea.Events = EventMask.ExposureMask | EventMask.LeaveNotifyMask |
-				       EventMask.ButtonPressMask | EventMask.PointerMotionMask |
-				       EventMask.PointerMotionHintMask;
-
+			Gtk.Window win = new Gtk.Window ("Scribble");
+			win.DeleteEvent += delegate { Application.Quit (); };
+			win.BorderWidth = 8;
+			Frame frm = new Frame (null);
+			frm.ShadowType = ShadowType.In;
+			frm.Add (new ScribbleArea ());
+			win.Add (frm);
 			win.ShowAll ();
 			Application.Run ();
 			return 0;
 		}
 
-		static void Window_Delete (object obj, DeleteEventArgs args)
+		Cairo.Surface surface;
+
+		public ScribbleArea ()
 		{
-			Application.Quit ();
-			args.RetVal = true;
+			SetSizeRequest (200, 200);
+			Events |= EventMask.ButtonPressMask | EventMask.PointerMotionMask | EventMask.PointerMotionHintMask;
 		}
 
-		static void ExposeEvent (object obj, ExposeEventArgs args)
+		void ClearSurface ()
 		{
-			Gdk.Rectangle area = args.Event.Area;
-			args.Event.Window.DrawDrawable (darea.Style.BlackGC,
-							pixmap,
-							area.X, area.Y,
-							area.X, area.Y,
-							area.Width, area.Height);
-
-			args.RetVal = false;
-		}
-		
-		static void ConfigureEvent (object obj, ConfigureEventArgs args)
-		{
-			Gdk.EventConfigure ev = args.Event;
-			Gdk.Window window = ev.Window;
-			Gdk.Rectangle allocation = darea.Allocation;
-
-			pixmap = new Gdk.Pixmap (window, allocation.Width, allocation.Height, -1);
-			pixmap.DrawRectangle (darea.Style.WhiteGC, true, 0, 0,
-					      allocation.Width, allocation.Height);
-
-			args.RetVal = true;
+			using (Cairo.Context ctx = new Cairo.Context (surface)) {
+				ctx.SetSourceRGB (1, 1, 1);
+				ctx.Paint ();
+			}
 		}
 
-		static void DrawBrush (double x, double y, bool black)
+		void DrawBrush (double x, double y)
 		{
-			Gdk.Rectangle update_rect = new Gdk.Rectangle ();
-			update_rect.X = (int) x - 5;
-			update_rect.Y = (int) y - 5;
-			update_rect.Width = 10;
-			update_rect.Height = 10;
-			
-			pixmap.DrawRectangle (black ? darea.Style.BlackGC : darea.Style.WhiteGC, true,
-										 update_rect.X, update_rect.Y,
-										 update_rect.Width, update_rect.Height);
-			darea.QueueDrawArea (update_rect.X, update_rect.Y,
-										update_rect.Width, update_rect.Height);
-		}
-	
-		static void ButtonPressEvent (object obj, ButtonPressEventArgs args)
-		{
-			Gdk.EventButton ev = args.Event;
-			if (ev.Button == 1 && pixmap != null)
-				DrawBrush (ev.X, ev.Y, true);
-			else if (ev.Button == 3 && pixmap != null)
-				DrawBrush (ev.X, ev.Y, false);
-			args.RetVal = true;
-		}
-		
-		static void MotionNotifyEvent (object obj, MotionNotifyEventArgs args)
-		{
-			int x, y;
-			Gdk.ModifierType state;
-			Gdk.EventMotion ev = args.Event;
-			Gdk.Window window = ev.Window;
-
-			if (ev.IsHint) {
-				Gdk.ModifierType s;
-				window.GetPointer (out x, out y, out s);
-				state = s;
-			} else {
-				x = (int) ev.X;
-				y = (int) ev.Y;
-				state = ev.State;
+			using (Cairo.Context ctx = new Cairo.Context (surface)) {
+				ctx.Rectangle ((int) x - 3, (int) y - 3, 6, 6);
+				ctx.Fill ();
 			}
 
-			if ((state & Gdk.ModifierType.Button1Mask) != 0 && pixmap != null)
-				DrawBrush (x, y, true);
-			else if ((state & Gdk.ModifierType.Button3Mask) != 0 && pixmap != null)
-				DrawBrush (x, y, false);
+			QueueDrawArea ((int) x - 3, (int) y - 3, 6, 6);
+		}
+	
+		protected override bool OnButtonPressEvent (EventButton ev)
+		{
+			if (surface == null)
+				return false;
 
-			args.RetVal = true;
+			switch (ev.Button) {
+			case 1:
+				DrawBrush (ev.X, ev.Y);
+				break;
+			case 3:
+				ClearSurface ();
+				QueueDraw ();
+				break;
+			default:
+				break;
+			}
+			return true;
+		}
+		
+		protected override bool OnConfigureEvent (EventConfigure ev)
+		{
+			surface = ev.Window.CreateSimilarSurface (Cairo.Content.Color, AllocatedWidth, AllocatedHeight);
+			ClearSurface ();
+			return true;
+		}
+
+		protected override bool OnDrawn (Cairo.Context ctx)
+		{
+			ctx.SetSourceSurface (surface, 0, 0);
+			ctx.Paint ();
+			return false;
+		}
+		
+		protected override bool OnMotionNotifyEvent (EventMotion ev)
+		{
+			if (surface == null)
+				return false;
+
+			int x, y;
+			Gdk.ModifierType state;
+			ev.Window.GetPointer (out x, out y, out state);
+			if ((state & Gdk.ModifierType.Button1Mask) != 0)
+				DrawBrush (x, y);
+
+			return true;
 		}
 	}
 }
