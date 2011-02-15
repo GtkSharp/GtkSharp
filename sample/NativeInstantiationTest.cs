@@ -13,7 +13,7 @@ namespace GtkSharp {
 		[DllImport ("libgobject-2.0.so.0")]
 		static extern IntPtr g_object_new (IntPtr gtype, string prop, string val, IntPtr dummy);
 
-		[DllImport ("libgtk-3.0.so.0")]
+		[DllImport ("libgtk-3.so.0")]
 		static extern void gtk_widget_show (IntPtr handle);
 
 		public static int Main (string[] args)
