@@ -1,11 +1,4 @@
-//                                                   
-// Mono.Cairo.Pattern.cs
-//
-// Author: Jordi Mas (jordi@ximian.com)
-//         Hisham Mardam Bey (hisham.mardambey@gmail.com)
-// (C) Ximian Inc, 2004.
-//
-// Copyright (C) 2004 Novell, Inc (http://www.novell.com)
+// Copyright (c) 2011 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -29,23 +22,64 @@
 
 using System;
 
-namespace Cairo {
-   
-	public class SurfacePattern : Pattern
+namespace Cairo
+{
+
+	public enum DeviceType {
+		Drm,
+		GL,
+		Script,
+		Xcb,
+		Xlib,
+		Xml,
+	}
+
+	public class Device : IDisposable
 	{
-		internal SurfacePattern (IntPtr handle) : base (handle)
+
+		IntPtr handle;
+
+		internal Device (IntPtr handle)
 		{
+			this.handle = NativeMethods.cairo_device_reference (handle);
 		}
 
-		public SurfacePattern (Surface surface)
+		public Status Acquire ()
 		{
-			pattern = NativeMethods.cairo_pattern_create_for_surface (surface.Handle);
+			return NativeMethods.cairo_device_acquire (handle);
 		}
 
-		public Filter Filter {
-			set { NativeMethods.cairo_pattern_set_filter (pattern, value); }
-			get { return NativeMethods.cairo_pattern_get_filter (pattern); }
+		public void Dispose ()
+		{
+			if (handle != IntPtr.Zero)
+				NativeMethods.cairo_device_destroy (handle);
+			handle = IntPtr.Zero;
+			GC.SuppressFinalize (this);
 		}
+
+		public void Finish ()
+		{
+			NativeMethods.cairo_device_finish (handle);
+		}
+
+		public void Flush ()
+		{
+			NativeMethods.cairo_device_flush (handle);
+		}
+
+		public void Release ()
+		{
+			NativeMethods.cairo_device_release (handle);
+		}
+
+		public Status Status {
+			get { return NativeMethods.cairo_device_status (handle); }
+		}
+
+		public DeviceType Type {
+			get { return NativeMethods.cairo_device_get_type (handle); }
+		}
+
 	}
 }
 

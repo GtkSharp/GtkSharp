@@ -89,7 +89,7 @@ namespace Cairo {
                         NativeMethods.cairo_pattern_reference (pattern);
                 }
 
-		void IDisposable.Dispose ()
+		public void Dispose ()
 		{
 			Dispose (true);
 		}
@@ -112,6 +112,11 @@ namespace Cairo {
 			}
                 }
 		
+		public Extend Extend {
+			get { return NativeMethods.cairo_pattern_get_extend (pattern); }
+			set { NativeMethods.cairo_pattern_set_extend (pattern, value); }
+		}
+
 		public Status Status
 		{
 			get { return NativeMethods.cairo_pattern_status (pattern); }

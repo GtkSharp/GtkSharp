@@ -139,7 +139,7 @@ namespace Cairo {
 			NativeMethods.cairo_paint (gr.Handle);
 		}
 
-		void IDisposable.Dispose ()
+		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
@@ -183,6 +183,13 @@ namespace Cairo {
 				return surface;
 			}
                 }
+
+		public Device Device {
+			get { 
+				IntPtr dev = NativeMethods.cairo_surface_get_device (surface);
+				return dev == IntPtr.Zero ? null : new Device (dev);
+			}
+		}
 
 		public PointD DeviceOffset {
 			get {

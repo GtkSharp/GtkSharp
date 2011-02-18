@@ -186,7 +186,7 @@ namespace Cairo {
 		
 		public Context (IntPtr state)
 		{
-			this.state = state;
+			this.state = NativeMethods.cairo_reference (state);
 		}
 		
 		~Context ()
@@ -359,6 +359,10 @@ namespace Cairo {
                         }
                 }
 
+		public bool HasCurrentPoint {
+			get { return NativeMethods.cairo_has_current_point (state); }
+		}
+
                 public Cairo.Surface Target {
                         set {
 				if (state != IntPtr.Zero)
@@ -530,6 +534,11 @@ namespace Cairo {
 			NativeMethods.cairo_append_path (state, path.handle);
 		}
 		
+		public void PathExtents (out double x1, out double y1, out double x2, out double y2)
+		{
+			NativeMethods.cairo_path_extents (state, out x1, out y1, out x2, out y2);
+		}
+
 #endregion
 
 #region Painting Methods
@@ -607,6 +616,11 @@ namespace Cairo {
 		public bool InStroke (double x, double y)
 		{
 			return NativeMethods.cairo_in_stroke (state, x, y);
+		}
+
+		public bool InClip (double x, double y)
+		{
+			return NativeMethods.cairo_in_clip (state, x, y);
 		}
 
 		public bool InFill (double x, double y)
@@ -897,6 +911,11 @@ namespace Cairo {
 			Marshal.FreeHGlobal (ptr);
 
 			return extents;
+		}
+
+		public static int FormatStrideForWidth (Format format, int width)
+		{
+			return NativeMethods.cairo_format_stride_for_width (format, width);
 		}
         }
 }

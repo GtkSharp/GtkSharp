@@ -14,6 +14,7 @@ sources = \
 	Cairo.cs \
 	Content.cs \
 	Context.cs \
+	Device.cs \
 	DirectFBSurface.cs \
 	Extend.cs \
 	FillRule.cs \
