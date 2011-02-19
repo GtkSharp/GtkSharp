@@ -3,6 +3,7 @@ SUBDIRS = . glue
 pkg = gio
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = gio-sharp-3.0.pc
+INCLUDE_API = $(top_srcdir)/glib/glib-api.xml
 METADATA = Gio.metadata
 SYMBOLS = 
 references = ../glib/glib-sharp.dll
