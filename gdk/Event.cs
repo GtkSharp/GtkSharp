@@ -131,8 +131,6 @@ namespace Gdk {
 			case EventType.DropStart:
 			case EventType.DropFinished:
 				return new EventDND (raw);
-			case EventType.ClientEvent:
-				return new EventClient (raw);
 			case EventType.VisibilityNotify:
 				return new EventVisibility (raw);
 			case EventType.Scroll:

@@ -52,22 +52,6 @@
 		}
 	}
 
-	[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-	static extern IntPtr gdk_window_get_toplevels();
-
-	public static Window[] Toplevels {
-		get {
-			IntPtr raw_ret = gdk_window_get_toplevels();
-			if (raw_ret == IntPtr.Zero)
-				return new Window [0];
-			GLib.List list = new GLib.List(raw_ret);
-			Window[] result = new Window [list.Count];
-			for (int i = 0; i < list.Count; i++)
-				result [i] = list [i] as Window;
-			return result;
-		}
-	}
-
 	[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 	static extern IntPtr g_object_ref (IntPtr raw);
 

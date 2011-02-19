@@ -7,7 +7,6 @@ glue_includes = gdk/gdk.h
 
 sources = 			\
 	EventButton.cs		\
-	EventClient.cs		\
 	EventConfigure.cs	\
 	EventCrossing.cs	\
 	Event.cs		\
@@ -33,19 +32,11 @@ sources = 			\
 customs = 			\
 	Atom.custom		\
 	Color.custom		\
-	Colormap.custom		\
 	Device.custom		\
-	DeviceAxis.custom	\
 	Display.custom		\
 	DisplayManager.custom	\
-	EdgeTable.custom	\
-	GCValues.custom		\
 	Global.custom		\
-	Input.custom		\
 	Keymap.custom		\
-	PangoAttrEmbossed.custom\
-	PangoAttrEmbossColor.custom	\
-	PangoAttrStipple.custom \
 	Pixbuf.custom		\
 	PixbufAnimation.custom	\
 	PixbufFrame.custom	\
@@ -53,8 +44,6 @@ customs = 			\
 	Pixdata.custom		\
 	Point.custom		\
 	Property.custom		\
-	Region.custom		\
-	RgbCmap.custom		\
 	Screen.custom		\
 	Selection.custom	\
 	WindowAttr.custom	\
