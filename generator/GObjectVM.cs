@@ -342,26 +342,26 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 		}
 
-		public override bool Validate ()
+		public override bool Validate (LogWriter log)
 		{
-			if (!base.Validate ()) return false;
+			if (!base.Validate (log))
+				return false;
+
 			bool is_valid = true;
 
 			if (this.IsStatic) {
 				switch (OverrideType) {
 				case VMOverrideType.Unspecified:
-					Console.Write ("Static virtual methods can only be generated if you provide info on how to override this method via the metadata ");
+					log.Warn ("Static virtual methods can only be generated if you provide info on how to override this method via the metadata ");
 					is_valid = false;
 					break;
 				case VMOverrideType.ImplementingClass:
-					Console.Write ("Overriding static virtual methods in the implementing class is not supported yet ");
+					log.Warn ("Overriding static virtual methods in the implementing class is not supported yet ");
 					is_valid = false;
 					break;
 				}
 			}
 
-			if (!is_valid)
-				Console.WriteLine (" (in virtual method {0}.{1})", container_type.QualifiedName, this.Name);
 			return is_valid;
 		}
 	}

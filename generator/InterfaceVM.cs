@@ -85,13 +85,17 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t" + retval.CSType + " " + Name + " (" + Signature + ");");
 		}
 
-		public override bool Validate ()
+		public override bool Validate (LogWriter log)
 		{
+			if (!base.Validate (log))
+				return false;
+
 			if (target == null && !(container_type as InterfaceGen).IsConsumeOnly) {
-				Console.WriteLine ("Virtual method {0}->{1} has no matching target to invoke", container_type.CName, CName);
+				log.Warn ("No matching target method to invoke. Add target_method attribute with fixup.");
 				return false;
 			}
-			return base.Validate ();
+
+			return true;
 		}
 	}
 }

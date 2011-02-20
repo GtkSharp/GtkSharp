@@ -127,9 +127,9 @@ namespace GtkSharp.Generation {
 
 		public override bool Validate ()
 		{
+			LogWriter log = new LogWriter (QualifiedName);
 			foreach (StructField field in fields) {
-				if (!field.Validate ()) {
-					Console.WriteLine ("in Struct " + QualifiedName);
+				if (!field.Validate (log)) {
 					if (!field.IsPointer)
 						return false;
 				}

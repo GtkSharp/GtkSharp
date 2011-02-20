@@ -158,12 +158,13 @@ namespace GtkSharp.Generation {
 				return IGen.CallByName (var);
 		}
 
-		public bool Validate ()
+		public bool Validate (LogWriter log)
 		{
 			if (MarshalType == "" || CSType == "") {
-				Console.Write("rettype: " + CType);
+				log.Warn ("Unknown return type: {0}", CType);
 				return false;
-			}
+			} else if ((CSType == "GLib.List" || CSType == "GLib.SList") && String.IsNullOrEmpty (ElementType))
+				log.Warn ("Returns {0} with unknown element type.  Add element_type attribute with gapi-fixup.", CType);
 
 			return true;
 		}

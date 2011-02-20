@@ -46,7 +46,7 @@ namespace GtkSharp.Generation {
 					break;
 				default:
 					if (!base.IsNodeNameHandled (node.Name))
-						Console.WriteLine ("Unexpected node " + node.Name + " in " + CName);
+						new LogWriter (QualifiedName).Warn ("Unexpected node " + node.Name);
 					break;
 				}
 			}
@@ -70,19 +70,20 @@ namespace GtkSharp.Generation {
 
 		public override bool ValidateForSubclass ()
 		{
-			ArrayList invalids = new ArrayList ();
+			if (!base.ValidateForSubclass ())
+				return false;
 
+			LogWriter log = new LogWriter (QualifiedName);
+			ArrayList invalids = new ArrayList ();
 			foreach (Method method in methods.Values) {
-				if (!method.Validate ()) {
-					Console.WriteLine ("in type " + QualifiedName);
+				if (!method.Validate (log))
 					invalids.Add (method);
-				}
 			}
 			foreach (Method method in invalids)
 				methods.Remove (method.Name);
 			invalids.Clear ();
 
-			return base.ValidateForSubclass ();
+			return true;
 		}
 
 		void GenerateStaticCtor (StreamWriter sw)
@@ -93,7 +94,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tGLib.GType.Register (_gtype, typeof({0}Adapter));", Name);
 			foreach (InterfaceVM vm in interface_vms) {
-				if (vm.IsValid)
+				if (vm.Validate (new LogWriter (QualifiedName)))
 					sw.WriteLine ("\t\t\tiface.{0} = new {0}NativeDelegate ({0}_cb);", vm.Name);
 			}
 			sw.WriteLine ("\t\t}");
@@ -288,7 +289,7 @@ namespace GtkSharp.Generation {
 			foreach (InterfaceVM vm in interface_vms) {
 				if (vm_table [vm.Name] == null)
 					continue;
-				else if (!vm.IsValid) {
+				else if (!vm.Validate (new LogWriter (QualifiedName))) {
 					vm_table.Remove (vm.Name);
 					continue;
 				} else if (vm.IsGetter || vm.IsSetter) {

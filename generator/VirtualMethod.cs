@@ -61,7 +61,9 @@ namespace GtkSharp.Generation {
 		*/
 		public void GenerateCallback (StreamWriter sw, ClassBase implementor)
 		{
-			if (!Validate ())
+			LogWriter log = new LogWriter ();
+			log.Type = container_type.QualifiedName;
+			if (!Validate (log))
 				return;
 
 			string native_signature = "";
@@ -118,12 +120,6 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 		}
 
-		public bool IsValid {
-			get { 
-				return Validate ();
-			}
-		}
-
 		enum ValidState {
 			Unvalidated,
 			Invalid,
@@ -132,24 +128,20 @@ namespace GtkSharp.Generation {
 
 		ValidState vstate = ValidState.Unvalidated;
 
-		public override bool Validate ()
+		public override bool Validate (LogWriter log)
 		{
 			if (vstate != ValidState.Unvalidated)
 				return vstate == ValidState.Valid;
 
 			vstate = ValidState.Valid;
-			if (!parms.Validate () || !retval.Validate ()) {
+			log.Member = Name;
+			if (!parms.Validate (log) || !retval.Validate (log)) {
 				vstate = ValidState.Invalid;
+				return false;
 			}
 
-			if (vstate == ValidState.Invalid) {
-				Console.WriteLine ("(in virtual method " + container_type.QualifiedName + "." + Name + ")");
-				return false;
-			} else {
-				// The call string has to be created *after* the params have been validated since the Parameters class contains no elements before validation
-				call = new ManagedCallString (parms);
-				return true;
-			}
+			call = new ManagedCallString (parms);
+			return true;
 		}
 	}
 }

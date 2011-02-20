@@ -82,12 +82,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public override bool Validate ()
+		public override bool Validate (LogWriter log)
 		{
-			if (!retval.Validate () || !base.Validate ()) {
-				Console.Write(" in method " + Name + " ");
+			log.Member = Name;
+			if (!retval.Validate (log) || !base.Validate (log))
 				return false;
-			}
 
 			Parameters parms = Parameters;
 			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && HasGetterName);
@@ -214,9 +213,6 @@ namespace GtkSharp.Generation {
 
 		public void Generate (GenerationInfo gen_info, ClassBase implementor)
 		{
-			if (!Validate ())
-				return;
-
 			Method comp = null;
 
 			gen_info.CurrentMember = Name;

@@ -116,14 +116,16 @@ namespace GtkSharp.Generation {
 
 		public override bool Validate ()
 		{
+			LogWriter log = new LogWriter (QualifiedName);
+
 			foreach (string iface in interfaces) {
 				InterfaceGen igen = SymbolTable.Table[iface] as InterfaceGen;
 				if (igen == null) {
-					Console.WriteLine (QualifiedName + " implements unknown GInterface " + iface);
+					log.Warn ("implements unknown GInterface " + iface);
 					return false;
 				}
 				if (!igen.ValidateForSubclass ()) {
-					Console.WriteLine (QualifiedName + " implements invalid GInterface " + iface);
+					log.Warn ("implements invalid GInterface " + iface);
 					return false;
 				}
 			}
@@ -131,40 +133,32 @@ namespace GtkSharp.Generation {
 			ArrayList invalids = new ArrayList ();
 
 			foreach (Property prop in props.Values) {
-				if (!prop.Validate ()) {
-					Console.WriteLine ("in type " + QualifiedName);
+				if (!prop.Validate (log))
 					invalids.Add (prop);
-				}
 			}
 			foreach (Property prop in invalids)
 				props.Remove (prop.Name);
 			invalids.Clear ();
 
 			foreach (ObjectField field in fields.Values) {
-				if (!field.Validate ()) {
-					Console.WriteLine ("in type " + QualifiedName);
+				if (!field.Validate (log))
 					invalids.Add (field);
-				}
 			}
 			foreach (ObjectField field in invalids)
 				fields.Remove (field.Name);
 			invalids.Clear ();
 
 			foreach (Method method in methods.Values) {
-				if (!method.Validate ()) {
-					Console.WriteLine ("in type " + QualifiedName);
+				if (!method.Validate (log))
 					invalids.Add (method);
-				}
 			}
 			foreach (Method method in invalids)
 				methods.Remove (method.Name);
 			invalids.Clear ();
 
 			foreach (Ctor ctor in ctors) {
-				if (!ctor.Validate ()) {
-					Console.WriteLine ("in type " + QualifiedName);
+				if (!ctor.Validate (log))
 					invalids.Add (ctor);
-				}
 			}
 			foreach (Ctor ctor in invalids)
 				ctors.Remove (ctor);

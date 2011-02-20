@@ -46,22 +46,15 @@ namespace GtkSharp.Generation {
 
 		public override bool Validate ()
 		{
-			if (!retval.Validate ()) {
-				Console.WriteLine ("rettype: " + retval.CType + " in callback " + CName);
-				Statistics.ThrottledCount++;
-				valid = false;
-				return false;
-			}
-
-			if (!parms.Validate ()) {
-				Console.WriteLine (" in callback " + CName);
-				Statistics.ThrottledCount++;
-				valid = false;
-				return false;
-			}
-
 			valid = true;
-			return true;
+			LogWriter log = new LogWriter ();
+			log.Type = QualifiedName;
+			if (!retval.Validate (log) || !parms.Validate (log)) {
+				Statistics.ThrottledCount++;
+				valid = false;
+			}
+
+			return valid;
 		}
 
 		public string InvokerName {
@@ -281,7 +274,7 @@ namespace GtkSharp.Generation {
 		
 		public override void Generate (GenerationInfo gen_info)
 		{
-			gen_info.CurrentType = Name;
+			gen_info.CurrentType = QualifiedName;
 
 			sig = new Signature (parms);
 

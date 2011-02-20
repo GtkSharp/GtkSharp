@@ -60,7 +60,7 @@ namespace GtkSharp.Generation {
 
 		public override void Generate (GenerationInfo gen_info)
 		{
-			gen_info.CurrentType = Name;
+			gen_info.CurrentType = QualifiedName;
 
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream(Name);
 

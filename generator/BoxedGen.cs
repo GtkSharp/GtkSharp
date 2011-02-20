@@ -36,7 +36,7 @@ namespace GtkSharp.Generation {
 			methods.Remove ("Copy");
 			methods.Remove ("Free");
 
-			gen_info.CurrentType = Name;
+			gen_info.CurrentType = QualifiedName;
 
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 			base.Generate (gen_info);

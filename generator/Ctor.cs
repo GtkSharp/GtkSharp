@@ -92,9 +92,6 @@ namespace GtkSharp.Generation {
 
 		public void Generate (GenerationInfo gen_info)
 		{
-			if (!Validate ())
-				return;
-
 			StreamWriter sw = gen_info.Writer;
 			gen_info.CurrentMember = CName;
 

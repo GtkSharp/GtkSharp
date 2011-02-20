@@ -31,13 +31,17 @@ namespace GtkSharp.Generation {
 			this.container_type = container_type;
 		}
 
-		public override bool Validate () {
+		public override bool Validate (LogWriter log)
+		{
+			if (!base.Validate (log))
+				return false;
+
 			if (IsBitfield) {
-				Console.WriteLine ("Field {0}.{1} is a bitfield which is not supported yet", container_type.ClassStructName, Name);
+				log.Warn ("bitfields are not supported");
 				return false;
 			}
 
-			return base.Validate ();
+			return true;
 		}
 	}
 }

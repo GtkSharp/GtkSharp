@@ -168,10 +168,10 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public virtual bool Validate ()
+		public virtual bool Validate (LogWriter log)
 		{
-			if (!parms.Validate ()) {
-				Console.Write("in " + CName + " ");
+			log.Member = Name;
+			if (!parms.Validate (log)) {
 				Statistics.ThrottledCount++;
 				return false;
 			}

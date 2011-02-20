@@ -31,10 +31,11 @@ namespace GtkSharp.Generation {
 
 		public Property (XmlElement elem, ClassBase container_type) : base (elem, container_type) {}
 
-		public bool Validate ()
+		public bool Validate (LogWriter log)
 		{
 			if (CSType == "" && !Hidden) {
-				Console.Write("Property has unknown Type {0} ", CType);
+				log.Member = Name;
+				log.Warn ("property has unknown type '{0}' ", CType);
 				Statistics.ThrottledCount++;
 				return false;
 			}

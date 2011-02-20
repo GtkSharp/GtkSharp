@@ -60,20 +60,17 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public bool Validate ()
+		public bool Validate (LogWriter log)
 		{
+			log.Member = Name;
 			if (Name == "") {
-				Console.Write ("Nameless signal ");
+				log.Warn ("Nameless signal found. Add name attribute with fixup.");
+				Statistics.ThrottledCount++;
+				return false;
+			} else if (!parms.Validate (log) || !retval.Validate (log)) {
 				Statistics.ThrottledCount++;
 				return false;
 			}
-			
-			if (!parms.Validate () || !retval.Validate ()) {
-				Console.Write (" in signal " + Name + " ");
-				Statistics.ThrottledCount++;
-				return false;
-			}
-
 			return true;
 		}
 

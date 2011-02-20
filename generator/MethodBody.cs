@@ -122,7 +122,7 @@ namespace GtkSharp.Generation {
 					case "call":
 					default:
 						if (p.Scope == String.Empty)
-							Console.WriteLine ("Defaulting " + gen.Name + " param to 'call' scope in method " + gen_info.CurrentMember);
+							Console.WriteLine (gen_info.CurrentMember + " - defaulting " + gen.Name + " param to 'call' scope. Specify callback scope (call|async|notified) attribute with fixup.");
 						sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = new {0} ({1});", wrapper, name);
 						break;
 					}

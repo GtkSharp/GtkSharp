@@ -77,13 +77,13 @@ namespace GtkSharp.Generation {
 
 		public override bool Validate ()
 		{
+			LogWriter log = new LogWriter (QualifiedName);
+
 			ArrayList invalids = new ArrayList ();
 
 			foreach (ChildProperty prop in childprops.Values) {
-				if (!prop.Validate ()) {
-					Console.WriteLine ("in Object " + QualifiedName);
+				if (!prop.Validate (log))
 					invalids.Add (prop);
-				}
 			}
 			foreach (ChildProperty prop in invalids)
 				childprops.Remove (prop);
@@ -129,7 +129,7 @@ namespace GtkSharp.Generation {
 
 		public override void Generate (GenerationInfo gen_info)
 		{
-			gen_info.CurrentType = Name;
+			gen_info.CurrentType = QualifiedName;
 
 			string asm_name = gen_info.AssemblyName.Length == 0 ? NS.ToLower () + "-sharp" : gen_info.AssemblyName;
 			DirectoryInfo di = GetDirectoryInfo (gen_info.Dir, asm_name);

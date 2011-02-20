@@ -28,10 +28,11 @@ namespace GtkSharp.Generation {
 	public abstract class FieldBase : PropertyBase {
 		public FieldBase (XmlElement elem, ClassBase container_type) : base (elem, container_type) {}
 
-		public virtual bool Validate ()
+		public virtual bool Validate (LogWriter log)
 		{
+			log.Member = Name;
 			if (!Ignored && !Hidden && CSType == "") {
-				Console.Write("Field {0} has unknown Type {1} ", Name, CType);
+				log.Warn ("field has unknown type: " + CType);
 				Statistics.ThrottledCount++;
 				return false;
 			}
@@ -141,10 +142,10 @@ namespace GtkSharp.Generation {
 				return;
 
 			CheckGlue ();
-			if ((getterName != null || setterName != null || getOffsetName != null) &&
-			    gen_info.GlueWriter == null) {
-				Console.WriteLine ("No glue-filename specified, can't create glue for {0}.{1}",
-						   container_type.Name, Name);
+			if ((getterName != null || setterName != null || getOffsetName != null) && gen_info.GlueWriter == null) {
+				LogWriter log = new LogWriter (container_type.QualifiedName);
+				log.Member = Name;
+				log.Warn ("needs glue for field access.  Specify --glue-filename");
 				return;
 			}
 

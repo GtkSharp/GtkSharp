@@ -622,7 +622,7 @@ namespace GtkSharp.Generation {
 
 		bool valid = false;
 
-		public bool Validate ()
+		public bool Validate (LogWriter log)
 		{
 			if (valid)
 				return true;
@@ -637,14 +637,14 @@ namespace GtkSharp.Generation {
 				Parameter p = new Parameter (parm);
 				
 				if (p.IsEllipsis) {
-					Console.Write("Ellipsis parameter ");
+					log.Warn ("Ellipsis parameter: hide and bind manually if no alternative exists. ");
 					Clear ();
 					return false;
 				}
 
 				if ((p.CSType == "") || (p.Name == "") || 
 				    (p.MarshalType == "") || (SymbolTable.Table.CallByName(p.CType, p.Name) == "")) {
-					Console.Write ("Invalid parameter {0} of type {1}", p.Name, p.CType);
+					log.Warn ("Unknown type {1} on parameter {0}", p.Name, p.CType);
 					Clear ();
 					return false;
 				}

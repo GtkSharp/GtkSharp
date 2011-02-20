@@ -31,6 +31,7 @@ sources = 				\
 	IManualMarshaler.cs		\
 	InterfaceGen.cs			\
 	InterfaceVM.cs			\
+	LogWriter.cs			\
 	LPGen.cs			\
 	LPUGen.cs			\
 	ManagedCallString.cs		\
