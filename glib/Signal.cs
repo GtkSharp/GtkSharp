@@ -222,7 +222,7 @@ namespace GLib {
 
 		public static Signal Lookup (GLib.Object obj, string name, Delegate marshaler)
 		{
-			Signal result = obj.ToggleRef.Signals [name] as Signal;
+			Signal result = obj.ToggleRef.Signals [name];
 			if (result == null)
 				result = new Signal (obj, name, marshaler);
 			return result;
@@ -230,7 +230,7 @@ namespace GLib {
 
 		public static Signal Lookup (GLib.Object obj, string name, Type args_type)
 		{
-			Signal result = obj.ToggleRef.Signals [name] as Signal;
+			Signal result = obj.ToggleRef.Signals [name];
 			if (result == null)
 				result = new Signal (obj, name, args_type);
 			return result;

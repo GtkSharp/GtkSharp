@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@novell.com>
 //
-// Copyright <c> 2007 Novell, Inc.
+// Copyright <c> 2007, 2011 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -19,11 +19,11 @@
 // Boston, MA 02111-1307, USA.
 
 
-namespace GLib {
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
-	using System;
-	using System.Collections;
-	using System.Runtime.InteropServices;
+namespace GLib {
 
 	internal class ToggleRef {
 
@@ -31,7 +31,7 @@ namespace GLib {
 		IntPtr handle;
 		object reference;
 		GCHandle gch;
-		Hashtable signals;
+		Dictionary<string, Signal> signals;
 
 		public ToggleRef (GLib.Object target)
 		{
@@ -42,27 +42,14 @@ namespace GLib {
 			g_object_unref (target.Handle);
 		}
 
-		public bool IsAlive {
-			get {
-				if (reference is WeakReference) {
-					WeakReference weak = reference as WeakReference;
-					return weak.IsAlive;
-				} else if (reference == null)
-					return false;
-				return true;
-			}
-		}
-
 		public IntPtr Handle {
-			get {
-				return handle;
-			}
+			get { return handle; }
 		}
 
-		public Hashtable Signals {
+		public Dictionary<string, Signal> Signals {
 			get {
 				if (signals == null)
-					signals = new Hashtable ();
+					signals = new Dictionary<string, Signal> ();
 				return signals;
 			}
 		}
@@ -115,8 +102,7 @@ namespace GLib {
 				reference = new WeakReference (reference);
 			else if (!is_last_ref && reference is WeakReference) {
 				WeakReference weak = reference as WeakReference;
-				if (weak.IsAlive)
-					reference = weak.Target;
+				reference = weak.Target;
 			}
 		}
 

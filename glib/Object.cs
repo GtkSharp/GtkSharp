@@ -105,7 +105,7 @@ namespace GLib {
 
 			if (Objects.Contains (o)) {
 				ToggleRef toggle_ref = Objects [o] as ToggleRef;
-				if (toggle_ref != null && toggle_ref.IsAlive)
+				if (toggle_ref != null)
 					obj = toggle_ref.Target;
 			}
 
