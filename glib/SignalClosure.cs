@@ -29,7 +29,6 @@ namespace GLib {
 
 		EventArgs args;
 		GLib.Object obj;
-		object result;
 
 		public ClosureInvokedArgs (GLib.Object obj, EventArgs args)
 		{
@@ -51,10 +50,10 @@ namespace GLib {
 	}
 
 	struct GClosure {
-		long fields;
-		IntPtr marshaler;
-		IntPtr data;
-		IntPtr notifiers;
+		public long fields;
+		public IntPtr marshaler;
+		public IntPtr data;
+		public IntPtr notifiers;
 	}
 
 	internal delegate void ClosureInvokedHandler (object o, ClosureInvokedArgs args);

@@ -180,23 +180,23 @@ namespace GLib {
 		}
 
 		struct GObjectClass {
-			GTypeClass type_class;
-			IntPtr construct_props;
+			public GTypeClass type_class;
+			public IntPtr construct_props;
 			public ConstructorDelegate constructor_cb;
 			public SetPropertyDelegate set_prop_cb;
 			public GetPropertyDelegate get_prop_cb;
-			IntPtr dispose;
-			IntPtr finalize;
-			IntPtr dispatch_properties_changed;
-			IntPtr notify;
-			IntPtr constructed;
-			IntPtr dummy1;
-			IntPtr dummy2;
-			IntPtr dummy3;
-			IntPtr dummy4;
-			IntPtr dummy5;
-			IntPtr dummy6;
-			IntPtr dummy7;
+			public IntPtr dispose;
+			public IntPtr finalize;
+			public IntPtr dispatch_properties_changed;
+			public IntPtr notify;
+			public IntPtr constructed;
+			public IntPtr dummy1;
+			public IntPtr dummy2;
+			public IntPtr dummy3;
+			public IntPtr dummy4;
+			public IntPtr dummy5;
+			public IntPtr dummy6;
+			public IntPtr dummy7;
 		}
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]

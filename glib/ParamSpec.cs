@@ -109,22 +109,22 @@ namespace GLib {
 		}
 
 		struct GTypeInstance {
-			IntPtr g_class;
+			public IntPtr g_class;
 		}
 
 		struct GParamSpec {
-			GTypeInstance  g_type_instance;
+			public GTypeInstance  g_type_instance;
 
-			IntPtr name;
-			ParamFlags flags;
+			public IntPtr name;
+			public ParamFlags flags;
 			public IntPtr value_type;
-			IntPtr owner_type;
+			public IntPtr owner_type;
 
-			IntPtr _nick;
-			IntPtr _blurb;
-			IntPtr qdata;
-			uint ref_count;
-			uint param_id;
+			public IntPtr _nick;
+			public IntPtr _blurb;
+			public IntPtr qdata;
+			public uint ref_count;
+			public uint param_id;
 		}
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]

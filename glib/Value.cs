@@ -32,15 +32,15 @@ namespace GLib {
 
 		[StructLayout(LayoutKind.Explicit)]
 		struct Padding {
-			[FieldOffset (0)] int v_int;
-			[FieldOffset (0)] uint v_uint;
-			[FieldOffset (0)] int v_long;
-			[FieldOffset (0)] uint v_ulong;
-			[FieldOffset (0)] long v_int64;
-			[FieldOffset (0)] ulong v_uint64;
-			[FieldOffset (0)] float v_float;
-			[FieldOffset (0)] double v_double;
-			[FieldOffset (0)] IntPtr v_pointer;
+			[FieldOffset (0)] public int v_int;
+			[FieldOffset (0)] public uint v_uint;
+			[FieldOffset (0)] public int v_long;
+			[FieldOffset (0)] public uint v_ulong;
+			[FieldOffset (0)] public long v_int64;
+			[FieldOffset (0)] public ulong v_uint64;
+			[FieldOffset (0)] public float v_float;
+			[FieldOffset (0)] public double v_double;
+			[FieldOffset (0)] public IntPtr v_pointer;
 		}
 
 		IntPtr type;

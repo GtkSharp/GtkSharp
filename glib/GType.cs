@@ -38,15 +38,15 @@ namespace GLib {
 
 		struct GTypeInfo {
 			public ushort class_size;
-			IntPtr base_init;
-			IntPtr base_finalize;
-			IntPtr class_init;
-			IntPtr class_finalize;
-			IntPtr class_data;
+			public IntPtr base_init;
+			public IntPtr base_finalize;
+			public IntPtr class_init;
+			public IntPtr class_finalize;
+			public IntPtr class_data;
 			public ushort instance_size;
-			ushort n_preallocs;
-			IntPtr instance_init;
-			IntPtr value_table;
+			public ushort n_preallocs;
+			public IntPtr instance_init;
+			public IntPtr value_table;
 		}
 
 		struct GTypeQuery {
