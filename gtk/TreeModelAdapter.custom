@@ -170,12 +170,10 @@
 		[GLib.Signal("rows_reordered")]
 		public event Gtk.RowsReorderedHandler RowsReordered {
 			add {
-				GLib.Signal sig = GLib.Signal.Lookup (GLib.Object.GetObject (Handle), "rows_reordered", new RowsReorderedSignalDelegate(RowsReorderedSignalCallback));
-				sig.AddDelegate (value);
+				GLib.Object.GetObject (Handle).AddSignalHandler ("rows_reordered", value, new RowsReorderedSignalDelegate(RowsReorderedSignalCallback));
 			}
 			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (GLib.Object.GetObject (Handle), "rows_reordered", new RowsReorderedSignalDelegate(RowsReorderedSignalCallback));
-				sig.RemoveDelegate (value);
+				GLib.Object.GetObject (Handle).RemoveSignalHandler ("rows_reordered", value);
 			}
 		}
 

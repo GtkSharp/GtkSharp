@@ -130,9 +130,9 @@
 
 	public void AddFilter (FilterFunc function)
 	{
-		if (!PersistentData.Contains ("filter_func_hash"))
-			PersistentData ["filter_func_hash"] = new Hashtable ();
-		Hashtable hash = PersistentData ["filter_func_hash"] as Hashtable;
+		if (!Data.Contains ("filter_func_hash"))
+			Data ["filter_func_hash"] = new Hashtable ();
+		Hashtable hash = Data ["filter_func_hash"] as Hashtable;
 		GdkSharp.FilterFuncWrapper wrapper = new GdkSharp.FilterFuncWrapper (function);
 		hash [function] = wrapper;
 		gdk_window_add_filter (Handle, wrapper.NativeDelegate, IntPtr.Zero);
@@ -140,7 +140,7 @@
 
 	public void RemoveFilter (FilterFunc function)
 	{
-		Hashtable hash = PersistentData ["filter_func_hash"] as Hashtable;
+		Hashtable hash = Data ["filter_func_hash"] as Hashtable;
 		GdkSharp.FilterFuncWrapper wrapper = hash [function] as GdkSharp.FilterFuncWrapper;
 		if (wrapper == null)
 			return;

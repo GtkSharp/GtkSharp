@@ -31,7 +31,6 @@ namespace GLib {
 		IntPtr handle;
 		object reference;
 		GCHandle gch;
-		Dictionary<string, Signal> signals;
 
 		public ToggleRef (GLib.Object target)
 		{
@@ -44,14 +43,6 @@ namespace GLib {
 
 		public IntPtr Handle {
 			get { return handle; }
-		}
-
-		public Dictionary<string, Signal> Signals {
-			get {
-				if (signals == null)
-					signals = new Dictionary<string, Signal> ();
-				return signals;
-			}
 		}
 
 		public GLib.Object Target {
@@ -68,10 +59,6 @@ namespace GLib {
 
   		public void Free ()
   		{
-			Signal[] signals = new Signal [Signals.Count];
-			Signals.Values.CopyTo (signals, 0);
-			foreach (Signal s in signals)
-				s.Free ();
 			if (hardened)
 				g_object_unref (handle);
 			else

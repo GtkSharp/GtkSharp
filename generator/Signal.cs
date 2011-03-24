@@ -305,12 +305,10 @@ namespace GtkSharp.Generation {
 				sw.Write("new ");
 			sw.WriteLine("event " + EventHandlerQualifiedName + " " + Name + " {");
 			sw.WriteLine("\t\t\tadd {");
-			sw.WriteLine("\t\t\t\tGLib.Signal sig = GLib.Signal.Lookup (" + target + ", " + CName + args_type + ");");
-			sw.WriteLine("\t\t\t\tsig.AddDelegate (value);");
+			sw.WriteLine("\t\t\t\t{0}.AddSignalHandler ({1}, value{2});", target, CName, args_type);
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t\tremove {");
-			sw.WriteLine("\t\t\t\tGLib.Signal sig = GLib.Signal.Lookup (" + target + ", " + CName + args_type + ");");
-			sw.WriteLine("\t\t\t\tsig.RemoveDelegate (value);");
+			sw.WriteLine("\t\t\t\t{0}.RemoveSignalHandler ({1}, value);", target, CName);
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();

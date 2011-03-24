@@ -23,7 +23,7 @@
 namespace GLib {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.ComponentModel;
 	using System.Reflection;
 	using System.Runtime.InteropServices;
@@ -34,9 +34,8 @@ namespace GLib {
 		IntPtr handle;
 		ToggleRef tref;
 		bool disposed = false;
-		Hashtable data;
-		static Hashtable Objects = new Hashtable();
-		static ArrayList PendingDestroys = new ArrayList ();
+		static Dictionary<IntPtr, ToggleRef> Objects = new Dictionary<IntPtr, ToggleRef>();
+		static List<ToggleRef> PendingDestroys = new List<ToggleRef> ();
 		static bool idle_queued;
 
 		~Object ()
@@ -59,10 +58,10 @@ namespace GLib {
 		
 		static bool PerformQueuedUnrefs ()
 		{
-			object [] references;
+			ToggleRef[] references;
 
 			lock (PendingDestroys){
-				references = new object [PendingDestroys.Count];
+				references = new ToggleRef [PendingDestroys.Count];
 				PendingDestroys.CopyTo (references, 0);
 				PendingDestroys.Clear ();
 				idle_queued = false;
@@ -80,8 +79,9 @@ namespace GLib {
 				return;
 
 			disposed = true;
-			ToggleRef toggle_ref = Objects [Handle] as ToggleRef;
-			Objects.Remove (Handle);
+			ToggleRef toggle_ref;
+			if (Objects.TryGetValue (Handle, out toggle_ref))
+				Objects.Remove (Handle);
 			try {
 				if (toggle_ref != null)
 					toggle_ref.Free ();
@@ -103,8 +103,8 @@ namespace GLib {
 
 			Object obj = null;
 
-			if (Objects.Contains (o)) {
-				ToggleRef toggle_ref = Objects [o] as ToggleRef;
+			ToggleRef toggle_ref;
+			if (Objects.TryGetValue (o, out toggle_ref)) {
 				if (toggle_ref != null)
 					obj = toggle_ref.Target;
 			}
@@ -166,11 +166,11 @@ namespace GLib {
 		
 		//  Key: The pointer to the ParamSpec of the property
 		//  Value: The corresponding PropertyInfo object
-		static Hashtable properties;
-		static Hashtable Properties {
+		static Dictionary<IntPtr, PropertyInfo> properties;
+		static Dictionary<IntPtr, PropertyInfo> Properties {
 			get {
 				if (properties == null)
-					properties = new Hashtable ();
+					properties = new Dictionary<IntPtr, PropertyInfo> ();
 				return properties;
 			}
 		}
@@ -298,11 +298,11 @@ namespace GLib {
 
 		static void GetPropertyCallback (IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
 		{
-			if (!Properties.Contains (param_spec))
+			if (!Properties.ContainsKey (param_spec))
 				return;
 
 			GLib.Object obj = GLib.Object.GetObject (handle, false);
-			value.Val = (Properties [param_spec] as PropertyInfo).GetValue (obj, new object [0]);
+			value.Val = Properties [param_spec].GetValue (obj, new object [0]);
 		}
 
 		static GetPropertyDelegate get_property_handler;
@@ -319,11 +319,11 @@ namespace GLib {
 
 		static void SetPropertyCallback(IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
 		{
-			if (!Properties.Contains (param_spec))
+			if (!Properties.ContainsKey (param_spec))
 				return;
 
 			GLib.Object obj = GLib.Object.GetObject (handle, false);
-			(Properties [param_spec] as PropertyInfo).SetValue (obj, value.Val, new object [0]);
+			Properties [param_spec].SetValue (obj, value.Val, new object [0]);
 		}
 
 		static SetPropertyDelegate set_property_handler;
@@ -456,131 +456,47 @@ namespace GLib {
 		}	
 
 		public static GLib.GType GType {
-			get {
-				return GType.Object;
-			}
+			get { return GType.Object; }
 		}
 
 		protected string TypeName {
-			get {
-				return NativeType.ToString ();
-			}
+			get { return NativeType.ToString (); }
 		}
 
 		internal GLib.GType NativeType {
-			get {
-				return LookupGType ();
-			}
+			get { return LookupGType (); }
 		}
 
 		internal ToggleRef ToggleRef {
-			get {
-				return tref;
-			}
+			get { return tref; }
 		}
 
 		public IntPtr Handle {
-			get {
-				return handle;
-			}
+			get { return handle; }
 		}
 
 		public IntPtr OwnedHandle {
-			get {
-				return g_object_ref (handle);
-			}
-		}
-
-		Hashtable before_signals;
-		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
-		protected internal Hashtable BeforeSignals {
-			get {
-				if (before_signals == null)
-					before_signals = new Hashtable ();
-				return before_signals;
-			}
-		}
-
-		Hashtable after_signals;
-		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
-		protected internal Hashtable AfterSignals {
-			get {
-				if (after_signals == null)
-					after_signals = new Hashtable ();
-				return after_signals;
-			}
-		}
-
-		EventHandlerList before_handlers;
-		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
-		protected EventHandlerList BeforeHandlers {
-			get {
-				if (before_handlers == null)
-					before_handlers = new EventHandlerList ();
-				return before_handlers;
-			}
-		}
-
-		EventHandlerList after_handlers;
-		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
-		protected EventHandlerList AfterHandlers {
-			get {
-				if (after_handlers == null)
-					after_handlers = new EventHandlerList ();
-				return after_handlers;
-			}
-		}
-
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		delegate void NotifyDelegate (IntPtr handle, IntPtr pspec, IntPtr gch);
-
-		void NotifyCallback (IntPtr handle, IntPtr pspec, IntPtr gch)
-		{
-			try {
-				GLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;
-				if (sig == null)
-					throw new Exception("Unknown signal GC handle received " + gch);
-
-				NotifyArgs args = new NotifyArgs ();
-				args.Args = new object[1];
-				args.Args[0] = pspec;
-				NotifyHandler handler = (NotifyHandler) sig.Handler;
-				handler (GLib.Object.GetObject (handle), args);
-			} catch (Exception e) {
-				ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-
-		void ConnectNotification (string signal, NotifyHandler handler)
-		{
-			Signal sig = Signal.Lookup (this, signal, new NotifyDelegate (NotifyCallback));
-			sig.AddDelegate (handler);
+			get { return g_object_ref (handle); }
 		}
 
 		public void AddNotification (string property, NotifyHandler handler)
 		{
-			ConnectNotification ("notify::" + property, handler);
+			AddSignalHandler ("notify::" + property, handler, typeof(NotifyArgs));
 		}
 
 		public void AddNotification (NotifyHandler handler)
 		{
-			ConnectNotification ("notify", handler);
-		}
-
-		void DisconnectNotification (string signal, NotifyHandler handler)
-		{
-			Signal sig = Signal.Lookup (this, signal, new NotifyDelegate (NotifyCallback));
-			sig.RemoveDelegate (handler);
+			AddSignalHandler ("notify", handler, typeof(NotifyArgs));
 		}
 
 		public void RemoveNotification (string property, NotifyHandler handler)
 		{
-			DisconnectNotification ("notify::" + property, handler);
+			RemoveSignalHandler ("notify::" + property, handler);
 		}
 
 		public void RemoveNotification (NotifyHandler handler)
 		{
-			DisconnectNotification ("notify", handler);
+			RemoveSignalHandler ("notify", handler);
 		}
 
 		public override int GetHashCode ()
@@ -588,22 +504,13 @@ namespace GLib {
 			return Handle.GetHashCode ();
 		}
 
-		public Hashtable Data {
+		System.Collections.Hashtable data;
+		public System.Collections.Hashtable Data {
 			get { 
 				if (data == null)
-					data = new Hashtable ();
+					data = new System.Collections.Hashtable ();
 				
 				return data;
-			}
-		}
-
-		Hashtable persistent_data;
-		protected Hashtable PersistentData {
-			get {
-				if (persistent_data == null)
-					persistent_data = new Hashtable ();
-				
-				return persistent_data;
 			}
 		}
 
@@ -637,6 +544,52 @@ namespace GLib {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (property_name);
 			g_object_notify (Handle, native_name);
 			GLib.Marshaller.Free (native_name);
+		}
+
+		Dictionary<string, Signal> signals;
+		Dictionary<string, Signal> Signals {
+			get {
+				if (signals == null)
+					signals = new Dictionary<string, Signal> ();
+				return signals;
+			}
+		}
+
+		public void AddSignalHandler (string name, Delegate handler)
+		{
+			AddSignalHandler (name, handler, typeof (EventArgs));
+		}
+
+		public void AddSignalHandler (string name, Delegate handler, Delegate marshaler)
+		{
+			Signal sig;
+			if (!Signals.TryGetValue (name, out sig)) {
+				sig = new Signal (this, name, marshaler);
+				Signals [name] = sig;
+			}
+
+			sig.AddDelegate (handler);
+		}
+
+		public void AddSignalHandler (string name, Delegate handler, Type args_type)
+		{
+			if (args_type == null)
+				args_type = handler.Method.GetParameters ()[1].ParameterType;
+
+			Signal sig;
+			if (!Signals.TryGetValue (name, out sig)) {
+				sig = new Signal (this, name, args_type);
+				Signals [name] = sig;
+			}
+
+			sig.AddDelegate (handler);
+		}
+
+		public void RemoveSignalHandler (string name, Delegate handler)
+		{
+			Signal sig;
+			if (Signals.TryGetValue (name, out sig))
+				sig.RemoveDelegate (handler);
 		}
 
 		protected static void OverrideVirtualMethod (GType gtype, string name, Delegate cb)

@@ -27,8 +27,8 @@
 
 		void ClearProxy (Clipboard clipboard)
 		{
-			if (PersistentData ["clear_func"] != null)  {
-				ClipboardClearFunc clear = PersistentData ["clear_func"] as ClipboardClearFunc;
+			if (Data ["clear_func"] != null)  {
+				ClipboardClearFunc clear = Data ["clear_func"] as ClipboardClearFunc;
 				clear (clipboard);
 			}
 			SetPersistentData (null, null, null);
@@ -36,9 +36,9 @@
 
 		void SetPersistentData (object get_func_wrapper, object clear_func, object clear_proxy_wrapper)
 		{
-			PersistentData ["get_func_wrapper"] = get_func_wrapper;
-			PersistentData ["clear_func"] = clear_func;
-			PersistentData ["clear_proxy_wrapper"] = clear_proxy_wrapper;
+			Data ["get_func_wrapper"] = get_func_wrapper;
+			Data ["clear_func"] = clear_func;
+			Data ["clear_proxy_wrapper"] = clear_proxy_wrapper;
 		}
 
 		public bool SetWithData (TargetEntry[] targets, ClipboardGetFunc get_func, ClipboardClearFunc clear_func)

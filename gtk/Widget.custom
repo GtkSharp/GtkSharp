@@ -347,12 +347,10 @@ public void Path (out string path, out string path_reversed)
 
 		event EventHandler InternalDestroyed {
 			add {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "destroy");
-				sig.AddDelegate (value);
+				AddSignalHandler ("destroy", value);
 			}
 			remove {
-				GLib.Signal sig = GLib.Signal.Lookup (this, "destroy");
-				sig.RemoveDelegate (value);
+				RemoveSignalHandler ("destroy", value);
 			}
 		}
 

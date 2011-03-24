@@ -133,27 +133,27 @@ namespace GLib {
 			}
 		}
 
-		ToggleRef tref;
+		GLib.Object obj;
 		string name;
 		Type args_type;
 		SignalClosure before_closure;
 		SignalClosure after_closure;
+		Delegate after_handler;
+		Delegate before_handler;
 		Delegate marshaler;
 
-		private Signal (GLib.Object obj, string signal_name, Delegate marshaler)
+		internal Signal (GLib.Object obj, string name, Delegate marshaler)
 		{
-			tref = obj.ToggleRef;
-			name = signal_name;
-			tref.Signals [name] = this;
+			this.obj = obj;
+			this.name = name;
 			this.marshaler = marshaler;
 		}
 
-		private Signal (GLib.Object obj, string signal_name, Type args_type)
+		internal Signal (GLib.Object obj, string name, Type args_type)
 		{
-			tref = obj.ToggleRef;
-			name = signal_name;
+			this.obj = obj;
+			this.name = name;
 			this.args_type = args_type;
-			tref.Signals [name] = this;
 		}
 
 		internal void Free ()
@@ -170,19 +170,14 @@ namespace GLib {
 			if (o == before_closure) {
 				before_closure.Disposed -= new EventHandler (ClosureDisposedHandler);
 				before_closure.Invoked -= new ClosureInvokedHandler (ClosureInvokedCB);
-				if (tref.Target != null)
-					tref.Target.BeforeSignals.Remove (name);
 				before_closure = null;
+				before_handler = null;
 			} else if (o == after_closure) {
 				after_closure.Disposed -= new EventHandler (ClosureDisposedHandler);
 				after_closure.Invoked -= new ClosureInvokedHandler (ClosureInvokedCB);
-				if (tref.Target != null)
-					tref.Target.AfterSignals.Remove (name);
 				after_closure = null;
+				after_handler = null;
 			}
-
-			if (before_closure == null && after_closure == null)
-				tref.Signals.Remove (name);
 		}
 
 		EventHandler closure_disposed_cb;
@@ -198,9 +193,9 @@ namespace GLib {
 		{
 			Delegate handler;
 			if (o == before_closure)
-				handler = args.Target.BeforeSignals [name] as Delegate;
+				handler = before_handler;
 			else
-				handler = args.Target.AfterSignals [name] as Delegate;
+				handler = after_handler;
 
 			if (handler != null)
 				handler.DynamicInvoke (new object[] {args.Target, args.Args});
@@ -215,35 +210,13 @@ namespace GLib {
 			}
 		}
 
-		public static Signal Lookup (GLib.Object obj, string name)
-		{
-			return Lookup (obj, name, typeof (EventArgs));
-		}
-
-		public static Signal Lookup (GLib.Object obj, string name, Delegate marshaler)
-		{
-			Signal result = obj.ToggleRef.Signals [name];
-			if (result == null)
-				result = new Signal (obj, name, marshaler);
-			return result;
-		}
-
-		public static Signal Lookup (GLib.Object obj, string name, Type args_type)
-		{
-			Signal result = obj.ToggleRef.Signals [name];
-			if (result == null)
-				result = new Signal (obj, name, args_type);
-			return result;
-		}
-
-
 		public Delegate Handler {
 			get {
-				InvocationHint hint = (InvocationHint) Marshal.PtrToStructure (g_signal_get_invocation_hint (tref.Handle), typeof (InvocationHint));
+				InvocationHint hint = (InvocationHint) Marshal.PtrToStructure (g_signal_get_invocation_hint (obj.Handle), typeof (InvocationHint));
 				if (hint.run_type == Flags.RunFirst)
-					return tref.Target.BeforeSignals [name] as Delegate;
+					return before_handler;
 				else
-					return tref.Target.AfterSignals [name] as Delegate;
+					return after_handler;
 			}
 		}
 
@@ -253,23 +226,23 @@ namespace GLib {
 				args_type = d.Method.GetParameters ()[1].ParameterType;
 
 			if (d.Method.IsDefined (typeof (ConnectBeforeAttribute), false)) {
-				tref.Target.BeforeSignals [name] = Delegate.Combine (tref.Target.BeforeSignals [name] as Delegate, d);
+				before_handler = Delegate.Combine (before_handler, d);
 				if (before_closure == null) {
 					if (marshaler == null)
-						before_closure = new SignalClosure (tref.Handle, name, args_type);
+						before_closure = new SignalClosure (obj.Handle, name, args_type);
 					else
-						before_closure = new SignalClosure (tref.Handle, name, marshaler, this);
+						before_closure = new SignalClosure (obj.Handle, name, marshaler, this);
 					before_closure.Disposed += ClosureDisposedHandler;
 					before_closure.Invoked += ClosureInvokedHandler;
 					before_closure.Connect (false);
 				}
 			} else {
-				tref.Target.AfterSignals [name] = Delegate.Combine (tref.Target.AfterSignals [name] as Delegate, d);
+				after_handler = Delegate.Combine (after_handler, d);
 				if (after_closure == null) {
 					if (marshaler == null)
-						after_closure = new SignalClosure (tref.Handle, name, args_type);
+						after_closure = new SignalClosure (obj.Handle, name, args_type);
 					else
-						after_closure = new SignalClosure (tref.Handle, name, marshaler, this);
+						after_closure = new SignalClosure (obj.Handle, name, marshaler, this);
 					after_closure.Disposed += ClosureDisposedHandler;
 					after_closure.Invoked += ClosureInvokedHandler;
 					after_closure.Connect (true);
@@ -279,18 +252,15 @@ namespace GLib {
 
 		public void RemoveDelegate (Delegate d)
 		{
-			if (tref.Target == null)
-				return;
-
 			if (d.Method.IsDefined (typeof (ConnectBeforeAttribute), false)) {
-				tref.Target.BeforeSignals [name] = Delegate.Remove (tref.Target.BeforeSignals [name] as Delegate, d);
-				if (tref.Target.BeforeSignals [name] == null && before_closure != null) {
+				before_handler = Delegate.Remove (before_handler, d);
+				if (before_handler == null && before_closure != null) {
 					before_closure.Dispose ();
 					before_closure = null;
 				}
 			} else {
-				tref.Target.AfterSignals [name] = Delegate.Remove (tref.Target.AfterSignals [name] as Delegate, d);
-				if (tref.Target.AfterSignals [name] == null && after_closure != null) {
+				after_handler = Delegate.Remove (after_handler, d);
+				if (after_handler == null && after_closure != null) {
 					after_closure.Dispose ();
 					after_closure = null;
 				}
