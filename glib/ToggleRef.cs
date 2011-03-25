@@ -116,6 +116,37 @@ namespace GLib {
 			}
 		}
 
+		static List<ToggleRef> PendingDestroys = new List<ToggleRef> ();
+		static bool idle_queued;
+
+		public void QueueUnref ()
+		{
+			lock (PendingDestroys) {
+				PendingDestroys.Add (this);
+				if (!idle_queued){
+					Timeout.Add (50, new TimeoutHandler (PerformQueuedUnrefs));
+					idle_queued = true;
+				}
+			}
+		}
+
+		static bool PerformQueuedUnrefs ()
+		{
+			ToggleRef[] references;
+
+			lock (PendingDestroys){
+				references = new ToggleRef [PendingDestroys.Count];
+				PendingDestroys.CopyTo (references, 0);
+				PendingDestroys.Clear ();
+				idle_queued = false;
+			}
+
+			foreach (ToggleRef r in references)
+				r.Free ();
+
+			return false;
+		}
+
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_add_toggle_ref (IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
 

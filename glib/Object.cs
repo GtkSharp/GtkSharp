@@ -35,67 +35,53 @@ namespace GLib {
 		ToggleRef tref;
 		bool disposed = false;
 		static Dictionary<IntPtr, ToggleRef> Objects = new Dictionary<IntPtr, ToggleRef>();
-		static List<ToggleRef> PendingDestroys = new List<ToggleRef> ();
-		static bool idle_queued;
 
 		~Object ()
 		{
-			lock (PendingDestroys) {
-				lock (Objects) {
-					if (Objects[Handle] is ToggleRef)
-						PendingDestroys.Add (Objects [Handle]);
-					Objects.Remove (Handle);
-				}
-				if (!idle_queued){
-					Timeout.Add (50, new TimeoutHandler (PerformQueuedUnrefs));
-					idle_queued = true;
-				}
-			}
+			if (WarnOnFinalize)
+				Console.Error.WriteLine ("Unexpected finalization of " + GetType() + " instance.  Consider calling Dispose.");
+
+			Dispose (false);
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_object_unref (IntPtr raw);
-		
-		static bool PerformQueuedUnrefs ()
-		{
-			ToggleRef[] references;
-
-			lock (PendingDestroys){
-				references = new ToggleRef [PendingDestroys.Count];
-				PendingDestroys.CopyTo (references, 0);
-				PendingDestroys.Clear ();
-				idle_queued = false;
-			}
-
-			foreach (ToggleRef r in references)
-				r.Free ();
-
-			return false;
-		}
-
-		public virtual void Dispose ()
+		public void Dispose ()
 		{
 			if (disposed)
 				return;
 
+			Dispose (true);
 			disposed = true;
-			ToggleRef toggle_ref;
-			if (Objects.TryGetValue (Handle, out toggle_ref))
-				Objects.Remove (Handle);
-			try {
-				if (toggle_ref != null)
-					toggle_ref.Free ();
-			} catch (Exception e) {
-				Console.WriteLine ("Exception while disposing a " + this + " in Gtk#");
-				throw e;
-			}
-			handle = IntPtr.Zero;
 			GC.SuppressFinalize (this);
 		}
+
+		protected virtual void Dispose (bool disposing)
+		{
+			ToggleRef tref;
+			lock (Objects) {
+				if (Objects.TryGetValue (Handle, out tref)) {
+					tref.QueueUnref ();
+					Objects.Remove (Handle);
+				}
+			}
+
+			handle = IntPtr.Zero;
+			if (tref == null)
+				return;
+			
+			if (disposing)
+				tref.Free ();
+			else
+				tref.QueueUnref ();
+		}
+
+		public static bool WarnOnFinalize { get; set; }
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_ref (IntPtr raw);
 
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void g_object_unref (IntPtr raw);
+		
 		public static Object GetObject(IntPtr o, bool owned_ref)
 		{
 			if (o == IntPtr.Zero)

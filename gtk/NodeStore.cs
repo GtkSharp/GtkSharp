@@ -202,13 +202,13 @@ namespace Gtk {
 #region Gtk.TreeIter handling
 			ArrayList gc_handles = new ArrayList ();
 
-			public override void Dispose ()
+			protected override void Dispose (bool disposing)
 			{
 				// Free all the GCHandles pointing to the iters since they won't be garbage collected
 				foreach (System.Runtime.InteropServices.GCHandle handle in gc_handles)
 					handle.Free ();
 
-				base.Dispose ();
+				base.Dispose (disposing);
 			}
 
 			internal void GetIter (ITreeNode node, ref TreeIter iter)

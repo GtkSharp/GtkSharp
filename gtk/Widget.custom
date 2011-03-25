@@ -376,12 +376,12 @@ public void Path (out string path, out string path_reversed)
 			base.CreateNativeObject (names, vals);
 		}
 
-		public override void Dispose ()
+		protected override void Dispose (bool disposing)
 		{
 			if (Handle == IntPtr.Zero)
 				return;
 			InternalDestroyed -= NativeDestroyHandler;
-			base.Dispose ();
+			base.Dispose (disposing);
 		}
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
