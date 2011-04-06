@@ -303,3 +303,23 @@
 				throw new GLib.GException (error);
 		}
 
+		[DllImport("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern unsafe bool gdk_pixbuf_savev(IntPtr raw, IntPtr filename, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
+
+		public unsafe bool Savev(string filename, string type, string[] option_keys, string[] option_values) {
+			IntPtr error = IntPtr.Zero;
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup (filename);
+			IntPtr native_type = GLib.Marshaller.StringToPtrGStrdup (type);
+			IntPtr[] native_option_keys = NullTerm (option_keys);
+			IntPtr[] native_option_values = NullTerm (option_values);
+			bool saved = gdk_pixbuf_savev(Handle, native_filename, native_type, native_option_keys, native_option_values, out error);
+			GLib.Marshaller.Free (native_filename);
+			GLib.Marshaller.Free (native_type);
+			ReleaseArray (native_option_keys);
+			ReleaseArray (native_option_values);
+
+			if (!saved)
+				throw new GLib.GException (error);
+			return saved;
+		}
+
