@@ -169,6 +169,14 @@ namespace GLib {
 				return ret.Replace ("%", "%%");
 		}
 
+		internal static IntPtr StringArrayToStrvPtr (string[] strs)
+		{
+			IntPtr[] ptrs = StringArrayToNullTermPointer (strs);
+			IntPtr ret = g_malloc (new UIntPtr ((ulong) (ptrs.Length * IntPtr.Size)));
+			Marshal.Copy (ptrs, 0, ret, ptrs.Length);
+			return ret;
+		}
+
 		public static IntPtr[] StringArrayToNullTermPointer (string[] strs)
 		{
 			if (strs == null)

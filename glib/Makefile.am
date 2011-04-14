@@ -36,6 +36,7 @@ sources =		 			\
 	InitiallyUnowned.cs			\
 	IOChannel.cs				\
 	IWrapper.cs				\
+	KeyFile.cs				\
 	ListBase.cs				\
 	List.cs					\
 	Log.cs					\
