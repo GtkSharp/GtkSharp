@@ -220,9 +220,11 @@ namespace Gdk {
 		[DllImport("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_rectangle_union (ref Rectangle src1, ref Rectangle src2, out Rectangle dest);
 
-		public void Union (Gdk.Rectangle src, out Gdk.Rectangle dest)
+		public Gdk.Rectangle Union (Gdk.Rectangle src)
 		{
+			Gdk.Rectangle dest;
 			gdk_rectangle_union (ref this, ref src, out dest);
+			return dest;
 		}
 
 		[DllImport("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
