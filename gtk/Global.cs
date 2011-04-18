@@ -1,5 +1,3 @@
-//  Gtk.Global.custom - Gtk Global customizations
-//
 //  Authors:  Aaron Bockover <abockover@novell.com>
 // 
 //  Copyright 2007-2010 Novell, Inc.
@@ -18,6 +16,10 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Gtk {
+
+	public partial class Global {
+
 		public static bool ShowUri (string uri)
 		{
 			return ShowUri (null, uri);
@@ -27,3 +29,6 @@
 		{
 			return ShowUri (screen, uri, Gtk.Global.CurrentEventTime);
 		}
+	}
+}
+

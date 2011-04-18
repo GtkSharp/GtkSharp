@@ -16,6 +16,7 @@ sources = 				\
 	BindingAttribute.cs		\
 	CellAreaBox.cs			\
 	ChildPropertyAttribute.cs	\
+	Global.cs			\
 	ITreeNode.cs			\
 	Key.cs				\
 	NodeCellDataFunc.cs		\
