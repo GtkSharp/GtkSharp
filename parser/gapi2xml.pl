@@ -570,7 +570,7 @@ sub addClassElem
 						$vm_elem->setAttribute('shared', 'true');
 					}
 
-					if ($cname =~ /reserved[0-9]+$/ || $cname =~ /padding[0-9]+$/ || $cname =~ /recent[0-9]+$/) {
+					if ($cname =~ /reserved_?[0-9]+$/ || $cname =~ /padding_?[0-9]+$/ || $cname =~ /recent_?[0-9]+$/) {
 						$vm_elem->setAttribute('padding', 'true');
 					}
 				}
