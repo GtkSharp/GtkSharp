@@ -26,6 +26,7 @@ sources = 				\
 	RadioActionEntry.cs		\
 	RowsReorderedHandler.cs		\
 	StockManager.cs			\
+	StyleContext.cs			\
 	ThreadNotify.cs			\
 	ToggleActionEntry.cs		\
 	TreeEnumerator.cs		\
