@@ -31,6 +31,7 @@ sources = 				\
 	IManualMarshaler.cs		\
 	InterfaceGen.cs			\
 	InterfaceVM.cs			\
+	IOwnable.cs			\
 	LogWriter.cs			\
 	LPGen.cs			\
 	LPUGen.cs			\
@@ -44,6 +45,7 @@ sources = 				\
 	ObjectBase.cs			\
 	ObjectGen.cs			\
 	OpaqueGen.cs			\
+	OwnableGen.cs			\
 	Parameters.cs			\
 	Parser.cs			\
 	Property.cs			\

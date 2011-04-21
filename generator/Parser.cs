@@ -169,6 +169,8 @@ namespace GtkSharp.Generation {
 				}
 			} else if (type == "manual")
 				result = new ManualGen (cname, name);
+			else if (type == "ownable")
+				result = new OwnableGen (cname, name);
 			else if (type == "alias")
 				result = new AliasGen (cname, name);
 			else if (type == "marshal") {

@@ -25,7 +25,7 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public abstract class HandleBase : ClassBase, IAccessor {
+	public abstract class HandleBase : ClassBase, IAccessor, IOwnable {
 
 		protected HandleBase (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 					
