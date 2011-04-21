@@ -71,7 +71,6 @@ customs = 				\
 	Image.custom			\
 	ImageMenuItem.custom		\
 	Init.custom			\
-	Input.custom			\
 	ItemFactory.custom		\
 	Label.custom			\
 	ListStore.custom		\
