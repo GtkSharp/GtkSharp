@@ -16,11 +16,12 @@ DISTCLEANFILES = $(ASSEMBLY).config
 POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
 POLICY_CONFIGS = $(addsuffix .config, $(addprefix policy., $(POLICY_VERSIONS)))
 
-references = ../glib/glib-sharp.dll ../gio/gio-sharp.dll ../cairo/cairo-sharp.dll ../pango/pango-sharp.dll ../gdk/gdk-sharp.dll
+references = $(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.dll $(top_builddir)/cairo/cairo-sharp.dll $(top_builddir)/pango/pango-sharp.dll $(top_builddir)/gdk/gdk-sharp.dll $(top_builddir)/gtk/gtk-sharp.dll
 build_references = $(addprefix -r:, $(references)) -r:System.Drawing.dll
 
 sources =		 			\
-	Graphics.cs
+	Graphics.cs				\
+	StyleContextExtensions.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) $(top_builddir)/AssemblyInfo.cs
 
