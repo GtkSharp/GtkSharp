@@ -159,6 +159,9 @@ namespace GLib {
 
 		static string GetQualifiedName (string cname)
 		{
+			if (string.IsNullOrEmpty (cname))
+				return null;
+
 			for (int i = 1; i < cname.Length; i++) {
 				if (System.Char.IsUpper (cname[i])) {
 					if (i == 1 && cname [0] == 'G')
