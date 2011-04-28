@@ -30,23 +30,10 @@ namespace GLib {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct Value : IDisposable {
 
-		[StructLayout(LayoutKind.Explicit)]
-		struct Padding {
-			[FieldOffset (0)] public int v_int;
-			[FieldOffset (0)] public uint v_uint;
-			[FieldOffset (0)] public int v_long;
-			[FieldOffset (0)] public uint v_ulong;
-			[FieldOffset (0)] public long v_int64;
-			[FieldOffset (0)] public ulong v_uint64;
-			[FieldOffset (0)] public float v_float;
-			[FieldOffset (0)] public double v_double;
-			[FieldOffset (0)] public IntPtr v_pointer;
-		}
-
 		IntPtr type;
 #pragma warning disable 0414
-		Padding pad1;
-		Padding pad2;
+		long pad1;
+		long pad2;
 #pragma warning restore 0414
 
 		public static Value Empty;
@@ -54,16 +41,14 @@ namespace GLib {
 		public Value (GLib.GType gtype)
 		{
 			type = IntPtr.Zero;
-			pad1 = new Padding ();
-			pad2 = new Padding ();
+			pad1 = pad2 = 0;
 			g_value_init (ref this, gtype.Val);
 		}
 
 		public Value (object obj)
 		{
 			type = IntPtr.Zero;
-			pad1 = new Padding ();
-			pad2 = new Padding ();
+			pad1 = pad2 = 0;
 
 			GType gtype = (GType) obj.GetType ();
 			g_value_init (ref this, gtype.Val);
@@ -140,8 +125,7 @@ namespace GLib {
 		public Value (Opaque val, string type_name)
 		{
 			type = IntPtr.Zero;
-			pad1 = new Padding ();
-			pad2 = new Padding ();
+			pad1 = pad2 = 0;
 			g_value_init (ref this, GType.FromName (type_name).Val);
 			g_value_set_boxed (ref this, val.Handle);
 		}
@@ -159,8 +143,7 @@ namespace GLib {
 		public Value (GLib.Object obj, string prop_name)
 		{
 			type = IntPtr.Zero;
-			pad1 = new Padding ();
-			pad2 = new Padding ();
+			pad1 = pad2 = 0;
 			InitForProperty (obj, prop_name);
 		}
 
@@ -168,8 +151,7 @@ namespace GLib {
 		public Value (IntPtr obj, string prop_name, Opaque val)
 		{
 			type = IntPtr.Zero;
-			pad1 = new Padding ();
-			pad2 = new Padding ();
+			pad1 = pad2 = 0;
 			InitForProperty (GLib.Object.GetObject (obj), prop_name);
 			g_value_set_boxed (ref this, val.Handle);
 		}
