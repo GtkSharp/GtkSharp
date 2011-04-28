@@ -140,9 +140,12 @@ namespace GtkSharp.Generation {
 
 		public void Finish (StreamWriter sw, string indent)
 		{
-			foreach (Parameter p in parameters)
+			foreach (Parameter p in parameters) {
+				if (parameters.IsHidden (p))
+					continue;
 				foreach (string s in p.Finish)
 					sw.WriteLine(indent + "\t\t\t" + s);
+			}
 		}
 
 		public void FinishAccessor (StreamWriter sw, Signature sig, string indent)

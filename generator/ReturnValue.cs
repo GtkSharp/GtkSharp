@@ -31,21 +31,33 @@ namespace GtkSharp.Generation {
 		bool is_array;
 		bool elements_owned;
 		bool owned;
+		string array_length_param = String.Empty;
 		string ctype = String.Empty;
 		string default_value = String.Empty;
 		string element_ctype = String.Empty;
+		Parameter count_param;
 
 		public ReturnValue (XmlElement elem) 
 		{
 			if (elem != null) {
 				is_null_term = elem.HasAttribute ("null_term_array");
-				is_array = elem.HasAttribute ("array");
+				is_array = elem.HasAttribute ("array") || elem.HasAttribute ("array_length_param");
+				array_length_param = elem.GetAttribute ("array_length_param");
 				elements_owned = elem.GetAttribute ("elements_owned") == "true";
 				owned = elem.GetAttribute ("owned") == "true";
 				ctype = elem.GetAttribute("type");
 				default_value = elem.GetAttribute ("default_value");
 				element_ctype = elem.GetAttribute ("element_type");
 			}
+		}
+
+		public Parameter CountParameter {
+			get { return count_param; }
+			set { count_param = value; }
+		}
+
+		public string CountParameterName {
+			get { return array_length_param; }
 		}
 
 		public string CType {
@@ -104,9 +116,9 @@ namespace GtkSharp.Generation {
 			get {
 				if (IGen == null)
 					return String.Empty;
-				else if (is_null_term)
+				else if (is_array || is_null_term)
 					return "IntPtr";
-				return IGen.MarshalType + (is_array ? "[]" : String.Empty);
+				return IGen.MarshalType;
 			}
 		}
 
@@ -133,6 +145,8 @@ namespace GtkSharp.Generation {
 				return ((IOwnable)IGen).FromNative (var, owned);
 			else if (is_null_term)
 				return String.Format ("GLib.Marshaller.NullTermPtrToStringArray ({0}, {1})", var, owned ? "true" : "false");
+			else if (is_array)
+				return String.Format ("({0}) GLib.Marshaller.ArrayPtrToArray ({1}, typeof ({2}), (int){3}native_{4}, true)", CSType, var, IGen.QualifiedName, CountParameter.CSType == "int" ? String.Empty : "(" + CountParameter.CSType + ")", CountParameter.Name);
 			else
 				return IGen.FromNative (var);
 		}
@@ -147,6 +161,8 @@ namespace GtkSharp.Generation {
 				var = "new " + IGen.QualifiedName + "(" + var + args + ")";
 			} else if (is_null_term)
 				return String.Format ("GLib.Marshaller.StringArrayToNullTermPointer ({0})", var);
+			else if (is_array)
+				return String.Format ("GLib.Marshaller.ArrayToArrayPtr ({0})", var);
 
 			if (IGen is IManualMarshaler)
 				return (IGen as IManualMarshaler).AllocNative (var);

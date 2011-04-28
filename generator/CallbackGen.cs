@@ -54,6 +54,9 @@ namespace GtkSharp.Generation {
 				valid = false;
 			}
 
+			if (!String.IsNullOrEmpty (retval.CountParameterName))
+				retval.CountParameter = parms.GetCountParameter (retval.CountParameterName);
+
 			return valid;
 		}
 
@@ -218,6 +221,9 @@ namespace GtkSharp.Generation {
 			if (finish.Length > 0)
 				sw.WriteLine (finish);
 			sw.WriteLine ("\t\t\t\tif (release_on_call)\n\t\t\t\t\tgch.Free ();");
+			Parameter cnt = retval.CountParameter;
+			if (cnt != null)
+				sw.WriteLine ("\t\t\t\t{0} = {1}{2};", cnt.Name, cnt.CSType == "int" ? String.Empty : "(" + cnt.MarshalType + ")(" + cnt.CSType + ")", "__ret.Length");
 			if (retval.CSType != "void")
 				sw.WriteLine ("\t\t\t\treturn {0};", retval.ToNative ("__ret"));
 

@@ -402,6 +402,28 @@ namespace GLib {
 			return result;
 		}
 
+		public static IntPtr ArrayToArrayPtr (byte[] array)
+		{
+			IntPtr ret = Malloc ((ulong) array.Length);
+			Marshal.Copy (array, 0, ret, array.Length);
+			return ret;
+		}
+
+		public static Array ArrayPtrToArray (IntPtr array_ptr, Type element_type, int length, bool owned)
+		{
+			Array result = null;
+			if (element_type == typeof (byte)) {
+				byte[] ret = new byte [length];
+				Marshal.Copy (array_ptr, ret, 0, length);
+				result = ret;
+			} else {
+				throw new InvalidOperationException ("Marshaling of " + element_type + " arrays is not supported");
+			}
+			if (owned)
+				Free (array_ptr);
+			return result;
+		}
+
 		public static Array ListPtrToArray (IntPtr list_ptr, Type list_type, bool owned, bool elements_owned, Type elem_type)
 		{
 			Type array_type = elem_type == typeof (ListBase.FilenameString) ? typeof (string) : elem_type;

@@ -91,8 +91,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		bool is_count;
+		bool is_count_set;
 		public bool IsCount {
 			get {
+				if (is_count_set)
+					return is_count;
 				
 				if (Name.StartsWith("n_"))
 					switch (CSType) {
@@ -109,6 +113,10 @@ namespace GtkSharp.Generation {
 				else
 					return false;
 			}
+			set {
+				is_count_set = true;
+				is_count = value;
+			}
 		}
 
 		public bool IsDestroyNotify {
@@ -119,7 +127,6 @@ namespace GtkSharp.Generation {
 
 		public bool IsLength {
 			get {
-				
 				if (Name.EndsWith("len") || Name.EndsWith("length"))
 					switch (CSType) {
 					case "int":
@@ -529,9 +536,7 @@ namespace GtkSharp.Generation {
 		}
 
 		public int Count {
-			get {
-				return param_list.Count;
-			}
+			get { return param_list.Count; }
 		}
 
 		public int VisibleCount {
@@ -558,8 +563,7 @@ namespace GtkSharp.Generation {
 			if (idx > 0 && p.IsLength && p.PassAs == String.Empty && this [idx - 1].IsString)
 				return true;
 
-			if (p.IsCount && ((idx > 0 && this [idx - 1].IsArray) ||
-					  (idx < Count - 1 && this [idx + 1].IsArray)))
+			if (p.IsCount)
 				return true;
 
 			if (p.CType == "GError**")
@@ -606,6 +610,16 @@ namespace GtkSharp.Generation {
 		public bool Static {
 			get { return is_static; }
 			set { is_static = value; }
+		}
+
+		public Parameter GetCountParameter (string param_name)
+		{
+			foreach (Parameter p in this)
+				if (p.Name == param_name) {
+					p.IsCount = true;
+					return p;
+				}
+			return null;
 		}
 
 		void Clear ()
@@ -663,13 +677,16 @@ namespace GtkSharp.Generation {
 							} 
 						}
 					}
-				} else if (p.IsCount && i < elem.ChildNodes.Count - 1) {
-					XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
-					if (next != null || next.Name == "parameter") {
-						Parameter a = new Parameter (next);
-						if (a.IsArray) {
-							p = new ArrayCountPair (next, parm, true);
-							i++;
+				} else if (p.IsCount) {
+					p.IsCount = false;
+					if (i < elem.ChildNodes.Count - 1) {
+						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
+						if (next != null || next.Name == "parameter") {
+							Parameter a = new Parameter (next);
+							if (a.IsArray) {
+								p = new ArrayCountPair (next, parm, true);
+								i++;
+							}
 						}
 					}
 				} else if (p.CType == "GError**")
