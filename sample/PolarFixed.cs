@@ -63,7 +63,7 @@ class PolarFixed : Container {
 	// The default is "GLib.GType.None", which technically means that no (new)
 	// children can be added to the container, though Container.Add does not
 	// enforce this.
-	public override GLib.GType ChildType ()
+	protected override GLib.GType OnChildType ()
 	{
 		return Gtk.Widget.GType;
 	}
@@ -128,17 +128,18 @@ class PolarFixed : Container {
 
 	void OnSizeRequested (ref Requisition req)
 	{
-		Requisition childReq;
+		int child_width, child_minwidth, child_height, child_minheight;
 		int x, y;
 
 		req.Width = req.Height = 0;
 		foreach (PolarFixedChild pfc in children) {
-			// Recursively SizeRequest each child
-			childReq = pfc.Child.SizeRequest ();
+			// Recursively request the size of each child
+			pfc.Child.GetPreferredWidth (out child_minwidth, out child_width);
+			pfc.Child.GetPreferredHeight (out child_minheight, out child_height);
 
 			// Figure out where we're going to put it
-			x = (int)(Math.Cos (pfc.Theta) * pfc.R) + childReq.Width / 2;
-			y = (int)(Math.Sin (pfc.Theta) * pfc.R) + childReq.Height / 2;
+			x = (int)(Math.Cos (pfc.Theta) * pfc.R) + child_width / 2;
+			y = (int)(Math.Sin (pfc.Theta) * pfc.R) + child_height / 2;
 
 			// Update our own size request to fit it
 			if (req.Width < 2 * x)
@@ -159,7 +160,7 @@ class PolarFixed : Container {
 	// aren't allocated enough room.
 	protected override void OnSizeAllocated (Rectangle allocation)
 	{
-		Requisition childReq;
+		Requisition childReq, childMinReq;
 		int cx, cy, x, y;
 
 		// This sets the "Allocation" property. For widgets that
@@ -171,11 +172,7 @@ class PolarFixed : Container {
 		cy = allocation.Y + (allocation.Height / 2);
 
 		foreach (PolarFixedChild pfc in children) {
-			// Use ChildRequisition rather than SizeRequest(),
-			// to ask for "what this child requested in the
-			// last SizeRequest", rather than having it
-			// compute it anew.
-			childReq = pfc.Child.ChildRequisition;
+			pfc.Child.GetPreferredSize (out childMinReq, out childReq);
 
 			x = (int)(Math.Cos (pfc.Theta) * pfc.R) - childReq.Width / 2;
 			y = (int)(Math.Sin (pfc.Theta) * pfc.R) + childReq.Height / 2;
