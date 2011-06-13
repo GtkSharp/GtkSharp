@@ -35,6 +35,43 @@ namespace GLib {
 			}
 		}
 
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		private static extern void g_object_ref_sink (IntPtr raw);
+
+		protected override IntPtr Raw {
+			get {
+				return base.Raw;
+			}
+			set {
+				if (value != IntPtr.Zero)
+					g_object_ref_sink (value);
+				base.Raw = value;
+			}
+		}
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern bool g_object_is_floating (IntPtr raw);
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void g_object_force_floating (IntPtr raw);
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void g_object_unref (IntPtr raw);
+
+		public bool IsFloating {
+			get {
+				return g_object_is_floating (Handle);
+			}
+			set {
+			  	if (value == true) {
+					if (!IsFloating)
+						g_object_force_floating (Handle);
+				} else {
+					g_object_ref_sink (Handle);
+					g_object_unref (Handle);
+				}
+			}
+		}
 	}
 }
 
