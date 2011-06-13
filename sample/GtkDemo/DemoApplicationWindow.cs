@@ -192,7 +192,7 @@ namespace GtkDemo
 		protected override bool OnWindowStateEvent (Gdk.EventWindowState evt)
 		{
 			if ((evt.ChangedMask & (Gdk.WindowState.Maximized | Gdk.WindowState.Fullscreen)) != 0)
-				statusbar.HasResizeGrip = (evt.NewWindowState & (Gdk.WindowState.Maximized | Gdk.WindowState.Fullscreen)) == 0;
+				HasResizeGrip = (evt.NewWindowState & (Gdk.WindowState.Maximized | Gdk.WindowState.Fullscreen)) == 0;
 			return false;
 		}
 

@@ -180,8 +180,8 @@ namespace GtkDemo
 			scrolledWindow.Add (textView);
 
 			if (IsSource) {
-				FontDescription fontDescription = FontDescription.FromString ("Courier 12");
-				textView.ModifyFont (fontDescription);
+				FontDescription fontDescription = FontDescription.FromString ("monospace");
+				textView.OverrideFont (fontDescription);
 				textView.WrapMode = Gtk.WrapMode.None;
 			} else {
 				// Make it a bit nicer for text
@@ -191,7 +191,7 @@ namespace GtkDemo
 			}
 
 			return scrolledWindow;
-	        }
+		}
 
 		private TreeStore FillTree ()
 		{

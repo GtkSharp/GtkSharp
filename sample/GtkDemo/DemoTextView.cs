@@ -71,7 +71,7 @@ namespace GtkDemo
 			textView.AddChildAtAnchor (button, buttonAnchor);
 			button.ShowAll ();
 
-			ComboBox combo = ComboBox.NewText ();
+			ComboBoxText combo = new ComboBoxText ();
 			combo.AppendText ("Option 1");
 			combo.AppendText ("Option 2");
 			combo.AppendText ("Option 3");
@@ -152,20 +152,6 @@ namespace GtkDemo
 
 			tag  = new TextTag ("red_background");
 			tag.Background = "red";
-			buffer.TagTable.Add (tag);
-
-			// The C gtk-demo passes NULL for the drawable param, which isn't
-			// multi-head safe, so it seems bad to allow it in the C# API.
-			// But the Window isn't realized at this point, so we can't get
-			// an actual Drawable from it. So we kludge for now.
-			Pixmap stipple = Pixmap.CreateBitmapFromData (Gdk.Screen.Default.RootWindow, gray50_bits, gray50_width, gray50_height);
-
-			tag  = new TextTag ("background_stipple");
-			tag.BackgroundStipple = stipple;
-			buffer.TagTable.Add (tag);
-
-			tag  = new TextTag ("foreground_stipple");
-			tag.ForegroundStipple = stipple;
 			buffer.TagTable.Add (tag);
 
 			tag  = new TextTag ("big_gap_before_line");
@@ -278,17 +264,10 @@ namespace GtkDemo
 		        buffer.Insert (ref insertIter, " or ");
 			buffer.InsertWithTagsByName (ref insertIter, "a red background", "red_background");
 		        buffer.Insert (ref insertIter, " or even ");
-			buffer.InsertWithTagsByName (ref insertIter, "a stippled red background",
-						     "red_background",
-						     "background_stipple");
-
-		        buffer.Insert (ref insertIter, " or ");
-                        buffer.InsertWithTagsByName (ref insertIter,
-						     "a stippled blue foreground on solid red background",
-						     "blue_foreground",
-						     "red_background",
-						     "foreground_stipple");
-		        buffer.Insert (ref insertIter, " (select that to read it) can be used.\n\n");
+			buffer.InsertWithTagsByName (ref insertIter, "a blue foreground on red background",
+                                            "blue_foreground",
+                                            "red_background");
+			buffer.Insert (ref insertIter, " (select that to read it) can be used.\n\n");
 
 			buffer.InsertWithTagsByName (ref insertIter, "Underline, strikethrough, and rise. ", "heading");
 
@@ -389,9 +368,9 @@ namespace GtkDemo
 
 			// Event box is to add a black border around each child view
 			EventBox eventBox = new EventBox ();
-			Gdk.Color color = new Gdk.Color ();
-			Gdk.Color.Parse ("black", ref color);
-			eventBox.ModifyBg (StateType.Normal, color);
+			Gdk.RGBA color = new Gdk.RGBA ();
+			color.Parse ("black");
+			eventBox.OverrideBackgroundColor (StateFlags.Normal, color);
 
 			Alignment align = new Alignment (0.5f, 0.5f, 1.0f, 1.0f);
 			align.BorderWidth = 1;

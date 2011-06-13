@@ -17,7 +17,7 @@ namespace GtkDemo
 			Resizable = false;
 
 			VBox vbox = new VBox (false, 5);
-			this.VBox.PackStart (vbox, true, true, 0);
+			this.ContentArea.PackStart (vbox, true, true, 0);
 			vbox.BorderWidth = 5;
 
 			vbox.PackStart (new Label ("Expander demo. Click on the triangle for details."), false, false, 0);

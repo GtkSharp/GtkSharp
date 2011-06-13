@@ -184,7 +184,7 @@ namespace GtkDemo
 			view.WindowToBufferCoords (TextWindowType.Widget, (int) args.Event.X, (int) args.Event.Y, out x, out y);
 			SetCursorIfAppropriate (view, x, y);
 
-			view.GdkWindow.GetPointer (out x, out y, out state);
+			view.Window.GetPointer (out x, out y, out state);
 		}
 
 		// Also update the cursor image if the window becomes visible
