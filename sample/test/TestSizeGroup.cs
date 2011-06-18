@@ -23,7 +23,7 @@ namespace WidgetViewer {
 			window.Resizable = false;
 			
 			VBox vbox = new VBox (false, 5);
-			window.VBox.PackStart (vbox, true, true, 0);
+			window.ContentArea.PackStart (vbox, true, true, 0);
 			vbox.BorderWidth = 5;
 
 			size_group = new SizeGroup (SizeGroupMode.Horizontal);
@@ -85,7 +85,7 @@ namespace WidgetViewer {
 			option_menu.Menu = menu;
 
 			return option_menu;*/
-			ComboBox combo_box = new ComboBox ();
+			ComboBoxText combo_box = new ComboBoxText ();
 			foreach (string str in strings) {
 				combo_box.AppendText (str);
 			}

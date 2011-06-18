@@ -34,10 +34,6 @@ namespace WidgetViewer {
 			toggle_button.Clicked += new EventHandler (Label_Toggle);
 			window.ActionArea.PackStart (toggle_button, true, true, 0);
 
-			toggle_button = new ToggleButton ("Toggle Separator");
-			toggle_button.Clicked += new EventHandler (Separator_Toggle);
-			window.ActionArea.PackStart (toggle_button, true, true, 0);
-
 			window.ShowAll ();
 
 			return window;
@@ -58,17 +54,12 @@ namespace WidgetViewer {
 			if (label == null) {
 				label = new Label ("This is Text label inside a Dialog");
 				label.SetPadding (10, 10);
-				window.VBox.PackStart (label, true, true, 0);
+				window.ContentArea.PackStart (label, true, true, 0);
 				label.Show ();
 			} else {
 				label.Destroy ();
 				label = null;
 			}
-		}
-
-		static void Separator_Toggle (object o, EventArgs args)
-		{
-			window.HasSeparator = (!((ToggleButton) o).Active);
 		}
 	}
 }

@@ -27,8 +27,8 @@ namespace WidgetViewer {
 			window.ColorSelection.HasPalette = true;
 
 			window.SetDefaultSize (250, 200);
-			window.VBox.PackStart (options, false, false, 0);
-			window.VBox.BorderWidth = 10;
+			window.ContentArea.PackStart (options, false, false, 0);
+			window.ContentArea.BorderWidth = 10;
 
 			check_button = new CheckButton("Show Opacity");
 			check_button.Active = true;
@@ -59,18 +59,18 @@ namespace WidgetViewer {
 			window.ColorSelection.HasPalette = ((ToggleButton )o).Active;
 		}
 
-		static string HexFormat (Gdk.Color color)
+		static string HexFormat (Gdk.RGBA color)
 		{
 			StringBuilder s = new StringBuilder ();
-			ushort[] vals = { color.Red, color.Green, color.Blue };
+			double[] vals = { color.Red, color.Green, color.Blue };
 			char[] hexchars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 									 'A', 'B', 'C', 'D', 'E', 'F'};
 
 			s.Append ('#');
-			foreach (ushort val in vals) {
+			foreach (double val in vals) {
 				/* Convert to a range of 0-255, then lookup the
 				 * digit for each half-byte */
-				byte rounded = (byte) (val >> 8);
+				byte rounded = (byte) (val * 255);
 				s.Append (hexchars[(rounded & 0xf0) >> 4]);
 				s.Append (hexchars[rounded & 0x0f]);
 			}
@@ -80,13 +80,13 @@ namespace WidgetViewer {
 		
 		static void Color_Changed (object o, EventArgs args)
 		{
-			Gdk.Color color = window.ColorSelection.CurrentColor;
+			Gdk.RGBA color = window.ColorSelection.CurrentRgba;
 			Console.WriteLine (HexFormat (color));
 		}
 
 		static void Color_Selection_OK (object o, EventArgs args)
 		{
-			Gdk.Color selected = window.ColorSelection.CurrentColor;
+			Gdk.RGBA selected = window.ColorSelection.CurrentRgba;
 			window.Hide ();
 			Display_Result (selected);
 		}
@@ -102,18 +102,17 @@ namespace WidgetViewer {
 			window.ShowAll ();
 		}
 
-		static void Display_Result (Gdk.Color color)
+		static void Display_Result (Gdk.RGBA color)
 		{
 			dialog = new Dialog ();
 			dialog.Title = "Selected Color: " + HexFormat (color);
-			dialog.HasSeparator = true;
-
+			
 			DrawingArea da = new DrawingArea ();
 
-			da.ModifyBg (StateType.Normal, color);
+			da.OverrideBackgroundColor (StateFlags.Normal, color);
 
-			dialog.VBox.BorderWidth = 10;
-			dialog.VBox.PackStart (da, true, true, 10);
+			dialog.ContentArea.BorderWidth = 10;
+			dialog.ContentArea.PackStart (da, true, true, 10);
 			dialog.SetDefaultSize (200, 200);
 
 			Button button = new Button (Stock.Ok);

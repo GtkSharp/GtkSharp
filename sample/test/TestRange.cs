@@ -32,14 +32,12 @@ namespace WidgetViewer {
 
 			HScale hscale = new HScale (adjustment);
 			hscale.SetSizeRequest (150, -1);
-			((Range) hscale).UpdatePolicy = UpdateType.Delayed;
 
 			hscale.Digits = 1;
 			hscale.DrawValue = true;
 			box2.PackStart (hscale, true, true, 0);
 
 			HScrollbar hscrollbar = new HScrollbar (adjustment);
-			((Range) hscrollbar).UpdatePolicy = UpdateType.Continuous;
 			box2.PackStart (hscrollbar, true, true, 0);
 
 			hscale = new HScale (adjustment);
