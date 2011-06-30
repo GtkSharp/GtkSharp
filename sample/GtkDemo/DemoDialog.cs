@@ -94,7 +94,7 @@ namespace GtkDemo
 
 			HBox hbox = new HBox (false, 8);
 			hbox.BorderWidth = 8;
-			dialog.VBox.PackStart (hbox, false, false, 0);
+			dialog.ContentArea.PackStart (hbox, false, false, 0);
 
 			Image stock = new Image (Stock.DialogQuestion, IconSize.Dialog);
 			hbox.PackStart (stock, false, false, 0);

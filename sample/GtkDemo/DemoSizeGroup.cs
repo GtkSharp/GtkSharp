@@ -33,7 +33,7 @@ namespace GtkDemo
 			Resizable = false;
 
  			VBox vbox = new VBox (false, 5);
- 			this.VBox.PackStart (vbox, true, true, 0);
+ 			this.ContentArea.PackStart (vbox, true, true, 0);
  			vbox.BorderWidth = 5;
 
  			sizeGroup = new SizeGroup (SizeGroupMode.Horizontal);
@@ -76,7 +76,7 @@ namespace GtkDemo
 		// Convenience function to create a combo box holding a number of strings
 		private ComboBox CreateComboBox (string [] strings)
 		{
-			ComboBox combo = ComboBox.NewText ();
+			ComboBoxText combo = new ComboBoxText ();
 
 			foreach (string str in strings)
 				combo.AppendText (str);

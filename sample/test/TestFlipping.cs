@@ -27,10 +27,10 @@ namespace WidgetViewer {
 			label = new Label ("Label direction: <b>Left-to-right</b>");
 			label.UseMarkup = true;
 			label.SetPadding (3, 3);
-			window.VBox.PackStart (label, true, true, 0);
+			window.ContentArea.PackStart (label, true, true, 0);
 
 			check_button = new CheckButton ("Toggle label direction");
-			window.VBox.PackStart (check_button, true, true, 2);
+			window.ContentArea.PackStart (check_button, true, true, 2);
 
 			if (window.Direction == TextDirection.Ltr)
 				check_button.Active = true;

@@ -21,7 +21,7 @@ Valobj.cs: valobj-api.xml
 	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/valobj-api.xml --include ../../gtk/gtk-api.xml ../../gdk/gdk-api.xml --outdir=. --assembly-name=valobj-sharp
 
 api:
-	PATH=../../parser:$PATH $(RUNTIME) ../../parser/gapi-parser.exe valobj-sources.xml
+	PATH=../../parser:$(PATH) $(RUNTIME) ../../parser/gapi-parser.exe valobj-sources.xml
 
 install:
 

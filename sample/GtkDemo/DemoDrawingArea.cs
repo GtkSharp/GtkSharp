@@ -22,7 +22,7 @@ namespace GtkDemo
 	[Demo ("Drawing Area", "DemoDrawingArea.cs")]
 	public class DemoDrawingArea : Gtk.Window
 	{
-		private Pixmap pixmap = null;
+		private Cairo.Surface surface = null;
 
 		public DemoDrawingArea () : base ("Drawing Area")
 		{
@@ -45,7 +45,7 @@ namespace GtkDemo
 			// set a minimum size
 			da.SetSizeRequest (100,100);
 			frame.Add (da);
-			da.ExposeEvent += new ExposeEventHandler (CheckerboardExpose);
+			da.Drawn += new DrawnHandler (CheckerboardDrawn);
 
 			// Create the scribble area
 			label = new Label ("<u>Scribble area</u>");
@@ -62,7 +62,7 @@ namespace GtkDemo
 			frame.Add (da);
 
 			// Signals used to handle backing pixmap
-			da.ExposeEvent += new ExposeEventHandler (ScribbleExpose);
+			da.Drawn += new DrawnHandler (ScribbleDrawn);
 			da.ConfigureEvent += new ConfigureEventHandler (ScribbleConfigure);
 
 			// Event signals
@@ -84,25 +84,21 @@ namespace GtkDemo
 			return true;
 		}
 
-		private void CheckerboardExpose (object o, ExposeEventArgs args)
+		private void CheckerboardDrawn (object o, DrawnArgs args)
 		{
 			const int CheckSize = 10;
 			const int Spacing = 2;
 
-			DrawingArea da = o as DrawingArea;
-
-			// It would be a bit more efficient to keep these
-			// GC's around instead of recreating on each expose, but
-			// this is the lazy/slow way.
-			Gdk.GC gc1 = new Gdk.GC (da.GdkWindow);
-			gc1.RgbFgColor = new Gdk.Color (117, 0, 117);
-
-			Gdk.GC gc2 = new Gdk.GC (da.GdkWindow);
-			gc2.RgbFgColor = new Gdk.Color (255, 255, 255);
+			Widget widget = o as Widget;
+			Cairo.Context cr = args.Cr;
 
 			int i, j, xcount, ycount;
-			Gdk.Rectangle alloc = da.Allocation;
 
+			// At the start of a draw handler, a clip region has been set on
+			// the Cairo context, and the contents have been cleared to the
+			// widget's background color.
+			
+			Rectangle alloc = widget.Allocation;
 			// Start redrawing the Checkerboard
 			xcount = 0;
 			i = Spacing;
@@ -110,13 +106,12 @@ namespace GtkDemo
 				j = Spacing;
 				ycount = xcount % 2; // start with even/odd depending on row
 				while (j < alloc.Height) {
-					Gdk.GC gc;
 					if (ycount % 2 != 0)
-						gc = gc1;
+						cr.SetSourceRGB (0.45777, 0, 0.45777);
 					else
-						gc = gc2;
-					da.GdkWindow.DrawRectangle (gc, true, i, j,
-								    CheckSize, CheckSize);
+						cr.SetSourceRGB (1, 1, 1);
+					// If we're outside the clip, this will do nothing.
+					cr.Rectangle (i, j, CheckSize, CheckSize);
 
 					j += CheckSize + Spacing;
 					++ycount;
@@ -130,33 +125,29 @@ namespace GtkDemo
 			args.RetVal = true;
 		}
 
-		private void ScribbleExpose (object o, ExposeEventArgs args)
+		private void ScribbleDrawn (object o, DrawnArgs args)
 		{
-			Widget widget = o as Widget;
-			Gdk.Window window = widget.GdkWindow;
- 			Rectangle area = args.Event.Area;
-
-			// We use the "ForegroundGC" for the widget since it already exists,
-			// but honestly any GC would work. The only thing to worry about
-			// is whether the GC has an inappropriate clip region set.
-			window.DrawDrawable (widget.Style.ForegroundGC (StateType.Normal),
-					     pixmap,
-					     area.X, area.Y,
-					     area.X, area.Y,
-					     area.Width, area.Height);
+			Cairo.Context cr = args.Cr;
+			
+			cr.SetSourceSurface (surface, 0, 0);
+			cr.Paint ();
 		}
 
-		// Create a new pixmap of the appropriate size to store our scribbles
+		// Create a new surface of the appropriate size to store our scribbles
 		private void ScribbleConfigure (object o, ConfigureEventArgs args)
 		{
 			Widget widget = o as Widget;
-			Rectangle allocation = widget.Allocation;
+			
+			if (surface != null)
+				surface.Destroy ();
 
-			pixmap = new Pixmap (widget.GdkWindow, allocation.Width, allocation.Height, -1);
+			var allocation = widget.Allocation;
 
-			// Initialize the pixmap to white
-			pixmap.DrawRectangle (widget.Style.WhiteGC, true, 0, 0,
-					      allocation.Width, allocation.Height);
+			surface = widget.Window.CreateSimilarSurface (Cairo.Content.Color, allocation.Width, allocation.Height);
+			var cr = new Cairo.Context (surface);
+			
+			cr.Paint ();
+			((IDisposable)cr).Dispose ();
 
 			// We've handled the configure event, no need for further processing.
 			args.RetVal = true;
@@ -166,7 +157,7 @@ namespace GtkDemo
 		{
 
 			// paranoia check, in case we haven't gotten a configure event
-			if (pixmap == null)
+			if (surface == null)
 				return;
 
 			// This call is very important; it requests the next motion event.
@@ -192,19 +183,21 @@ namespace GtkDemo
 		// Draw a rectangle on the screen
 		private void DrawBrush (Widget widget, double x, double y)
 		{
-			Rectangle update_rect = new Rectangle ((int)x - 3, (int)y - 3, 6, 6);
+			var update_rect = new Gdk.Rectangle ((int)x - 3, (int)y - 3, 6, 6);
+			var cr = new Cairo.Context (surface);
+			
+			cr.Fill ();
+			Gdk.CairoHelper.Rectangle (cr, update_rect);
 
-			// Paint to the pixmap, where we store our state
-			pixmap.DrawRectangle (widget.Style.BlackGC, true,
-					      update_rect.X, update_rect.Y,
-					      update_rect.Width, update_rect.Height);
-			widget.GdkWindow.InvalidateRect (update_rect, false);
+			((IDisposable)cr).Dispose ();
+			
+			widget.Window.InvalidateRect (update_rect, false);
 		}
 
 		private void ScribbleButtonPress (object o, ButtonPressEventArgs args)
 		{
 			// paranoia check, in case we haven't gotten a configure event
-			if (pixmap == null)
+			if (surface == null)
 				return;
 
 			EventButton ev = args.Event;

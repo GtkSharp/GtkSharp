@@ -19,13 +19,13 @@ EXTRA_DIST = $(sources) ChangeLog
 sources =			\
 	TestCheckButton.cs 	\
 	TestColorSelection.cs 	\
-	TestRadioButton.cs 	\
-	TestRange.cs 		\
-	TestStatusbar.cs 	\
+	TestComboBox.cs		\
 	TestDialog.cs 		\
 	TestFlipping.cs 	\
+	TestRadioButton.cs 	\
+	TestRange.cs 		\
 	TestSizeGroup.cs	\
-	TestComboBox.cs		\
+	TestStatusbar.cs 	\
 	WidgetViewer.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources))

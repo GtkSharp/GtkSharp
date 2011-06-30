@@ -71,6 +71,19 @@ namespace Gdk {
 		{
 			return !(r1 == r2);
 		}
+		
+		public static explicit operator GLib.Value (Gdk.Rectangle boxed)
+		{
+			GLib.Value val = GLib.Value.Empty;
+			val.Init (Gdk.Rectangle.GType);
+			val.Val = boxed;
+			return val;
+		}
+
+		public static explicit operator Gdk.Rectangle (GLib.Value val)
+		{
+			return (Gdk.Rectangle) val.Val;
+		}
 
 		public override string ToString ()
 		{

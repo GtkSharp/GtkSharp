@@ -6,8 +6,7 @@
 #ifndef GTKSHARP_VALOBJ_H
 #define GTKSHARP_VALOBJ_H 1
 
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkenums.h>
+#include <gtk/gtk.h>
 
 #define GTKSHARP_TYPE_VALOBJ            (gtksharp_valobj_get_type ())
 #define GTKSHARP_VALOBJ(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTKSHARP_TYPE_VALOBJ, GtksharpValobj))

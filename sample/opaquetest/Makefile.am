@@ -21,7 +21,7 @@ generated/*.cs: opaque-api.xml
 	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/opaque-api.xml --include ../../gtk/gtk-api.xml ../../gdk/gdk-api.xml --outdir=generated --assembly-name=opaque-sharp
 
 api:
-	PATH=../../parser:$PATH $(RUNTIME) ../../parser/gapi-parser.exe opaque-sources.xml
+	PATH=../../parser:$(PATH) $(RUNTIME) ../../parser/gapi-parser.exe opaque-sources.xml
 	$(RUNTIME) ../../parser/gapi-fixup.exe --metadata=Opaque.metadata --api=opaque-api.xml
 
 install:

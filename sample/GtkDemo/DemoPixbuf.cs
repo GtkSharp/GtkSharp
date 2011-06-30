@@ -71,23 +71,13 @@ namespace GtkDemo
 		}
 
 		// Expose callback for the drawing area
-		void Expose (object o, ExposeEventArgs args)
+		void DrawnCallback (object o, DrawnArgs args)
 		{
-			Widget widget = (Widget) o;
-			Gdk.Rectangle area = args.Event.Area;
-			byte[] pixels;
-			int rowstride;
+			Cairo.Context cr = args.Cr;
+			
+			Gdk.CairoHelper.SetSourcePixbuf (cr, frame, 0, 0);
+			cr.Paint ();
 
-			rowstride = frame.Rowstride;
-			pixels = new byte[(frame.Height - area.Y) * rowstride];
-			IntPtr src = (IntPtr)(frame.Pixels.ToInt64 () + rowstride * area.Y + area.X * 3);
-			Marshal.Copy (src, pixels, 0, pixels.Length);
-
-			widget.GdkWindow.DrawRgbImageDithalign (widget.Style.BlackGC,
-								area.X, area.Y, area.Width, area.Height,
-								Gdk.RgbDither.Normal,
-								pixels, rowstride,
-								area.X, area.Y);
 			args.RetVal = true;
 		}
 
@@ -152,7 +142,7 @@ namespace GtkDemo
 			frame = new Pixbuf (Colorspace.Rgb, false, 8, backWidth, backHeight);
 
 			drawingArea = new DrawingArea ();
-			drawingArea.ExposeEvent += new ExposeEventHandler (Expose);
+			drawingArea.Drawn += new DrawnHandler (DrawnCallback);
 
 			Add (drawingArea);
 			timeoutId = GLib.Timeout.Add (FrameDelay, new GLib.TimeoutHandler(timeout));

@@ -18,7 +18,7 @@ namespace GtkDemo
 
 			VBox vbox = new VBox (false, 5);
 			vbox.BorderWidth = 5;
-			this.VBox.PackStart (vbox, true, true, 0);
+			this.ContentArea.PackStart (vbox, true, true, 0);
 
 			Label label = new Label ("Completion demo, try writing <b>total</b> or <b>gnome</b> for example.");
 			label.UseMarkup = true;

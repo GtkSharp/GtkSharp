@@ -170,7 +170,7 @@ namespace GtkDemo
 		{
 			Gdk.Pixbuf pixbuf = pixbufLoader.Pixbuf;
 			pixbuf.Fill (0xaaaaaaff);
-			progressiveImage.FromPixbuf = pixbuf;
+			progressiveImage.Pixbuf = pixbuf;
 		}
 
 		void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args)

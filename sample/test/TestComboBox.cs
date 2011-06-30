@@ -25,9 +25,11 @@ namespace WidgetViewer {
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, true, true, 0);
 
-			ComboBoxEntry combo = new Gtk.ComboBoxEntry (new string[] {"Foo", "Bar"});
+			ComboBoxText combo = ComboBoxText.NewWithEntry ();
+			combo.AppendText ("Foo");
+			combo.AppendText ("Bar");
 			combo.Changed += new EventHandler (OnComboActivated);
-			combo.Entry.Changed += new EventHandler (OnComboEntryChanged);
+			((Entry)combo.Child).Changed += new EventHandler (OnComboEntryChanged);
 			box2.PackStart (combo, true, true, 0);
 
 			HSeparator separator = new HSeparator ();
