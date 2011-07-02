@@ -290,7 +290,7 @@ public class TestDnd {
 		have_drag = false;
 
 		// FIXME?  Kinda wonky binding.
-		(sender as Gtk.Image).FromPixbuf = trashcan_closed_pixbuf;
+		(sender as Gtk.Image).Pixbuf = trashcan_closed_pixbuf;
 	}
 
 	private static void HandleTargetDragMotion (object sender, DragMotionArgs args)
@@ -298,13 +298,13 @@ public class TestDnd {
 		if (! have_drag) {
 			have_drag = true;
 			// FIXME?  Kinda wonky binding.
-			(sender as Gtk.Image).FromPixbuf = trashcan_open_pixbuf;
+			(sender as Gtk.Image).Pixbuf = trashcan_open_pixbuf;
 		}
 
 		Widget source_widget = Gtk.Drag.GetSourceWidget (args.Context);
 		Console.WriteLine ("motion, source {0}", source_widget == null ? "null" : source_widget.ToString ());
 
-		Atom [] targets = args.Context.Targets;
+		Atom [] targets = args.Context.ListTargets ();
 		foreach (Atom a in targets)
 			Console.WriteLine (a.Name); 
 
@@ -316,7 +316,7 @@ public class TestDnd {
 	{
 		Console.WriteLine ("drop");
 		have_drag = false;
-		(sender as Gtk.Image).FromPixbuf = trashcan_closed_pixbuf;
+		(sender as Gtk.Image).Pixbuf = trashcan_closed_pixbuf;
 
 #if BROKEN			// Context.Targets is not defined in the bindings
 		if (Context.Targets.Length != 0) {
@@ -474,7 +474,7 @@ public class TestDnd {
 		Button button;
 		Pixbuf drag_icon_pixbuf;
 
-		Application.Init ();
+		Gtk.Application.Init ();
 
 		window = new Gtk.Window (Gtk.WindowType.Toplevel);
 		window.DeleteEvent += new DeleteEventHandler (OnDelete);
@@ -522,8 +522,7 @@ public class TestDnd {
 		Gtk.Drag.SourceSet (button, Gdk.ModifierType.Button1Mask | Gdk.ModifierType.Button3Mask,
 				    target_table, DragAction.Copy | DragAction.Move);
 
-		// FIXME can I pass a pixbuf here instead?
-		// Gtk.Drag.SourceSetIcon (button, window.Colormap, drag_icon, drag_mask);
+		Gtk.Drag.SourceSetIconPixbuf (button, drag_icon_pixbuf);
 
 		table.Attach (button, 0, 1, 1, 2,
 			      AttachOptions.Expand | AttachOptions.Fill,
@@ -534,11 +533,11 @@ public class TestDnd {
 
 		window.ShowAll ();
 
-		Application.Run ();
+		Gtk.Application.Run ();
 	}
 
 	private static void OnDelete (object o, DeleteEventArgs e)
 	{
-		Application.Quit ();
+		Gtk.Application.Quit ();
 	}
 }
