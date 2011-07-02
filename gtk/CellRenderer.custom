@@ -54,7 +54,9 @@
 			try {
 				CellRenderer obj = GLib.Object.GetObject (item, false) as CellRenderer;
 				Gtk.Widget widg = GLib.Object.GetObject (widget, false) as Gtk.Widget;
-				Gdk.Rectangle cell_area = Gdk.Rectangle.New (cell_area_ptr);
+				Gdk.Rectangle cell_area = Gdk.Rectangle.Zero;
+				if (cell_area_ptr != IntPtr.Zero)
+					cell_area = Gdk.Rectangle.New (cell_area_ptr);
 				int a, b, c, d;
 
 				obj.OnGetSize (widg, ref cell_area, out a, out b, out c, out d);
