@@ -19,26 +19,6 @@
 // Boston, MA 02111-1307, USA.
 
 
-		[DllImport("gdksharpglue-3")]
-		static extern DeviceKey gtksharp_gdk_device_get_device_key (IntPtr device, uint axis);
-
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-                static extern void gdk_device_get_state(IntPtr device, IntPtr window, double [] axes, out int maskAsInt);
-
-		
-#if FIXME30
-		public void GetState(Gdk.Window window, out double [] axes, out Gdk.ModifierType mask) {
-			int maskAsInt;
-			axes = new double [this.NumAxes];
-			gdk_device_get_state(Handle, window.Handle, axes, out maskAsInt);
- 			mask = (Gdk.ModifierType) maskAsInt;
-		}
-#endif
-
-		public Gdk.DeviceKey GetDeviceKey (uint axis) {
-			return gtksharp_gdk_device_get_device_key (Handle, axis);
-		}
-
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
                 static extern void gdk_device_free_history(IntPtr events, int n_events);
 
