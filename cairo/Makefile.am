@@ -79,5 +79,5 @@ uninstall-local:
 	  $(GACUTIL) -u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;			\
 	fi
 
-EXTRA_DIST = $(sources) mono.snk
+EXTRA_DIST = $(sources) cairo-api.xml mono.snk
 

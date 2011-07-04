@@ -110,6 +110,7 @@ EXTRA_DIST = 				\
 	TreeModelDemo.cs		\
 	TreeViewDemo.cs			\
 	ManagedTreeViewDemo.cs		\
+	NativeInstantiationTest.cs	\
 	NodeViewDemo.cs			\
 	GExceptionTest.cs		\
 	CairoSample.cs			\

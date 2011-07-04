@@ -74,11 +74,9 @@ namespace Gtk {
 			return CollapseRow (store.GetPath (node));
 		}
 		
-#if FIXME30
-		public Gdk.Pixmap CreateRowDragIcon (ITreeNode node) {
+		public Cairo.Surface CreateRowDragIcon (ITreeNode node) {
 			return CreateRowDragIcon (store.GetPath (node));
 		}
-#endif
 		
 		public Gdk.Rectangle GetBackgroundArea (ITreeNode node, Gtk.TreeViewColumn column) {
 			return GetBackgroundArea (store.GetPath (node), column);

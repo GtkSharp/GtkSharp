@@ -233,7 +233,6 @@ atk/atk-sharp.dll.config
 atk/glue/Makefile
 gdk/Makefile
 gdk/gdk-sharp.dll.config
-gdk/glue/Makefile
 gtk/Makefile
 gtk/gtk-sharp-3.0.pc
 gtk/gtk-sharp.dll.config
