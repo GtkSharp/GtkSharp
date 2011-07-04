@@ -46,31 +46,30 @@ public class CustomCellRenderer : CellRenderer
 		}
 	}
 
-	protected override void OnRender (Drawable window, Widget widget, Rectangle background_area, Rectangle cell_area, Rectangle expose_area, CellRendererState flags)
+	protected override void OnRender (Cairo.Context cr, Widget widget, Rectangle background_area, Rectangle cell_area, CellRendererState flags)
 	{
-		int width = 0, height = 0, x_offset = 0, y_offset = 0;
-		StateType state;
-		OnGetSize (widget, ref cell_area, out x_offset, out y_offset, out width, out height);
+		int x = (int) (cell_area.X + this.Xpad);
+		int y = (int) (cell_area.Y + this.Ypad);
+		int width = (int) (cell_area.Width - this.Xpad * 2);
+		int height = (int) (cell_area.Height - this.Ypad * 2);
 
-		if (widget.HasFocus)
-			state = StateType.Active;
-		else
-			state = StateType.Normal;
-
-		width -= (int) this.Xpad * 2;
-		height -= (int) this.Ypad * 2;
-
-
-		//FIXME: Style.PaintBox needs some customization so that if you pass it
-		//a Gdk.Rectangle.Zero it gives a clipping area big enough to draw
-		//everything
-		Gdk.Rectangle clipping_area = new Gdk.Rectangle ((int) (cell_area.X + x_offset + this.Xpad), (int) (cell_area.Y + y_offset + this.Ypad), width - 1, height - 1);
+		widget.StyleContext.Save ();
+		widget.StyleContext.AddClass ("trough");
+		widget.StyleContext.RenderBackground (cr, x, y, width, height);
+		widget.StyleContext.RenderFrame (cr, x, y, width, height);
 		
-		Style.PaintBox (widget.Style, (Gdk.Window) window, StateType.Normal, ShadowType.In, clipping_area, widget, "trough", (int) (cell_area.X + x_offset + this.Xpad), (int) (cell_area.Y + y_offset + this.Ypad), width - 1, height - 1);
+		Border padding = widget.StyleContext.GetPadding (StateFlags.Normal);
+		x += padding.Left;
+		y += padding.Top;
+		width -= padding.Left + padding.Right;
+		height -= padding.Top + padding.Bottom;
 
-		Gdk.Rectangle clipping_area2 = new Gdk.Rectangle ((int) (cell_area.X + x_offset + this.Xpad), (int) (cell_area.Y + y_offset + this.Ypad), (int) (width * Percentage), height - 1);
+		widget.StyleContext.Restore ();
 		
-		Style.PaintBox (widget.Style, (Gdk.Window) window, state, ShadowType.Out, clipping_area2, widget, "bar", (int) (cell_area.X + x_offset + this.Xpad), (int) (cell_area.Y + y_offset + this.Ypad), (int) (width * Percentage), height - 1);
+		widget.StyleContext.Save ();
+		widget.StyleContext.AddClass ("progressbar");
+		widget.StyleContext.RenderActivity (cr, x, y, (int) (width * Percentage), height);
+		widget.StyleContext.Restore ();
 	}
 }
 
@@ -78,9 +77,9 @@ public class Driver : Gtk.Window
 {
 	public static void Main ()
 	{
-		Application.Init ();
+		Gtk.Application.Init ();
 		new Driver ();
-		Application.Run ();
+		Gtk.Application.Run ();
 	}
 
 	ListStore liststore;
@@ -128,7 +127,7 @@ public class Driver : Gtk.Window
 
 	void window_delete (object obj, DeleteEventArgs args)
 	{
-		Application.Quit ();
+		Gtk.Application.Quit ();
 		args.RetVal = true;
 	}
 }

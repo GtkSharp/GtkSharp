@@ -5,7 +5,7 @@ using System;
 class CustomWidgetTest {
 	public static int Main (string[] args)
 	{
-		Application.Init ();
+		Gtk.Application.Init ();
 		Window win = new Window ("Custom Widget Test");
 		win.DeleteEvent += new DeleteEventHandler (OnQuit);
 		
@@ -30,18 +30,17 @@ class CustomWidgetTest {
 		
 		win.Add (paned);
 		win.ShowAll ();
-		Application.Run ();
+		Gtk.Application.Run ();
 		return 0;
 	}
 
 	static void OnQuit (object sender, DeleteEventArgs args)
 	{
-		Application.Quit ();
+		Gtk.Application.Quit ();
 	}
 }
 
 class CustomWidget : Bin {
-	internal static GType customWidgetGType;
 	private Gdk.Pixbuf icon;
 	private string label;
 	private Pango.Layout layout;
@@ -54,13 +53,13 @@ class CustomWidget : Bin {
 		layout = null;
 		stockid = Stock.Execute;
 		
-		WidgetFlags |= WidgetFlags.NoWindow;
+		HasWindow = false;
 	}
 
 	private Gdk.Pixbuf Icon {
 		get {
 			if (icon == null)
-				icon = RenderIcon (stockid, IconSize.Menu, "");
+				icon = RenderIconPixbuf (stockid, IconSize.Menu);
 			return icon;
 		}
 	}
@@ -89,7 +88,7 @@ class CustomWidget : Bin {
 		}
 		set {
 			stockid = value;
-			icon = RenderIcon (stockid, IconSize.Menu, "");
+			icon = RenderIconPixbuf (stockid, IconSize.Menu);
 		}
 	}
 
@@ -108,41 +107,26 @@ class CustomWidget : Bin {
 		}
 	}
 
-	protected override bool OnExposeEvent (Gdk.EventExpose args)
+	protected override bool OnDrawn (Cairo.Context cr)
 	{
-		Gdk.Rectangle exposeArea;
 		Gdk.Rectangle titleArea = TitleArea;
 
-		if (args.Area.Intersect (titleArea, out exposeArea))
-			GdkWindow.DrawPixbuf (Style.BackgroundGC (State), Icon, 0, 0,
-					      titleArea.X, titleArea.Y, Icon.Width,
-					      Icon.Height, Gdk.RgbDither.None, 0, 0);
+		Gdk.CairoHelper.SetSourcePixbuf (cr, Icon, 0, 0);
+		cr.Paint ();
 		
-		titleArea.X += icon.Width + 1;
+		int layout_x = icon.Width + 1;
 		titleArea.Width -= icon.Width - 1;
 		
-		if (args.Area.Intersect (titleArea, out exposeArea)) {
-			int layoutWidth, layoutHeight;
-			Layout.GetPixelSize (out layoutWidth, out layoutHeight);
+		int layoutWidth, layoutHeight;
+		Layout.GetPixelSize (out layoutWidth, out layoutHeight);
 		
-			titleArea.Y += (titleArea.Height - layoutHeight) / 2;
-
-			Style.PaintLayout (Style, GdkWindow, State,
-					   true, exposeArea, this, null,
-					   titleArea.X, titleArea.Y, Layout);
-		}
+		int layout_y = (titleArea.Height - layoutHeight) / 2;
+		
+		StyleContext.RenderLayout (cr, layout_x, layout_y, Layout);
 	
-		return base.OnExposeEvent (args);
+		return base.OnDrawn (cr);
 	}
 
-	protected override void OnRealized ()
-	{
-		WidgetFlags |= WidgetFlags.Realized;
-		
-		GdkWindow = ParentWindow;
-		Style = Style.Attach (GdkWindow);
-	}
-	
 	protected override void OnSizeAllocated (Gdk.Rectangle allocation)
 	{
 		base.OnSizeAllocated (allocation);
@@ -161,22 +145,39 @@ class CustomWidget : Bin {
 		}
 	}
 
-	protected override void OnSizeRequested (ref Requisition requisition)
+	protected override void OnGetPreferredWidth (out int minimum_width, out int natural_width)
 	{
-		requisition.Width = requisition.Height = (int)BorderWidth * 2;
-		requisition.Width += Icon.Width + 1;
-	
+		minimum_width = natural_width = (int)BorderWidth * 2 + Icon.Width + 1;
 		int layoutWidth, layoutHeight;
 		Layout.GetPixelSize (out layoutWidth, out layoutHeight);
-		requisition.Height += layoutHeight;
 		
 		if (Child != null && Child.Visible) {
-			Requisition childReq = Child.SizeRequest ();
-			requisition.Height += childReq.Height;
-
-			requisition.Width += Math.Max (layoutWidth, childReq.Width);
+			int child_min_width, child_nat_width;
+			Child.GetPreferredWidth (out child_min_width, out child_nat_width);
+			
+			minimum_width += Math.Max (layoutWidth, child_min_width);
+			natural_width += Math.Max (layoutWidth, child_nat_width);
 		} else {
-			requisition.Width += layoutWidth;
+			minimum_width += layoutWidth;
+			natural_width += layoutWidth;
+		}
+	}
+
+	protected override void OnGetPreferredHeight (out int minimum_height, out int natural_height)
+	{
+		minimum_height = natural_height = (int)BorderWidth * 2;
+		
+		int layoutWidth, layoutHeight;
+		Layout.GetPixelSize (out layoutWidth, out layoutHeight);
+		minimum_height += layoutHeight;
+		natural_height += layoutHeight;
+		
+		if (Child != null && Child.Visible) {
+			int child_min_height, child_nat_height;
+			Child.GetPreferredHeight (out child_min_height, out child_nat_height);
+			
+			minimum_height += Math.Max (layoutHeight, child_min_height);
+			natural_height += Math.Max (layoutHeight, child_nat_height);
 		}
 	}
 }
