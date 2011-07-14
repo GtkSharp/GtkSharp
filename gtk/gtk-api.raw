@@ -1259,6 +1259,8 @@
         <method vm="update" />
         <method vm="sync_action_properties" />
       </class_struct>
+      <property name="RelatedAction" cname="related-action" type="GtkAction" readable="true" writeable="true" />
+      <property name="UseActionAppearance" cname="use-action-appearance" type="gboolean" readable="true" writeable="true" />
       <virtual_method name="Update" cname="update">
         <return-type type="void" />
         <parameters>
@@ -1488,18 +1490,19 @@
     <interface name="CellEditable" cname="GtkCellEditable">
       <class_struct cname="GtkCellEditableIface">
         <field name="GIface" cname="g_iface" type="GTypeInterface" />
-        <method vm="editing_done" />
-        <method vm="remove_widget" />
+        <method signal_vm="editing_done" />
+        <method signal_vm="remove_widget" />
         <method vm="start_editing" />
       </class_struct>
-      <virtual_method name="EditingDone" cname="editing_done">
+      <property name="EditingCanceled" cname="editing-canceled" type="gboolean" readable="true" writeable="true" />
+      <signal name="EditingDone" cname="editing-done" when="LAST" field_name="editing_done">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
-      <virtual_method name="RemoveWidget" cname="remove_widget">
+      </signal>
+      <signal name="RemoveWidget" cname="remove-widget" when="LAST" field_name="remove_widget">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
+      </signal>
       <virtual_method name="StartEditing" cname="start_editing">
         <return-type type="void" />
         <parameters>
@@ -1823,12 +1826,43 @@
         <method vm="add_shortcut_folder" />
         <method vm="remove_shortcut_folder" />
         <method vm="list_shortcut_folders" />
-        <method vm="current_folder_changed" />
-        <method vm="selection_changed" />
-        <method vm="update_preview" />
-        <method vm="file_activated" />
-        <method vm="confirm_overwrite" />
+        <method signal_vm="current_folder_changed" />
+        <method signal_vm="selection_changed" />
+        <method signal_vm="update_preview" />
+        <method signal_vm="file_activated" />
+        <method signal_vm="confirm_overwrite" />
       </class_struct>
+      <signal name="CurrentFolderChanged" cname="current-folder-changed" when="LAST" field_name="current_folder_changed">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="SelectionChanged" cname="selection-changed" when="LAST" field_name="selection_changed">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="UpdatePreview" cname="update-preview" when="LAST" field_name="update_preview">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="FileActivated" cname="file-activated" when="LAST" field_name="file_activated">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="ConfirmOverwrite" cname="confirm-overwrite" when="LAST" field_name="confirm_overwrite">
+        <return-type type="GtkFileChooserConfirmation" />
+        <parameters />
+      </signal>
+      <property name="Action" cname="action" type="GtkFileChooserAction" readable="true" writeable="true" />
+      <property name="Filter" cname="filter" type="GtkFileFilter" readable="true" writeable="true" />
+      <property name="LocalOnly" cname="local-only" type="gboolean" readable="true" writeable="true" />
+      <property name="PreviewWidget" cname="preview-widget" type="GtkWidget" readable="true" writeable="true" />
+      <property name="PreviewWidgetActive" cname="preview-widget-active" type="gboolean" readable="true" writeable="true" />
+      <property name="UsePreviewLabel" cname="use-preview-label" type="gboolean" readable="true" writeable="true" />
+      <property name="ExtraWidget" cname="extra-widget" type="GtkWidget" readable="true" writeable="true" />
+      <property name="SelectMultiple" cname="select-multiple" type="gboolean" readable="true" writeable="true" />
+      <property name="ShowHidden" cname="show-hidden" type="gboolean" readable="true" writeable="true" />
+      <property name="DoOverwriteConfirmation" cname="do-overwrite-confirmation" type="gboolean" readable="true" writeable="true" />
+      <property name="CreateFolders" cname="create-folders" type="gboolean" readable="true" writeable="true" />
       <virtual_method name="SetCurrentFolder" cname="set_current_folder">
         <return-type type="gboolean" />
         <parameters>
@@ -1911,26 +1945,6 @@
       </virtual_method>
       <virtual_method name="ListShortcutFolders" cname="list_shortcut_folders">
         <return-type type="GSList*" />
-        <parameters />
-      </virtual_method>
-      <virtual_method name="CurrentFolderChanged" cname="current_folder_changed">
-        <return-type type="void" />
-        <parameters />
-      </virtual_method>
-      <virtual_method name="SelectionChanged" cname="selection_changed">
-        <return-type type="void" />
-        <parameters />
-      </virtual_method>
-      <virtual_method name="UpdatePreview" cname="update_preview">
-        <return-type type="void" />
-        <parameters />
-      </virtual_method>
-      <virtual_method name="FileActivated" cname="file_activated">
-        <return-type type="void" />
-        <parameters />
-      </virtual_method>
-      <virtual_method name="ConfirmOverwrite" cname="confirm_overwrite">
-        <return-type type="GtkFileChooserConfirmation" />
         <parameters />
       </virtual_method>
       <method name="AddFilter" cname="gtk_file_chooser_add_filter">
@@ -2215,6 +2229,7 @@
       <class_struct cname="GtkOrientableIface">
         <field name="BaseIface" cname="base_iface" type="GTypeInterface" />
       </class_struct>
+      <property name="Orientation" cname="orientation" type="GtkOrientation" readable="true" writeable="true" />
       <method name="GetOrientation" cname="gtk_orientable_get_orientation">
         <return-type type="GtkOrientation" />
       </method>
@@ -2563,6 +2578,10 @@
       <class_struct cname="GtkScrollableInterface">
         <field name="BaseIface" cname="base_iface" type="GTypeInterface" />
       </class_struct>
+      <property name="" cname="" type="ginterface" />
+      <property name="" cname="" type="ginterface" />
+      <property name="" cname="" type="ginterface" />
+      <property name="" cname="" type="ginterface" />
       <method name="GetHadjustment" cname="gtk_scrollable_get_hadjustment">
         <return-type type="GtkAdjustment*" />
       </method>

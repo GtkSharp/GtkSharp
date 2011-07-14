@@ -674,6 +674,11 @@
         <method vm="set_state" />
         <method vm="activate" />
       </class_struct>
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="ParameterType" cname="parameter-type" type="GVariantType" readable="true" writeable="true" construct-only="true" />
+      <property name="Enabled" cname="enabled" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="StateType" cname="state-type" type="GVariantType" readable="true" />
+      <property name="State" cname="state" type="variant" readable="true" writeable="true" construct="true" />
       <virtual_method name="GetName" cname="get_name">
         <return-type type="gchar*" />
         <parameters />
@@ -756,11 +761,37 @@
         <method vm="get_action_state" />
         <method vm="change_action_state" />
         <method vm="activate_action" />
-        <method vm="action_added" />
-        <method vm="action_removed" />
-        <method vm="action_enabled_changed" />
-        <method vm="action_state_changed" />
+        <method signal_vm="action_added" />
+        <method signal_vm="action_removed" />
+        <method signal_vm="action_enabled_changed" />
+        <method signal_vm="action_state_changed" />
       </class_struct>
+      <signal name="ActionAdded" cname="action-added" when="LAST" field_name="action_added">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="action_name" />
+        </parameters>
+      </signal>
+      <signal name="ActionRemoved" cname="action-removed" when="LAST" field_name="action_removed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="action_name" />
+        </parameters>
+      </signal>
+      <signal name="ActionEnabledChanged" cname="action-enabled-changed" when="LAST" field_name="action_enabled_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="action_name" />
+          <parameter type="gboolean" name="enabled" />
+        </parameters>
+      </signal>
+      <signal name="ActionStateChanged" cname="action-state-changed" when="LAST" field_name="action_state_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="action_name" />
+          <parameter type="GVariant*" name="value" />
+        </parameters>
+      </signal>
       <virtual_method name="HasAction" cname="has_action">
         <return-type type="gboolean" />
         <parameters>
@@ -813,32 +844,6 @@
         <parameters>
           <parameter type="const-gchar*" name="action_name" />
           <parameter type="GVariant*" name="parameter" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ActionAdded" cname="action_added">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="action_name" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ActionRemoved" cname="action_removed">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="action_name" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ActionEnabledChanged" cname="action_enabled_changed">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="action_name" />
-          <parameter type="gboolean" name="enabled" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ActionStateChanged" cname="action_state_changed">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="action_name" />
-          <parameter type="GVariant*" name="value" />
         </parameters>
       </virtual_method>
       <method name="ActionAdded" cname="g_action_group_action_added">
@@ -1396,9 +1401,9 @@
     <interface name="Drive" cname="GDrive">
       <class_struct cname="GDriveIface">
         <field name="GIface" cname="g_iface" type="GTypeInterface" />
-        <method vm="changed" />
-        <method vm="disconnected" />
-        <method vm="eject_button" />
+        <method signal_vm="changed" />
+        <method signal_vm="disconnected" />
+        <method signal_vm="eject_button" />
         <method vm="get_name" />
         <method vm="get_icon" />
         <method vm="has_volumes" />
@@ -1422,22 +1427,26 @@
         <method vm="can_stop" />
         <method vm="stop" />
         <method vm="stop_finish" />
-        <method vm="stop_button" />
+        <method signal_vm="stop_button" />
         <method vm="eject_with_operation" />
         <method vm="eject_with_operation_finish" />
       </class_struct>
-      <virtual_method name="Changed" cname="changed">
+      <signal name="Changed" cname="changed" when="LAST" field_name="changed">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
-      <virtual_method name="Disconnected" cname="disconnected">
+      </signal>
+      <signal name="Disconnected" cname="disconnected" when="LAST" field_name="disconnected">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
-      <virtual_method name="EjectButton" cname="eject_button">
+      </signal>
+      <signal name="EjectButton" cname="eject-button" when="LAST" field_name="eject_button">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
+      </signal>
+      <signal name="StopButton" cname="stop-button" when="LAST" field_name="stop_button">
+        <return-type type="void" />
+        <parameters />
+      </signal>
       <virtual_method name="GetName" cname="get_name">
         <return-type type="char*" />
         <parameters />
@@ -1564,10 +1573,6 @@
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
-      </virtual_method>
-      <virtual_method name="StopButton" cname="stop_button">
-        <return-type type="void" />
-        <parameters />
       </virtual_method>
       <virtual_method name="EjectWithOperation" cname="eject_with_operation">
         <return-type type="void" />
@@ -3596,8 +3601,8 @@
     <interface name="Mount" cname="GMount">
       <class_struct cname="GMountIface">
         <field name="GIface" cname="g_iface" type="GTypeInterface" />
-        <method vm="changed" />
-        <method vm="unmounted" />
+        <method signal_vm="changed" />
+        <method signal_vm="unmounted" />
         <method vm="get_root" />
         <method vm="get_name" />
         <method vm="get_icon" />
@@ -3615,21 +3620,25 @@
         <method vm="guess_content_type" />
         <method vm="guess_content_type_finish" />
         <method vm="guess_content_type_sync" />
-        <method vm="pre_unmount" />
+        <method signal_vm="pre_unmount" />
         <method vm="unmount_with_operation" />
         <method vm="unmount_with_operation_finish" />
         <method vm="eject_with_operation" />
         <method vm="eject_with_operation_finish" />
         <method vm="get_default_location" />
       </class_struct>
-      <virtual_method name="Changed" cname="changed">
+      <signal name="Changed" cname="changed" when="LAST" field_name="changed">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
-      <virtual_method name="Unmounted" cname="unmounted">
+      </signal>
+      <signal name="Unmounted" cname="unmounted" when="LAST" field_name="unmounted">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
+      </signal>
+      <signal name="PreUnmount" cname="pre-unmount" when="LAST" field_name="pre_unmount">
+        <return-type type="void" />
+        <parameters />
+      </signal>
       <virtual_method name="GetRoot" cname="get_root">
         <return-type type="GFile*" />
         <parameters />
@@ -3734,10 +3743,6 @@
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
         </parameters>
-      </virtual_method>
-      <virtual_method name="PreUnmount" cname="pre_unmount">
-        <return-type type="void" />
-        <parameters />
       </virtual_method>
       <virtual_method name="UnmountWithOperation" cname="unmount_with_operation">
         <return-type type="void" />
@@ -4317,6 +4322,10 @@
       <class_struct cname="GTlsClientConnectionInterface">
         <field name="GIface" cname="g_iface" type="GTypeInterface" />
       </class_struct>
+      <property name="ValidationFlags" cname="validation-flags" type="GTlsCertificateFlags" readable="true" writeable="true" construct="true" />
+      <property name="ServerIdentity" cname="server-identity" type="GSocketConnectable" readable="true" writeable="true" construct="true" />
+      <property name="UseSsl3" cname="use-ssl3" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="AcceptedCas" cname="accepted-cas" type="gpointer" readable="true" />
       <method name="GetAcceptedCas" cname="g_tls_client_connection_get_accepted_cas">
         <return-type type="GList*" />
       </method>
@@ -4362,6 +4371,7 @@
       <class_struct cname="GTlsServerConnectionInterface">
         <field name="GIface" cname="g_iface" type="GTypeInterface" />
       </class_struct>
+      <property name="AuthenticationMode" cname="authentication-mode" type="GTlsAuthenticationMode" readable="true" writeable="true" />
       <method name="GetType" cname="g_tls_server_connection_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -4376,8 +4386,8 @@
     <interface name="Volume" cname="GVolume">
       <class_struct cname="GVolumeIface">
         <field name="GIface" cname="g_iface" type="GTypeInterface" />
-        <method vm="changed" />
-        <method vm="removed" />
+        <method signal_vm="changed" />
+        <method signal_vm="removed" />
         <method vm="get_name" />
         <method vm="get_icon" />
         <method vm="get_uuid" />
@@ -4396,14 +4406,14 @@
         <method vm="eject_with_operation" />
         <method vm="eject_with_operation_finish" />
       </class_struct>
-      <virtual_method name="Changed" cname="changed">
+      <signal name="Changed" cname="changed" when="LAST" field_name="changed">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
-      <virtual_method name="Removed" cname="removed">
+      </signal>
+      <signal name="Removed" cname="removed" when="LAST" field_name="removed">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
+      </signal>
       <virtual_method name="GetName" cname="get_name">
         <return-type type="char*" />
         <parameters />
