@@ -1,4 +1,4 @@
-//  ComboBoxText.custom - Gtk ComboBoxText customizations
+//  ComboBoxText.cs - Gtk ComboBoxText customizations
 //
 //  Authors:  Bertrand Lorentz  <bertrand.lorentz@gmail.com>
 //
@@ -18,14 +18,18 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		protected ComboBoxText (bool with_entry) : base (IntPtr.Zero)
+namespace Gtk {
+
+	public partial class ComboBoxText {
+
+		protected ComboBoxText (bool has_entry) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (ComboBoxText)) {
-				CreateNativeObject (new string [0], new GLib.Value[0]);
+				CreateNativeObject (new string[] { "has-entry" }, new GLib.Value[] { new GLib.Value (has_entry) });
 				return;
 			}
 				
-			if (with_entry) {
+			if (has_entry) {
 				Raw = gtk_combo_box_text_new_with_entry ();
 			} else {
 				Raw = gtk_combo_box_text_new ();
@@ -37,4 +41,5 @@
 				return (Gtk.Entry)Child;
 			}
 		}
-
+	}
+}
