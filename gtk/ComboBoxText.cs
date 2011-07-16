@@ -20,6 +20,8 @@
 
 namespace Gtk {
 
+	using System;
+
 	public partial class ComboBoxText {
 
 		protected ComboBoxText (bool has_entry) : base (IntPtr.Zero)
