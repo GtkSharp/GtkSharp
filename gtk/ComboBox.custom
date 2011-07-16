@@ -30,6 +30,26 @@
 				store.AppendValues (entry);
 		}
 
+		protected ComboBox (bool with_entry) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (ComboBox)) {
+				CreateNativeObject (new string [0], new GLib.Value[0]);
+				return;
+			}
+				
+			if (with_entry) {
+				Raw = gtk_combo_box_new_with_entry ();
+			} else {
+				Raw = gtk_combo_box_new ();
+			}
+		}
+
+		public Gtk.Entry Entry {
+			get {
+				return (Gtk.Entry)Child;
+			}
+		}
+
 		public void SetAttributes (CellRenderer cell, params object[] attrs)
 		{
 			if (attrs.Length % 2 != 0)

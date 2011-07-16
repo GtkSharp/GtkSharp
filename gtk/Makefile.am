@@ -16,6 +16,7 @@ sources = 				\
 	BindingAttribute.cs		\
 	CellAreaBox.cs			\
 	ChildPropertyAttribute.cs	\
+	ComboBoxText.cs			\
 	Global.cs			\
 	ITreeNode.cs			\
 	Key.cs				\
@@ -54,7 +55,6 @@ customs = 				\
 	ColorSelection.custom		\
 	ColorSelectionDialog.custom	\
 	ComboBox.custom			\
-	ComboBoxEntry.custom		\
 	Container.custom		\
 	Dialog.custom			\
 	Drag.custom			\

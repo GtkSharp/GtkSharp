@@ -29,7 +29,7 @@ namespace WidgetViewer {
 			combo.AppendText ("Foo");
 			combo.AppendText ("Bar");
 			combo.Changed += new EventHandler (OnComboActivated);
-			((Entry)combo.Child).Changed += new EventHandler (OnComboEntryChanged);
+			combo.Entry.Changed += new EventHandler (OnComboEntryChanged);
 			box2.PackStart (combo, true, true, 0);
 
 			HSeparator separator = new HSeparator ();

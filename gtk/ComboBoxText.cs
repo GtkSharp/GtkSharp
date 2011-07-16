@@ -1,8 +1,8 @@
-//  Gtk.ComboBoxEntry.custom - Gtk ComboBoxEntry customizations
+//  ComboBoxText.cs - Gtk ComboBoxText customizations
 //
-//  Authors:   Mike Kestner  <mkestner@novell.com>
+//  Authors:  Bertrand Lorentz  <bertrand.lorentz@gmail.com>
 //
-//  Copyright (c) 2005 Novell, Inc.
+//  Copyright (c) 2011 Bertrand Lorentz
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General
@@ -18,10 +18,24 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		public ComboBoxEntry (string[] entries) : this (new ListStore (typeof (string)), 0)
+namespace Gtk {
+
+	using System;
+
+	public partial class ComboBoxText {
+
+		protected ComboBoxText (bool has_entry) : base (IntPtr.Zero)
 		{
-			foreach (string entry in entries)
-				AppendText (entry);
+			if (GetType () != typeof (ComboBoxText)) {
+				CreateNativeObject (new string[] { "has-entry" }, new GLib.Value[] { new GLib.Value (has_entry) });
+				return;
+			}
+				
+			if (has_entry) {
+				Raw = gtk_combo_box_text_new_with_entry ();
+			} else {
+				Raw = gtk_combo_box_text_new ();
+			}
 		}
 
 		public Gtk.Entry Entry {
@@ -29,3 +43,5 @@
 				return (Gtk.Entry)Child;
 			}
 		}
+	}
+}
