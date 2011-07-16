@@ -54,7 +54,7 @@ customs = 				\
 	ColorSelection.custom		\
 	ColorSelectionDialog.custom	\
 	ComboBox.custom			\
-	ComboBoxEntry.custom		\
+	ComboBoxText.custom		\
 	Container.custom		\
 	Dialog.custom			\
 	Drag.custom			\
