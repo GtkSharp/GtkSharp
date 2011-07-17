@@ -63,6 +63,14 @@ namespace GLib
 			can_seek = stream is Seekable && (stream as Seekable).CanSeek;
 		}
 
+		public GioStream (IOStream stream)
+		{
+			this.stream = stream;
+			can_read = true;
+			can_write = true;
+			can_seek = stream is Seekable && (stream as Seekable).CanSeek;
+		}
+
 		public override bool CanSeek {
 			get { return can_seek; }
 		}
@@ -88,6 +96,10 @@ namespace GLib
 				}
 				if (stream is FileOutputStream) {
 					FileInfo info = (stream as FileOutputStream).QueryInfo ("standard::size", null);
+					return info.Size;
+				}
+				if (stream is FileIOStream) {
+					FileInfo info = (stream as FileIOStream).QueryInfo ("standard::size", null);
 					return info.Size;
 				}
 				throw new NotImplementedException (String.Format ("not implemented for {0} streams", stream.GetType()));
@@ -127,7 +139,11 @@ namespace GLib
 				throw new NotSupportedException ("The stream does not support reading");
 			if (is_disposed)
 				throw new ObjectDisposedException ("The stream is closed");
-			InputStream input_stream = stream as InputStream;
+			InputStream input_stream = null;
+			if (stream is InputStream)
+				input_stream = stream as InputStream;
+			else if (stream is IOStream)
+				input_stream = (stream as IOStream).InputStream;
 			if (input_stream == null)
 				throw new System.Exception ("this shouldn't happen");
 
@@ -155,7 +171,11 @@ namespace GLib
 				throw new NotSupportedException ("The stream does not support writing");
 			if (is_disposed)
 				throw new ObjectDisposedException ("The stream is closed");
-			OutputStream output_stream = stream as OutputStream;
+			OutputStream output_stream = null;
+			if (stream is OutputStream)
+				output_stream = stream as OutputStream;
+			else if (stream is IOStream)
+				output_stream = (stream as IOStream).OutputStream;
 			if (output_stream == null)
 				throw new System.Exception ("this shouldn't happen");
 			if (offset == 0) {
@@ -198,9 +218,16 @@ namespace GLib
 		{
 			if (!CanSeek || !CanWrite)
 				throw new NotSupportedException ("This stream doesn't support seeking");
+
+			var seekable = stream as Seekable;
+
+			if (!seekable.CanTruncate ())
+				throw new NotSupportedException ("This stream doesn't support truncating");
+
 			if (is_disposed)
 				throw new ObjectDisposedException ("The stream is closed");
-			throw new NotImplementedException ();
+
+			seekable.Truncate (value, null);
 		}
 
 		public override void Close ()
@@ -209,6 +236,8 @@ namespace GLib
 				(stream as InputStream).Close (null);
 			if (stream is OutputStream)
 				(stream as OutputStream).Close (null);
+			if (stream is IOStream)
+				(stream as IOStream).Close (null);
 			is_disposed = true;
 		}
 	}
