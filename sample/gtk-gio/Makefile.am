@@ -4,6 +4,7 @@ DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
 assemblies = 					\
 	$(top_builddir)/glib/glib-sharp.dll 	\
+	$(top_builddir)/cairo/cairo-sharp.dll 	\
 	$(top_builddir)/gtk/gtk-sharp.dll 	\
 	$(top_builddir)/gio/gio-sharp.dll 	\
 	$(top_builddir)/gdk/gdk-sharp.dll	\

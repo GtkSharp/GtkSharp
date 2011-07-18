@@ -1,7 +1,7 @@
 noinst_SCRIPTS = valtest.exe
 lib_LTLIBRARIES = libvalobj.la
 
-assemblies=../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
+assemblies=../../glib/glib-sharp.dll ../../gio/gio-sharp.dll ../../cairo/cairo-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
 references=$(addprefix -r:, $(assemblies))
 
 valtest.exe: Valtest.cs Valobj.cs $(assemblies)
