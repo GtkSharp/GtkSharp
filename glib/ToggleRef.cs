@@ -59,6 +59,10 @@ namespace GLib {
 
   		public void Free ()
   		{
+			lock (PendingDestroys) {
+				PendingDestroys.Remove (this);
+			}
+
 			if (hardened)
 				g_object_unref (handle);
 			else
