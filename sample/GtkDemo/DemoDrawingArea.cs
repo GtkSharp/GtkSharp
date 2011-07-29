@@ -112,6 +112,7 @@ namespace GtkDemo
 						cr.SetSourceRGB (1, 1, 1);
 					// If we're outside the clip, this will do nothing.
 					cr.Rectangle (i, j, CheckSize, CheckSize);
+					cr.Fill ();
 
 					j += CheckSize + Spacing;
 					++ycount;
@@ -146,6 +147,7 @@ namespace GtkDemo
 			surface = widget.Window.CreateSimilarSurface (Cairo.Content.Color, allocation.Width, allocation.Height);
 			var cr = new Cairo.Context (surface);
 			
+			cr.SetSourceRGB (1, 1, 1);
 			cr.Paint ();
 			((IDisposable)cr).Dispose ();
 
@@ -186,8 +188,8 @@ namespace GtkDemo
 			var update_rect = new Gdk.Rectangle ((int)x - 3, (int)y - 3, 6, 6);
 			var cr = new Cairo.Context (surface);
 			
-			cr.Fill ();
 			Gdk.CairoHelper.Rectangle (cr, update_rect);
+			cr.Fill ();
 
 			((IDisposable)cr).Dispose ();
 			
