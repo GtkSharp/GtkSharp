@@ -30,7 +30,6 @@ namespace GtkDemo
 			vbox.PackStart (frame, true, true, 0);
 
 			drawingArea = new DrawingArea ();
-			drawingArea.Drawn += new DrawnHandler (DrawnCallback);
 			// set a minimum size
 			drawingArea.SetSizeRequest (200,200);
 			// set the color
@@ -56,18 +55,6 @@ namespace GtkDemo
 			return true;
 		}
 
-		// Drawn callback for the drawing area
-		private void DrawnCallback (object o, DrawnArgs args)
-		{
-			Cairo.Context cr = args.Cr;
-			
-			Gdk.RGBA rgba = StyleContext.GetBackgroundColor (StateFlags.Normal);
-			cr.SetSourceRGBA (rgba.Red, rgba.Green, rgba.Blue, rgba.Alpha);
-			cr.Paint ();
-
-			args.RetVal = true;
-		}
-
 		private void ChangeColorCallback (object o, EventArgs args)
 		{
 			using (ColorSelectionDialog colorSelectionDialog = new ColorSelectionDialog ("Changing color")) {
@@ -77,8 +64,8 @@ namespace GtkDemo
 				colorSelectionDialog.ColorSelection.HasPalette = true;
 
 				if (colorSelectionDialog.Run () == (int) ResponseType.Ok) {
-					Gdk.RGBA selected = colorSelectionDialog.ColorSelection.CurrentRgba;
-					drawingArea.OverrideBackgroundColor (StateFlags.Normal, selected);
+					color = colorSelectionDialog.ColorSelection.CurrentRgba;
+					drawingArea.OverrideBackgroundColor (StateFlags.Normal, color);
 				}
 
 				colorSelectionDialog.Hide ();
