@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 
 namespace GLib {
 
-	internal class ToggleRef {
+	internal class ToggleRef : IDisposable {
 
 		bool hardened;
 		IntPtr handle;
@@ -57,12 +57,16 @@ namespace GLib {
 			}
 		}
 
-  		public void Free ()
-  		{
+		public void Dispose ()
+		{
 			lock (PendingDestroys) {
 				PendingDestroys.Remove (this);
 			}
+			Free ();
+		}
 
+  		void Free ()
+  		{
 			if (hardened)
 				g_object_unref (handle);
 			else

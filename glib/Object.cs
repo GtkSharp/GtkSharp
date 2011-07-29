@@ -69,7 +69,7 @@ namespace GLib {
 				return;
 			
 			if (disposing)
-				tref.Free ();
+				tref.Dispose ();
 			else
 				tref.QueueUnref ();
 		}
@@ -429,7 +429,7 @@ namespace GLib {
 				if (handle != IntPtr.Zero) {
 					Objects.Remove (handle);
 					if (tref != null) {
-						tref.Free ();
+						tref.Dispose ();
 						tref = null;
 					}
 				}
