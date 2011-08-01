@@ -161,8 +161,8 @@ while ($line = <STDIN>) {
 			last if ($line =~ /^(deprecated)?}/);
 		}
 		$typefuncs{lc($class)} = $pedef;
-	} elsif ($line =~ /^G_DEFINE_TYPE_WITH_CODE\s*\(\s*(\w+)/) {
-		$typefuncs{lc($1)} = $line;
+	} elsif ($line =~ /^G_DEFINE_TYPE_(EXTENDED|WITH_CODE)\s*\(\s*(\w+)/) {
+		$typefuncs{lc($2)} = $line;
 	} elsif ($line =~ /^G_DEFINE_BOXED_TYPE\s*\(\s*(\w+)/) {
 		$boxdefs{$1} = $line;
 	} elsif ($line =~ /^G_DEFINE_INTERFACE\s*\(\s*(\w+)\s*,\s*(\w+)/) {
@@ -410,7 +410,7 @@ foreach $type (sort(keys(%objects))) {
 
 	# Get the interfaces from the class_init func.
 	if ($typefunc) {
-		if ($typefunc =~ /G_DEFINE_TYPE_WITH_CODE/) {
+		if ($typefunc =~ /G_DEFINE_TYPE_(EXTENDED|WITH_CODE)/) {
 			parseTypeFuncMacro($obj_el, $typefunc);
 		} else {
 			parseTypeFunc($obj_el, $typefunc);
