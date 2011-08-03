@@ -1015,6 +1015,53 @@ sub addPropElem
 	$prop_elem->setAttribute('construct-only', "true") if ($mode =~ /CONSTRUCT_ONLY/);
 }
 
+sub addPropElem2
+{
+	my ($spec, $node, $is_child) = @_;
+	my ($name, $mode, $docs);
+
+	$spec =~ /g_param_spec_(\w+)\s*\((.*)\s*\);/;
+	my $type = $1;
+	my @params = split(/,/, $2);
+
+	$name = $params[0];
+
+	if ($defines{$name}) {
+		$name = $defines{$name};
+	} else {
+		$name =~ s/\s*\"//g;
+	}
+
+	$mode = $params[$#params];
+
+	if ($type =~ /boolean|float|double|^u?int|pointer|unichar/) {
+		$type = "g$type";
+	} elsif ($type =~ /string/) {
+		$type = "gchar*";
+	} elsif ($type =~ /boxed|object/) {
+		$type = $params[$#params-1];
+		$type =~ s/TYPE_//;
+		$type =~ s/\s+//g;
+		$type = StudlyCaps(lc($type));
+	} elsif ($type =~ /enum|flags/) {
+		$type = $params[$#params-2];
+		$type =~ s/TYPE_//;
+		$type =~ s/\s+//g;
+		$type = StudlyCaps(lc($type));
+	}
+
+	$prop_elem = $doc->createElement($is_child ? "childprop" : "property");
+	$node->appendChild($prop_elem);
+	$prop_elem->setAttribute('name', StudlyCaps($name));
+	$prop_elem->setAttribute('cname', $name);
+	$prop_elem->setAttribute('type', $type);
+
+	$prop_elem->setAttribute('readable', "true") if ($mode =~ /READ/);
+	$prop_elem->setAttribute('writeable', "true") if ($mode =~ /WRIT/);
+	$prop_elem->setAttribute('construct', "true") if ($mode =~ /CONSTRUCT(?!_)/);
+	$prop_elem->setAttribute('construct-only', "true") if ($mode =~ /CONSTRUCT_ONLY/);
+}
+
 sub parseTypeToken
 {
 	my ($tok) = @_;
@@ -1115,6 +1162,8 @@ sub parseInitFunc
 	my @signal_vms = ();
 
 	my $linenum = 0;
+	my $pspec = "";
+	my $pspec_use = 0;
 	while ($linenum < @init_lines) {
 
 		my $line = $init_lines[$linenum];
@@ -1123,10 +1172,18 @@ sub parseInitFunc
 			# FIXME: This ignores the bool helper macro thingie.
 		} elsif ($line =~ /g_object_(class|interface)_install_prop/) {
 			my $prop = $line;
+			$pspec_use = 1;
 			while ($prop !~ /\)\s*;/) {
 				$prop .= $init_lines[++$linenum];
+				if ($init_lines[$linenum] =~ /g_param_spec_/) {
+					$pspec_use = 0;
+				}
 			}
-			addPropElem ($prop, $obj_el, 0);
+			if ($pspec_use) {
+				addPropElem2 ($prop.$pspec, $obj_el, 0);
+			} else {
+				addPropElem ($prop, $obj_el, 0);
+			}
 			$propcnt++;
 		} elsif ($line =~ /gtk_container_class_install_child_property/) {
 			my $prop = $line;
@@ -1143,6 +1200,11 @@ sub parseInitFunc
 			$signal_vm = addSignalElem ($sig, $classdef, $obj_el);
 			push (@signal_vms, $signal_vm) if $signal_vm;
 			$sigcnt++;
+		} elsif ($line =~ /g_param_spec_/) {
+			$pspec = $line;
+			do {
+				$pspec .= $init_lines[++$linenum];
+			} until ($init_lines[$linenum] =~ /\)\s*;/);
 		}
 		$linenum++;
 	}
