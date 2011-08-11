@@ -1,4 +1,5 @@
 ASSEMBLY_NAME = cairo-sharp
+ASSEMBLY_NAME_VERSION = $(ASSEMBLY_NAME),Version=$(API_VERSION)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 SNK = $(srcdir)/mono.snk
 
@@ -75,8 +76,8 @@ install-data-local:
 
 uninstall-local:
 	@if test -n '$(TARGET)'; then							\
-	  echo "$(GACUTIL) -u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";			\
-	  $(GACUTIL) -u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;			\
+	  echo "$(GACUTIL) -u $(ASSEMBLY_NAME_VERSION) $(GACUTIL_FLAGS)";			\
+	  $(GACUTIL) -u $(ASSEMBLY_NAME_VERSION) $(GACUTIL_FLAGS) || exit 1;			\
 	fi
 
 EXTRA_DIST = $(sources) cairo-api.xml mono.snk

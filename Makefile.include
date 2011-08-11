@@ -3,6 +3,7 @@ API = $(pkg)-api.xml
 RAW_API = $(pkg)-api.raw
 
 ASSEMBLY_NAME = $(pkg)-sharp
+ASSEMBLY_NAME_VERSION = $(ASSEMBLY_NAME),Version=$(API_VERSION)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 
 TARGET = $(pkg:=-sharp.dll) $(pkg:=-sharp.dll.config) $(POLICY_ASSEMBLIES)
@@ -67,8 +68,8 @@ install-data-local:
 
 uninstall-local:
 	@if test -n '$(pkg)'; then							\
-	  echo "$(GACUTIL) -u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";			\
-	  $(GACUTIL) -u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;			\
+	  echo "$(GACUTIL) -u $(ASSEMBLY_NAME_VERSION) $(GACUTIL_FLAGS)";		\
+	  $(GACUTIL) -u $(ASSEMBLY_NAME_VERSION) $(GACUTIL_FLAGS) || exit 1;		\
 	  if test -n '$(POLICY_VERSIONS)'; then						\
 	    for i in $(POLICY_VERSIONS); do						\
 	      echo "$(GACUTIL) -u policy.$$i.$(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";	\
