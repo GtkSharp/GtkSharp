@@ -9,6 +9,7 @@ endif
 SNK = $(top_srcdir)/gtk-sharp.snk
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = gtk-dotnet
+ASSEMBLY_NAME_VERSION = $(ASSEMBLY_NAME),Version=$(API_VERSION)
 noinst_DATA = $(ASSEMBLY) $(POLICY_ASSEMBLIES)
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
 DISTCLEANFILES = $(ASSEMBLY).config
@@ -54,8 +55,8 @@ install-data-local:
 
 uninstall-local:
 	@if test -n '$(TARGET)'; then							\
-	  echo "$(GACUTIL) -u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";			\
-	  $(GACUTIL) -u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;			\
+	  echo "$(GACUTIL) -u $(ASSEMBLY_NAME_VERSION) $(GACUTIL_FLAGS)";			\
+	  $(GACUTIL) -u $(ASSEMBLY_NAME_VERSION) $(GACUTIL_FLAGS) || exit 1;			\
 	  if test -n '$(POLICY_VERSIONS)'; then						\
 	    for i in $(POLICY_VERSIONS); do						\
 	      echo "$(GACUTIL) -u policy.$$i.$(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";	\
