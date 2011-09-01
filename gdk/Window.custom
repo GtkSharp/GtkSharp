@@ -24,6 +24,23 @@
 
 	public Window (Gdk.Window parent, Gdk.WindowAttr attributes, Gdk.WindowAttributesType attributes_mask) : this (parent, attributes, (int)attributes_mask) {}
 
+	[DllImport("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+	static extern IntPtr gdk_window_get_background_pattern(IntPtr raw);
+
+	[DllImport("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+	static extern void gdk_window_set_background_pattern(IntPtr raw, IntPtr pattern);
+
+	public Cairo.Pattern BackgroundPattern { 
+		get {
+			IntPtr raw_ret = gdk_window_get_background_pattern(Handle);
+			Cairo.Pattern ret = Cairo.Pattern.Lookup (raw_ret);
+			return ret;
+		}
+		set {
+			gdk_window_set_background_pattern(Handle, (value == null) ? IntPtr.Zero : value.Handle);
+		}
+	}
+
 	[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 	static extern IntPtr gdk_window_get_children(IntPtr raw);
 
