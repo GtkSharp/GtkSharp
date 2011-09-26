@@ -84,12 +84,16 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("ulong", "uint", "0"));
 			AddType (new SimpleGen ("gulong", "uint", "0"));
 			AddType (new SimpleGen ("unsigned long", "uint", "0"));
+			AddType (new SimpleGen ("gintptr", "int", "0"));
+			AddType (new SimpleGen ("guintptr", "uint", "0"));
 #else
 			AddType (new LPGen ("long"));
 			AddType (new LPGen ("glong"));
+			AddType (new LPGen ("gintptr"));
 			AddType (new LPUGen ("ulong"));
 			AddType (new LPUGen ("gulong"));
 			AddType (new LPUGen ("unsigned long"));
+			AddType (new LPUGen ("guintptr"));
 #endif
 
 			AddType (new LPGen ("ssize_t"));
@@ -121,6 +125,7 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GSList", "GLib.SList"));
 			AddType (new ManualGen ("GVariant", "GLib.Variant"));
 			AddType (new ManualGen ("GVariantType", "GLib.VariantType"));
+			AddType (new ManualGen ("GValueArray", "GLib.ValueArray"));
 			AddType (new MarshalGen ("gunichar", "char", "uint", "GLib.Marshaller.CharToGUnichar ({0})", "GLib.Marshaller.GUnicharToChar ({0})"));
 			AddType (new MarshalGen ("time_t", "System.DateTime", "IntPtr", "GLib.Marshaller.DateTimeTotime_t ({0})", "GLib.Marshaller.time_tToDateTime ({0})"));
 			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
