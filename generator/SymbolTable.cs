@@ -84,12 +84,16 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("ulong", "uint", "0"));
 			AddType (new SimpleGen ("gulong", "uint", "0"));
 			AddType (new SimpleGen ("unsigned long", "uint", "0"));
+			AddType (new SimpleGen ("gintptr", "int", "0"));
+			AddType (new SimpleGen ("guintptr", "uint", "0"));
 #else
 			AddType (new LPGen ("long"));
 			AddType (new LPGen ("glong"));
+			AddType (new LPGen ("gintptr"));
 			AddType (new LPUGen ("ulong"));
 			AddType (new LPUGen ("gulong"));
 			AddType (new LPUGen ("unsigned long"));
+			AddType (new LPUGen ("guintptr"));
 #endif
 
 			AddType (new LPGen ("ssize_t"));
