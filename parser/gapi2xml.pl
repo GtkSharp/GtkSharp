@@ -574,8 +574,11 @@ sub addClassElem
 						$vm_elem->setAttribute('padding', 'true');
 					}
 				}
-			} elsif ($field =~ /(unsigned\s+)?(\S+)\s+(.+)/) {
-				my $type = $1 . $2; $symb = $3;
+			} elsif ($field =~ /(unsigned\s+)?(const\s+)?(\S+)\s+(.+)/) {
+				my $unsigned = $1; $const = $2; $name = $3; $symb = $4;
+				$const =~ s/const\s+/const\-/g;
+				my $type = $unsigned . $const . $name;
+				
 				foreach $tok (split (/,\s*/, $symb)) { # multiple field defs may occur in one line; like int xrange, yrange;
 					$tok =~ /(\*)?(\w+)\s*(.*)/;
 					my $field_type = $type . $1; my $cname = $2; my $modifiers = $3;
