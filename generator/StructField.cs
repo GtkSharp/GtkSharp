@@ -70,6 +70,26 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string EqualityName {
+			get {
+				SymbolTable table = SymbolTable.Table;
+				string wrapped = table.GetCSType (CType);
+				string wrapped_name = SymbolTable.Table.MangleName (CName);
+				IGeneratable gen = table [CType];
+
+				if (IsArray || gen is IAccessor)
+					return StudlyName;
+				else if (IsBitfield)
+					return Name;
+				else if (IsPointer && (gen is StructGen || gen is BoxedGen))
+					return Access != "private" ? wrapped_name : Name;
+				else if (IsPointer && CSType != "string")
+					return Name;
+				else 
+					return Access == "public" ? StudlyName : Name;
+			}
+		}
+
 		bool IsPadding {
 			get {
 				return (CName.StartsWith ("dummy") || CName.StartsWith ("padding"));
@@ -93,7 +113,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		string StudlyName {
+		public string StudlyName {
 			get {
 				string studly = base.Name;
 				if (studly == "")

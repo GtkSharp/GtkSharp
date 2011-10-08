@@ -24,6 +24,7 @@ namespace GtkSharp.Generation {
 	using System;
 	using System.Collections;
 	using System.IO;
+	using System.Text;
 	using System.Text.RegularExpressions;
 	using System.Xml;
 
@@ -106,6 +107,53 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		protected new void GenEqualsAndHash (StreamWriter sw)
+		{
+			int bitfields = 0;
+			bool need_field = true;
+			StringBuilder sb = new StringBuilder ();
+
+			sw.WriteLine ("\t\tpublic bool Equals ({0} other)", Name);
+			sw.WriteLine ("\t\t{");
+
+			foreach (StructField field in fields) {
+				if (field.IsBitfield) {
+					if (need_field) {
+						sw.WriteLine ("\t\tif (!_bitfield{0}.Equals (other._bitfield{0})) return false;", bitfields);
+						if (sb.Length > 0)
+							sb.Append (" ^ ");
+						sb.Append ("_bitfield");
+						sb.Append (bitfields++);
+						sb.Append (".GetHashCode ()");
+						need_field = false;
+					}
+				} else {
+					need_field = true;
+					sw.WriteLine ("\t\t\tif (!{0}.Equals (other.{0})) return false;", field.EqualityName);
+					if (sb.Length > 0)
+						sb.Append (" ^ ");
+					sb.Append (field.EqualityName);
+					sb.Append (".GetHashCode ()");
+				}
+			}
+			sw.WriteLine ("\t\t\treturn true;");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic override bool Equals (object other)");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\treturn other is {0} && Equals (({0}) other);", Name);
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			if (Elem.GetAttribute ("nohash") == "true")
+				return;
+			sw.WriteLine ("\t\tpublic override int GetHashCode ()");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\treturn {0};", sb.ToString ());
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+
+		}
+
 		protected new void GenFields (GenerationInfo gen_info)
 		{
 			int bitfields = 0;
@@ -160,7 +208,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t[Obsolete]");
 			sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
 			string access = IsInternal ? "internal" : "public";
-			sw.WriteLine ("\t" + access + " partial struct " + Name + " {");
+			sw.WriteLine ("\t" + access + " partial struct {0} : IEquatable<{0}> {{", Name);
 			sw.WriteLine ();
 
 			need_read_native = false;
@@ -170,6 +218,7 @@ namespace GtkSharp.Generation {
 			GenMethods (gen_info, null, this);
 			if (need_read_native)
 				GenReadNative (sw);
+			GenEqualsAndHash (sw);
 
 			if (!need_close)
 				return;
