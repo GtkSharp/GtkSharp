@@ -27,7 +27,7 @@
 namespace GLib {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.Runtime.InteropServices;
 
 	public delegate bool IdleHandler ();
@@ -116,7 +116,7 @@ namespace GLib {
 		}
 		
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_source_remove_by_funcs_user_data (Delegate d, IntPtr data);
+		static extern bool g_source_remove (uint id);
                                                                                 
 		public static void Remove (uint id)
 		{
@@ -126,7 +126,7 @@ namespace GLib {
 		public static bool Remove (IdleHandler hndlr)
 		{
 			bool result = false;
-			ArrayList keys = new ArrayList ();
+			List<uint> keys = new List<uint> ();
 
 			lock (Source.source_handlers) {
 				foreach (uint code in Source.source_handlers.Keys) {
@@ -134,7 +134,7 @@ namespace GLib {
 				
 					if (p != null && p.real_handler == hndlr) {
 						keys.Add (code);
-						result = g_source_remove_by_funcs_user_data (p.proxy_handler, IntPtr.Zero);
+						result = g_source_remove (code);
 					}
 				}
 
