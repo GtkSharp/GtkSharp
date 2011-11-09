@@ -1,12 +1,17 @@
 <Type Name="Component" FullName="Atk.Component">
   <TypeSignature Language="C#" Maintainer="auto" Value="public interface Component : GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract Component implements class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>The ATK interface provided by UI components which occupy a physical area on the screen.</summary>
     <remarks>
@@ -30,121 +35,10 @@
       </para>
     </remarks>
   </Docs>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-  </Interfaces>
   <Members>
-    <Member MemberName="RemoveFocusHandler">
-      <MemberSignature Language="C#" Value="public void RemoveFocusHandler (uint handler_id);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="handler_id" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>
-          Remove the handler from the list of functions to be executed
-          when this object receives focus events (in or out).
-        </summary>
-        <param name="handler_id">The handler id of the focus handler to be removed from component.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetPosition">
-      <MemberSignature Language="C#" Value="public bool SetPosition (int x, int y, Atk.CoordType coord_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="coord_type" Type="Atk.CoordType" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the postition of this component.</summary>
-        <param name="x">X coordinate.</param>
-        <param name="y">Y coordinate.</param>
-        <param name="coord_type">
-          Specifies whether the coordinates are relative to the screen
-          or to the components top level window.
-        </param>
-        <returns>
-          <see langword="true" /> or <see langword="false" /> whether or not the position was set or not.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GrabFocus">
-      <MemberSignature Language="C#" Value="public bool GrabFocus ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Grabs focus for this component</summary>
-        <returns>
-          <see langword="true" /> if successful, <see langword="false" /> otherwise.
-        </returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetExtents">
-      <MemberSignature Language="C#" Value="public bool SetExtents (int x, int y, int width, int height, Atk.CoordType coord_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-        <Parameter Name="coord_type" Type="Atk.CoordType" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the extents of this component.</summary>
-        <param name="x">X coordinate.</param>
-        <param name="y">Y coordinate.</param>
-        <param name="width">Width to set for this component.</param>
-        <param name="height">Height to set for this component.</param>
-        <param name="coord_type">
-          Specifies whether the coordinates are relative to the screen
-          or to the components top level window.
-        </param>
-        <returns>
-          <see langword="true" /> or <see langword="false" /> whether the extents were
-          set or not.
-        </returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetSize">
-      <MemberSignature Language="C#" Value="public bool SetSize (int width, int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Set the size of this component in terms of width and height.</summary>
-        <param name="width">Width to set for this component.</param>
-        <param name="height">Height to set for this component.</param>
-        <returns>
-          <see langword="true" /> or <see langword="false" /> whether the size was set or not.
-        </returns>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="AddFocusHandler">
       <MemberSignature Language="C#" Value="public uint AddFocusHandler (Atk.FocusHandler handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance unsigned int32 AddFocusHandler(class Atk.FocusHandler handler) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
@@ -153,11 +47,11 @@
         <Parameter Name="handler" Type="Atk.FocusHandler" />
       </Parameters>
       <Docs>
+        <param name="handler">The <see cref="T:Atk.FocusHandler" /> to be attached to this component.</param>
         <summary>
           Add the specified handler to the set of functions to be
           called when this object receives focus events (in or out).
         </summary>
-        <param name="handler">The <see cref="T:Atk.FocusHandler" /> to be attached to this component.</param>
         <returns>
           A handler id which can be used in
           <see cref="M:Atk.Component.RemoveFocusHandler" /> or zero if the handler
@@ -174,146 +68,23 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Contains">
-      <MemberSignature Language="C#" Value="public bool Contains (int x, int y, Atk.CoordType coord_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="coord_type" Type="Atk.CoordType" />
-      </Parameters>
-      <Docs>
-        <summary>Checks whether the specified point is within the extent of this component.</summary>
-        <param name="x">X coordinate</param>
-        <param name="y">Y coordinate</param>
-        <param name="coord_type">
-          Specifies whether the coordinates are relative to the screen
-          or to the components top level window.
-        </param>
-        <returns>
-          <see langword="true" /> or <see langword="false" /> indicating whether the specified point is
-          within the extent of the component or not.
-        </returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="RefAccessibleAtPoint">
-      <MemberSignature Language="C#" Value="public Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coord_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Atk.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="coord_type" Type="Atk.CoordType" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="coord_type">To be added: an object of type 'Atk.CoordType'</param>
-        <returns>To be added: an object of type 'Atk.Object'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="MdiZorder">
-      <MemberSignature Language="C#" Value="public int MdiZorder { get; };" />
+    <Member MemberName="Alpha">
+      <MemberSignature Language="C#" Value="public double Alpha { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 Alpha" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the Z order of the component.</summary>
-        <value>The value G_MININT will be returned if the layer of the component is not ATK_LAYER_MDI or ATK_LAYER_WINDOW.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Layer">
-      <MemberSignature Language="C#" Value="public Atk.Layer Layer { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Atk.Layer</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Gets the layer of this component.</summary>
-        <value>An <see cref="T:Atk.Layer" /> which is the layer of the component.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetPosition">
-      <MemberSignature Language="C#" Value="public void GetPosition (out int x, out int y, Atk.CoordType coord_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="coord_type" Type="Atk.CoordType" />
-      </Parameters>
-      <Docs>
-        <summary>
-          Gets the position of component in the form of a point
-          specifying this component's top-left corner.
-        </summary>
-        <param name="x">X coordinate position</param>
-        <param name="y">Y coordinate position</param>
-        <param name="coord_type">
-          Specifies whether the coordinates are relative to the screen
-          or to the components top level window.
-        </param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetExtents">
-      <MemberSignature Language="C#" Value="public void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coord_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="coord_type" Type="Atk.CoordType" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the rectangle which gives the extent of this component.</summary>
-        <param name="x">X coordinate position</param>
-        <param name="y">Y coordinate position</param>
-        <param name="width">Width</param>
-        <param name="height">Height</param>
-        <param name="coord_type">
-          Specifies whether the coordinates are relative to the screen
-          or to the components top level window.
-        </param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetSize">
-      <MemberSignature Language="C#" Value="public void GetSize (out int width, out int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the size of this component in terms of width and height.</summary>
-        <param name="width">Width</param>
-        <param name="height">Height</param>
-        <remarks />
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
     <Member MemberName="BoundsChanged">
       <MemberSignature Language="C#" Value="public event Atk.BoundsChangedHandler BoundsChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.BoundsChangedHandler BoundsChanged" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.BoundsChangedHandler</ReturnType>
@@ -325,17 +96,261 @@
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
-    <Member MemberName="Alpha">
-      <MemberSignature Language="C#" Value="public double Alpha { get; };" />
+    <Member MemberName="Contains">
+      <MemberSignature Language="C#" Value="public bool Contains (int x, int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Contains(int32 x, int32 y, valuetype Atk.CoordType coord_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="coord_type" Type="Atk.CoordType" />
+      </Parameters>
+      <Docs>
+        <param name="x">X coordinate</param>
+        <param name="y">Y coordinate</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <summary>Checks whether the specified point is within the extent of this component.</summary>
+        <returns>
+          <see langword="true" /> or <see langword="false" /> indicating whether the specified point is
+          within the extent of the component or not.
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetExtents">
+      <MemberSignature Language="C#" Value="public void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetExtents(int32 x, int32 y, int32 width, int32 height, valuetype Atk.CoordType coord_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="coord_type" Type="Atk.CoordType" />
+      </Parameters>
+      <Docs>
+        <param name="x">X coordinate position</param>
+        <param name="y">Y coordinate position</param>
+        <param name="width">Width</param>
+        <param name="height">Height</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <summary>Gets the rectangle which gives the extent of this component.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPosition">
+      <MemberSignature Language="C#" Value="public void GetPosition (out int x, out int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetPosition(int32 x, int32 y, valuetype Atk.CoordType coord_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="coord_type" Type="Atk.CoordType" />
+      </Parameters>
+      <Docs>
+        <param name="x">X coordinate position</param>
+        <param name="y">Y coordinate position</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <summary>
+          Gets the position of component in the form of a point
+          specifying this component's top-left corner.
+        </summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSize">
+      <MemberSignature Language="C#" Value="public void GetSize (out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetSize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="width">Width</param>
+        <param name="height">Height</param>
+        <summary>Gets the size of this component in terms of width and height.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GrabFocus">
+      <MemberSignature Language="C#" Value="public bool GrabFocus ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool GrabFocus() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Grabs focus for this component</summary>
+        <returns>
+          <see langword="true" /> if successful, <see langword="false" /> otherwise.
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Layer">
+      <MemberSignature Language="C#" Value="public Atk.Layer Layer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Atk.Layer Layer" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
+        <ReturnType>Atk.Layer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
+        <summary>Gets the layer of this component.</summary>
+        <value>An <see cref="T:Atk.Layer" /> which is the layer of the component.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="MdiZorder">
+      <MemberSignature Language="C#" Value="public int MdiZorder { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 MdiZorder" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the Z order of the component.</summary>
+        <value>The value G_MININT will be returned if the layer of the component is not ATK_LAYER_MDI or ATK_LAYER_WINDOW.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="RefAccessibleAtPoint">
+      <MemberSignature Language="C#" Value="public Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Atk.Object RefAccessibleAtPoint(int32 x, int32 y, valuetype Atk.CoordType coord_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="coord_type" Type="Atk.CoordType" />
+      </Parameters>
+      <Docs>
+        <param name="x">To be added: an object of type 'int'</param>
+        <param name="y">To be added: an object of type 'int'</param>
+        <param name="coord_type">To be added: an object of type 'Atk.CoordType'</param>
+        <summary>To be added</summary>
+        <returns>To be added: an object of type 'Atk.Object'</returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveFocusHandler">
+      <MemberSignature Language="C#" Value="public void RemoveFocusHandler (uint handler_id);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveFocusHandler(unsigned int32 handler_id) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler_id" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="handler_id">The handler id of the focus handler to be removed from component.</param>
+        <summary>
+          Remove the handler from the list of functions to be executed
+          when this object receives focus events (in or out).
+        </summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetExtents">
+      <MemberSignature Language="C#" Value="public bool SetExtents (int x, int y, int width, int height, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetExtents(int32 x, int32 y, int32 width, int32 height, valuetype Atk.CoordType coord_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="coord_type" Type="Atk.CoordType" />
+      </Parameters>
+      <Docs>
+        <param name="x">X coordinate.</param>
+        <param name="y">Y coordinate.</param>
+        <param name="width">Width to set for this component.</param>
+        <param name="height">Height to set for this component.</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <summary>Sets the extents of this component.</summary>
+        <returns>
+          <see langword="true" /> or <see langword="false" /> whether the extents were
+          set or not.
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetPosition">
+      <MemberSignature Language="C#" Value="public bool SetPosition (int x, int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetPosition(int32 x, int32 y, valuetype Atk.CoordType coord_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="coord_type" Type="Atk.CoordType" />
+      </Parameters>
+      <Docs>
+        <param name="x">X coordinate.</param>
+        <param name="y">Y coordinate.</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <summary>Sets the postition of this component.</summary>
+        <returns>
+          <see langword="true" /> or <see langword="false" /> whether or not the position was set or not.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetSize">
+      <MemberSignature Language="C#" Value="public bool SetSize (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetSize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="width">Width to set for this component.</param>
+        <param name="height">Height to set for this component.</param>
+        <summary>Set the size of this component in terms of width and height.</summary>
+        <returns>
+          <see langword="true" /> or <see langword="false" /> whether the size was set or not.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>

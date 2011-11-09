@@ -1,12 +1,20 @@
 <Type Name="Container" FullName="Gtk.Container">
   <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Container : Gtk.Widget, System.Collections.IEnumerable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Container extends Gtk.Widget implements class System.Collections.IEnumerable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Widget</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.Collections.IEnumerable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>Base class for widgets which contain other widgets</summary>
     <remarks>
@@ -27,53 +35,38 @@
       </para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Widget</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>System.Collections.IEnumerable</InterfaceName>
-    </Interface>
-  </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
   <Members>
-    <Member MemberName="CheckResize">
-      <MemberSignature Language="C#" Value="public void CheckResize ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Container ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Attempts to resize this container.</summary>
-        <remarks />
+        <summary>Protected constructor for chaining by descendant classes.</summary>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
-    <Member MemberName="ChildGetValist">
-      <MemberSignature Language="C#" Value="public void ChildGetValist (Gtk.Widget child, string first_property_name, IntPtr var_args);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Container (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="first_property_name" Type="System.String" />
-        <Parameter Name="var_args" Type="System.IntPtr" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Gets the values of one or more child properties for child and container.</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="first_property_name">an object of type <see cref="T:System.String" /></param>
-        <param name="var_args">an object of type <see cref="T:System.IntPtr" /></param>
-        <remarks>Gets the values of one or more child properties for child and container.</remarks>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Add">
       <MemberSignature Language="C#" Value="public void Add (Gtk.Widget widget);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(class Gtk.Widget widget) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -82,8 +75,8 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Adds a <see cref="T:Gtk.Widget" /> to the <see cref="T:Gtk.Container" />.</summary>
         <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
+        <summary>Adds a <see cref="T:Gtk.Widget" /> to the <see cref="T:Gtk.Container" />.</summary>
         <remarks>
           <para>
 	  Typically used for simple containers such as <see cref="T:Gtk.Window" />, <see cref="T:Gtk.Frame" />, or <see cref="T:Gtk.Button" />; for more complicated layout containers such as <see cref="T:Gtk.Box" /> or <see cref="T:Gtk.Table" />, this function will pick default packing parameters that may not be correct. So consider functions such as <see cref="M:Gtk.Box.Packstart" /> and <see cref="M:Gtk.Table.Attach" /> as an alternative to <see cref="M:Gtk.Container.Add" /> in those cases. A <see cref="T:Gtk.Widget" /> may be added to only one <see cref="T:Gtk.Container" /> at a time; you can not place the same widget inside two different containers.
@@ -91,246 +84,51 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Remove">
-      <MemberSignature Language="C#" Value="public void Remove (Gtk.Widget widget);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Added">
+      <MemberSignature Language="C#" Value="public event Gtk.AddedHandler Added;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.AddedHandler Added" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("add")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gtk.AddedHandler</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Removes a <see cref="T:Gtk.Widget" /> from the <see cref="T:Gtk.Container" />.</summary>
-        <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
+        <summary>Raised when a child widget is added to the container via <see cref="M:Gtk.Container.Add" />.</summary>
+        <remarks>Note that this event is raised only when <see cref="M:Gtk.Container.Add" /> (or its C equivalent) is called. It is not a generic widget-added notification. For example, calling <see cref="M:Gtk.Box.PackStart" /> will not result in this event firing.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AllChildren">
+      <MemberSignature Language="C#" Value="public System.Collections.IEnumerable AllChildren { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.IEnumerable AllChildren" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IEnumerable</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Allows you to enumerate all of the container's children.</summary>
+        <value>an <see cref="T:System.Collections.IEnumerable" /></value>
         <remarks>
-          <see cref="T:Gtk.Widget" /> must be inside <see cref="T:Gtk.Container" />.
+	    Enumerates all of the container's children, including those widgets that are
+	    internal implementation details of the container.
 	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="UnsetFocusChain">
-      <MemberSignature Language="C#" Value="public void UnsetFocusChain ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Removes a focus chain.</summary>
-        <remarks>Removes a focus chain explicitly set with <see cref="M:Gtk.Container.FocusChain" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ResizeChildren">
-      <MemberSignature Language="C#" Value="public void ResizeChildren ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Tries to resize the child widgets of this container.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ChildSetProperty">
-      <MemberSignature Language="C#" Value="public void ChildSetProperty (Gtk.Widget child, string property_name, GLib.Value value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="property_name" Type="System.String" />
-        <Parameter Name="value" Type="GLib.Value" />
-      </Parameters>
-      <Docs>
-        <summary>Sets a child property of a <see cref="T:Gtk.Widget" />.</summary>
-        <param name="child">a child of this <see cref="T:Gtk.Container" /></param>
-        <param name="property_name">the child property name</param>
-        <param name="value">the value to set <paramref name="property_name" /> to</param>
-        <remarks>You will not normally need to use this method; Gtk# automatically generates child property accessors for all <see cref="T:Gtk.Container" /> subclasses.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ChildGetProperty">
-      <MemberSignature Language="C#" Value="public GLib.Value ChildGetProperty (Gtk.Widget child, string property_name);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.Value</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="property_name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Gets a child property of a <see cref="T:Gtk.Widget" />.</summary>
-        <param name="child">a child of this <see cref="T:Gtk.Container" /></param>
-        <param name="property_name">the child property name</param>
-        <remarks>You will not normally need to use this method; Gtk# automatically generates child property accessors for all <see cref="T:Gtk.Container" /> subclasses.</remarks>
-        <returns>To be added.</returns>
         <since version="Gtk# 2.4" />
       </Docs>
-    </Member>
-    <Member MemberName="PropagateExpose">
-      <MemberSignature Language="C#" Value="public void PropagateExpose (Gtk.Widget child, Gdk.EventExpose evnt);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="evnt" Type="Gdk.EventExpose" />
-      </Parameters>
-      <Docs>
-        <summary>Send synthetic expose events to all children that do not have their own <see cref="T:Gdk.Windows" />.</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="evnt">an object of type <see cref="T:Gdk.EventExpose" /></param>
-        <remarks>
-          <para>
-	  When a <see cref="T:Gtk.Container" /> receives an expose event, it must send synthetic expose events to all children that do not have their own <see cref="T:Gdk.Window" />s. This function provides a convenient way of doing this. A <see cref="T:Gtk.Container" />, when it receives an expose event, calls <see cref="M:Gtk.Container.PropagateExpose(Gtk.Widget,Gdk.EventExpose)" /> once for each child, passing in the event the <see cref="T:Gtk.Container" /> received.
-	  </para>
-          <para>
-            <see cref="M:Gtk.Container.PropagateExpose(Gtk.Widget,Gdk.EventExpose)" /> takes care of deciding whether an expose event needs to be sent to the child, intersecting the event's area with the child area, and sending the event.
-	  </para>
-          <para>
-	  In most cases, a <see cref="T:Gtk.Container" /> can either simply inherit the expose implementation from <see cref="T:Gtk.Container" />, or do some drawing and then chain to the expose implementation from <see cref="T:Gtk.Container" />.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ChildSetValist">
-      <MemberSignature Language="C#" Value="public void ChildSetValist (Gtk.Widget child, string first_property_name, IntPtr var_args);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="first_property_name" Type="System.String" />
-        <Parameter Name="var_args" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Sets one or more child properties for child and <see cref="T:Gtk.Container" />.</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="first_property_name">an object of type <see cref="T:System.String" /></param>
-        <param name="var_args">an object of type <see cref="T:System.IntPtr" /></param>
-        <remarks>Sets one or more child properties for child and <see cref="T:Gtk.Container" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Container (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="FocusVadjustment">
-      <MemberSignature Language="C#" Value="public Gtk.Adjustment FocusVadjustment { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Adjustment</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The vertical focus adjustment.</summary>
-        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="FocusHadjustment">
-      <MemberSignature Language="C#" Value="public Gtk.Adjustment FocusHadjustment { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Adjustment</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The horizontal focus adjustment.</summary>
-        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="FocusChild">
-      <MemberSignature Language="C#" Value="public Gtk.Widget FocusChild { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Moves the focus to a particular child widget or finds the last-focused widget.</summary>
-        <value>an object of type <see cref="T:Gtk.Widget" /></value>
-        <remarks />
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="ReallocateRedraws">
-      <MemberSignature Language="C#" Value="public bool ReallocateRedraws { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The redraw-reallocation flag. Containers requesting 
-	  reallocation redraws get automatically redrawn if any of their 
-	  children changed allocation. </summary>
-        <value>an object of type <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Child">
-      <MemberSignature Language="C#" Value="public Gtk.Widget Child { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>A child widget for this container.</summary>
-        <value>an object of type <see cref="T:Gtk.Widget" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("child")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ResizeMode">
-      <MemberSignature Language="C#" Value="public Gtk.ResizeMode ResizeMode { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ResizeMode</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>How this container behaves when resized.</summary>
-        <value>an object of type <see cref="T:Gtk.ResizeMode" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("resize-mode")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="BorderWidth">
-      <MemberSignature Language="C#" Value="public uint BorderWidth { set; get; };" />
+      <MemberSignature Language="C#" Value="public uint BorderWidth { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 BorderWidth" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("border-width")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
@@ -341,205 +139,83 @@
         <value>A <see cref="T:System.UInt32" /></value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("border-width")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="Added">
-      <MemberSignature Language="C#" Value="public event Gtk.AddedHandler Added;" />
-      <MemberType>Event</MemberType>
+    <Member MemberName="CheckResize">
+      <MemberSignature Language="C#" Value="public void CheckResize ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void CheckResize() cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.AddedHandler</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Raised when a child widget is added to the container via <see cref="M:Gtk.Container.Add" />.</summary>
-        <remarks>Note that this event is raised only when <see cref="M:Gtk.Container.Add" /> (or its C equivalent) is called. It is not a generic widget-added notification. For example, calling <see cref="M:Gtk.Box.PackStart" /> will not result in this event firing.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("add")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="FocusChildSet">
-      <MemberSignature Language="C#" Value="public event Gtk.FocusChildSetHandler FocusChildSet;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.FocusChildSetHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when the focus moves to a child widget of this container.</summary>
+        <summary>Attempts to resize this container.</summary>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("set-focus-child")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="Removed">
-      <MemberSignature Language="C#" Value="public event Gtk.RemovedHandler Removed;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.RemovedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when a child widget is removed from this container</summary>
-        <remarks>Note that this event is raised only when <see cref="M:Gtk.Container.Remove" /> (or its C equivalent) is called. If a <see cref="T:Gtk.Container" /> subclass defines additional methods for removing widgets, then calling those methods will not result in this event being raised.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("remove")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ResizeChecked">
-      <MemberSignature Language="C#" Value="public event EventHandler ResizeChecked;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when this container's resizability is queried.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("check_resize")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+    <Member MemberName="Child">
+      <MemberSignature Language="C#" Value="public Gtk.Widget Child { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget Child" />
       <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Container" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnResizeChecked">
-      <MemberSignature Language="C#" Value="protected virtual void OnResizeChecked ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Container.ResizeChecked" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Container.ResizeChecked" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnRemoved">
-      <MemberSignature Language="C#" Value="protected virtual void OnRemoved (Gtk.Widget widget);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Container.Removed" /> event.</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Container.Removed" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnFocusChildSet">
-      <MemberSignature Language="C#" Value="protected virtual void OnFocusChildSet (Gtk.Widget widget);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Container.FocusChildSet" /> event.</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Container.FocusChildSet" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnAdded">
-      <MemberSignature Language="C#" Value="protected virtual void OnAdded (Gtk.Widget widget);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Container.Added" /> event.</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Container.Added" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Forall">
-      <MemberSignature Language="C#" Value="public void Forall (Gtk.Callback cb);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="cb" Type="Gtk.Callback" />
-      </Parameters>
-      <Docs>
-        <summary>Invokes a callback function on each child of this container, 
-	  including children that are considered "internal" (implementation 
-	  details of the container). "Internal" children generally weren't 
-	  added by the user of the container but were added by the container 
-	  implementation itself. </summary>
-        <param name="cb">a <see cref="T:Gtk.Callback" /></param>
-        <remarks>Most applications should use <see cref="M:Gtk.Container.Foreach" /> instead of this method.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Foreach">
-      <MemberSignature Language="C#" Value="public void Foreach (Gtk.Callback cb);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="cb" Type="Gtk.Callback" />
-      </Parameters>
-      <Docs>
-        <summary>Invokes a callback function on each non-internal child of this container. See <see cref="M:Gtk.Container.Forall" /> for more details on internal children. </summary>
-        <param name="cb">a <see cref="T:Gtk.Callback" /></param>
-        <remarks>Most applications should use this method instead of <see cref="M:Gtk.Container.Forall" />.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Container (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
+          <AttributeName>GLib.Property("child")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>A child widget for this container.</summary>
+        <value>an object of type <see cref="T:Gtk.Widget" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ChildGetProperty">
+      <MemberSignature Language="C#" Value="public GLib.Value ChildGetProperty (Gtk.Widget child, string property_name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype GLib.Value ChildGetProperty(class Gtk.Widget child, string property_name) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Value</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="property_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="child">a child of this <see cref="T:Gtk.Container" /></param>
+        <param name="property_name">the child property name</param>
+        <summary>Gets a child property of a <see cref="T:Gtk.Widget" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>You will not normally need to use this method; Gtk# automatically generates child property accessors for all <see cref="T:Gtk.Container" /> subclasses.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="ChildGetValist">
+      <MemberSignature Language="C#" Value="public void ChildGetValist (Gtk.Widget child, string first_property_name, IntPtr var_args);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ChildGetValist(class Gtk.Widget child, string first_property_name, native int var_args) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="first_property_name" Type="System.String" />
+        <Parameter Name="var_args" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="first_property_name">an object of type <see cref="T:System.String" /></param>
+        <param name="var_args">an object of type <see cref="T:System.IntPtr" /></param>
+        <summary>Gets the values of one or more child properties for child and container.</summary>
+        <remarks>Gets the values of one or more child properties for child and container.</remarks>
+      </Docs>
     </Member>
     <Member MemberName="Children">
-      <MemberSignature Language="C#" Value="public Gtk.Widget[] Children { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.Widget[] Children { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget[] Children" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Widget[]</ReturnType>
@@ -570,8 +246,252 @@ foreach (Widget w in myContainer) {
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="ChildSetProperty">
+      <MemberSignature Language="C#" Value="public void ChildSetProperty (Gtk.Widget child, string property_name, GLib.Value value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ChildSetProperty(class Gtk.Widget child, string property_name, valuetype GLib.Value value) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="property_name" Type="System.String" />
+        <Parameter Name="value" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="child">a child of this <see cref="T:Gtk.Container" /></param>
+        <param name="property_name">the child property name</param>
+        <param name="value">the value to set <paramref name="property_name" /> to</param>
+        <summary>Sets a child property of a <see cref="T:Gtk.Widget" />.</summary>
+        <remarks>You will not normally need to use this method; Gtk# automatically generates child property accessors for all <see cref="T:Gtk.Container" /> subclasses.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChildSetValist">
+      <MemberSignature Language="C#" Value="public void ChildSetValist (Gtk.Widget child, string first_property_name, IntPtr var_args);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ChildSetValist(class Gtk.Widget child, string first_property_name, native int var_args) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="first_property_name" Type="System.String" />
+        <Parameter Name="var_args" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="first_property_name">an object of type <see cref="T:System.String" /></param>
+        <param name="var_args">an object of type <see cref="T:System.IntPtr" /></param>
+        <summary>Sets one or more child properties for child and <see cref="T:Gtk.Container" />.</summary>
+        <remarks>Sets one or more child properties for child and <see cref="T:Gtk.Container" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChildType">
+      <MemberSignature Language="C#" Value="public virtual GLib.GType ChildType ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype GLib.GType ChildType() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideObsoleteChildType", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by OnChildType for implementations and SupportedChildType for callers.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns the type of children supported by this container.</summary>
+        <returns>a <see cref="T:GLib.GType" /></returns>
+        <remarks>
+	    If you override this in a derived container class, you
+	    must not call base.ChildType() from the overridden method.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FocusChain">
+      <MemberSignature Language="C#" Value="public Gtk.Widget[] FocusChain { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget[] FocusChain" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Sets or obtains a focus chain of the container, overriding the one computed automatically by Gtk#.</summary>
+        <value>An array of <paramref name="widgets" />.</value>
+        <remarks>
+          <para>
+	  In principle each <see cref="T:Gtk.Widget" /> in the chain should be a descendant of the <see cref="T:Gtk.Container" />, but this is not enforced by this method, since it is allowed to set the focus chain before you pack the widgets, or have a widget in the chain that is not always packed. The necessary checks are done when the focus chain is actually traversed.	   
+	  </para>
+          <para>
+	  If no focus chain has been explicitly set, gtk# computes the focus chain based on the positions of the children. in that case, gtk# stores <see langword="null" /> in focusable_widgets and returns <see langword="false" />. 
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FocusChild">
+      <MemberSignature Language="C#" Value="public Gtk.Widget FocusChild { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget FocusChild" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Moves the focus to a particular child widget or finds the last-focused widget.</summary>
+        <value>an object of type <see cref="T:Gtk.Widget" /></value>
+        <remarks />
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="FocusChildSet">
+      <MemberSignature Language="C#" Value="public event Gtk.FocusChildSetHandler FocusChildSet;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.FocusChildSetHandler FocusChildSet" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("set-focus-child")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.FocusChildSetHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when the focus moves to a child widget of this container.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="FocusHadjustment">
+      <MemberSignature Language="C#" Value="public Gtk.Adjustment FocusHadjustment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Adjustment FocusHadjustment" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Adjustment</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The horizontal focus adjustment.</summary>
+        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="FocusVadjustment">
+      <MemberSignature Language="C#" Value="public Gtk.Adjustment FocusVadjustment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Adjustment FocusVadjustment" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Adjustment</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The vertical focus adjustment.</summary>
+        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Forall">
+      <MemberSignature Language="C#" Value="public void Forall (Gtk.Callback cb);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Forall(class Gtk.Callback cb) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cb" Type="Gtk.Callback" />
+      </Parameters>
+      <Docs>
+        <param name="cb">a <see cref="T:Gtk.Callback" /></param>
+        <summary>Invokes a callback function on each child of this container, 
+	  including children that are considered "internal" (implementation 
+	  details of the container). "Internal" children generally weren't 
+	  added by the user of the container but were added by the container 
+	  implementation itself. </summary>
+        <remarks>Most applications should use <see cref="M:Gtk.Container.Foreach" /> instead of this method.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForAll">
+      <MemberSignature Language="C#" Value="protected virtual void ForAll (bool include_internals, Gtk.Callback callback);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void ForAll(bool include_internals, class Gtk.Callback callback) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideForall", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="include_internals" Type="System.Boolean" />
+        <Parameter Name="callback" Type="Gtk.Callback" />
+      </Parameters>
+      <Docs>
+        <param name="include_internals">a <see cref="T:System.Boolean" />, whether to include "internal" children when running the callback.</param>
+        <param name="callback">a <see cref="T:Gtk.Callback" /></param>
+        <summary>Run a given callback for every object inside this container.</summary>
+        <remarks>
+	    Overload this in subclasses of Gtk.Container to implement the
+	    <see cref="M:Gtk.Container.Foreach" /> and <see cref="M:Gtk.Container.Forall" />
+	    methods.
+	</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="ForAll" Deprecated="true">
+      <MemberSignature Language="C#" Value="protected virtual void ForAll (bool include_internals, Gtk.Container.CallbackInvoker invoker);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void ForAll(bool include_internals, valuetype Gtk.Container/CallbackInvoker invoker) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideForallOld", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Obsolete("Override the ForAll(bool,Gtk.Callback) method instead")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="include_internals" Type="System.Boolean" />
+        <Parameter Name="invoker" Type="Gtk.Container+CallbackInvoker" />
+      </Parameters>
+      <Docs>
+        <param name="include_internals">a <see cref="T:System.Boolean" />, whether to include "internal" children when running the callback.</param>
+        <param name="invoker">a <see cref="T:Gtk.Container+CallbackInvoker" /></param>
+        <summary>Run a given callback for every object inside this container.</summary>
+        <remarks>
+	    Deprecated: overload <see cref="M:Gtk.Container.Forall(System.Boolean,Gtk.Callback)" /> instead.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Foreach">
+      <MemberSignature Language="C#" Value="public void Foreach (Gtk.Callback cb);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Foreach(class Gtk.Callback cb) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cb" Type="Gtk.Callback" />
+      </Parameters>
+      <Docs>
+        <param name="cb">a <see cref="T:Gtk.Callback" /></param>
+        <summary>Invokes a callback function on each non-internal child of this container. See <see cref="M:Gtk.Container.Forall" /> for more details on internal children. </summary>
+        <remarks>Most applications should use this method instead of <see cref="M:Gtk.Container.Forall" />.
+	</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="GetEnumerator">
       <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Collections.IEnumerator GetEnumerator() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Collections.IEnumerator</ReturnType>
@@ -597,113 +517,41 @@ foreach (Widget w in myContainer) {
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="AllChildren">
-      <MemberSignature Language="C#" Value="public System.Collections.IEnumerable AllChildren { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Collections.IEnumerable</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Allows you to enumerate all of the container's children.</summary>
-        <value>an <see cref="T:System.Collections.IEnumerable" /></value>
-        <remarks>
-	    Enumerates all of the container's children, including those widgets that are
-	    internal implementation details of the container.
-	</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="FocusChain">
-      <MemberSignature Language="C#" Value="public Gtk.Widget[] FocusChain { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Sets or obtains a focus chain of the container, overriding the one computed automatically by Gtk#.</summary>
-        <value>An array of <paramref name="widgets" />.</value>
-        <remarks>
-          <para>
-	  In principle each <see cref="T:Gtk.Widget" /> in the chain should be a descendant of the <see cref="T:Gtk.Container" />, but this is not enforced by this method, since it is allowed to set the focus chain before you pack the widgets, or have a widget in the chain that is not always packed. The necessary checks are done when the focus chain is actually traversed.	   
-	  </para>
-          <para>
-	  If no focus chain has been explicitly set, gtk# computes the focus chain based on the positions of the children. in that case, gtk# stores <see langword="null" /> in focusable_widgets and returns <see langword="false" />. 
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Container ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Protected constructor for chaining by descendant classes.</summary>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForAll" Deprecated="true">
-      <MemberSignature Language="C#" Value="protected virtual void ForAll (bool include_internals, Gtk.Container.CallbackInvoker invoker);" />
+    <Member MemberName="GetPathForChild">
+      <MemberSignature Language="C#" Value="public Gtk.WidgetPath GetPathForChild (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.WidgetPath GetPathForChild(class Gtk.Widget child) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gtk.WidgetPath</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="include_internals" Type="System.Boolean" />
-        <Parameter Name="invoker" Type="Gtk.Container+CallbackInvoker" />
+        <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Run a given callback for every object inside this container.</summary>
-        <param name="include_internals">a <see cref="T:System.Boolean" />, whether to include "internal" children when running the callback.</param>
-        <param name="invoker">a <see cref="T:Gtk.Container+CallbackInvoker" /></param>
-        <remarks>
-	    Deprecated: overload <see cref="M:Gtk.Container.Forall(System.Boolean,Gtk.Callback)" /> instead.
-	</remarks>
+        <param name="child">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="ForAll">
-      <MemberSignature Language="C#" Value="protected virtual void ForAll (bool include_internals, Gtk.Callback callback);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="include_internals" Type="System.Boolean" />
-        <Parameter Name="callback" Type="Gtk.Callback" />
-      </Parameters>
-      <Docs>
-        <summary>Run a given callback for every object inside this container.</summary>
-        <param name="include_internals">a <see cref="T:System.Boolean" />, whether to include "internal" children when running the callback.</param>
-        <param name="callback">a <see cref="T:Gtk.Callback" /></param>
-        <remarks>
-	    Overload this in subclasses of Gtk.Container to implement the
-	    <see cref="M:Gtk.Container.Foreach" /> and <see cref="M:Gtk.Container.Forall" />
-	    methods.
-	</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="ChildType">
-      <MemberSignature Language="C#" Value="public virtual GLib.GType ChildType ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the type of children supported by this container.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>
-	    If you override this in a derived container class, you
-	    must not call base.ChildType() from the overridden method.
-	</remarks>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Container" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public virtual Gtk.Container.ContainerChild this[Gtk.Widget w] { get; };" />
+      <MemberSignature Language="C#" Value="public virtual Gtk.Container.ContainerChild this[Gtk.Widget w] { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Container/ContainerChild Item(class Gtk.Widget)" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Container+ContainerChild</ReturnType>
@@ -712,11 +560,365 @@ foreach (Widget w in myContainer) {
         <Parameter Name="w" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Access for child properties</summary>
         <param name="w">a child of this container</param>
+        <summary>Access for child properties</summary>
         <value>a <see cref="T:Gtk.Container+ContainerChild" /></value>
         <remarks>The base <see cref="T:Gtk.Container+ContainerChild" /> type is not very useful; you will normally need to cast it to a subclass of the appropriate type.</remarks>
         <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnAdded">
+      <MemberSignature Language="C#" Value="protected virtual void OnAdded (Gtk.Widget widget);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAdded(class Gtk.Widget widget) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideAdded", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Container.Added" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Container.Added" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnChildType">
+      <MemberSignature Language="C#" Value="protected virtual GLib.GType OnChildType ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance valuetype GLib.GType OnChildType() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideChildType", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnCompositeName">
+      <MemberSignature Language="C#" Value="protected virtual string OnCompositeName (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string OnCompositeName(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCompositeName", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnFocusChildSet">
+      <MemberSignature Language="C#" Value="protected virtual void OnFocusChildSet (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnFocusChildSet(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideFocusChildSet", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Container.FocusChildSet" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Container.FocusChildSet" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetChildProperty">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetChildProperty (Gtk.Widget child, uint property_id, GLib.Value value, IntPtr pspec);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetChildProperty(class Gtk.Widget child, unsigned int32 property_id, valuetype GLib.Value value, native int pspec) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetChildProperty", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="property_id" Type="System.UInt32" />
+        <Parameter Name="value" Type="GLib.Value" />
+        <Parameter Name="pspec" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <param name="property_id">To be added.</param>
+        <param name="value">To be added.</param>
+        <param name="pspec">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetPathForChild">
+      <MemberSignature Language="C#" Value="protected virtual Gtk.WidgetPath OnGetPathForChild (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gtk.WidgetPath OnGetPathForChild(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetPathForChild", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.WidgetPath</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnRemoved">
+      <MemberSignature Language="C#" Value="protected virtual void OnRemoved (Gtk.Widget widget);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnRemoved(class Gtk.Widget widget) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideRemoved", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Container.Removed" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Container.Removed" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnResizeChecked">
+      <MemberSignature Language="C#" Value="protected virtual void OnResizeChecked ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnResizeChecked() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideResizeChecked", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Container.ResizeChecked" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Container.ResizeChecked" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetChildProperty">
+      <MemberSignature Language="C#" Value="protected virtual void OnSetChildProperty (Gtk.Widget child, uint property_id, GLib.Value value, IntPtr pspec);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSetChildProperty(class Gtk.Widget child, unsigned int32 property_id, valuetype GLib.Value value, native int pspec) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSetChildProperty", Type=typeof(Gtk.Container))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="property_id" Type="System.UInt32" />
+        <Parameter Name="value" Type="GLib.Value" />
+        <Parameter Name="pspec" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <param name="property_id">To be added.</param>
+        <param name="value">To be added.</param>
+        <param name="pspec">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PropagateDraw">
+      <MemberSignature Language="C#" Value="public void PropagateDraw (Gtk.Widget child, Cairo.Context cr);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PropagateDraw(class Gtk.Widget child, class Cairo.Context cr) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="cr" Type="Cairo.Context" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <param name="cr">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ReallocateRedraws">
+      <MemberSignature Language="C#" Value="public bool ReallocateRedraws { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ReallocateRedraws" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The redraw-reallocation flag. Containers requesting 
+	  reallocation redraws get automatically redrawn if any of their 
+	  children changed allocation. </summary>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Remove">
+      <MemberSignature Language="C#" Value="public void Remove (Gtk.Widget widget);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Remove(class Gtk.Widget widget) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
+        <summary>Removes a <see cref="T:Gtk.Widget" /> from the <see cref="T:Gtk.Container" />.</summary>
+        <remarks>
+          <see cref="T:Gtk.Widget" /> must be inside <see cref="T:Gtk.Container" />.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Removed">
+      <MemberSignature Language="C#" Value="public event Gtk.RemovedHandler Removed;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RemovedHandler Removed" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("remove")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.RemovedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when a child widget is removed from this container</summary>
+        <remarks>Note that this event is raised only when <see cref="M:Gtk.Container.Remove" /> (or its C equivalent) is called. If a <see cref="T:Gtk.Container" /> subclass defines additional methods for removing widgets, then calling those methods will not result in this event being raised.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResizeChecked">
+      <MemberSignature Language="C#" Value="public event EventHandler ResizeChecked;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ResizeChecked" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("check-resize")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when this container's resizability is queried.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ResizeChildren">
+      <MemberSignature Language="C#" Value="public void ResizeChildren ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ResizeChildren() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Tries to resize the child widgets of this container.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ResizeMode">
+      <MemberSignature Language="C#" Value="public Gtk.ResizeMode ResizeMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.ResizeMode ResizeMode" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("resize-mode")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ResizeMode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>How this container behaves when resized.</summary>
+        <value>an object of type <see cref="T:Gtk.ResizeMode" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SupportedChildType">
+      <MemberSignature Language="C#" Value="public GLib.GType SupportedChildType ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype GLib.GType SupportedChildType() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="UnsetFocusChain">
+      <MemberSignature Language="C#" Value="public void UnsetFocusChain ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void UnsetFocusChain() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Removes a focus chain.</summary>
+        <remarks>Removes a focus chain explicitly set with <see cref="M:Gtk.Container.FocusChain" />.</remarks>
       </Docs>
     </Member>
   </Members>

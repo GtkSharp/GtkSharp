@@ -1,5 +1,6 @@
 <Type Name="Marshaller" FullName="GLib.Marshaller">
   <TypeSignature Language="C#" Value="public class Marshaller" Maintainer="auto" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Marshaller extends System.Object" />
   <AssemblyInfo>
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
@@ -17,7 +18,13 @@
   <Members>
     <Member MemberName="ArgvToArrayPtr">
       <MemberSignature Language="C#" Value="public static IntPtr ArgvToArrayPtr (string[] args);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int ArgvToArrayPtr(string[] args) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use GLib.Argv instead to avoid leaks.")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
@@ -30,15 +37,16 @@
         <returns>a <see cref="T:System.IntPtr" /></returns>
         <remarks>Replaced by <see cref="T:GLib.Argv" /></remarks>
       </Docs>
+    </Member>
+    <Member MemberName="ArrayPtrToArgv">
+      <MemberSignature Language="C#" Value="public static string[] ArrayPtrToArgv (IntPtr array, int argc);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string[] ArrayPtrToArgv(native int array, int32 argc) cil managed" />
+      <MemberType>Method</MemberType>
       <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete("Use GLib.Argv instead to avoid leaks.")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="ArrayPtrToArgv">
-      <MemberSignature Language="C#" Value="public static string[] ArrayPtrToArgv (IntPtr array, int argc);" />
-      <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String[]</ReturnType>
       </ReturnValue>
@@ -53,14 +61,52 @@
         <returns>a <see cref="T:System.String[]" /></returns>
         <remarks>Replaced by <see cref="T:GLib.Argv" /></remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("Use GLib.Argv instead to avoid leaks.")</AttributeName>
-        </Attribute>
-      </Attributes>
+    </Member>
+    <Member MemberName="ArrayPtrToArray">
+      <MemberSignature Language="C#" Value="public static Array ArrayPtrToArray (IntPtr array_ptr, Type element_type, int length, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Array ArrayPtrToArray(native int array_ptr, class System.Type element_type, int32 length, bool owned) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Array</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array_ptr" Type="System.IntPtr" />
+        <Parameter Name="element_type" Type="System.Type" />
+        <Parameter Name="length" Type="System.Int32" />
+        <Parameter Name="owned" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="array_ptr">To be added.</param>
+        <param name="element_type">To be added.</param>
+        <param name="length">To be added.</param>
+        <param name="owned">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ArrayToArrayPtr">
+      <MemberSignature Language="C#" Value="public static IntPtr ArrayToArrayPtr (byte[] array);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int ArrayToArrayPtr(unsigned int8[] array) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <param name="array">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
     </Member>
     <Member MemberName="CharToGUnichar">
       <MemberSignature Language="C#" Value="public static uint CharToGUnichar (char c);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int32 CharToGUnichar(char c) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
@@ -78,6 +124,7 @@
     </Member>
     <Member MemberName="DateTimeTotime_t">
       <MemberSignature Language="C#" Value="public static IntPtr DateTimeTotime_t (DateTime time);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int DateTimeTotime_t(valuetype System.DateTime time) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
@@ -94,6 +141,7 @@
     </Member>
     <Member MemberName="FilenamePtrToString">
       <MemberSignature Language="C#" Value="public static string FilenamePtrToString (IntPtr ptr);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string FilenamePtrToString(native int ptr) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -111,6 +159,7 @@
     </Member>
     <Member MemberName="FilenamePtrToStringGFree">
       <MemberSignature Language="C#" Value="public static string FilenamePtrToStringGFree (IntPtr ptr);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string FilenamePtrToStringGFree(native int ptr) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -128,6 +177,7 @@
     </Member>
     <Member MemberName="Free">
       <MemberSignature Language="C#" Value="public static void Free (IntPtr ptr);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Free(native int ptr) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -144,6 +194,7 @@
     </Member>
     <Member MemberName="Free">
       <MemberSignature Language="C#" Value="public static void Free (IntPtr[] ptrs);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Free(native int[] ptrs) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -159,6 +210,7 @@
     </Member>
     <Member MemberName="GUnicharToChar">
       <MemberSignature Language="C#" Value="public static char GUnicharToChar (uint ucs4_char);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig char GUnicharToChar(unsigned int32 ucs4_char) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Char</ReturnType>
@@ -176,6 +228,7 @@
     </Member>
     <Member MemberName="GUnicharToString">
       <MemberSignature Language="C#" Value="public static string GUnicharToString (uint ucs4_char);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string GUnicharToString(unsigned int32 ucs4_char) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -193,6 +246,7 @@
     </Member>
     <Member MemberName="ListPtrToArray">
       <MemberSignature Language="C#" Value="public static Array ListPtrToArray (IntPtr list_ptr, Type list_type, bool owned, bool elements_owned, Type elem_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Array ListPtrToArray(native int list_ptr, class System.Type list_type, bool owned, bool elements_owned, class System.Type elem_type) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Array</ReturnType>
@@ -218,6 +272,7 @@
     </Member>
     <Member MemberName="ListToArray">
       <MemberSignature Language="C#" Value="public static Array ListToArray (GLib.ListBase list, Type type);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Array ListToArray(class GLib.ListBase list, class System.Type type) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Array</ReturnType>
@@ -237,6 +292,7 @@
     </Member>
     <Member MemberName="Malloc">
       <MemberSignature Language="C#" Value="public static IntPtr Malloc (ulong size);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int Malloc(unsigned int64 size) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
@@ -253,6 +309,7 @@
     </Member>
     <Member MemberName="NullTermPtrToStringArray">
       <MemberSignature Language="C#" Value="public static string[] NullTermPtrToStringArray (IntPtr null_term_array, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string[] NullTermPtrToStringArray(native int null_term_array, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String[]</ReturnType>
@@ -271,6 +328,7 @@
     </Member>
     <Member MemberName="PtrArrayToArray">
       <MemberSignature Language="C#" Value="public static Array PtrArrayToArray (IntPtr list_ptr, bool owned, bool elements_owned, Type elem_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Array PtrArrayToArray(native int list_ptr, bool owned, bool elements_owned, class System.Type elem_type) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Array</ReturnType>
@@ -294,6 +352,7 @@
     </Member>
     <Member MemberName="PtrToStringArrayGFree">
       <MemberSignature Language="C#" Value="public static string[] PtrToStringArrayGFree (IntPtr string_array);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string[] PtrToStringArrayGFree(native int string_array) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String[]</ReturnType>
@@ -310,6 +369,7 @@
     </Member>
     <Member MemberName="PtrToStringGFree">
       <MemberSignature Language="C#" Value="public static string PtrToStringGFree (IntPtr ptr);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string PtrToStringGFree(native int ptr) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -326,6 +386,7 @@
     </Member>
     <Member MemberName="PtrToStringGFree">
       <MemberSignature Language="C#" Value="public static string[] PtrToStringGFree (IntPtr[] ptrs);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string[] PtrToStringGFree(native int[] ptrs) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String[]</ReturnType>
@@ -342,6 +403,7 @@
     </Member>
     <Member MemberName="StrFreeV">
       <MemberSignature Language="C#" Value="public static void StrFreeV (IntPtr null_term_array);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void StrFreeV(native int null_term_array) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -357,6 +419,7 @@
     </Member>
     <Member MemberName="StringArrayToNullTermPointer">
       <MemberSignature Language="C#" Value="public static IntPtr[] StringArrayToNullTermPointer (string[] strs);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int[] StringArrayToNullTermPointer(string[] strs) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr[]</ReturnType>
@@ -373,6 +436,7 @@
     </Member>
     <Member MemberName="StringFormat">
       <MemberSignature Language="C#" Value="public static string StringFormat (string format, object[] args);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string StringFormat(string format, object[] args) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -398,6 +462,7 @@
     </Member>
     <Member MemberName="StringToFilenamePtr">
       <MemberSignature Language="C#" Value="public static IntPtr StringToFilenamePtr (string str);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int StringToFilenamePtr(string str) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
@@ -415,6 +480,7 @@
     </Member>
     <Member MemberName="StringToPtrGStrdup">
       <MemberSignature Language="C#" Value="public static IntPtr StringToPtrGStrdup (string str);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int StringToPtrGStrdup(string str) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
@@ -431,6 +497,7 @@
     </Member>
     <Member MemberName="StructureToPtrAlloc">
       <MemberSignature Language="C#" Value="public static IntPtr StructureToPtrAlloc (object o);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int StructureToPtrAlloc(object o) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
@@ -448,6 +515,7 @@
     </Member>
     <Member MemberName="time_tToDateTime">
       <MemberSignature Language="C#" Value="public static DateTime time_tToDateTime (IntPtr time_t);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.DateTime time_tToDateTime(native int time_t) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.DateTime</ReturnType>
@@ -464,6 +532,7 @@
     </Member>
     <Member MemberName="Utf8PtrToString">
       <MemberSignature Language="C#" Value="public static string Utf8PtrToString (IntPtr ptr);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string Utf8PtrToString(native int ptr) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -481,6 +550,7 @@
     </Member>
     <Member MemberName="Utf8PtrToString">
       <MemberSignature Language="C#" Value="public static string[] Utf8PtrToString (IntPtr[] ptrs);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string[] Utf8PtrToString(native int[] ptrs) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String[]</ReturnType>

@@ -1,12 +1,20 @@
 <Type Name="TextView" FullName="Gtk.TextView">
-  <TypeSignature Language="C#" Maintainer="duncan" Value="public class TextView : Gtk.Container" />
+  <TypeSignature Language="C#" Maintainer="duncan" Value="public class TextView : Gtk.Container, Gtk.Scrollable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit TextView extends Gtk.Container implements class GLib.IWrapper, class Gtk.Scrollable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Container</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Gtk.Scrollable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>Widget that displays a <see cref="T:Gtk.TextBuffer" /></summary>
     <remarks>
@@ -58,63 +66,144 @@ class TextViewSample
       </example>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Container</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="BufferToWindowCoords">
-      <MemberSignature Language="C#" Value="public void BufferToWindowCoords (Gtk.TextWindowType win, int buffer_x, int buffer_y, out int window_x, out int window_y);" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TextView ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Creates a new TextView</summary>
+        <remarks>
+          <para>
+            If you don't set the <see cref="P:Gtk.TextView.Buffer" /> before using
+            the text view, an empty default buffer will be created for
+            you. If you want to specify your own buffer, use
+            <see cref="C:Gtk.TextView(Gtk.TextBuffer)" />.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TextView (Gtk.TextBuffer buffer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Gtk.TextBuffer buffer) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="buffer" Type="Gtk.TextBuffer" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">the buffer to be displayed</param>
+        <summary>Creates a new TextView displaying a specified buffer.</summary>
+        <remarks>
+          <para>
+            Creates a new <see cref="T:Gtk.TextView" /> widget
+            displaying the <paramref name="buffer" /> buffer. One
+            buffer can be shared among many widgets.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TextView (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AcceptsTab">
+      <MemberSignature Language="C#" Value="public bool AcceptsTab { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AcceptsTab" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("accepts-tab")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether Tab will result in a tab character being entered.</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>Defaults to true.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="AddChildAtAnchor">
+      <MemberSignature Language="C#" Value="public void AddChildAtAnchor (Gtk.Widget child, Gtk.TextChildAnchor anchor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddChildAtAnchor(class Gtk.Widget child, class Gtk.TextChildAnchor anchor) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="win" Type="Gtk.TextWindowType" />
-        <Parameter Name="buffer_x" Type="System.Int32" />
-        <Parameter Name="buffer_y" Type="System.Int32" />
-        <Parameter Name="window_x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="window_y" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="anchor" Type="Gtk.TextChildAnchor" />
       </Parameters>
       <Docs>
-        <summary>
-          Converts specified buffer coordinates to coordinates
-          for window
-        </summary>
-        <param name="win">
-          a <see cref="T:Gtk.TextWindowType" />,
-          except for <see cref="T:Gtk.TextWindowType.Private" /></param>
-        <param name="buffer_x">x coordinate of the buffer</param>
-        <param name="buffer_y">y coordinate of the buffer</param>
-        <param name="window_x">return location for the window's x coordinate</param>
-        <param name="window_y">return location for the window's y coordinate</param>
-        <remarks>
-          <para>
-            Note that you can't convert coordinates for a nonexisting
-            window (see <see cref="M:Ptk.TextView.SetBorderWindowSize(Gtk.TextWindowType,System.Int32)" />.
-          </para>
-        </remarks>
+        <param name="child">any <see cref="M:Gtk.Widget" /></param>
+        <param name="anchor">
+          a <see cref="M:Gtk.TextChildAnchor" /> in the current <see cref="P:Gtk.TextView.Buffer" /></param>
+        <summary>Adds a child widget in the text buffer, at the given anchor</summary>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GetBorderWindowSize">
-      <MemberSignature Language="C#" Value="public int GetBorderWindowSize (Gtk.TextWindowType type);" />
+    <Member MemberName="AddChildInWindow">
+      <MemberSignature Language="C#" Value="public void AddChildInWindow (Gtk.Widget child, Gtk.TextWindowType which_window, int xpos, int ypos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddChildInWindow(class Gtk.Widget child, valuetype Gtk.TextWindowType which_window, int32 xpos, int32 ypos) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="type" Type="Gtk.TextWindowType" />
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="which_window" Type="Gtk.TextWindowType" />
+        <Parameter Name="xpos" Type="System.Int32" />
+        <Parameter Name="ypos" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Gets the width of the specified border window.</summary>
-        <param name="type">a window to return size from</param>
-        <returns>the width of the window</returns>
-        <remarks />
+        <param name="child">a <see cref="T:Gtk.Widget" /></param>
+        <param name="which_window">a <see cref="T:Gtk.TextWindowType" /></param>
+        <param name="xpos">a <see cref="T:System.Int32" /></param>
+        <param name="ypos">a <see cref="T:System.Int32" /></param>
+        <summary>Adds a child at fixed coordinates in one of the text widget's windows.</summary>
+        <remarks>The window must have non-zero size (see <see cref="M:Gtk.TextView.SetBorderWindowSize()" />). Note that the child coordinates are given relative to the <see cref="T:Gdk.Window" /> in question, and that these coordinates have no sane relationship to scrolling. When placing a child in GTK_TEXT_WINDOW_WIDGET, scrolling is irrelevant, the child floats above all scrollable areas. But when placing a child in one of the scrollable windows (border windows or text window), you will need to compute the child's correct position in buffer coordinates any time scrolling occurs or buffer changes occur, and then call <see cref="M:Gtk.TextView.MoveChild()" /> to update the child's position. Unfortunately there is no good way to detect that scrolling has occurred, using the current API; a possible hack would be to update all child positions when the scroll adjustments change or the text buffer changes. See bug 64518 on bugzilla.gnome.org for status of fixing this issue.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Backspace">
+      <MemberSignature Language="C#" Value="public event EventHandler Backspace;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Backspace" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("backspace")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
       </Docs>
     </Member>
     <Member MemberName="BackwardDisplayLine">
       <MemberSignature Language="C#" Value="public bool BackwardDisplayLine (ref Gtk.TextIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardDisplayLine(valuetype Gtk.TextIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -123,8 +212,8 @@ class TextViewSample
         <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <summary>Moves the given iter backward by one display (wrapped) line</summary>
         <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <summary>Moves the given iter backward by one display (wrapped) line</summary>
         <returns>
           <see langword="true" /> if <paramref name="iter" /> was moved and is not on the end iterator</returns>
         <remarks>
@@ -143,77 +232,9 @@ class TextViewSample
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="GetWindow">
-      <MemberSignature Language="C#" Value="public Gdk.Window GetWindow (Gtk.TextWindowType win);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="win" Type="Gtk.TextWindowType" />
-      </Parameters>
-      <Docs>
-        <summary>Retrieves the <see cref="T:Gdk.Window" /> corresponding to an area of the text view</summary>
-        <param name="win">window to get</param>
-        <returns>
-          a <see cref="T:Gdk.Window" />, or <see langword="null" /></returns>
-        <remarks>
-          <para>
-            Retrieves the <see cref="T:Gdk.Window" /> corresponding to
-            an area of the text view; possible windows include the
-            overall widget window, child windows on the left, right,
-            top, bottom, and the window that displays the text
-            buffer. Windows are <see langword="null" /> and
-            nonexistent if their width or height is 0, and are
-            nonexistent before the widget has been realized.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetBorderWindowSize">
-      <MemberSignature Language="C#" Value="public void SetBorderWindowSize (Gtk.TextWindowType type, int size);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="Gtk.TextWindowType" />
-        <Parameter Name="size" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>
-          Sets the width of <see cref="T:Gtk.TextWindowType.Left" />
-          or <see cref="T:Gtk.TextWindowType.Right" />, or the height of
-          <see cref="T:Gtk.TextWindow.Top" /> or <see cref="T:Gtk.TextWindow.Bottom" />.
-        </summary>
-        <param name="type">the window to affect</param>
-        <param name="size">the width or height of the window</param>
-        <remarks>
-          <para>
-            Automatically destroys the corresponding window if the
-            size is set to 0, and creates the window if the size is
-            set to non-zero. This function can only be used for the
-            "border windows," it doesn't work with <see cref="T:Gtk.TextWindowType.Widget" />, <see cref="T:Gtk.TextWindow.Text" />, or <see cref="T:Gtk.TextWindow.Private" />.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="PlaceCursorOnscreen">
-      <MemberSignature Language="C#" Value="public bool PlaceCursorOnscreen ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves the cursor to the currently visible region of the buffer  if it isn't there already.</summary>
-        <returns>
-          <see langword="true" /> if the cursor had to be moved</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardDisplayLineEnd">
-      <MemberSignature Language="C#" Value="public bool ForwardDisplayLineEnd (ref Gtk.TextIter iter);" />
+    <Member MemberName="BackwardDisplayLineStart">
+      <MemberSignature Language="C#" Value="public bool BackwardDisplayLineStart (ref Gtk.TextIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardDisplayLineStart(valuetype Gtk.TextIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -222,8 +243,243 @@ class TextViewSample
         <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <summary>Moves <paramref name="iter" /> forward to the next display line end</summary>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <summary>Moves the given <paramref name="iter" /> backward to the next display line start</summary>
+        <returns>
+          <see langword="true" /> if <paramref name="iter" /> was moved and is not on the end iterator</returns>
+        <remarks>
+          <para>
+            A display line is different from a paragraph. Paragraphs
+            are separated by newlines or other paragraph separator
+            characters. Display lines are created by line-wrapping a
+            paragraph. If wrapping is turned off, display lines and
+            paragraphs will be the same. Display lines are divided
+            differently for each view, since they depend on the view's
+            width; paragraphs are the same in all views, since they
+            depend on the contents of the <see cref="T:Gtk.TextBuffer" />.
+          </para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="Buffer">
+      <MemberSignature Language="C#" Value="public Gtk.TextBuffer Buffer { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TextBuffer Buffer" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("buffer")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.TextBuffer</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>
+          The <see cref="T:Gtk.TextBuffer" /> displayed by the text view
+        </summary>
+        <value>the current buffer that is displayed</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BufferToWindowCoords">
+      <MemberSignature Language="C#" Value="public void BufferToWindowCoords (Gtk.TextWindowType win, int buffer_x, int buffer_y, out int window_x, out int window_y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BufferToWindowCoords(valuetype Gtk.TextWindowType win, int32 buffer_x, int32 buffer_y, int32 window_x, int32 window_y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="win" Type="Gtk.TextWindowType" />
+        <Parameter Name="buffer_x" Type="System.Int32" />
+        <Parameter Name="buffer_y" Type="System.Int32" />
+        <Parameter Name="window_x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="window_y" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="win">
+          a <see cref="T:Gtk.TextWindowType" />,
+          except for <see cref="T:Gtk.TextWindowType.Private" /></param>
+        <param name="buffer_x">x coordinate of the buffer</param>
+        <param name="buffer_y">y coordinate of the buffer</param>
+        <param name="window_x">return location for the window's x coordinate</param>
+        <param name="window_y">return location for the window's y coordinate</param>
+        <summary>
+          Converts specified buffer coordinates to coordinates
+          for window
+        </summary>
+        <remarks>
+          <para>
+            Note that you can't convert coordinates for a nonexisting
+            window (see <see cref="M:Ptk.TextView.SetBorderWindowSize(Gtk.TextWindowType,System.Int32)" />.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CopyClipboard">
+      <MemberSignature Language="C#" Value="public event EventHandler CopyClipboard;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler CopyClipboard" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("copy-clipboard")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when text is copied to the clipboard.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="CursorVisible">
+      <MemberSignature Language="C#" Value="public bool CursorVisible { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CursorVisible" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("cursor-visible")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Whether the insertion point is displayed</summary>
+        <value>whether the insertion point is visible</value>
+        <remarks>Defaults to true.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CutClipboard">
+      <MemberSignature Language="C#" Value="public event EventHandler CutClipboard;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler CutClipboard" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("cut-clipboard")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised whenever a selection is cut to the clipboard.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultAttributes">
+      <MemberSignature Language="C#" Value="public Gtk.TextAttributes DefaultAttributes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TextAttributes DefaultAttributes" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TextAttributes</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The default text attributes</summary>
+        <value>a <see cref="T:Gtk.TextAttribute" />s</value>
+        <remarks>
+          <para>
+            Obtains a copy of the default text attributes. These are
+            the attributes used for text unless a tag overrides
+            them. You'd typically pass the default attributes in to
+            <see cref="M:Gtk.TextIter.GetAttributes(System.Boolean)" /> in order to get the attributes in effect at a given
+            text position.
+          </para>
+          <para>
+            The return valuea is a copy owned by the caller of this
+            function, and should be freed.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteFromCursor">
+      <MemberSignature Language="C#" Value="public event Gtk.DeleteFromCursorHandler DeleteFromCursor;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.DeleteFromCursorHandler DeleteFromCursor" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("delete-from-cursor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.DeleteFromCursorHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when text is deleted from the cursor (usually by hitting Backspace or Delete).</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Editable">
+      <MemberSignature Language="C#" Value="public bool Editable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Editable" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("editable")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Whether the text can be modified by the user</summary>
+        <value>Whether or not the text can be edited by the user.</value>
+        <remarks>Defaults to true.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardDisplayLine">
+      <MemberSignature Language="C#" Value="public bool ForwardDisplayLine (ref Gtk.TextIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardDisplayLine(valuetype Gtk.TextIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <summary>Moves the given <paramref name="iter" /> forward by one display (wrapped) line</summary>
+        <returns>
+          <see langword="true" /> if <paramref name="iter" /> was moved and is not on the end iterator</returns>
+        <remarks>
+          <para>
+            A display line is different from a paragraph. Paragraphs
+            are separated by newlines or other paragraph separator
+            characters. Display lines are created by line-wrapping a
+            paragraph. If wrapping is turned off, display lines and
+            paragraphs will be the same. Display lines are divided
+            differently for each view, since they depend on the view's
+            width; paragraphs are the same in all views, since they
+            depend on the contents of the <see cref="T:Gtk.TextBuffer" />.
+          </para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardDisplayLineEnd">
+      <MemberSignature Language="C#" Value="public bool ForwardDisplayLineEnd (ref Gtk.TextIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardDisplayLineEnd(valuetype Gtk.TextIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
         <param name="iter">a <see cref="T:Gtk.TextIter" /></param>
+        <summary>Moves <paramref name="iter" /> forward to the next display line end</summary>
         <returns>
           <see langword="true" /> if <paramref name="iter" /> was moved and is not on the end iterator</returns>
         <remarks>
@@ -243,84 +499,125 @@ class TextViewSample
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="AddChildAtAnchor">
-      <MemberSignature Language="C#" Value="public void AddChildAtAnchor (Gtk.Widget child, Gtk.TextChildAnchor anchor);" />
+    <Member MemberName="GetBorderWindowSize">
+      <MemberSignature Language="C#" Value="public int GetBorderWindowSize (Gtk.TextWindowType type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetBorderWindowSize(valuetype Gtk.TextWindowType type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="Gtk.TextWindowType" />
+      </Parameters>
+      <Docs>
+        <param name="type">a window to return size from</param>
+        <summary>Gets the width of the specified border window.</summary>
+        <returns>the width of the window</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCursorLocations">
+      <MemberSignature Language="C#" Value="public void GetCursorLocations (Gtk.TextIter iter, Gdk.Rectangle strong, Gdk.Rectangle weak);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetCursorLocations(valuetype Gtk.TextIter iter, valuetype Gdk.Rectangle strong, valuetype Gdk.Rectangle weak) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="anchor" Type="Gtk.TextChildAnchor" />
+        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="strong" Type="Gdk.Rectangle" />
+        <Parameter Name="weak" Type="Gdk.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>Adds a child widget in the text buffer, at the given anchor</summary>
-        <param name="child">any <see cref="M:Gtk.Widget" /></param>
-        <param name="anchor">
-          a <see cref="M:Gtk.TextChildAnchor" /> in the current <see cref="P:Gtk.TextView.Buffer" /></param>
-        <remarks />
+        <param name="iter">To be added.</param>
+        <param name="strong">To be added.</param>
+        <param name="weak">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="BackwardDisplayLineStart">
-      <MemberSignature Language="C#" Value="public bool BackwardDisplayLineStart (ref Gtk.TextIter iter);" />
+    <Member MemberName="GetIterAtLocation">
+      <MemberSignature Language="C#" Value="public Gtk.TextIter GetIterAtLocation (int x, int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gtk.TextIter GetIterAtLocation(int32 x, int32 y) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>Gtk.TextIter</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Moves the given <paramref name="iter" /> backward to the next display line start</summary>
-        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
-        <returns>
-          <see langword="true" /> if <paramref name="iter" /> was moved and is not on the end iterator</returns>
-        <remarks>
-          <para>
-            A display line is different from a paragraph. Paragraphs
-            are separated by newlines or other paragraph separator
-            characters. Display lines are created by line-wrapping a
-            paragraph. If wrapping is turned off, display lines and
-            paragraphs will be the same. Display lines are divided
-            differently for each view, since they depend on the view's
-            width; paragraphs are the same in all views, since they
-            depend on the contents of the <see cref="T:Gtk.TextBuffer" />.
-          </para>
-        </remarks>
-        <since version="Gtk# 2.4" />
+        <param name="x"> x position, in buffer coordinates</param>
+        <param name="y"> y position, in buffer coordinates</param>
+        <summary>Retrieves the iterator at buffer coordinates <paramref name="x" /> and <paramref name="y" />.</summary>
+        <returns>a <see cref="T:Gtk.TextIter" /></returns>
+        <remarks>Buffer coordinates are coordinates for the entire buffer, not just the currently-displayed portion. If you have coordinates from an event, you have to convert those to buffer coordinates with <see cref="M:Gtk.TextView.WindowToBufferCoords()" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ForwardDisplayLine">
-      <MemberSignature Language="C#" Value="public bool ForwardDisplayLine (ref Gtk.TextIter iter);" />
+    <Member MemberName="GetIterAtPosition">
+      <MemberSignature Language="C#" Value="public int GetIterAtPosition (Gtk.TextIter iter, int x, int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetIterAtPosition(valuetype Gtk.TextIter iter, int32 x, int32 y) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
+        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Moves the given <paramref name="iter" /> forward by one display (wrapped) line</summary>
-        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
-        <returns>
-          <see langword="true" /> if <paramref name="iter" /> was moved and is not on the end iterator</returns>
-        <remarks>
-          <para>
-            A display line is different from a paragraph. Paragraphs
-            are separated by newlines or other paragraph separator
-            characters. Display lines are created by line-wrapping a
-            paragraph. If wrapping is turned off, display lines and
-            paragraphs will be the same. Display lines are divided
-            differently for each view, since they depend on the view's
-            width; paragraphs are the same in all views, since they
-            depend on the contents of the <see cref="T:Gtk.TextBuffer" />.
-          </para>
-        </remarks>
-        <since version="Gtk# 2.4" />
+        <param name="iter">a <see cref="T:Gtk.TextIter" /></param>
+        <param name="x">a <see cref="T:System.Int32" /></param>
+        <param name="y">a <see cref="T:System.Int32" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIterLocation">
+      <MemberSignature Language="C#" Value="public Gdk.Rectangle GetIterLocation (Gtk.TextIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gdk.Rectangle GetIterLocation(valuetype Gtk.TextIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Rectangle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="iter">a <see cref="T:Gtk.TextIter" /></param>
+        <summary>Gets a rectangle which roughly contains the character at iter.</summary>
+        <returns>a <see cref="T:Gdk.Rectangle" />, which is the bounds of the character at <paramref name="iter" /></returns>
+        <remarks>The rectangle position is in buffer coordinates; use <see cref="M:Gtk.TextView.BufferToWindowCoords()" /> to convert these coordinates to coordinates for one of the windows in the text view.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLineAtY">
+      <MemberSignature Language="C#" Value="public void GetLineAtY (out Gtk.TextIter target_iter, int y, out int line_top);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetLineAtY(valuetype Gtk.TextIter target_iter, int32 y, int32 line_top) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="target_iter" Type="Gtk.TextIter&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="line_top" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="target_iter">a <see cref="T:Gtk.TextIter" /></param>
+        <param name="y"> a y coordinate</param>
+        <param name="line_top"> return location for top coordinate of the line</param>
+        <summary>This method should be fixed</summary>
+        <remarks>Gets the <see cref="T:Gtk.TextIter" /> at the start of the line containing the coordinate <paramref name="y" />. <paramref name="y" /> is in buffer coordinates, convert from window coordinates with <see cref="M:Gtk.TextView.WindowToBufferCoords()" />. If non-<see langword="null" />, <paramref name="line_top" /> will be filled with the coordinate of the top edge of the line.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetLineYrange">
       <MemberSignature Language="C#" Value="public void GetLineYrange (Gtk.TextIter iter, out int y, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetLineYrange(valuetype Gtk.TextIter iter, int32 y, int32 height) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -331,13 +628,13 @@ class TextViewSample
         <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <param name="y">return location for the y coordinate</param>
+        <param name="height">return location for the height</param>
         <summary>
           Gets the y coordinate of the top of the line
           containing <paramref name="iter" />, and the height of the line
         </summary>
-        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
-        <param name="y">return location for the y coordinate</param>
-        <param name="height">return location for the height</param>
         <remarks>
           Gets the y coordinate of the top of the line containing
           iter, and the height of the line. The coordinate is a buffer
@@ -345,73 +642,37 @@ class TextViewSample
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="ScrollToMark">
-      <MemberSignature Language="C#" Value="public void ScrollToMark (Gtk.TextMark mark, double within_margin, bool use_align, double xalign, double yalign);" />
+    <Member MemberName="GetWindow">
+      <MemberSignature Language="C#" Value="public Gdk.Window GetWindow (Gtk.TextWindowType win);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.Window GetWindow(valuetype Gtk.TextWindowType win) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gdk.Window</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="mark" Type="Gtk.TextMark" />
-        <Parameter Name="within_margin" Type="System.Double" />
-        <Parameter Name="use_align" Type="System.Boolean" />
-        <Parameter Name="xalign" Type="System.Double" />
-        <Parameter Name="yalign" Type="System.Double" />
+        <Parameter Name="win" Type="Gtk.TextWindowType" />
       </Parameters>
       <Docs>
-        <summary>
-          Scrolls the view so that <paramref name="mark" /> is on the
-          screen in the position indicated by <paramref name="xalign" /> and <paramref name="yalign" /></summary>
-        <param name="mark">a given <see cref="T:Gtk.TextMark" /></param>
-        <param name="within_margin">
-          margin of screen size, the valid range is 0.0 to 0.5
-        </param>
-        <param name="use_align">
-          whether to use alignment arguments (if <see langword="false" />, just get the mark onscreen)
-        </param>
-        <param name="xalign">
-          horizontal alignment of mark within visible area
-        </param>
-        <param name="yalign">
-          vertical alignment of mark within visible area
-        </param>
-        <remarks>
-          <para>
-            An alignment of 0.0 indicates left or top, 1.0 indicates
-            right or bottom, 0.5 means center. If <paramref name="use_align" /> is <see langword="false" />,
-            the text scrolls the minimal distance to get the mark
-            onscreen, possibly not scrolling at all. The effective
-            screen for purposes of this function is reduced by a
-            margin of size <paramref name="within_margin" />.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="StartsDisplayLine">
-      <MemberSignature Language="C#" Value="public bool StartsDisplayLine (Gtk.TextIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Determines whether iter is at the start of a display line</summary>
-        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <param name="win">window to get</param>
+        <summary>Retrieves the <see cref="T:Gdk.Window" /> corresponding to an area of the text view</summary>
         <returns>
-          <see langword="true" /> if <paramref name="iter" /> begins a wrapped line</returns>
+          a <see cref="T:Gdk.Window" />, or <see langword="null" /></returns>
         <remarks>
           <para>
-            Determines whether iter is at the start of a display
-            line. See <see cref="M:GtkTextView.ForwardDisplayLine(Gtk.TextIter)" /> for an
-            explanation of display lines vs. paragraphs.
+            Retrieves the <see cref="T:Gdk.Window" /> corresponding to
+            an area of the text view; possible windows include the
+            overall widget window, child windows on the left, right,
+            top, bottom, and the window that displays the text
+            buffer. Windows are <see langword="null" /> and
+            nonexistent if their width or height is 0, and are
+            nonexistent before the widget has been realized.
           </para>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetWindowType">
       <MemberSignature Language="C#" Value="public Gtk.TextWindowType GetWindowType (Gdk.Window window);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gtk.TextWindowType GetWindowType(class Gdk.Window window) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TextWindowType</ReturnType>
@@ -420,14 +681,265 @@ class TextViewSample
         <Parameter Name="window" Type="Gdk.Window" />
       </Parameters>
       <Docs>
-        <summary>Used for finding out which window an event corresponds to</summary>
         <param name="window">a window type</param>
+        <summary>Used for finding out which window an event corresponds to</summary>
         <returns>the window type</returns>
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TextView" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Hadjustment">
+      <MemberSignature Language="C#" Value="public Gtk.Adjustment Hadjustment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Adjustment Hadjustment" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("hadjustment")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Adjustment</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="HscrollPolicy">
+      <MemberSignature Language="C#" Value="public Gtk.ScrollablePolicy HscrollPolicy { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.ScrollablePolicy HscrollPolicy" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("hscroll-policy")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ScrollablePolicy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ImContextFilterKeypress">
+      <MemberSignature Language="C#" Value="public bool ImContextFilterKeypress (Gdk.EventKey evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ImContextFilterKeypress(class Gdk.EventKey evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.EventKey" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ImModule">
+      <MemberSignature Language="C#" Value="public string ImModule { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ImModule" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("im-module")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Indent">
+      <MemberSignature Language="C#" Value="public int Indent { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Indent" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("indent")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The default indentation for paragraphs</summary>
+        <value>The number of pixels of indentation.</value>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may override the default.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertAtCursor">
+      <MemberSignature Language="C#" Value="public event Gtk.InsertAtCursorHandler InsertAtCursor;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.InsertAtCursorHandler InsertAtCursor" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("insert-at-cursor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.InsertAtCursorHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised whenever text is inserted at the cursor.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Justification">
+      <MemberSignature Language="C#" Value="public Gtk.Justification Justification { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.Justification Justification" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("justification")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Justification</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The default justification</summary>
+        <value>The default justification of paragraphs</value>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
+            override the defaults.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LeftMargin">
+      <MemberSignature Language="C#" Value="public int LeftMargin { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 LeftMargin" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("left-margin")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The default left margin</summary>
+        <value>The left margin.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveChild">
+      <MemberSignature Language="C#" Value="public void MoveChild (Gtk.Widget child, int xpos, int ypos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void MoveChild(class Gtk.Widget child, int32 xpos, int32 ypos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="xpos" Type="System.Int32" />
+        <Parameter Name="ypos" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="child"> child widget already added to the text view</param>
+        <param name="xpos"> new X position in window coordinates</param>
+        <param name="ypos"> new Y position in window coordinates</param>
+        <summary>Updates the position of a child</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCursor">
+      <MemberSignature Language="C#" Value="public event Gtk.MoveCursorHandler MoveCursor;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MoveCursorHandler MoveCursor" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("move-cursor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.MoveCursorHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised whenever the cursor is moved.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveMarkOnscreen">
+      <MemberSignature Language="C#" Value="public bool MoveMarkOnscreen (Gtk.TextMark mark);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool MoveMarkOnscreen(class Gtk.TextMark mark) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mark" Type="Gtk.TextMark" />
+      </Parameters>
+      <Docs>
+        <param name="mark">a <see cref="T:Gtk.TextMark" /></param>
+        <summary>Moves <paramref name="mark" /> within the buffer so that it's located within the currently-visible text area</summary>
+        <returns>
+          <see langword="true" /> if the mark moved (wasn't already onscreen)</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveViewport">
+      <MemberSignature Language="C#" Value="public event Gtk.MoveViewportHandler MoveViewport;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MoveViewportHandler MoveViewport" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("move-viewport")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.MoveViewportHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="MoveVisually">
       <MemberSignature Language="C#" Value="public bool MoveVisually (ref Gtk.TextIter iter, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool MoveVisually(valuetype Gtk.TextIter iter, int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -437,9 +949,9 @@ class TextViewSample
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Move the iterator a given number of characters visually, treating it as the strong cursor position</summary>
         <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
         <param name="count">the number of characters to move (negative moves left, positive moves right)</param>
+        <summary>Move the iterator a given number of characters visually, treating it as the strong cursor position</summary>
         <returns>
           <see langword="true" /> if iter moved and is not on the end iterator</returns>
         <remarks>
@@ -462,25 +974,513 @@ class TextViewSample
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="MoveMarkOnscreen">
-      <MemberSignature Language="C#" Value="public bool MoveMarkOnscreen (Gtk.TextMark mark);" />
+    <Member MemberName="OnBackspace">
+      <MemberSignature Language="C#" Value="protected virtual void OnBackspace ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnBackspace() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideBackspace", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.Backspace" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.Backspace" /> event.</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnCopyClipboard">
+      <MemberSignature Language="C#" Value="protected virtual void OnCopyClipboard ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCopyClipboard() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCopyClipboard", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.CopyClipboard" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.CopyClipboard" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnCutClipboard">
+      <MemberSignature Language="C#" Value="protected virtual void OnCutClipboard ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCutClipboard() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCutClipboard", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.CutClipboard" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.CutClipboard" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnDeleteFromCursor">
+      <MemberSignature Language="C#" Value="protected virtual void OnDeleteFromCursor (Gtk.DeleteType type, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnDeleteFromCursor(valuetype Gtk.DeleteType type, int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideDeleteFromCursor", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="Gtk.DeleteType" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="type">a <see cref="T:Gtk.DeleteType" /></param>
+        <param name="count">a <see cref="T:System.Int32" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.DeleteFromCursor" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.DeleteFromCursor" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnInsertAtCursor">
+      <MemberSignature Language="C#" Value="protected virtual void OnInsertAtCursor (string str);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnInsertAtCursor(string str) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideInsertAtCursor", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="str">a <see cref="T:System.String" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.InsertAtCursor" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.InsertAtCursor" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnMoveCursor">
+      <MemberSignature Language="C#" Value="protected virtual void OnMoveCursor (Gtk.MovementStep step, int count, bool extend_selection);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnMoveCursor(valuetype Gtk.MovementStep step, int32 count, bool extend_selection) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMoveCursor", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="step" Type="Gtk.MovementStep" />
+        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="extend_selection" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="step">a <see cref="T:Gtk.MovementStep" /></param>
+        <param name="count">a <see cref="T:System.Int32" /></param>
+        <param name="extend_selection">a <see cref="T:System.Boolean" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.MoveCursor" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.MoveCursor" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnMoveViewport">
+      <MemberSignature Language="C#" Value="protected virtual void OnMoveViewport (Gtk.ScrollStep p0, int p1);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnMoveViewport(valuetype Gtk.ScrollStep p0, int32 p1) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMoveViewport", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="p0" Type="Gtk.ScrollStep" />
+        <Parameter Name="p1" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="p0">To be added.</param>
+        <param name="p1">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnPasteClipboard">
+      <MemberSignature Language="C#" Value="protected virtual void OnPasteClipboard ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPasteClipboard() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePasteClipboard", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.PasteClipboard" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.PasteClipboard" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPopulatePopup">
+      <MemberSignature Language="C#" Value="protected virtual void OnPopulatePopup (Gtk.Menu menu);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPopulatePopup(class Gtk.Menu menu) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePopulatePopup", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="menu" Type="Gtk.Menu" />
+      </Parameters>
+      <Docs>
+        <param name="menu">a <see cref="T:Gtk.Menu" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.PopulatePopup" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.PopulatePopup" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPreeditChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnPreeditChanged (string p0);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPreeditChanged(string p0) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePreeditChanged", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="p0" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="p0">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSelectAll">
+      <MemberSignature Language="C#" Value="protected virtual void OnSelectAll (bool p0);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSelectAll(bool p0) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSelectAll", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="p0" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="p0">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetAnchor">
+      <MemberSignature Language="C#" Value="protected virtual void OnSetAnchor ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSetAnchor() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSetAnchor", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.SetAnchor" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.SetAnchor" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnToggleCursorVisible">
+      <MemberSignature Language="C#" Value="protected virtual void OnToggleCursorVisible ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnToggleCursorVisible() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideToggleCursorVisible", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnToggleOverwrite">
+      <MemberSignature Language="C#" Value="protected virtual void OnToggleOverwrite ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnToggleOverwrite() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideToggleOverwrite", Type=typeof(Gtk.TextView))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.TextView.ToggleOverwrite" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.ToggleOverwrite" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Overwrite">
+      <MemberSignature Language="C#" Value="public bool Overwrite { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Overwrite" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("overwrite")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether entered text overwrites existing contents.</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>Defaults to false.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="PasteClipboard">
+      <MemberSignature Language="C#" Value="public event EventHandler PasteClipboard;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler PasteClipboard" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("paste-clipboard")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised whenever text is pasted from the clipboard.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PixelsAboveLines">
+      <MemberSignature Language="C#" Value="public int PixelsAboveLines { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 PixelsAboveLines" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("pixels-above-lines")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The default number of blank pixels above paragraphs</summary>
+        <value>the number of pixels above paragraphs</value>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
+            override the defaults.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PixelsBelowLines">
+      <MemberSignature Language="C#" Value="public int PixelsBelowLines { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 PixelsBelowLines" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("pixels-below-lines")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The default number of pixels of blank space to put below paragraphs</summary>
+        <value>the blank space below paragraphs in pixels</value>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
+            override this default.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PixelsInsideWrap">
+      <MemberSignature Language="C#" Value="public int PixelsInsideWrap { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 PixelsInsideWrap" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("pixels-inside-wrap")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The default number of pixels of blank space to leave between display/wrapped lines within a paragraph</summary>
+        <value>default number of pixels of blank space between wrapped lines</value>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
+            override this default.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PlaceCursorOnscreen">
+      <MemberSignature Language="C#" Value="public bool PlaceCursorOnscreen ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool PlaceCursorOnscreen() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves the cursor to the currently visible region of the buffer  if it isn't there already.</summary>
+        <returns>
+          <see langword="true" /> if the cursor had to be moved</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PopulatePopup">
+      <MemberSignature Language="C#" Value="public event Gtk.PopulatePopupHandler PopulatePopup;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PopulatePopupHandler PopulatePopup" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("populate-popup")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PopulatePopupHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when the popup dialog on this object needs to be filled with data.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PreeditChanged">
+      <MemberSignature Language="C#" Value="public event Gtk.PreeditChangedHandler PreeditChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PreeditChangedHandler PreeditChanged" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("preedit-changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PreeditChangedHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ResetImContext">
+      <MemberSignature Language="C#" Value="public void ResetImContext ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ResetImContext() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="RightMargin">
+      <MemberSignature Language="C#" Value="public int RightMargin { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 RightMargin" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("right-margin")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The default right margin</summary>
+        <value>the right margin</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ScrollMarkOnscreen">
+      <MemberSignature Language="C#" Value="public void ScrollMarkOnscreen (Gtk.TextMark mark);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ScrollMarkOnscreen(class Gtk.TextMark mark) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="mark" Type="Gtk.TextMark" />
       </Parameters>
       <Docs>
-        <summary>Moves <paramref name="mark" /> within the buffer so that it's located within the currently-visible text area</summary>
-        <param name="mark">a <see cref="T:Gtk.TextMark" /></param>
-        <returns>
-          <see langword="true" /> if the mark moved (wasn't already onscreen)</returns>
+        <param name="mark">
+          a mark in the current <see cref="P:Gtk.TextView.Buffer" /></param>
+        <summary>
+          Scrolls the text view the minimum distance such that <paramref name="mark" /> is contained within the visible area of
+          the widget
+        </summary>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="ScrollToIter">
       <MemberSignature Language="C#" Value="public bool ScrollToIter (Gtk.TextIter iter, double within_margin, bool use_align, double xalign, double yalign);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ScrollToIter(valuetype Gtk.TextIter iter, float64 within_margin, bool use_align, float64 xalign, float64 yalign) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -493,9 +1493,6 @@ class TextViewSample
         <Parameter Name="yalign" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>
-          Scrolls the text view so that <paramref name="iter" /> is on
-          the screen in the position indicated by <paramref name="xalign" /> and <paramref name="yalign" /></summary>
         <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
         <param name="within_margin">
           margin of screen size, the valid range is 0.0 to 0.5
@@ -505,6 +1502,9 @@ class TextViewSample
         </param>
         <param name="xalign">horizontal alignment of mark within visible area</param>
         <param name="yalign">vertical alignment of mark within visible area</param>
+        <summary>
+          Scrolls the text view so that <paramref name="iter" /> is on
+          the screen in the position indicated by <paramref name="xalign" /> and <paramref name="yalign" /></summary>
         <returns>
           <see langword="true" /> if scrolling occurred</returns>
         <remarks>
@@ -529,319 +1529,147 @@ class TextViewSample
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="ScrollMarkOnscreen">
-      <MemberSignature Language="C#" Value="public void ScrollMarkOnscreen (Gtk.TextMark mark);" />
+    <Member MemberName="ScrollToMark">
+      <MemberSignature Language="C#" Value="public void ScrollToMark (Gtk.TextMark mark, double within_margin, bool use_align, double xalign, double yalign);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ScrollToMark(class Gtk.TextMark mark, float64 within_margin, bool use_align, float64 xalign, float64 yalign) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="mark" Type="Gtk.TextMark" />
+        <Parameter Name="within_margin" Type="System.Double" />
+        <Parameter Name="use_align" Type="System.Boolean" />
+        <Parameter Name="xalign" Type="System.Double" />
+        <Parameter Name="yalign" Type="System.Double" />
       </Parameters>
       <Docs>
+        <param name="mark">a given <see cref="T:Gtk.TextMark" /></param>
+        <param name="within_margin">
+          margin of screen size, the valid range is 0.0 to 0.5
+        </param>
+        <param name="use_align">
+          whether to use alignment arguments (if <see langword="false" />, just get the mark onscreen)
+        </param>
+        <param name="xalign">
+          horizontal alignment of mark within visible area
+        </param>
+        <param name="yalign">
+          vertical alignment of mark within visible area
+        </param>
         <summary>
-          Scrolls the text view the minimum distance such that <paramref name="mark" /> is contained within the visible area of
-          the widget
-        </summary>
-        <param name="mark">
-          a mark in the current <see cref="P:Gtk.TextView.Buffer" /></param>
+          Scrolls the view so that <paramref name="mark" /> is on the
+          screen in the position indicated by <paramref name="xalign" /> and <paramref name="yalign" /></summary>
+        <remarks>
+          <para>
+            An alignment of 0.0 indicates left or top, 1.0 indicates
+            right or bottom, 0.5 means center. If <paramref name="use_align" /> is <see langword="false" />,
+            the text scrolls the minimal distance to get the mark
+            onscreen, possibly not scrolling at all. The effective
+            screen for purposes of this function is reduced by a
+            margin of size <paramref name="within_margin" />.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SelectAll">
+      <MemberSignature Language="C#" Value="public event Gtk.SelectAllHandler SelectAll;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.SelectAllHandler SelectAll" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("select-all")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.SelectAllHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetAnchor">
+      <MemberSignature Language="C#" Value="public event EventHandler SetAnchor;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler SetAnchor" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("set-anchor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised whenever an anchor (e.g. <see cref="M:Gtk.TextChildAnchor" />) is set within the TextView. </summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="WindowToBufferCoords">
-      <MemberSignature Language="C#" Value="public void WindowToBufferCoords (Gtk.TextWindowType win, int window_x, int window_y, out int buffer_x, out int buffer_y);" />
+    <Member MemberName="SetBorderWindowSize">
+      <MemberSignature Language="C#" Value="public void SetBorderWindowSize (Gtk.TextWindowType type, int size);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetBorderWindowSize(valuetype Gtk.TextWindowType type, int32 size) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="win" Type="Gtk.TextWindowType" />
-        <Parameter Name="window_x" Type="System.Int32" />
-        <Parameter Name="window_y" Type="System.Int32" />
-        <Parameter Name="buffer_x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="buffer_y" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="type" Type="Gtk.TextWindowType" />
+        <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Converts coordinates on the window to buffer coordinates</summary>
-        <param name="win">
-          a <see cref="T:Gtk.TextWindowType" /> except <see cref="T:Gtk.TextWindowType.Private" /></param>
-        <param name="window_x">x coordinate of the window</param>
-        <param name="window_y">y coordinate of the window</param>
-        <param name="buffer_x">return location for the buffer's x coordinate</param>
-        <param name="buffer_y">return location for the buffer's y coordinate</param>
-        <remarks>
-          <para>
-            Note that you can't convert coordinates for a nonexisting
-            window (see <see cref="M:Ptk.TextView.SetBorderWindowSize(Gtk.TextWindowType,System.Int32)" />.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public TextView (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public TextView ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Creates a new TextView</summary>
-        <remarks>
-          <para>
-            If you don't set the <see cref="P:Gtk.TextView.Buffer" /> before using
-            the text view, an empty default buffer will be created for
-            you. If you want to specify your own buffer, use
-            <see cref="C:Gtk.TextView(Gtk.TextBuffer)" />.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public TextView (Gtk.TextBuffer buffer);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="buffer" Type="Gtk.TextBuffer" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new TextView displaying a specified buffer.</summary>
-        <param name="buffer">the buffer to be displayed</param>
-        <remarks>
-          <para>
-            Creates a new <see cref="T:Gtk.TextView" /> widget
-            displaying the <paramref name="buffer" /> buffer. One
-            buffer can be shared among many widgets.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="DefaultAttributes">
-      <MemberSignature Language="C#" Value="public Gtk.TextAttributes DefaultAttributes { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextAttributes</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The default text attributes</summary>
-        <value>a <see cref="T:Gtk.TextAttribute" />s</value>
-        <remarks>
-          <para>
-            Obtains a copy of the default text attributes. These are
-            the attributes used for text unless a tag overrides
-            them. You'd typically pass the default attributes in to
-            <see cref="M:Gtk.TextIter.GetAttributes(System.Boolean)" /> in order to get the attributes in effect at a given
-            text position.
-          </para>
-          <para>
-            The return valuea is a copy owned by the caller of this
-            function, and should be freed.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Buffer">
-      <MemberSignature Language="C#" Value="public Gtk.TextBuffer Buffer { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextBuffer</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
+        <param name="type">the window to affect</param>
+        <param name="size">the width or height of the window</param>
         <summary>
-          The <see cref="T:Gtk.TextBuffer" /> displayed by the text view
+          Sets the width of <see cref="T:Gtk.TextWindowType.Left" />
+          or <see cref="T:Gtk.TextWindowType.Right" />, or the height of
+          <see cref="T:Gtk.TextWindow.Top" /> or <see cref="T:Gtk.TextWindow.Bottom" />.
         </summary>
-        <value>the current buffer that is displayed</value>
-        <remarks />
+        <remarks>
+          <para>
+            Automatically destroys the corresponding window if the
+            size is set to 0, and creates the window if the size is
+            set to non-zero. This function can only be used for the
+            "border windows," it doesn't work with <see cref="T:Gtk.TextWindowType.Widget" />, <see cref="T:Gtk.TextWindow.Text" />, or <see cref="T:Gtk.TextWindow.Private" />.
+          </para>
+        </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("buffer")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="CursorVisible">
-      <MemberSignature Language="C#" Value="public bool CursorVisible { set; get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="StartsDisplayLine">
+      <MemberSignature Language="C#" Value="public bool StartsDisplayLine (Gtk.TextIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool StartsDisplayLine(valuetype Gtk.TextIter iter) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
+        <Parameter Name="iter" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>Whether the insertion point is displayed</summary>
-        <value>whether the insertion point is visible</value>
-        <remarks>Defaults to true.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("cursor-visible")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="LeftMargin">
-      <MemberSignature Language="C#" Value="public int LeftMargin { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The default left margin</summary>
-        <value>The left margin.</value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("left-margin")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="RightMargin">
-      <MemberSignature Language="C#" Value="public int RightMargin { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The default right margin</summary>
-        <value>the right margin</value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("right-margin")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="PixelsAboveLines">
-      <MemberSignature Language="C#" Value="public int PixelsAboveLines { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The default number of blank pixels above paragraphs</summary>
-        <value>the number of pixels above paragraphs</value>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <summary>Determines whether iter is at the start of a display line</summary>
+        <returns>
+          <see langword="true" /> if <paramref name="iter" /> begins a wrapped line</returns>
         <remarks>
           <para>
-            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
-            override the defaults.
+            Determines whether iter is at the start of a display
+            line. See <see cref="M:GtkTextView.ForwardDisplayLine(Gtk.TextIter)" /> for an
+            explanation of display lines vs. paragraphs.
           </para>
         </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("pixels-above-lines")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Justification">
-      <MemberSignature Language="C#" Value="public Gtk.Justification Justification { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Justification</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The default justification</summary>
-        <value>The default justification of paragraphs</value>
-        <remarks>
-          <para>
-            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
-            override the defaults.
-          </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("justification")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Indent">
-      <MemberSignature Language="C#" Value="public int Indent { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The default indentation for paragraphs</summary>
-        <value>The number of pixels of indentation.</value>
-        <remarks>
-          <para>
-            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may override the default.
-          </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("indent")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Editable">
-      <MemberSignature Language="C#" Value="public bool Editable { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Whether the text can be modified by the user</summary>
-        <value>Whether or not the text can be edited by the user.</value>
-        <remarks>Defaults to true.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("editable")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="WrapMode">
-      <MemberSignature Language="C#" Value="public Gtk.WrapMode WrapMode { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.WrapMode</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Whether to wrap lines never, at word boundaries, or at character boundaries.</summary>
-        <value>the <see cref="T:Gtk.WrapMode" /> of the text view </value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("wrap-mode")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="Tabs">
-      <MemberSignature Language="C#" Value="public Pango.TabArray Tabs { set; get; };" />
+      <MemberSignature Language="C#" Value="public Pango.TabArray Tabs { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.TabArray Tabs" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("tabs")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Pango.TabArray</ReturnType>
       </ReturnValue>
@@ -852,202 +1680,34 @@ class TextViewSample
         <value>custom tabes for this text</value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("tabs")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="PixelsBelowLines">
-      <MemberSignature Language="C#" Value="public int PixelsBelowLines { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The default number of pixels of blank space to put below paragraphs</summary>
-        <value>the blank space below paragraphs in pixels</value>
-        <remarks>
-          <para>
-            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
-            override this default.
-          </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("pixels-below-lines")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="PixelsInsideWrap">
-      <MemberSignature Language="C#" Value="public int PixelsInsideWrap { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The default number of pixels of blank space to leave between display/wrapped lines within a paragraph</summary>
-        <value>default number of pixels of blank space between wrapped lines</value>
-        <remarks>
-          <para>
-            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
-            override this default.
-          </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("pixels-inside-wrap")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ScrollAdjustmentsSet">
-      <MemberSignature Language="C#" Value="public event Gtk.ScrollAdjustmentsSetHandler ScrollAdjustmentsSet;" />
+    <Member MemberName="ToggleCursorVisible">
+      <MemberSignature Language="C#" Value="public event EventHandler ToggleCursorVisible;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ToggleCursorVisible" />
       <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ScrollAdjustmentsSetHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised whenever the adjustment values for the scrollbars are set.</summary>
-        <remarks />
-      </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("set_scroll_adjustments")</AttributeName>
+          <AttributeName>GLib.Signal("toggle-cursor-visible")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="SetAnchor">
-      <MemberSignature Language="C#" Value="public event EventHandler SetAnchor;" />
-      <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
-      <Parameters />
       <Docs>
-        <summary>Raised whenever an anchor (e.g. <see cref="M:Gtk.TextChildAnchor" />) is set within the TextView. </summary>
-        <remarks />
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("set_anchor")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="MoveCursor">
-      <MemberSignature Language="C#" Value="public event Gtk.MoveCursorHandler MoveCursor;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.MoveCursorHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised whenever the cursor is moved.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("move_cursor")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="PopulatePopup">
-      <MemberSignature Language="C#" Value="public event Gtk.PopulatePopupHandler PopulatePopup;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.PopulatePopupHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when the popup dialog on this object needs to be filled with data.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("populate_popup")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="DeleteFromCursor">
-      <MemberSignature Language="C#" Value="public event Gtk.DeleteFromCursorHandler DeleteFromCursor;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.DeleteFromCursorHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when text is deleted from the cursor (usually by hitting Backspace or Delete).</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("delete_from_cursor")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="CopyClipboard">
-      <MemberSignature Language="C#" Value="public event EventHandler CopyClipboard;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when text is copied to the clipboard.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("copy_clipboard")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="MoveFocus">
-      <MemberSignature Language="C#" Value="public event Gtk.MoveFocusHandler MoveFocus;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.MoveFocusHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when the keyboard focus changes.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("move_focus")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>System.Obsolete("Replaced by keybinding signal on Gtk.Widget")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="PageHorizontally">
-      <MemberSignature Language="C#" Value="public event Gtk.PageHorizontallyHandler PageHorizontally;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.PageHorizontallyHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when the user scrolls horizontally in this widget.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("page_horizontally")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="ToggleOverwrite">
       <MemberSignature Language="C#" Value="public event EventHandler ToggleOverwrite;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ToggleOverwrite" />
       <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("toggle-overwrite")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
@@ -1056,402 +1716,29 @@ class TextViewSample
         <summary>Raised whenever the insert/overwrite flag is toggled.</summary>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("toggle_overwrite")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="CutClipboard">
-      <MemberSignature Language="C#" Value="public event EventHandler CutClipboard;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised whenever a selection is cut to the clipboard.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("cut_clipboard")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="InsertAtCursor">
-      <MemberSignature Language="C#" Value="public event Gtk.InsertAtCursorHandler InsertAtCursor;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.InsertAtCursorHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised whenever text is inserted at the cursor.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("insert_at_cursor")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="PasteClipboard">
-      <MemberSignature Language="C#" Value="public event EventHandler PasteClipboard;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised whenever text is pasted from the clipboard.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("paste_clipboard")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="GetLineAtY">
-      <MemberSignature Language="C#" Value="public void GetLineAtY (out Gtk.TextIter target_iter, int y, out int line_top);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="target_iter" Type="Gtk.TextIter&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="line_top" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>This method should be fixed</summary>
-        <param name="target_iter">a <see cref="T:Gtk.TextIter" /></param>
-        <param name="y"> a y coordinate</param>
-        <param name="line_top"> return location for top coordinate of the line</param>
-        <remarks>Gets the <see cref="T:Gtk.TextIter" /> at the start of the line containing the coordinate <paramref name="y" />. <paramref name="y" /> is in buffer coordinates, convert from window coordinates with <see cref="M:Gtk.TextView.WindowToBufferCoords()" />. If non-<see langword="null" />, <paramref name="line_top" /> will be filled with the coordinate of the top edge of the line.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="MoveChild">
-      <MemberSignature Language="C#" Value="public void MoveChild (Gtk.Widget child, int xpos, int ypos);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="xpos" Type="System.Int32" />
-        <Parameter Name="ypos" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Updates the position of a child</summary>
-        <param name="child"> child widget already added to the text view</param>
-        <param name="xpos"> new X position in window coordinates</param>
-        <param name="ypos"> new Y position in window coordinates</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="AddChildInWindow">
-      <MemberSignature Language="C#" Value="public void AddChildInWindow (Gtk.Widget child, Gtk.TextWindowType which_window, int xpos, int ypos);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="which_window" Type="Gtk.TextWindowType" />
-        <Parameter Name="xpos" Type="System.Int32" />
-        <Parameter Name="ypos" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Adds a child at fixed coordinates in one of the text widget's windows.</summary>
-        <param name="child">a <see cref="T:Gtk.Widget" /></param>
-        <param name="which_window">a <see cref="T:Gtk.TextWindowType" /></param>
-        <param name="xpos">a <see cref="T:System.Int32" /></param>
-        <param name="ypos">a <see cref="T:System.Int32" /></param>
-        <remarks>The window must have non-zero size (see <see cref="M:Gtk.TextView.SetBorderWindowSize()" />). Note that the child coordinates are given relative to the <see cref="T:Gdk.Window" /> in question, and that these coordinates have no sane relationship to scrolling. When placing a child in GTK_TEXT_WINDOW_WIDGET, scrolling is irrelevant, the child floats above all scrollable areas. But when placing a child in one of the scrollable windows (border windows or text window), you will need to compute the child's correct position in buffer coordinates any time scrolling occurs or buffer changes occur, and then call <see cref="M:Gtk.TextView.MoveChild()" /> to update the child's position. Unfortunately there is no good way to detect that scrolling has occurred, using the current API; a possible hack would be to update all child positions when the scroll adjustments change or the text buffer changes. See bug 64518 on bugzilla.gnome.org for status of fixing this issue.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+    <Member MemberName="Vadjustment">
+      <MemberSignature Language="C#" Value="public Gtk.Adjustment Vadjustment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Adjustment Vadjustment" />
       <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TextView" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnPasteClipboard">
-      <MemberSignature Language="C#" Value="protected virtual void OnPasteClipboard ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.PasteClipboard" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.PasteClipboard" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnInsertAtCursor">
-      <MemberSignature Language="C#" Value="protected virtual void OnInsertAtCursor (string str);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="str" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.InsertAtCursor" /> event.</summary>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.InsertAtCursor" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnCutClipboard">
-      <MemberSignature Language="C#" Value="protected virtual void OnCutClipboard ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.CutClipboard" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.CutClipboard" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnToggleOverwrite">
-      <MemberSignature Language="C#" Value="protected virtual void OnToggleOverwrite ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.ToggleOverwrite" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.ToggleOverwrite" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnPageHorizontally">
-      <MemberSignature Language="C#" Value="protected virtual void OnPageHorizontally (int count, bool extend_selection);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
-        <Parameter Name="extend_selection" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.PageHorizontally" /> event.</summary>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <param name="extend_selection">a <see cref="T:System.Boolean" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.PageHorizontally" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnMoveFocus">
-      <MemberSignature Language="C#" Value="protected virtual void OnMoveFocus (Gtk.DirectionType direction);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="direction" Type="Gtk.DirectionType" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.MoveFocus" /> event.</summary>
-        <param name="direction">a <see cref="T:Gtk.DirectionType" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.MoveFocus" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnCopyClipboard">
-      <MemberSignature Language="C#" Value="protected virtual void OnCopyClipboard ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.CopyClipboard" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.CopyClipboard" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnDeleteFromCursor">
-      <MemberSignature Language="C#" Value="protected virtual void OnDeleteFromCursor (Gtk.DeleteType type, int count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="Gtk.DeleteType" />
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.DeleteFromCursor" /> event.</summary>
-        <param name="type">a <see cref="T:Gtk.DeleteType" /></param>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.DeleteFromCursor" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnPopulatePopup">
-      <MemberSignature Language="C#" Value="protected virtual void OnPopulatePopup (Gtk.Menu menu);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="menu" Type="Gtk.Menu" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.PopulatePopup" /> event.</summary>
-        <param name="menu">a <see cref="T:Gtk.Menu" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.PopulatePopup" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnMoveCursor">
-      <MemberSignature Language="C#" Value="protected virtual void OnMoveCursor (Gtk.MovementStep step, int count, bool extend_selection);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="step" Type="Gtk.MovementStep" />
-        <Parameter Name="count" Type="System.Int32" />
-        <Parameter Name="extend_selection" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.MoveCursor" /> event.</summary>
-        <param name="step">a <see cref="T:Gtk.MovementStep" /></param>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <param name="extend_selection">a <see cref="T:System.Boolean" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.MoveCursor" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnSetAnchor">
-      <MemberSignature Language="C#" Value="protected virtual void OnSetAnchor ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.SetAnchor" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.SetAnchor" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnScrollAdjustmentsSet">
-      <MemberSignature Language="C#" Value="protected virtual void OnScrollAdjustmentsSet (Gtk.Adjustment hadjustment, Gtk.Adjustment vadjustment);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="hadjustment" Type="Gtk.Adjustment" />
-        <Parameter Name="vadjustment" Type="Gtk.Adjustment" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.ScrollAdjustmentsSet" /> event.</summary>
-        <param name="hadjustment">a <see cref="T:Gtk.Adjustment" /></param>
-        <param name="vadjustment">a <see cref="T:Gtk.Adjustment" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.ScrollAdjustmentsSet" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected TextView (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
+          <AttributeName>GLib.Property("vadjustment")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="GetIterAtLocation">
-      <MemberSignature Language="C#" Value="public Gtk.TextIter GetIterAtLocation (int x, int y);" />
-      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.TextIter</ReturnType>
+        <ReturnType>Gtk.Adjustment</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-      </Parameters>
       <Docs>
-        <summary>Retrieves the iterator at buffer coordinates <paramref name="x" /> and <paramref name="y" />.</summary>
-        <param name="x"> x position, in buffer coordinates</param>
-        <param name="y"> y position, in buffer coordinates</param>
-        <returns>a <see cref="T:Gtk.TextIter" /></returns>
-        <remarks>Buffer coordinates are coordinates for the entire buffer, not just the currently-displayed portion. If you have coordinates from an event, you have to convert those to buffer coordinates with <see cref="M:Gtk.TextView.WindowToBufferCoords()" />.</remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
-    </Member>
-    <Member MemberName="GetIterLocation">
-      <MemberSignature Language="C#" Value="public Gdk.Rectangle GetIterLocation (Gtk.TextIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Rectangle</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Gets a rectangle which roughly contains the character at iter.</summary>
-        <param name="iter">a <see cref="T:Gtk.TextIter" /></param>
-        <returns>a <see cref="T:Gdk.Rectangle" />, which is the bounds of the character at <paramref name="iter" /></returns>
-        <remarks>The rectangle position is in buffer coordinates; use <see cref="M:Gtk.TextView.BufferToWindowCoords()" /> to convert these coordinates to coordinates for one of the windows in the text view.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AcceptsTab">
-      <MemberSignature Language="C#" Value="public bool AcceptsTab { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Whether Tab will result in a tab character being entered.</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>Defaults to true.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("accepts-tab")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Overwrite">
-      <MemberSignature Language="C#" Value="public bool Overwrite { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Whether entered text overwrites existing contents.</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>Defaults to false.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("overwrite")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="VisibleRect">
-      <MemberSignature Language="C#" Value="public Gdk.Rectangle VisibleRect { get; };" />
+      <MemberSignature Language="C#" Value="public Gdk.Rectangle VisibleRect { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.Rectangle VisibleRect" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Rectangle</ReturnType>
@@ -1465,56 +1752,73 @@ class TextViewSample
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Backspace">
-      <MemberSignature Language="C#" Value="public event EventHandler Backspace;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
+    <Member MemberName="VscrollPolicy">
+      <MemberSignature Language="C#" Value="public Gtk.ScrollablePolicy VscrollPolicy { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.ScrollablePolicy VscrollPolicy" />
+      <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("backspace")</AttributeName>
+          <AttributeName>GLib.Property("vscroll-policy")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ScrollablePolicy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
     </Member>
-    <Member MemberName="OnBackspace">
-      <MemberSignature Language="C#" Value="protected virtual void OnBackspace ();" />
+    <Member MemberName="WindowToBufferCoords">
+      <MemberSignature Language="C#" Value="public void WindowToBufferCoords (Gtk.TextWindowType win, int window_x, int window_y, out int buffer_x, out int buffer_y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void WindowToBufferCoords(valuetype Gtk.TextWindowType win, int32 window_x, int32 window_y, int32 buffer_x, int32 buffer_y) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.TextView.Backspace" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.TextView.Backspace" /> event.</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="GetIterAtPosition">
-      <MemberSignature Language="C#" Value="public int GetIterAtPosition (Gtk.TextIter iter, int x, int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="win" Type="Gtk.TextWindowType" />
+        <Parameter Name="window_x" Type="System.Int32" />
+        <Parameter Name="window_y" Type="System.Int32" />
+        <Parameter Name="buffer_x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="buffer_y" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">a <see cref="T:Gtk.TextIter" /></param>
-        <param name="x">a <see cref="T:System.Int32" /></param>
-        <param name="y">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
+        <param name="win">
+          a <see cref="T:Gtk.TextWindowType" /> except <see cref="T:Gtk.TextWindowType.Private" /></param>
+        <param name="window_x">x coordinate of the window</param>
+        <param name="window_y">y coordinate of the window</param>
+        <param name="buffer_x">return location for the buffer's x coordinate</param>
+        <param name="buffer_y">return location for the buffer's y coordinate</param>
+        <summary>Converts coordinates on the window to buffer coordinates</summary>
+        <remarks>
+          <para>
+            Note that you can't convert coordinates for a nonexisting
+            window (see <see cref="M:Ptk.TextView.SetBorderWindowSize(Gtk.TextWindowType,System.Int32)" />.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WrapMode">
+      <MemberSignature Language="C#" Value="public Gtk.WrapMode WrapMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.WrapMode WrapMode" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("wrap-mode")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.WrapMode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Whether to wrap lines never, at word boundaries, or at character boundaries.</summary>
+        <value>the <see cref="T:Gtk.WrapMode" /> of the text view </value>
+        <remarks />
       </Docs>
     </Member>
   </Members>

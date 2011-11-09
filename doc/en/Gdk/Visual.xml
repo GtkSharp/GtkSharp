@@ -1,12 +1,17 @@
 <Type Name="Visual" FullName="Gdk.Visual">
   <TypeSignature Language="C#" Maintainer="miguel" Value="public class Visual : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Visual extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>Describes a particular video hardware display format.</summary>
     <remarks>
@@ -49,114 +54,50 @@
       </para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="GetBestWithDepth">
-      <MemberSignature Language="C#" Value="public static Gdk.Visual GetBestWithDepth (int depth);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Visual</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="depth" Type="System.Int32" />
-      </Parameters>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Visual ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
       <Docs>
-        <summary>Get the best visual with depth depth for the default GDK screen.</summary>
-        <param name="depth">A bit depth</param>
-        <returns>Best visual for the given depth.</returns>
-        <remarks>
-          <para>
-	    Get the best visual with depth depth for the default GDK
-	    screen.  Color visuals and visuals with mutable colormaps
-	    are preferred over grayscale or fixed-colormap visuals.
-	    The return value should not be freed. <see langword="null" /> may be returned if no visual supports
-	    <paramref name="depth" />.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetBestWithType">
-      <MemberSignature Language="C#" Value="public static Gdk.Visual GetBestWithType (Gdk.VisualType visual_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Visual</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="visual_type" Type="Gdk.VisualType" />
-      </Parameters>
-      <Docs>
-        <summary>Get the best visual of the given visual_type for the default GDK screen.</summary>
-        <param name="visual_type">Required visual type.</param>
-        <returns>Best visual of the given type</returns>
-        <remarks>
-          <para>
-	    Get the best visual of the given <paramref name="visual_type" /> for the default GDK screen.  Visuals
-	    with higher color depths are considered better. The return
-	    value should not be freed. <see langword="null" /> may be
-	    returned if no visual has type <paramref name="visual_type" />.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetBestWithBoth">
-      <MemberSignature Language="C#" Value="public static Gdk.Visual GetBestWithBoth (int depth, Gdk.VisualType visual_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Visual</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="depth" Type="System.Int32" />
-        <Parameter Name="visual_type" Type="Gdk.VisualType" />
-      </Parameters>
-      <Docs>
-        <summary>Get the best visual given a visual type and a
-        required depth.</summary>
-        <param name="depth">Required depth.</param>
-        <param name="visual_type">Required visual type.</param>
-        <returns>Best visual of the given type and depth.</returns>
-        <remarks>
-          <para>
-	    Get the best visual of the given <paramref name="visual_type" /> at the given <paramref name="depth" />for the default GDK screen.  Visuals with
-	    higher color depths are considered better. The return
-	    value should not be freed. <see langword="null" /> may be
-	    returned if no visual that match the type <paramref name="visual_type" /> and <paramref name="depth" />.
-	  </para>
-        </remarks>
+        <summary>Default constructor.</summary>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Visual (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="BestType">
-      <MemberSignature Language="C#" Value="public static Gdk.VisualType BestType { get; };" />
+    <Member MemberName="Best">
+      <MemberSignature Language="C#" Value="public static Gdk.Visual Best { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Gdk.Visual Best" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Gdk.VisualType</ReturnType>
+        <ReturnType>Gdk.Visual</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Best visual type for the default Gdk screen</summary>
-        <value>The best visual type available.</value>
-        <remarks>Return the best available visual type for the default GDK screen.</remarks>
+        <summary>Visual with the most available colors for the default GDK screen.</summary>
+        <value>The best visual.</value>
+        <remarks>Get the visual with the most available colors for the default GDK screen. </remarks>
       </Docs>
     </Member>
     <Member MemberName="BestDepth">
-      <MemberSignature Language="C#" Value="public static int BestDepth { get; };" />
+      <MemberSignature Language="C#" Value="public static int BestDepth { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 BestDepth" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -173,20 +114,244 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Best">
-      <MemberSignature Language="C#" Value="public static Gdk.Visual Best { get; };" />
+    <Member MemberName="BestType">
+      <MemberSignature Language="C#" Value="public static Gdk.VisualType BestType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype Gdk.VisualType BestType" />
       <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.VisualType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Best visual type for the default Gdk screen</summary>
+        <value>The best visual type available.</value>
+        <remarks>Return the best available visual type for the default GDK screen.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BitsPerRgb">
+      <MemberSignature Language="C#" Value="public int BitsPerRgb { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 BitsPerRgb" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ByteOrder">
+      <MemberSignature Language="C#" Value="public Gdk.ByteOrder ByteOrder { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.ByteOrder ByteOrder" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.ByteOrder</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ColormapSize">
+      <MemberSignature Language="C#" Value="public int ColormapSize { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 ColormapSize" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Depth">
+      <MemberSignature Language="C#" Value="public int Depth { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Depth" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetBestWithBoth">
+      <MemberSignature Language="C#" Value="public static Gdk.Visual GetBestWithBoth (int depth, Gdk.VisualType visual_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Visual GetBestWithBoth(int32 depth, valuetype Gdk.VisualType visual_type) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Visual</ReturnType>
       </ReturnValue>
+      <Parameters>
+        <Parameter Name="depth" Type="System.Int32" />
+        <Parameter Name="visual_type" Type="Gdk.VisualType" />
+      </Parameters>
       <Docs>
-        <summary>Visual with the most available colors for the default GDK screen.</summary>
-        <value>The best visual.</value>
-        <remarks>Get the visual with the most available colors for the default GDK screen. </remarks>
+        <param name="depth">Required depth.</param>
+        <param name="visual_type">Required visual type.</param>
+        <summary>Get the best visual given a visual type and a
+        required depth.</summary>
+        <returns>Best visual of the given type and depth.</returns>
+        <remarks>
+          <para>
+	    Get the best visual of the given <paramref name="visual_type" /> at the given <paramref name="depth" />for the default GDK screen.  Visuals with
+	    higher color depths are considered better. The return
+	    value should not be freed. <see langword="null" /> may be
+	    returned if no visual that match the type <paramref name="visual_type" /> and <paramref name="depth" />.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetBestWithDepth">
+      <MemberSignature Language="C#" Value="public static Gdk.Visual GetBestWithDepth (int depth);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Visual GetBestWithDepth(int32 depth) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="depth" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="depth">A bit depth</param>
+        <summary>Get the best visual with depth depth for the default GDK screen.</summary>
+        <returns>Best visual for the given depth.</returns>
+        <remarks>
+          <para>
+	    Get the best visual with depth depth for the default GDK
+	    screen.  Color visuals and visuals with mutable colormaps
+	    are preferred over grayscale or fixed-colormap visuals.
+	    The return value should not be freed. <see langword="null" /> may be returned if no visual supports
+	    <paramref name="depth" />.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetBestWithType">
+      <MemberSignature Language="C#" Value="public static Gdk.Visual GetBestWithType (Gdk.VisualType visual_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Visual GetBestWithType(valuetype Gdk.VisualType visual_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="visual_type" Type="Gdk.VisualType" />
+      </Parameters>
+      <Docs>
+        <param name="visual_type">Required visual type.</param>
+        <summary>Get the best visual of the given visual_type for the default GDK screen.</summary>
+        <returns>Best visual of the given type</returns>
+        <remarks>
+          <para>
+	    Get the best visual of the given <paramref name="visual_type" /> for the default GDK screen.  Visuals
+	    with higher color depths are considered better. The return
+	    value should not be freed. <see langword="null" /> may be
+	    returned if no visual has type <paramref name="visual_type" />.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetBluePixelDetails">
+      <MemberSignature Language="C#" Value="public void GetBluePixelDetails (out uint mask, out int shift, out int precision);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetBluePixelDetails(unsigned int32 mask, int32 shift, int32 precision) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mask" Type="System.UInt32&amp;" RefType="out" />
+        <Parameter Name="shift" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="precision" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="mask">To be added.</param>
+        <param name="shift">To be added.</param>
+        <param name="precision">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetGreenPixelDetails">
+      <MemberSignature Language="C#" Value="public void GetGreenPixelDetails (out uint mask, out int shift, out int precision);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetGreenPixelDetails(unsigned int32 mask, int32 shift, int32 precision) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mask" Type="System.UInt32&amp;" RefType="out" />
+        <Parameter Name="shift" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="precision" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="mask">To be added.</param>
+        <param name="shift">To be added.</param>
+        <param name="precision">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetRedPixelDetails">
+      <MemberSignature Language="C#" Value="public void GetRedPixelDetails (out uint mask, out int shift, out int precision);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetRedPixelDetails(unsigned int32 mask, int32 shift, int32 precision) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mask" Type="System.UInt32&amp;" RefType="out" />
+        <Parameter Name="shift" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="precision" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="mask">To be added.</param>
+        <param name="shift">To be added.</param>
+        <param name="precision">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.Visual" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Screen">
+      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Screen Screen" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Screen</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the screen to which this visual belongs.</summary>
+        <value>The <see cref="T:Gdk.Screen" /> to which this visual belongs.</value>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="System">
-      <MemberSignature Language="C#" Value="public static Gdk.Visual System { get; };" />
+      <MemberSignature Language="C#" Value="public static Gdk.Visual System { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Gdk.Visual System" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Visual</ReturnType>
@@ -200,57 +365,18 @@
         display.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Screen">
-      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { get; };" />
+    <Member MemberName="VisualType">
+      <MemberSignature Language="C#" Value="public Gdk.VisualType VisualType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.VisualType VisualType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Gdk.Screen</ReturnType>
+        <ReturnType>Gdk.VisualType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the screen to which this visual belongs.</summary>
-        <value>The <see cref="T:Gdk.Screen" /> to which this visual belongs.</value>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.Visual" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Visual (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Visual ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Default constructor.</summary>
-        <remarks>None.</remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
   </Members>

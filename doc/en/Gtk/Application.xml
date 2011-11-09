@@ -1,12 +1,16 @@
 <Type Name="Application" FullName="Gtk.Application">
-  <TypeSignature Language="C#" Value="public class Application" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Value="public class Application : GLib.Application" Maintainer="John Luke" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi Application extends GLib.Application" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Application</BaseTypeName>
+  </Base>
+  <Interfaces />
   <Docs>
     <summary>Application class</summary>
     <remarks>
@@ -46,48 +50,71 @@ public class HelloWorld  {
       </example>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
-    <Member MemberName="Quit">
-      <MemberSignature Language="C#" Value="public static void Quit ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Application (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
-        <summary>Quits the current main loop</summary>
-        <remarks>
-          <para>
-	    Makes the innermost invocation of the main loop return when it regains control.
-	  </para>
-        </remarks>
+        <param name="raw">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="RunIteration">
-      <MemberSignature Language="C#" Value="public static void RunIteration ();" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Application (string application_id, GLib.ApplicationFlags flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string application_id, valuetype GLib.ApplicationFlags flags) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="application_id" Type="System.String" />
+        <Parameter Name="flags" Type="GLib.ApplicationFlags" />
+      </Parameters>
+      <Docs>
+        <param name="application_id">To be added.</param>
+        <param name="flags">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="AddWindow">
+      <MemberSignature Language="C#" Value="public void AddWindow (Gtk.Window window);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddWindow(class Gtk.Window window) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
+      <Parameters>
+        <Parameter Name="window" Type="Gtk.Window" />
+      </Parameters>
+      <Docs>
+        <param name="window">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentEvent">
+      <MemberSignature Language="C#" Value="public static Gdk.Event CurrentEvent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Gdk.Event CurrentEvent" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Event</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Runs a single iteration of the main loop.</summary>
-        <remarks>
-          <para>
-	    Runs a single iteration of the main loop. If no events are
-	    waiting to be processed Gtk# will block until the next
-	    event is noticed.  If you do not want to block look at <see cref="M:Gtk.Application.RunIteration(System.Boolean)" /> or check if
-	    any events are pending with <see cref="M:Gtk.Application.EventsPending()" /> first.
-	  </para>
-        </remarks>
+        <summary>Returns the event currently taking place.</summary>
+        <value>a <see cref="T:Gdk.Event" /></value>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="EventsPending">
       <MemberSignature Language="C#" Value="public static bool EventsPending ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool EventsPending() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -120,27 +147,23 @@ void LongComputation ()
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Run">
-      <MemberSignature Language="C#" Value="public static void Run ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
-      <Parameters />
       <Docs>
-        <summary>Runs the main loop</summary>
-        <remarks>
-          <para>
-	    Runs the main loop until <see cref="M:Gtk.Application.Quit()" /> is called. You can nest
-	    calls to <see cref="M:Gtk.Application.Run()" />.  In that
-	    case <see cref="M:Gtk.Application.Quit()" /> will make the
-	    innermost invocation of the main loop return.
-	  </para>
-        </remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="Init">
       <MemberSignature Language="C#" Value="public static void Init ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Init() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -168,44 +191,9 @@ void LongComputation ()
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="RunIteration">
-      <MemberSignature Language="C#" Value="public static bool RunIteration (bool blocking);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="blocking" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Runs a single iteration of the main loop.</summary>
-        <param name="blocking">A boolean value, whether the iteration should block or not</param>
-        <remarks>
-          <para>
-            Runs a single iteration of the main loop. If <paramref name="blocking" /> is <see langword="true" />, then if no events are
-            waiting to be processed Gtk# will block until the next event is noticed; If <paramref name="blocking" /> is <see langword="false" />,
-            then it if no events are waiting to be processed Gtk#, routine will return immediately.
-          </para>
-        </remarks>
-        <returns>
-          <see langword="true" /> if <see cref="M:Gtk.Application.Quit()" /> has been called in the innermost main loop.</returns>
-      </Docs>
-    </Member>
-    <Member MemberName="CurrentEvent">
-      <MemberSignature Language="C#" Value="public static Gdk.Event CurrentEvent { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Event</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns the event currently taking place.</summary>
-        <value>a <see cref="T:Gdk.Event" /></value>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="Init">
       <MemberSignature Language="C#" Value="public static void Init (string progname, ref string[] args);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Init(string progname, string[] args) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -230,6 +218,7 @@ void LongComputation ()
     </Member>
     <Member MemberName="InitCheck">
       <MemberSignature Language="C#" Value="public static bool InitCheck (string progname, ref string[] args);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool InitCheck(string progname, string[] args) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -249,6 +238,7 @@ void LongComputation ()
     </Member>
     <Member MemberName="Invoke">
       <MemberSignature Language="C#" Value="public static void Invoke (EventHandler d);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Invoke(class System.EventHandler d) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -323,6 +313,7 @@ void LongComputation ()
     </Member>
     <Member MemberName="Invoke">
       <MemberSignature Language="C#" Value="public static void Invoke (object sender, EventArgs args, EventHandler d);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Invoke(object sender, class System.EventArgs args, class System.EventHandler d) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -397,6 +388,118 @@ void LongComputation ()
     			args.RetVal = true;
     		}
             </code></example></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Quit">
+      <MemberSignature Language="C#" Value="public static void Quit ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Quit() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Quits the current main loop</summary>
+        <remarks>
+          <para>
+	    Makes the innermost invocation of the main loop return when it regains control.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveWindow">
+      <MemberSignature Language="C#" Value="public void RemoveWindow (Gtk.Window window);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveWindow(class Gtk.Window window) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="window" Type="Gtk.Window" />
+      </Parameters>
+      <Docs>
+        <param name="window">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Run">
+      <MemberSignature Language="C#" Value="public static void Run ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Run() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Runs the main loop</summary>
+        <remarks>
+          <para>
+	    Runs the main loop until <see cref="M:Gtk.Application.Quit()" /> is called. You can nest
+	    calls to <see cref="M:Gtk.Application.Run()" />.  In that
+	    case <see cref="M:Gtk.Application.Quit()" /> will make the
+	    innermost invocation of the main loop return.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RunIteration">
+      <MemberSignature Language="C#" Value="public static void RunIteration ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void RunIteration() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Runs a single iteration of the main loop.</summary>
+        <remarks>
+          <para>
+	    Runs a single iteration of the main loop. If no events are
+	    waiting to be processed Gtk# will block until the next
+	    event is noticed.  If you do not want to block look at <see cref="M:Gtk.Application.RunIteration(System.Boolean)" /> or check if
+	    any events are pending with <see cref="M:Gtk.Application.EventsPending()" /> first.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RunIteration">
+      <MemberSignature Language="C#" Value="public static bool RunIteration (bool blocking);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool RunIteration(bool blocking) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="blocking" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="blocking">A boolean value, whether the iteration should block or not</param>
+        <summary>Runs a single iteration of the main loop.</summary>
+        <returns>
+          <see langword="true" /> if <see cref="M:Gtk.Application.Quit()" /> has been called in the innermost main loop.</returns>
+        <remarks>
+          <para>
+            Runs a single iteration of the main loop. If <paramref name="blocking" /> is <see langword="true" />, then if no events are
+            waiting to be processed Gtk# will block until the next event is noticed; If <paramref name="blocking" /> is <see langword="false" />,
+            then it if no events are waiting to be processed Gtk#, routine will return immediately.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Windows">
+      <MemberSignature Language="C#" Value="public Gtk.Window[] Windows { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Window[] Windows" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Window[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
   </Members>

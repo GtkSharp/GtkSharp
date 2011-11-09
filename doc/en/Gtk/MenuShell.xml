@@ -1,12 +1,17 @@
 <Type Name="MenuShell" FullName="Gtk.MenuShell">
   <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class MenuShell : Gtk.Container" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit MenuShell extends Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Container</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>A GtkMenuShell is the abstract base class used to derive the GtkMenu and GtkMenuBar subclasses.</summary>
     <remarks>
@@ -15,14 +20,77 @@
      </para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Container</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="Prepend">
-      <MemberSignature Language="C#" Value="public void Prepend (Gtk.Widget child);" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected MenuShell ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Protected constructor.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MenuShell (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ActivateCurrent">
+      <MemberSignature Language="C#" Value="public event Gtk.ActivateCurrentHandler ActivateCurrent;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ActivateCurrentHandler ActivateCurrent" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("activate-current")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ActivateCurrentHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>An action signal that activates the current menu item within the menu shell.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ActivateItem">
+      <MemberSignature Language="C#" Value="public void ActivateItem (Gtk.Widget menu_item, bool force_deactivate);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ActivateItem(class Gtk.Widget menu_item, bool force_deactivate) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="menu_item" Type="Gtk.Widget" />
+        <Parameter Name="force_deactivate" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="menu_item">The <see cref="T:Gtk.MenuItem" /> to activate.</param>
+        <param name="force_deactivate">If <see langword="true" />, force the deactivation of the menu shell after the menu item is activated.</param>
+        <summary>Activates the menu item within the menu shell.</summary>
+        <remarks>
+          <para>
+          Activates the menu item within the menu shell.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Append">
+      <MemberSignature Language="C#" Value="public void Append (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Append(class Gtk.Widget child) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -31,16 +99,69 @@
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Adds a new <see cref="T:Gtk.MenuItem" /> to the beginning of the menu shell's item list.</summary>
         <param name="child">The <see cref="T:Gtk.MenuItem" /> to add.</param>
-        <remarks>Activates the menu item within the menu shell.
-         <para>
-          Adds a new <see cref="T:Gtk.MenuItem" /> to the beginning of the menu shell's item list.
-         </para></remarks>
+        <summary>Adds a new <see cref="T:Gtk.MenuItem" /> to the end of the menu shell's item list.</summary>
+        <remarks>
+          <para>
+          Adds a new <see cref="T:Gtk.MenuItem" /> to the end of the menu shell's item list.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Cancel">
+      <MemberSignature Language="C#" Value="public void Cancel ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Cancel() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emits the Canceled event.</summary>
+        <remarks />
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="Canceled">
+      <MemberSignature Language="C#" Value="public event EventHandler Canceled;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Canceled" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("cancel")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>An action signal which cancels the selection within the menu shell.Causes the <see cref="F:Gtk.MenuShell.SelectionDone" /> signal to be emitted.</summary>
+        <remarks />
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="CycleFocus">
+      <MemberSignature Language="C#" Value="public event Gtk.CycleFocusHandler CycleFocus;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.CycleFocusHandler CycleFocus" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("cycle-focus")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CycleFocusHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="Deactivate">
       <MemberSignature Language="C#" Value="public void Deactivate ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Deactivate() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -55,50 +176,27 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="ActivateItem">
-      <MemberSignature Language="C#" Value="public void ActivateItem (Gtk.Widget menu_item, bool force_deactivate);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Deactivated">
+      <MemberSignature Language="C#" Value="public event EventHandler Deactivated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Deactivated" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("deactivate")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="menu_item" Type="Gtk.Widget" />
-        <Parameter Name="force_deactivate" Type="System.Boolean" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Activates the menu item within the menu shell.</summary>
-        <param name="menu_item">The <see cref="T:Gtk.MenuItem" /> to activate.</param>
-        <param name="force_deactivate">If <see langword="true" />, force the deactivation of the menu shell after the menu item is activated.</param>
-        <remarks>
-          <para>
-          Activates the menu item within the menu shell.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Insert">
-      <MemberSignature Language="C#" Value="public void Insert (Gtk.Widget child, int position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="position" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Adds a new <see cref="T:Gtk.MenuItem" /> to the menu shell's item list at the position indicated by <paramref name="position" />.</summary>
-        <param name="child">The <see cref="T:Gtk.MenuItem" /> to add.</param>
-        <param name="position">The position in the item list where <paramref name="child" /> is added. Positions are numbered from 0 to n-1.</param>
-        <remarks>
-          <para>
-          Adds a new <see cref="T:Gtk.MenuItem" /> to the menu shell's item list at the position indicated by position.
-         </para>
-        </remarks>
+        <summary>This signal is emitted when a menu shell is deactivated.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Deselect">
       <MemberSignature Language="C#" Value="public void Deselect ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Deselect() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -113,150 +211,9 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Append">
-      <MemberSignature Language="C#" Value="public void Append (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Adds a new <see cref="T:Gtk.MenuItem" /> to the end of the menu shell's item list.</summary>
-        <param name="child">The <see cref="T:Gtk.MenuItem" /> to add.</param>
-        <remarks>
-          <para>
-          Adds a new <see cref="T:Gtk.MenuItem" /> to the end of the menu shell's item list.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SelectItem">
-      <MemberSignature Language="C#" Value="public void SelectItem (Gtk.Widget menu_item);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="menu_item" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Selects the menu item from the menu shell.</summary>
-        <param name="menu_item">The <see cref="T:Gtk.MenuItem" /> to select.</param>
-        <remarks>
-          <para>
-         Selects the menu item from the menu shell.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public MenuShell (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ActivateCurrent">
-      <MemberSignature Language="C#" Value="public event Gtk.ActivateCurrentHandler ActivateCurrent;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ActivateCurrentHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>An action signal that activates the current menu item within the menu shell.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("activate_current")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="MoveCurrent">
-      <MemberSignature Language="C#" Value="public event Gtk.MoveCurrentHandler MoveCurrent;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.MoveCurrentHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>An action signal which moves the current menu item in the direction specified by <paramref name="direction" />.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("move_current")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SelectionDone">
-      <MemberSignature Language="C#" Value="public event EventHandler SelectionDone;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>This signal is emitted when a selection has been completed within a menu shell.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("selection-done")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Deactivated">
-      <MemberSignature Language="C#" Value="public event EventHandler Deactivated;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>This signal is emitted when a menu shell is deactivated.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("deactivate")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SelectFirst">
-      <MemberSignature Language="C#" Value="public void SelectFirst (bool search_sensitive);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="search_sensitive" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Select the first visible or selectable child of the menu shell;
-	  don't select tearoff items unless the only item is a tearoff item.
-	</summary>
-        <param name="search_sensitive">a <see cref="T:System.Boolean" /></param>
-        <remarks>If <paramref name="search_sensitive" /> is  true, 
-	  search for the first selectable menu item, otherwise select nothing if
-	  the first item isn't sensitive. This  should be false if the 
-	  menu is being popped up initially.
-	</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -268,48 +225,73 @@
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.MenuShell" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="OnDeactivated">
-      <MemberSignature Language="C#" Value="protected virtual void OnDeactivated ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.MenuShell.Deactivated" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuShell.Deactivated" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnSelectionDone">
-      <MemberSignature Language="C#" Value="protected virtual void OnSelectionDone ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.MenuShell.SelectionDone" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuShell.SelectionDone" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnMoveCurrent">
-      <MemberSignature Language="C#" Value="protected virtual void OnMoveCurrent (Gtk.MenuDirectionType direction);" />
+    <Member MemberName="Insert">
+      <MemberSignature Language="C#" Value="public void Insert (Gtk.Widget child, int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Insert(class Gtk.Widget child, int32 position) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="direction" Type="Gtk.MenuDirectionType" />
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.MenuShell.MoveCurrent" /> event.</summary>
-        <param name="direction">a <see cref="T:Gtk.MenuDirectionType" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuShell.MoveCurrent" /> event.</remarks>
+        <param name="child">The <see cref="T:Gtk.MenuItem" /> to add.</param>
+        <param name="position">The position in the item list where <paramref name="child" /> is added. Positions are numbered from 0 to n-1.</param>
+        <summary>Adds a new <see cref="T:Gtk.MenuItem" /> to the menu shell's item list at the position indicated by <paramref name="position" />.</summary>
+        <remarks>
+          <para>
+          Adds a new <see cref="T:Gtk.MenuItem" /> to the menu shell's item list at the position indicated by position.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCurrent">
+      <MemberSignature Language="C#" Value="public event Gtk.MoveCurrentHandler MoveCurrent;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MoveCurrentHandler MoveCurrent" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("move-current")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.MoveCurrentHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>An action signal which moves the current menu item in the direction specified by <paramref name="direction" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveSelected">
+      <MemberSignature Language="C#" Value="public event Gtk.MoveSelectedHandler MoveSelected;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MoveSelectedHandler MoveSelected" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("move-selected")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.MoveSelectedHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
     <Member MemberName="OnActivateCurrent">
       <MemberSignature Language="C#" Value="protected virtual void OnActivateCurrent (bool force_hide);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnActivateCurrent(bool force_hide) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideActivateCurrent", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -317,60 +299,20 @@
         <Parameter Name="force_hide" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.MenuShell.ActivateCurrent" /> event.</summary>
         <param name="force_hide">a <see cref="T:System.Boolean" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.MenuShell.ActivateCurrent" /> event.</summary>
         <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuShell.ActivateCurrent" /> event.</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected MenuShell (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected MenuShell ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Protected constructor.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Canceled">
-      <MemberSignature Language="C#" Value="public event EventHandler Canceled;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>An action signal which cancels the selection within the menu shell.Causes the <see cref="F:Gtk.MenuShell.SelectionDone" /> signal to be emitted.</summary>
-        <remarks />
-        <since version="Gtk# 2.4" />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("cancel")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
     <Member MemberName="OnCanceled">
       <MemberSignature Language="C#" Value="protected virtual void OnCanceled ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCanceled() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCanceled", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -381,21 +323,284 @@
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="Cancel">
-      <MemberSignature Language="C#" Value="public void Cancel ();" />
+    <Member MemberName="OnCycleFocus">
+      <MemberSignature Language="C#" Value="protected virtual void OnCycleFocus (Gtk.DirectionType p0);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCycleFocus(valuetype Gtk.DirectionType p0) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCycleFocus", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="p0" Type="Gtk.DirectionType" />
+      </Parameters>
+      <Docs>
+        <param name="p0">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnDeactivated">
+      <MemberSignature Language="C#" Value="protected virtual void OnDeactivated ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnDeactivated() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideDeactivated", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Emits the Canceled event.</summary>
+        <summary>Default handler for the <see cref="M:Gtk.MenuShell.Deactivated" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuShell.Deactivated" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetPopupDelay">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetPopupDelay ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetPopupDelay() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetPopupDelay", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnInsert">
+      <MemberSignature Language="C#" Value="protected virtual void OnInsert (Gtk.Widget child, int position);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnInsert(class Gtk.Widget child, int32 position) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideInsert", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="position" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <param name="position">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnMoveCurrent">
+      <MemberSignature Language="C#" Value="protected virtual void OnMoveCurrent (Gtk.MenuDirectionType direction);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnMoveCurrent(valuetype Gtk.MenuDirectionType direction) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMoveCurrent", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="Gtk.MenuDirectionType" />
+      </Parameters>
+      <Docs>
+        <param name="direction">a <see cref="T:Gtk.MenuDirectionType" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.MenuShell.MoveCurrent" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuShell.MoveCurrent" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnMoveSelected">
+      <MemberSignature Language="C#" Value="protected virtual bool OnMoveSelected (int distance);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnMoveSelected(int32 distance) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMoveSelected", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="distance" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="distance">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSelectionDone">
+      <MemberSignature Language="C#" Value="protected virtual void OnSelectionDone ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSelectionDone() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSelectionDone", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.MenuShell.SelectionDone" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuShell.SelectionDone" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSelectItem">
+      <MemberSignature Language="C#" Value="protected virtual void OnSelectItem (Gtk.Widget menu_item);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSelectItem(class Gtk.Widget menu_item) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSelectItem", Type=typeof(Gtk.MenuShell))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="menu_item" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="menu_item">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ParentShell">
+      <MemberSignature Language="C#" Value="public Gtk.Widget ParentShell { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget ParentShell" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Prepend">
+      <MemberSignature Language="C#" Value="public void Prepend (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Prepend(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">The <see cref="T:Gtk.MenuItem" /> to add.</param>
+        <summary>Adds a new <see cref="T:Gtk.MenuItem" /> to the beginning of the menu shell's item list.</summary>
+        <remarks>Activates the menu item within the menu shell.
+         <para>
+          Adds a new <see cref="T:Gtk.MenuItem" /> to the beginning of the menu shell's item list.
+         </para></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SelectedItem">
+      <MemberSignature Language="C#" Value="public Gtk.Widget SelectedItem { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget SelectedItem" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SelectFirst">
+      <MemberSignature Language="C#" Value="public void SelectFirst (bool search_sensitive);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SelectFirst(bool search_sensitive) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="search_sensitive" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="search_sensitive">a <see cref="T:System.Boolean" /></param>
+        <summary>Select the first visible or selectable child of the menu shell;
+	  don't select tearoff items unless the only item is a tearoff item.
+	</summary>
+        <remarks>If <paramref name="search_sensitive" /> is  true, 
+	  search for the first selectable menu item, otherwise select nothing if
+	  the first item isn't sensitive. This  should be false if the 
+	  menu is being popped up initially.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SelectionDone">
+      <MemberSignature Language="C#" Value="public event EventHandler SelectionDone;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler SelectionDone" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("selection-done")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>This signal is emitted when a selection has been completed within a menu shell.</summary>
         <remarks />
-        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="SelectItem">
+      <MemberSignature Language="C#" Value="public void SelectItem (Gtk.Widget menu_item);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SelectItem(class Gtk.Widget menu_item) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="menu_item" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="menu_item">The <see cref="T:Gtk.MenuItem" /> to select.</param>
+        <summary>Selects the menu item from the menu shell.</summary>
+        <remarks>
+          <para>
+         Selects the menu item from the menu shell.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TakeFocus">
-      <MemberSignature Language="C#" Value="public bool TakeFocus { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool TakeFocus { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool TakeFocus" />
       <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
@@ -411,40 +616,6 @@
           <see langword="true" /> if the keyboard focus is taken when active.</value>
         <remarks>By default, this is true.  Setting to false can have unexpected side effects and in general should only be done with menus that don't contain mnemonics.</remarks>
         <since version="Gtk# 2.8" />
-      </Docs>
-    </Member>
-    <Member MemberName="MoveSelected">
-      <MemberSignature Language="C#" Value="public event Gtk.MoveSelectedHandler MoveSelected;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("move_selected")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.MoveSelectedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
-      </Docs>
-    </Member>
-    <Member MemberName="OnMoveSelected">
-      <MemberSignature Language="C#" Value="protected virtual bool OnMoveSelected (int distance);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="distance" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="distance">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
   </Members>

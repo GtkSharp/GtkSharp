@@ -1,55 +1,112 @@
 <Type Name="IMContext" FullName="Gtk.IMContext">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class IMContext : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit IMContext extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>A base class for input method contexts.</summary>
-    <remarks />
-  </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>A base class for input method contexts.</summary>
+    <remarks />
+  </Docs>
   <Members>
-    <Member MemberName="FocusIn">
-      <MemberSignature Language="C#" Value="public void FocusIn ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected IMContext ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters />
       <Docs>
-        <summary> Notify the input method that the widget to which this 
-	  input context corresponds has gained focus. The input method
-	  may, for example, change the displayed feedback to reflect
-	  this change.</summary>
+        <summary>Protected Constructor.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="FocusOut">
-      <MemberSignature Language="C#" Value="public void FocusOut ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public IMContext (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClientWindow">
+      <MemberSignature Language="C#" Value="public Gdk.Window ClientWindow { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window ClientWindow" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>
+	  Set the client window for the input context; this is the
+	  <see cref="T:Gdk.Window" /> in which the input appears. 
+	</summary>
+        <value>a <see cref="T:Gdk.Window" /></value>
+        <remarks>
+	  The client window is
+	  used in order to correctly position status windows. It may
+	  also be used for purposes internal to the input method.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Commit">
+      <MemberSignature Language="C#" Value="public event Gtk.CommitHandler Commit;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.CommitHandler Commit" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("commit")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CommitHandler</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Notify the input method that the widget to which this
-	  input context corresponds has lost focus. The input method
-	  may, for example, change the displayed feedback or reset the contexts
-	  state to reflect this change.
+        <summary>Commit text event.</summary>
+        <remarks>The event is emitted when the input method has processed all the keystrokes for an individual text element, including pre-edit keystrokes.  The resulting text is located in <see cref="M:Gtk.CommitArgs.Str" /></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CursorLocation">
+      <MemberSignature Language="C#" Value="public Gdk.Rectangle CursorLocation { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.Rectangle CursorLocation" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Rectangle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>
+	  Notify the input method that a change in cursor 
+	  position has been made. 
 	</summary>
-        <remarks />
+        <value>a <see cref="T:Gdk.Rectangle" /></value>
+        <remarks>
+	  The location is relative to the client window.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="DeleteSurrounding">
       <MemberSignature Language="C#" Value="public bool DeleteSurrounding (int offset, int n_chars);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool DeleteSurrounding(int32 offset, int32 n_chars) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -59,13 +116,13 @@
         <Parameter Name="n_chars" Type="System.Int32" />
       </Parameters>
       <Docs>
+        <param name="offset">a <see cref="T:System.Int32" /></param>
+        <param name="n_chars">a <see cref="T:System.Int32" /></param>
         <summary>
 	  Asks the widget that the input context is attached to to delete
 	  characters around the cursor position by emitting the
 	  <see cref="E:Gtk.IMContext.DeleteSurrounding" /> signal. 
 	</summary>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
-        <param name="n_chars">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if the signal was handled.</returns>
         <remarks>
           <para>
@@ -92,6 +149,7 @@
     </Member>
     <Member MemberName="FilterKeypress">
       <MemberSignature Language="C#" Value="public bool FilterKeypress (Gdk.EventKey evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool FilterKeypress(class Gdk.EventKey evnt) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -100,378 +158,49 @@
         <Parameter Name="evnt" Type="Gdk.EventKey" />
       </Parameters>
       <Docs>
-        <summary>Allow an input method to handle a <see cref="T:Gdk.EventKey" />.</summary>
         <param name="evnt">a <see cref="T:Gdk.EventKey" /> representing a key press.</param>
+        <summary>Allow an input method to handle a <see cref="T:Gdk.EventKey" />.</summary>
         <returns>
           <see langword="true" /> if the keypress was handled.</returns>
         <remarks>If the method returns <see langword="true" />, no further processing should be done for <paramref name="evnt" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Reset">
-      <MemberSignature Language="C#" Value="public void Reset ();" />
+    <Member MemberName="FocusIn">
+      <MemberSignature Language="C#" Value="public void FocusIn ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void FocusIn() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Resets the state of the input method.</summary>
-        <remarks>Call this method if, for example, a change in cursor position has occurred.  The reset clears any existing pre-edit state.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public IMContext (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ClientWindow">
-      <MemberSignature Language="C#" Value="public Gdk.Window ClientWindow { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>
-	  Set the client window for the input context; this is the
-	  <see cref="T:Gdk.Window" /> in which the input appears. 
-	</summary>
-        <value>a <see cref="T:Gdk.Window" /></value>
-        <remarks>
-	  The client window is
-	  used in order to correctly position status windows. It may
-	  also be used for purposes internal to the input method.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CursorLocation">
-      <MemberSignature Language="C#" Value="public Gdk.Rectangle CursorLocation { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Rectangle</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>
-	  Notify the input method that a change in cursor 
-	  position has been made. 
-	</summary>
-        <value>a <see cref="T:Gdk.Rectangle" /></value>
-        <remarks>
-	  The location is relative to the client window.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="UsePreedit">
-      <MemberSignature Language="C#" Value="public bool UsePreedit { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>
-	  Whether the IM context should use the preedit string
-	  to display feedback. 
-	</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>
-	  If <paramref name="use_preedit" /> is <see langword="false" /> (default
-	  is <see langword="true" />), then the IM context may use some other method to display
-	  feedback, such as displaying it in a child of the root window.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="PreeditChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler PreeditChanged;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Event raised when the preedit string is changed.</summary>
+        <summary> Notify the input method that the widget to which this 
+	  input context corresponds has gained focus. The input method
+	  may, for example, change the displayed feedback to reflect
+	  this change.</summary>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("preedit_changed")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="PreeditStart">
-      <MemberSignature Language="C#" Value="public event EventHandler PreeditStart;" />
-      <MemberType>Event</MemberType>
+    <Member MemberName="FocusOut">
+      <MemberSignature Language="C#" Value="public void FocusOut ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void FocusOut() cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Event raised when pre-editing is started.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("preedit_start")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SurroundingDeleted">
-      <MemberSignature Language="C#" Value="public event Gtk.SurroundingDeletedHandler SurroundingDeleted;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.SurroundingDeletedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Event raised when the input method needs to delete the context text.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("delete_surrounding")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Commit">
-      <MemberSignature Language="C#" Value="public event Gtk.CommitHandler Commit;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.CommitHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Commit text event.</summary>
-        <remarks>The event is emitted when the input method has processed all the keystrokes for an individual text element, including pre-edit keystrokes.  The resulting text is located in <see cref="M:Gtk.CommitArgs.Str" /></remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("commit")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="RetrieveSurrounding">
-      <MemberSignature Language="C#" Value="public event Gtk.RetrieveSurroundingHandler RetrieveSurrounding;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.RetrieveSurroundingHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-	  Event raised when the input method requires the context surrounding the cursor. 
+        <summary>Notify the input method that the widget to which this
+	  input context corresponds has lost focus. The input method
+	  may, for example, change the displayed feedback or reset the contexts
+	  state to reflect this change.
 	</summary>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("retrieve_surrounding")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="PreeditEnd">
-      <MemberSignature Language="C#" Value="public event EventHandler PreeditEnd;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Event raised when pre-editing is completed.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("preedit_end")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SetSurrounding">
-      <MemberSignature Language="C#" Value="public void SetSurrounding (string text, int cursor_index);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String" />
-        <Parameter Name="cursor_index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Sets surrounding context around the insertion point and preedit string. 
-	</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <param name="cursor_index">a <see cref="T:System.Int32" /></param>
-        <remarks>
-	  This function is expected to be called in response to the 
-	  <see cref="E:Gtk.IMContext.RetrieveSurrounding" /> event,
-	  and it will likely have no effect if called at other times.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetSurrounding">
-      <MemberSignature Language="C#" Value="public bool GetSurrounding (out string text, out int cursor_index);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String&amp;" RefType="out" />
-        <Parameter Name="cursor_index" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the context around the insertion point.</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <param name="cursor_index">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>
-          <para>
-	    Input methods typically want context in order to constrain
-	    input text based on existing text; this is important for
-	    languages such as Thai where only some sequences of
-	    characters are allowed.
-	  </para>
-          <para>
-	    This function is implemented by emitting the <see cref="E:Gtk.IMContext.RetrieveSurrounding" /> event on the
-	    input method; in response to this signal, a widget should
-	    provide as much context as is available, up to an entire
-	    paragraph, by calling <see cref="M:Gtk.IMContext.SetSurrounding" />. Note that there
-	    is no obligation for a widget to respond to the <see cref="E:Gtk.IMContext.RetrieveSurrounding" /> signal, so
-	    input methods must be prepared to function without
-	    context.
-	</para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.IMContext" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnPreeditEnd">
-      <MemberSignature Language="C#" Value="protected virtual void OnPreeditEnd ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.IMContext.PreeditEnd" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.PreeditEnd" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnRetrieveSurrounding">
-      <MemberSignature Language="C#" Value="protected virtual bool OnRetrieveSurrounding ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.IMContext.RetrieveSurrounding" /> event.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.RetrieveSurrounding" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnCommit">
-      <MemberSignature Language="C#" Value="protected virtual void OnCommit (string str);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="str" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.IMContext.Commit" /> event.</summary>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.Commit" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnSurroundingDeleted">
-      <MemberSignature Language="C#" Value="protected virtual bool OnSurroundingDeleted (int offset, int n_chars);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="offset" Type="System.Int32" />
-        <Parameter Name="n_chars" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.IMContext.SurroundingDeleted" /> event.</summary>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
-        <param name="n_chars">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.SurroundingDeleted" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnPreeditStart">
-      <MemberSignature Language="C#" Value="protected virtual void OnPreeditStart ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.IMContext.PreeditStart" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.PreeditStart" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnPreeditChanged">
-      <MemberSignature Language="C#" Value="protected virtual void OnPreeditChanged ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.IMContext.PreeditChanged" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.PreeditChanged" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected IMContext (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="GetPreeditString">
       <MemberSignature Language="C#" Value="public void GetPreeditString (out string str, out Pango.AttrList attrs, out int cursor_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPreeditString(string str, class Pango.AttrList attrs, int32 cursor_pos) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -496,14 +225,544 @@
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected IMContext ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="GetSurrounding">
+      <MemberSignature Language="C#" Value="public bool GetSurrounding (out string text, out int cursor_index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetSurrounding(string text, int32 cursor_index) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String&amp;" RefType="out" />
+        <Parameter Name="cursor_index" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="text">a <see cref="T:System.String" /></param>
+        <param name="cursor_index">a <see cref="T:System.Int32" /></param>
+        <summary>Gets the context around the insertion point.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+          <para>
+	    Input methods typically want context in order to constrain
+	    input text based on existing text; this is important for
+	    languages such as Thai where only some sequences of
+	    characters are allowed.
+	  </para>
+          <para>
+	    This function is implemented by emitting the <see cref="E:Gtk.IMContext.RetrieveSurrounding" /> event on the
+	    input method; in response to this signal, a widget should
+	    provide as much context as is available, up to an entire
+	    paragraph, by calling <see cref="M:Gtk.IMContext.SetSurrounding" />. Note that there
+	    is no obligation for a widget to respond to the <see cref="E:Gtk.IMContext.RetrieveSurrounding" /> signal, so
+	    input methods must be prepared to function without
+	    context.
+	</para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Protected Constructor.</summary>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.IMContext" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnCommit">
+      <MemberSignature Language="C#" Value="protected virtual void OnCommit (string str);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCommit(string str) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCommit", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="str">a <see cref="T:System.String" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.IMContext.Commit" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.Commit" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnFilterKeypress">
+      <MemberSignature Language="C#" Value="protected virtual bool OnFilterKeypress (Gdk.EventKey evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnFilterKeypress(class Gdk.EventKey evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideFilterKeypress", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.EventKey" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnFocusIn">
+      <MemberSignature Language="C#" Value="protected virtual void OnFocusIn ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnFocusIn() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideFocusIn", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnFocusOut">
+      <MemberSignature Language="C#" Value="protected virtual void OnFocusOut ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnFocusOut() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideFocusOut", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetPreeditString">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetPreeditString (string str, Pango.AttrList attrs, out int cursor_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetPreeditString(string str, class Pango.AttrList attrs, int32 cursor_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetPreeditString", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+        <Parameter Name="attrs" Type="Pango.AttrList" />
+        <Parameter Name="cursor_pos" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="str">To be added.</param>
+        <param name="attrs">To be added.</param>
+        <param name="cursor_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetSurrounding">
+      <MemberSignature Language="C#" Value="protected virtual bool OnGetSurrounding (string text, out int cursor_index);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnGetSurrounding(string text, int32 cursor_index) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetSurrounding", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+        <Parameter Name="cursor_index" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="text">To be added.</param>
+        <param name="cursor_index">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnPreeditChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnPreeditChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPreeditChanged() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePreeditChanged", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.IMContext.PreeditChanged" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.PreeditChanged" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPreeditEnd">
+      <MemberSignature Language="C#" Value="protected virtual void OnPreeditEnd ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPreeditEnd() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePreeditEnd", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.IMContext.PreeditEnd" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.PreeditEnd" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPreeditStart">
+      <MemberSignature Language="C#" Value="protected virtual void OnPreeditStart ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPreeditStart() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePreeditStart", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.IMContext.PreeditStart" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.PreeditStart" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnReset">
+      <MemberSignature Language="C#" Value="protected virtual void OnReset ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnReset() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideReset", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnRetrieveSurrounding">
+      <MemberSignature Language="C#" Value="protected virtual bool OnRetrieveSurrounding ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnRetrieveSurrounding() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideRetrieveSurrounding", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.IMContext.RetrieveSurrounding" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.RetrieveSurrounding" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetClientWindow">
+      <MemberSignature Language="C#" Value="protected virtual void OnSetClientWindow (Gdk.Window window);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSetClientWindow(class Gdk.Window window) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSetClientWindow", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="window" Type="Gdk.Window" />
+      </Parameters>
+      <Docs>
+        <param name="window">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetCursorLocation">
+      <MemberSignature Language="C#" Value="protected virtual void OnSetCursorLocation (Gdk.Rectangle area);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSetCursorLocation(valuetype Gdk.Rectangle area) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSetCursorLocation", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="area" Type="Gdk.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="area">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetSurrounding">
+      <MemberSignature Language="C#" Value="protected virtual void OnSetSurrounding (string text, int cursor_index);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSetSurrounding(string text, int32 cursor_index) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSetSurrounding", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+        <Parameter Name="cursor_index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="text">To be added.</param>
+        <param name="cursor_index">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetUsePreedit">
+      <MemberSignature Language="C#" Value="protected virtual void OnSetUsePreedit (bool use_preedit);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSetUsePreedit(bool use_preedit) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSetUsePreedit", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="use_preedit" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="use_preedit">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSurroundingDeleted">
+      <MemberSignature Language="C#" Value="protected virtual bool OnSurroundingDeleted (int offset, int n_chars);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnSurroundingDeleted(int32 offset, int32 n_chars) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSurroundingDeleted", Type=typeof(Gtk.IMContext))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="n_chars" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="offset">a <see cref="T:System.Int32" /></param>
+        <param name="n_chars">a <see cref="T:System.Int32" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.IMContext.SurroundingDeleted" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IMContext.SurroundingDeleted" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreeditChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler PreeditChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler PreeditChanged" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("preedit-changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Event raised when the preedit string is changed.</summary>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PreeditEnd">
+      <MemberSignature Language="C#" Value="public event EventHandler PreeditEnd;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler PreeditEnd" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("preedit-end")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Event raised when pre-editing is completed.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PreeditStart">
+      <MemberSignature Language="C#" Value="public event EventHandler PreeditStart;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler PreeditStart" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("preedit-start")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Event raised when pre-editing is started.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Reset">
+      <MemberSignature Language="C#" Value="public void Reset ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Reset() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Resets the state of the input method.</summary>
+        <remarks>Call this method if, for example, a change in cursor position has occurred.  The reset clears any existing pre-edit state.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RetrieveSurrounding">
+      <MemberSignature Language="C#" Value="public event Gtk.RetrieveSurroundingHandler RetrieveSurrounding;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RetrieveSurroundingHandler RetrieveSurrounding" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("retrieve-surrounding")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.RetrieveSurroundingHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+	  Event raised when the input method requires the context surrounding the cursor. 
+	</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetSurrounding">
+      <MemberSignature Language="C#" Value="public void SetSurrounding (string text, int cursor_index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetSurrounding(string text, int32 cursor_index) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+        <Parameter Name="cursor_index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="text">a <see cref="T:System.String" /></param>
+        <param name="cursor_index">a <see cref="T:System.Int32" /></param>
+        <summary>
+	  Sets surrounding context around the insertion point and preedit string. 
+	</summary>
+        <remarks>
+	  This function is expected to be called in response to the 
+	  <see cref="E:Gtk.IMContext.RetrieveSurrounding" /> event,
+	  and it will likely have no effect if called at other times.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SurroundingDeleted">
+      <MemberSignature Language="C#" Value="public event Gtk.SurroundingDeletedHandler SurroundingDeleted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.SurroundingDeletedHandler SurroundingDeleted" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("delete-surrounding")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.SurroundingDeletedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Event raised when the input method needs to delete the context text.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="UsePreedit">
+      <MemberSignature Language="C#" Value="public bool UsePreedit { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UsePreedit" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>
+	  Whether the IM context should use the preedit string
+	  to display feedback. 
+	</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>
+	  If <paramref name="use_preedit" /> is <see langword="false" /> (default
+	  is <see langword="true" />), then the IM context may use some other method to display
+	  feedback, such as displaying it in a child of the root window.
+	</remarks>
       </Docs>
     </Member>
   </Members>

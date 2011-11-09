@@ -1,12 +1,17 @@
 <Type Name="Window" FullName="Gtk.Window">
   <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class Window : Gtk.Bin" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Window extends Gtk.Bin" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Bin</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>Toplevel <paramref name="widget" /> which can contain other widgets.
 
@@ -38,418 +43,83 @@ class WindowTester {
   </code></example></summary>
     <remarks>Toplevel <paramref name="widget" /> which can contain other widgets.</remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Bin</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="BeginMoveDrag">
-      <MemberSignature Language="C#" Value="public void BeginMoveDrag (int button, int root_x, int root_y, uint timestamp);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Window (Gtk.WindowType type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype Gtk.WindowType type) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="button" Type="System.Int32" />
-        <Parameter Name="root_x" Type="System.Int32" />
-        <Parameter Name="root_y" Type="System.Int32" />
-        <Parameter Name="timestamp" Type="System.UInt32" />
+        <Parameter Name="type" Type="Gtk.WindowType" />
       </Parameters>
       <Docs>
-        <summary>Starts moving a <paramref name="window" />.</summary>
-        <param name="button">Mouse button that initiated the drag.</param>
-        <param name="root_x">X position where the user clicked to initiate the drag, in root window coordinates.</param>
-        <param name="root_y">Y position where the user clicked to initiate the drag.</param>
-        <param name="timestamp">Timestamp from the click event that initiated the drag.</param>
+        <param name="type">A <see cref="T:Gtk.WindowType" />.</param>
+        <summary>Creates a new Window object, based on the <paramref name="type" />.</summary>
         <remarks>
           <para>
-	  This method is used if an application has window movement grips. When GDK can support it, the window movement will be done using the standard mechanism for the window manager or windowing system. Otherwise, GDK will try to emulate window movement, potentially not all that well, depending on the windowing system.
-         </para>
+	  Creates a new Window object, wich can be of type TopLevel ( most of the cases ) or PopUp. Take care with the use of PopUp type, since it is not controlled by the window manager.
+	 </para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetFrameDimensions">
-      <MemberSignature Language="C#" Value="public void GetFrameDimensions (out int left, out int top, out int right, out int bottom);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Window (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="left" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="top" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="right" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="bottom" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Retrieves the dimensions of the frame window for this toplevel.</summary>
-        <param name="left">Location to store the width of the frame at the left, or <see langword="null" />.</param>
-        <param name="top">Location to store the height of the frame at the top, or <see langword="null" />.</param>
-        <param name="right">Location to store the width of the frame at the returns, or <see langword="null" />.</param>
-        <param name="bottom">Location to store the height of the frame at the bottom, or <see langword="null" />.</param>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor.</summary>
         <remarks>
-          <para>
-	  It will not return the size of the window border drawn by the window manager, which is the normal case when using a windowing system. See <see cref="M:Gdk.Window.GetFrameExtents" /> to get the standard window border extents.) See also <see cref="P:Gtk.Window.HasFrame" />, <see cref="M:Gtk.Window.SetFrameDimensions" />.
-         </para>
-          <para>
-	  Note: this is a special-purpose method intended for the framebuffer port; see <see cref="M:Gtk.Window.SetFrameDimensions" />.
-	 </para>
+          <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Iconify">
-      <MemberSignature Language="C#" Value="public void Iconify ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Asks to iconify (i.e. minimize) the specified <paramref name="window" />.</summary>
-        <remarks>
-          <para>
-	  Note that you shouldn't assume the <paramref name="window" /> is definitely iconified afterward, because other entities (e.g. the user or window manager) could deiconify it again, or there may not be a window manager in which case iconification isn't possible, etc. But normally the <paramref name="window" /> will end up iconified. Just do not write code that crashes if not.
-	 </para>
-          <para>
-	  You can track iconification via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Unstick">
-      <MemberSignature Language="C#" Value="public void Unstick ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Asks to unstick <paramref name="window" />, which means that it will appear on only one of the user's desktops.</summary>
-        <remarks>
-          <para>
-	  Note that you shouldn't assume the <paramref name="window" /> is definitely unstuck afterward, because other entities (e.g. the user or window manager) could stick it again. But normally the <paramref name="window" /> will end up stuck. Just do not write code that crashes if not.
-	 </para>
-          <para>
-	  You can track stickiness via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Unmaximize">
-      <MemberSignature Language="C#" Value="public void Unmaximize ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Asks to unmaximize <paramref name="window" />.</summary>
-        <remarks>
-          <para>
-	  Note that you shouldn't assume the <paramref name="window" /> is definitely unmaximized afterward, because other entities (e.g. the user or window manager) could maximize it again, and not all window managers honor requests to unmaximize. But normally the <paramref name="window" /> will end up unmaximized. Just don't write code that crashes if not.
-	 </para>
-          <para>
-	  You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" /></para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetSize">
-      <MemberSignature Language="C#" Value="public void GetSize (out int width, out int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Window (string title);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string title) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="title" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Obtains the current size of <paramref name="window" />.</summary>
-        <param name="width">Return location for width, or <see langword="null" />.</param>
-        <param name="height">Return location for height, or <see langword="null" />.</param>
+        <param name="title">A string.</param>
+        <summary>Creates a new TopLevel Window object, with <paramref name="string" /> as the title.</summary>
         <remarks>
           <para>
-	  If <paramref name="window" /> is not onscreen, it returns the size GTK# will suggest to the window manager for the initial window size (but this is not reliably the same as the size the window manager will actually select). The size obtained by <see cref="M:Gtk.Window.GetSize" /> is the last size received in a GdkEventConfigure, that is, GTK# uses its locally-stored size, rather than querying the X server for the size. As a result, if you call <see cref="M:Gtk.Window.Resize" /> then immediately call <see cref="M:Gtk.Window.GetSize" />, the size would not have taken effect yet. After the window manager processes the resize request, GTK# receives notification that the size has changed via a configure event, and the size of the <paramref name="window" /> gets updated.
-	 </para>
-          <para>
-	  Note 1: Nearly any use of this method creates a race condition, because the size of the <paramref name="window" /> may change between the time that you get the size and the time that you perform some action assuming that size is the current size. To avoid race conditions, connect to <see cref="F:Gtk.Widget.ConfigureEvent" /> on the <paramref name="window" /> and adjust your size-dependent state to match the size delivered in the GdkEventConfigure.
-	 </para>
-          <para>The following example will print the height and width of a <see cref="T:Gtk.Window" /> called myWindow to the console. </para>
-          <example>
-            <code lang="C#">int height =0;
-int width = 0;
-myWindow.GetSize(out width , out height);
-Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
-          </example>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetDefaultSize">
-      <MemberSignature Language="C#" Value="public void GetDefaultSize (out int width, out int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the default size of the <paramref name="window" />.</summary>
-        <param name="width">Location to store the default width, or <see langword="null" />.</param>
-        <param name="height">Location to store the default height, or <see langword="null" />.</param>
-        <remarks>
-          <para>
-	  A value of -1 for the width or height indicates that a default size has not been explicitly set for that dimension, so the "natural" size of the <paramref name="window" /> will be used.
+	  Creates a new TopLevel Window object, using <paramref name="string" /> as the title. You get the same if you use the public Window ( Gtk.WindowType type ) constructor and later set the string Title property.
 	 </para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Resize">
-      <MemberSignature Language="C#" Value="public void Resize (int width, int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Resizes the <paramref name="window" /> as if the user had done so, obeying geometry constraints.</summary>
-        <param name="width">Width in pixels to resize the <paramref name="window" /> to.</param>
-        <param name="height">Height in pixels to resize the <paramref name="window" /> to.</param>
-        <remarks>
-          <para>
-	  The default geometry constraint is that windows may not be smaller than their size request; to override this constraint, call <see cref="M:Gtk.Widget.SetSizeRequest" /> to set the <paramref name="window" />'s request to a smaller value.
-	 </para>
-          <para>
-	  If <see cref="M:Gtk.Window.Resize" /> is called before showing a <paramref name="window" /> for the first time, it overrides any default size set with <see cref="M:Gtk.Window.SetDefaultSize" />. Windows may not be resized smaller than 1 by 1 pixels.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ActivateFocus">
-      <MemberSignature Language="C#" Value="public bool ActivateFocus ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="AcceptFocus">
+      <MemberSignature Language="C#" Value="public bool AcceptFocus { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AcceptFocus" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("accept-focus")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Activates the current focused <paramref name="widget" /> within the <paramref name="window" />.</summary>
-        <returns>
-          <see langword="true" /> if a <paramref name="widget" /> got activated.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ParseGeometry">
-      <MemberSignature Language="C#" Value="public bool ParseGeometry (string geometry);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="geometry" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Parses a standard X Window System geometry string.</summary>
-        <param name="geometry">
-        </param>
-        <returns>
-          <see langword="true" /> if string was parsed successfully.</returns>
+        <summary>Windows may set a hint asking the desktop environment not to receive the input focus.</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
-          <para>
-            <see cref="M:Gtk.Window.ParseGeometry" /> does work on all GTK# ports including Win32 but is primarily intended for an X environment.
-	 </para>
-          <para>
-	  If either a size or a position can be extracted from the geometry string, <see cref="M:Gtk.Window.ParseGeometry" /> returns <see langword="true" /> and calls <see cref="M:Gtk.Window.SetDefaultSize" /> and/or <see cref="M:Gtk.Window.Move" /> to resize/move the <paramref name="window" />.
-	 </para>
-          <para>
-	  If <see cref="M:Gtk.Window.ParseGeometry" /> returns <see langword="true" />, it will also set the <paramref name="F:Gdk.WindowHints.UserPos" /> and/or <see cref="F:Gdk.WindowHints.UserSize" /> hints indicating to the window manager that the size/position of the <paramref name="window" /> was user-specified. This causes most window managers to honor the geometry.
-	 </para>
-          <para>
-	  Note that for <see cref="M:Gtk.Window.ParseGeometry" /> to work as expected, it has to be called when the <paramref name="window" /> has its "final" size, i.e. after calling <see cref="M:Gtk.Widget.ShowAll" /> on the contents and <see cref="M:Gtk.Window.SetGeometryHints" /> on the <paramref name="window" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveAccelGroup">
-      <MemberSignature Language="C#" Value="public void RemoveAccelGroup (Gtk.AccelGroup accel_group);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="accel_group" Type="Gtk.AccelGroup" />
-      </Parameters>
-      <Docs>
-        <summary>Reverses the effects of <see cref="M:Gtk.Window.AddAccelGroup" />.</summary>
-        <param name="accel_group">A <see cref="T:Gtk.AccelGroup" />.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Stick">
-      <MemberSignature Language="C#" Value="public void Stick ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Asks to stick <paramref name="window" />, which means that it will appear on all user desktops.</summary>
-        <remarks>
-          <para>
-	  Note that you shouldn't assume the <paramref name="window" /> is definitely stuck afterward, because other entities (e.g. the user or window manager) could unstick it again, and some window managers do not support sticking windows. But normally the <paramref name="window" /> will end up stuck. Just don't write code that crashes if not.
-	 </para>
-          <para>
-	  You can track stickiness via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on GtkWidget. It's permitted to call this method before showing a <paramref name="window" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetFrameDimensions">
-      <MemberSignature Language="C#" Value="public void SetFrameDimensions (int left, int top, int right, int bottom);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="left" Type="System.Int32" />
-        <Parameter Name="top" Type="System.Int32" />
-        <Parameter Name="right" Type="System.Int32" />
-        <Parameter Name="bottom" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>For windows with frames (see <see cref="P:Gtk.Window.HasFrame" />) this method can be used to change the size of the frame border.</summary>
-        <param name="left">The width of the left border.</param>
-        <param name="top">The height of the top border.</param>
-        <param name="right">The width of the right border.</param>
-        <param name="bottom">The height of the bottom border.</param>
-        <remarks>
-          <para>
-	  Note: this is a special-purpose method intended for the framebuffer port; see <see cref="P:Gtk.Window.HasFrame" />. It will have no effect on the window border drawn by the window manager, which is the normal case when using the X Window system.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AddMnemonic">
-      <MemberSignature Language="C#" Value="public void AddMnemonic (uint keyval, Gtk.Widget target);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="keyval" Type="System.UInt32" />
-        <Parameter Name="target" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Adds a mnemonic to this <paramref name="window" />.</summary>
-        <param name="keyval">The mnemonic.</param>
-        <param name="target">The <paramref name="widget" /> that gets activated by the mnemonic.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="BeginResizeDrag">
-      <MemberSignature Language="C#" Value="public void BeginResizeDrag (Gdk.WindowEdge edge, int button, int root_x, int root_y, uint timestamp);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="edge" Type="Gdk.WindowEdge" />
-        <Parameter Name="button" Type="System.Int32" />
-        <Parameter Name="root_x" Type="System.Int32" />
-        <Parameter Name="root_y" Type="System.Int32" />
-        <Parameter Name="timestamp" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Starts resizing a <paramref name="window" />.</summary>
-        <param name="edge">Position of the resize control.</param>
-        <param name="button">Mouse button that initiated the drag.</param>
-        <param name="root_x">X position where the user clicked to initiate the drag, in root window coordinates.</param>
-        <param name="root_y">Y position where the user clicked to initiate the drag</param>
-        <param name="timestamp">Timestamp from the click event that initiated the drag.</param>
-        <remarks>
-          <para>
-	  This method is used if an application has window resizing controls. When GDK can support it, the resize will be done using the standard mechanism for the window manager or windowing system. Otherwise, GDK will try to emulate window resizing, potentially not all that well, depending on the windowing system.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetPosition">
-      <MemberSignature Language="C#" Value="public void GetPosition (out int root_x, out int root_y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="root_x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="root_y" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>This method returns the position you need to pass to <see cref="M:Gtk.Window.Move" /> to keep <paramref name="window" /> in its current position.</summary>
-        <param name="root_x">Return location for X coordinate of gravity-determined reference point.</param>
-        <param name="root_y">Return location for Y coordinate of gravity-determined reference point.</param>
-        <remarks>
-          <para>
-	  If you haven't changed the window gravity, its gravity will be <see cref="F:Gdk.Gravity.NorthWest" />. This means that <see cref="M:Gtk.Window.GetPosition" /> gets the position of the top-left corner of the window manager frame for the <paramref name="window" />. <see cref="M:Gtk.Window.Move" /> sets the position of this same top-left corner.
-	 </para>
-          <para>
-            <see cref="M:Gtk.Window.GetPosition" /> is not 100% reliable because the X Window System does not specify a way to obtain the geometry of the decorations placed on a <paramref name="window" /> by the window manager. Thus GTK# is using a "best guess" that works with most window managers.
-	 </para>
-          <para>
-	  Moreover, nearly all window managers are historically broken with respect to their handling of window gravity. So moving a <paramref name="window" /> to its current position as returned by <see cref="M:Gtk.Window.GetPostion" /> tends to result in moving the <paramref name="window" /> slightly. Window managers are slowly getting better over time.
-	 </para>
-          <para>
-	  If a <paramref name="window" /> has gravity <see cref="F.Gdk.Gravity.Static" /> the window manager frame is not relevant, and thus <see cref="M:Gtk.Window.GetPosition" /> will always produce accurate results. However you can't use static gravity to do things like place a <paramref name="window" /> in a corner of the screen, because static gravity ignores the window manager decorations.
-	 </para>
-          <para>
-	  If you are saving and restoring your application's <paramref name="window" /> positions, you should know that it's impossible for applications to do this without getting it somewhat wrong because applications do not have sufficient knowledge of window manager state. The Correct Mechanism is to support the session management protocol (see the "GnomeClient" object in the GNOME libraries for example) and allow the window manager to save your <paramref name="window" /> sizes and positions.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Deiconify">
-      <MemberSignature Language="C#" Value="public void Deiconify ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Asks to deiconify (i.e. unminimize) the specified <paramref name="window" />.</summary>
-        <remarks>
-          <para>
-	  Note that you shouldn't assume the <paramref name="window" /> is definitely deiconified afterward, because other entities (e.g. the user or window manager) could iconify it again before your code which assumes deiconification gets to run.
-	 </para>
-          <para>
-	  You can track iconification via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on GtkWidget. 
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="MnemonicActivate">
-      <MemberSignature Language="C#" Value="public bool MnemonicActivate (uint keyval, Gdk.ModifierType modifier);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="keyval" Type="System.UInt32" />
-        <Parameter Name="modifier" Type="Gdk.ModifierType" />
-      </Parameters>
-      <Docs>
-        <summary>Activates the targets associated with the mnemonic.</summary>
-        <param name="keyval">The mnemonic.</param>
-        <param name="modifier">The modifiers.</param>
-        <returns>
-          <see langword="true" /> if the activation is done.</returns>
-        <remarks />
+          <see langword="true" /> to let this window receive input focus</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="ActivateDefault">
       <MemberSignature Language="C#" Value="public bool ActivateDefault ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ActivateDefault() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -466,27 +136,62 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Maximize">
-      <MemberSignature Language="C#" Value="public void Maximize ();" />
+    <Member MemberName="ActivateFocus">
+      <MemberSignature Language="C#" Value="public bool ActivateFocus ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ActivateFocus() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Activates the current focused <paramref name="widget" /> within the <paramref name="window" />.</summary>
+        <returns>
+          <see langword="true" /> if a <paramref name="widget" /> got activated.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ActivateKey">
+      <MemberSignature Language="C#" Value="public bool ActivateKey (Gdk.EventKey evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ActivateKey(class Gdk.EventKey evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.EventKey" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">a <see cref="T:Gdk.EventKey" /></param>
+        <summary>Activates mnemonics and accelerators for this window.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>This is normally called by the default KeyPressEvent handler for toplevel windows, however in some cases it may be useful to call this directly when overriding the standard key handling for a toplevel window.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="AddAccelGroup">
+      <MemberSignature Language="C#" Value="public void AddAccelGroup (Gtk.AccelGroup accel_group);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddAccelGroup(class Gtk.AccelGroup accel_group) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="accel_group" Type="Gtk.AccelGroup" />
+      </Parameters>
       <Docs>
-        <summary>Asks to maximize <paramref name="window" />, so that it becomes full-screen.</summary>
+        <param name="accel_group">A <see cref="T:Gtk.AccelGroup" />.</param>
+        <summary>Associate <paramref name="accel_group" /> with <paramref name="window" />.</summary>
         <remarks>
           <para>
-	  Note that you shouldn't assume the <paramref name="window" /> is definitely maximized afterward, because other entities (e.g. the user or window manager) could unmaximize it again, and not all window managers support maximization. But normally the <paramref name="window" /> will end up maximized. Just don't write code that crashes if not.
-	 </para>
-          <para>
-	  You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T.Gtk.Widget" />. It's permitted to call this method before showing a <paramref name="window" />, in which case the <paramref name="window" /> will be maximized when it appears onscreen initially.
+	  Such that calling <see cref="T:Gtk.AccelGroupActivate" /> on <paramref name="window" /> will activate accelerators in <paramref name="accel_group" />.
 	 </para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="RemoveMnemonic">
-      <MemberSignature Language="C#" Value="public void RemoveMnemonic (uint keyval, Gtk.Widget target);" />
+    <Member MemberName="AddMnemonic">
+      <MemberSignature Language="C#" Value="public void AddMnemonic (uint keyval, Gtk.Widget target);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddMnemonic(unsigned int32 keyval, class Gtk.Widget target) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -496,828 +201,34 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <Parameter Name="target" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Removes a mnemonic from this <paramref name="window" />.</summary>
         <param name="keyval">The mnemonic.</param>
         <param name="target">The <paramref name="widget" /> that gets activated by the mnemonic.</param>
+        <summary>Adds a mnemonic to this <paramref name="window" />.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="AddEmbeddedXid">
-      <MemberSignature Language="C#" Value="public void AddEmbeddedXid (uint xid);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="xid" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Adds an X id number to the list of embedded windows.</summary>
-        <param name="xid">an object of type <see cref="T:System.UInt32" /></param>
-        <remarks>This is an advanced feature and is not used by typical code.  The method adds the specified XID to a list of embedded windows that is maintained as object data on the Window object.  This list is used for things like querying X rc settings.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetWmclass">
-      <MemberSignature Language="C#" Value="public void SetWmclass (string wmclass_name, string wmclass_class);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="wmclass_name" Type="System.String" />
-        <Parameter Name="wmclass_class" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>It sets the X Window System "class" and "name" hints for a <paramref name="window" />. (Don't use this method.)</summary>
-        <param name="wmclass_name">Window name hint.</param>
-        <param name="wmclass_class">Window class hint.</param>
-        <remarks>
-          <para>
-	  According to the ICCCM, you should always set these to the same value for all windows in an application, and GTK# sets them to that value by default, so calling this method is sort of pointless. However, you may want to call <see cref="P:Gtk.Window.Role" /> on each <paramref name="window" /> in your application, for the benefit of the session manager. Setting the role allows the window manager to restore window positions when loading a saved session.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveEmbeddedXid">
-      <MemberSignature Language="C#" Value="public void RemoveEmbeddedXid (uint xid);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="xid" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Removes an X id number to the list of embedded windows.</summary>
-        <param name="xid">an object of type <see cref="T:System.UInt32" /></param>
-        <remarks>This is an advanced feature and is not used by typical code.  The method removess the specified XID to a list of embedded windows that is maintained as object data on the Window object.  This list is used for things like querying X rc settings.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetDefaultSize">
-      <MemberSignature Language="C#" Value="public void SetDefaultSize (int width, int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the default size of an object, with the specified width and height arguments.</summary>
-        <param name="width">Width in pixels, or -1 to unset the default width.</param>
-        <param name="height">Height in pixels, or -1 to unset the default height.</param>
-        <remarks>
-          <para>
-	  If the <paramref name="window" />'s "natural" size (its size request) is larger than the default, the default will be ignored. More generally, if the default size does not obey the geometry hints for the <paramref name="window" /> (<see cref="M:Gtk.Window.SetGeometryHints" /> can be used to set these explicitly), the default size will be clamped to the nearest permitted size.
-	 </para>
-          <para>
-	  Unlike <see cref="M:Gtk.Widget.SetSizeRequest" /> which sets a size request for a <paramref name="widget" /> and thus would keep users from shrinking the <paramref name="window" />, this method only sets the initial size, just as if the user had resized the <paramref name="window" /> themselves. Users can still shrink the <paramref name="window" /> again as they normally would. Setting a default size of -1 means to use the "natural" default size (the size request of the <paramref name="window" />). 
-	 </para>
-          <para>
-	  For more control over a <paramref name="window" />'s initial size and how resizing works, investigate <see cref="M:Gtk.Window.SetGeometryHints" />.
-	 </para>
-          <para>
-	  For some uses, <see cref="M:Gtk.Window.Resize" /> is a more appropriate method. <see cref="M:Gtk.Window.Resize" /> changes the current size of the <paramref name="window" />, rather than the size to be used on initial display. <see cref="M:Gtk.Window.Resize" /> always affects the <paramref name="window" /> itself, not the geometry widget. 
-	 </para>
-          <para>
-	  The default size of a <paramref name="window" /> only affects the first time a <paramref name="window" /> is shown; if a <paramref name="window" /> is hidden and re-shown, it will remember the size it had prior to hiding, rather than using the default size.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Present">
-      <MemberSignature Language="C#" Value="public void Present ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Presents a <paramref name="window" /> to the user.</summary>
-        <remarks>
-          <para>
-	  This may mean raising the <paramref name="window" /> in the stacking order, deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus, possibly dependent on the user's platform, window manager, and preferences. If <paramref name="window" /> is hidden, this method calls <see cref="M:Gtk.Widget.Show" /> as well. 
-	 </para>
-          <para>
-	  This method should be used when the user tries to open a <paramref name="window" /> that's already open. Say for example the preferences dialog is currently open, and the user chooses Preferences from the menu a second time; use <see cref="M:Gtk.Window.Present" /> to move the already-open dialog where the user can see it.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReshowWithInitialSize">
-      <MemberSignature Language="C#" Value="public void ReshowWithInitialSize ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Hides <paramref name="window" />, then reshows it, resetting the default size and position of the <paramref name="window" />.</summary>
-        <remarks>
-          <para>
-	  Used by GUI builders only.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Move">
-      <MemberSignature Language="C#" Value="public void Move (int x, int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Asks the window manager to move <paramref name="window" /> to the given position.</summary>
-        <param name="x">X coordinate to move <paramref name="window" /> to.</param>
-        <param name="y">Y coordinate to move <paramref name="window" /> to.</param>
-        <remarks>
-          <para>
-	  Window managers are free to ignore this; most window managers ignore requests for initial window positions (instead using a user-defined placement algorithm) and honor requests after the <paramref name="window" /> has already been shown.
-	 </para>
-          <para>
-	  Note: the position is the position of the gravity-determined reference point for the <paramref name="window" />. The gravity determines two things: first, the location of the reference point in root <paramref name="window" /> coordinates; and second, which point on the <paramref name="window" /> is positioned at the reference point. 
-	 </para>
-          <para>
-	  By default the gravity is <see cref="F:Gdk.Gravity.NorthWest" /> so the reference point is simply the x, y supplied to <see cref="M:Gtk.Window.Move" />. The top-left corner of the <paramref name="window" /> decorations (aka window frame or border) will be placed at <paramref name="x" />, <paramref name="y" />. Therefore, to position a <paramref name="window" /> at the top left of the screen, you want to use the default gravity (which is <see cref="F:Gdk.Gravity.NorthWest" />) and move the <paramref name="window" /> to 0,0.
-	 </para>
-          <para>
-	  To position a <paramref name="window" /> at the bottom right corner of the screen, you would set <see cref="F:Gdk.Gravity.SouthEast" />, which means that the reference point is at x + the <paramref name="window" /> width and y + the <paramref name="window" /> height, and the bottom-right corner of the window border will be placed at that reference point.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetPosition">
-      <MemberSignature Language="C#" Value="public void SetPosition (Gtk.WindowPosition position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="position" Type="Gtk.WindowPosition" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the position constraint for a <paramref name="window" />.</summary>
-        <param name="position">A position constraint.</param>
-        <remarks>
-          <para>
-	  Is is used for placing the <paramref name="window" /> in some area, depending on the <paramref name="position" /> constraint.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AddAccelGroup">
-      <MemberSignature Language="C#" Value="public void AddAccelGroup (Gtk.AccelGroup accel_group);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="accel_group" Type="Gtk.AccelGroup" />
-      </Parameters>
-      <Docs>
-        <summary>Associate <paramref name="accel_group" /> with <paramref name="window" />.</summary>
-        <param name="accel_group">A <see cref="T:Gtk.AccelGroup" />.</param>
-        <remarks>
-          <para>
-	  Such that calling <see cref="T:Gtk.AccelGroupActivate" /> on <paramref name="window" /> will activate accelerators in <paramref name="accel_group" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetGeometryHints">
-      <MemberSignature Language="C#" Value="public void SetGeometryHints (Gtk.Widget geometry_widget, Gdk.Geometry geometry, Gdk.WindowHints geom_mask);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="geometry_widget" Type="Gtk.Widget" />
-        <Parameter Name="geometry" Type="Gdk.Geometry" />
-        <Parameter Name="geom_mask" Type="Gdk.WindowHints" />
-      </Parameters>
-      <Docs>
-        <summary>This method sets up hints about how a <paramref name="window" /> can be resized by the user.</summary>
-        <param name="geometry_widget">Widget the geometry hints will be applied to.</param>
-        <param name="geometry">Struct containing geometry information.</param>
-        <param name="geom_mask">Mask indicating which struct fields should be paid attention to.</param>
-        <remarks>
-          <para>
-	  You can set a minimum and maximum size; allowed resize increments (e.g. for xterm, you can only resize by the size of a character); aspect ratios; and more. See <see cref="T:Gdk.Geometry" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Window (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor.</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Window (Gtk.WindowType type);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="type" Type="Gtk.WindowType" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new Window object, based on the <paramref name="type" />.</summary>
-        <param name="type">A <see cref="T:Gtk.WindowType" />.</param>
-        <remarks>
-          <para>
-	  Creates a new Window object, wich can be of type TopLevel ( most of the cases ) or PopUp. Take care with the use of PopUp type, since it is not controlled by the window manager.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Window (string title);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="title" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new TopLevel Window object, with <paramref name="string" /> as the title.</summary>
-        <param name="title">A string.</param>
-        <remarks>
-          <para>
-	  Creates a new TopLevel Window object, using <paramref name="string" /> as the title. You get the same if you use the public Window ( Gtk.WindowType type ) constructor and later set the string Title property.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Default">
-      <MemberSignature Language="C#" Value="public Gtk.Widget Default { set; };" />
+    <Member MemberName="Application">
+      <MemberSignature Language="C#" Value="public Gtk.Application Application { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Application Application" />
       <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or unsets the default <paramref name="widget" /> for a <see cref="T:Gtk.Window" /> about.</summary>
-        <value>A <see cref="T:Gtk.Widget" />.</value>
-        <remarks>
-          <para>
-	  The default <paramref name="widget" /> is the widget that's activated when the user presses Enter in a dialog (for example). When setting (rather than unsetting) the default <paramref name="widget" /> it's generally easier to call <see cref="M:Gtk.Widget.GrabFocus" /> on the <paramref name="widget" />. Before making a default <paramref name="widget" />, you must set the <see cref="F:Gtk.WidgetFlags.CanDefault" /> flag on the <paramref name="widget" /> you'd like to make the default.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="HasFrame">
-      <MemberSignature Language="C#" Value="public bool HasFrame { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>If this function is called on a <paramref name="window" /> with setting of <see langword="true" />, before it is realized or showed, it will have a "frame" <paramref name="window" /> around widget-&gt;window, accessible in window-&gt;frame. Or it access the "frame" <paramref name="window" /> exterior to widget-&gt;window.</summary>
-        <value>
-          <see langword="true" /> if a frame has been added to the <paramref name="window" /> via <see cref="P:Gtk.Window.HasFrame" />.</value>
-        <remarks>
-          <para>
-	  Using the event <see cref="F:Gtk.WIndow.FrameEvent" /> you can receive all events targeted at the frame. This method is used by the linux-fb port to implement managed windows, but it could concievably be used by X-programs that want to do their  own window decorations.
-	 </para>
-          <para>
-	  Note: This is a special-purpose method for the framebuffer port, this causes GTK# to draw its own window border. For most applications you want <see cref="P:Gtk.Window.Decorated" /> instead, which tells the window manager whether to  draw the window border. 
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Gravity">
-      <MemberSignature Language="C#" Value="public Gdk.Gravity Gravity { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Gravity</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the meaning of coordinates passed to <see cref="M:Gtk.Window.Move" />.</summary>
-        <value>A window gravity.</value>
-        <remarks>
-          <para>
-	  The default window gravity is <see cref="F:Gdk.Gravity.NorthWest" /> which is typically "do what you mean". See <see cref="M:Gtk.Window.Move" /> and <see cref="T:Gdk.Gravity" />.
-	 </para>
-        </remarks>
-      </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("gravity")</AttributeName>
+          <AttributeName>GLib.Property("application")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="MnemonicModifier">
-      <MemberSignature Language="C#" Value="public Gdk.ModifierType MnemonicModifier { set; get; };" />
-      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Gdk.ModifierType</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the mnemonic modifier for this <paramref name="window" />.</summary>
-        <value>The modifier mask used to activate mnemonics on this <paramref name="window" />.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="TypeHint">
-      <MemberSignature Language="C#" Value="public Gdk.WindowTypeHint TypeHint { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.WindowTypeHint</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the type hint for <paramref name="window" />.</summary>
-        <value>The type hint for <paramref name="window" />.</value>
-        <remarks>
-          <para>
-	  By setting the type hint for the <paramref name="window" />, you allow the window manager to decorate and handle the <paramref name="window" /> in a way which is suitable to the function of the <paramref name="window" /> in your application. This property should be called before the <paramref name="window" /> becomes visible.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("type-hint")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="TransientFor">
-      <MemberSignature Language="C#" Value="public Gtk.Window TransientFor { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the transient parent window.</summary>
-        <value />
-        <remarks>
-          <para>
-	  Dialog windows should be transient for the main <paramref name="window" /> they were spawned from, this allows windows managers to e.g. keep the dialog on top of the main <paramref name="window" />, or center the dialog over the main <paramref name="window" />.
-	 </para>
-          <para>
-	  On Windows(tm), this function will and put the child <paramref name="window" /> on top of the parent, much as the <paramref name="window" />  would have done in X.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("transient-for")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Focus">
-      <MemberSignature Language="C#" Value="public Gtk.Widget Focus { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets a <paramref name="widget" /> to be the focus widget for the <paramref name="window" /> if it is not the current focus widget, and its focusable, or retrieves the current focused <paramref name="widget" /> within the <paramref name="window" />.</summary>
-        <value>The currently focused <paramref name="widget" />, or <see langword="null" /> if there is none.</value>
-        <remarks>
-          <para>
-	  To set the focus to a particular <paramref name="widget" /> in the toplevel, it is usually more convenient to use <see cref="M:Gtk.Widget.GrabFocus" />.
-	 </para>
-          <para>
-	  Note: when retrieving the current focused <paramref name="widget" /> is the <paramref name="widget" /> that would have the focus if the toplevel focused; if the toplevel <paramref name="window" /> is not focused then <see cref="P:Gtk.Widget.HasFocus" /> will not be <see langword="true" /> for the <paramref name="widget" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Role">
-      <MemberSignature Language="C#" Value="public string Role { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the role of the <paramref name="window" />.</summary>
-        <value>The role of the <paramref name="window" /> if set, or <see langword="null" />. The returned is owned by the widget and must not be modified or freed.</value>
-        <remarks>
-          <para>
-	 This property is only useful on X11, not with other GTK# targets.
-	</para>
-	 In combination with the <paramref name="window" /> title, the <paramref name="window" /> role allows a window manager to identify "the same" <paramref name="window" /> when an application is restarted. So for example you might set the "toolbox" role on your app's toolbox <paramref name="window" />, so that when the user restarts their session, the session manager can put the toolbox back in the same place.
-	<para>
-	 If a <paramref name="window" /> already has a unique title, you don't need to set the role, since the WM can use the title to identigy the <paramref name="window" /> when restoring the session.
-	</para></remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("role")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Decorated">
-      <MemberSignature Language="C#" Value="public bool Decorated { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains whether the <paramref name="window" /> has been set to have decorations.</summary>
-        <value>
-          <see langword="true" /> if the <paramref name="window" /> has been set to have decorations.</value>
-        <remarks>
-          <para>
-	  With this property you control if a <paramref name="window" /> will be decorated or not.
-	 </para>
-          <para>
-	  By default, windows are decorated with a title bar and resize controls. Some window managers allow to disable these decorations, creating a borderless Window. If you set this property as false, Gtk# will try to convince the window manager not to decorate the <paramref name="window" />.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("decorated")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Resizable">
-      <MemberSignature Language="C#" Value="public bool Resizable { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains whether a <paramref name="window" /> will be resizable by the user or not.</summary>
-        <value>
-          <see langword="true" /> if the user can resize the <paramref name="window" />.</value>
-        <remarks>
-          <para>
-	  By default, the <paramref name="window" /> are resizable, so you can change the size of them. But if you set this property to false, the user won't be able to change the size of them.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("resizable")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="WindowPosition">
-      <MemberSignature Language="C#" Value="public Gtk.WindowPosition WindowPosition { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.WindowPosition</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Property used for setting/getting the <paramref name="window" /> position.</summary>
-        <value>The <paramref name="window" /> position. See also <see cref="T:Gtk.WindowPosition" />.</value>
-        <remarks>
-          <para>
-	  This property will alow you to define where a <paramref name="window" /> should be displayed on the screen. Position values are described in the <see cref="T:Gtk.WindowPosition" /> definition.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("window-position")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="DefaultHeight">
-      <MemberSignature Language="C#" Value="public int DefaultHeight { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Property used for setting or obtaining the default height of a <paramref name="window" />.</summary>
-        <value>The default height of the <paramref name="window" />.</value>
-        <remarks>
-          <para>
-	  This property will allow you to define the default height for your <paramref name="window" />. It only define the default one, so if the <paramref name="window" /> is resized, it won't be able to do anything.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("default-height")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="DestroyWithParent">
-      <MemberSignature Language="C#" Value="public bool DestroyWithParent { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains whether the transient parent of <paramref name="window" /> will also destroy <paramref name="window" /> itself</summary>
-        <value>an object of type <see cref="T:System.Boolean" /></value>
-        <remarks>
-          <para>
-	  This is useful for dialogs that shouldn't persist beyond the livefime of the main <paramref name="window" /> they're associated with, for example.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("destroy-with-parent")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Modal">
-      <MemberSignature Language="C#" Value="public bool Modal { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the modal status of <paramref name="window" />.</summary>
-        <value>
-          <see langword="true" /> if the <paramref name="window" /> is set to be modal and establishes a grab when shown.</value>
-        <remarks>
-          <para>
-	  Modal windows prevent interaction with other windows in the same application. To keep modal dialogs on top of main application windows, use <see cref="P:Gtk.Window.TransientFor" /> to make the dialog transient for the parent; most window managers will then disallow lowering the dialog below the parent.
-	 </para>
-          <para>
-	  There are two status: modal (<see langword="true" />) and non-modal (<see langword="false" />).
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("modal")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="AllowGrow">
-      <MemberSignature Language="C#" Value="public bool AllowGrow { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains if the <paramref name="window" /> can be resized to a larger size by the user.</summary>
-        <value>
-          <see langword="true" /> if the <paramref name="window" /> can be resized.</value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("allow-grow")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Title">
-      <MemberSignature Language="C#" Value="public string Title { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Property used for setting the <paramref name="window" /> title.</summary>
-        <value>The title of the <paramref name="window" />, or <see langword="null" /> if none has been set explicitely. The returned string is owned by the <paramref name="widget" /> and must not be modified or freed.</value>
-        <remarks>
-          <para>
-	  This property will allow you to set the <paramref name="window" /> title. The title of a <paramref name="window" /> will be displayed in its title bar. Since the title bar is rendered by the window managers on X Window System, the way it appears will depend on the user preferences. This title should help the users to distinguish a <paramref name="window" /> from others opened. A good title will have the application name an the actual document, for example.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("title")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Type">
-      <MemberSignature Language="C#" Value="public Gtk.WindowType Type { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.WindowType</ReturnType>
+        <ReturnType>Gtk.Application</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The type of <paramref name="window" />.</summary>
-        <value>The <paramref name="window" /> type.</value>
-        <remarks>
-          <para>
-	  See also <see cref="T:Gtk.WindowType" />.
-	 </para>
-        </remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("type")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="DefaultWidth">
-      <MemberSignature Language="C#" Value="public int DefaultWidth { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Property used for setting or obtaining the default width of a <paramref name="window" />.</summary>
-        <value>The default width of the <paramref name="window" />.</value>
-        <remarks>
-          <para>
-	  This property will allow you to define the default width for <paramref name="window" />. It only define the default one, so if the <paramref name="window" /> is resized, it won't be able to do anything.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("default-width")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Icon">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Icon { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Pixbuf</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Property used for setting the icon for a <paramref name="window" />.</summary>
-        <value>The default icon for <paramref name="window" />.</value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("icon")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="AllowShrink">
-      <MemberSignature Language="C#" Value="public bool AllowShrink { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains if the <paramref name="window" /> has no mininum size.</summary>
-        <value>
-          <see langword="true" /> if the <paramref name="window" /> has no minimum size.</value>
-        <remarks>
-          <para>
-	  Setting this to <paramref name="true" /> is 99% of the time a bad idea.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("allow-shrink")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="KeysChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler KeysChanged;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>KeysChanged event.</summary>
-        <remarks>This event is emited when the <see cref="T:Gtk.AccelGroup" /> or mnemonic associated with the <see cref="T:Gtk.Window" /> is changed.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("keys_changed")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="MoveFocus">
-      <MemberSignature Language="C#" Value="public event Gtk.MoveFocusHandler MoveFocus;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.MoveFocusHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>MoveFocus event.</summary>
-        <remarks>This event is emited when the focus is moved from one child to another.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("move_focus")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>System.Obsolete("Replaced by Keybinding signal on Gtk.Widget")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SetFocus">
-      <MemberSignature Language="C#" Value="public event Gtk.SetFocusHandler SetFocus;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.SetFocusHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>SetFocus event.</summary>
-        <remarks>This event is emited when the focused widget is set.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("set_focus")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="DefaultActivated">
-      <MemberSignature Language="C#" Value="public event EventHandler DefaultActivated;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>DefaultActivated event.</summary>
-        <remarks>This event is emited when the keybinding for default widget activation is triggered.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("activate_default")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="FocusActivated">
-      <MemberSignature Language="C#" Value="public event EventHandler FocusActivated;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>FocusActivated event.</summary>
-        <remarks>This event is emited when the keybinding for focused widget activation is triggered.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("activate_focus")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="FrameEvent">
-      <MemberSignature Language="C#" Value="public event Gtk.FrameEventHandler FrameEvent;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.FrameEventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>FrameEvent event.</summary>
-        <remarks>This event is emited when <see cref="M:Gtk.Window.HasFrame" /> has been set to true and an event occurs on the resulting frame.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("frame_event")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="AutoStartupNotification">
-      <MemberSignature Language="C#" Value="public static bool AutoStartupNotification { set; };" />
+      <MemberSignature Language="C#" Value="public static bool AutoStartupNotification { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property bool AutoStartupNotification" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1338,300 +249,167 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Screen">
-      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { set; get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="BeginMoveDrag">
+      <MemberSignature Language="C#" Value="public void BeginMoveDrag (int button, int root_x, int root_y, uint timestamp);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginMoveDrag(int32 button, int32 root_x, int32 root_y, unsigned int32 timestamp) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Gdk.Screen</ReturnType>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="button" Type="System.Int32" />
+        <Parameter Name="root_x" Type="System.Int32" />
+        <Parameter Name="root_y" Type="System.Int32" />
+        <Parameter Name="timestamp" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="button">Mouse button that initiated the drag.</param>
+        <param name="root_x">X position where the user clicked to initiate the drag, in root window coordinates.</param>
+        <param name="root_y">Y position where the user clicked to initiate the drag.</param>
+        <param name="timestamp">Timestamp from the click event that initiated the drag.</param>
+        <summary>Starts moving a <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  This method is used if an application has window movement grips. When GDK can support it, the window movement will be done using the standard mechanism for the window manager or windowing system. Otherwise, GDK will try to emulate window movement, potentially not all that well, depending on the windowing system.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginResizeDrag">
+      <MemberSignature Language="C#" Value="public void BeginResizeDrag (Gdk.WindowEdge edge, int button, int root_x, int root_y, uint timestamp);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginResizeDrag(valuetype Gdk.WindowEdge edge, int32 button, int32 root_x, int32 root_y, unsigned int32 timestamp) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="edge" Type="Gdk.WindowEdge" />
+        <Parameter Name="button" Type="System.Int32" />
+        <Parameter Name="root_x" Type="System.Int32" />
+        <Parameter Name="root_y" Type="System.Int32" />
+        <Parameter Name="timestamp" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="edge">Position of the resize control.</param>
+        <param name="button">Mouse button that initiated the drag.</param>
+        <param name="root_x">X position where the user clicked to initiate the drag, in root window coordinates.</param>
+        <param name="root_y">Y position where the user clicked to initiate the drag</param>
+        <param name="timestamp">Timestamp from the click event that initiated the drag.</param>
+        <summary>Starts resizing a <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  This method is used if an application has window resizing controls. When GDK can support it, the resize will be done using the standard mechanism for the window manager or windowing system. Otherwise, GDK will try to emulate window resizing, potentially not all that well, depending on the windowing system.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Decorated">
+      <MemberSignature Language="C#" Value="public bool Decorated { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Decorated" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("decorated")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Sets or obtains the <see cref="T:Gdk.Screen" /> where the <paramref name="window" /> is displayed.</summary>
-        <value>A <see cref="T:Gdk.Screen" />.</value>
-        <remarks>
-          <para>
-	  If the <paramref name="window" /> is already mapped, it will be unmapped, and then remapped on the new screen.
-	 </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("screen")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="IsActive">
-      <MemberSignature Language="C#" Value="public bool IsActive { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Whether the toplevel is the current active <paramref name="window" />.</summary>
+        <summary>Sets or obtains whether the <paramref name="window" /> has been set to have decorations.</summary>
         <value>
-          <see langword="true" /> if the <paramref name="window" /> is the toplevel.</value>
+          <see langword="true" /> if the <paramref name="window" /> has been set to have decorations.</value>
         <remarks>
+          <para>
+	  With this property you control if a <paramref name="window" /> will be decorated or not.
+	 </para>
+          <para>
+	  By default, windows are decorated with a title bar and resize controls. Some window managers allow to disable these decorations, creating a borderless Window. If you set this property as false, Gtk# will try to convince the window manager not to decorate the <paramref name="window" />.
+	 </para>
         </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("is-active")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="HasToplevelFocus">
-      <MemberSignature Language="C#" Value="public bool HasToplevelFocus { get; };" />
+    <Member MemberName="Default">
+      <MemberSignature Language="C#" Value="public Gtk.Widget Default { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget Default" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>Whether the input focus is within this <paramref name="window" />.</summary>
-        <value>
-          <see langword="true" /> if the <paramref name="window" /> has the input focus.</value>
+        <summary>Sets or unsets the default <paramref name="widget" /> for a <see cref="T:Gtk.Window" /> about.</summary>
+        <value>A <see cref="T:Gtk.Widget" />.</value>
         <remarks>
+          <para>
+	  The default <paramref name="widget" /> is the widget that's activated when the user presses Enter in a dialog (for example). When setting (rather than unsetting) the default <paramref name="widget" /> it's generally easier to call <see cref="M:Gtk.Widget.GrabFocus" /> on the <paramref name="widget" />. Before making a default <paramref name="widget" />, you must set the <see cref="F:Gtk.WidgetFlags.CanDefault" /> flag on the <paramref name="widget" /> you'd like to make the default.
+	 </para>
         </remarks>
       </Docs>
+    </Member>
+    <Member MemberName="DefaultActivated">
+      <MemberSignature Language="C#" Value="public event EventHandler DefaultActivated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler DefaultActivated" />
+      <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("has-toplevel-focus")</AttributeName>
+          <AttributeName>GLib.Signal("activate-default")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>DefaultActivated event.</summary>
+        <remarks>This event is emited when the keybinding for default widget activation is triggered.</remarks>
+      </Docs>
     </Member>
-    <Member MemberName="SkipPagerHint">
-      <MemberSignature Language="C#" Value="public bool SkipPagerHint { set; get; };" />
+    <Member MemberName="DefaultHeight">
+      <MemberSignature Language="C#" Value="public int DefaultHeight { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 DefaultHeight" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("default-height")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Property used for setting or obtaining the default height of a <paramref name="window" />.</summary>
+        <value>The default height of the <paramref name="window" />.</value>
+        <remarks>
+          <para>
+	  This property will allow you to define the default height for your <paramref name="window" />. It only define the default one, so if the <paramref name="window" /> is resized, it won't be able to do anything.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultIcon">
+      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf DefaultIcon { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Gdk.Pixbuf DefaultIcon" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
-        <summary>Whether the <paramref name="window" /> should not be in the pager.</summary>
-        <value>
-          <see langword="true" /> if the <paramref name="window" /> should not be in the pager.</value>
+        <summary>Sets an icon to be used as fallback for windows that have not had <see cref="M:Gtk.Window.SetIcon()" /> called on them from a pixbuf.</summary>
+        <value>a <see cref="T:Gdk.Pixbuf" /></value>
         <remarks>
         </remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("skip-pager-hint")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SkipTaskbarHint">
-      <MemberSignature Language="C#" Value="public bool SkipTaskbarHint { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Whether the <paramref name="window" /> should not be in the taskbar.</summary>
-        <value>
-          <see langword="true" /> if the <paramref name="window" /> should not be in the taskbar.</value>
-        <remarks>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("skip-taskbar-hint")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SetDefaultIconFromFile">
-      <MemberSignature Language="C#" Value="public static bool SetDefaultIconFromFile (string filename);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="filename" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Sets an icon to be used as fallback for windows that haven't had <see cref="P:Gtk.Window.IconList" /> called on them from a file on disk.</summary>
-        <param name="filename">Location of icon file.</param>
-        <returns>
-          <see langword="true" /> if setting the icon succeded.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Fullscreen">
-      <MemberSignature Language="C#" Value="public void Fullscreen ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Asks to place <paramref name="window" /> in the fullscreen state.</summary>
-        <remarks>
-          <para>
-	  Note that you shouldn't assume the <paramref name="window" /> is definitely full screen afterward, because other entities (e.g. the user or window manager) could unfullscreen it again, and not all window managers honor requests to fullscreen windows. But normally the <paramref name="window" /> will end up restored to its normal state. Just don't write code that crashes if not.
-	 </para>
-          <para>
-	  You can track the fullscreen state via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetIconFromFile">
-      <MemberSignature Language="C#" Value="public bool SetIconFromFile (string filename);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="filename" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the icon for <paramref name="window" />.</summary>
-        <param name="filename">Location of icon file.</param>
-        <returns>
-          <see langword="true" /> if setting the icon succeded.</returns>
-        <remarks>
-          <para>
-	  This method is equivalent to calling <see cref="M:Gtk.Window.ParseGeometry" /> with pixbuf created by loading the image from <paramref name="filename" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Unfullscreen">
-      <MemberSignature Language="C#" Value="public void Unfullscreen ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Asks to toggle off the fullscreen state for <paramref name="window" />.</summary>
-        <remarks>
-          <para>
-	  Note that you shouldn't assume the <paramref name="window" /> is definitely not full screen afterward, because other entities (e.g. the user or window manager) could fullscreen it again, and not all window managers honor requests to unfullscreen windows. But normally the <paramref name="window" /> will end up restored to its normal state. Just don't write code that crashes if not.
-	 </para>
-          <para>
-	  You can track the fullscreen state via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native GObject type for <see cref="T:Gtk.Window" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnFrameEvent">
-      <MemberSignature Language="C#" Value="protected virtual bool OnFrameEvent (Gdk.Event evnt);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Window.FrameEvent" /> event.</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.FrameEvent" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnFocusActivated">
-      <MemberSignature Language="C#" Value="protected virtual void OnFocusActivated ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Window.FocusActivated" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.FocusActivated" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnDefaultActivated">
-      <MemberSignature Language="C#" Value="protected virtual void OnDefaultActivated ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Window.DefaultActivated" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.DefaultActivated" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnSetFocus">
-      <MemberSignature Language="C#" Value="protected virtual void OnSetFocus (Gtk.Widget focus);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="focus" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Window.SetFocus" /> event.</summary>
-        <param name="focus">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.SetFocus" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnMoveFocus">
-      <MemberSignature Language="C#" Value="protected virtual void OnMoveFocus (Gtk.DirectionType direction);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="direction" Type="Gtk.DirectionType" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Window.MoveFocus" /> event.</summary>
-        <param name="direction">a <see cref="T:Gtk.DirectionType" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.MoveFocus" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnKeysChanged">
-      <MemberSignature Language="C#" Value="protected virtual void OnKeysChanged ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Window.KeysChanged" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.KeysChanged" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Window (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native GType for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="DefaultIconList">
-      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf[] DefaultIconList { set; get; };" />
+      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf[] DefaultIconList { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Gdk.Pixbuf[] DefaultIconList" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Pixbuf[]</ReturnType>
@@ -1647,54 +425,23 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="IconList">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf[] IconList { set; get; };" />
+    <Member MemberName="DefaultIconName">
+      <MemberSignature Language="C#" Value="public static string DefaultIconName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property string DefaultIconName" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Gdk.Pixbuf[]</ReturnType>
+        <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters />
       <Docs>
-        <summary>Sets or obtains the list of icons representing a <see cref="T:Gtk.Window" />.</summary>
-        <value>An array of <see cref="T:Gdk.Pixbuf[]" />s.</value>
-        <remarks>
-          <para>
-	  The icon is used when <paramref name="window" /> is minimized (also known as iconified). Some window managers or desktop environments may also place it in the window frame, or display it in other contexts.
-	 </para>
-          <para>
-            <see cref="M:Gtk.Window.IconList" /> allows you to pass the same icon in several hand-drawn sizes. The list should contain the natural sizes your icon is available in; that is, don't scale the image before passing it to GTK#. Scaling is postponed unitl the last minute, when the desired final size is known, to allow best quality. By passing several sizes, you may improve the final image quality of the icon, by reducing or eliminating automatic image scaling.
-	 </para>
-          <para>
-	  Recommended sizes to provide: 16x16, 32x32, 48x48 at minimum, and larger images (64x64, 128x128) if you have them).
-	 </para>
-          <para>
-	  Note that transient windows (those who have been set transient for another <paramref name="window" /> using <see cref="P:Gtk.Window.TransientFor" /> will inherit their icon from their transient parent. So there's no need to explicity set the icon on transient windows.
-	 </para>
-          <para>
-	  When retrieving the list is copied, but the reference count on each won't be incremented.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ListToplevels">
-      <MemberSignature Language="C#" Value="public static Gtk.Window[] ListToplevels ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Window[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns a list of all existing toplevel windows.</summary>
-        <returns>An array of toplevel widgets.</returns>
-        <remarks>
-          <para>
-	  The widgets in the list are not individually referenced.
-         </para>
-        </remarks>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.String" /></value>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
       </Docs>
     </Member>
     <Member MemberName="DefaultSize">
-      <MemberSignature Language="C#" Value="public Gdk.Size DefaultSize { set; get; };" />
+      <MemberSignature Language="C#" Value="public Gdk.Size DefaultSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.Size DefaultSize" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Size</ReturnType>
@@ -1728,61 +475,525 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="DefaultIcon">
-      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf DefaultIcon { set; };" />
+    <Member MemberName="DefaultWidget">
+      <MemberSignature Language="C#" Value="public Gtk.Widget DefaultWidget { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget DefaultWidget" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Gdk.Pixbuf</ReturnType>
+        <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Sets an icon to be used as fallback for windows that have not had <see cref="M:Gtk.Window.SetIcon()" /> called on them from a pixbuf.</summary>
-        <value>a <see cref="T:Gdk.Pixbuf" /></value>
-        <remarks>
-        </remarks>
-        <since version="Gtk# 2.4" />
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="AcceptFocus">
-      <MemberSignature Language="C#" Value="public bool AcceptFocus { set; get; };" />
+    <Member MemberName="DefaultWidth">
+      <MemberSignature Language="C#" Value="public int DefaultWidth { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 DefaultWidth" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("default-width")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Property used for setting or obtaining the default width of a <paramref name="window" />.</summary>
+        <value>The default width of the <paramref name="window" />.</value>
+        <remarks>
+          <para>
+	  This property will allow you to define the default width for <paramref name="window" />. It only define the default one, so if the <paramref name="window" /> is resized, it won't be able to do anything.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Deiconify">
+      <MemberSignature Language="C#" Value="public void Deiconify ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Deiconify() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asks to deiconify (i.e. unminimize) the specified <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely deiconified afterward, because other entities (e.g. the user or window manager) could iconify it again before your code which assumes deiconification gets to run.
+	 </para>
+          <para>
+	  You can track iconification via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on GtkWidget. 
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Deletable">
+      <MemberSignature Language="C#" Value="public bool Deletable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Deletable" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("deletable")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Indicates if the window has a close button.</summary>
+        <value>if <see langword="true" />, a close button is displayed.</value>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="DestroyWithParent">
+      <MemberSignature Language="C#" Value="public bool DestroyWithParent { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool DestroyWithParent" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("destroy-with-parent")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains whether the transient parent of <paramref name="window" /> will also destroy <paramref name="window" /> itself</summary>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
+        <remarks>
+          <para>
+	  This is useful for dialogs that shouldn't persist beyond the livefime of the main <paramref name="window" /> they're associated with, for example.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Focus">
+      <MemberSignature Language="C#" Value="public Gtk.Widget Focus { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget Focus" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets a <paramref name="widget" /> to be the focus widget for the <paramref name="window" /> if it is not the current focus widget, and its focusable, or retrieves the current focused <paramref name="widget" /> within the <paramref name="window" />.</summary>
+        <value>The currently focused <paramref name="widget" />, or <see langword="null" /> if there is none.</value>
+        <remarks>
+          <para>
+	  To set the focus to a particular <paramref name="widget" /> in the toplevel, it is usually more convenient to use <see cref="M:Gtk.Widget.GrabFocus" />.
+	 </para>
+          <para>
+	  Note: when retrieving the current focused <paramref name="widget" /> is the <paramref name="widget" /> that would have the focus if the toplevel focused; if the toplevel <paramref name="window" /> is not focused then <see cref="P:Gtk.Widget.HasFocus" /> will not be <see langword="true" /> for the <paramref name="widget" />.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FocusActivated">
+      <MemberSignature Language="C#" Value="public event EventHandler FocusActivated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler FocusActivated" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("activate-focus")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>FocusActivated event.</summary>
+        <remarks>This event is emited when the keybinding for focused widget activation is triggered.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FocusOnMap">
+      <MemberSignature Language="C#" Value="public bool FocusOnMap { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool FocusOnMap" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("focus-on-map")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Windows may set a hint asking the desktop environment not to receive the input focus.</summary>
+        <summary>To be added</summary>
         <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>
-          <see langword="true" /> to let this window receive input focus</remarks>
-        <since version="Gtk# 2.4" />
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
       </Docs>
+    </Member>
+    <Member MemberName="Fullscreen">
+      <MemberSignature Language="C#" Value="public void Fullscreen ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Fullscreen() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asks to place <paramref name="window" /> in the fullscreen state.</summary>
+        <remarks>
+          <para>
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely full screen afterward, because other entities (e.g. the user or window manager) could unfullscreen it again, and not all window managers honor requests to fullscreen windows. But normally the <paramref name="window" /> will end up restored to its normal state. Just don't write code that crashes if not.
+	 </para>
+          <para>
+	  You can track the fullscreen state via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDefaultSize">
+      <MemberSignature Language="C#" Value="public void GetDefaultSize (out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetDefaultSize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="width">Location to store the default width, or <see langword="null" />.</param>
+        <param name="height">Location to store the default height, or <see langword="null" />.</param>
+        <summary>Gets the default size of the <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  A value of -1 for the width or height indicates that a default size has not been explicitly set for that dimension, so the "natural" size of the <paramref name="window" /> will be used.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPosition">
+      <MemberSignature Language="C#" Value="public void GetPosition (out int root_x, out int root_y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPosition(int32 root_x, int32 root_y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="root_x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="root_y" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="root_x">Return location for X coordinate of gravity-determined reference point.</param>
+        <param name="root_y">Return location for Y coordinate of gravity-determined reference point.</param>
+        <summary>This method returns the position you need to pass to <see cref="M:Gtk.Window.Move" /> to keep <paramref name="window" /> in its current position.</summary>
+        <remarks>
+          <para>
+	  If you haven't changed the window gravity, its gravity will be <see cref="F:Gdk.Gravity.NorthWest" />. This means that <see cref="M:Gtk.Window.GetPosition" /> gets the position of the top-left corner of the window manager frame for the <paramref name="window" />. <see cref="M:Gtk.Window.Move" /> sets the position of this same top-left corner.
+	 </para>
+          <para>
+            <see cref="M:Gtk.Window.GetPosition" /> is not 100% reliable because the X Window System does not specify a way to obtain the geometry of the decorations placed on a <paramref name="window" /> by the window manager. Thus GTK# is using a "best guess" that works with most window managers.
+	 </para>
+          <para>
+	  Moreover, nearly all window managers are historically broken with respect to their handling of window gravity. So moving a <paramref name="window" /> to its current position as returned by <see cref="M:Gtk.Window.GetPostion" /> tends to result in moving the <paramref name="window" /> slightly. Window managers are slowly getting better over time.
+	 </para>
+          <para>
+	  If a <paramref name="window" /> has gravity <see cref="F.Gdk.Gravity.Static" /> the window manager frame is not relevant, and thus <see cref="M:Gtk.Window.GetPosition" /> will always produce accurate results. However you can't use static gravity to do things like place a <paramref name="window" /> in a corner of the screen, because static gravity ignores the window manager decorations.
+	 </para>
+          <para>
+	  If you are saving and restoring your application's <paramref name="window" /> positions, you should know that it's impossible for applications to do this without getting it somewhat wrong because applications do not have sufficient knowledge of window manager state. The Correct Mechanism is to support the session management protocol (see the "GnomeClient" object in the GNOME libraries for example) and allow the window manager to save your <paramref name="window" /> sizes and positions.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetResizeGripArea">
+      <MemberSignature Language="C#" Value="public bool GetResizeGripArea (Gdk.Rectangle rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetResizeGripArea(valuetype Gdk.Rectangle rect) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="Gdk.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="rect">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSize">
+      <MemberSignature Language="C#" Value="public void GetSize (out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetSize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="width">Return location for width, or <see langword="null" />.</param>
+        <param name="height">Return location for height, or <see langword="null" />.</param>
+        <summary>Obtains the current size of <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  If <paramref name="window" /> is not onscreen, it returns the size GTK# will suggest to the window manager for the initial window size (but this is not reliably the same as the size the window manager will actually select). The size obtained by <see cref="M:Gtk.Window.GetSize" /> is the last size received in a GdkEventConfigure, that is, GTK# uses its locally-stored size, rather than querying the X server for the size. As a result, if you call <see cref="M:Gtk.Window.Resize" /> then immediately call <see cref="M:Gtk.Window.GetSize" />, the size would not have taken effect yet. After the window manager processes the resize request, GTK# receives notification that the size has changed via a configure event, and the size of the <paramref name="window" /> gets updated.
+	 </para>
+          <para>
+	  Note 1: Nearly any use of this method creates a race condition, because the size of the <paramref name="window" /> may change between the time that you get the size and the time that you perform some action assuming that size is the current size. To avoid race conditions, connect to <see cref="F:Gtk.Widget.ConfigureEvent" /> on the <paramref name="window" /> and adjust your size-dependent state to match the size delivered in the GdkEventConfigure.
+	 </para>
+          <para>The following example will print the height and width of a <see cref="T:Gtk.Window" /> called myWindow to the console. </para>
+          <example>
+            <code lang="C#">int height =0;
+int width = 0;
+myWindow.GetSize(out width , out height);
+Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Gravity">
+      <MemberSignature Language="C#" Value="public Gdk.Gravity Gravity { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.Gravity Gravity" />
+      <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("accept-focus")</AttributeName>
+          <AttributeName>GLib.Property("gravity")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Gravity</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the meaning of coordinates passed to <see cref="M:Gtk.Window.Move" />.</summary>
+        <value>A window gravity.</value>
+        <remarks>
+          <para>
+	  The default window gravity is <see cref="F:Gdk.Gravity.NorthWest" /> which is typically "do what you mean". See <see cref="M:Gtk.Window.Move" /> and <see cref="T:Gdk.Gravity" />.
+	 </para>
+        </remarks>
+      </Docs>
     </Member>
-    <Member MemberName="KeepBelow">
-      <MemberSignature Language="C#" Value="public bool KeepBelow { set; };" />
+    <Member MemberName="Group">
+      <MemberSignature Language="C#" Value="public Gtk.WindowGroup Group { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.WindowGroup Group" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.WindowGroup</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the Group the window is associated with.</summary>
+        <value>a <see cref="Gtk.WindowGroup" />.</value>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native GObject type for <see cref="T:Gtk.Window" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HasGroup">
+      <MemberSignature Language="C#" Value="public bool HasGroup { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasGroup" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Asks to keep window below, so that it stays in bottom.</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="HasResizeGrip">
+      <MemberSignature Language="C#" Value="public bool HasResizeGrip { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasResizeGrip" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("has-resize-grip")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="HasToplevelFocus">
+      <MemberSignature Language="C#" Value="public bool HasToplevelFocus { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasToplevelFocus" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("has-toplevel-focus")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the input focus is within this <paramref name="window" />.</summary>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> has the input focus.</value>
         <remarks>
-          <para>Note that you should not assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it below, and not all window managers support putting windows below. But normally the window will be kept below. Just do not write code that crashes if not.</para>
-          <para>It is permitted to call this function before showing a window, in which case the window will be kept below when it appears onscreen initially.</para>
-          <para>You can track the below state via <see cref="E:Gtk.Widget.WindowStateEvent" /> event.</para>
-          <para>Note that, according to the Extended Window Manager Hints specification, the above state is mainly meant for user preferences and should not be used by applications e.g. for drawing attention to their dialogs.
-</para>
         </remarks>
-        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="HasUserRefCount">
+      <MemberSignature Language="C#" Value="public bool HasUserRefCount { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasUserRefCount" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Icon">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Icon { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf Icon" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("icon")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Property used for setting the icon for a <paramref name="window" />.</summary>
+        <value>The default icon for <paramref name="window" />.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Iconify">
+      <MemberSignature Language="C#" Value="public void Iconify ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Iconify() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asks to iconify (i.e. minimize) the specified <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely iconified afterward, because other entities (e.g. the user or window manager) could deiconify it again, or there may not be a window manager in which case iconification isn't possible, etc. But normally the <paramref name="window" /> will end up iconified. Just do not write code that crashes if not.
+	 </para>
+          <para>
+	  You can track iconification via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IconList">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf[] IconList { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf[] IconList" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Sets or obtains the list of icons representing a <see cref="T:Gtk.Window" />.</summary>
+        <value>An array of <see cref="T:Gdk.Pixbuf[]" />s.</value>
+        <remarks>
+          <para>
+	  The icon is used when <paramref name="window" /> is minimized (also known as iconified). Some window managers or desktop environments may also place it in the window frame, or display it in other contexts.
+	 </para>
+          <para>
+            <see cref="M:Gtk.Window.IconList" /> allows you to pass the same icon in several hand-drawn sizes. The list should contain the natural sizes your icon is available in; that is, don't scale the image before passing it to GTK#. Scaling is postponed unitl the last minute, when the desired final size is known, to allow best quality. By passing several sizes, you may improve the final image quality of the icon, by reducing or eliminating automatic image scaling.
+	 </para>
+          <para>
+	  Recommended sizes to provide: 16x16, 32x32, 48x48 at minimum, and larger images (64x64, 128x128) if you have them).
+	 </para>
+          <para>
+	  Note that transient windows (those who have been set transient for another <paramref name="window" /> using <see cref="P:Gtk.Window.TransientFor" /> will inherit their icon from their transient parent. So there's no need to explicity set the icon on transient windows.
+	 </para>
+          <para>
+	  When retrieving the list is copied, but the reference count on each won't be incremented.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IconName">
+      <MemberSignature Language="C#" Value="public string IconName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string IconName" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("icon-name")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.String" /></value>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsActive">
+      <MemberSignature Language="C#" Value="public bool IsActive { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsActive" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("is-active")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the toplevel is the current active <paramref name="window" />.</summary>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> is the toplevel.</value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="KeepAbove">
-      <MemberSignature Language="C#" Value="public bool KeepAbove { set; };" />
+      <MemberSignature Language="C#" Value="public bool KeepAbove { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool KeepAbove" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1800,124 +1011,344 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="ActivateKey">
-      <MemberSignature Language="C#" Value="public bool ActivateKey (Gdk.EventKey evnt);" />
+    <Member MemberName="KeepBelow">
+      <MemberSignature Language="C#" Value="public bool KeepBelow { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool KeepBelow" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Asks to keep window below, so that it stays in bottom.</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>
+          <para>Note that you should not assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it below, and not all window managers support putting windows below. But normally the window will be kept below. Just do not write code that crashes if not.</para>
+          <para>It is permitted to call this function before showing a window, in which case the window will be kept below when it appears onscreen initially.</para>
+          <para>You can track the below state via <see cref="E:Gtk.Widget.WindowStateEvent" /> event.</para>
+          <para>Note that, according to the Extended Window Manager Hints specification, the above state is mainly meant for user preferences and should not be used by applications e.g. for drawing attention to their dialogs.
+</para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="KeysChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler KeysChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler KeysChanged" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("keys-changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>KeysChanged event.</summary>
+        <remarks>This event is emited when the <see cref="T:Gtk.AccelGroup" /> or mnemonic associated with the <see cref="T:Gtk.Window" /> is changed.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ListToplevels">
+      <MemberSignature Language="C#" Value="public static Gtk.Window[] ListToplevels ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gtk.Window[] ListToplevels() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Window[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns a list of all existing toplevel windows.</summary>
+        <returns>An array of toplevel widgets.</returns>
+        <remarks>
+          <para>
+	  The widgets in the list are not individually referenced.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Maximize">
+      <MemberSignature Language="C#" Value="public void Maximize ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Maximize() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asks to maximize <paramref name="window" />, so that it becomes full-screen.</summary>
+        <remarks>
+          <para>
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely maximized afterward, because other entities (e.g. the user or window manager) could unmaximize it again, and not all window managers support maximization. But normally the <paramref name="window" /> will end up maximized. Just don't write code that crashes if not.
+	 </para>
+          <para>
+	  You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T.Gtk.Widget" />. It's permitted to call this method before showing a <paramref name="window" />, in which case the <paramref name="window" /> will be maximized when it appears onscreen initially.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MnemonicActivate">
+      <MemberSignature Language="C#" Value="public bool MnemonicActivate (uint keyval, Gdk.ModifierType modifier);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool MnemonicActivate(unsigned int32 keyval, valuetype Gdk.ModifierType modifier) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="evnt" Type="Gdk.EventKey" />
+        <Parameter Name="keyval" Type="System.UInt32" />
+        <Parameter Name="modifier" Type="Gdk.ModifierType" />
       </Parameters>
       <Docs>
-        <summary>Activates mnemonics and accelerators for this window.</summary>
-        <param name="evnt">a <see cref="T:Gdk.EventKey" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>This is normally called by the default KeyPressEvent handler for toplevel windows, however in some cases it may be useful to call this directly when overriding the standard key handling for a toplevel window.</remarks>
-        <since version="Gtk# 2.4" />
+        <param name="keyval">The mnemonic.</param>
+        <param name="modifier">The modifiers.</param>
+        <summary>Activates the targets associated with the mnemonic.</summary>
+        <returns>
+          <see langword="true" /> if the activation is done.</returns>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="SetPolicy">
-      <MemberSignature Language="C#" Value="public void SetPolicy (int allow_shrink, int allow_grow, int auto_shrink);" />
+    <Member MemberName="MnemonicModifier">
+      <MemberSignature Language="C#" Value="public Gdk.ModifierType MnemonicModifier { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.ModifierType MnemonicModifier" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.ModifierType</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the mnemonic modifier for this <paramref name="window" />.</summary>
+        <value>The modifier mask used to activate mnemonics on this <paramref name="window" />.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="MnemonicsVisible">
+      <MemberSignature Language="C#" Value="public bool MnemonicsVisible { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool MnemonicsVisible" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("mnemonics-visible")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Modal">
+      <MemberSignature Language="C#" Value="public bool Modal { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Modal" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("modal")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the modal status of <paramref name="window" />.</summary>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> is set to be modal and establishes a grab when shown.</value>
+        <remarks>
+          <para>
+	  Modal windows prevent interaction with other windows in the same application. To keep modal dialogs on top of main application windows, use <see cref="P:Gtk.Window.TransientFor" /> to make the dialog transient for the parent; most window managers will then disallow lowering the dialog below the parent.
+	 </para>
+          <para>
+	  There are two status: modal (<see langword="true" />) and non-modal (<see langword="false" />).
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Move">
+      <MemberSignature Language="C#" Value="public void Move (int x, int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Move(int32 x, int32 y) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="allow_shrink" Type="System.Int32" />
-        <Parameter Name="allow_grow" Type="System.Int32" />
-        <Parameter Name="auto_shrink" Type="System.Int32" />
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Changes how a toplevel window deals with its size request and user resize attempts.</summary>
-        <param name="allow_shrink">a <see cref="T:System.Int32" /></param>
-        <param name="allow_grow">a <see cref="T:System.Int32" /></param>
-        <param name="auto_shrink">a <see cref="T:System.Int32" /></param>
-        <remarks>The first policy is the default, that is, by default windows are designed to be resized by users.
-<para><see cref="M:Gtk.Window.SetPolicy()" /> is deprecated and should not be used in newly-written code. Use <see cref="M:Gtk.Window.SetResizable()" /> instead.
-</para><para>
-If set to <see langword="true" />, the allow_grow parameter allows the user to expand the window beyond the size request of its child widgets. If allow_grow is <see langword="true" />, be sure to check that your child widgets work properly as the window is resized.
-</para><para>
-A toplevel window will always change size to ensure its child widgets receive their requested size. This means that if you add child widgets, the toplevel window will expand to contain them. However, normally the toplevel will not shrink to fit the size request of its children if it's too large; the auto_shrink parameter causes the window to shrink when child widgets have too much space. auto_shrink is normally used with the second of the two window policies mentioned above. That is, set auto_shrink to <see langword="true" /> if you want the window to have a fixed, always-optimal size determined by your program.
-</para><para>
-Note that auto_shrink does not do anything if allow_shrink and allow_grow are both set to <see langword="false" />.
-</para><para>
-Neither of the two suggested window policies set the allow_shrink parameter to <see langword="true" />. If allow_shrink is <see langword="true" />, the user can shrink the window so that its children do not receive their full size request; this is basically a bad thing, because most widgets will look wrong if this happens. Furthermore Gtk has a tendency to re-expand the window if size is recalculated for any reason. The upshot is that allow_shrink should always be set to <see langword="false" />.
-</para><para>
-Sometimes when you think you want to use allow_shrink, the real problem is that some specific child widget is requesting too much space, so the user can't shrink the window sufficiently. Perhaps you are calling gtk_widget_set_size_request() on a child widget, and forcing its size request to be too large. Instead of setting the child's usize, consider using gtk_window_set_default_size() so that the child gets a larger allocation than it requests.</para></remarks>
-        <since version="Gtk# 2.4" />
+        <param name="x">X coordinate to move <paramref name="window" /> to.</param>
+        <param name="y">Y coordinate to move <paramref name="window" /> to.</param>
+        <summary>Asks the window manager to move <paramref name="window" /> to the given position.</summary>
+        <remarks>
+          <para>
+	  Window managers are free to ignore this; most window managers ignore requests for initial window positions (instead using a user-defined placement algorithm) and honor requests after the <paramref name="window" /> has already been shown.
+	 </para>
+          <para>
+	  Note: the position is the position of the gravity-determined reference point for the <paramref name="window" />. The gravity determines two things: first, the location of the reference point in root <paramref name="window" /> coordinates; and second, which point on the <paramref name="window" /> is positioned at the reference point. 
+	 </para>
+          <para>
+	  By default the gravity is <see cref="F:Gdk.Gravity.NorthWest" /> so the reference point is simply the x, y supplied to <see cref="M:Gtk.Window.Move" />. The top-left corner of the <paramref name="window" /> decorations (aka window frame or border) will be placed at <paramref name="x" />, <paramref name="y" />. Therefore, to position a <paramref name="window" /> at the top left of the screen, you want to use the default gravity (which is <see cref="F:Gdk.Gravity.NorthWest" />) and move the <paramref name="window" /> to 0,0.
+	 </para>
+          <para>
+	  To position a <paramref name="window" /> at the bottom right corner of the screen, you would set <see cref="F:Gdk.Gravity.SouthEast" />, which means that the reference point is at x + the <paramref name="window" /> width and y + the <paramref name="window" /> height, and the bottom-right corner of the window border will be placed at that reference point.
+	 </para>
+        </remarks>
       </Docs>
     </Member>
-    <Member MemberName="PropagateKeyEvent">
-      <MemberSignature Language="C#" Value="public bool PropagateKeyEvent (Gdk.EventKey evnt);" />
+    <Member MemberName="OnDefaultActivated">
+      <MemberSignature Language="C#" Value="protected virtual void OnDefaultActivated ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnDefaultActivated() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideDefaultActivated", Type=typeof(Gtk.Window))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Window.DefaultActivated" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.DefaultActivated" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnFocusActivated">
+      <MemberSignature Language="C#" Value="protected virtual void OnFocusActivated ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnFocusActivated() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideFocusActivated", Type=typeof(Gtk.Window))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Window.FocusActivated" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.FocusActivated" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnKeysChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnKeysChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnKeysChanged() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideKeysChanged", Type=typeof(Gtk.Window))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Window.KeysChanged" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.KeysChanged" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetFocus">
+      <MemberSignature Language="C#" Value="protected virtual void OnSetFocus (Gtk.Widget focus);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSetFocus(class Gtk.Widget focus) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSetFocus", Type=typeof(Gtk.Window))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="focus" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="focus">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Window.SetFocus" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Window.SetFocus" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Opacity">
+      <MemberSignature Language="C#" Value="public double Opacity { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 Opacity" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("opacity")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Opacity property.</summary>
+        <value>Range from 0.0 to 1.0.</value>
+        <remarks>Only valid when compositing is supported.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="ParseGeometry">
+      <MemberSignature Language="C#" Value="public bool ParseGeometry (string geometry);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ParseGeometry(string geometry) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="evnt" Type="Gdk.EventKey" />
+        <Parameter Name="geometry" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Propagate a key press or release event to the focus widget and up the focus container chain until a widget handles <paramref name="evnt" />.</summary>
-        <param name="evnt">a <see cref="T:Gdk.EventKey" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>This is normally called by the default KeyPressEvent and KeyReleaseEvent handlers for toplevel windows, however in some cases it may be useful to call this directly when overriding the standard key handling for a toplevel window.</remarks>
-        <since version="Gtk# 2.4" />
+        <param name="geometry">
+        </param>
+        <summary>Parses a standard X Window System geometry string.</summary>
+        <returns>
+          <see langword="true" /> if string was parsed successfully.</returns>
+        <remarks>
+          <para>
+            <see cref="M:Gtk.Window.ParseGeometry" /> does work on all GTK# ports including Win32 but is primarily intended for an X environment.
+	 </para>
+          <para>
+	  If either a size or a position can be extracted from the geometry string, <see cref="M:Gtk.Window.ParseGeometry" /> returns <see langword="true" /> and calls <see cref="M:Gtk.Window.SetDefaultSize" /> and/or <see cref="M:Gtk.Window.Move" /> to resize/move the <paramref name="window" />.
+	 </para>
+          <para>
+	  If <see cref="M:Gtk.Window.ParseGeometry" /> returns <see langword="true" />, it will also set the <paramref name="F:Gdk.WindowHints.UserPos" /> and/or <see cref="F:Gdk.WindowHints.UserSize" /> hints indicating to the window manager that the size/position of the <paramref name="window" /> was user-specified. This causes most window managers to honor the geometry.
+	 </para>
+          <para>
+	  Note that for <see cref="M:Gtk.Window.ParseGeometry" /> to work as expected, it has to be called when the <paramref name="window" /> has its "final" size, i.e. after calling <see cref="M:Gtk.Widget.ShowAll" /> on the contents and <see cref="M:Gtk.Window.SetGeometryHints" /> on the <paramref name="window" />.
+	 </para>
+        </remarks>
       </Docs>
     </Member>
-    <Member MemberName="DefaultIconName">
-      <MemberSignature Language="C#" Value="public static string DefaultIconName { set; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="Present">
+      <MemberSignature Language="C#" Value="public void Present ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Present() cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="IconName">
-      <MemberSignature Language="C#" Value="public string IconName { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("icon-name")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="FocusOnMap">
-      <MemberSignature Language="C#" Value="public bool FocusOnMap { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
+        <summary>Presents a <paramref name="window" /> to the user.</summary>
+        <remarks>
+          <para>
+	  This may mean raising the <paramref name="window" /> in the stacking order, deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus, possibly dependent on the user's platform, window manager, and preferences. If <paramref name="window" /> is hidden, this method calls <see cref="M:Gtk.Widget.Show" /> as well. 
+	 </para>
+          <para>
+	  This method should be used when the user tries to open a <paramref name="window" /> that's already open. Say for example the preferences dialog is currently open, and the user chooses Preferences from the menu a second time; use <see cref="M:Gtk.Window.Present" /> to move the already-open dialog where the user can see it.
+	 </para>
+        </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("focus-on-map")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="PresentWithTime">
       <MemberSignature Language="C#" Value="public void PresentWithTime (uint timestamp);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PresentWithTime(unsigned int32 timestamp) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1932,8 +1363,648 @@ Sometimes when you think you want to use allow_shrink, the real problem is that 
         <since version="Gtk# 2.8" />
       </Docs>
     </Member>
+    <Member MemberName="PropagateKeyEvent">
+      <MemberSignature Language="C#" Value="public bool PropagateKeyEvent (Gdk.EventKey evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool PropagateKeyEvent(class Gdk.EventKey evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.EventKey" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">a <see cref="T:Gdk.EventKey" /></param>
+        <summary>Propagate a key press or release event to the focus widget and up the focus container chain until a widget handles <paramref name="evnt" />.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>This is normally called by the default KeyPressEvent and KeyReleaseEvent handlers for toplevel windows, however in some cases it may be useful to call this directly when overriding the standard key handling for a toplevel window.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAccelGroup">
+      <MemberSignature Language="C#" Value="public void RemoveAccelGroup (Gtk.AccelGroup accel_group);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveAccelGroup(class Gtk.AccelGroup accel_group) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accel_group" Type="Gtk.AccelGroup" />
+      </Parameters>
+      <Docs>
+        <param name="accel_group">A <see cref="T:Gtk.AccelGroup" />.</param>
+        <summary>Reverses the effects of <see cref="M:Gtk.Window.AddAccelGroup" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveMnemonic">
+      <MemberSignature Language="C#" Value="public void RemoveMnemonic (uint keyval, Gtk.Widget target);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveMnemonic(unsigned int32 keyval, class Gtk.Widget target) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keyval" Type="System.UInt32" />
+        <Parameter Name="target" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="keyval">The mnemonic.</param>
+        <param name="target">The <paramref name="widget" /> that gets activated by the mnemonic.</param>
+        <summary>Removes a mnemonic from this <paramref name="window" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ReshowWithInitialSize">
+      <MemberSignature Language="C#" Value="public void ReshowWithInitialSize ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReshowWithInitialSize() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Hides <paramref name="window" />, then reshows it, resetting the default size and position of the <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  Used by GUI builders only.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Resizable">
+      <MemberSignature Language="C#" Value="public bool Resizable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Resizable" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("resizable")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains whether a <paramref name="window" /> will be resizable by the user or not.</summary>
+        <value>
+          <see langword="true" /> if the user can resize the <paramref name="window" />.</value>
+        <remarks>
+          <para>
+	  By default, the <paramref name="window" /> are resizable, so you can change the size of them. But if you set this property to false, the user won't be able to change the size of them.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Resize">
+      <MemberSignature Language="C#" Value="public void Resize (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Resize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="width">Width in pixels to resize the <paramref name="window" /> to.</param>
+        <param name="height">Height in pixels to resize the <paramref name="window" /> to.</param>
+        <summary>Resizes the <paramref name="window" /> as if the user had done so, obeying geometry constraints.</summary>
+        <remarks>
+          <para>
+	  The default geometry constraint is that windows may not be smaller than their size request; to override this constraint, call <see cref="M:Gtk.Widget.SetSizeRequest" /> to set the <paramref name="window" />'s request to a smaller value.
+	 </para>
+          <para>
+	  If <see cref="M:Gtk.Window.Resize" /> is called before showing a <paramref name="window" /> for the first time, it overrides any default size set with <see cref="M:Gtk.Window.SetDefaultSize" />. Windows may not be resized smaller than 1 by 1 pixels.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResizeGripIsVisible">
+      <MemberSignature Language="C#" Value="public bool ResizeGripIsVisible ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ResizeGripIsVisible() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ResizeGripVisible">
+      <MemberSignature Language="C#" Value="public bool ResizeGripVisible { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ResizeGripVisible" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("resize-grip-visible")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ResizeToGeometry">
+      <MemberSignature Language="C#" Value="public void ResizeToGeometry (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ResizeToGeometry(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Role">
+      <MemberSignature Language="C#" Value="public string Role { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Role" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("role")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the role of the <paramref name="window" />.</summary>
+        <value>The role of the <paramref name="window" /> if set, or <see langword="null" />. The returned is owned by the widget and must not be modified or freed.</value>
+        <remarks>
+          <para>
+	 This property is only useful on X11, not with other GTK# targets.
+	</para>
+	 In combination with the <paramref name="window" /> title, the <paramref name="window" /> role allows a window manager to identify "the same" <paramref name="window" /> when an application is restarted. So for example you might set the "toolbox" role on your app's toolbox <paramref name="window" />, so that when the user restarts their session, the session manager can put the toolbox back in the same place.
+	<para>
+	 If a <paramref name="window" /> already has a unique title, you don't need to set the role, since the WM can use the title to identigy the <paramref name="window" /> when restoring the session.
+	</para></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Screen">
+      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Screen Screen" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("screen")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Screen</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the <see cref="T:Gdk.Screen" /> where the <paramref name="window" /> is displayed.</summary>
+        <value>A <see cref="T:Gdk.Screen" />.</value>
+        <remarks>
+          <para>
+	  If the <paramref name="window" /> is already mapped, it will be unmapped, and then remapped on the new screen.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetDefaultGeometry">
+      <MemberSignature Language="C#" Value="public void SetDefaultGeometry (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetDefaultGeometry(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetDefaultIconFromFile">
+      <MemberSignature Language="C#" Value="public static bool SetDefaultIconFromFile (string filename);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool SetDefaultIconFromFile(string filename) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filename" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="filename">Location of icon file.</param>
+        <summary>Sets an icon to be used as fallback for windows that haven't had <see cref="P:Gtk.Window.IconList" /> called on them from a file on disk.</summary>
+        <returns>
+          <see langword="true" /> if setting the icon succeded.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetDefaultSize">
+      <MemberSignature Language="C#" Value="public void SetDefaultSize (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetDefaultSize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="width">Width in pixels, or -1 to unset the default width.</param>
+        <param name="height">Height in pixels, or -1 to unset the default height.</param>
+        <summary>Sets the default size of an object, with the specified width and height arguments.</summary>
+        <remarks>
+          <para>
+	  If the <paramref name="window" />'s "natural" size (its size request) is larger than the default, the default will be ignored. More generally, if the default size does not obey the geometry hints for the <paramref name="window" /> (<see cref="M:Gtk.Window.SetGeometryHints" /> can be used to set these explicitly), the default size will be clamped to the nearest permitted size.
+	 </para>
+          <para>
+	  Unlike <see cref="M:Gtk.Widget.SetSizeRequest" /> which sets a size request for a <paramref name="widget" /> and thus would keep users from shrinking the <paramref name="window" />, this method only sets the initial size, just as if the user had resized the <paramref name="window" /> themselves. Users can still shrink the <paramref name="window" /> again as they normally would. Setting a default size of -1 means to use the "natural" default size (the size request of the <paramref name="window" />). 
+	 </para>
+          <para>
+	  For more control over a <paramref name="window" />'s initial size and how resizing works, investigate <see cref="M:Gtk.Window.SetGeometryHints" />.
+	 </para>
+          <para>
+	  For some uses, <see cref="M:Gtk.Window.Resize" /> is a more appropriate method. <see cref="M:Gtk.Window.Resize" /> changes the current size of the <paramref name="window" />, rather than the size to be used on initial display. <see cref="M:Gtk.Window.Resize" /> always affects the <paramref name="window" /> itself, not the geometry widget. 
+	 </para>
+          <para>
+	  The default size of a <paramref name="window" /> only affects the first time a <paramref name="window" /> is shown; if a <paramref name="window" /> is hidden and re-shown, it will remember the size it had prior to hiding, rather than using the default size.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetFocus">
+      <MemberSignature Language="C#" Value="public event Gtk.SetFocusHandler SetFocus;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.SetFocusHandler SetFocus" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("set-focus")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.SetFocusHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>SetFocus event.</summary>
+        <remarks>This event is emited when the focused widget is set.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetGeometryHints">
+      <MemberSignature Language="C#" Value="public void SetGeometryHints (Gtk.Widget geometry_widget, Gdk.Geometry geometry, Gdk.WindowHints geom_mask);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetGeometryHints(class Gtk.Widget geometry_widget, valuetype Gdk.Geometry geometry, valuetype Gdk.WindowHints geom_mask) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="geometry_widget" Type="Gtk.Widget" />
+        <Parameter Name="geometry" Type="Gdk.Geometry" />
+        <Parameter Name="geom_mask" Type="Gdk.WindowHints" />
+      </Parameters>
+      <Docs>
+        <param name="geometry_widget">Widget the geometry hints will be applied to.</param>
+        <param name="geometry">Struct containing geometry information.</param>
+        <param name="geom_mask">Mask indicating which struct fields should be paid attention to.</param>
+        <summary>This method sets up hints about how a <paramref name="window" /> can be resized by the user.</summary>
+        <remarks>
+          <para>
+	  You can set a minimum and maximum size; allowed resize increments (e.g. for xterm, you can only resize by the size of a character); aspect ratios; and more. See <see cref="T:Gdk.Geometry" />.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconFromFile">
+      <MemberSignature Language="C#" Value="public bool SetIconFromFile (string filename);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool SetIconFromFile(string filename) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filename" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="filename">Location of icon file.</param>
+        <summary>Sets the icon for <paramref name="window" />.</summary>
+        <returns>
+          <see langword="true" /> if setting the icon succeded.</returns>
+        <remarks>
+          <para>
+	  This method is equivalent to calling <see cref="M:Gtk.Window.ParseGeometry" /> with pixbuf created by loading the image from <paramref name="filename" />.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetPosition">
+      <MemberSignature Language="C#" Value="public void SetPosition (Gtk.WindowPosition position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetPosition(valuetype Gtk.WindowPosition position) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="position" Type="Gtk.WindowPosition" />
+      </Parameters>
+      <Docs>
+        <param name="position">A position constraint.</param>
+        <summary>Sets the position constraint for a <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  Is is used for placing the <paramref name="window" /> in some area, depending on the <paramref name="position" /> constraint.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetWmclass">
+      <MemberSignature Language="C#" Value="public void SetWmclass (string wmclass_name, string wmclass_class);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetWmclass(string wmclass_name, string wmclass_class) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="wmclass_name" Type="System.String" />
+        <Parameter Name="wmclass_class" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="wmclass_name">Window name hint.</param>
+        <param name="wmclass_class">Window class hint.</param>
+        <summary>It sets the X Window System "class" and "name" hints for a <paramref name="window" />. (Don't use this method.)</summary>
+        <remarks>
+          <para>
+	  According to the ICCCM, you should always set these to the same value for all windows in an application, and GTK# sets them to that value by default, so calling this method is sort of pointless. However, you may want to call <see cref="P:Gtk.Window.Role" /> on each <paramref name="window" /> in your application, for the benefit of the session manager. Setting the role allows the window manager to restore window positions when loading a saved session.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SkipPagerHint">
+      <MemberSignature Language="C#" Value="public bool SkipPagerHint { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SkipPagerHint" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("skip-pager-hint")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Whether the <paramref name="window" /> should not be in the pager.</summary>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> should not be in the pager.</value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SkipTaskbarHint">
+      <MemberSignature Language="C#" Value="public bool SkipTaskbarHint { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SkipTaskbarHint" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("skip-taskbar-hint")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Whether the <paramref name="window" /> should not be in the taskbar.</summary>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> should not be in the taskbar.</value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StartupId">
+      <MemberSignature Language="C#" Value="public string StartupId { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string StartupId" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("startup-id")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="Stick">
+      <MemberSignature Language="C#" Value="public void Stick ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Stick() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asks to stick <paramref name="window" />, which means that it will appear on all user desktops.</summary>
+        <remarks>
+          <para>
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely stuck afterward, because other entities (e.g. the user or window manager) could unstick it again, and some window managers do not support sticking windows. But normally the <paramref name="window" /> will end up stuck. Just don't write code that crashes if not.
+	 </para>
+          <para>
+	  You can track stickiness via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on GtkWidget. It's permitted to call this method before showing a <paramref name="window" />.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Title">
+      <MemberSignature Language="C#" Value="public string Title { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Title" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("title")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Property used for setting the <paramref name="window" /> title.</summary>
+        <value>The title of the <paramref name="window" />, or <see langword="null" /> if none has been set explicitely. The returned string is owned by the <paramref name="widget" /> and must not be modified or freed.</value>
+        <remarks>
+          <para>
+	  This property will allow you to set the <paramref name="window" /> title. The title of a <paramref name="window" /> will be displayed in its title bar. Since the title bar is rendered by the window managers on X Window System, the way it appears will depend on the user preferences. This title should help the users to distinguish a <paramref name="window" /> from others opened. A good title will have the application name an the actual document, for example.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TransientFor">
+      <MemberSignature Language="C#" Value="public Gtk.Window TransientFor { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Window TransientFor" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("transient-for")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the transient parent window.</summary>
+        <value />
+        <remarks>
+          <para>
+	  Dialog windows should be transient for the main <paramref name="window" /> they were spawned from, this allows windows managers to e.g. keep the dialog on top of the main <paramref name="window" />, or center the dialog over the main <paramref name="window" />.
+	 </para>
+          <para>
+	  On Windows(tm), this function will and put the child <paramref name="window" /> on top of the parent, much as the <paramref name="window" />  would have done in X.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Type">
+      <MemberSignature Language="C#" Value="public Gtk.WindowType Type { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.WindowType Type" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("type")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.WindowType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The type of <paramref name="window" />.</summary>
+        <value>The <paramref name="window" /> type.</value>
+        <remarks>
+          <para>
+	  See also <see cref="T:Gtk.WindowType" />.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TypeHint">
+      <MemberSignature Language="C#" Value="public Gdk.WindowTypeHint TypeHint { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.WindowTypeHint TypeHint" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("type-hint")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.WindowTypeHint</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the type hint for <paramref name="window" />.</summary>
+        <value>The type hint for <paramref name="window" />.</value>
+        <remarks>
+          <para>
+	  By setting the type hint for the <paramref name="window" />, you allow the window manager to decorate and handle the <paramref name="window" /> in a way which is suitable to the function of the <paramref name="window" /> in your application. This property should be called before the <paramref name="window" /> becomes visible.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unfullscreen">
+      <MemberSignature Language="C#" Value="public void Unfullscreen ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unfullscreen() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asks to toggle off the fullscreen state for <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely not full screen afterward, because other entities (e.g. the user or window manager) could fullscreen it again, and not all window managers honor requests to unfullscreen windows. But normally the <paramref name="window" /> will end up restored to its normal state. Just don't write code that crashes if not.
+	 </para>
+          <para>
+	  You can track the fullscreen state via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unmaximize">
+      <MemberSignature Language="C#" Value="public void Unmaximize ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unmaximize() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asks to unmaximize <paramref name="window" />.</summary>
+        <remarks>
+          <para>
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely unmaximized afterward, because other entities (e.g. the user or window manager) could maximize it again, and not all window managers honor requests to unmaximize. But normally the <paramref name="window" /> will end up unmaximized. Just don't write code that crashes if not.
+	 </para>
+          <para>
+	  You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" /></para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unstick">
+      <MemberSignature Language="C#" Value="public void Unstick ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unstick() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asks to unstick <paramref name="window" />, which means that it will appear on only one of the user's desktops.</summary>
+        <remarks>
+          <para>
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely unstuck afterward, because other entities (e.g. the user or window manager) could stick it again. But normally the <paramref name="window" /> will end up stuck. Just do not write code that crashes if not.
+	 </para>
+          <para>
+	  You can track stickiness via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
+	 </para>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="UrgencyHint">
-      <MemberSignature Language="C#" Value="public bool UrgencyHint { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool UrgencyHint { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UrgencyHint" />
       <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
@@ -1951,71 +2022,42 @@ Sometimes when you think you want to use allow_shrink, the real problem is that 
         <since version="Gtk# 2.8" />
       </Docs>
     </Member>
-    <Member MemberName="Deletable">
-      <MemberSignature Language="C#" Value="public bool Deletable { set; get; };" />
+    <Member MemberName="WindowPosition">
+      <MemberSignature Language="C#" Value="public Gtk.WindowPosition WindowPosition { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.WindowPosition WindowPosition" />
       <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("deletable")</AttributeName>
+          <AttributeName>GLib.Property("window-position")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>Gtk.WindowPosition</ReturnType>
       </ReturnValue>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>Indicates if the window has a close button.</summary>
-        <value>if <see langword="true" />, a close button is displayed.</value>
-        <remarks />
-        <since version="Gtk# 2.10" />
+        <summary>Property used for setting/getting the <paramref name="window" /> position.</summary>
+        <value>The <paramref name="window" /> position. See also <see cref="T:Gtk.WindowPosition" />.</value>
+        <remarks>
+          <para>
+	  This property will alow you to define where a <paramref name="window" /> should be displayed on the screen. Position values are described in the <see cref="T:Gtk.WindowPosition" /> definition.
+	 </para>
+        </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Group">
-      <MemberSignature Language="C#" Value="public Gtk.WindowGroup Group { get; };" />
+    <Member MemberName="WindowType">
+      <MemberSignature Language="C#" Value="public Gtk.WindowType WindowType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.WindowType WindowType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.WindowGroup</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Gets the Group the window is associated with.</summary>
-        <value>a <see cref="Gtk.WindowGroup" />.</value>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="Opacity">
-      <MemberSignature Language="C#" Value="public double Opacity { set; get; };" />
-      <MemberType>Property</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("opacity")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Opacity property.</summary>
-        <value>Range from 0.0 to 1.0.</value>
-        <remarks>Only valid when compositing is supported.</remarks>
-        <since version="Gtk# 2.12" />
-      </Docs>
-    </Member>
-    <Member MemberName="StartupId">
-      <MemberSignature Language="C#" Value="public string StartupId { set; };" />
-      <MemberType>Property</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("startup-id")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
+        <ReturnType>Gtk.WindowType</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
   </Members>

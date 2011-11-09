@@ -1,26 +1,72 @@
 <Type Name="AttrList" FullName="Pango.AttrList">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class AttrList : GLib.Opaque" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AttrList extends GLib.Opaque" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Opaque</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>Represents a list of attributes that apply to a section of text.</summary>
     <remarks>The attributes are, in general, allowed to overlap in an arbitrary fashion, however, if the attributes are manipulated only through <see cref="M:Pango.AttrList.Change()" />, the overlap between properties will meet stricter criteria.
 <para>Since the <see cref="T:Pango.AttrList" /> is stored as a linear list, it is not suitable for storing attributes for large amounts of text. In general, you should not use a single <see cref="T:Pango.AttrList" /> for more than one paragraph of text.
 </para></remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Opaque</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AttrList ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Default constructor</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AttrList (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Change">
+      <MemberSignature Language="C#" Value="public void Change (Pango.Attribute attr);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Change(class Pango.Attribute attr) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="attr" Type="Pango.Attribute" />
+      </Parameters>
+      <Docs>
+        <param name="attr">a <see cref="T:Pango.Attribute" /></param>
+        <summary>Insert the given attribute into the list.</summary>
+        <remarks>It will replace any attributes of the same type on that segment and be merged with any adjoining attributes that are identical.  
+<block subset="none" type="note"><para>This function is slower than <see cref="M:Pango.AttrList.Insert()" /> for creating a attribute list in order (potentially much slower for large lists). However, <see cref="M:Pango.AttrList.Insert()" /> is not suitable for continually changing a set of attributes since it never removes or combines existing attributes.
+  </para></block></remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Copy">
       <MemberSignature Language="C#" Value="public Pango.AttrList Copy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.AttrList Copy() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Pango.AttrList</ReturnType>
@@ -32,124 +78,9 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Change">
-      <MemberSignature Language="C#" Value="public void Change (Pango.Attribute attr);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="attr" Type="Pango.Attribute" />
-      </Parameters>
-      <Docs>
-        <summary>Insert the given attribute into the list.</summary>
-        <param name="attr">a <see cref="T:Pango.Attribute" /></param>
-        <remarks>It will replace any attributes of the same type on that segment and be merged with any adjoining attributes that are identical.  
-<block subset="none" type="note"><para>This function is slower than <see cref="M:Pango.AttrList.Insert()" /> for creating a attribute list in order (potentially much slower for large lists). However, <see cref="M:Pango.AttrList.Insert()" /> is not suitable for continually changing a set of attributes since it never removes or combines existing attributes.
-  </para></block></remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="InsertBefore">
-      <MemberSignature Language="C#" Value="public void InsertBefore (Pango.Attribute attr);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="attr" Type="Pango.Attribute" />
-      </Parameters>
-      <Docs>
-        <summary>Insert the given attribute into the list.</summary>
-        <param name="attr"> the attribute to insert.</param>
-        <remarks>It will be inserted before all other attributes with a matching start_index.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Unref">
-      <MemberSignature Language="C#" Value="public void Unref ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Decrease the reference count of the given attribute list by one.</summary>
-        <remarks>If the result is zero, free the attribute list and the attributes it contains.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Splice">
-      <MemberSignature Language="C#" Value="public void Splice (Pango.AttrList other, int pos, int len);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="other" Type="Pango.AttrList" />
-        <Parameter Name="pos" Type="System.Int32" />
-        <Parameter Name="len" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>This function splices attribute list <paramref name="other" /> into list.</summary>
-        <param name="other">another <see cref="T:Pango.AttrList" /></param>
-        <param name="pos"> the position at which to insert <paramref name="other" /></param>
-        <param name="len">the length of the spliced segment.</param>
-        <remarks>This operation is equivalent to stretching every attribute applies at position <paramref name="pos" /> in list by an amount <paramref name="len" />, and then calling <see cref="M:Pango.AttrList.Change()" /> with a copy of each attributes in other in sequence (offset in position by <paramref name="pos" />).
-This operation proves useful for, for instance, inserting a pre-edit string in the middle of an edit buffer.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Insert">
-      <MemberSignature Language="C#" Value="public void Insert (Pango.Attribute attr);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="attr" Type="Pango.Attribute" />
-      </Parameters>
-      <Docs>
-        <summary>Insert the given attribute to the list</summary>
-        <param name="attr"> the attribute to insert.</param>
-        <remarks>It will be inserted after all other attributes with a matching start_index.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public AttrList (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public AttrList ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Default constructor</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Iterator">
-      <MemberSignature Language="C#" Value="public Pango.AttrIterator Iterator { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.AttrIterator</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Create a iterator initialized to the beginning of the list.</summary>
-        <value>a new <see cref="T:Pango.AttrIterator" /></value>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="Filter">
       <MemberSignature Language="C#" Value="public Pango.AttrList Filter (Pango.AttrFilterFunc func);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.AttrList Filter(class Pango.AttrFilterFunc func) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Pango.AttrList</ReturnType>
@@ -158,14 +89,29 @@ This operation proves useful for, for instance, inserting a pre-edit string in t
         <Parameter Name="func" Type="Pango.AttrFilterFunc" />
       </Parameters>
       <Docs>
-        <summary>Given a callback function, removes any elements of list for which <paramref name="func" /> returns <see langword="true" /> and inserts them into a new list.</summary>
         <param name="func">a <see cref="T:Pango.AttrFilterFunc" /></param>
+        <summary>Given a callback function, removes any elements of list for which <paramref name="func" /> returns <see langword="true" /> and inserts them into a new list.</summary>
         <returns>a <see cref="T:Pango.AttrList" /></returns>
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~AttrList ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -177,9 +123,60 @@ This operation proves useful for, for instance, inserting a pre-edit string in t
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Pango.AttrList" />.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="Insert">
+      <MemberSignature Language="C#" Value="public void Insert (Pango.Attribute attr);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Insert(class Pango.Attribute attr) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="attr" Type="Pango.Attribute" />
+      </Parameters>
+      <Docs>
+        <param name="attr"> the attribute to insert.</param>
+        <summary>Insert the given attribute to the list</summary>
+        <remarks>It will be inserted after all other attributes with a matching start_index.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertBefore">
+      <MemberSignature Language="C#" Value="public void InsertBefore (Pango.Attribute attr);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void InsertBefore(class Pango.Attribute attr) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="attr" Type="Pango.Attribute" />
+      </Parameters>
+      <Docs>
+        <param name="attr"> the attribute to insert.</param>
+        <summary>Insert the given attribute into the list.</summary>
+        <remarks>It will be inserted before all other attributes with a matching start_index.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Iterator">
+      <MemberSignature Language="C#" Value="public Pango.AttrIterator Iterator { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.AttrIterator Iterator" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.AttrIterator</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Create a iterator initialized to the beginning of the list.</summary>
+        <value>a new <see cref="T:Pango.AttrIterator" /></value>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Ref">
       <MemberSignature Language="C#" Value="public Pango.AttrList Ref ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.AttrList Ref() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Pango.AttrList is now refcounted automatically")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Pango.AttrList</ReturnType>
       </ReturnValue>
@@ -188,6 +185,79 @@ This operation proves useful for, for instance, inserting a pre-edit string in t
         <summary>Increases the reference count of the list.</summary>
         <returns>The list.</returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Ref">
+      <MemberSignature Language="C#" Value="protected override void Ref (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Ref(native int raw) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Splice">
+      <MemberSignature Language="C#" Value="public void Splice (Pango.AttrList other, int pos, int len);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Splice(class Pango.AttrList other, int32 pos, int32 len) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="other" Type="Pango.AttrList" />
+        <Parameter Name="pos" Type="System.Int32" />
+        <Parameter Name="len" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="other">another <see cref="T:Pango.AttrList" /></param>
+        <param name="pos"> the position at which to insert <paramref name="other" /></param>
+        <param name="len">the length of the spliced segment.</param>
+        <summary>This function splices attribute list <paramref name="other" /> into list.</summary>
+        <remarks>This operation is equivalent to stretching every attribute applies at position <paramref name="pos" /> in list by an amount <paramref name="len" />, and then calling <see cref="M:Pango.AttrList.Change()" /> with a copy of each attributes in other in sequence (offset in position by <paramref name="pos" />).
+This operation proves useful for, for instance, inserting a pre-edit string in the middle of an edit buffer.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unref">
+      <MemberSignature Language="C#" Value="public void Unref ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unref() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Pango.AttrList is now refcounted automatically")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Decrease the reference count of the given attribute list by one.</summary>
+        <remarks>If the result is zero, free the attribute list and the attributes it contains.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unref">
+      <MemberSignature Language="C#" Value="protected override void Unref (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Unref(native int raw) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
   </Members>

@@ -1,12 +1,17 @@
 <Type Name="Clipboard" FullName="Gtk.Clipboard">
   <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Clipboard : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Clipboard extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>An object that stores clipboard data.</summary>
     <remarks>
@@ -18,30 +23,37 @@
       <para> Along with the functions to get the clipboard contents as an arbitrary data chunk, there are also functions to retrieve it as text, <see cref="M:Gtk.Clipboard.RequestText()" /> and <see cref="M:Gtk.Clipboard.WaitForText()" />. These functions take care of determining which formats are advertised by the clipboard provider, asking for the clipboard in the best available format and converting the results into the UTF-8 encoding. (The standard form for representing strings in Gtk#.)</para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="Get">
-      <MemberSignature Language="C#" Value="public static Gtk.Clipboard Get (Gdk.Atom selection);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Clipboard</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Clipboard ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Proctected constructor.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Clipboard (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="selection" Type="Gdk.Atom" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Returns the clipboard object for the given selection.</summary>
-        <param name="selection">an object of type <see cref="T:Gdk.Atom" /></param>
-        <returns>an object of type <see cref="T:Gtk.Clipboard" /></returns>
-        <remarks>See <see cref="M:Gtk.Clipboard.GetForDisplay()" /> for complete details.</remarks>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Clear">
       <MemberSignature Language="C#" Value="public void Clear ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Clear() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -52,108 +64,9 @@
         <remarks>Generally this should only be called between the time you call <see cref="M:Gtk.Clipboard.SetWithOwner()" /> or <see cref="M:Gtk.Clipboard.SetWithData()" />, and when the clear_func you supplied is called. Otherwise, the clipboard may be owned by someone else.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="WaitIsTextAvailable">
-      <MemberSignature Language="C#" Value="public bool WaitIsTextAvailable ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Test to see if there is text available to be pasted.</summary>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>
-          <para>This is done by requesting the TARGETS atom and checking if it contains any of the names: STRING, TEXT, COMPOUND_TEXT, UTF8_STRING. This function waits for the data to be received using the main loop, so events, timeouts, etc, may be dispatched during the wait.</para>
-          <para>This function is a little faster than calling <see cref="M:Gtk.ClipboardWaitForText()" /> since it does not need to retrieve the actual text.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WaitForContents">
-      <MemberSignature Language="C#" Value="public Gtk.SelectionData WaitForContents (Gdk.Atom target);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.SelectionData</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="target" Type="Gdk.Atom" />
-      </Parameters>
-      <Docs>
-        <summary>Requests the contents of the clipboard using the given target.</summary>
-        <param name="target">an object of type <see cref="T:Gdk.Atom" /></param>
-        <returns>an object of type <see cref="T:Gtk.SelectionData" /></returns>
-        <remarks>This function waits for the data to be received using the main loop, so events, timeouts, etc, may be dispatched during the wait.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WaitForText">
-      <MemberSignature Language="C#" Value="public string WaitForText ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Requests the contents of the clipboard as text and converts the result to UTF-8 if necessary.</summary>
-        <returns>an object of type <see cref="T:System.String" /></returns>
-        <remarks>This function waits for the data to be received using the main loop, so events, timeouts, etc, may be dispatched during the wait.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Clipboard (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Owner">
-      <MemberSignature Language="C#" Value="public GLib.Object Owner { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.Object</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The owner of the clipboard, if any; otherwise <see langword="null" />.</summary>
-        <value>an object of type <see cref="T:GLib.Object" /></value>
-        <remarks>If the clipboard contents callbacks were set with <see cref="M:Gtk.Clipboard.SetWithOwner()" />, and the <see cref="M:Gtk.Clipboard.SetWithData()" /> or <see cref="M:Gtk.Clipboard.Clear()" /> has not been subsequently called, it will return the owner set by <see cref="M:Gtk.Clipboard.SetWithOwner()" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Text">
-      <MemberSignature Language="C#" Value="public string Text { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Sets the contents of the clipboard to the given UTF-8 string.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>Gtk# will make a copy of the text and take responsibility for responding for requests for the text, and for converting the text into the requested format.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="SetText" Deprecated="true">
-      <MemberSignature Language="C#" Value="public void SetText (string text);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Deprecated method to set the contents of the clipboard.</summary>
-        <param name="text">an object of type <see cref="T:System.String" /></param>
-        <remarks>Replaced by the <see cref="M:Gtk.Clipboard.Text" /> property.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Display">
-      <MemberSignature Language="C#" Value="public Gdk.Display Display { get; };" />
+      <MemberSignature Language="C#" Value="public Gdk.Display Display { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Display Display" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Display</ReturnType>
@@ -165,8 +78,26 @@
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="Get">
+      <MemberSignature Language="C#" Value="public static Gtk.Clipboard Get (Gdk.Atom selection);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gtk.Clipboard Get(class Gdk.Atom selection) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Clipboard</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="selection" Type="Gdk.Atom" />
+      </Parameters>
+      <Docs>
+        <param name="selection">an object of type <see cref="T:Gdk.Atom" /></param>
+        <summary>Returns the clipboard object for the given selection.</summary>
+        <returns>an object of type <see cref="T:Gtk.Clipboard" /></returns>
+        <remarks>See <see cref="M:Gtk.Clipboard.GetForDisplay()" /> for complete details.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="GetForDisplay">
       <MemberSignature Language="C#" Value="public static Gtk.Clipboard GetForDisplay (Gdk.Display display, Gdk.Atom selection);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gtk.Clipboard GetForDisplay(class Gdk.Display display, class Gdk.Atom selection) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Clipboard</ReturnType>
@@ -176,9 +107,9 @@
         <Parameter Name="selection" Type="Gdk.Atom" />
       </Parameters>
       <Docs>
-        <summary>Returns the clipboard object for the given selection.</summary>
         <param name="display">a <see cref="T:Gdk.Display" /></param>
         <param name="selection">a <see cref="T:Gdk.Atom" /></param>
+        <summary>Returns the clipboard object for the given selection.</summary>
         <returns>a <see cref="T:Gtk.Clipboard" /></returns>
         <remarks>
           <para>Cut/copy/paste menu items and keyboard shortcuts should use the default clipboard, returned by passing GDK_SELECTION_CLIPBOARD for selection. (GDK_NONE is supported as a synonym for GDK_SELECTION_CLIPBOARD for backwards compatibility reasons.) The currently-selected object or text should be provided on the clipboard identified by GDK_SELECTION_PRIMARY. Cut/copy/paste menu items conceptually copy the contents of the GDK_SELECTION_PRIMARY clipboard to the default clipboard, i.e. they copy the selection to what the user sees as the clipboard.</para>
@@ -187,51 +118,9 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetWithData">
-      <MemberSignature Language="C#" Value="public bool SetWithData (Gtk.TargetEntry[] targets, Gtk.ClipboardGetFunc get_func, Gtk.ClipboardClearFunc clear_func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="targets" Type="Gtk.TargetEntry[]" />
-        <Parameter Name="get_func" Type="Gtk.ClipboardGetFunc" />
-        <Parameter Name="clear_func" Type="Gtk.ClipboardClearFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Virtually sets the contents of the specified clipboard by providing a list of supported formats for the clipboard data and a function to call to get the actual data when it is requested.</summary>
-        <param name="targets">a <see cref="T:Gtk.TargetEntry[]" /></param>
-        <param name="get_func">a <see cref="T:Gtk.ClipboardGetFunc" /></param>
-        <param name="clear_func">a <see cref="T:Gtk.ClipboardClearFunc" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetWithOwner">
-      <MemberSignature Language="C#" Value="public bool SetWithOwner (Gtk.TargetEntry[] targets, Gtk.ClipboardGetFunc get_func, Gtk.ClipboardClearFunc clear_func, GLib.Object owner);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="targets" Type="Gtk.TargetEntry[]" />
-        <Parameter Name="get_func" Type="Gtk.ClipboardGetFunc" />
-        <Parameter Name="clear_func" Type="Gtk.ClipboardClearFunc" />
-        <Parameter Name="owner" Type="GLib.Object" />
-      </Parameters>
-      <Docs>
-        <summary>Virtually sets the contents of the specified clipboard by providing a list of supported formats for the clipboard data and a function to call to get the actual data when it is requested.</summary>
-        <param name="targets">a <see cref="T:Gtk.TargetEntry[]" /></param>
-        <param name="get_func">a <see cref="T:Gtk.ClipboardGetFunc" /></param>
-        <param name="clear_func">a <see cref="T:Gtk.ClipboardClearFunc" /></param>
-        <param name="owner">a <see cref="T:GLib.Object" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>The difference between this function and <see cref="M:Gtk.Clipboard.SetWithData()" /> is that a <see cref="T:GLib.Object" /> is passed in.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -243,120 +132,9 @@
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Clipboard" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="RequestContents">
-      <MemberSignature Language="C#" Value="public void RequestContents (Gdk.Atom target, Gtk.ClipboardReceivedFunc cb);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="target" Type="Gdk.Atom" />
-        <Parameter Name="cb" Type="Gtk.ClipboardReceivedFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Requests the contents of clipboard as the given target.
-	  When the results of the result are later received the supplied 
-	  callback will be called.</summary>
-        <param name="target">a <see cref="T:Gdk.Atom" /> representing the form into which the clipboard-owning program should convert the selection.</param>
-        <param name="cb">a <see cref="T:Gtk.ClipboardReceivedFunc" />, a function to call when the clipboard results are received.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="RequestText">
-      <MemberSignature Language="C#" Value="public void RequestText (Gtk.ClipboardTextReceivedFunc cb);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="cb" Type="Gtk.ClipboardTextReceivedFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Fetch the clipboard's text and fire the function <paramref name="cb" /> on it.</summary>
-        <param name="cb">a <see cref="T:Gtk.ClipboardTextReceivedFunc" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Clipboard (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Clipboard ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Proctected constructor.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="WaitForTargets">
-      <MemberSignature Language="C#" Value="public bool WaitForTargets (Gdk.Atom targets, out int n_targets);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="targets" Type="Gdk.Atom" />
-        <Parameter Name="n_targets" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Returns a list of targets that are present on the clipboard, or 
-	  <see langword="null" /> if there aren't any targets available.
-	</summary>
-        <param name="targets">a <see cref="T:Gdk.Atom" /></param>
-        <param name="n_targets">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" />,TRUE if any 
-	  targets are present on the clipboard, otherwise FALSE.</returns>
-        <remarks>
-          <para>
-	  This function waits for the data to be received using the main 
-	  loop, so events, timeouts, etc, may be dispatched during the wait.
-	  </para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="RequestTargets">
-      <MemberSignature Language="C#" Value="public void RequestTargets (Gtk.ClipboardTargetsReceivedFunc cb);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="cb" Type="Gtk.ClipboardTargetsReceivedFunc" />
-      </Parameters>
-      <Docs>
-        <summary> 
-	  Requests the contents of the clipboard as list of supported targets. 
-	  When the list is later received, <paramref name="cb" /> will be called.
-	</summary>
-        <param name="cb">a <see cref="T:Gtk.ClipboardTargetsReceivedFunc" /></param>
-        <remarks>
-	  The "targets" parameter to <paramref name="cb" /> will contain the resulting targets if
-	  the request succeeded, or <see langword="null" /> if it failed. Added in GTK 2.4.
-	</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
     <Member MemberName="Image">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Image { set; };" />
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Image { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf Image" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Pixbuf</ReturnType>
@@ -368,119 +146,15 @@
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
-    <Member MemberName="OwnerChange">
-      <MemberSignature Language="C#" Value="public event Gtk.OwnerChangeHandler OwnerChange;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.OwnerChangeHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("owner_change")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="WaitForImage">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf WaitForImage ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Pixbuf</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="Store">
-      <MemberSignature Language="C#" Value="public void Store ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="SetCanStore">
-      <MemberSignature Language="C#" Value="public void SetCanStore (Gtk.TargetEntry targets, int n_targets);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="targets" Type="Gtk.TargetEntry" />
-        <Parameter Name="n_targets" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="targets">a <see cref="T:Gtk.TargetEntry" /></param>
-        <param name="n_targets">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="WaitIsTargetAvailable">
-      <MemberSignature Language="C#" Value="public bool WaitIsTargetAvailable (Gdk.Atom target);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="target" Type="Gdk.Atom" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="target">a <see cref="T:Gdk.Atom" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="WaitIsImageAvailable">
-      <MemberSignature Language="C#" Value="public bool WaitIsImageAvailable ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="RequestImage">
-      <MemberSignature Language="C#" Value="public void RequestImage (Gtk.ClipboardImageReceivedFunc cb);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="cb" Type="Gtk.ClipboardImageReceivedFunc" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="cb">a <see cref="T:Gtk.ClipboardImageReceivedFunc" /></param>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
     <Member MemberName="OnOwnerChange">
       <MemberSignature Language="C#" Value="protected virtual void OnOwnerChange (Gdk.EventOwnerChange evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnOwnerChange(class Gdk.EventOwnerChange evnt) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideOwnerChange", Type=typeof(Gtk.Clipboard))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -494,25 +168,298 @@
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
-    <Member MemberName="WaitIsRichTextAvailable">
-      <MemberSignature Language="C#" Value="public bool WaitIsRichTextAvailable (Gtk.TextBuffer buffer);" />
+    <Member MemberName="Owner">
+      <MemberSignature Language="C#" Value="public GLib.Object Owner { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GLib.Object Owner" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The owner of the clipboard, if any; otherwise <see langword="null" />.</summary>
+        <value>an object of type <see cref="T:GLib.Object" /></value>
+        <remarks>If the clipboard contents callbacks were set with <see cref="M:Gtk.Clipboard.SetWithOwner()" />, and the <see cref="M:Gtk.Clipboard.SetWithData()" /> or <see cref="M:Gtk.Clipboard.Clear()" /> has not been subsequently called, it will return the owner set by <see cref="M:Gtk.Clipboard.SetWithOwner()" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OwnerChange">
+      <MemberSignature Language="C#" Value="public event Gtk.OwnerChangeHandler OwnerChange;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.OwnerChangeHandler OwnerChange" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("owner-change")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.OwnerChangeHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestContents">
+      <MemberSignature Language="C#" Value="public void RequestContents (Gdk.Atom target, Gtk.ClipboardReceivedFunc cb);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RequestContents(class Gdk.Atom target, class Gtk.ClipboardReceivedFunc cb) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="target" Type="Gdk.Atom" />
+        <Parameter Name="cb" Type="Gtk.ClipboardReceivedFunc" />
+      </Parameters>
+      <Docs>
+        <param name="target">a <see cref="T:Gdk.Atom" /> representing the form into which the clipboard-owning program should convert the selection.</param>
+        <param name="cb">a <see cref="T:Gtk.ClipboardReceivedFunc" />, a function to call when the clipboard results are received.</param>
+        <summary>Requests the contents of clipboard as the given target.
+	  When the results of the result are later received the supplied 
+	  callback will be called.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestImage">
+      <MemberSignature Language="C#" Value="public void RequestImage (Gtk.ClipboardImageReceivedFunc cb);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RequestImage(class Gtk.ClipboardImageReceivedFunc cb) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cb" Type="Gtk.ClipboardImageReceivedFunc" />
+      </Parameters>
+      <Docs>
+        <param name="cb">a <see cref="T:Gtk.ClipboardImageReceivedFunc" /></param>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestRichText">
+      <MemberSignature Language="C#" Value="public void RequestRichText (Gtk.TextBuffer buffer, Gtk.Clipboard.RichTextReceivedFunc cb);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RequestRichText(class Gtk.TextBuffer buffer, class Gtk.Clipboard/RichTextReceivedFunc cb) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="Gtk.TextBuffer" />
+        <Parameter Name="cb" Type="Gtk.Clipboard+RichTextReceivedFunc" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">a <see cref="T:Gtk.TextBuffer" />.</param>
+        <param name="cb">callback to invoke when data is prepared.</param>
+        <summary>Requests the contents as Rich Text asynchronously.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestTargets">
+      <MemberSignature Language="C#" Value="public void RequestTargets (Gtk.ClipboardTargetsReceivedFunc cb);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RequestTargets(class Gtk.ClipboardTargetsReceivedFunc cb) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cb" Type="Gtk.ClipboardTargetsReceivedFunc" />
+      </Parameters>
+      <Docs>
+        <param name="cb">a <see cref="T:Gtk.ClipboardTargetsReceivedFunc" /></param>
+        <summary> 
+	  Requests the contents of the clipboard as list of supported targets. 
+	  When the list is later received, <paramref name="cb" /> will be called.
+	</summary>
+        <remarks>
+	  The "targets" parameter to <paramref name="cb" /> will contain the resulting targets if
+	  the request succeeded, or <see langword="null" /> if it failed. Added in GTK 2.4.
+	</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestText">
+      <MemberSignature Language="C#" Value="public void RequestText (Gtk.ClipboardTextReceivedFunc cb);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RequestText(class Gtk.ClipboardTextReceivedFunc cb) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cb" Type="Gtk.ClipboardTextReceivedFunc" />
+      </Parameters>
+      <Docs>
+        <param name="cb">a <see cref="T:Gtk.ClipboardTextReceivedFunc" /></param>
+        <summary>Fetch the clipboard's text and fire the function <paramref name="cb" /> on it.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestUris">
+      <MemberSignature Language="C#" Value="public void RequestUris (Gtk.ClipboardURIReceivedFunc cb);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RequestUris(class Gtk.ClipboardURIReceivedFunc cb) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cb" Type="Gtk.ClipboardURIReceivedFunc" />
+      </Parameters>
+      <Docs>
+        <param name="cb">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetCanStore">
+      <MemberSignature Language="C#" Value="public void SetCanStore (Gtk.TargetEntry targets, int n_targets);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetCanStore(valuetype Gtk.TargetEntry targets, int32 n_targets) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="targets" Type="Gtk.TargetEntry" />
+        <Parameter Name="n_targets" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="targets">a <see cref="T:Gtk.TargetEntry" /></param>
+        <param name="n_targets">a <see cref="T:System.Int32" /></param>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetText" Deprecated="true">
+      <MemberSignature Language="C#" Value="public void SetText (string text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetText(string text) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by Text property.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="text">an object of type <see cref="T:System.String" /></param>
+        <summary>Deprecated method to set the contents of the clipboard.</summary>
+        <remarks>Replaced by the <see cref="M:Gtk.Clipboard.Text" /> property.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetWithData">
+      <MemberSignature Language="C#" Value="public bool SetWithData (Gtk.TargetEntry[] targets, Gtk.ClipboardGetFunc get_func, Gtk.ClipboardClearFunc clear_func);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool SetWithData(valuetype Gtk.TargetEntry[] targets, class Gtk.ClipboardGetFunc get_func, class Gtk.ClipboardClearFunc clear_func) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="buffer" Type="Gtk.TextBuffer" />
+        <Parameter Name="targets" Type="Gtk.TargetEntry[]" />
+        <Parameter Name="get_func" Type="Gtk.ClipboardGetFunc" />
+        <Parameter Name="clear_func" Type="Gtk.ClipboardClearFunc" />
       </Parameters>
       <Docs>
-        <param name="buffer">a <see cref="T:Gtk.TextBuffer" />.</param>
-        <summary>Tests if Rich Text is available for pasting.</summary>
-        <returns>if <see langword="true" />, rich text is available.</returns>
-        <remarks>This method is slightly faster that <see cref="M:Gtk.Clipboard.WaitForRichText" /> since it doesn't retrieve the actual text. Uses the main loop, so events and timeouts may be dispatched during the wait.</remarks>
-        <since version="Gtk# 2.10" />
+        <param name="targets">a <see cref="T:Gtk.TargetEntry[]" /></param>
+        <param name="get_func">a <see cref="T:Gtk.ClipboardGetFunc" /></param>
+        <param name="clear_func">a <see cref="T:Gtk.ClipboardClearFunc" /></param>
+        <summary>Virtually sets the contents of the specified clipboard by providing a list of supported formats for the clipboard data and a function to call to get the actual data when it is requested.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetWithOwner">
+      <MemberSignature Language="C#" Value="public bool SetWithOwner (Gtk.TargetEntry[] targets, Gtk.ClipboardGetFunc get_func, Gtk.ClipboardClearFunc clear_func, GLib.Object owner);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool SetWithOwner(valuetype Gtk.TargetEntry[] targets, class Gtk.ClipboardGetFunc get_func, class Gtk.ClipboardClearFunc clear_func, class GLib.Object owner) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="targets" Type="Gtk.TargetEntry[]" />
+        <Parameter Name="get_func" Type="Gtk.ClipboardGetFunc" />
+        <Parameter Name="clear_func" Type="Gtk.ClipboardClearFunc" />
+        <Parameter Name="owner" Type="GLib.Object" />
+      </Parameters>
+      <Docs>
+        <param name="targets">a <see cref="T:Gtk.TargetEntry[]" /></param>
+        <param name="get_func">a <see cref="T:Gtk.ClipboardGetFunc" /></param>
+        <param name="clear_func">a <see cref="T:Gtk.ClipboardClearFunc" /></param>
+        <param name="owner">a <see cref="T:GLib.Object" /></param>
+        <summary>Virtually sets the contents of the specified clipboard by providing a list of supported formats for the clipboard data and a function to call to get the actual data when it is requested.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>The difference between this function and <see cref="M:Gtk.Clipboard.SetWithData()" /> is that a <see cref="T:GLib.Object" /> is passed in.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Store">
+      <MemberSignature Language="C#" Value="public void Store ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Store() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="Text">
+      <MemberSignature Language="C#" Value="public string Text { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Text" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Sets the contents of the clipboard to the given UTF-8 string.</summary>
+        <value>a <see cref="T:System.String" /></value>
+        <remarks>Gtk# will make a copy of the text and take responsibility for responding for requests for the text, and for converting the text into the requested format.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="WaitForContents">
+      <MemberSignature Language="C#" Value="public Gtk.SelectionData WaitForContents (Gdk.Atom target);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.SelectionData WaitForContents(class Gdk.Atom target) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.SelectionData</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="target" Type="Gdk.Atom" />
+      </Parameters>
+      <Docs>
+        <param name="target">an object of type <see cref="T:Gdk.Atom" /></param>
+        <summary>Requests the contents of the clipboard using the given target.</summary>
+        <returns>an object of type <see cref="T:Gtk.SelectionData" /></returns>
+        <remarks>This function waits for the data to be received using the main loop, so events, timeouts, etc, may be dispatched during the wait.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WaitForImage">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf WaitForImage ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.Pixbuf WaitForImage() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
       </Docs>
     </Member>
     <Member MemberName="WaitForRichText">
       <MemberSignature Language="C#" Value="public byte[] WaitForRichText (Gtk.TextBuffer buffer, out Gdk.Atom format);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int8[] WaitForRichText(class Gtk.TextBuffer buffer, class Gdk.Atom format) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Byte[]</ReturnType>
@@ -530,22 +477,145 @@
         <since version="Gtk# 2.10" />
       </Docs>
     </Member>
-    <Member MemberName="RequestRichText">
-      <MemberSignature Language="C#" Value="public void RequestRichText (Gtk.TextBuffer buffer, Gtk.Clipboard.RichTextReceivedFunc cb);" />
+    <Member MemberName="WaitForTargets">
+      <MemberSignature Language="C#" Value="public bool WaitForTargets (Gdk.Atom targets, out int n_targets);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool WaitForTargets(class Gdk.Atom targets, int32 n_targets) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="targets" Type="Gdk.Atom" />
+        <Parameter Name="n_targets" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="targets">a <see cref="T:Gdk.Atom" /></param>
+        <param name="n_targets">a <see cref="T:System.Int32" /></param>
+        <summary>
+	  Returns a list of targets that are present on the clipboard, or 
+	  <see langword="null" /> if there aren't any targets available.
+	</summary>
+        <returns>a <see cref="T:System.Boolean" />,TRUE if any 
+	  targets are present on the clipboard, otherwise FALSE.</returns>
+        <remarks>
+          <para>
+	  This function waits for the data to be received using the main 
+	  loop, so events, timeouts, etc, may be dispatched during the wait.
+	  </para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="WaitForText">
+      <MemberSignature Language="C#" Value="public string WaitForText ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string WaitForText() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Requests the contents of the clipboard as text and converts the result to UTF-8 if necessary.</summary>
+        <returns>an object of type <see cref="T:System.String" /></returns>
+        <remarks>This function waits for the data to be received using the main loop, so events, timeouts, etc, may be dispatched during the wait.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WaitForUris">
+      <MemberSignature Language="C#" Value="public string WaitForUris ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string WaitForUris() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="WaitIsImageAvailable">
+      <MemberSignature Language="C#" Value="public bool WaitIsImageAvailable ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool WaitIsImageAvailable() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="WaitIsRichTextAvailable">
+      <MemberSignature Language="C#" Value="public bool WaitIsRichTextAvailable (Gtk.TextBuffer buffer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool WaitIsRichTextAvailable(class Gtk.TextBuffer buffer) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="buffer" Type="Gtk.TextBuffer" />
-        <Parameter Name="cb" Type="Gtk.Clipboard+RichTextReceivedFunc" />
       </Parameters>
       <Docs>
         <param name="buffer">a <see cref="T:Gtk.TextBuffer" />.</param>
-        <param name="cb">callback to invoke when data is prepared.</param>
-        <summary>Requests the contents as Rich Text asynchronously.</summary>
-        <remarks />
+        <summary>Tests if Rich Text is available for pasting.</summary>
+        <returns>if <see langword="true" />, rich text is available.</returns>
+        <remarks>This method is slightly faster that <see cref="M:Gtk.Clipboard.WaitForRichText" /> since it doesn't retrieve the actual text. Uses the main loop, so events and timeouts may be dispatched during the wait.</remarks>
         <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="WaitIsTargetAvailable">
+      <MemberSignature Language="C#" Value="public bool WaitIsTargetAvailable (Gdk.Atom target);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool WaitIsTargetAvailable(class Gdk.Atom target) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="target" Type="Gdk.Atom" />
+      </Parameters>
+      <Docs>
+        <param name="target">a <see cref="T:Gdk.Atom" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="WaitIsTextAvailable">
+      <MemberSignature Language="C#" Value="public bool WaitIsTextAvailable ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool WaitIsTextAvailable() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Test to see if there is text available to be pasted.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>
+          <para>This is done by requesting the TARGETS atom and checking if it contains any of the names: STRING, TEXT, COMPOUND_TEXT, UTF8_STRING. This function waits for the data to be received using the main loop, so events, timeouts, etc, may be dispatched during the wait.</para>
+          <para>This function is a little faster than calling <see cref="M:Gtk.ClipboardWaitForText()" /> since it does not need to retrieve the actual text.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WaitIsUrisAvailable">
+      <MemberSignature Language="C#" Value="public bool WaitIsUrisAvailable ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool WaitIsUrisAvailable() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
   </Members>

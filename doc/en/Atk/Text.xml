@@ -1,12 +1,17 @@
 <Type Name="Text" FullName="Atk.Text">
   <TypeSignature Language="C#" Maintainer="auto" Value="public interface Text : GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract Text implements class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>The interface implemented by components with text content.</summary>
     <remarks>
@@ -18,108 +23,10 @@
 </para>
     </remarks>
   </Docs>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-  </Interfaces>
   <Members>
-    <Member MemberName="GetOffsetAtPoint">
-      <MemberSignature Language="C#" Value="public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="coords" Type="Atk.CoordType" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the offset of the character located at coordinates <paramref name="x" /> and <paramref name="y" />. </summary>
-        <param name="x"> screen x-position of character</param>
-        <param name="y"> screen y-position of character</param>
-        <param name="coords"> specify whether coordinates are relative to the screen or widget window</param>
-        <returns> the offset to the character which is located at the specified x and y coordinates.</returns>
-        <remarks>
-          <paramref name="x" /> and <paramref name="y" /> are interpreted as being relative to the screen or this widget's window depending on <paramref name="coords" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetSelection">
-      <MemberSignature Language="C#" Value="public bool SetSelection (int selection_num, int start_offset, int end_offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="selection_num" Type="System.Int32" />
-        <Parameter Name="start_offset" Type="System.Int32" />
-        <Parameter Name="end_offset" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Changes the start and end offset of the specified selection.</summary>
-        <param name="selection_num"> The selection number. The selected regions are assigned numbers that correspond to how far the region is from the start of the text. The selected region closest to the beginning of the text region is assigned the number 0, etc. Note that adding, moving or deleting a selected region can change the numbering.</param>
-        <param name="start_offset"> the new start position of the selection</param>
-        <param name="end_offset"> the new end position of the selection</param>
-        <returns>
-          <see langword="true" /> if success, <see langword="false" /> otherwise</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetCaretOffset">
-      <MemberSignature Language="C#" Value="public bool SetCaretOffset (int offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="offset" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the caret (cursor) position to the specified offset.</summary>
-        <param name="offset">position</param>
-        <returns>
-          <see langword="true" /> if success, <see langword="false" /> otherwise.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveSelection">
-      <MemberSignature Language="C#" Value="public bool RemoveSelection (int selection_num);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="selection_num" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Removes the specified selection.</summary>
-        <param name="selection_num"> The selection number. The selected regions are assigned numbers that correspond to how far the region is from the start of the text. The selected region closest to the beginning of the text region is assigned the number 0, etc. Note that adding, moving or deleting a selected region can change the numbering.</param>
-        <returns>
-          <see langword="true" /> if success, <see langword="false" /> otherwise</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetText">
-      <MemberSignature Language="C#" Value="public string GetText (int start_offset, int end_offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="start_offset" Type="System.Int32" />
-        <Parameter Name="end_offset" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the specified text.</summary>
-        <param name="start_offset"> start position</param>
-        <param name="end_offset"> end position</param>
-        <returns> the text from <paramref name="start_offset" /> up to, but not including <paramref name="end_offset" />.</returns>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="AddSelection">
       <MemberSignature Language="C#" Value="public bool AddSelection (int start_offset, int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool AddSelection(int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -129,40 +36,17 @@
         <Parameter Name="end_offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Adds a selection bounded by the specified offsets.</summary>
         <param name="start_offset"> the start position of the selected region</param>
         <param name="end_offset"> the end position of the selected region</param>
+        <summary>Adds a selection bounded by the specified offsets.</summary>
         <returns>
           <see langword="true" /> if success, <see langword="false" /> otherwise</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="DefaultAttributes">
-      <MemberSignature Language="C#" Value="public GLib.SList DefaultAttributes { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.SList</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Creates an <see cref="T:Atk.AttributeSet" /> which consists of the default values of attributes for the text.</summary>
-        <value> an <see cref="T:Atk.AttributeSet" /> which contains the default values of attributes, at <paramref name="offset" />.</value>
-        <remarks>See the enum <see cref="T:Atk.TextAttribute" /> for types of text attributes that can be returned. Note that other attributes may also be returned.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="NSelections">
-      <MemberSignature Language="C#" Value="public int NSelections { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Gets the number of selected regions.</summary>
-        <value> The number of selected regions, or -1 if a failure occurred.</value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="CaretOffset">
-      <MemberSignature Language="C#" Value="public int CaretOffset { get; };" />
+      <MemberSignature Language="C#" Value="public int CaretOffset { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CaretOffset" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -174,7 +58,8 @@
       </Docs>
     </Member>
     <Member MemberName="CharacterCount">
-      <MemberSignature Language="C#" Value="public int CharacterCount { get; };" />
+      <MemberSignature Language="C#" Value="public int CharacterCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CharacterCount" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -185,56 +70,196 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="TextChanged">
-      <MemberSignature Language="C#" Value="public event Atk.TextChangedHandler TextChanged;" />
-      <MemberType>Event</MemberType>
+    <Member MemberName="DefaultAttributes">
+      <MemberSignature Language="C#" Value="public Atk.Attribute[] DefaultAttributes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Atk.Attribute[] DefaultAttributes" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Atk.TextChangedHandler</ReturnType>
+        <ReturnType>Atk.Attribute[]</ReturnType>
       </ReturnValue>
-      <Parameters />
       <Docs>
-        <summary>Emitted when the text of the object which implements the AtkText interface changes.</summary>
-        <remarks>This signal will have a detail which is either "insert" or "delete" which identifies whether the text change was an insertion or a deletion.</remarks>
+        <summary>Creates an <see cref="T:Atk.AttributeSet" /> which consists of the default values of attributes for the text.</summary>
+        <value> an <see cref="T:Atk.AttributeSet" /> which contains the default values of attributes, at <paramref name="offset" />.</value>
+        <remarks>See the enum <see cref="T:Atk.TextAttribute" /> for types of text attributes that can be returned. Note that other attributes may also be returned.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="TextSelectionChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler TextSelectionChanged;" />
-      <MemberType>Event</MemberType>
+    <Member MemberName="GetBoundedRanges">
+      <MemberSignature Language="C#" Value="public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coord_type, Atk.TextClipType x_clip_type, Atk.TextClipType y_clip_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype Atk.TextRange GetBoundedRanges(valuetype Atk.TextRectangle rect, valuetype Atk.CoordType coord_type, valuetype Atk.TextClipType x_clip_type, valuetype Atk.TextClipType y_clip_type) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
+        <ReturnType>Atk.TextRange</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="rect" Type="Atk.TextRectangle" />
+        <Parameter Name="coord_type" Type="Atk.CoordType" />
+        <Parameter Name="x_clip_type" Type="Atk.TextClipType" />
+        <Parameter Name="y_clip_type" Type="Atk.TextClipType" />
+      </Parameters>
       <Docs>
-        <summary>Emitted when the selected text of an object which implements AtkText changes.</summary>
+        <param name="rect">a <see cref="T:Atk.TextRectangle" /></param>
+        <param name="coord_type">a <see cref="T:System.Int32" /></param>
+        <param name="x_clip_type">a <see cref="T:System.Int32" /></param>
+        <param name="y_clip_type">a <see cref="T:System.Int32" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Atk.TextRange" /></returns>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCharacterAtOffset">
+      <MemberSignature Language="C#" Value="public char GetCharacterAtOffset (int offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance char GetCharacterAtOffset(int32 offset) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Char</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="offset">position</param>
+        <summary>Gets the specified text.</summary>
+        <returns>the character at <paramref name="offset" />.</returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCharacterExtents">
+      <MemberSignature Language="C#" Value="public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetCharacterExtents(int32 offset, int32 x, int32 y, int32 width, int32 height, valuetype Atk.CoordType coords) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="coords" Type="Atk.CoordType" />
+      </Parameters>
+      <Docs>
+        <param name="offset"> The offset of the text character for which bounding information is required.</param>
+        <param name="x"> Pointer for the x cordinate of the bounding box.</param>
+        <param name="y"> Pointer for the y cordinate of the bounding box.</param>
+        <param name="width"> Pointer for the width of the bounding box</param>
+        <param name="height"> Pointer for the height of the bounding box.</param>
+        <param name="coords"> specify whether coordinates are relative to the screen or widget window</param>
+        <summary>Get the bounding box containing the glyph representing the character at a particular text offset.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="TextCaretMoved">
-      <MemberSignature Language="C#" Value="public event Atk.TextCaretMovedHandler TextCaretMoved;" />
-      <MemberType>Event</MemberType>
+    <Member MemberName="GetOffsetAtPoint">
+      <MemberSignature Language="C#" Value="public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetOffsetAtPoint(int32 x, int32 y, valuetype Atk.CoordType coords) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Atk.TextCaretMovedHandler</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="coords" Type="Atk.CoordType" />
+      </Parameters>
       <Docs>
-        <summary>Emitted when the caret position of the text of an object which implements AtkText changes.</summary>
+        <param name="x"> screen x-position of character</param>
+        <param name="y"> screen y-position of character</param>
+        <param name="coords"> specify whether coordinates are relative to the screen or widget window</param>
+        <summary>Gets the offset of the character located at coordinates <paramref name="x" /> and <paramref name="y" />. </summary>
+        <returns> the offset to the character which is located at the specified x and y coordinates.</returns>
+        <remarks>
+          <paramref name="x" /> and <paramref name="y" /> are interpreted as being relative to the screen or this widget's window depending on <paramref name="coords" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetRangeExtents">
+      <MemberSignature Language="C#" Value="public Atk.TextRectangle GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype Atk.TextRectangle GetRangeExtents(int32 start_offset, int32 end_offset, valuetype Atk.CoordType coord_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.TextRectangle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_offset" Type="System.Int32" />
+        <Parameter Name="end_offset" Type="System.Int32" />
+        <Parameter Name="coord_type" Type="Atk.CoordType" />
+      </Parameters>
+      <Docs>
+        <param name="start_offset">To be added.</param>
+        <param name="end_offset">To be added.</param>
+        <param name="coord_type">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetRunAttributes">
+      <MemberSignature Language="C#" Value="public Atk.Attribute[] GetRunAttributes (int offset, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype Atk.Attribute[] GetRunAttributes(int32 offset, int32 start_offset, int32 end_offset) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Attribute[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="start_offset" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="offset">To be added.</param>
+        <param name="start_offset">To be added.</param>
+        <param name="end_offset">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSelection">
+      <MemberSignature Language="C#" Value="public string GetSelection (int selection_num, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetSelection(int32 selection_num, int32 start_offset, int32 end_offset) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="selection_num" Type="System.Int32" />
+        <Parameter Name="start_offset" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="selection_num"> The selection number. The selected regions are assigned numbers that correspond to how far the region is from the start of the text. The selected region closest to the beginning of the text region is assigned the number 0, etc. Note that adding, moving or deleting a selected region can change the numbering.</param>
+        <param name="start_offset"> passes back the start position of the selected region</param>
+        <param name="end_offset"> passes back the end position of the selected region</param>
+        <summary>Gets the text from the specified selection.</summary>
+        <returns> the selected text.</returns>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="TextAttributesChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler TextAttributesChanged;" />
-      <MemberType>Event</MemberType>
+    <Member MemberName="GetText">
+      <MemberSignature Language="C#" Value="public string GetText (int start_offset, int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetText(int32 start_offset, int32 end_offset) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
+        <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="start_offset" Type="System.Int32" />
+        <Parameter Name="end_offset" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>Emitted when the text attributes of the text of an object which implements AtkText changes.</summary>
+        <param name="start_offset"> start position</param>
+        <param name="end_offset"> end position</param>
+        <summary>Gets the specified text.</summary>
+        <returns> the text from <paramref name="start_offset" /> up to, but not including <paramref name="end_offset" />.</returns>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetTextAfterOffset">
       <MemberSignature Language="C#" Value="public string GetTextAfterOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetTextAfterOffset(int32 offset, valuetype Atk.TextBoundary boundary_type, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -246,11 +271,11 @@
         <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>Gets the specified text.</summary>
         <param name="offset">position</param>
         <param name="boundary_type">a <see cref="T:Atk.TextBoundary" /></param>
         <param name="start_offset"> the start offset of the returned string.</param>
         <param name="end_offset"> the end offset of the returned string.</param>
+        <summary>Gets the specified text.</summary>
         <returns> the text after <paramref name="offset" /> bounded by the specified <paramref name="boundary_type" />.</returns>
         <remarks>
           <para>
@@ -289,129 +314,9 @@ If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineEn
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetSelection">
-      <MemberSignature Language="C#" Value="public string GetSelection (int selection_num, out int start_offset, out int end_offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="selection_num" Type="System.Int32" />
-        <Parameter Name="start_offset" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the text from the specified selection.</summary>
-        <param name="selection_num"> The selection number. The selected regions are assigned numbers that correspond to how far the region is from the start of the text. The selected region closest to the beginning of the text region is assigned the number 0, etc. Note that adding, moving or deleting a selected region can change the numbering.</param>
-        <param name="start_offset"> passes back the start position of the selected region</param>
-        <param name="end_offset"> passes back the end position of the selected region</param>
-        <returns> the selected text.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetTextBeforeOffset">
-      <MemberSignature Language="C#" Value="public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="offset" Type="System.Int32" />
-        <Parameter Name="boundary_type" Type="Atk.TextBoundary" />
-        <Parameter Name="start_offset" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the specified text.</summary>
-        <param name="offset">position</param>
-        <param name="boundary_type">a <see cref="T:Atk.TextBoundary" /></param>
-        <param name="start_offset"> the start offset of the returned string.</param>
-        <param name="end_offset"> the end offset of the returned string.</param>
-        <returns> the text before <paramref name="offset" /> bounded by the specified <paramref name="boundary_type" />.</returns>
-        <remarks>
-          <para>
-If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.Char" /> the character after the offset is returned.
-</para>
-          <para>
-If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordStart" /> the returned string is from the word start after the offset to the next word start.
-</para>
-          <para>
-The returned string will contain the word after the offset if the offset is inside a word or if the offset is not inside a word.
-</para>
-          <para>
-If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordEnd" /> the returned string is from the word end at or after the offset to the next work end.
-</para>
-          <para>
-The returned string will contain the word after the offset if the offset is inside a word and will contain the word after the word after the offset if the offset is not inside a word.
-</para>
-          <para>
-If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceStart" /> the returned string is from the sentence start after the offset to the next sentence start.
-</para>
-          <para>
-The returned string will contain the sentence after the offset if the offset is inside a sentence or if the offset is not inside a sentence.
-</para>
-          <para>
-If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceEnd" /> the returned string is from the sentence end at or after the offset to the next sentence end.
-</para>
-          <para>
-The returned string will contain the sentence after the offset if the offset is inside a sentence and will contain the sentence after the sentence after the offset if the offset is not inside a sentence.
-</para>
-          <para>
-If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineStart" /> the returned string is from the line start after the offset to the next line start.
-</para>
-          <para>
-If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineEnd" /> the returned string is from the line end at or after the offset to the next line start.
-</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetCharacterExtents">
-      <MemberSignature Language="C#" Value="public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="offset" Type="System.Int32" />
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="coords" Type="Atk.CoordType" />
-      </Parameters>
-      <Docs>
-        <summary>Get the bounding box containing the glyph representing the character at a particular text offset.</summary>
-        <param name="offset"> The offset of the text character for which bounding information is required.</param>
-        <param name="x"> Pointer for the x cordinate of the bounding box.</param>
-        <param name="y"> Pointer for the y cordinate of the bounding box.</param>
-        <param name="width"> Pointer for the width of the bounding box</param>
-        <param name="height"> Pointer for the height of the bounding box.</param>
-        <param name="coords"> specify whether coordinates are relative to the screen or widget window</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetRunAttributes">
-      <MemberSignature Language="C#" Value="public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.SList</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="offset" Type="System.Int32" />
-        <Parameter Name="start_offset" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Creates an <see cref="T:Atk.AttributeSet" /> which consists of the attributes explicitly set at the position offset in the text. <paramref name="start_offset" /> and <paramref name="end_offset" /> are set to the start and end of the range around <paramref name="offset" /> where the attributes are invariant.</summary>
-        <param name="offset"> the offset at which to get the attributes</param>
-        <param name="start_offset"> the address to put the start offset of the range</param>
-        <param name="end_offset"> the address to put the end offset of the range</param>
-        <returns> an <see cref="T:Atk.AttributeSet" /> which contains the attributes explicitly set at <paramref name="offset" />.</returns>
-        <remarks>See the enum <see cref="T:Atk.TextAttribute" /> for types of text attributes that can be returned. Note that other attributes may also be returned.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GetTextAtOffset">
       <MemberSignature Language="C#" Value="public string GetTextAtOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetTextAtOffset(int32 offset, valuetype Atk.TextBoundary boundary_type, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -423,11 +328,11 @@ If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineEn
         <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>Gets the specified text.</summary>
         <param name="offset"> position</param>
         <param name="boundary_type">a <see cref="T:Atk.TextBoundary" /></param>
         <param name="start_offset"> the start offset of the returned string.</param>
         <param name="end_offset"> the end offset of the returned string.</param>
+        <summary>Gets the specified text.</summary>
         <returns> the text at <paramref name="offset" /> bounded by the specified <paramref name="boundary_type" />.</returns>
         <remarks>
           <para>
@@ -466,66 +371,184 @@ If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineEn
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetBoundedRanges">
-      <MemberSignature Language="C#" Value="public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coord_type, Atk.TextClipType x_clip_type, Atk.TextClipType y_clip_type);" />
+    <Member MemberName="GetTextBeforeOffset">
+      <MemberSignature Language="C#" Value="public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetTextBeforeOffset(int32 offset, valuetype Atk.TextBoundary boundary_type, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Atk.TextRange</ReturnType>
+        <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="rect" Type="Atk.TextRectangle" />
-        <Parameter Name="coord_type" Type="Atk.CoordType" />
-        <Parameter Name="x_clip_type" Type="Atk.TextClipType" />
-        <Parameter Name="y_clip_type" Type="Atk.TextClipType" />
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="boundary_type" Type="Atk.TextBoundary" />
+        <Parameter Name="start_offset" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rect">a <see cref="T:Atk.TextRectangle" /></param>
-        <param name="coord_type">a <see cref="T:System.Int32" /></param>
-        <param name="x_clip_type">a <see cref="T:System.Int32" /></param>
-        <param name="y_clip_type">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Atk.TextRange" /></returns>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
+        <param name="offset">position</param>
+        <param name="boundary_type">a <see cref="T:Atk.TextBoundary" /></param>
+        <param name="start_offset"> the start offset of the returned string.</param>
+        <param name="end_offset"> the end offset of the returned string.</param>
+        <summary>Gets the specified text.</summary>
+        <returns> the text before <paramref name="offset" /> bounded by the specified <paramref name="boundary_type" />.</returns>
+        <remarks>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.Char" /> the character after the offset is returned.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordStart" /> the returned string is from the word start after the offset to the next word start.
+</para>
+          <para>
+The returned string will contain the word after the offset if the offset is inside a word or if the offset is not inside a word.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordEnd" /> the returned string is from the word end at or after the offset to the next work end.
+</para>
+          <para>
+The returned string will contain the word after the offset if the offset is inside a word and will contain the word after the word after the offset if the offset is not inside a word.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceStart" /> the returned string is from the sentence start after the offset to the next sentence start.
+</para>
+          <para>
+The returned string will contain the sentence after the offset if the offset is inside a sentence or if the offset is not inside a sentence.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceEnd" /> the returned string is from the sentence end at or after the offset to the next sentence end.
+</para>
+          <para>
+The returned string will contain the sentence after the offset if the offset is inside a sentence and will contain the sentence after the sentence after the offset if the offset is not inside a sentence.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineStart" /> the returned string is from the line start after the offset to the next line start.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineEnd" /> the returned string is from the line end at or after the offset to the next line start.
+</para>
+        </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetRangeExtents">
-      <MemberSignature Language="C#" Value="public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, Atk.TextRectangle rect);" />
+    <Member MemberName="NSelections">
+      <MemberSignature Language="C#" Value="public int NSelections { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NSelections" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the number of selected regions.</summary>
+        <value> The number of selected regions, or -1 if a failure occurred.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveSelection">
+      <MemberSignature Language="C#" Value="public bool RemoveSelection (int selection_num);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool RemoveSelection(int32 selection_num) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="start_offset" Type="System.Int32" />
-        <Parameter Name="end_offset" Type="System.Int32" />
-        <Parameter Name="coord_type" Type="Atk.CoordType" />
-        <Parameter Name="rect" Type="Atk.TextRectangle" />
+        <Parameter Name="selection_num" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_offset">a <see cref="T:System.Int32" /></param>
-        <param name="end_offset">a <see cref="T:System.Int32" /></param>
-        <param name="coord_type">a <see cref="T:System.Int32" /></param>
-        <param name="rect">a <see cref="T:Atk.TextRectangle" /></param>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
+        <param name="selection_num"> The selection number. The selected regions are assigned numbers that correspond to how far the region is from the start of the text. The selected region closest to the beginning of the text region is assigned the number 0, etc. Note that adding, moving or deleting a selected region can change the numbering.</param>
+        <summary>Removes the specified selection.</summary>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise</returns>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GetCharacterAtOffset">
-      <MemberSignature Language="C#" Value="public char GetCharacterAtOffset (int offset);" />
+    <Member MemberName="SetCaretOffset">
+      <MemberSignature Language="C#" Value="public bool SetCaretOffset (int offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetCaretOffset(int32 offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Char</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Gets the specified text.</summary>
         <param name="offset">position</param>
-        <returns>the character at <paramref name="offset" />.</returns>
-        <remarks>
-        </remarks>
+        <summary>Sets the caret (cursor) position to the specified offset.</summary>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetSelection">
+      <MemberSignature Language="C#" Value="public bool SetSelection (int selection_num, int start_offset, int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetSelection(int32 selection_num, int32 start_offset, int32 end_offset) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="selection_num" Type="System.Int32" />
+        <Parameter Name="start_offset" Type="System.Int32" />
+        <Parameter Name="end_offset" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="selection_num"> The selection number. The selected regions are assigned numbers that correspond to how far the region is from the start of the text. The selected region closest to the beginning of the text region is assigned the number 0, etc. Note that adding, moving or deleting a selected region can change the numbering.</param>
+        <param name="start_offset"> the new start position of the selection</param>
+        <param name="end_offset"> the new end position of the selection</param>
+        <summary>Changes the start and end offset of the specified selection.</summary>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="TextAttributesChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler TextAttributesChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler TextAttributesChanged" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when the text attributes of the text of an object which implements AtkText changes.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="TextCaretMoved">
+      <MemberSignature Language="C#" Value="public event Atk.TextCaretMovedHandler TextCaretMoved;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.TextCaretMovedHandler TextCaretMoved" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.TextCaretMovedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when the caret position of the text of an object which implements AtkText changes.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="TextChanged">
+      <MemberSignature Language="C#" Value="public event Atk.TextChangedHandler TextChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.TextChangedHandler TextChanged" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.TextChangedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when the text of the object which implements the AtkText interface changes.</summary>
+        <remarks>This signal will have a detail which is either "insert" or "delete" which identifies whether the text change was an insertion or a deletion.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TextSelectionChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler TextSelectionChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler TextSelectionChanged" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when the selected text of an object which implements AtkText changes.</summary>
+        <remarks />
       </Docs>
     </Member>
   </Members>

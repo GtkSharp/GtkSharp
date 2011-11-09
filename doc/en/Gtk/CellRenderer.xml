@@ -1,12 +1,17 @@
 <Type Name="CellRenderer" FullName="Gtk.CellRenderer">
-  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class CellRenderer : Gtk.Object" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class CellRenderer : GLib.InitiallyUnowned" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CellRenderer extends GLib.InitiallyUnowned" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.InitiallyUnowned</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>An object for rendering a single cell on a <see cref="T:Gdk.Drawable" /></summary>
     <remarks>
@@ -30,61 +35,37 @@
 	  </para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="Render">
-      <MemberSignature Language="C#" Value="public void Render (Gdk.Window window, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, Gtk.CellRendererState flags);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="window" Type="Gdk.Window" />
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="background_area" Type="Gdk.Rectangle" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="expose_area" Type="Gdk.Rectangle" />
-        <Parameter Name="flags" Type="Gtk.CellRendererState" />
-      </Parameters>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected CellRenderer ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
       <Docs>
-        <summary>Invokes the virtual render function of the <see cref="T:Gtk.CellRenderer" />.</summary>
-        <param name="window">an object of type <see cref="T:Gdk.Window" /></param>
-        <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="background_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <param name="expose_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <param name="flags">an object of type <see cref="T:Gtk.CellRendererState" /></param>
-        <remarks>
-          The three passed-in rectangles are areas of <paramref name="window" />.
-		  Most renderers will draw within <paramref name="cell_area" />;
-		  <paramref name="background_area" /> includes the blank space around the cell, and also the area containing the tree expander; so the <paramref name="background_area" /> rectangles for all cells tile to cover the entire window.
-		  <paramref name="expose_area" /> is a clip rectangle.
-		</remarks>
+        <summary>Protected constructor.</summary>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="SetFixedSize">
-      <MemberSignature Language="C#" Value="public void SetFixedSize (int width, int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CellRenderer (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Sets the renderer size to be explicit, independent of the properties set.</summary>
-        <param name="width">an object of type <see cref="T:System.Int32" /></param>
-        <param name="height">an object of type <see cref="T:System.Int32" /></param>
-        <remarks />
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Activate">
       <MemberSignature Language="C#" Value="public bool Activate (Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Activate(class Gdk.Event evnt, class Gtk.Widget widget, string path, valuetype Gdk.Rectangle background_area, valuetype Gdk.Rectangle cell_area, valuetype Gtk.CellRendererState flags) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -98,244 +79,26 @@
         <Parameter Name="flags" Type="Gtk.CellRendererState" />
       </Parameters>
       <Docs>
-        <summary>Passes an activate event to the <see cref="T:Gtk.CellRenderer" /> for possible processing.</summary>
         <param name="evnt">an object of type <see cref="T:Gdk.Event" /></param>
         <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
         <param name="path">an object of type <see cref="T:System.String" /></param>
         <param name="background_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
         <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
         <param name="flags">an object of type <see cref="T:Gtk.CellRendererState" /></param>
+        <summary>Passes an activate event to the <see cref="T:Gtk.CellRenderer" /> for possible processing.</summary>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>Some <see cref="T:Gtk.CellRenderer" />s may use events; for example, <see cref="T:Gtk.CellRendererToggle" /> toggles when it gets a mouse click.</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CellRenderer (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Height">
-      <MemberSignature Language="C#" Value="public int Height { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The fixed height.</summary>
-        <value>an object of type <see cref="T:System.Int32" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("height")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Visible">
-      <MemberSignature Language="C#" Value="public bool Visible { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Display the cell.</summary>
-        <value>an object of type <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("visible")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Xalign">
-      <MemberSignature Language="C#" Value="public float Xalign { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Single</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The x-align.</summary>
-        <value>an object of type <see cref="T:System.Single" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("xalign")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Width">
-      <MemberSignature Language="C#" Value="public int Width { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The fixed width.</summary>
-        <value>an object of type <see cref="T:System.Int32" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("width")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Yalign">
-      <MemberSignature Language="C#" Value="public float Yalign { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Single</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The y-align.</summary>
-        <value>an object of type <see cref="T:System.Single" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("yalign")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="IsExpander">
-      <MemberSignature Language="C#" Value="public bool IsExpander { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Row has children.</summary>
-        <value>an object of type <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("is-expander")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Ypad">
-      <MemberSignature Language="C#" Value="public uint Ypad { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The ypad.</summary>
-        <value>an object of type <see cref="T:System.UInt32" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("ypad")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Xpad">
-      <MemberSignature Language="C#" Value="public uint Xpad { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The xpad.</summary>
-        <value>an object of type <see cref="T:System.UInt32" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("xpad")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="IsExpanded">
-      <MemberSignature Language="C#" Value="public bool IsExpanded { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Row is an expander row, and is expanded.</summary>
-        <value>an object of type <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("is-expanded")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Mode">
-      <MemberSignature Language="C#" Value="public Gtk.CellRendererMode Mode { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.CellRendererMode</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Editable mode of the CellRenderer.</summary>
-        <value>an object of type <see cref="T:Gtk.CellRendererMode" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("mode")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="CellBackgroundGdk">
-      <MemberSignature Language="C#" Value="public Gdk.Color CellBackgroundGdk { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Color</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Cell background color as a <see cref="T:Gdk.Color" />.</summary>
-        <value>a <see cref="T:Gdk.Color" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("cell-background-gdk")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
     <Member MemberName="CellBackground">
-      <MemberSignature Language="C#" Value="public string CellBackground { set; };" />
+      <MemberSignature Language="C#" Value="public string CellBackground { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string CellBackground" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("cell-background")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
@@ -346,186 +109,74 @@
         <value>a <see cref="T:System.String" /></value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("cell-background")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+    <Member MemberName="CellBackgroundGdk">
+      <MemberSignature Language="C#" Value="public Gdk.Color CellBackgroundGdk { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.Color CellBackgroundGdk" />
       <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.CellRenderer" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected CellRenderer (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
+          <AttributeName>GLib.Property("cell-background-gdk")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected CellRenderer ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
+      <ReturnValue>
+        <ReturnType>Gdk.Color</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>Protected constructor.</summary>
+        <summary>Cell background color as a <see cref="T:Gdk.Color" />.</summary>
+        <value>a <see cref="T:Gdk.Color" /></value>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GetSize">
-      <MemberSignature Language="C#" Value="public virtual void GetSize (Gtk.Widget widget, ref Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="CellBackgroundRgba">
+      <MemberSignature Language="C#" Value="public Gdk.RGBA CellBackgroundRgba { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.RGBA CellBackgroundRgba" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("cell-background-rgba")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gdk.RGBA</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle&amp;" RefType="ref" />
-        <Parameter Name="x_offset" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y_offset" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
       <Docs>
-        <summary>Obtains the <paramref name="width" /> and <paramref name="height" /> needed to render the cell.</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="cell_area">a <see cref="T:Gdk.Rectangle" /></param>
-        <param name="x_offset">a <see cref="T:System.Int32" /></param>
-        <param name="y_offset">a <see cref="T:System.Int32" /></param>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <param name="height">a <see cref="T:System.Int32" /></param>
-        <remarks>Used by view widgets to determine the appropriate size for the <paramref name="cell_area" /> passed to gtk_cell_renderer_render(). If <paramref name="cell_area" /> is not <see langword="null" />, fills in the x and y offsets (if set) of the cell relative to this location. Please note that the values set in <paramref name="width" /> and <paramref name="height" />, as well as those in <paramref name="x_offset" /> and <paramref name="y_offset" /> are inclusive of the xpad and ypad properties.</remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="Render">
-      <MemberSignature Language="C#" Value="protected virtual void Render (Gdk.Drawable window, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, Gtk.CellRendererState flags);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Editing">
+      <MemberSignature Language="C#" Value="public bool Editing { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Editing" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("editing")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="window" Type="Gdk.Drawable" />
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="background_area" Type="Gdk.Rectangle" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="expose_area" Type="Gdk.Rectangle" />
-        <Parameter Name="flags" Type="Gtk.CellRendererState" />
-      </Parameters>
       <Docs>
-        <summary>Invokes the virtual render function of the <see cref="M:CellRenderer" />. The three passed-in rectangles are areas of window. Most renderers will draw within <paramref name="cell_area" />; the xalign, yalign, xpad, and ypad fields of the <see cref="M:CellRenderer" /> should be honored with respect to <paramref name="cell_area" />. <paramref name="background_area" /> includes the blank space around the cell, and also the area containing the tree expander; so the <paramref name="background_area" /> rectangles for all cells tile to cover the entire window. <paramref name="expose_area" /> is a clip rectangle.</summary>
-        <param name="window">a <see cref="T:Gdk.Drawable" /> to render to</param>
-        <param name="widget">a <see cref="T:Gtk.Widget" />, the widget that owns <paramref name="window" /></param>
-        <param name="background_area">a <see cref="T:Gdk.Rectangle" />,  entire cell area (including tree expanders and maybe padding on the sides)</param>
-        <param name="cell_area">a <see cref="T:Gdk.Rectangle" />, area normally rendered by a cell renderer</param>
-        <param name="expose_area">a <see cref="T:Gdk.Rectangle" />, area that needs updating</param>
-        <param name="flags">a <see cref="T:System.Int32" />, flags that affect rendering</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="StartEditing">
-      <MemberSignature Language="C#" Value="public virtual Gtk.CellEditable StartEditing (Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.CellEditable</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="path" Type="System.String" />
-        <Parameter Name="background_area" Type="Gdk.Rectangle" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="flags" Type="Gtk.CellRendererState" />
-      </Parameters>
-      <Docs>
-        <summary>Passes an activate event to the <see cref="T:Gtk.CellRenderer" /> for possible processing.</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="path">a <see cref="T:System.String" /></param>
-        <param name="background_area">a <see cref="T:Gdk.Rectangle" /></param>
-        <param name="cell_area">a <see cref="T:Gdk.Rectangle" /></param>
-        <param name="flags">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gtk.CellEditable" /></returns>
-        <remarks>Some cell renderers may use events; for example, <see cref="T:CellRendererToggle" /> toggles when it gets a mouse click.
-<para>
-The following example illustrates a CellRenderText derived class that implements auto-completion in the entry widget.
-</para><example><code lang="C#">
-public class CellRendererCompletion : CellRendererText
-{
-	public delegate ListStore CompletionStoreNeededDelegate(TreeView tree, out int textColumn);
-	
-	// Delegate that is called to obtain a ListStore that contains entries
-	// for the column being editted. TreeView.GetCursor(out path, out column)
-	// can be used to determine the column being editted.
-	public static CompletionStoreNeededDelegate CompletionStoreNeededEventHandler;
-	
-	// Required constructor that may be called by the framework.
-	public CellRendererCompletion(System.IntPtr raw) : base(raw)
-	{
-	}
-
-	public CellRendererCompletion()
-	{
-	}
-
-	public override CellEditable StartEditing(Gdk.Event evnt, Widget widget, string path, 
-                   Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
-	{
-		// get the entry widget
-		Entry entry = base.StartEditing (evnt, widget, path, background_area, cell_area, flags) as Gtk.Entry;
-
-		// make it auto-complete
-		TreeView treeview = widget as TreeView;
-		int textColumn = 0;
-
-		entry.Completion = new EntryCompletion();
-		entry.Completion.Model = CreateCompletionModel(treeview, out textColumn);
-		entry.Completion.TextColumn = textColumn;
-
-		return entry;
-	}
-
-	// Gets the ListStore that contains the auto-complete entries
-	// to be shown when editting this cell. Typical use might use
-	// TreeView.GetCursor(out path, out column) to get the column name
-	// being editted to build an appropriate list.
-	private static TreeModel CreateCompletionModel(TreeView treeview, out int textColumn)
-	{
-		textColumn = 0;
-		
-		if (CompletionStoreNeededEventHandler != null)
-			return CompletionStoreNeededEventHandler(treeview, out textColumn);
-			
-		return null;
-	}
-
-}
-</code></example></remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="EditingCanceled">
       <MemberSignature Language="C#" Value="public event EventHandler EditingCanceled;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler EditingCanceled" />
       <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("editing-canceled")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
@@ -541,64 +192,16 @@ public class CellRendererCompletion : CellRendererText
 	</remarks>
         <since version="Gtk# 2.4" />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("editing-canceled")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="OnEditingCanceled">
-      <MemberSignature Language="C#" Value="protected virtual void OnEditingCanceled ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.CellRenderer.EditingCanceled" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.CellRenderer.EditingCanceled" /> event.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="CancelEditing">
-      <MemberSignature Language="C#" Value="public void CancelEditing ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Causes the cell renderer to fire an <see cref="M:Gtk.CellRenderer.EditingCanceled" /> event.</summary>
-        <remarks>
-	  This function is for use only by implementations of cell renderers that need to
-	  notify the client program that an editing process was canceled and the
-	  changes were not committed.
-	</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="Sensitive">
-      <MemberSignature Language="C#" Value="public bool Sensitive { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Display the cell sensitive.</summary>
-        <value>A <see cref="T:System.Boolean" />.</value>
-        <remarks>The default value is <see langword="true" />.</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("sensitive")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="EditingStarted">
       <MemberSignature Language="C#" Value="public event Gtk.EditingStartedHandler EditingStarted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.EditingStartedHandler EditingStarted" />
       <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("editing-started")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gtk.EditingStartedHandler</ReturnType>
       </ReturnValue>
@@ -615,48 +218,52 @@ public class CellRendererCompletion : CellRendererText
         </remarks>
         <since version="Gtk# 2.6" />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("editing-started")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="OnEditingStarted">
-      <MemberSignature Language="C#" Value="protected virtual void OnEditingStarted (Gtk.CellEditable editable, string path);" />
+    <Member MemberName="GetAlignedArea">
+      <MemberSignature Language="C#" Value="public void GetAlignedArea (Gtk.Widget widget, Gtk.CellRendererState flags, Gdk.Rectangle cell_area, Gdk.Rectangle aligned_area);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetAlignedArea(class Gtk.Widget widget, valuetype Gtk.CellRendererState flags, valuetype Gdk.Rectangle cell_area, valuetype Gdk.Rectangle aligned_area) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="editable" Type="Gtk.CellEditable" />
-        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="flags" Type="Gtk.CellRendererState" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="aligned_area" Type="Gdk.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.CellRenderer.EditingStarted" /> event.</summary>
-        <param name="editable">a <see cref="T:Gtk.CellEditable" /></param>
-        <param name="path">a <see cref="T:System.String" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.CellRenderer.EditingStarted" /> event.</remarks>
-        <since version="Gtk# 2.6" />
+        <param name="widget">To be added.</param>
+        <param name="flags">To be added.</param>
+        <param name="cell_area">To be added.</param>
+        <param name="aligned_area">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="StopEditing">
-      <MemberSignature Language="C#" Value="public void StopEditing (bool canceled);" />
+    <Member MemberName="GetAlignment">
+      <MemberSignature Language="C#" Value="public void GetAlignment (out float xalign, out float yalign);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetAlignment(float32 xalign, float32 yalign) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="canceled" Type="System.Boolean" />
+        <Parameter Name="xalign" Type="System.Single&amp;" RefType="out" />
+        <Parameter Name="yalign" Type="System.Single&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>Informs the cell renderer that the editing is stopped.</summary>
-        <param name="canceled">a <see cref="T:System.Boolean" /></param>
-        <remarks>If <paramref name="canceled" /> is <see langword="true" />, the cell renderer will emit the <see cref="F:Gtk.CellRenderer.EditingCanceled" /> event. This method should be called by cell renderer implementations in response to the <see cref="F:Gtk.CellEditable.EditingDone" /> event of <see cref="T:Gtk.CellEditable" />.</remarks>
-        <since version="Gtk# 2.6" />
+        <param name="xalign">To be added.</param>
+        <param name="yalign">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="GetFixedSize">
       <MemberSignature Language="C#" Value="public void GetFixedSize (out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetFixedSize(int32 width, int32 height) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -669,6 +276,896 @@ public class CellRendererCompletion : CellRendererText
         <param name="width">Location to fill in with the fixed width of the widget, or <see langword="null" />.</param>
         <param name="height">Location to fill in with the fixed height of the widget, or <see langword="null" />.</param>
         <summary>Fills in <paramref name="width" /> and <paramref name="height" /> with the appropriate size.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPadding">
+      <MemberSignature Language="C#" Value="public void GetPadding (out int xpad, out int ypad);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPadding(int32 xpad, int32 ypad) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="xpad" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="ypad" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="xpad">To be added.</param>
+        <param name="ypad">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPreferredHeight">
+      <MemberSignature Language="C#" Value="public void GetPreferredHeight (Gtk.Widget widget, out int minimum_size, out int natural_size);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPreferredHeight(class Gtk.Widget widget, int32 minimum_size, int32 natural_size) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="minimum_size" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="natural_size" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="minimum_size">To be added.</param>
+        <param name="natural_size">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPreferredHeightForWidth">
+      <MemberSignature Language="C#" Value="public void GetPreferredHeightForWidth (Gtk.Widget widget, int width, out int minimum_height, out int natural_height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPreferredHeightForWidth(class Gtk.Widget widget, int32 width, int32 minimum_height, int32 natural_height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="minimum_height" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="natural_height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="minimum_height">To be added.</param>
+        <param name="natural_height">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPreferredSize">
+      <MemberSignature Language="C#" Value="public void GetPreferredSize (Gtk.Widget widget, Gtk.Requisition minimum_size, Gtk.Requisition natural_size);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPreferredSize(class Gtk.Widget widget, valuetype Gtk.Requisition minimum_size, valuetype Gtk.Requisition natural_size) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="minimum_size" Type="Gtk.Requisition" />
+        <Parameter Name="natural_size" Type="Gtk.Requisition" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="minimum_size">To be added.</param>
+        <param name="natural_size">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPreferredWidth">
+      <MemberSignature Language="C#" Value="public void GetPreferredWidth (Gtk.Widget widget, out int minimum_size, out int natural_size);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPreferredWidth(class Gtk.Widget widget, int32 minimum_size, int32 natural_size) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="minimum_size" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="natural_size" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="minimum_size">To be added.</param>
+        <param name="natural_size">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPreferredWidthForHeight">
+      <MemberSignature Language="C#" Value="public void GetPreferredWidthForHeight (Gtk.Widget widget, int height, out int minimum_width, out int natural_width);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPreferredWidthForHeight(class Gtk.Widget widget, int32 height, int32 minimum_width, int32 natural_width) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="minimum_width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="natural_width" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="height">To be added.</param>
+        <param name="minimum_width">To be added.</param>
+        <param name="natural_width">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetState">
+      <MemberSignature Language="C#" Value="public Gtk.StateFlags GetState (Gtk.Widget widget, Gtk.CellRendererState cell_state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gtk.StateFlags GetState(class Gtk.Widget widget, valuetype Gtk.CellRendererState cell_state) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.StateFlags</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="cell_state" Type="Gtk.CellRendererState" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="cell_state">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.CellRenderer" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Height">
+      <MemberSignature Language="C#" Value="public int Height { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Height" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("height")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The fixed height.</summary>
+        <value>an object of type <see cref="T:System.Int32" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsActivatable">
+      <MemberSignature Language="C#" Value="public bool IsActivatable { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsActivatable" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsExpanded">
+      <MemberSignature Language="C#" Value="public bool IsExpanded { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsExpanded" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("is-expanded")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Row is an expander row, and is expanded.</summary>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsExpander">
+      <MemberSignature Language="C#" Value="public bool IsExpander { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsExpander" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("is-expander")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Row has children.</summary>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Mode">
+      <MemberSignature Language="C#" Value="public Gtk.CellRendererMode Mode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.CellRendererMode Mode" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("mode")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CellRendererMode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Editable mode of the CellRenderer.</summary>
+        <value>an object of type <see cref="T:Gtk.CellRendererMode" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="OnActivate">
+      <MemberSignature Language="C#" Value="protected virtual bool OnActivate (Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnActivate(class Gdk.Event evnt, class Gtk.Widget widget, string path, valuetype Gdk.Rectangle background_area, valuetype Gdk.Rectangle cell_area, valuetype Gtk.CellRendererState flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideActivate", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="background_area" Type="Gdk.Rectangle" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="flags" Type="Gtk.CellRendererState" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">To be added.</param>
+        <param name="widget">To be added.</param>
+        <param name="path">To be added.</param>
+        <param name="background_area">To be added.</param>
+        <param name="cell_area">To be added.</param>
+        <param name="flags">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnEditingCanceled">
+      <MemberSignature Language="C#" Value="protected virtual void OnEditingCanceled ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnEditingCanceled() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideEditingCanceled", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.CellRenderer.EditingCanceled" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.CellRenderer.EditingCanceled" /> event.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnEditingStarted">
+      <MemberSignature Language="C#" Value="protected virtual void OnEditingStarted (Gtk.CellEditable editable, string path);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnEditingStarted(class Gtk.CellEditable editable, string path) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideEditingStarted", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="editable" Type="Gtk.CellEditable" />
+        <Parameter Name="path" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="editable">a <see cref="T:Gtk.CellEditable" /></param>
+        <param name="path">a <see cref="T:System.String" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.CellRenderer.EditingStarted" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.CellRenderer.EditingStarted" /> event.</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetAlignedArea">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetAlignedArea (Gtk.Widget widget, Gtk.CellRendererState flags, Gdk.Rectangle cell_area, Gdk.Rectangle aligned_area);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetAlignedArea(class Gtk.Widget widget, valuetype Gtk.CellRendererState flags, valuetype Gdk.Rectangle cell_area, valuetype Gdk.Rectangle aligned_area) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetAlignedArea", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="flags" Type="Gtk.CellRendererState" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="aligned_area" Type="Gdk.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="flags">To be added.</param>
+        <param name="cell_area">To be added.</param>
+        <param name="aligned_area">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetPreferredHeight">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetPreferredHeight (Gtk.Widget widget, out int minimum_size, out int natural_size);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetPreferredHeight(class Gtk.Widget widget, int32 minimum_size, int32 natural_size) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetPreferredHeight", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="minimum_size" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="natural_size" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="minimum_size">To be added.</param>
+        <param name="natural_size">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetPreferredHeightForWidth">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetPreferredHeightForWidth (Gtk.Widget widget, int width, out int minimum_height, out int natural_height);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetPreferredHeightForWidth(class Gtk.Widget widget, int32 width, int32 minimum_height, int32 natural_height) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetPreferredHeightForWidth", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="minimum_height" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="natural_height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="minimum_height">To be added.</param>
+        <param name="natural_height">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetPreferredWidth">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetPreferredWidth (Gtk.Widget widget, out int minimum_size, out int natural_size);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetPreferredWidth(class Gtk.Widget widget, int32 minimum_size, int32 natural_size) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetPreferredWidth", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="minimum_size" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="natural_size" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="minimum_size">To be added.</param>
+        <param name="natural_size">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetPreferredWidthForHeight">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetPreferredWidthForHeight (Gtk.Widget widget, int height, out int minimum_width, out int natural_width);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetPreferredWidthForHeight(class Gtk.Widget widget, int32 height, int32 minimum_width, int32 natural_width) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetPreferredWidthForHeight", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="minimum_width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="natural_width" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="height">To be added.</param>
+        <param name="minimum_width">To be added.</param>
+        <param name="natural_width">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetRequestMode">
+      <MemberSignature Language="C#" Value="protected virtual Gtk.SizeRequestMode OnGetRequestMode ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance valuetype Gtk.SizeRequestMode OnGetRequestMode() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetRequestMode", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.SizeRequestMode</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetSize">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetSize (Gtk.Widget widget, ref Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetSize(class Gtk.Widget widget, valuetype Gdk.Rectangle cell_area, int32 x_offset, int32 y_offset, int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideOnGetSize", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle&amp;" RefType="ref" />
+        <Parameter Name="x_offset" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y_offset" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="cell_area">To be added.</param>
+        <param name="x_offset">To be added.</param>
+        <param name="y_offset">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnRender">
+      <MemberSignature Language="C#" Value="protected virtual void OnRender (Cairo.Context cr, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnRender(class Cairo.Context cr, class Gtk.Widget widget, valuetype Gdk.Rectangle background_area, valuetype Gdk.Rectangle cell_area, valuetype Gtk.CellRendererState flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideRender", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cr" Type="Cairo.Context" />
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="background_area" Type="Gdk.Rectangle" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="flags" Type="Gtk.CellRendererState" />
+      </Parameters>
+      <Docs>
+        <param name="cr">To be added.</param>
+        <param name="widget">To be added.</param>
+        <param name="background_area">To be added.</param>
+        <param name="cell_area">To be added.</param>
+        <param name="flags">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnStartEditing">
+      <MemberSignature Language="C#" Value="protected virtual Gtk.CellEditable OnStartEditing (Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gtk.CellEditable OnStartEditing(class Gdk.Event evnt, class Gtk.Widget widget, string path, valuetype Gdk.Rectangle background_area, valuetype Gdk.Rectangle cell_area, valuetype Gtk.CellRendererState flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideStartEditing", Type=typeof(Gtk.CellRenderer))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CellEditable</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="background_area" Type="Gdk.Rectangle" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="flags" Type="Gtk.CellRendererState" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">To be added.</param>
+        <param name="widget">To be added.</param>
+        <param name="path">To be added.</param>
+        <param name="background_area">To be added.</param>
+        <param name="cell_area">To be added.</param>
+        <param name="flags">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Render">
+      <MemberSignature Language="C#" Value="public void Render (Cairo.Context cr, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Render(class Cairo.Context cr, class Gtk.Widget widget, valuetype Gdk.Rectangle background_area, valuetype Gdk.Rectangle cell_area, valuetype Gtk.CellRendererState flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cr" Type="Cairo.Context" />
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="background_area" Type="Gdk.Rectangle" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="flags" Type="Gtk.CellRendererState" />
+      </Parameters>
+      <Docs>
+        <param name="cr">To be added.</param>
+        <param name="widget">To be added.</param>
+        <param name="background_area">To be added.</param>
+        <param name="cell_area">To be added.</param>
+        <param name="flags">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Render">
+      <MemberSignature Language="C#" Value="public void Render (Cairo.Context context, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, Gtk.CellRendererState flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Render(class Cairo.Context context, class Gtk.Widget widget, valuetype Gdk.Rectangle background_area, valuetype Gdk.Rectangle cell_area, valuetype Gdk.Rectangle expose_area, valuetype Gtk.CellRendererState flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="Cairo.Context" />
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="background_area" Type="Gdk.Rectangle" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="expose_area" Type="Gdk.Rectangle" />
+        <Parameter Name="flags" Type="Gtk.CellRendererState" />
+      </Parameters>
+      <Docs>
+        <param name="context">To be added.</param>
+        <param name="widget">To be added.</param>
+        <param name="background_area">To be added.</param>
+        <param name="cell_area">To be added.</param>
+        <param name="expose_area">To be added.</param>
+        <param name="flags">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestMode">
+      <MemberSignature Language="C#" Value="public Gtk.SizeRequestMode RequestMode { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.SizeRequestMode RequestMode" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.SizeRequestMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Sensitive">
+      <MemberSignature Language="C#" Value="public bool Sensitive { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Sensitive" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("sensitive")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Display the cell sensitive.</summary>
+        <value>A <see cref="T:System.Boolean" />.</value>
+        <remarks>The default value is <see langword="true" />.</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetAlignment">
+      <MemberSignature Language="C#" Value="public void SetAlignment (float xalign, float yalign);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetAlignment(float32 xalign, float32 yalign) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="xalign" Type="System.Single" />
+        <Parameter Name="yalign" Type="System.Single" />
+      </Parameters>
+      <Docs>
+        <param name="xalign">To be added.</param>
+        <param name="yalign">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetFixedSize">
+      <MemberSignature Language="C#" Value="public void SetFixedSize (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetFixedSize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="width">an object of type <see cref="T:System.Int32" /></param>
+        <param name="height">an object of type <see cref="T:System.Int32" /></param>
+        <summary>Sets the renderer size to be explicit, independent of the properties set.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetPadding">
+      <MemberSignature Language="C#" Value="public void SetPadding (int xpad, int ypad);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetPadding(int32 xpad, int32 ypad) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="xpad" Type="System.Int32" />
+        <Parameter Name="ypad" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="xpad">To be added.</param>
+        <param name="ypad">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="StartEditing">
+      <MemberSignature Language="C#" Value="public Gtk.CellEditable StartEditing (Gtk.Widget widget, Gdk.Event evnt, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.CellEditable StartEditing(class Gtk.Widget widget, class Gdk.Event evnt, string path, valuetype Gdk.Rectangle background_area, valuetype Gdk.Rectangle cell_area, valuetype Gtk.CellRendererState flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.CellEditable</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="background_area" Type="Gdk.Rectangle" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="flags" Type="Gtk.CellRendererState" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="evnt">To be added.</param>
+        <param name="path">To be added.</param>
+        <param name="background_area">To be added.</param>
+        <param name="cell_area">To be added.</param>
+        <param name="flags">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="StopEditing">
+      <MemberSignature Language="C#" Value="public void StopEditing (bool canceled);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void StopEditing(bool canceled) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="canceled" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="canceled">a <see cref="T:System.Boolean" /></param>
+        <summary>Informs the cell renderer that the editing is stopped.</summary>
+        <remarks>If <paramref name="canceled" /> is <see langword="true" />, the cell renderer will emit the <see cref="F:Gtk.CellRenderer.EditingCanceled" /> event. This method should be called by cell renderer implementations in response to the <see cref="F:Gtk.CellEditable.EditingDone" /> event of <see cref="T:Gtk.CellEditable" />.</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="Visible">
+      <MemberSignature Language="C#" Value="public bool Visible { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Visible" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("visible")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Display the cell.</summary>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Width">
+      <MemberSignature Language="C#" Value="public int Width { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Width" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("width")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The fixed width.</summary>
+        <value>an object of type <see cref="T:System.Int32" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Xalign">
+      <MemberSignature Language="C#" Value="public float Xalign { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Xalign" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("xalign")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The x-align.</summary>
+        <value>an object of type <see cref="T:System.Single" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Xpad">
+      <MemberSignature Language="C#" Value="public uint Xpad { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 Xpad" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("xpad")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The xpad.</summary>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Yalign">
+      <MemberSignature Language="C#" Value="public float Yalign { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Yalign" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("yalign")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The y-align.</summary>
+        <value>an object of type <see cref="T:System.Single" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Ypad">
+      <MemberSignature Language="C#" Value="public uint Ypad { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 Ypad" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("ypad")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The ypad.</summary>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks />
       </Docs>
     </Member>

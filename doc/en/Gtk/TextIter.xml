@@ -1,123 +1,42 @@
 <Type Name="TextIter" FullName="Gtk.TextIter">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public struct TextIter" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public struct TextIter : IEquatable&lt;Gtk.TextIter&gt;" />
+  <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit TextIter extends System.ValueType implements class System.IEquatable`1&lt;valuetype Gtk.TextIter&gt;" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>System.ValueType</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IEquatable&lt;Gtk.TextIter&gt;</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>Text buffer iterator</summary>
     <remarks />
   </Docs>
-  <Base>
-    <BaseTypeName>System.ValueType</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
-    <Member MemberName="Zero">
-      <MemberSignature Language="C#" Value="public static Gtk.TextIter Zero;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextIter</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns an empty <see cref="T:Gtk.TextIter" /></summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Gtk.TextIter New (IntPtr raw);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextIter</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal method</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a new <see cref="T:Gtk.TextIter" /></returns>
-        <remarks>This is an internal method and should not be used by user code.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardToTagToggle">
-      <MemberSignature Language="C#" Value="public bool BackwardToTagToggle (Gtk.TextTag tag);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="tag" Type="Gtk.TextTag" />
-      </Parameters>
-      <Docs>
-        <summary>Moves backward to the next toggle (on or off) of the <see cref="T:Gtk.TextTag" /> tag, or to the next toggle of any tag if tag is <see langword="null" />.</summary>
-        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
-        <returns> whether we found a tag toggle before iter</returns>
-        <remarks>If no matching tag toggles are found, returns <see langword="false" />, otherwise <see langword="true" />. Does not return toggles located at iter, only toggles before iter. Sets iter to the location of the toggle, or the start of the buffer if no toggle is found.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Copy">
-      <MemberSignature Language="C#" Value="public Gtk.TextIter Copy ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextIter</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Creates a dynamically-allocated copy of an iterator.</summary>
-        <returns>a <see cref="T:Gtk.TextIter" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardWordStart">
-      <MemberSignature Language="C#" Value="public bool BackwardWordStart ();" />
+    <Member MemberName="BackwardChar">
+      <MemberSignature Language="C#" Value="public bool BackwardChar ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardChar() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Moves backward to the previous word start.</summary>
-        <returns>
-          <see langword="true" /> if iter moved and is not the end iterator</returns>
-        <remarks>(If iter is currently on a word start, moves backward to the next one after that.) Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
+        <summary>Moves the iterator back one character</summary>
+        <returns>true if the operation succeeded</returns>
+        <remarks>Returns <see langword="true" /> if movement was possible; if iter was the first in the buffer (character offset 0), this returns <see langword="false" /> for convenience when writing loops.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ForwardSentenceEnd">
-      <MemberSignature Language="C#" Value="public bool ForwardSentenceEnd ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves forward to the next sentence end.</summary>
-        <returns>
-          <see langword="true" /> if iter moved and is not the end iterator</returns>
-        <remarks>If iter is at the end of a sentence, moves to the next end of sentence. Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Order">
-      <MemberSignature Language="C#" Value="public void Order (Gtk.TextIter second);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="second" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Swaps the value of first and second if second comes before first in the buffer.</summary>
-        <param name="second">another <see cref="T:Gtk.TextIter" /></param>
-        <remarks>That is, ensures that first and second are in sequence. Most text buffer functions that take a range call this automatically on your behalf, so there's no real reason to call it yourself in those cases. There are some exceptions, such as <see cref="M:Gtk.TextIter.InRange()" />, that expect a pre-sorted range.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardCursorPositions">
-      <MemberSignature Language="C#" Value="public bool BackwardCursorPositions (int count);" />
+    <Member MemberName="BackwardChars">
+      <MemberSignature Language="C#" Value="public bool BackwardChars (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardChars(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -126,352 +45,15 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Moves back <paramref name="count" /> cursor positions.</summary>
-        <param name="count"> number of positions to move</param>
-        <returns>
-          <see langword="true" /> if we moved and the new position is dereferenceable</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardLine">
-      <MemberSignature Language="C#" Value="public bool BackwardLine ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves the iterator backward one line</summary>
-        <returns>true if the operation succeeded.</returns>
-        <remarks>Returns <see langword="true" /> if iter could be moved; i.e. if iter was at character offset 0, this function returns <see langword="false" />. Therefore if iter was already on line 0, but not at the start of the line, iter is snapped to the start of the line and the function returns <see langword="true" />. (Note that this implies that in a loop calling this function, the line number may not change on every iteration, if your first iteration is on line 0.)</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetVisibleSlice">
-      <MemberSignature Language="C#" Value="public string GetVisibleSlice (Gtk.TextIter end);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="end" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Like <see cref="M:Gtk.TextIter.GetSlice()" />, but invisible text is not included.</summary>
-        <param name="end"> iterator at end of range</param>
-        <returns> slice of text from the buffer</returns>
-        <remarks> Invisible text is usually invisible because a <see cref="T:Gtk.TextTag" /> with the "invisible" attribute turned on has been applied to it.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetSlice">
-      <MemberSignature Language="C#" Value="public string GetSlice (Gtk.TextIter end);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="end" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Returns the text in the given range.</summary>
-        <param name="end"> iterator at end of a range</param>
-        <returns> slice of text from the buffer</returns>
-        <remarks>A "slice" is an array of characters encoded in UTF-8 format, including the Unicode "unknown" character 0xFFFC for iterable non-character elements in the buffer, such as images. Because images are encoded in the slice, byte and character offsets in the returned array will correspond to byte offsets in the text buffer. Note that 0xFFFC can occur in normal text as well, so it is not a reliable indicator that a pixbuf or widget is in the buffer.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardWordEnd">
-      <MemberSignature Language="C#" Value="public bool ForwardWordEnd ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves forward to the next word end.</summary>
-        <returns>
-          <see langword="true" /> if iter moved and is not the end iterator</returns>
-        <remarks>(If iter is currently on a word end, moves forward to the next one after that.) Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardFindChar">
-      <MemberSignature Language="C#" Value="public bool ForwardFindChar (Gtk.TextCharPredicate pred, Gtk.TextIter limit);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pred" Type="Gtk.TextCharPredicate" />
-        <Parameter Name="limit" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Advances the iterator, calling <paramref name="pred" /> on each character.</summary>
-        <param name="pred">A <see cref="M:Gtk.TextCharPredicate" /> to call on each character.</param>
-        <param name="limit"> search limit, or <see langword="null" /> for none</param>
-        <returns>whether a match was found</returns>
-        <remarks>If pred returns <see langword="true" />, returns <see langword="true" /> and stops scanning. If pred never returns <see langword="true" />, iter is set to limit if limit is non-<see langword="null" />, otherwise to the end iterator.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardFindChar">
-      <MemberSignature Language="C#" Value="public bool ForwardFindChar (Gtk.TextCharPredicate pred, IntPtr user_data, Gtk.TextIter limit);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pred" Type="Gtk.TextCharPredicate" />
-        <Parameter Name="user_data" Type="System.IntPtr" />
-        <Parameter Name="limit" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Obsolete. Replaced by <see cref="M:Gtk.TextIter.ForwardFindChar(Gtk.TextCharPredicate,Gtk.TextIter)" />.</summary>
-        <param name="pred">A <see cref="M:Gtk.TextCharPredicate" /> to call on each character.</param>
-        <param name="user_data">Ignored</param>
-        <param name="limit"> search limit, or <see langword="null" /> for none</param>
-        <returns>whether a match was found</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="EndsWord">
-      <MemberSignature Language="C#" Value="public bool EndsWord ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Determines whether iter ends a natural-language word.</summary>
-        <returns>
-          <see langword="true" /> if iter is at the end of a word</returns>
-        <remarks>Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Editable">
-      <MemberSignature Language="C#" Value="public bool Editable (bool default_setting);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="default_setting" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Returns whether the character at iter is within an editable region of text.</summary>
-        <param name="default_setting">
-          <see langword="true" /> if text is editable by default</param>
-        <returns> whether iter is inside an editable range</returns>
-        <remarks>
-          <para>
-Non-editable text is "locked" and cannot be changed by the user via <see cref="T:Gtk.TextView" />. This function is simply a convenience wrapper around <see cref="M:Gtk.TextIter.GetAttributes()" />. If no tags applied to this text effect editability, <paramref name="default_setting" /> will be returned.
-</para>
-          <para>
-You do not want to use this function to decide whether text can be inserted at iter, because for insertion you do not want to know whether the char at iter is inside an editable range, you want to know whether a new character inserted at iter would be inside an editable range. Use <see cref="M:Gtk.TextIter.CanInsert()" /> to handle this case.
-</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardChar">
-      <MemberSignature Language="C#" Value="public bool ForwardChar ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves this iterator forward by one character offset.</summary>
-        <returns>A boolean: <see langword="true" /> if the iterator moved and is dereferenceable.</returns>
-        <remarks>Note that images embedded in the buffer occupy 1 character slot, so this may actually move onto an image instead of a character, if you have images in your buffer. If this object is the end iterator or one character before it, the object will now point at the end iterator, and return <see langword="false" /> for convenience when writing loops.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardLines">
-      <MemberSignature Language="C#" Value="public bool BackwardLines (int count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Moves the iterator back a number of lines.</summary>
-        <param name="count">number of lines to move backwards.</param>
-        <returns>true if the operation succeeded.</returns>
-        <remarks>Moves count lines backward, if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer). The return value indicates whether the iterator moved onto a dereferenceable position; if the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, moves forward by 0 - count lines.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="EndsLine">
-      <MemberSignature Language="C#" Value="public bool EndsLine ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns true if the iterator is at the end of a line.</summary>
-        <returns>true if the iterator is at the end of a line.</returns>
-        <remarks>Returns <see langword="true" /> if iter points to the start of the paragraph delimiter characters for a line (delimiters will be either a newline, a carriage return, a carriage return followed by a newline, or a Unicode paragraph separator character). Note that an iterator pointing to the \n of a \r\n pair will not be counted as the end of a line, the line ends before the \r. The end iterator is considered to be at the end of a line, even though there are no paragraph delimiter chars there.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardSentenceStarts">
-      <MemberSignature Language="C#" Value="public bool BackwardSentenceStarts (int count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Calls <see cref="M:Gtk.TextIter.BackwardSentenceStart()" /> up to <paramref name="count" /> times, or until it returns <see langword="false" />.</summary>
-        <param name="count"> number of sentences to move</param>
-        <returns>
-          <see langword="true" /> if iter moved and is not the end iterator</returns>
-        <remarks>If <paramref name="count" /> is negative, moves forward instead of backward.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardToEnd">
-      <MemberSignature Language="C#" Value="public void ForwardToEnd ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves iter forward to the "end iterator," which points one past the last valid character in the buffer.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardFindChar">
-      <MemberSignature Language="C#" Value="public bool BackwardFindChar (Gtk.TextCharPredicate pred, Gtk.TextIter limit);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pred" Type="Gtk.TextCharPredicate" />
-        <Parameter Name="limit" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Same as <see cref="M:Gtk.TextIter.ForwardFindChar()" />, but goes backward from iter.</summary>
-        <param name="pred">A <see cref="M:Gtk.TextCharPredicate" /> to call on each character.</param>
-        <param name="limit"> search limit, or <see langword="null" /> for none</param>
-        <returns>whether a match was found</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardFindChar">
-      <MemberSignature Language="C#" Value="public bool BackwardFindChar (Gtk.TextCharPredicate pred, IntPtr user_data, Gtk.TextIter limit);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pred" Type="Gtk.TextCharPredicate" />
-        <Parameter Name="user_data" Type="System.IntPtr" />
-        <Parameter Name="limit" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Obsolete. Replaced by <see cref="M:Gtk.TextIter.BackwardFindChar(Gtk.TextCharPredicate,Gtk.TextIter)" />.</summary>
-        <param name="pred">A <see cref="M:Gtk.TextCharPredicate" /> to call on each character.</param>
-        <param name="user_data">Ignored</param>
-        <param name="limit"> search limit, or <see langword="null" /> for none</param>
-        <returns>whether a match was found</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardCursorPositions">
-      <MemberSignature Language="C#" Value="public bool ForwardCursorPositions (int count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Moves up <paramref name="count" /> cursor positions.</summary>
-        <param name="count"> number of positions to move</param>
-        <returns>
-          <see langword="true" /> if we moved and the new position is dereferenceable</returns>
-        <remarks>See <see cref="M:Gtk.TextIter.ForwardCursorPosition()" /> for details.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Equal">
-      <MemberSignature Language="C#" Value="public bool Equal (Gtk.TextIter rhs);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="rhs" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Tests whether two iterators are equal, using the fastest possible mechanism.</summary>
-        <param name="rhs">another <see cref="T:Gtk.TextIter" /></param>
-        <returns>
-          <see langword="true" /> if the iterators point to the same place in the buffer</returns>
-        <remarks>This function is very fast; you can expect it to perform better than e.g. getting the character offset for each iterator and comparing the offsets yourself. Also, it's a bit faster than <see cref="M:Gtk.TextIter.Compare()" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TogglesTag">
-      <MemberSignature Language="C#" Value="public bool TogglesTag (Gtk.TextTag tag);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="tag" Type="Gtk.TextTag" />
-      </Parameters>
-      <Docs>
-        <summary> whether tag is either toggled on or off at iter</summary>
-        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
-        <returns> whether tag is toggled on or off at iter</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="StartsSentence">
-      <MemberSignature Language="C#" Value="public bool StartsSentence ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Determines whether iter begins a sentence.</summary>
-        <returns>
-          <see langword="true" /> if iter is at the start of a sentence.</returns>
-        <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardToTagToggle">
-      <MemberSignature Language="C#" Value="public bool ForwardToTagToggle (Gtk.TextTag tag);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="tag" Type="Gtk.TextTag" />
-      </Parameters>
-      <Docs>
-        <summary>Moves forward to the next toggle (on or off) of the <see cref="T:Gtk.TextTag" /> tag, or to the next toggle of any tag if tag is <see langword="null" />.</summary>
-        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
-        <returns> whether we found a tag toggle after iter</returns>
-        <remarks>If no matching tag toggles are found, returns <see langword="false" />, otherwise <see langword="true" />. Does not return toggles located at iter, only toggles after iter. Sets iter to the location of the toggle, or to the end of the buffer if no toggle is found.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="StartsLine">
-      <MemberSignature Language="C#" Value="public bool StartsLine ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns <see langword="true" /> if iter begins a paragraph.</summary>
-        <returns> whether iter begins a line</returns>
-        <remarks />
+        <param name="count">number of characters to move backwards.</param>
+        <summary>Moves the iterator back a number of characters.</summary>
+        <returns>true if the operation succeeded</returns>
+        <remarks>Moves count characters backward, if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer). The return value indicates whether the iterator moved onto a dereferenceable position; if the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardCursorPosition">
       <MemberSignature Language="C#" Value="public bool BackwardCursorPosition ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardCursorPosition() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -484,91 +66,86 @@ You do not want to use this function to decide whether text can be inserted at i
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GetAttributes">
-      <MemberSignature Language="C#" Value="public bool GetAttributes (Gtk.TextAttributes values);" />
+    <Member MemberName="BackwardCursorPositions">
+      <MemberSignature Language="C#" Value="public bool BackwardCursorPositions (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardCursorPositions(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="values" Type="Gtk.TextAttributes" />
+        <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Computes the effect of any tags applied to this spot in the text.</summary>
-        <param name="values">a <see cref="T:Gtk.TextAttribute" />s</param>
-        <returns>
-          <see langword="true" /> if values was modified</returns>
-        <remarks>
-          <para>
-The values parameter should be initialized to the default settings you wish to use if no tags are in effect. You would typically obtain the defaults from <see cref="M:Gtk.TextView.GetDefaultAttributes()" />.
-</para>
-          <para>
-            <see cref="M:Gtk.TextIter.GetAttributes()" /> will modify values, applying the effects of any tags present at iter. If any tags affected values, the function returns <see langword="true" />.
-</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetText">
-      <MemberSignature Language="C#" Value="public string GetText (Gtk.TextIter end);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="end" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Returns text in the given range.</summary>
-        <param name="end"> iterator at end of a range</param>
-        <returns> the string from the buffer</returns>
-        <remarks>If the range contains non-text elements such as images, the character and byte offsets in the returned string will not correspond to character and byte offsets in the buffer. If you want offsets to correspond, see <see cref="M:Gtk.TextIter.GetSlice()" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardCursorPosition">
-      <MemberSignature Language="C#" Value="public bool ForwardCursorPosition ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves iter forward by a single cursor position.</summary>
+        <param name="count"> number of positions to move</param>
+        <summary>Moves back <paramref name="count" /> cursor positions.</summary>
         <returns>
           <see langword="true" /> if we moved and the new position is dereferenceable</returns>
-        <remarks>Cursor positions are (unsurprisingly) positions where the cursor can appear. Perhaps surprisingly, there may not be a cursor position between all characters. The most common example for European languages would be a carriage return/newline sequence. For some Unicode characters, the equivalent of say the letter "a" with an accent mark will be represented as two characters, first the letter then a "combining mark" that causes the accent to be rendered; so the cursor cannot go between those two characters.</remarks>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="ForwardLines">
-      <MemberSignature Language="C#" Value="public bool ForwardLines (int count);" />
+    <Member MemberName="BackwardFindChar">
+      <MemberSignature Language="C#" Value="public bool BackwardFindChar (Gtk.TextCharPredicate pred, Gtk.TextIter limit);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardFindChar(class Gtk.TextCharPredicate pred, valuetype Gtk.TextIter limit) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="pred" Type="Gtk.TextCharPredicate" />
+        <Parameter Name="limit" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>Moves count lines forward, if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer).</summary>
-        <param name="count"> number of lines to move forward</param>
-        <returns> whether iter moved and is dereferenceable</returns>
-        <remarks>The return value indicates whether the iterator moved onto a dereferenceable position; if the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, moves backward by 0 - count lines.</remarks>
+        <param name="pred">A <see cref="M:Gtk.TextCharPredicate" /> to call on each character.</param>
+        <param name="limit"> search limit, or <see langword="null" /> for none</param>
+        <summary>Same as <see cref="M:Gtk.TextIter.ForwardFindChar()" />, but goes backward from iter.</summary>
+        <returns>whether a match was found</returns>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="ForwardLine">
-      <MemberSignature Language="C#" Value="public bool ForwardLine ();" />
+    <Member MemberName="BackwardFindChar">
+      <MemberSignature Language="C#" Value="public bool BackwardFindChar (Gtk.TextCharPredicate pred, IntPtr user_data, Gtk.TextIter limit);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardFindChar(class Gtk.TextCharPredicate pred, native int user_data, valuetype Gtk.TextIter limit) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by overload without IntPtr argument")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pred" Type="Gtk.TextCharPredicate" />
+        <Parameter Name="user_data" Type="System.IntPtr" />
+        <Parameter Name="limit" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="pred">A <see cref="M:Gtk.TextCharPredicate" /> to call on each character.</param>
+        <param name="user_data">Ignored</param>
+        <param name="limit"> search limit, or <see langword="null" /> for none</param>
+        <summary>Obsolete. Replaced by <see cref="M:Gtk.TextIter.BackwardFindChar(Gtk.TextCharPredicate,Gtk.TextIter)" />.</summary>
+        <returns>whether a match was found</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardLine">
+      <MemberSignature Language="C#" Value="public bool BackwardLine ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardLine() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Moves iter to the start of the next line.</summary>
-        <returns>A boolean; whether the iterator is dereferenceable</returns>
-        <remarks>Returns <see langword="true" /> if there was a next line to move to, and <see langword="false" /> if iter was simply moved to the end of the buffer and is now not dereferenceable, or if iter was already at the end of the buffer.</remarks>
+        <summary>Moves the iterator backward one line</summary>
+        <returns>true if the operation succeeded.</returns>
+        <remarks>Returns <see langword="true" /> if iter could be moved; i.e. if iter was at character offset 0, this function returns <see langword="false" />. Therefore if iter was already on line 0, but not at the start of the line, iter is snapped to the start of the line and the function returns <see langword="true" />. (Note that this implies that in a loop calling this function, the line number may not change on every iteration, if your first iteration is on line 0.)</remarks>
       </Docs>
     </Member>
-    <Member MemberName="BackwardChars">
-      <MemberSignature Language="C#" Value="public bool BackwardChars (int count);" />
+    <Member MemberName="BackwardLines">
+      <MemberSignature Language="C#" Value="public bool BackwardLines (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardLines(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -577,30 +154,40 @@ The values parameter should be initialized to the default settings you wish to u
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Moves the iterator back a number of characters.</summary>
-        <param name="count">number of characters to move backwards.</param>
-        <returns>true if the operation succeeded</returns>
-        <remarks>Moves count characters backward, if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer). The return value indicates whether the iterator moved onto a dereferenceable position; if the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />.</remarks>
+        <param name="count">number of lines to move backwards.</param>
+        <summary>Moves the iterator back a number of lines.</summary>
+        <returns>true if the operation succeeded.</returns>
+        <remarks>Moves count lines backward, if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer). The return value indicates whether the iterator moved onto a dereferenceable position; if the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, moves forward by 0 - count lines.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="HasTag">
-      <MemberSignature Language="C#" Value="public bool HasTag (Gtk.TextTag tag);" />
+    <Member MemberName="BackwardSearch">
+      <MemberSignature Language="C#" Value="public bool BackwardSearch (string str, Gtk.TextSearchFlags flags, out Gtk.TextIter match_start, out Gtk.TextIter match_end, Gtk.TextIter limit);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardSearch(string str, valuetype Gtk.TextSearchFlags flags, valuetype Gtk.TextIter match_start, valuetype Gtk.TextIter match_end, valuetype Gtk.TextIter limit) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="tag" Type="Gtk.TextTag" />
+        <Parameter Name="str" Type="System.String" />
+        <Parameter Name="flags" Type="Gtk.TextSearchFlags" />
+        <Parameter Name="match_start" Type="Gtk.TextIter&amp;" RefType="out" />
+        <Parameter Name="match_end" Type="Gtk.TextIter&amp;" RefType="out" />
+        <Parameter Name="limit" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>Returns <see langword="true" /> if iter is within a range tagged with tag.</summary>
-        <param name="tag">a <see cref="T:Gtk.TextTag" /></param>
-        <returns> whether iter is tagged with tag</returns>
+        <param name="str"> search string</param>
+        <param name="flags"> bitmask of flags affecting the search</param>
+        <param name="match_start"> return location for start of match, or <see langword="null" /></param>
+        <param name="match_end"> return location for end of match, or <see langword="null" /></param>
+        <param name="limit"> location of last possible match_start, or <see langword="null" /> for start of buffer</param>
+        <summary>Same as <see cref="M:Gtk.TextIter.ForwardSearch()" />, but moves backward.</summary>
+        <returns> whether a match was found</returns>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardSentenceStart">
       <MemberSignature Language="C#" Value="public bool BackwardSentenceStart ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardSentenceStart() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -613,22 +200,27 @@ The values parameter should be initialized to the default settings you wish to u
         <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
       </Docs>
     </Member>
-    <Member MemberName="StartsWord">
-      <MemberSignature Language="C#" Value="public bool StartsWord ();" />
+    <Member MemberName="BackwardSentenceStarts">
+      <MemberSignature Language="C#" Value="public bool BackwardSentenceStarts (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardSentenceStarts(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>Determines whether iter begins a natural-language word.</summary>
+        <param name="count"> number of sentences to move</param>
+        <summary>Calls <see cref="M:Gtk.TextIter.BackwardSentenceStart()" /> up to <paramref name="count" /> times, or until it returns <see langword="false" />.</summary>
         <returns>
-          <see langword="true" /> if iter is at the start of a word</returns>
-        <remarks>Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>If <paramref name="count" /> is negative, moves forward instead of backward.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="BeginsTag">
-      <MemberSignature Language="C#" Value="public bool BeginsTag (Gtk.TextTag tag);" />
+    <Member MemberName="BackwardToTagToggle">
+      <MemberSignature Language="C#" Value="public bool BackwardToTagToggle (Gtk.TextTag tag);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardToTagToggle(class Gtk.TextTag tag) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -637,44 +229,332 @@ The values parameter should be initialized to the default settings you wish to u
         <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <summary>Returns <see langword="true" /> if tag is toggled on at exactly this point.</summary>
         <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
-        <returns> whether iter is the start of a range tagged with tag</returns>
-        <remarks>If tag is <see langword="null" />, returns <see langword="true" /> if any tag is toggled on at this point. Note that the <see cref="M:Gtk.TextIter.BeginsTag()" /> returns <see langword="true" /> if iter is the start of the tagged range; <see cref="M:Gtk.TextIter.HasTag()" /> tells you whether an iterator is within a tagged range.</remarks>
+        <summary>Moves backward to the next toggle (on or off) of the <see cref="T:Gtk.TextTag" /> tag, or to the next toggle of any tag if tag is <see langword="null" />.</summary>
+        <returns> whether we found a tag toggle before iter</returns>
+        <remarks>If no matching tag toggles are found, returns <see langword="false" />, otherwise <see langword="true" />. Does not return toggles located at iter, only toggles before iter. Sets iter to the location of the toggle, or the start of the buffer if no toggle is found.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetVisibleText">
-      <MemberSignature Language="C#" Value="public string GetVisibleText (Gtk.TextIter end);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="end" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>Like <see cref="M:Gtk.TextIter.GetText()" />, but invisible text is not included.</summary>
-        <param name="end"> iterator at end of range</param>
-        <returns> string containing visible text in the range</returns>
-        <remarks>Invisible text is usually invisible because a <see cref="T:Gtk.TextTag" /> with the "invisible" attribute turned on has been applied to it.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardToLineEnd">
-      <MemberSignature Language="C#" Value="public bool ForwardToLineEnd ();" />
+    <Member MemberName="BackwardVisibleCursorPosition">
+      <MemberSignature Language="C#" Value="public bool BackwardVisibleCursorPosition ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardVisibleCursorPosition() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Moves the iterator to point to the paragraph delimiter characters, which will be either a newline, a carriage return, a carriage return/newline in sequence, or the Unicode paragraph separator character.</summary>
+        <summary>Moves the iterator back to the previous visible cursor position.
+</summary>
+        <returns>a <see cref="T:System.Boolean" />, true if the iter moved and the new position is dereferenceable</returns>
+        <remarks>See <see cref="M:Gtk.TextIter.BackwardCursorPosition" /> for details.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardVisibleCursorPositions">
+      <MemberSignature Language="C#" Value="public bool BackwardVisibleCursorPositions (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardVisibleCursorPositions(int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count">a <see cref="T:System.Int32" /></param>
+        <summary>Moves backward up to <paramref name="count" /> visible cursor positions.</summary>
+        <returns>a <see cref="T:System.Boolean" />, true if the cursor was moved and is in a dereferenceable position.</returns>
+        <remarks>See <see cref="M:Gtk.TextIter.BackwardCursorPosition" /> for details.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardVisibleLine">
+      <MemberSignature Language="C#" Value="public bool BackwardVisibleLine ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardVisibleLine() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves to the beginning of the previous visible line.</summary>
         <returns>
-          <see langword="true" /> if we moved and the new location is not the end iterator</returns>
-        <remarks> If the iterator is already at the paragraph delimiter characters, moves to the paragraph delimiter characters for the next line. If iter is on the last line in the buffer, which does not end in paragraph delimiters, moves to the end iterator (end of the last line), and returns <see langword="false" />.</remarks>
+          <see langword="true" /> if the iter could be moved.</returns>
+        <remarks>Moves <paramref name="iter" /> to the start of the previous visible line. If iter was at character offset 0, this function returns <see langword="false" />. If iter was already on line 0, but not at the start of the line, iter is snapped to the start of the line and the function returns <see langword="true" />. (Note that this implies that in a loop calling this function, the line number may not change on every iteration, if your first iteration is on line 0.).</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardVisibleLines">
+      <MemberSignature Language="C#" Value="public bool BackwardVisibleLines (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardVisibleLines(int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count">The number of lines to move.</param>
+        <summary>Moves backward by a specified number of visible lines.</summary>
+        <returns>
+          <see langword="true" /> if the result of the move is a referenceable position.</returns>
+        <remarks>If <paramref name="count" /> would move past the start or end of the buffer, the iter is moved to the start or end of the buffer. The return value indicates whether the iterator moved onto a dereferenceable position. If the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, the iter is moved forward by 0 - count lines.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardVisibleWordStart">
+      <MemberSignature Language="C#" Value="public bool BackwardVisibleWordStart ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardVisibleWordStart() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+	  Moves backward to the previous visible word start. (If the iterator is currently 
+	  on a word start, moves backward to the next one after that.) 
+	</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+	  Word breaks are determined by Pango and should be correct for nearly any
+	  language (if not, the correct fix would be to the Pango word break
+	  algorithms).
+	</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardVisibleWordStarts">
+      <MemberSignature Language="C#" Value="public bool BackwardVisibleWordStarts (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardVisibleWordStarts(int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count">a <see cref="T:System.Int32" /></param>
+        <summary>Calls <see cref="M:Gtk.TextIter.BackwardVisibleWordStart" /> up to <paramref name="count" /> times.</summary>
+        <returns>a <see cref="T:System.Boolean" />, true if the iterator moved and is not at the end of the text.</returns>
+        <remarks />
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardWordStart">
+      <MemberSignature Language="C#" Value="public bool BackwardWordStart ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardWordStart() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves backward to the previous word start.</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>(If iter is currently on a word start, moves backward to the next one after that.) Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardWordStarts">
+      <MemberSignature Language="C#" Value="public bool BackwardWordStarts (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BackwardWordStarts(int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count"> number of times to move</param>
+        <summary>Calls <see cref="M:Gtk.TextIter.BackwardWordStart()" /> up to <paramref name="count" /> times.</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginsTag">
+      <MemberSignature Language="C#" Value="public bool BeginsTag (Gtk.TextTag tag);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BeginsTag(class Gtk.TextTag tag) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tag" Type="Gtk.TextTag" />
+      </Parameters>
+      <Docs>
+        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
+        <summary>Returns <see langword="true" /> if tag is toggled on at exactly this point.</summary>
+        <returns> whether iter is the start of a range tagged with tag</returns>
+        <remarks>If tag is <see langword="null" />, returns <see langword="true" /> if any tag is toggled on at this point. Note that the <see cref="M:Gtk.TextIter.BeginsTag()" /> returns <see langword="true" /> if iter is the start of the tagged range; <see cref="M:Gtk.TextIter.HasTag()" /> tells you whether an iterator is within a tagged range.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Buffer">
+      <MemberSignature Language="C#" Value="public Gtk.TextBuffer Buffer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TextBuffer Buffer" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TextBuffer</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Obtains the buffer the iter is in</summary>
+        <value>containing buffer</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BytesInLine">
+      <MemberSignature Language="C#" Value="public int BytesInLine { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 BytesInLine" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the number of bytes in the line containing iter, including the paragraph delimiters.</summary>
+        <value> number of bytes in the line</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="CanInsert">
+      <MemberSignature Language="C#" Value="public bool CanInsert (bool default_editability);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CanInsert(bool default_editability) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="default_editability" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="default_editability">
+          <see langword="true" /> if text is editable by default</param>
+        <summary>Considering the default editability of the buffer, and tags that affect editability, determines whether text inserted at iter would be editable.</summary>
+        <returns> whether text inserted at iter would be editable</returns>
+        <remarks>If text inserted at iter would be editable then the user should be allowed to insert text at iter. <see cref="T:Gtk.TextBuffer.InsertInteractive()" /> uses this function to decide whether insertions are allowed at a given position.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Char">
+      <MemberSignature Language="C#" Value="public string Char { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Char" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Character the TextIter points to.</summary>
+        <value>a 1 character length string container the character pointed to by the TextIter</value>
+        <remarks>Even though this property returns a string, it will never hold more than a single character.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CharsInLine">
+      <MemberSignature Language="C#" Value="public int CharsInLine { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CharsInLine" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Number of characters in the TextIter's line.</summary>
+        <value>Returns the number of characters in the TextIter's current line, including the paragraph delimiters.</value>
+        <remarks>None.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChildAnchor">
+      <MemberSignature Language="C#" Value="public Gtk.TextChildAnchor ChildAnchor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TextChildAnchor ChildAnchor" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TextChildAnchor</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>If the location at iter contains a child anchor, the anchor is returned. Otherwise, <see langword="null" /> is returned.</summary>
+        <value> the anchor at iter</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Compare">
+      <MemberSignature Language="C#" Value="public int Compare (Gtk.TextIter rhs);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 Compare(valuetype Gtk.TextIter rhs) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rhs" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="rhs">another <see cref="T:Gtk.TextIter" /></param>
+        <summary>A qsort()-style function that returns negative if lhs is less than rhs, positive if lhs is greater than rhs, and 0 if they are equal.</summary>
+        <returns> -1 if lhs is less than rhs, 1 if lhs is greater, 0 if they are equal</returns>
+        <remarks>Ordering is in character offset order, i.e. the first character in the buffer is less than the second character in the buffer.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Copy">
+      <MemberSignature Language="C#" Value="public Gtk.TextIter Copy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gtk.TextIter Copy() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("This is a no-op")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.TextIter</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Creates a dynamically-allocated copy of an iterator.</summary>
+        <returns>a <see cref="T:Gtk.TextIter" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Editable">
+      <MemberSignature Language="C#" Value="public bool Editable (bool default_setting);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Editable(bool default_setting) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="default_setting" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="default_setting">
+          <see langword="true" /> if text is editable by default</param>
+        <summary>Returns whether the character at iter is within an editable region of text.</summary>
+        <returns> whether iter is inside an editable range</returns>
+        <remarks>
+          <para>
+Non-editable text is "locked" and cannot be changed by the user via <see cref="T:Gtk.TextView" />. This function is simply a convenience wrapper around <see cref="M:Gtk.TextIter.GetAttributes()" />. If no tags applied to this text effect editability, <paramref name="default_setting" /> will be returned.
+</para>
+          <para>
+You do not want to use this function to decide whether text can be inserted at iter, because for insertion you do not want to know whether the char at iter is inside an editable range, you want to know whether a new character inserted at iter would be inside an editable range. Use <see cref="M:Gtk.TextIter.CanInsert()" /> to handle this case.
+</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndsLine">
+      <MemberSignature Language="C#" Value="public bool EndsLine ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool EndsLine() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns true if the iterator is at the end of a line.</summary>
+        <returns>true if the iterator is at the end of a line.</returns>
+        <remarks>Returns <see langword="true" /> if iter points to the start of the paragraph delimiter characters for a line (delimiters will be either a newline, a carriage return, a carriage return followed by a newline, or a Unicode paragraph separator character). Note that an iterator pointing to the \n of a \r\n pair will not be counted as the end of a line, the line ends before the \r. The end iterator is considered to be at the end of a line, even though there are no paragraph delimiter chars there.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EndsSentence">
       <MemberSignature Language="C#" Value="public bool EndsSentence ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool EndsSentence() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -687,69 +567,9 @@ The values parameter should be initialized to the default settings you wish to u
         <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ForwardSentenceEnds">
-      <MemberSignature Language="C#" Value="public bool ForwardSentenceEnds (int count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Calls <see cref="M:Gtk.TextIter.ForwardSentenceEnd()" /><paramref name="count" /> times (or until it returns <see langword="false" />).</summary>
-        <param name="count"> number of sentences to move</param>
-        <returns>
-          <see langword="true" /> if iter moved and is not the end iterator</returns>
-        <remarks>If <paramref name="count" /> is negative, moves backward instead of forward.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="InsideSentence">
-      <MemberSignature Language="C#" Value="public bool InsideSentence ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Determines whether iter is inside a sentence (as opposed to in between two sentences, e.g. after a period and before the first letter of the next sentence).</summary>
-        <returns>
-          <see langword="true" /> if iter is inside a sentence.</returns>
-        <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardWordEnds">
-      <MemberSignature Language="C#" Value="public bool ForwardWordEnds (int count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Calls <see cref="M:Gtk.TextIter.ForwardWordEnd()" /> up to <paramref name="count" /> times.</summary>
-        <param name="count"> number of times to move</param>
-        <returns>
-          <see langword="true" /> if iter moved and is not the end iterator</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardChar">
-      <MemberSignature Language="C#" Value="public bool BackwardChar ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves the iterator back one character</summary>
-        <returns>true if the operation succeeded</returns>
-        <remarks>Returns <see langword="true" /> if movement was possible; if iter was the first in the buffer (character offset 0), this returns <see langword="false" /> for convenience when writing loops.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="EndsTag">
       <MemberSignature Language="C#" Value="public bool EndsTag (Gtk.TextTag tag);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool EndsTag(class Gtk.TextTag tag) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -758,97 +578,98 @@ The values parameter should be initialized to the default settings you wish to u
         <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <summary>Returns <see langword="true" /> if tag is toggled off at exactly this point.</summary>
         <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
+        <summary>Returns <see langword="true" /> if tag is toggled off at exactly this point.</summary>
         <returns> whether iter is the end of a range tagged with tag</returns>
         <remarks>If tag is <see langword="null" />, returns <see langword="true" /> if any tag is toggled off at this point. Note that the <see cref="T:Gtk.TextIter.EndsTag()" /> returns <see langword="true" /> if iter is the end of the tagged range; <see cref="T:Gtk.TextIter.HasTag()" /> tells you whether an iterator is within a tagged range.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ForwardChars">
-      <MemberSignature Language="C#" Value="public bool ForwardChars (int count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Moves count characters if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer).</summary>
-        <param name="count"> number of characters to move, may be negative</param>
-        <returns> whether iter moved and is dereferenceable</returns>
-        <remarks>The return value indicates whether the new position of iter is different from its original position, and dereferenceable (the last iterator in the buffer is not dereferenceable). If count is 0, the function does nothing and returns <see langword="false" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CanInsert">
-      <MemberSignature Language="C#" Value="public bool CanInsert (bool default_editability);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="default_editability" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Considering the default editability of the buffer, and tags that affect editability, determines whether text inserted at iter would be editable.</summary>
-        <param name="default_editability">
-          <see langword="true" /> if text is editable by default</param>
-        <returns> whether text inserted at iter would be editable</returns>
-        <remarks>If text inserted at iter would be editable then the user should be allowed to insert text at iter. <see cref="T:Gtk.TextBuffer.InsertInteractive()" /> uses this function to decide whether insertions are allowed at a given position.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Compare">
-      <MemberSignature Language="C#" Value="public int Compare (Gtk.TextIter rhs);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="rhs" Type="Gtk.TextIter" />
-      </Parameters>
-      <Docs>
-        <summary>A qsort()-style function that returns negative if lhs is less than rhs, positive if lhs is greater than rhs, and 0 if they are equal.</summary>
-        <param name="rhs">another <see cref="T:Gtk.TextIter" /></param>
-        <returns> -1 if lhs is less than rhs, 1 if lhs is greater, 0 if they are equal</returns>
-        <remarks>Ordering is in character offset order, i.e. the first character in the buffer is less than the second character in the buffer.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="InsideWord">
-      <MemberSignature Language="C#" Value="public bool InsideWord ();" />
+    <Member MemberName="EndsWord">
+      <MemberSignature Language="C#" Value="public bool EndsWord ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool EndsWord() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Determines whether iter is inside a natural-language word (as opposed to say inside some whitespace).</summary>
+        <summary>Determines whether iter ends a natural-language word.</summary>
         <returns>
-          <see langword="true" /> if iter is inside a word</returns>
+          <see langword="true" /> if iter is at the end of a word</returns>
         <remarks>Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
       </Docs>
     </Member>
-    <Member MemberName="InRange">
-      <MemberSignature Language="C#" Value="public bool InRange (Gtk.TextIter start, Gtk.TextIter end);" />
+    <Member MemberName="Equal">
+      <MemberSignature Language="C#" Value="public bool Equal (Gtk.TextIter rhs);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Equal(valuetype Gtk.TextIter rhs) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="start" Type="Gtk.TextIter" />
-        <Parameter Name="end" Type="Gtk.TextIter" />
+        <Parameter Name="rhs" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>Checks whether iter falls in the range (start, end).</summary>
-        <param name="start"> start of range</param>
-        <param name="end"> end of range</param>
+        <param name="rhs">another <see cref="T:Gtk.TextIter" /></param>
+        <summary>Tests whether two iterators are equal, using the fastest possible mechanism.</summary>
         <returns>
-          <see langword="true" /> if iter is in the range</returns>
-        <remarks>
-          <paramref name="start" /> and <paramref name="end" /> must be in ascending order.</remarks>
+          <see langword="true" /> if the iterators point to the same place in the buffer</returns>
+        <remarks>This function is very fast; you can expect it to perform better than e.g. getting the character offset for each iterator and comparing the offsets yourself. Also, it's a bit faster than <see cref="M:Gtk.TextIter.Compare()" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="BackwardWordStarts">
-      <MemberSignature Language="C#" Value="public bool BackwardWordStarts (int count);" />
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public bool Equals (Gtk.TextIter other);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Equals(valuetype Gtk.TextIter other) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="other" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="other">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public override bool Equals (object other);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool Equals(object other) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="other" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="other">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardChar">
+      <MemberSignature Language="C#" Value="public bool ForwardChar ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardChar() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves this iterator forward by one character offset.</summary>
+        <returns>A boolean: <see langword="true" /> if the iterator moved and is dereferenceable.</returns>
+        <remarks>Note that images embedded in the buffer occupy 1 character slot, so this may actually move onto an image instead of a character, if you have images in your buffer. If this object is the end iterator or one character before it, the object will now point at the end iterator, and return <see langword="false" /> for convenience when writing loops.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardChars">
+      <MemberSignature Language="C#" Value="public bool ForwardChars (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardChars(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -857,207 +678,124 @@ The values parameter should be initialized to the default settings you wish to u
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Calls <see cref="M:Gtk.TextIter.BackwardWordStart()" /> up to <paramref name="count" /> times.</summary>
-        <param name="count"> number of times to move</param>
+        <param name="count"> number of characters to move, may be negative</param>
+        <summary>Moves count characters if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer).</summary>
+        <returns> whether iter moved and is dereferenceable</returns>
+        <remarks>The return value indicates whether the new position of iter is different from its original position, and dereferenceable (the last iterator in the buffer is not dereferenceable). If count is 0, the function does nothing and returns <see langword="false" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardCursorPosition">
+      <MemberSignature Language="C#" Value="public bool ForwardCursorPosition ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardCursorPosition() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves iter forward by a single cursor position.</summary>
         <returns>
-          <see langword="true" /> if iter moved and is not the end iterator</returns>
-        <remarks />
+          <see langword="true" /> if we moved and the new position is dereferenceable</returns>
+        <remarks>Cursor positions are (unsurprisingly) positions where the cursor can appear. Perhaps surprisingly, there may not be a cursor position between all characters. The most common example for European languages would be a carriage return/newline sequence. For some Unicode characters, the equivalent of say the letter "a" with an accent mark will be represented as two characters, first the letter then a "combining mark" that causes the accent to be rendered; so the cursor cannot go between those two characters.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="VisibleLineIndex">
-      <MemberSignature Language="C#" Value="public int VisibleLineIndex { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Returns the number of bytes from the start of the line to the given iter, not counting bytes that are invisible due to tags with the "invisible" flag toggled on.</summary>
-        <value> byte index of iter with respect to the start of the line</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ChildAnchor">
-      <MemberSignature Language="C#" Value="public Gtk.TextChildAnchor ChildAnchor { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextChildAnchor</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>If the location at iter contains a child anchor, the anchor is returned. Otherwise, <see langword="null" /> is returned.</summary>
-        <value> the anchor at iter</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="CharsInLine">
-      <MemberSignature Language="C#" Value="public int CharsInLine { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Number of characters in the TextIter's line.</summary>
-        <value>Returns the number of characters in the TextIter's current line, including the paragraph delimiters.</value>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Line">
-      <MemberSignature Language="C#" Value="public int Line { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Line number the iterator is currently on.</summary>
-        <value>The line number the iterator is currently on.</value>
-        <remarks>Lines in a <see cref="T:Gtk.TextBuffer" /> are numbered beginning with 0 for the first line in the buffer.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BytesInLine">
-      <MemberSignature Language="C#" Value="public int BytesInLine { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Returns the number of bytes in the line containing iter, including the paragraph delimiters.</summary>
-        <value> number of bytes in the line</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Char">
-      <MemberSignature Language="C#" Value="public string Char { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Character the TextIter points to.</summary>
-        <value>a 1 character length string container the character pointed to by the TextIter</value>
-        <remarks>Even though this property returns a string, it will never hold more than a single character.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Offset">
-      <MemberSignature Language="C#" Value="public int Offset { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Manipulates the offset from the start of the buffer.</summary>
-        <value>Returns the offset of the iter from the start of the buffer.</value>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Pixbuf">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Pixbuf { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Pixbuf</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>return the pixbuf at this iter, if it is one.</summary>
-        <value> the pixbuf at iter</value>
-        <remarks>If the element at iter is a <see cref="T:Gdk.Pixbuf" />, the Pixbuf is returned. Otherwise, <see langword="null" /> is returned.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Language">
-      <MemberSignature Language="C#" Value="public Pango.Language Language { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Language</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>A convenience wrapper around <see cref="M:Gtk.TextIter.GetAttributes()" />, which returns the language in effect at iter.</summary>
-        <value> language in effect at iter</value>
-        <remarks>If no tags affecting language apply to iter, the return value is identical to that of <see cref="P:Gtk.Global.DefaultLanguage" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LineIndex">
-      <MemberSignature Language="C#" Value="public int LineIndex { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Returns the byte index of the iterator, counting from the start of a newline-terminated line.</summary>
-        <value> distance from start of line, in bytes</value>
-        <remarks>Remember that <see cref="T:Gtk.TextBuffer" /> encodes text in UTF-8, and that characters can require a variable number of bytes to represent.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LineOffset">
-      <MemberSignature Language="C#" Value="public int LineOffset { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Returns the character offset of the iterator, counting from the start of a newline-terminated line.</summary>
-        <value> offset from start of line</value>
-        <remarks>The first character on the line has offset 0.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="VisibleLineOffset">
-      <MemberSignature Language="C#" Value="public int VisibleLineOffset { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Returns the offset in characters from the start of the line to the given iter, not counting characters that are invisible due to tags with the "invisible" flag toggled on.</summary>
-        <value> offset in visible characters from the start of the line</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Buffer">
-      <MemberSignature Language="C#" Value="public Gtk.TextBuffer Buffer { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextBuffer</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Obtains the buffer the iter is in</summary>
-        <value>containing buffer</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="BackwardSearch">
-      <MemberSignature Language="C#" Value="public bool BackwardSearch (string str, Gtk.TextSearchFlags flags, out Gtk.TextIter match_start, out Gtk.TextIter match_end, Gtk.TextIter limit);" />
+    <Member MemberName="ForwardCursorPositions">
+      <MemberSignature Language="C#" Value="public bool ForwardCursorPositions (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardCursorPositions(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="str" Type="System.String" />
-        <Parameter Name="flags" Type="Gtk.TextSearchFlags" />
-        <Parameter Name="match_start" Type="Gtk.TextIter&amp;" RefType="out" />
-        <Parameter Name="match_end" Type="Gtk.TextIter&amp;" RefType="out" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count"> number of positions to move</param>
+        <summary>Moves up <paramref name="count" /> cursor positions.</summary>
+        <returns>
+          <see langword="true" /> if we moved and the new position is dereferenceable</returns>
+        <remarks>See <see cref="M:Gtk.TextIter.ForwardCursorPosition()" /> for details.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardFindChar">
+      <MemberSignature Language="C#" Value="public bool ForwardFindChar (Gtk.TextCharPredicate pred, Gtk.TextIter limit);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardFindChar(class Gtk.TextCharPredicate pred, valuetype Gtk.TextIter limit) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pred" Type="Gtk.TextCharPredicate" />
         <Parameter Name="limit" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>Same as <see cref="M:Gtk.TextIter.ForwardSearch()" />, but moves backward.</summary>
-        <param name="str"> search string</param>
-        <param name="flags"> bitmask of flags affecting the search</param>
-        <param name="match_start"> return location for start of match, or <see langword="null" /></param>
-        <param name="match_end"> return location for end of match, or <see langword="null" /></param>
-        <param name="limit"> location of last possible match_start, or <see langword="null" /> for start of buffer</param>
-        <returns> whether a match was found</returns>
+        <param name="pred">A <see cref="M:Gtk.TextCharPredicate" /> to call on each character.</param>
+        <param name="limit"> search limit, or <see langword="null" /> for none</param>
+        <summary>Advances the iterator, calling <paramref name="pred" /> on each character.</summary>
+        <returns>whether a match was found</returns>
+        <remarks>If pred returns <see langword="true" />, returns <see langword="true" /> and stops scanning. If pred never returns <see langword="true" />, iter is set to limit if limit is non-<see langword="null" />, otherwise to the end iterator.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardFindChar">
+      <MemberSignature Language="C#" Value="public bool ForwardFindChar (Gtk.TextCharPredicate pred, IntPtr user_data, Gtk.TextIter limit);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardFindChar(class Gtk.TextCharPredicate pred, native int user_data, valuetype Gtk.TextIter limit) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by overload without IntPtr argument")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pred" Type="Gtk.TextCharPredicate" />
+        <Parameter Name="user_data" Type="System.IntPtr" />
+        <Parameter Name="limit" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="pred">A <see cref="M:Gtk.TextCharPredicate" /> to call on each character.</param>
+        <param name="user_data">Ignored</param>
+        <param name="limit"> search limit, or <see langword="null" /> for none</param>
+        <summary>Obsolete. Replaced by <see cref="M:Gtk.TextIter.ForwardFindChar(Gtk.TextCharPredicate,Gtk.TextIter)" />.</summary>
+        <returns>whether a match was found</returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardLine">
+      <MemberSignature Language="C#" Value="public bool ForwardLine ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardLine() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves iter to the start of the next line.</summary>
+        <returns>A boolean; whether the iterator is dereferenceable</returns>
+        <remarks>Returns <see langword="true" /> if there was a next line to move to, and <see langword="false" /> if iter was simply moved to the end of the buffer and is now not dereferenceable, or if iter was already at the end of the buffer.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardLines">
+      <MemberSignature Language="C#" Value="public bool ForwardLines (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardLines(int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count"> number of lines to move forward</param>
+        <summary>Moves count lines forward, if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer).</summary>
+        <returns> whether iter moved and is dereferenceable</returns>
+        <remarks>The return value indicates whether the iterator moved onto a dereferenceable position; if the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, moves backward by 0 - count lines.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardSearch">
       <MemberSignature Language="C#" Value="public bool ForwardSearch (string str, Gtk.TextSearchFlags flags, out Gtk.TextIter match_start, out Gtk.TextIter match_end, Gtk.TextIter limit);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardSearch(string str, valuetype Gtk.TextSearchFlags flags, valuetype Gtk.TextIter match_start, valuetype Gtk.TextIter match_end, valuetype Gtk.TextIter limit) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1070,12 +808,12 @@ The values parameter should be initialized to the default settings you wish to u
         <Parameter Name="limit" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>Searches forward for <paramref name="str" />.</summary>
         <param name="str"> a search string</param>
         <param name="flags"> flags affecting how the search is done</param>
         <param name="match_start"> return location for start of match, or <see langword="null" /></param>
         <param name="match_end"> return location for end of match, or <see langword="null" /></param>
         <param name="limit"> bound for the search, or <see langword="null" /> for the end of the buffer</param>
+        <summary>Searches forward for <paramref name="str" />.</summary>
         <returns> whether a match was found</returns>
         <remarks>
           <para>
@@ -1087,102 +825,24 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="IsEnd">
-      <MemberSignature Language="C#" Value="public bool IsEnd { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns true if the iterator is at the end of the parent <see cref="T:Gtk.TextBuffer" /></summary>
-        <value>true if the iterator is equal to Buffer.EndIter</value>
-        <remarks>The most efficient way to check whether an iterator is the end iterator.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsStart">
-      <MemberSignature Language="C#" Value="public bool IsStart { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns <see langword="true" /> if iter is the first iterator in the buffer, that is if iter has a character offset of 0.</summary>
-        <value> whether iter is the first in the buffer</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="IsCursorPosition">
-      <MemberSignature Language="C#" Value="public bool IsCursorPosition { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>returns true if the iter is at the caret</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>returns true if this iterator equals the iterator returned by <see cref="M:Gtk.TextBuffer.GetIterAtMark(Buffer.InsertMark)" /></remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TextIter" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Marks">
-      <MemberSignature Language="C#" Value="public Gtk.TextMark[] Marks { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextMark[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns an array of <see cref="T:Gtk.TextMark" /> at this location.</summary>
-        <value>a <see cref="T:Gtk.TextMark[]" /></value>
-        <remarks>Because marks are not iterable (they do not take up any "space" in the buffer, they are just marks in between iterable locations), multiple marks can exist in the same place. The returned list is not in any meaningful order.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Tags">
-      <MemberSignature Language="C#" Value="public Gtk.TextTag[] Tags { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextTag[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns an array of tags that apply to iter, in ascending order of priority (highest-priority tags are last).</summary>
-        <value>a <see cref="T:Gtk.TextTag[]" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetToggledTags">
-      <MemberSignature Language="C#" Value="public Gtk.TextTag[] GetToggledTags (bool toggled_on);" />
+    <Member MemberName="ForwardSentenceEnd">
+      <MemberSignature Language="C#" Value="public bool ForwardSentenceEnd ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardSentenceEnd() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.TextTag[]</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="toggled_on" Type="System.Boolean" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Returns an array of <see cref="T:Gtk.TextTag" /> that are toggled on or off at this point.</summary>
-        <param name="toggled_on">a <see cref="T:System.Boolean" /></param>
-        <returns>tags toggled at this point</returns>
-        <remarks>(If toggled_on is <see langword="true" />, the list contains tags that are toggled on.) If a tag is toggled on at iter, then some non-empty range of characters following iter has that tag applied to it. If a tag is toggled off, then some non-empty range following iter does not have the tag applied to it.</remarks>
+        <summary>Moves forward to the next sentence end.</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>If iter is at the end of a sentence, moves to the next end of sentence. Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ForwardVisibleCursorPositions">
-      <MemberSignature Language="C#" Value="public bool ForwardVisibleCursorPositions (int count);" />
+    <Member MemberName="ForwardSentenceEnds">
+      <MemberSignature Language="C#" Value="public bool ForwardSentenceEnds (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardSentenceEnds(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1191,35 +851,61 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Moves up to <paramref name="count" /> visible cursor positions.
-	</summary>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" />, true if the iter was moved and is in a dereferenceable position.</returns>
-        <remarks>
-	  See <see cref="M:Gtk.TextIter.ForwardCursorPosition" /> for details.
-	</remarks>
-        <since version="Gtk# 2.4" />
+        <param name="count"> number of sentences to move</param>
+        <summary>Calls <see cref="M:Gtk.TextIter.ForwardSentenceEnd()" /><paramref name="count" /> times (or until it returns <see langword="false" />).</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>If <paramref name="count" /> is negative, moves backward instead of forward.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="BackwardVisibleWordStarts">
-      <MemberSignature Language="C#" Value="public bool BackwardVisibleWordStarts (int count);" />
+    <Member MemberName="ForwardToEnd">
+      <MemberSignature Language="C#" Value="public void ForwardToEnd ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ForwardToEnd() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves iter forward to the "end iterator," which points one past the last valid character in the buffer.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardToLineEnd">
+      <MemberSignature Language="C#" Value="public bool ForwardToLineEnd ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardToLineEnd() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves the iterator to point to the paragraph delimiter characters, which will be either a newline, a carriage return, a carriage return/newline in sequence, or the Unicode paragraph separator character.</summary>
+        <returns>
+          <see langword="true" /> if we moved and the new location is not the end iterator</returns>
+        <remarks> If the iterator is already at the paragraph delimiter characters, moves to the paragraph delimiter characters for the next line. If iter is on the last line in the buffer, which does not end in paragraph delimiters, moves to the end iterator (end of the last line), and returns <see langword="false" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardToTagToggle">
+      <MemberSignature Language="C#" Value="public bool ForwardToTagToggle (Gtk.TextTag tag);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardToTagToggle(class Gtk.TextTag tag) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <summary>Calls <see cref="M:Gtk.TextIter.BackwardVisibleWordStart" /> up to <paramref name="count" /> times.</summary>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" />, true if the iterator moved and is not at the end of the text.</returns>
-        <remarks />
-        <since version="Gtk# 2.4" />
+        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
+        <summary>Moves forward to the next toggle (on or off) of the <see cref="T:Gtk.TextTag" /> tag, or to the next toggle of any tag if tag is <see langword="null" />.</summary>
+        <returns> whether we found a tag toggle after iter</returns>
+        <remarks>If no matching tag toggles are found, returns <see langword="false" />, otherwise <see langword="true" />. Does not return toggles located at iter, only toggles after iter. Sets iter to the location of the toggle, or to the end of the buffer if no toggle is found.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardVisibleCursorPosition">
       <MemberSignature Language="C#" Value="public bool ForwardVisibleCursorPosition ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardVisibleCursorPosition() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1232,8 +918,9 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="BackwardVisibleCursorPositions">
-      <MemberSignature Language="C#" Value="public bool BackwardVisibleCursorPositions (int count);" />
+    <Member MemberName="ForwardVisibleCursorPositions">
+      <MemberSignature Language="C#" Value="public bool ForwardVisibleCursorPositions (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardVisibleCursorPositions(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1242,15 +929,54 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Moves backward up to <paramref name="count" /> visible cursor positions.</summary>
         <param name="count">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" />, true if the cursor was moved and is in a dereferenceable position.</returns>
-        <remarks>See <see cref="M:Gtk.TextIter.BackwardCursorPosition" /> for details.</remarks>
+        <summary>Moves up to <paramref name="count" /> visible cursor positions.
+	</summary>
+        <returns>a <see cref="T:System.Boolean" />, true if the iter was moved and is in a dereferenceable position.</returns>
+        <remarks>
+	  See <see cref="M:Gtk.TextIter.ForwardCursorPosition" /> for details.
+	</remarks>
         <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardVisibleLine">
+      <MemberSignature Language="C#" Value="public bool ForwardVisibleLine ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardVisibleLine() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves to the start of the next visible line.</summary>
+        <returns>
+          <see langword="true" /> if the iter could be moved and is dereferenceable after the move.</returns>
+        <remarks>. Returns <see langword="true" /> if there was a next line to move to, and <see langword="false" /> if the iter was moved to the end of the buffer and is now not dereferenceable, or if the iter was already at the end of the buffer.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardVisibleLines">
+      <MemberSignature Language="C#" Value="public bool ForwardVisibleLines (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardVisibleLines(int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count">The number of lines to move.</param>
+        <summary>Moves forward by a specified number of visible lines.</summary>
+        <returns>
+          <see langword="true" /> if the iter could be moved and is dereferenceable after the move.</returns>
+        <remarks>If <paramref name="count" /> would move past the start or end of the buffer, the iter is moved to the start or end of the buffer. The return value indicates whether the iterator moved onto a dereferenceable position. If the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, the iter is moved backward by 0 - count lines.</remarks>
+        <since version="Gtk# 2.8" />
       </Docs>
     </Member>
     <Member MemberName="ForwardVisibleWordEnd">
       <MemberSignature Language="C#" Value="public bool ForwardVisibleWordEnd ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardVisibleWordEnd() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1271,23 +997,9 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="BackwardVisibleCursorPosition">
-      <MemberSignature Language="C#" Value="public bool BackwardVisibleCursorPosition ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves the iterator back to the previous visible cursor position.
-</summary>
-        <returns>a <see cref="T:System.Boolean" />, true if the iter moved and the new position is dereferenceable</returns>
-        <remarks>See <see cref="M:Gtk.TextIter.BackwardCursorPosition" /> for details.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
     <Member MemberName="ForwardVisibleWordEnds">
       <MemberSignature Language="C#" Value="public bool ForwardVisibleWordEnds (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardVisibleWordEnds(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1296,12 +1008,12 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
+        <param name="count">a <see cref="T:System.Int32" /></param>
         <summary> 
 	  Moves forward to the next visible word end. (If the 
 	  iterator is currently on a word end, moves forward to the next 
 	  one after that.) 
 	</summary>
-        <param name="count">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:System.Boolean" />, true if the iterator moved and is not at the end.</returns>
         <remarks>
 	  Word breaks are determined by Pango and should be correct for nearly any
@@ -1311,45 +1023,395 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="BackwardVisibleWordStart">
-      <MemberSignature Language="C#" Value="public bool BackwardVisibleWordStart ();" />
+    <Member MemberName="ForwardWordEnd">
+      <MemberSignature Language="C#" Value="public bool ForwardWordEnd ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardWordEnd() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>
-	  Moves backward to the previous visible word start. (If the iterator is currently 
-	  on a word start, moves backward to the next one after that.) 
-	</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>
-	  Word breaks are determined by Pango and should be correct for nearly any
-	  language (if not, the correct fix would be to the Pango word break
-	  algorithms).
-	</remarks>
-        <since version="Gtk# 2.4" />
+        <summary>Moves forward to the next word end.</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>(If iter is currently on a word end, moves forward to the next one after that.) Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
       </Docs>
     </Member>
-    <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static GLib.Value op_Explicit (Gtk.TextIter boxed);" />
+    <Member MemberName="ForwardWordEnds">
+      <MemberSignature Language="C#" Value="public bool ForwardWordEnds (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ForwardWordEnds(int32 count) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.Value</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="boxed" Type="Gtk.TextIter" />
+        <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="boxed">To be added.</param>
-        <summary>Converts to a native GValue.</summary>
-        <returns>a native GValue.</returns>
-        <remarks>Internal. Provided for bindings.</remarks>
+        <param name="count"> number of times to move</param>
+        <summary>Calls <see cref="M:Gtk.TextIter.ForwardWordEnd()" /> up to <paramref name="count" /> times.</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetAttributes">
+      <MemberSignature Language="C#" Value="public bool GetAttributes (Gtk.TextAttributes values);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetAttributes(class Gtk.TextAttributes values) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="values" Type="Gtk.TextAttributes" />
+      </Parameters>
+      <Docs>
+        <param name="values">a <see cref="T:Gtk.TextAttribute" />s</param>
+        <summary>Computes the effect of any tags applied to this spot in the text.</summary>
+        <returns>
+          <see langword="true" /> if values was modified</returns>
+        <remarks>
+          <para>
+The values parameter should be initialized to the default settings you wish to use if no tags are in effect. You would typically obtain the defaults from <see cref="M:Gtk.TextView.GetDefaultAttributes()" />.
+</para>
+          <para>
+            <see cref="M:Gtk.TextIter.GetAttributes()" /> will modify values, applying the effects of any tags present at iter. If any tags affected values, the function returns <see langword="true" />.
+</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHashCode">
+      <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 GetHashCode() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSlice">
+      <MemberSignature Language="C#" Value="public string GetSlice (Gtk.TextIter end);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetSlice(valuetype Gtk.TextIter end) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="end" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="end"> iterator at end of a range</param>
+        <summary>Returns the text in the given range.</summary>
+        <returns> slice of text from the buffer</returns>
+        <remarks>A "slice" is an array of characters encoded in UTF-8 format, including the Unicode "unknown" character 0xFFFC for iterable non-character elements in the buffer, such as images. Because images are encoded in the slice, byte and character offsets in the returned array will correspond to byte offsets in the text buffer. Note that 0xFFFC can occur in normal text as well, so it is not a reliable indicator that a pixbuf or widget is in the buffer.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetText">
+      <MemberSignature Language="C#" Value="public string GetText (Gtk.TextIter end);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetText(valuetype Gtk.TextIter end) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="end" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="end"> iterator at end of a range</param>
+        <summary>Returns text in the given range.</summary>
+        <returns> the string from the buffer</returns>
+        <remarks>If the range contains non-text elements such as images, the character and byte offsets in the returned string will not correspond to character and byte offsets in the buffer. If you want offsets to correspond, see <see cref="M:Gtk.TextIter.GetSlice()" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetToggledTags">
+      <MemberSignature Language="C#" Value="public Gtk.TextTag[] GetToggledTags (bool toggled_on);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.TextTag[] GetToggledTags(bool toggled_on) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TextTag[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="toggled_on" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="toggled_on">a <see cref="T:System.Boolean" /></param>
+        <summary>Returns an array of <see cref="T:Gtk.TextTag" /> that are toggled on or off at this point.</summary>
+        <returns>tags toggled at this point</returns>
+        <remarks>(If toggled_on is <see langword="true" />, the list contains tags that are toggled on.) If a tag is toggled on at iter, then some non-empty range of characters following iter has that tag applied to it. If a tag is toggled off, then some non-empty range following iter does not have the tag applied to it.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetVisibleSlice">
+      <MemberSignature Language="C#" Value="public string GetVisibleSlice (Gtk.TextIter end);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetVisibleSlice(valuetype Gtk.TextIter end) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="end" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="end"> iterator at end of range</param>
+        <summary>Like <see cref="M:Gtk.TextIter.GetSlice()" />, but invisible text is not included.</summary>
+        <returns> slice of text from the buffer</returns>
+        <remarks> Invisible text is usually invisible because a <see cref="T:Gtk.TextTag" /> with the "invisible" attribute turned on has been applied to it.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetVisibleText">
+      <MemberSignature Language="C#" Value="public string GetVisibleText (Gtk.TextIter end);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetVisibleText(valuetype Gtk.TextIter end) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="end" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="end"> iterator at end of range</param>
+        <summary>Like <see cref="M:Gtk.TextIter.GetText()" />, but invisible text is not included.</summary>
+        <returns> string containing visible text in the range</returns>
+        <remarks>Invisible text is usually invisible because a <see cref="T:Gtk.TextTag" /> with the "invisible" attribute turned on has been applied to it.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TextIter" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HasTag">
+      <MemberSignature Language="C#" Value="public bool HasTag (Gtk.TextTag tag);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool HasTag(class Gtk.TextTag tag) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tag" Type="Gtk.TextTag" />
+      </Parameters>
+      <Docs>
+        <param name="tag">a <see cref="T:Gtk.TextTag" /></param>
+        <summary>Returns <see langword="true" /> if iter is within a range tagged with tag.</summary>
+        <returns> whether iter is tagged with tag</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="InRange">
+      <MemberSignature Language="C#" Value="public bool InRange (Gtk.TextIter start, Gtk.TextIter end);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool InRange(valuetype Gtk.TextIter start, valuetype Gtk.TextIter end) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start" Type="Gtk.TextIter" />
+        <Parameter Name="end" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="start"> start of range</param>
+        <param name="end"> end of range</param>
+        <summary>Checks whether iter falls in the range (start, end).</summary>
+        <returns>
+          <see langword="true" /> if iter is in the range</returns>
+        <remarks>
+          <paramref name="start" /> and <paramref name="end" /> must be in ascending order.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsideSentence">
+      <MemberSignature Language="C#" Value="public bool InsideSentence ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool InsideSentence() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Determines whether iter is inside a sentence (as opposed to in between two sentences, e.g. after a period and before the first letter of the next sentence).</summary>
+        <returns>
+          <see langword="true" /> if iter is inside a sentence.</returns>
+        <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsideWord">
+      <MemberSignature Language="C#" Value="public bool InsideWord ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool InsideWord() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Determines whether iter is inside a natural-language word (as opposed to say inside some whitespace).</summary>
+        <returns>
+          <see langword="true" /> if iter is inside a word</returns>
+        <remarks>Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsCursorPosition">
+      <MemberSignature Language="C#" Value="public bool IsCursorPosition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsCursorPosition" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>returns true if the iter is at the caret</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>returns true if this iterator equals the iterator returned by <see cref="M:Gtk.TextBuffer.GetIterAtMark(Buffer.InsertMark)" /></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsEnd">
+      <MemberSignature Language="C#" Value="public bool IsEnd { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsEnd" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns true if the iterator is at the end of the parent <see cref="T:Gtk.TextBuffer" /></summary>
+        <value>true if the iterator is equal to Buffer.EndIter</value>
+        <remarks>The most efficient way to check whether an iterator is the end iterator.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsStart">
+      <MemberSignature Language="C#" Value="public bool IsStart { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsStart" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns <see langword="true" /> if iter is the first iterator in the buffer, that is if iter has a character offset of 0.</summary>
+        <value> whether iter is the first in the buffer</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Language">
+      <MemberSignature Language="C#" Value="public Pango.Language Language { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.Language Language" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Language</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>A convenience wrapper around <see cref="M:Gtk.TextIter.GetAttributes()" />, which returns the language in effect at iter.</summary>
+        <value> language in effect at iter</value>
+        <remarks>If no tags affecting language apply to iter, the return value is identical to that of <see cref="P:Gtk.Global.DefaultLanguage" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Line">
+      <MemberSignature Language="C#" Value="public int Line { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Line" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Line number the iterator is currently on.</summary>
+        <value>The line number the iterator is currently on.</value>
+        <remarks>Lines in a <see cref="T:Gtk.TextBuffer" /> are numbered beginning with 0 for the first line in the buffer.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LineIndex">
+      <MemberSignature Language="C#" Value="public int LineIndex { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 LineIndex" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Returns the byte index of the iterator, counting from the start of a newline-terminated line.</summary>
+        <value> distance from start of line, in bytes</value>
+        <remarks>Remember that <see cref="T:Gtk.TextBuffer" /> encodes text in UTF-8, and that characters can require a variable number of bytes to represent.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LineOffset">
+      <MemberSignature Language="C#" Value="public int LineOffset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 LineOffset" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Returns the character offset of the iterator, counting from the start of a newline-terminated line.</summary>
+        <value> offset from start of line</value>
+        <remarks>The first character on the line has offset 0.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Marks">
+      <MemberSignature Language="C#" Value="public Gtk.TextMark[] Marks { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TextMark[] Marks" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TextMark[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns an array of <see cref="T:Gtk.TextMark" /> at this location.</summary>
+        <value>a <see cref="T:Gtk.TextMark[]" /></value>
+        <remarks>Because marks are not iterable (they do not take up any "space" in the buffer, they are just marks in between iterable locations), multiple marks can exist in the same place. The returned list is not in any meaningful order.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="New">
+      <MemberSignature Language="C#" Value="public static Gtk.TextIter New (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype Gtk.TextIter New(native int raw) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TextIter</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Internal method</summary>
+        <returns>a new <see cref="T:Gtk.TextIter" /></returns>
+        <remarks>This is an internal method and should not be used by user code.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Offset">
+      <MemberSignature Language="C#" Value="public int Offset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Offset" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Manipulates the offset from the start of the buffer.</summary>
+        <value>Returns the offset of the iter from the start of the buffer.</value>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="op_Explicit">
       <MemberSignature Language="C#" Value="public static Gtk.TextIter op_Explicit (GLib.Value val);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname valuetype Gtk.TextIter op_Explicit(valuetype GLib.Value val) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TextIter</ReturnType>
@@ -1364,70 +1426,168 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <remarks>Internal. Provided for bindings.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="BackwardVisibleLine">
-      <MemberSignature Language="C#" Value="public bool BackwardVisibleLine ();" />
+    <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static GLib.Value op_Explicit (Gtk.TextIter boxed);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname valuetype GLib.Value op_Explicit(valuetype Gtk.TextIter boxed) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Value</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="boxed" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="boxed">To be added.</param>
+        <summary>Converts to a native GValue.</summary>
+        <returns>a native GValue.</returns>
+        <remarks>Internal. Provided for bindings.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Order">
+      <MemberSignature Language="C#" Value="public void Order (Gtk.TextIter second);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Order(valuetype Gtk.TextIter second) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="second" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="second">another <see cref="T:Gtk.TextIter" /></param>
+        <summary>Swaps the value of first and second if second comes before first in the buffer.</summary>
+        <remarks>That is, ensures that first and second are in sequence. Most text buffer functions that take a range call this automatically on your behalf, so there's no real reason to call it yourself in those cases. There are some exceptions, such as <see cref="M:Gtk.TextIter.InRange()" />, that expect a pre-sorted range.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Pixbuf">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Pixbuf { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf Pixbuf" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>return the pixbuf at this iter, if it is one.</summary>
+        <value> the pixbuf at iter</value>
+        <remarks>If the element at iter is a <see cref="T:Gdk.Pixbuf" />, the Pixbuf is returned. Otherwise, <see langword="null" /> is returned.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StartsLine">
+      <MemberSignature Language="C#" Value="public bool StartsLine ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool StartsLine() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Moves to the beginning of the previous visible line.</summary>
-        <returns>
-          <see langword="true" /> if the iter could be moved.</returns>
-        <remarks>Moves <paramref name="iter" /> to the start of the previous visible line. If iter was at character offset 0, this function returns <see langword="false" />. If iter was already on line 0, but not at the start of the line, iter is snapped to the start of the line and the function returns <see langword="true" />. (Note that this implies that in a loop calling this function, the line number may not change on every iteration, if your first iteration is on line 0.).</remarks>
-        <since version="Gtk# 2.8" />
+        <summary>Returns <see langword="true" /> if iter begins a paragraph.</summary>
+        <returns> whether iter begins a line</returns>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="BackwardVisibleLines">
-      <MemberSignature Language="C#" Value="public bool BackwardVisibleLines (int count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="count">The number of lines to move.</param>
-        <summary>Moves backward by a specified number of visible lines.</summary>
-        <returns>
-          <see langword="true" /> if the result of the move is a referenceable position.</returns>
-        <remarks>If <paramref name="count" /> would move past the start or end of the buffer, the iter is moved to the start or end of the buffer. The return value indicates whether the iterator moved onto a dereferenceable position. If the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, the iter is moved forward by 0 - count lines.</remarks>
-        <since version="Gtk# 2.8" />
-      </Docs>
-    </Member>
-    <Member MemberName="ForwardVisibleLine">
-      <MemberSignature Language="C#" Value="public bool ForwardVisibleLine ();" />
+    <Member MemberName="StartsSentence">
+      <MemberSignature Language="C#" Value="public bool StartsSentence ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool StartsSentence() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Moves to the start of the next visible line.</summary>
+        <summary>Determines whether iter begins a sentence.</summary>
         <returns>
-          <see langword="true" /> if the iter could be moved and is dereferenceable after the move.</returns>
-        <remarks>. Returns <see langword="true" /> if there was a next line to move to, and <see langword="false" /> if the iter was moved to the end of the buffer and is now not dereferenceable, or if the iter was already at the end of the buffer.</remarks>
-        <since version="Gtk# 2.8" />
+          <see langword="true" /> if iter is at the start of a sentence.</returns>
+        <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ForwardVisibleLines">
-      <MemberSignature Language="C#" Value="public bool ForwardVisibleLines (int count);" />
+    <Member MemberName="StartsWord">
+      <MemberSignature Language="C#" Value="public bool StartsWord ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool StartsWord() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Determines whether iter begins a natural-language word.</summary>
+        <returns>
+          <see langword="true" /> if iter is at the start of a word</returns>
+        <remarks>Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Tags">
+      <MemberSignature Language="C#" Value="public Gtk.TextTag[] Tags { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TextTag[] Tags" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TextTag[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns an array of tags that apply to iter, in ascending order of priority (highest-priority tags are last).</summary>
+        <value>a <see cref="T:Gtk.TextTag[]" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="TogglesTag">
+      <MemberSignature Language="C#" Value="public bool TogglesTag (Gtk.TextTag tag);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TogglesTag(class Gtk.TextTag tag) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <param name="count">The number of lines to move.</param>
-        <summary>Moves forward by a specified number of visible lines.</summary>
-        <returns>
-          <see langword="true" /> if the iter could be moved and is dereferenceable after the move.</returns>
-        <remarks>If <paramref name="count" /> would move past the start or end of the buffer, the iter is moved to the start or end of the buffer. The return value indicates whether the iterator moved onto a dereferenceable position. If the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, the iter is moved backward by 0 - count lines.</remarks>
-        <since version="Gtk# 2.8" />
+        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
+        <summary> whether tag is either toggled on or off at iter</summary>
+        <returns> whether tag is toggled on or off at iter</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="VisibleLineIndex">
+      <MemberSignature Language="C#" Value="public int VisibleLineIndex { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 VisibleLineIndex" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Returns the number of bytes from the start of the line to the given iter, not counting bytes that are invisible due to tags with the "invisible" flag toggled on.</summary>
+        <value> byte index of iter with respect to the start of the line</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="VisibleLineOffset">
+      <MemberSignature Language="C#" Value="public int VisibleLineOffset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 VisibleLineOffset" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Returns the offset in characters from the start of the line to the given iter, not counting characters that are invisible due to tags with the "invisible" flag toggled on.</summary>
+        <value> offset in visible characters from the start of the line</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Zero">
+      <MemberSignature Language="C#" Value="public static Gtk.TextIter Zero;" />
+      <MemberSignature Language="ILAsm" Value=".field public static valuetype Gtk.TextIter Zero" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TextIter</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns an empty <see cref="T:Gtk.TextIter" /></summary>
+        <remarks />
       </Docs>
     </Member>
   </Members>

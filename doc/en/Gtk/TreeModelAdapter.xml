@@ -1,20 +1,29 @@
 <Type Name="TreeModelAdapter" FullName="Gtk.TreeModelAdapter">
-  <TypeSignature Language="C#" Value="public class TreeModelAdapter : GLib.GInterfaceAdapter, Gtk.TreeModel" />
+  <TypeSignature Language="C#" Value="public class TreeModelAdapter : GLib.GInterfaceAdapter, GLib.IWrapper, Gtk.TreeModel" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi TreeModelAdapter extends GLib.GInterfaceAdapter implements class GLib.IWrapper, class Gtk.TreeModel" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>GLib.GInterfaceAdapter</BaseTypeName>
   </Base>
   <Interfaces>
     <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+    <Interface>
       <InterfaceName>Gtk.TreeModel</InterfaceName>
     </Interface>
   </Interfaces>
+  <Docs>
+    <summary>TreeModel interface adapter.</summary>
+    <remarks>Adapts a <see cref="T:Gtk.TreeModelImplementor" /> implementation to expose the complete <see cref="T:Gtk.TreeModel" /> interface API.</remarks>
+    <since version="Gtk# 2.12" />
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public TreeModelAdapter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
@@ -24,6 +33,7 @@
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public TreeModelAdapter (Gtk.TreeModelImplementor implementor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Gtk.TreeModelImplementor implementor) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
         <Parameter Name="implementor" Type="Gtk.TreeModelImplementor" />
@@ -34,8 +44,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TreeModelAdapter (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="EmitRowChanged">
       <MemberSignature Language="C#" Value="public void EmitRowChanged (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowChanged(class Gtk.TreePath path, valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -53,6 +78,7 @@
     </Member>
     <Member MemberName="EmitRowDeleted">
       <MemberSignature Language="C#" Value="public void EmitRowDeleted (Gtk.TreePath path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowDeleted(class Gtk.TreePath path) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -68,6 +94,7 @@
     </Member>
     <Member MemberName="EmitRowHasChildToggled">
       <MemberSignature Language="C#" Value="public void EmitRowHasChildToggled (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowHasChildToggled(class Gtk.TreePath path, valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -85,6 +112,7 @@
     </Member>
     <Member MemberName="EmitRowInserted">
       <MemberSignature Language="C#" Value="public void EmitRowInserted (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowInserted(class Gtk.TreePath path, valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -101,25 +129,29 @@
       </Docs>
     </Member>
     <Member MemberName="EmitRowsReordered">
-      <MemberSignature Language="C#" Value="public int EmitRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void EmitRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter, int[] new_order);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowsReordered(class Gtk.TreePath path, valuetype Gtk.TreeIter iter, int32[] new_order) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="path" Type="Gtk.TreePath" />
         <Parameter Name="iter" Type="Gtk.TreeIter" />
+        <Parameter Name="new_order" Type="System.Int32[]" />
       </Parameters>
       <Docs>
         <param name="path">To be added.</param>
         <param name="iter">To be added.</param>
+        <param name="new_order">To be added.</param>
         <summary>To be added.</summary>
-        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="Flags">
-      <MemberSignature Language="C#" Value="public Gtk.TreeModelFlags Flags { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeModelFlags Flags { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.TreeModelFlags Flags" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeModelFlags</ReturnType>
@@ -132,6 +164,7 @@
     </Member>
     <Member MemberName="Foreach">
       <MemberSignature Language="C#" Value="public void Foreach (Gtk.TreeModelForeachFunc func);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Foreach(class Gtk.TreeModelForeachFunc func) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -147,6 +180,7 @@
     </Member>
     <Member MemberName="GetColumnType">
       <MemberSignature Language="C#" Value="public GLib.GType GetColumnType (int index_);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype GLib.GType GetColumnType(int32 index_) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -163,6 +197,7 @@
     </Member>
     <Member MemberName="GetIter">
       <MemberSignature Language="C#" Value="public bool GetIter (out Gtk.TreeIter iter, Gtk.TreePath path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool GetIter(valuetype Gtk.TreeIter iter, class Gtk.TreePath path) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -181,6 +216,7 @@
     </Member>
     <Member MemberName="GetIterFirst">
       <MemberSignature Language="C#" Value="public bool GetIterFirst (out Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool GetIterFirst(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -197,6 +233,7 @@
     </Member>
     <Member MemberName="GetIterFromString">
       <MemberSignature Language="C#" Value="public bool GetIterFromString (out Gtk.TreeIter iter, string path_string);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool GetIterFromString(valuetype Gtk.TreeIter iter, string path_string) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -214,7 +251,26 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public static Gtk.TreeModel GetObject (GLib.Object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gtk.TreeModel GetObject(class GLib.Object obj) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreeModel</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="GLib.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
       <MemberSignature Language="C#" Value="public static Gtk.TreeModel GetObject (IntPtr handle, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gtk.TreeModel GetObject(native int handle, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeModel</ReturnType>
@@ -233,6 +289,7 @@
     </Member>
     <Member MemberName="GetPath">
       <MemberSignature Language="C#" Value="public Gtk.TreePath GetPath (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Gtk.TreePath GetPath(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreePath</ReturnType>
@@ -249,6 +306,7 @@
     </Member>
     <Member MemberName="GetStringFromIter">
       <MemberSignature Language="C#" Value="public string GetStringFromIter (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetStringFromIter(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -265,6 +323,7 @@
     </Member>
     <Member MemberName="GetValist">
       <MemberSignature Language="C#" Value="public void GetValist (Gtk.TreeIter iter, IntPtr var_args);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetValist(valuetype Gtk.TreeIter iter, native int var_args) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -282,6 +341,7 @@
     </Member>
     <Member MemberName="GetValue">
       <MemberSignature Language="C#" Value="public object GetValue (Gtk.TreeIter iter, int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object GetValue(valuetype Gtk.TreeIter iter, int32 column) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
@@ -300,6 +360,7 @@
     </Member>
     <Member MemberName="GetValue">
       <MemberSignature Language="C#" Value="public void GetValue (Gtk.TreeIter iter, int column, ref GLib.Value value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetValue(valuetype Gtk.TreeIter iter, int32 column, valuetype GLib.Value value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -317,414 +378,37 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="IterChildren">
-      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterChildren">
-      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter, Gtk.TreeIter parent);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="parent" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="parent">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterHasChild">
-      <MemberSignature Language="C#" Value="public bool IterHasChild (Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterNChildren">
-      <MemberSignature Language="C#" Value="public int IterNChildren ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterNChildren">
-      <MemberSignature Language="C#" Value="public int IterNChildren (Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterNext">
-      <MemberSignature Language="C#" Value="public bool IterNext (ref Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="ref" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterNthChild">
-      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, Gtk.TreeIter parent, int n);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="parent" Type="Gtk.TreeIter" />
-        <Parameter Name="n" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="parent">To be added.</param>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterNthChild">
-      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, int n);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="n" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterParent">
-      <MemberSignature Language="C#" Value="public bool IterParent (out Gtk.TreeIter iter, Gtk.TreeIter child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="child" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="child">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="NColumns">
-      <MemberSignature Language="C#" Value="public int NColumns { get; };" />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public override GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="RefNode">
-      <MemberSignature Language="C#" Value="public void RefNode (Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public override IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RowChanged">
-      <MemberSignature Language="C#" Value="public event Gtk.RowChangedHandler RowChanged;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("row_changed")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.RowChangedHandler</ReturnType>
+        <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
+        <value>To be added.</value>
         <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RowDeleted">
-      <MemberSignature Language="C#" Value="public event Gtk.RowDeletedHandler RowDeleted;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("row_deleted")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.RowDeletedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RowHasChildToggled">
-      <MemberSignature Language="C#" Value="public event Gtk.RowHasChildToggledHandler RowHasChildToggled;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("row_has_child_toggled")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.RowHasChildToggledHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RowInserted">
-      <MemberSignature Language="C#" Value="public event Gtk.RowInsertedHandler RowInserted;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("row_inserted")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.RowInsertedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RowsReordered">
-      <MemberSignature Language="C#" Value="public event Gtk.RowsReorderedHandler RowsReordered;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("rows_reordered")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.RowsReorderedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, bool value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="column">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, double value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.Double" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="column">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, int value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="column">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, object value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="column">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, float value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.Single" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="column">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, string value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="column">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, uint value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="column">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="UnrefNode">
-      <MemberSignature Language="C#" Value="public void UnrefNode (Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="Implementor">
-      <MemberSignature Language="C#" Value="public Gtk.TreeModelImplementor Implementor { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeModelImplementor Implementor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TreeModelImplementor Implementor" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeModelImplementor</ReturnType>
@@ -737,6 +421,7 @@
     </Member>
     <Member MemberName="IterChildren">
       <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterChildren(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -753,6 +438,7 @@
     </Member>
     <Member MemberName="IterChildren">
       <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter, Gtk.TreeIter parent);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterChildren(valuetype Gtk.TreeIter iter, valuetype Gtk.TreeIter parent) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -771,6 +457,7 @@
     </Member>
     <Member MemberName="IterHasChild">
       <MemberSignature Language="C#" Value="public bool IterHasChild (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterHasChild(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -787,6 +474,7 @@
     </Member>
     <Member MemberName="IterNChildren">
       <MemberSignature Language="C#" Value="public int IterNChildren ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 IterNChildren() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -800,6 +488,7 @@
     </Member>
     <Member MemberName="IterNChildren">
       <MemberSignature Language="C#" Value="public int IterNChildren (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 IterNChildren(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -816,6 +505,7 @@
     </Member>
     <Member MemberName="IterNext">
       <MemberSignature Language="C#" Value="public bool IterNext (ref Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterNext(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -831,7 +521,27 @@
       </Docs>
     </Member>
     <Member MemberName="IterNthChild">
+      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, int n);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterNthChild(valuetype Gtk.TreeIter iter, int32 n) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
+        <Parameter Name="n" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="iter">To be added.</param>
+        <param name="n">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IterNthChild">
       <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, Gtk.TreeIter parent, int n);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterNthChild(valuetype Gtk.TreeIter iter, valuetype Gtk.TreeIter parent, int32 n) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -850,26 +560,9 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="IterNthChild">
-      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, int n);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="n" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="iter">To be added.</param>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="IterParent">
       <MemberSignature Language="C#" Value="public bool IterParent (out Gtk.TreeIter iter, Gtk.TreeIter child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterParent(valuetype Gtk.TreeIter iter, valuetype Gtk.TreeIter child) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -886,8 +579,27 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="IterPrevious">
+      <MemberSignature Language="C#" Value="public bool IterPrevious (ref Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterPrevious(valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="iter">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="NColumns">
-      <MemberSignature Language="C#" Value="public int NColumns { get; };" />
+      <MemberSignature Language="C#" Value="public int NColumns { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NColumns" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -898,8 +610,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OwnedHandle">
+      <MemberSignature Language="C#" Value="public IntPtr OwnedHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int OwnedHandle" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="RefNode">
       <MemberSignature Language="C#" Value="public void RefNode (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RefNode(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -915,10 +642,11 @@
     </Member>
     <Member MemberName="RowChanged">
       <MemberSignature Language="C#" Value="public event Gtk.RowChangedHandler RowChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowChangedHandler RowChanged" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("row_changed")</AttributeName>
+          <AttributeName>GLib.Signal("row-changed")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -931,10 +659,11 @@
     </Member>
     <Member MemberName="RowDeleted">
       <MemberSignature Language="C#" Value="public event Gtk.RowDeletedHandler RowDeleted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowDeletedHandler RowDeleted" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("row_deleted")</AttributeName>
+          <AttributeName>GLib.Signal("row-deleted")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -947,10 +676,11 @@
     </Member>
     <Member MemberName="RowHasChildToggled">
       <MemberSignature Language="C#" Value="public event Gtk.RowHasChildToggledHandler RowHasChildToggled;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowHasChildToggledHandler RowHasChildToggled" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("row_has_child_toggled")</AttributeName>
+          <AttributeName>GLib.Signal("row-has-child-toggled")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -963,10 +693,11 @@
     </Member>
     <Member MemberName="RowInserted">
       <MemberSignature Language="C#" Value="public event Gtk.RowInsertedHandler RowInserted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowInsertedHandler RowInserted" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("row_inserted")</AttributeName>
+          <AttributeName>GLib.Signal("row-inserted")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -979,6 +710,7 @@
     </Member>
     <Member MemberName="RowsReordered">
       <MemberSignature Language="C#" Value="public event Gtk.RowsReorderedHandler RowsReordered;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowsReorderedHandler RowsReordered" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
@@ -995,6 +727,7 @@
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, bool value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, bool value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1014,6 +747,7 @@
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, double value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, float64 value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1033,6 +767,7 @@
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, int value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, int32 value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1052,6 +787,7 @@
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, object value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1071,6 +807,7 @@
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, float value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, float32 value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1090,6 +827,7 @@
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, string value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, string value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1109,6 +847,7 @@
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, uint value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, unsigned int32 value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1128,6 +867,7 @@
     </Member>
     <Member MemberName="UnrefNode">
       <MemberSignature Language="C#" Value="public void UnrefNode (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UnrefNode(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1142,9 +882,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary>TreeModel interface adapter.</summary>
-    <remarks>Adapts a <see cref="T:Gtk.TreeModelImplementor" /> implementation to expose the complete <see cref="T:Gtk.TreeModel" /> interface API.</remarks>
-    <since version="Gtk# 2.12" />
-  </Docs>
 </Type>

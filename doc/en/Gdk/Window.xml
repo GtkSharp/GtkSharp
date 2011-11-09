@@ -1,12 +1,17 @@
 <Type Name="Window" FullName="Gdk.Window">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public class Window : Gdk.Drawable" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Window : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Window extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>
       <para>Onscreen display area in the target window system.</para>
@@ -16,182 +21,1329 @@
       <para>A <see cref="T:Gtk.Window" /> is a toplevel window, the thing a user might think of as a "window" with a titlebar and so on; a <see cref="T:Gtk.Widget" /> may contain many <see cref="T:Gdk.Window" />s. For example, each <see cref="T:Gtk.Button" /> has a <see cref="T:Gdk.Window" /> associated with it.</para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gdk.Drawable</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="ProcessAllUpdates">
-      <MemberSignature Language="C#" Value="public static void ProcessAllUpdates ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Calls <see cref="M:Gdk.Window.ProcessUpdates" /> for all windows in the application.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Lookup">
-      <MemberSignature Language="C#" Value="public static Gdk.Window Lookup (uint anid);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Window (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="anid" Type="System.UInt32" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>For internal use only. Looks up the Window that wraps the given native window handle.</summary>
-        <param name="anid">A <see cref="T:System.UInt32" />, a native window ID.</param>
-        <returns>A <see cref="T:Gdk.Window" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ForeignNew">
-      <MemberSignature Language="C#" Value="public static Gdk.Window ForeignNew (uint anid);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="anid" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>For internal use only.
-	  Wraps a native window for the default display in a <see cref="T:Gdk.Window" />.
-	  This may fail if the window has been destroyed.</summary>
-        <param name="anid">A <see cref="T:System.UInt32" /></param>
-        <returns>A <see cref="T:Gdk.Window" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetChildShapes">
-      <MemberSignature Language="C#" Value="public void SetChildShapes ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Sets the shape mask of this window to the union of shape masks
-	  for all children of the window, ignoring the shape mask of the window
-	  itself. Contrast with <see cref="M:Gdk.Window.MergeChildShapes" />
-	  which includes the shape mask of the window in the masks to be 
-	  merged.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="InvalidateRegion">
-      <MemberSignature Language="C#" Value="public void InvalidateRegion (Gdk.Region region, bool invalidate_children);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="region" Type="Gdk.Region" />
-        <Parameter Name="invalidate_children" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Adds <paramref name="region" /> to the update area for the window. 
-	  The update area is the
-	  region that needs to be redrawn, or "dirty region." 
-	</summary>
-        <param name="region">A <see cref="T:Gdk.Region" /></param>
-        <param name="invalidate_children">A <see cref="T:System.Boolean" /></param>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
-          <p>The call <see cref="M:Gdk.Window.ProcessUpdates" /> sends one or 
-	    more expose events to the window, which together cover the entire 
-	  update area. An application would normally redraw the contents of 
-	  <paramref name="window" /> in response to those expose events.</p>
-          <p>GDK will call <see cref="M:Gdk.Window.ProcessAllUpdates" /> on your behalf
-	    whenever your program returns to the main loop and becomes idle, so
-	    normally there's no need to do that manually, you just need to
-	    invalidate regions that you know should be redrawn.</p>
-          <p>The <paramref name="invalidate_children" /> parameter controls 
-	    whether the region of
-	    each child window that intersects <paramref name="region" /> will 
-	    also be invalidated.
-	    If <see langword="false" />, then the update area for child windows will remain
-	    unaffected. See <see cref="M:Gdk.Window.InvalidateMaybeRecurse" /> if you need
-	    fine grained control over which children are invalidated.</p>
+          <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Reparent">
-      <MemberSignature Language="C#" Value="public void Reparent (Gdk.Window new_parent, int x, int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Window (Gdk.Window parent, Gdk.WindowAttr attributes, Gdk.WindowAttributesType attributes_mask);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Gdk.Window parent, valuetype Gdk.WindowAttr attributes, valuetype Gdk.WindowAttributesType attributes_mask) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="new_parent" Type="Gdk.Window" />
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="parent" Type="Gdk.Window" />
+        <Parameter Name="attributes" Type="Gdk.WindowAttr" />
+        <Parameter Name="attributes_mask" Type="Gdk.WindowAttributesType" />
       </Parameters>
       <Docs>
-        <summary>Reparents this window into the given 
-	  <paramref name="new_parent" />. The window being
-	  reparented will be unmapped as a side effect.</summary>
-        <param name="new_parent">A <see cref="T:Gdk.Window" />, new parent to move this window into</param>
-        <param name="x">A <see cref="T:System.Int32" />, X location inside the new parent</param>
-        <param name="y">A <see cref="T:System.Int32" />, Y location inside the new parent</param>
-        <remarks />
+        <param name="parent">a <see cref="T:Gdk.Window" /></param>
+        <param name="attributes">a <see cref="T:Gdk.WindowAttr" /></param>
+        <param name="attributes_mask">a <see cref="T:Gdk.WindowAttributesType" /></param>
+        <summary>Basic constructor</summary>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Scroll">
-      <MemberSignature Language="C#" Value="public void Scroll (int dx, int dy);" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Window (Gdk.Window parent, Gdk.WindowAttr attributes, int attributes_mask);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Gdk.Window parent, valuetype Gdk.WindowAttr attributes, int32 attributes_mask) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="parent" Type="Gdk.Window" />
+        <Parameter Name="attributes" Type="Gdk.WindowAttr" />
+        <Parameter Name="attributes_mask" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="parent">A <see cref="T:Gdk.Window" /></param>
+        <param name="attributes">A <see cref="T:Gdk.WindowAttr" /></param>
+        <param name="attributes_mask">A <see cref="T:System.Int32" /></param>
+        <summary>Basic constructor</summary>
+        <remarks>The type of the <paramref name="attributes_mask" /> parameter in this auto-generated constructor is incorrect. You would normally want to use the overloaded constructor that takes a <see cref="T:Gdk.WindowAttributesType" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AcceptFocus">
+      <MemberSignature Language="C#" Value="public bool AcceptFocus { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AcceptFocus" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="AddFilter">
+      <MemberSignature Language="C#" Value="public void AddFilter (Gdk.FilterFunc function);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddFilter(class Gdk.FilterFunc function) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="dx" Type="System.Int32" />
-        <Parameter Name="dy" Type="System.Int32" />
+        <Parameter Name="function" Type="Gdk.FilterFunc" />
       </Parameters>
       <Docs>
+        <param name="function">A <see cref="T:Gdk.FilterFunc" /></param>
         <summary>
-	  Scroll the contents of this window, both pixels and 
-	  children, by the given
-	  amount. The window itself does not move.  Portions of the window that the scroll
-	  operation brings in from offscreen areas are invalidated. The invalidated
-	  region may be bigger than what would strictly be necessary.  (For X11, a
-	  minimum area will be invalidated if the window has no subwindows, or if the
-	  edges of the window's parent do not extend beyond the edges of the window. In
-	  other cases, a multi-step process is used to scroll the window which may
-	  produce temporary visual artifacts and unnecessary invalidations.)
+	  Adds an event filter to this window, allowing you to intercept events
+	  before they reach GDK. This is a low-level operation and makes it
+	  easy to break GDK and/or GTK+, so you have to know what you're
+	  doing. Pass <see langword="null" /> for this window to get all events 
+	  for all windows, instead of events for a specific window.
 	</summary>
-        <param name="dx">A <see cref="T:System.Int32" />, amount to scroll in the X direction</param>
-        <param name="dy">A <see cref="T:System.Int32" />, amount to scroll in the Y direction</param>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="SetStaticGravities">
-      <MemberSignature Language="C#" Value="public bool SetStaticGravities (bool use_static);" />
+    <Member MemberName="AddFilterForAll">
+      <MemberSignature Language="C#" Value="public static void AddFilterForAll (Gdk.FilterFunc func);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void AddFilterForAll(class Gdk.FilterFunc func) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="func" Type="Gdk.FilterFunc" />
+      </Parameters>
+      <Docs>
+        <param name="func">a <see cref="T:Gdk.FilterFunc" /></param>
+        <summary>Adds an event filtering function for all Windows.</summary>
+        <remarks>It is possible to do significant damage to Gdk's built in event processing using this capability if used improperly.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="AtPointer">
+      <MemberSignature Language="C#" Value="public static Gdk.Window AtPointer (out int win_x, out int win_y);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Window AtPointer(int32 win_x, int32 win_y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="win_x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="win_y" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="win_x">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="win_y">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gdk.Window" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Background">
+      <MemberSignature Language="C#" Value="public Gdk.Color Background { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.Color Background" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Color</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets the background color for the window.</summary>
+        <value>A <see cref="T:Gdk.Color" /></value>
+        <remarks>Sets the background color of window. (However, when using GTK+, set the background of a widget with <see cref="M:Gtk.Widget.ModifyBg(Gtk.StateType, Gdk.Color)" /> - if you're an application - or <see cref="M:Gtk.Style.SetBackground(Gdk.Window, Gtk.StateType)" /> - if you're implementing a custom widget.
+<para>
+The color must be allocated; 
+</para></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BackgroundPattern">
+      <MemberSignature Language="C#" Value="public Cairo.Pattern BackgroundPattern { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Cairo.Pattern BackgroundPattern" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Cairo.Pattern</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="BackgroundRgba">
+      <MemberSignature Language="C#" Value="public Gdk.RGBA BackgroundRgba { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.RGBA BackgroundRgba" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.RGBA</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Beep">
+      <MemberSignature Language="C#" Value="public void Beep ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Beep() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emits a short beep.</summary>
+        <remarks />
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginMoveDrag">
+      <MemberSignature Language="C#" Value="public void BeginMoveDrag (int button, int root_x, int root_y, uint timestamp);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginMoveDrag(int32 button, int32 root_x, int32 root_y, unsigned int32 timestamp) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="button" Type="System.Int32" />
+        <Parameter Name="root_x" Type="System.Int32" />
+        <Parameter Name="root_y" Type="System.Int32" />
+        <Parameter Name="timestamp" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="button">A <see cref="T:System.Int32" />, the button being used to drag</param>
+        <param name="root_x">A <see cref="T:System.Int32" />,  root window X coordinate of mouse click that began the drag</param>
+        <param name="root_y">A <see cref="T:System.Int32" />m  root window Y coordinate of mouse click that began the drag</param>
+        <param name="timestamp">A <see cref="T:System.UInt32" />, timestamp of mouse click that began the drag</param>
+        <summary>Begins a window move operation (for a toplevel window).  
+	  You might use this function to implement a "window move grip," for
+	  example. The function works best with window managers that support
+	  the Extended Window Manager Hints spec (see
+	  http://www.freedesktop.org), but has a fallback implementation for
+	  other window managers.
+	</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginPaintRect">
+      <MemberSignature Language="C#" Value="public void BeginPaintRect (Gdk.Rectangle rectangle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginPaintRect(valuetype Gdk.Rectangle rectangle) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rectangle" Type="Gdk.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="rectangle">A <see cref="T:Gdk.Rectangle" /></param>
+        <summary> 
+	  A convenience wrapper around <see cref="M:Gdk.Window.BeginPaintRegion" />() which
+	  creates a rectangular region for you. See
+	  <see cref="M:Gdk.Window.BeginPaintRegion" />() for details.
+	</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginPaintRegion">
+      <MemberSignature Language="C#" Value="public void BeginPaintRegion (Cairo.Region region);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginPaintRegion(class Cairo.Region region) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="region" Type="Cairo.Region" />
+      </Parameters>
+      <Docs>
+        <param name="region">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginResizeDrag">
+      <MemberSignature Language="C#" Value="public void BeginResizeDrag (Gdk.WindowEdge edge, int button, int root_x, int root_y, uint timestamp);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginResizeDrag(valuetype Gdk.WindowEdge edge, int32 button, int32 root_x, int32 root_y, unsigned int32 timestamp) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="edge" Type="Gdk.WindowEdge" />
+        <Parameter Name="button" Type="System.Int32" />
+        <Parameter Name="root_x" Type="System.Int32" />
+        <Parameter Name="root_y" Type="System.Int32" />
+        <Parameter Name="timestamp" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="edge">A <see cref="T:Gdk.WindowEdge" /></param>
+        <param name="button">A <see cref="T:System.Int32" /></param>
+        <param name="root_x">A <see cref="T:System.Int32" /></param>
+        <param name="root_y">A <see cref="T:System.Int32" /></param>
+        <param name="timestamp">A <see cref="T:System.UInt32" /></param>
+        <summary>
+	  Begins a window resize operation (for a toplevel window).
+	  You might use this function to implement a "window resize grip," for
+	  example; in fact <see cref="T:Gtk.Statusbar" /> uses it. The function works best
+	  with window managers that support the Extended Window Manager Hints spec
+	  (see http://www.freedesktop.org), but has a fallback implementation
+	  for other window managers.
+	</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Children">
+      <MemberSignature Language="C#" Value="public Gdk.Window[] Children { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window[] Children" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Gets the children of window known to Gdk. </summary>
+        <value>The array of windows.</value>
+        <remarks>This function only returns children created via GDK, so for example it's useless when used with the root window; it only returns windows an application created itself.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClipRegion">
+      <MemberSignature Language="C#" Value="public Cairo.Region ClipRegion { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Cairo.Region ClipRegion" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Cairo.Region</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Composited">
+      <MemberSignature Language="C#" Value="public bool Composited { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Composited" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Sets Composited indicator of window.</summary>
+        <value>If <see langword="true" /> window is composited.</value>
+        <remarks>Composited windows are not automatically drawn to the screen, but are instead rendered to an offscreen buffer and an expose event is sent to the window's parent.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="ConfigureFinished">
+      <MemberSignature Language="C#" Value="public void ConfigureFinished ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ConfigureFinished() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="ConstrainSize">
+      <MemberSignature Language="C#" Value="public static void ConstrainSize (Gdk.Geometry geometry, uint flags, int width, int height, out int new_width, out int new_height);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void ConstrainSize(valuetype Gdk.Geometry geometry, unsigned int32 flags, int32 width, int32 height, int32 new_width, int32 new_height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="geometry" Type="Gdk.Geometry" />
+        <Parameter Name="flags" Type="System.UInt32" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="new_width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="new_height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="geometry">a <see cref="T:Gdk.Geometry" /></param>
+        <param name="flags">a <see cref="T:System.UInt32" /></param>
+        <param name="width">a <see cref="T:System.Int32" /></param>
+        <param name="height">a <see cref="T:System.Int32" /></param>
+        <param name="new_width">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="new_height">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="CoordsFromParent">
+      <MemberSignature Language="C#" Value="public void CoordsFromParent (double parent_x, double parent_y, out double x, out double y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void CoordsFromParent(float64 parent_x, float64 parent_y, float64 x, float64 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="parent_x" Type="System.Double" />
+        <Parameter Name="parent_y" Type="System.Double" />
+        <Parameter Name="x" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="parent_x">To be added.</param>
+        <param name="parent_y">To be added.</param>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="CoordsToParent">
+      <MemberSignature Language="C#" Value="public void CoordsToParent (double x, double y, out double parent_x, out double parent_y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void CoordsToParent(float64 x, float64 y, float64 parent_x, float64 parent_y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Double" />
+        <Parameter Name="y" Type="System.Double" />
+        <Parameter Name="parent_x" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="parent_y" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <param name="parent_x">To be added.</param>
+        <param name="parent_y">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateSimilarSurface">
+      <MemberSignature Language="C#" Value="public Cairo.Surface CreateSimilarSurface (Cairo.Content content, int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Cairo.Surface CreateSimilarSurface(valuetype Cairo.Content content, int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Cairo.Surface</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="content" Type="Cairo.Content" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="content">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateSurface">
+      <MemberSignature Language="C#" Value="public event Gdk.CreateSurfaceHandler CreateSurface;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gdk.CreateSurfaceHandler CreateSurface" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("create-surface")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.CreateSurfaceHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Cursor">
+      <MemberSignature Language="C#" Value="public Gdk.Cursor Cursor { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Cursor Cursor" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("cursor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Cursor</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets the cursor for the window.</summary>
+        <value />
+        <remarks>Sets the mouse pointer for a <see cref="T:Gdk.Window" />. 
+
+<para>
+ To make the cursor invisible, use pixmap constructor for the cursor to create a cursor with no pixels in it. Passing <see langword="null" /> for the cursor argument to this property means that window will use the cursor of its parent window. Most windows should use this default.
+</para></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DebugUpdates">
+      <MemberSignature Language="C#" Value="public static bool DebugUpdates { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property bool DebugUpdates" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>For debugging use only.</summary>
+        <value>A <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Deiconify">
+      <MemberSignature Language="C#" Value="public void Deiconify ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Deiconify() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary> 
+	  Attempt to deiconify (unminimize) this window. On X11 the window manager may
+	  choose to ignore the request to deiconify. When using GTK+,
+	  use <see cref="M:Gtk.Window.Deiconify" /> instead of the <see cref="T:Gdk.Window" /> variant. Or better yet,
+	  you probably want to use <see cref="M:Gtk.Window.Present" />,
+	  which raises the window, focuses it,
+	  unminimizes it, and puts it on the current desktop.
+	</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Destroy">
+      <MemberSignature Language="C#" Value="public void Destroy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Destroy() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary> 
+	  Destroys the window system resources associated with this window 
+	  and decrements this window's
+	  reference count. The window system resources for all children of this 
+	  window are also
+	  destroyed, but the children's reference counts are not decremented.
+	</summary>
+        <remarks>
+	  Note that a window will not be destroyed automatically 
+	  when its reference count reaches zero. You must call this 
+	  function yourself before that happens.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Display">
+      <MemberSignature Language="C#" Value="public Gdk.Display Display { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Display Display" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Display</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="EffectiveParent">
+      <MemberSignature Language="C#" Value="public Gdk.Window EffectiveParent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window EffectiveParent" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="EffectiveToplevel">
+      <MemberSignature Language="C#" Value="public Gdk.Window EffectiveToplevel { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window EffectiveToplevel" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="EnableSynchronizedConfigure">
+      <MemberSignature Language="C#" Value="public void EnableSynchronizedConfigure ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void EnableSynchronizedConfigure() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="EndPaint">
+      <MemberSignature Language="C#" Value="public void EndPaint ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void EndPaint() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary> 
+	  Indicates that the backing store created by the most recent call to
+	  <see cref="M:Gdk.Window.BeginPaintRegion" />() should be copied onscreen and
+	  deleted, leaving the next-most-recent backing store or no backing
+	  store at all as the active paint region. See
+	  <see cref="M:Gdk.Window.BeginPaintRegion" />() for full details.
+	</summary>
+        <remarks> 
+	  It is an error to call this function without a matching
+	  <see cref="M:Gdk.Window.BeginPaintRegion" />() first.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EnsureNative">
+      <MemberSignature Language="C#" Value="public bool EnsureNative ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool EnsureNative() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Events">
+      <MemberSignature Language="C#" Value="public Gdk.EventMask Events { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.EventMask Events" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.EventMask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:Gdk.EventMask" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Flush">
+      <MemberSignature Language="C#" Value="public void Flush ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Flush() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Focus">
+      <MemberSignature Language="C#" Value="public void Focus (uint timestamp);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Focus(unsigned int32 timestamp) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timestamp" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="timestamp">A <see cref="T:System.UInt32" />, timestamp of the event calling this method</param>
+        <summary> Sets keyboard focus to this window. If the window is not onscreen this
+	  will not work. In most cases, <see cref="M:Gtk.Window.Present" />
+	  should be used on
+	  a <see cref="T:Gtk.Window" />, rather than calling this function.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="FocusOnMap">
+      <MemberSignature Language="C#" Value="public bool FocusOnMap { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool FocusOnMap" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="FrameExtents">
+      <MemberSignature Language="C#" Value="public Gdk.Rectangle FrameExtents { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.Rectangle FrameExtents" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Rectangle</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Obtains the bounding box of the window.</summary>
+        <value>a <see cref="T:Gdk.Rectangle" /></value>
+        <remarks>Area includes window manager titlebar/borders if any. The frame position is given in root window coordinates. To get the position of the window itself (rather than the frame) in root window coordinates, use <see cref="M:Gdk.Window.GetOrigin" />.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="FreezeUpdates">
+      <MemberSignature Language="C#" Value="public void FreezeUpdates ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void FreezeUpdates() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary> 
+	  Temporarily freezes a window such that it won't receive expose
+	  events.  The window will begin receiving expose events again when
+	  <see cref="M:Gdk.Window.ThawUpdates" /> is called. If <see cref="M:Gdk.Window.FreezeUpdates" />
+	  has been called more than once, <see cref="M:Gdk.Window.ThawUpdates" /> must be called
+	  an equal number of times to begin processing exposes.
+	</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="FromEmbedder">
+      <MemberSignature Language="C#" Value="public event Gdk.FromEmbedderHandler FromEmbedder;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gdk.FromEmbedderHandler FromEmbedder" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("from-embedder")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.FromEmbedderHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Fullscreen">
+      <MemberSignature Language="C#" Value="public void Fullscreen ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Fullscreen() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Functions">
+      <MemberSignature Language="C#" Value="public Gdk.WMFunction Functions { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.WMFunction Functions" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.WMFunction</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:Gdk.WMFunction" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GeometryChanged">
+      <MemberSignature Language="C#" Value="public void GeometryChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GeometryChanged() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetDecorations">
+      <MemberSignature Language="C#" Value="public bool GetDecorations (out Gdk.WMDecoration decorations);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetDecorations(valuetype Gdk.WMDecoration decorations) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="use_static" Type="System.Boolean" />
+        <Parameter Name="decorations" Type="Gdk.WMDecoration&amp;" RefType="out" />
       </Parameters>
       <Docs>
+        <param name="decorations">a <see cref="T:Gdk.WMDecoration&amp;" /> to put the decorations in</param>
         <summary>
-	  Set the bit gravity of the given window to static, and flag it so
-	  all children get static subwindow gravity. This is used if you are
-	  implementing scary features that involve deep knowledge of the
-	  windowing system. Don't worry about it unless you have to.
+	  Returns the decorations set on the window with <see cref="M:Gdk.Window.SetDecorations" />.
 	</summary>
-        <param name="use_static">A <see cref="T:System.Boolean" /></param>
-        <returns>A <see cref="T:System.Boolean" />, true if the server supports static gravity</returns>
+        <returns>a <see cref="T:System.Boolean" />, true if the window has decorations set, false otherwise.</returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetDeviceCursor">
+      <MemberSignature Language="C#" Value="public Gdk.Cursor GetDeviceCursor (Gdk.Device device);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.Cursor GetDeviceCursor(class Gdk.Device device) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Cursor</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="device" Type="Gdk.Device" />
+      </Parameters>
+      <Docs>
+        <param name="device">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetDeviceEvents">
+      <MemberSignature Language="C#" Value="public Gdk.EventMask GetDeviceEvents (Gdk.Device device);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gdk.EventMask GetDeviceEvents(class Gdk.Device device) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.EventMask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="device" Type="Gdk.Device" />
+      </Parameters>
+      <Docs>
+        <param name="device">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetDevicePosition">
+      <MemberSignature Language="C#" Value="public Gdk.Window GetDevicePosition (Gdk.Device device, out int x, out int y, out Gdk.ModifierType mask);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.Window GetDevicePosition(class Gdk.Device device, int32 x, int32 y, valuetype Gdk.ModifierType mask) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="device" Type="Gdk.Device" />
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="mask" Type="Gdk.ModifierType&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="device">To be added.</param>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <param name="mask">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetDragProtocol">
+      <MemberSignature Language="C#" Value="public Gdk.DragProtocol GetDragProtocol (Gdk.Window target);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gdk.DragProtocol GetDragProtocol(class Gdk.Window target) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.DragProtocol</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="target" Type="Gdk.Window" />
+      </Parameters>
+      <Docs>
+        <param name="target">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetGeometry">
+      <MemberSignature Language="C#" Value="public void GetGeometry (out int x, out int y, out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetGeometry(int32 x, int32 y, int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetOrigin">
+      <MemberSignature Language="C#" Value="public int GetOrigin (out int x, out int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetOrigin(int32 x, int32 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPointer">
+      <MemberSignature Language="C#" Value="public Gdk.Window GetPointer (out int x, out int y, out Gdk.ModifierType mask);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.Window GetPointer(int32 x, int32 y, valuetype Gdk.ModifierType mask) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="mask" Type="Gdk.ModifierType&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">A <see cref="T:int&amp;" /></param>
+        <param name="y">A <see cref="T:int&amp;" /></param>
+        <param name="mask">A <see cref="T:Gdk.ModifierType&amp;" /></param>
+        <summary>To be added</summary>
+        <returns>A <see cref="T:Gdk.Window" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPosition">
+      <MemberSignature Language="C#" Value="public void GetPosition (out int x, out int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPosition(int32 x, int32 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetRootCoords">
+      <MemberSignature Language="C#" Value="public void GetRootCoords (int x, int y, out int root_x, out int root_y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetRootCoords(int32 x, int32 y, int32 root_x, int32 root_y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="root_x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="root_y" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <param name="root_x">To be added.</param>
+        <param name="root_y">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetRootOrigin">
+      <MemberSignature Language="C#" Value="public void GetRootOrigin (out int x, out int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetRootOrigin(int32 x, int32 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSourceEvents">
+      <MemberSignature Language="C#" Value="public Gdk.EventMask GetSourceEvents (Gdk.InputSource source);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gdk.EventMask GetSourceEvents(valuetype Gdk.InputSource source) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.EventMask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="Gdk.InputSource" />
+      </Parameters>
+      <Docs>
+        <param name="source">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Group">
+      <MemberSignature Language="C#" Value="public Gdk.Window Group { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window Group" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:Gdk.Window" /></value>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="HasNative">
+      <MemberSignature Language="C#" Value="public bool HasNative { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasNative" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Height">
+      <MemberSignature Language="C#" Value="public int Height { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Height" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Hide">
+      <MemberSignature Language="C#" Value="public void Hide ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Hide() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary> 
+	  For toplevel windows, withdraws them, so they will no longer be
+	  known to the window manager; for all windows, unmaps them, so
+	  they won't be displayed. Normally done automatically as
+	  part of <see cref="M:Gtk.Window.Hide" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Iconify">
+      <MemberSignature Language="C#" Value="public void Iconify ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Iconify() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+	  Asks to iconify (minimize) the window. The window manager may choose
+	  to ignore the request, but normally will honor it. Using
+	  <see cref="M:Gtk.Window.Iconify" /> is preferred, if you have a 
+	  <see cref="T:Gtk.Window" /> widget.
+	</summary>
+        <remarks>
+	  This function only makes sense when this window is a toplevel window.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IconList">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf[] IconList { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf[] IconList" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:Gdk.Pixbuf[]" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IconName">
+      <MemberSignature Language="C#" Value="public string IconName { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string IconName" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:System.String" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="InputShapeCombineRegion">
+      <MemberSignature Language="C#" Value="public void InputShapeCombineRegion (Cairo.Region shape_region, int offset_x, int offset_y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void InputShapeCombineRegion(class Cairo.Region shape_region, int32 offset_x, int32 offset_y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="shape_region" Type="Cairo.Region" />
+        <Parameter Name="offset_x" Type="System.Int32" />
+        <Parameter Name="offset_y" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="shape_region">To be added.</param>
+        <param name="offset_x">To be added.</param>
+        <param name="offset_y">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="InvalidateMaybeRecurse">
+      <MemberSignature Language="C#" Value="public void InvalidateMaybeRecurse (Cairo.Region region, Gdk.WindowChildFunc child_func);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void InvalidateMaybeRecurse(class Cairo.Region region, class Gdk.WindowChildFunc child_func) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="region" Type="Cairo.Region" />
+        <Parameter Name="child_func" Type="Gdk.WindowChildFunc" />
+      </Parameters>
+      <Docs>
+        <param name="region">To be added.</param>
+        <param name="child_func">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="InvalidateRect">
+      <MemberSignature Language="C#" Value="public void InvalidateRect (Gdk.Rectangle rect, bool invalidate_children);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void InvalidateRect(valuetype Gdk.Rectangle rect, bool invalidate_children) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="Gdk.Rectangle" />
+        <Parameter Name="invalidate_children" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="rect">A <see cref="T:Gdk.Rectangle" /></param>
+        <param name="invalidate_children">A <see cref="T:System.Boolean" />, whether to invalidate child windows</param>
+        <summary>
+	  A convenience wrapper around 
+	  <see cref="M:Gdk.Window.InvalidateRegion" /> which
+	  invalidates a rectangular region. See
+	  <see cref="M:Gdk.Window.InvalidateRegion" /> for details.
+	</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="InvalidateRegion">
+      <MemberSignature Language="C#" Value="public void InvalidateRegion (Cairo.Region region, bool invalidate_children);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void InvalidateRegion(class Cairo.Region region, bool invalidate_children) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="region" Type="Cairo.Region" />
+        <Parameter Name="invalidate_children" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="region">To be added.</param>
+        <param name="invalidate_children">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsDestroyed">
+      <MemberSignature Language="C#" Value="public bool IsDestroyed { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsDestroyed" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsInputOnly">
+      <MemberSignature Language="C#" Value="public bool IsInputOnly { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsInputOnly" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsShaped">
+      <MemberSignature Language="C#" Value="public bool IsShaped { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsShaped" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsViewable">
+      <MemberSignature Language="C#" Value="public bool IsViewable { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsViewable" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsVisible">
+      <MemberSignature Language="C#" Value="public bool IsVisible { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsVisible" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="KeepAbove">
+      <MemberSignature Language="C#" Value="public bool KeepAbove { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool KeepAbove" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="KeepBelow">
+      <MemberSignature Language="C#" Value="public bool KeepBelow { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool KeepBelow" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="Lower">
       <MemberSignature Language="C#" Value="public void Lower ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Lower() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -216,8 +1368,154 @@
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="Maximize">
+      <MemberSignature Language="C#" Value="public void Maximize ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Maximize() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+	  Maximizes the window. If the window was already maximized, then
+	  this function does nothing.
+	</summary>
+        <remarks>
+          <p>On X11, asks the window manager to maximize the window, if the window
+	    manager supports this operation. Not all window managers support
+	    this, and some deliberately ignore it or don't have a concept of
+	    "maximized"; so you can't rely on the maximization actually
+	    happening. But it will happen with most standard window managers,
+	    and GDK makes a best effort to get it to happen.
+	  </p>
+          <p>
+	    On Windows, reliably maximizes the window.
+	  </p>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MergeChildInputShapes">
+      <MemberSignature Language="C#" Value="public void MergeChildInputShapes ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void MergeChildInputShapes() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Merges the union of all child window masks into the Input mask.</summary>
+        <remarks>Includes the current window input mask.  To ignore the parent mask, use <see cref="M:Gdk.Window.SetChildInputShapes" />.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="MergeChildShapes">
+      <MemberSignature Language="C#" Value="public void MergeChildShapes ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void MergeChildShapes() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <p>Merges the shape masks for any child windows into the
+	    shape mask for this window. i.e. the union of all masks
+	    for this window and its children will become the new mask
+	    for this window. See <see cref="M:Gdk.Window.ShapeCombineMask" />.
+	  </p>
+          <p>
+	    This function is distinct from <see cref="M:Gdk.Window.SetChildShapes" />
+	    because it includes this window's shape mask in the set of shapes to
+	    be merged.
+	  </p>
+        </summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ModalHint">
+      <MemberSignature Language="C#" Value="public bool ModalHint { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ModalHint" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Move">
+      <MemberSignature Language="C#" Value="public void Move (int x, int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Move(int32 x, int32 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="x">A <see cref="T:System.Int32" /></param>
+        <param name="y">A <see cref="T:System.Int32" /></param>
+        <summary> 
+	  Repositions a window relative to its parent window.
+	</summary>
+        <remarks>
+          <p>For toplevel windows, window managers may ignore or modify the move;
+	  you should probably use <see cref="M:Gtk.Window.Move" /> on a <see cref="T:Gtk.Window" /> widget
+	  anyway, instead of using GDK functions. For child windows,
+	  the move will reliably succeed.</p>
+          <p>If you're also planning to resize the window, use <see cref="M:Gdk.Window.MoveResize" />
+	    to both move and resize simultaneously, for a nicer visual effect.
+	  </p>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MoveRegion">
+      <MemberSignature Language="C#" Value="public void MoveRegion (Cairo.Region region, int dx, int dy);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void MoveRegion(class Cairo.Region region, int32 dx, int32 dy) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="region" Type="Cairo.Region" />
+        <Parameter Name="dx" Type="System.Int32" />
+        <Parameter Name="dy" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="region">To be added.</param>
+        <param name="dx">To be added.</param>
+        <param name="dy">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveResize">
+      <MemberSignature Language="C#" Value="public void MoveResize (Gdk.Rectangle rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void MoveResize(valuetype Gdk.Rectangle rect) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="Gdk.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="rect">a <see cref="T:Gdk.Rectangle" /></param>
+        <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="MoveResize">
       <MemberSignature Language="C#" Value="public void MoveResize (int x, int y, int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void MoveResize(int32 x, int32 y, int32 width, int32 height) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -229,6 +1527,10 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
+        <param name="x">A <see cref="T:System.Int32" />, new X position relative to window's parent</param>
+        <param name="y">A <see cref="T:System.Int32" />, new Y position relative to window's parent</param>
+        <param name="width">A <see cref="T:System.Int32" />, new width</param>
+        <param name="height">A <see cref="T:System.Int32" />, new height</param>
         <summary>
 	  Equivalent to calling <see cref="M:Gdk.Window.Move" /> and 
 	  <see cref="M:Gdk.Window.Resize" /> in succession,
@@ -236,37 +1538,504 @@
 	  visual effects. (i.e. the user may be able to see the window first
 	  move, then resize, if you don't use this method.)
 	</summary>
-        <param name="x">A <see cref="T:System.Int32" />, new X position relative to window's parent</param>
-        <param name="y">A <see cref="T:System.Int32" />, new Y position relative to window's parent</param>
-        <param name="width">A <see cref="T:System.Int32" />, new width</param>
-        <param name="height">A <see cref="T:System.Int32" />, new height</param>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Destroy">
-      <MemberSignature Language="C#" Value="public void Destroy ();" />
+    <Member MemberName="OnCreateSurface">
+      <MemberSignature Language="C#" Value="protected virtual Cairo.Surface OnCreateSurface (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Cairo.Surface OnCreateSurface(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCreateSurface", Type=typeof(Gdk.Window))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Cairo.Surface</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnFromEmbedder">
+      <MemberSignature Language="C#" Value="protected virtual void OnFromEmbedder (double embedder_x, double embedder_y, out double offscreen_x, out double offscreen_y);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnFromEmbedder(float64 embedder_x, float64 embedder_y, float64 offscreen_x, float64 offscreen_y) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideFromEmbedder", Type=typeof(Gdk.Window))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="embedder_x" Type="System.Double" />
+        <Parameter Name="embedder_y" Type="System.Double" />
+        <Parameter Name="offscreen_x" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="offscreen_y" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="embedder_x">To be added.</param>
+        <param name="embedder_y">To be added.</param>
+        <param name="offscreen_x">To be added.</param>
+        <param name="offscreen_y">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnPickEmbeddedChild">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Window OnPickEmbeddedChild (double x, double y);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Window OnPickEmbeddedChild(float64 x, float64 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePickEmbeddedChild", Type=typeof(Gdk.Window))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Double" />
+        <Parameter Name="y" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnToEmbedder">
+      <MemberSignature Language="C#" Value="protected virtual void OnToEmbedder (double offscreen_x, double offscreen_y, out double embedder_x, out double embedder_y);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnToEmbedder(float64 offscreen_x, float64 offscreen_y, float64 embedder_x, float64 embedder_y) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideToEmbedder", Type=typeof(Gdk.Window))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offscreen_x" Type="System.Double" />
+        <Parameter Name="offscreen_y" Type="System.Double" />
+        <Parameter Name="embedder_x" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="embedder_y" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="offscreen_x">To be added.</param>
+        <param name="offscreen_y">To be added.</param>
+        <param name="embedder_x">To be added.</param>
+        <param name="embedder_y">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Opacity">
+      <MemberSignature Language="C#" Value="public double Opacity { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 Opacity" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Opacity Property.</summary>
+        <value>A double between 0 and 1.</value>
+        <remarks />
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="OverrideRedirect">
+      <MemberSignature Language="C#" Value="public bool OverrideRedirect { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool OverrideRedirect" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Parent">
+      <MemberSignature Language="C#" Value="public Gdk.Window Parent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window Parent" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:Gdk.Window" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PickEmbeddedChild">
+      <MemberSignature Language="C#" Value="public event Gdk.PickEmbeddedChildHandler PickEmbeddedChild;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gdk.PickEmbeddedChildHandler PickEmbeddedChild" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("pick-embedded-child")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.PickEmbeddedChildHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ProcessAllUpdates">
+      <MemberSignature Language="C#" Value="public static void ProcessAllUpdates ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void ProcessAllUpdates() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary> 
-	  Destroys the window system resources associated with this window 
-	  and decrements this window's
-	  reference count. The window system resources for all children of this 
-	  window are also
-	  destroyed, but the children's reference counts are not decremented.
+        <summary>Calls <see cref="M:Gdk.Window.ProcessUpdates" /> for all windows in the application.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ProcessUpdates">
+      <MemberSignature Language="C#" Value="public void ProcessUpdates (bool update_children);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ProcessUpdates(bool update_children) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="update_children" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="update_children">A <see cref="T:System.Boolean" />, whether to process updates for child windows</param>
+        <summary>Sends one or more expose events to the window.</summary>
+        <remarks>The areas in each expose event will cover the entire 
+	  update area for the window (see
+	  <see cref="T:Gdk.Window.InvalidateRegion" /> for details). 
+	  Normally GDK calls <see cref="T:Gdk.Window.ProcessAllUpdates" />
+	  on your behalf, so there's no
+	  need to call this function unless you want to force expose events
+	  to be delivered immediately and synchronously (vs. the usual
+	  case, where GDK delivers them in an idle handler). Occasionally
+	  this is useful to produce nicer scrolling behavior, for example.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Raise">
+      <MemberSignature Language="C#" Value="public void Raise ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Raise() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+	  Raises the window to the top of the Z-order (stacking order), so 
+	  that other windows with the same parent window appear below 
+	  this window. This is true whether or not the windows are visible.
 	</summary>
         <remarks>
-	  Note that a window will not be destroyed automatically 
-	  when its reference count reaches zero. You must call this 
-	  function yourself before that happens.
+	  If this window is a toplevel, the window manager may choose to deny 
+	  the request to move the window in the Z-order. This method only
+	  requests the restack; it does not guarantee a restack.
 	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterDnd">
+      <MemberSignature Language="C#" Value="public void RegisterDnd ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RegisterDnd() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveFilter">
+      <MemberSignature Language="C#" Value="public void RemoveFilter (Gdk.FilterFunc function);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveFilter(class Gdk.FilterFunc function) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="function" Type="Gdk.FilterFunc" />
+      </Parameters>
+      <Docs>
+        <param name="function">A <see cref="T:Gdk.FilterFunc" /></param>
+        <summary>Remove a filter previously added with <see cref="M:Gdk.Window.AddFilter" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveFilterForAll">
+      <MemberSignature Language="C#" Value="public static void RemoveFilterForAll (Gdk.FilterFunc func);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void RemoveFilterForAll(class Gdk.FilterFunc func) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="func" Type="Gdk.FilterFunc" />
+      </Parameters>
+      <Docs>
+        <param name="func">a <see cref="T:Gdk.FilterFunc" /></param>
+        <summary>Removes an event filtering function for all Windows.</summary>
+        <remarks />
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="Reparent">
+      <MemberSignature Language="C#" Value="public void Reparent (Gdk.Window new_parent, int x, int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Reparent(class Gdk.Window new_parent, int32 x, int32 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="new_parent" Type="Gdk.Window" />
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="new_parent">A <see cref="T:Gdk.Window" />, new parent to move this window into</param>
+        <param name="x">A <see cref="T:System.Int32" />, X location inside the new parent</param>
+        <param name="y">A <see cref="T:System.Int32" />, Y location inside the new parent</param>
+        <summary>Reparents this window into the given 
+	  <paramref name="new_parent" />. The window being
+	  reparented will be unmapped as a side effect.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Resize">
+      <MemberSignature Language="C#" Value="public void Resize (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Resize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="width">A <see cref="T:System.Int32" /></param>
+        <param name="height">A <see cref="T:System.Int32" /></param>
+        <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Restack">
+      <MemberSignature Language="C#" Value="public void Restack (Gdk.Window sibling, bool above);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Restack(class Gdk.Window sibling, bool above) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sibling" Type="Gdk.Window" />
+        <Parameter Name="above" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="sibling">To be added.</param>
+        <param name="above">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Role">
+      <MemberSignature Language="C#" Value="public string Role { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Role" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:System.String" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Screen">
+      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Screen Screen" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Screen</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Scroll">
+      <MemberSignature Language="C#" Value="public void Scroll (int dx, int dy);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Scroll(int32 dx, int32 dy) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dx" Type="System.Int32" />
+        <Parameter Name="dy" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="dx">A <see cref="T:System.Int32" />, amount to scroll in the X direction</param>
+        <param name="dy">A <see cref="T:System.Int32" />, amount to scroll in the Y direction</param>
+        <summary>
+	  Scroll the contents of this window, both pixels and 
+	  children, by the given
+	  amount. The window itself does not move.  Portions of the window that the scroll
+	  operation brings in from offscreen areas are invalidated. The invalidated
+	  region may be bigger than what would strictly be necessary.  (For X11, a
+	  minimum area will be invalidated if the window has no subwindows, or if the
+	  edges of the window's parent do not extend beyond the edges of the window. In
+	  other cases, a multi-step process is used to scroll the window which may
+	  produce temporary visual artifacts and unnecessary invalidations.)
+	</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetChildInputShapes">
+      <MemberSignature Language="C#" Value="public void SetChildInputShapes ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetChildInputShapes() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Sets the input mask to the union of all child window masks.</summary>
+        <remarks>Ignores the windows own mask.  If you wish to add the child window masks to the parent, use <see cref="M:Gdk.Window.MergeChildInputShapes" />.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetChildShapes">
+      <MemberSignature Language="C#" Value="public void SetChildShapes ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetChildShapes() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Sets the shape mask of this window to the union of shape masks
+	  for all children of the window, ignoring the shape mask of the window
+	  itself. Contrast with <see cref="M:Gdk.Window.MergeChildShapes" />
+	  which includes the shape mask of the window in the masks to be 
+	  merged.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetDecorations">
+      <MemberSignature Language="C#" Value="public void SetDecorations (Gdk.WMDecoration decorations);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetDecorations(valuetype Gdk.WMDecoration decorations) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="decorations" Type="Gdk.WMDecoration" />
+      </Parameters>
+      <Docs>
+        <param name="decorations">A <see cref="T:Gdk.WMDecoration" /></param>
+        <summary>
+	  "Decorations" are the features the window manager adds to a toplevel
+	  <see cref="T:Gdk.Window" />.
+	  This function sets the traditional Motif window manager hints that tell the
+	  window manager which decorations you would like your window to have.
+	  Usually you should use <see cref="M:Gtk.Window.SetDecorated" /> on a 
+	  <see cref="T:Gtk.Window" /> instead of
+	  using the GDK function directly.
+	</summary>
+        <remarks>
+          <p>
+	    The <paramref name="decorations" /> argument is the logical OR of the fields in
+	    the <see cref="T:Gdk.WMDecoration" /> enumeration. If <see cref="P:GFdk.WMDecoration.All" /> is included in the
+	    mask, the other bits indicate which decorations should be turned off.
+	    If  <see cref="P:GFdk.WMDecoration.All" /> is not included, then the other bits indicate
+	    which decorations should be turned on.
+	  </p>
+          <p>
+	    Most window managers honor a decorations hint of 0 to disable all decorations,
+	    but very few honor all possible combinations of bits.
+	  </p>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetDeviceCursor">
+      <MemberSignature Language="C#" Value="public void SetDeviceCursor (Gdk.Device device, Gdk.Cursor cursor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetDeviceCursor(class Gdk.Device device, class Gdk.Cursor cursor) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="device" Type="Gdk.Device" />
+        <Parameter Name="cursor" Type="Gdk.Cursor" />
+      </Parameters>
+      <Docs>
+        <param name="device">To be added.</param>
+        <param name="cursor">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetDeviceEvents">
+      <MemberSignature Language="C#" Value="public void SetDeviceEvents (Gdk.Device device, Gdk.EventMask event_mask);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetDeviceEvents(class Gdk.Device device, valuetype Gdk.EventMask event_mask) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="device" Type="Gdk.Device" />
+        <Parameter Name="event_mask" Type="Gdk.EventMask" />
+      </Parameters>
+      <Docs>
+        <param name="device">To be added.</param>
+        <param name="event_mask">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="SetGeometryHints">
       <MemberSignature Language="C#" Value="public void SetGeometryHints (Gdk.Geometry geometry, Gdk.WindowHints geom_mask);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetGeometryHints(valuetype Gdk.Geometry geometry, valuetype Gdk.WindowHints geom_mask) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -276,14 +2045,14 @@
         <Parameter Name="geom_mask" Type="Gdk.WindowHints" />
       </Parameters>
       <Docs>
+        <param name="geometry">A <see cref="T:Gdk.Geometry" /></param>
+        <param name="geom_mask">A <see cref="T:Gdk.WindowHints" /></param>
         <summary>
 	  Sets the geometry hints for this window. Hints flagged in <paramref name="geom_mask" />
 	    are set, hints not flagged in <paramref name="geom_mask" /> are unset.
 	    To unset all hints, use a <paramref name="geom_mask" /> of 0 and a <paramref name="geometry" /> of <see langword="null" />.
 	  
 	</summary>
-        <param name="geometry">A <see cref="T:Gdk.Geometry" /></param>
-        <param name="geom_mask">A <see cref="T:Gdk.WindowHints" /></param>
         <remarks>
           <p>
 	    This function provides hints to the windowing system about
@@ -309,295 +2078,71 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Iconify">
-      <MemberSignature Language="C#" Value="public void Iconify ();" />
+    <Member MemberName="SetSourceEvents">
+      <MemberSignature Language="C#" Value="public void SetSourceEvents (Gdk.InputSource source, Gdk.EventMask event_mask);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetSourceEvents(valuetype Gdk.InputSource source, valuetype Gdk.EventMask event_mask) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="source" Type="Gdk.InputSource" />
+        <Parameter Name="event_mask" Type="Gdk.EventMask" />
+      </Parameters>
       <Docs>
+        <param name="source">To be added.</param>
+        <param name="event_mask">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetStaticGravities">
+      <MemberSignature Language="C#" Value="public bool SetStaticGravities (bool use_static);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool SetStaticGravities(bool use_static) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="use_static" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="use_static">A <see cref="T:System.Boolean" /></param>
         <summary>
-	  Asks to iconify (minimize) the window. The window manager may choose
-	  to ignore the request, but normally will honor it. Using
-	  <see cref="M:Gtk.Window.Iconify" /> is preferred, if you have a 
-	  <see cref="T:Gtk.Window" /> widget.
+	  Set the bit gravity of the given window to static, and flag it so
+	  all children get static subwindow gravity. This is used if you are
+	  implementing scary features that involve deep knowledge of the
+	  windowing system. Don't worry about it unless you have to.
 	</summary>
-        <remarks>
-	  This function only makes sense when this window is a toplevel window.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AddFilter">
-      <MemberSignature Language="C#" Value="public void AddFilter (Gdk.FilterFunc function);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="function" Type="Gdk.FilterFunc" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Adds an event filter to this window, allowing you to intercept events
-	  before they reach GDK. This is a low-level operation and makes it
-	  easy to break GDK and/or GTK+, so you have to know what you're
-	  doing. Pass <see langword="null" /> for this window to get all events 
-	  for all windows, instead of events for a specific window.
-	</summary>
-        <param name="function">A <see cref="T:Gdk.FilterFunc" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="InvalidateMaybeRecurse">
-      <MemberSignature Language="C#" Value="public void InvalidateMaybeRecurse (Gdk.Region region, Gdk.InvalidateMaybeRecurseChildFunc child_func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="region" Type="Gdk.Region" />
-        <Parameter Name="child_func" Type="Gdk.InvalidateMaybeRecurseChildFunc" />
-      </Parameters>
-      <Docs>
-        <param name="region">A <see cref="T:Gdk.Region" /></param>
-        <param name="child_func">Function to use to decide if to recurse to a child. <see langword="null" /> means never recurse.</param>
-        <summary>Adds a region to the update area for a window and some of its children</summary>
-        <remarks>
-          <p>
-		Adds <paramref name="region" /> to the update area for
-		the window. The update area is the region that needs
-		to be redrawn, or "dirty region." The call <see cref="M:Gdk.Window.ProcessUpdates" /> sends one or
-		more expose events to the window, which together cover
-		the entire update area. An application would normally
-		redraw the contents of the whole window in response to
-		those expose events.
-	    </p>
-          <p>
-		GDK will call <see cref="M:Gdk.Window.ProcessAllUpdates" /> on your
-		behalf whenever your program returns to the main loop
-		and becomes idle, so normally there's no need to do
-		that manually, you just need to invalidate regions
-		that you know should be redrawn.
-	    </p>
-          <p>
-		The <paramref name="child_func" /> parameter controls
-		whether the region of each child window that
-		intersects <paramref name="region" /> will also be
-		invalidated. Only children for which <paramref name="child_func" /> returns <see langword="true" />
-		will have the area invalidated.
-	    </p>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BeginMoveDrag">
-      <MemberSignature Language="C#" Value="public void BeginMoveDrag (int button, int root_x, int root_y, uint timestamp);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="button" Type="System.Int32" />
-        <Parameter Name="root_x" Type="System.Int32" />
-        <Parameter Name="root_y" Type="System.Int32" />
-        <Parameter Name="timestamp" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Begins a window move operation (for a toplevel window).  
-	  You might use this function to implement a "window move grip," for
-	  example. The function works best with window managers that support
-	  the Extended Window Manager Hints spec (see
-	  http://www.freedesktop.org), but has a fallback implementation for
-	  other window managers.
-	</summary>
-        <param name="button">A <see cref="T:System.Int32" />, the button being used to drag</param>
-        <param name="root_x">A <see cref="T:System.Int32" />,  root window X coordinate of mouse click that began the drag</param>
-        <param name="root_y">A <see cref="T:System.Int32" />m  root window Y coordinate of mouse click that began the drag</param>
-        <param name="timestamp">A <see cref="T:System.UInt32" />, timestamp of mouse click that began the drag</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="BeginPaintRegion">
-      <MemberSignature Language="C#" Value="public void BeginPaintRegion (Gdk.Region region);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="region" Type="Gdk.Region" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Indicates that you are beginning the process of redrawing @region.
-	</summary>
-        <param name="region">A <see cref="T:Gdk.Region" /></param>
-        <remarks>
-          <p>
-	    A backing store (offscreen buffer) large enough to contain <paramref name="region" />
-	    will be created. The backing store will be initialized with the
-	    background color or background pixmap for this window. Then, all
-	    drawing operations performed on this window will be diverted to the
-	    backing store.  When you call <see cref="M:Gdk.Window.EndPaint" />, the backing
-	    store will be copied to this window, making it visible onscreen. Only
-	    the part of this window contained in <paramref name="region" /> will be modified; that is,
-	    drawing operations are clipped to <paramref name="region" />.
-	  </p>
-          <p>
-	    The net result of all this is to remove flicker, because the user
-	    sees the finished product appear all at once when you call
-	    <see cref="M:Gdk.Window.EndPaint" />. If you draw to the window directly without
-	    calling <see cref="M:Gdk.Window.BeginPaintRegion" />, the user may see flicker
-	    as individual drawing operations are performed in sequence.  The
-	    clipping and background-initializing features of
-	    <see cref="M:Gdk.Window.BeginPaintRegion" /> are conveniences for the
-	    programmer, so you can avoid doing that work yourself.
-	  </p>
-          <p>
-	    When using GTK+, the widget system automatically places calls to
-	    <see cref="M:Gdk.Window.BeginPaintRegion" /> and <see cref="M:Gdk.Window.EndPaint" /> around
-	    emissions of the expose_event signal. That is, if you're writing an
-	    expose event handler, you can assume that the exposed area in
-	    #GdkEventExpose has already been cleared to the window background,
-	    is already set as the clip region, and already has a backing store.
-	    Therefore in most cases, application code need not call
-	    <see cref="M:Gdk.Window.BeginPaintRegion" />. (You can disable the automatic
-	    calls around expose events on a widget-by-widget basis by calling
-	    gtk_widget_set_double_buffered().)
-	  </p>
-          <p>
-	    If you call this function multiple times before calling the
-	    matching <see cref="M:Gdk.Window.EndPaint" />, the backing stores are pushed onto
-	    a stack. <see cref="M:Gdk.Window.EndPaint" /> copies the topmost backing store
-	    onscreen, subtracts the topmost region from all other regions in
-	    the stack, and pops the stack. All drawing operations affect only
-	    the topmost backing store in the stack. One matching call to
-	    <see cref="M:Gdk.Window.EndPaint" /> is required for each call to
-	    <see cref="M:Gdk.Window.BeginPaintRegion" />.
-	  </p>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ClearAreaE">
-      <MemberSignature Language="C#" Value="public void ClearAreaE (int x, int y, int width, int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Like <see cref="M:Gdk.Window.ClearArea" />, but also generates an 
-	  expose event for the cleared area.
-	</summary>
-        <param name="x">A <see cref="T:System.Int32" />, x coordinate of rectangle to clear</param>
-        <param name="y">A <see cref="T:System.Int32" />, y coordinate of rectangle to clear</param>
-        <param name="width">A <see cref="T:System.Int32" />, width of rectangle to clear</param>
-        <param name="height">A <see cref="T:System.Int32" />, height of rectangle to clear</param>
-        <remarks>
-	  This function has a stupid name because it dates back to the mists
-	  time, pre-GDK-1.0.
-	  </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Unstick">
-      <MemberSignature Language="C#" Value="public void Unstick ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Reverse operation for <see cref="M:Gdk.Window.Stick" />.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Resize">
-      <MemberSignature Language="C#" Value="public void Resize (int width, int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="width">A <see cref="T:System.Int32" /></param>
-        <param name="height">A <see cref="T:System.Int32" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetPointer">
-      <MemberSignature Language="C#" Value="public Gdk.Window GetPointer (out int x, out int y, out Gdk.ModifierType mask);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="mask" Type="Gdk.ModifierType&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="x">A <see cref="T:int&amp;" /></param>
-        <param name="y">A <see cref="T:int&amp;" /></param>
-        <param name="mask">A <see cref="T:Gdk.ModifierType&amp;" /></param>
-        <returns>A <see cref="T:Gdk.Window" /></returns>
+        <returns>A <see cref="T:System.Boolean" />, true if the server supports static gravity</returns>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="ShapeCombineRegion">
-      <MemberSignature Language="C#" Value="public void ShapeCombineRegion (Gdk.Region shape_region, int offset_x, int offset_y);" />
+      <MemberSignature Language="C#" Value="public void ShapeCombineRegion (Cairo.Region shape_region, int offset_x, int offset_y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ShapeCombineRegion(class Cairo.Region shape_region, int32 offset_x, int32 offset_y) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="shape_region" Type="Gdk.Region" />
+        <Parameter Name="shape_region" Type="Cairo.Region" />
         <Parameter Name="offset_x" Type="System.Int32" />
         <Parameter Name="offset_y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="shape_region">A <see cref="T:Gdk.Region" /></param>
-        <param name="offset_x">A <see cref="T:System.Int32" /></param>
-        <param name="offset_y">A <see cref="T:System.Int32" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ThawUpdates">
-      <MemberSignature Language="C#" Value="public void ThawUpdates ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Unmaximize">
-      <MemberSignature Language="C#" Value="public void Unmaximize ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks />
+        <param name="shape_region">To be added.</param>
+        <param name="offset_x">To be added.</param>
+        <param name="offset_y">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="Show">
       <MemberSignature Language="C#" Value="public void Show ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Show() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -605,11 +2150,91 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ShowUnraised">
+      <MemberSignature Language="C#" Value="public void ShowUnraised ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ShowUnraised() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+	  Shows a <see cref="T:Gdk.Window" /> onscreen, but does not modify its stacking
+	  order. In contrast, <see cref="M:Gdk.Window.Show()" /> will raise the window
+	  to the top of the window stack.
+
+</summary>
+        <remarks>
+	  On the X11 platform, in Xlib terms, this function calls
+	  XMapWindow() (it also updates some internal GDK state, which means
+	  that you can't really use XMapWindow() directly on a GDK window).
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SkipPagerHint">
+      <MemberSignature Language="C#" Value="public bool SkipPagerHint { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SkipPagerHint" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SkipTaskbarHint">
+      <MemberSignature Language="C#" Value="public bool SkipTaskbarHint { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SkipTaskbarHint" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="StartupId">
+      <MemberSignature Language="C#" Value="public string StartupId { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string StartupId" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Startup notification ID.</summary>
+        <value>A string.</value>
+        <remarks>When using Gtk, consider using <see cref="M:Gtk.Window.StartupId" /> instead.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="State">
+      <MemberSignature Language="C#" Value="public Gdk.WindowState State { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.WindowState State" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.WindowState</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:Gdk.WindowState" /></value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Stick">
       <MemberSignature Language="C#" Value="public void Stick ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Stick() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -631,197 +2256,248 @@
 	</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Raise">
-      <MemberSignature Language="C#" Value="public void Raise ();" />
+    <Member MemberName="SupportMultidevice">
+      <MemberSignature Language="C#" Value="public bool SupportMultidevice { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SupportMultidevice" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ThawUpdates">
+      <MemberSignature Language="C#" Value="public void ThawUpdates ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ThawUpdates() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>
-	  Raises the window to the top of the Z-order (stacking order), so 
-	  that other windows with the same parent window appear below 
-	  this window. This is true whether or not the windows are visible.
-	</summary>
-        <remarks>
-	  If this window is a toplevel, the window manager may choose to deny 
-	  the request to move the window in the Z-order. This method only
-	  requests the restack; it does not guarantee a restack.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="InvalidateRect">
-      <MemberSignature Language="C#" Value="public void InvalidateRect (Gdk.Rectangle rect, bool invalidate_children);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="rect" Type="Gdk.Rectangle" />
-        <Parameter Name="invalidate_children" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  A convenience wrapper around 
-	  <see cref="M:Gdk.Window.InvalidateRegion" /> which
-	  invalidates a rectangular region. See
-	  <see cref="M:Gdk.Window.InvalidateRegion" /> for details.
-	</summary>
-        <param name="rect">A <see cref="T:Gdk.Rectangle" /></param>
-        <param name="invalidate_children">A <see cref="T:System.Boolean" />, whether to invalidate child windows</param>
+        <summary>To be added</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Maximize">
-      <MemberSignature Language="C#" Value="public void Maximize ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Title">
+      <MemberSignature Language="C#" Value="public string Title { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Title" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-	  Maximizes the window. If the window was already maximized, then
-	  this function does nothing.
-	</summary>
-        <remarks>
-          <p>On X11, asks the window manager to maximize the window, if the window
-	    manager supports this operation. Not all window managers support
-	    this, and some deliberately ignore it or don't have a concept of
-	    "maximized"; so you can't rely on the maximization actually
-	    happening. But it will happen with most standard window managers,
-	    and GDK makes a best effort to get it to happen.
-	  </p>
-          <p>
-	    On Windows, reliably maximizes the window.
-	  </p>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetBackPixmap">
-      <MemberSignature Language="C#" Value="public void SetBackPixmap (Gdk.Pixmap pixmap, bool parent_relative);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="pixmap" Type="Gdk.Pixmap" />
-        <Parameter Name="parent_relative" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>
-	  Sets the background pixmap of this window. May also be used to set a background of
-	  "None" on this window, by setting a background pixmap of <see langword="null" />.
-	  A background pixmap will be tiled, positioning the first tile at the origin of
-	  this window, or if <paramref name="parent_relative" /> is true, the tiling will be done based on the
-	  origin of the parent window (useful to align tiles in a parent with tiles
-in a child).
-	</summary>
-        <param name="pixmap">A <see cref="T:Gdk.Pixmap" /></param>
-        <param name="parent_relative">A <see cref="T:System.Boolean" /></param>
-        <remarks>
-          <p>
-	    A background pixmap of <see langword="null" /> means that the window will have no
-	    background.  A window with no background will never have its
-	    background filled by the windowing system, instead the window will
-	    contain whatever pixels were already in the corresponding area of
-	    the display.
-	  </p>
-          <p>
-	    The windowing system will normally fill a window with its background
-	    when the window is obscured then exposed, or when you call
-	    <see cref="M:Gdk.Window.Clear" />.
-	  </p>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ClearArea">
-      <MemberSignature Language="C#" Value="public void ClearArea (int x, int y, int width, int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Clears an area of this window to the background color or background pixmap.</summary>
-        <param name="x">A <see cref="T:System.Int32" />, x coordinate of rectangle to clear</param>
-        <param name="y">A <see cref="T:System.Int32" />, y coordinate of rectangle to clear</param>
-        <param name="width">A <see cref="T:System.Int32" />, width of rectangle to clear</param>
-        <param name="height">A <see cref="T:System.Int32" />, height of rectangle to clear</param>
+        <summary>To be added</summary>
+        <value>A <see cref="T:System.String" /></value>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Deiconify">
-      <MemberSignature Language="C#" Value="public void Deiconify ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="ToEmbedder">
+      <MemberSignature Language="C#" Value="public event Gdk.ToEmbedderHandler ToEmbedder;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gdk.ToEmbedderHandler ToEmbedder" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("to-embedder")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gdk.ToEmbedderHandler</ReturnType>
       </ReturnValue>
-      <Parameters />
       <Docs>
-        <summary> 
-	  Attempt to deiconify (unminimize) this window. On X11 the window manager may
-	  choose to ignore the request to deiconify. When using GTK+,
-	  use <see cref="M:Gtk.Window.Deiconify" /> instead of the <see cref="T:Gdk.Window" /> variant. Or better yet,
-	  you probably want to use <see cref="M:Gtk.Window.Present" />,
-	  which raises the window, focuses it,
-	  unminimizes it, and puts it on the current desktop.
-	</summary>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Toplevel">
+      <MemberSignature Language="C#" Value="public Gdk.Window Toplevel { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window Toplevel" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:Gdk.Window" /></value>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="SetIcon">
-      <MemberSignature Language="C#" Value="public void SetIcon (Gdk.Window icon_window, Gdk.Pixmap pixmap, Gdk.Pixmap mask);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="TransientFor">
+      <MemberSignature Language="C#" Value="public Gdk.Window TransientFor { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window TransientFor" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gdk.Window</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="icon_window" Type="Gdk.Window" />
-        <Parameter Name="pixmap" Type="Gdk.Pixmap" />
-        <Parameter Name="mask" Type="Gdk.Pixmap" />
       </Parameters>
       <Docs>
-        <summary>
-	  Sets the icon of this window as a pixmap or window. 
-	</summary>
-        <param name="icon_window">A <see cref="T:Gdk.Window" /></param>
-        <param name="pixmap">A <see cref="T:Gdk.Pixmap" /></param>
-        <param name="mask">mask bitmap</param>
-        <remarks>
-	  If using GTK+, investigate
-	  <see cref="M:Gtk.Window.SetDefaultIconList" /> first, and then <see cref="M:Gtk.Window.SetIconList" />
-	  and <see cref="M:Gtk.Window.SetIcon" />. If those don't meet your needs, look at
-	  <see cref="M:Gdk.Window.SetIconList" />. Only if all those are too high-level do you
-	  want to fall back to this method.
-	</remarks>
-        <since version="Gtk# 2.4" />
+        <summary>To be added</summary>
+        <value>A <see cref="T:Gdk.Window" /></value>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Hide">
-      <MemberSignature Language="C#" Value="public void Hide ();" />
+    <Member MemberName="TypeHint">
+      <MemberSignature Language="C#" Value="public Gdk.WindowTypeHint TypeHint { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.WindowTypeHint TypeHint" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.WindowTypeHint</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:Gdk.WindowTypeHint" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Unfullscreen">
+      <MemberSignature Language="C#" Value="public void Unfullscreen ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unfullscreen() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary> 
-	  For toplevel windows, withdraws them, so they will no longer be
-	  known to the window manager; for all windows, unmaps them, so
-	  they won't be displayed. Normally done automatically as
-	  part of <see cref="M:Gtk.Window.Hide" />.</summary>
+        <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Unmaximize">
+      <MemberSignature Language="C#" Value="public void Unmaximize ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unmaximize() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Unstick">
+      <MemberSignature Language="C#" Value="public void Unstick ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unstick() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Reverse operation for <see cref="M:Gdk.Window.Stick" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateArea">
+      <MemberSignature Language="C#" Value="public Cairo.Region UpdateArea { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Cairo.Region UpdateArea" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Cairo.Region</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:Gdk.Region" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="UrgencyHint">
+      <MemberSignature Language="C#" Value="public bool UrgencyHint { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UrgencyHint" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Indicates if the window needs the user's urgent attention.</summary>
+        <value>
+          <see langword="true" /> to set the hint, or <see langword="false" /> to clear it.</value>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="UserData">
+      <MemberSignature Language="C#" Value="public IntPtr UserData { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int UserData" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.IntPtr" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="VisibleRegion">
+      <MemberSignature Language="C#" Value="public Cairo.Region VisibleRegion { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Cairo.Region VisibleRegion" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Cairo.Region</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Visual">
+      <MemberSignature Language="C#" Value="public Gdk.Visual Visual { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Visual Visual" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Width">
+      <MemberSignature Language="C#" Value="public int Width { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Width" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="WindowType">
+      <MemberSignature Language="C#" Value="public Gdk.WindowType WindowType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.WindowType WindowType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.WindowType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>A <see cref="T:Gdk.WindowType" /></value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Withdraw">
       <MemberSignature Language="C#" Value="public void Withdraw ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Withdraw() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -835,1314 +2511,6 @@ in a child).
         <remarks> This function is not really useful as <see cref="M:Gdk.Window.Hide" /> automatically
 	  withdraws toplevel windows before hiding them.
 </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetDecorations">
-      <MemberSignature Language="C#" Value="public void SetDecorations (Gdk.WMDecoration decorations);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="decorations" Type="Gdk.WMDecoration" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  "Decorations" are the features the window manager adds to a toplevel
-	  <see cref="T:Gdk.Window" />.
-	  This function sets the traditional Motif window manager hints that tell the
-	  window manager which decorations you would like your window to have.
-	  Usually you should use <see cref="M:Gtk.Window.SetDecorated" /> on a 
-	  <see cref="T:Gtk.Window" /> instead of
-	  using the GDK function directly.
-	</summary>
-        <param name="decorations">A <see cref="T:Gdk.WMDecoration" /></param>
-        <remarks>
-          <p>
-	    The <paramref name="decorations" /> argument is the logical OR of the fields in
-	    the <see cref="T:Gdk.WMDecoration" /> enumeration. If <see cref="P:GFdk.WMDecoration.All" /> is included in the
-	    mask, the other bits indicate which decorations should be turned off.
-	    If  <see cref="P:GFdk.WMDecoration.All" /> is not included, then the other bits indicate
-	    which decorations should be turned on.
-	  </p>
-          <p>
-	    Most window managers honor a decorations hint of 0 to disable all decorations,
-	    but very few honor all possible combinations of bits.
-	  </p>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ProcessUpdates">
-      <MemberSignature Language="C#" Value="public void ProcessUpdates (bool update_children);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="update_children" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Sends one or more expose events to the window.</summary>
-        <param name="update_children">A <see cref="T:System.Boolean" />, whether to process updates for child windows</param>
-        <remarks>The areas in each expose event will cover the entire 
-	  update area for the window (see
-	  <see cref="T:Gdk.Window.InvalidateRegion" /> for details). 
-	  Normally GDK calls <see cref="T:Gdk.Window.ProcessAllUpdates" />
-	  on your behalf, so there's no
-	  need to call this function unless you want to force expose events
-	  to be delivered immediately and synchronously (vs. the usual
-	  case, where GDK delivers them in an idle handler). Occasionally
-	  this is useful to produce nicer scrolling behavior, for example.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="MergeChildShapes">
-      <MemberSignature Language="C#" Value="public void MergeChildShapes ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <p>Merges the shape masks for any child windows into the
-	    shape mask for this window. i.e. the union of all masks
-	    for this window and its children will become the new mask
-	    for this window. See <see cref="M:Gdk.Window.ShapeCombineMask" />.
-	  </p>
-          <p>
-	    This function is distinct from <see cref="M:Gdk.Window.SetChildShapes" />
-	    because it includes this window's shape mask in the set of shapes to
-	    be merged.
-	  </p>
-        </summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="BeginResizeDrag">
-      <MemberSignature Language="C#" Value="public void BeginResizeDrag (Gdk.WindowEdge edge, int button, int root_x, int root_y, uint timestamp);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="edge" Type="Gdk.WindowEdge" />
-        <Parameter Name="button" Type="System.Int32" />
-        <Parameter Name="root_x" Type="System.Int32" />
-        <Parameter Name="root_y" Type="System.Int32" />
-        <Parameter Name="timestamp" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Begins a window resize operation (for a toplevel window).
-	  You might use this function to implement a "window resize grip," for
-	  example; in fact <see cref="T:Gtk.Statusbar" /> uses it. The function works best
-	  with window managers that support the Extended Window Manager Hints spec
-	  (see http://www.freedesktop.org), but has a fallback implementation
-	  for other window managers.
-	</summary>
-        <param name="edge">A <see cref="T:Gdk.WindowEdge" /></param>
-        <param name="button">A <see cref="T:System.Int32" /></param>
-        <param name="root_x">A <see cref="T:System.Int32" /></param>
-        <param name="root_y">A <see cref="T:System.Int32" /></param>
-        <param name="timestamp">A <see cref="T:System.UInt32" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="EndPaint">
-      <MemberSignature Language="C#" Value="public void EndPaint ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary> 
-	  Indicates that the backing store created by the most recent call to
-	  <see cref="M:Gdk.Window.BeginPaintRegion" />() should be copied onscreen and
-	  deleted, leaving the next-most-recent backing store or no backing
-	  store at all as the active paint region. See
-	  <see cref="M:Gdk.Window.BeginPaintRegion" />() for full details.
-	</summary>
-        <remarks> 
-	  It is an error to call this function without a matching
-	  <see cref="M:Gdk.Window.BeginPaintRegion" />() first.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BeginPaintRect">
-      <MemberSignature Language="C#" Value="public void BeginPaintRect (Gdk.Rectangle rectangle);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="rectangle" Type="Gdk.Rectangle" />
-      </Parameters>
-      <Docs>
-        <summary> 
-	  A convenience wrapper around <see cref="M:Gdk.Window.BeginPaintRegion" />() which
-	  creates a rectangular region for you. See
-	  <see cref="M:Gdk.Window.BeginPaintRegion" />() for details.
-	</summary>
-        <param name="rectangle">A <see cref="T:Gdk.Rectangle" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ShowUnraised">
-      <MemberSignature Language="C#" Value="public void ShowUnraised ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-	  Shows a <see cref="T:Gdk.Window" /> onscreen, but does not modify its stacking
-	  order. In contrast, <see cref="M:Gdk.Window.Show()" /> will raise the window
-	  to the top of the window stack.
-
-</summary>
-        <remarks>
-	  On the X11 platform, in Xlib terms, this function calls
-	  XMapWindow() (it also updates some internal GDK state, which means
-	  that you can't really use XMapWindow() directly on a GDK window).
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveFilter">
-      <MemberSignature Language="C#" Value="public void RemoveFilter (Gdk.FilterFunc function);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="function" Type="Gdk.FilterFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Remove a filter previously added with <see cref="M:Gdk.Window.AddFilter" />.</summary>
-        <param name="function">A <see cref="T:Gdk.FilterFunc" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Clear">
-      <MemberSignature Language="C#" Value="public void Clear ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Clears the entire window to the background color or background pixmap.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Focus">
-      <MemberSignature Language="C#" Value="public void Focus (uint timestamp);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="timestamp" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary> Sets keyboard focus to this window. If the window is not onscreen this
-	  will not work. In most cases, <see cref="M:Gtk.Window.Present" />
-	  should be used on
-	  a <see cref="T:Gtk.Window" />, rather than calling this function.</summary>
-        <param name="timestamp">A <see cref="T:System.UInt32" />, timestamp of the event calling this method</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="FreezeUpdates">
-      <MemberSignature Language="C#" Value="public void FreezeUpdates ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary> 
-	  Temporarily freezes a window such that it won't receive expose
-	  events.  The window will begin receiving expose events again when
-	  <see cref="M:Gdk.Window.ThawUpdates" /> is called. If <see cref="M:Gdk.Window.FreezeUpdates" />
-	  has been called more than once, <see cref="M:Gdk.Window.ThawUpdates" /> must be called
-	  an equal number of times to begin processing exposes.
-	</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="RegisterDnd">
-      <MemberSignature Language="C#" Value="public void RegisterDnd ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ShapeCombineMask">
-      <MemberSignature Language="C#" Value="public void ShapeCombineMask (Gdk.Pixmap mask, int x, int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="mask" Type="Gdk.Pixmap" />
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>
-          <p>Applies a shape mask to this window. 
-	  Pixels in this window corresponding to
-	  set bits in the <paramref name="mask" /> will be visible; pixels in this window
-	  corresponding to unset bits in the <paramref name="mask" /> will be transparent. This
-	  gives a non-rectangular window.</p>
-          <p>If <paramref name="mask" /> is <see langword="null" />, the shape 
-	    mask will be unset, and the 
-	    <paramref name="x" />/<paramref name="y" /> parameters are not 
-	    used.</p>
-        </summary>
-        <param name="mask">A <see cref="T:Gdk.Pixmap" />, a shape mask</param>
-        <param name="x">A <see cref="T:System.Int32" />, X position of shape mask with respect to this window</param>
-        <param name="y">A <see cref="T:System.Int32" />, Y position of shape mask with respect to this window</param>
-        <remarks>
-          <p>
-	    On the X11 platform, this uses an X server extension which is
-	    widely available on most common platforms, but not available on
-	    very old X servers, and occasionally the implementation will be
-	    buggy. On servers without the shape extension, this function
-	    will do nothing.
-	  </p>
-          <p>
-	    This function works on both toplevel and child windows.
-	  </p>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="Move">
-      <MemberSignature Language="C#" Value="public void Move (int x, int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary> 
-	  Repositions a window relative to its parent window.
-	</summary>
-        <param name="x">A <see cref="T:System.Int32" /></param>
-        <param name="y">A <see cref="T:System.Int32" /></param>
-        <remarks>
-          <p>For toplevel windows, window managers may ignore or modify the move;
-	  you should probably use <see cref="M:Gtk.Window.Move" /> on a <see cref="T:Gtk.Window" /> widget
-	  anyway, instead of using GDK functions. For child windows,
-	  the move will reliably succeed.</p>
-          <p>If you're also planning to resize the window, use <see cref="M:Gdk.Window.MoveResize" />
-	    to both move and resize simultaneously, for a nicer visual effect.
-	  </p>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Window (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Window (Gdk.Window parent, Gdk.WindowAttr attributes, int attributes_mask);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="parent" Type="Gdk.Window" />
-        <Parameter Name="attributes" Type="Gdk.WindowAttr" />
-        <Parameter Name="attributes_mask" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Basic constructor</summary>
-        <param name="parent">A <see cref="T:Gdk.Window" /></param>
-        <param name="attributes">A <see cref="T:Gdk.WindowAttr" /></param>
-        <param name="attributes_mask">A <see cref="T:System.Int32" /></param>
-        <remarks>The type of the <paramref name="attributes_mask" /> parameter in this auto-generated constructor is incorrect. You would normally want to use the overloaded constructor that takes a <see cref="T:Gdk.WindowAttributesType" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Window (Gdk.Window parent, Gdk.WindowAttr attributes, Gdk.WindowAttributesType attributes_mask);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="parent" Type="Gdk.Window" />
-        <Parameter Name="attributes" Type="Gdk.WindowAttr" />
-        <Parameter Name="attributes_mask" Type="Gdk.WindowAttributesType" />
-      </Parameters>
-      <Docs>
-        <summary>Basic constructor</summary>
-        <param name="parent">a <see cref="T:Gdk.Window" /></param>
-        <param name="attributes">a <see cref="T:Gdk.WindowAttr" /></param>
-        <param name="attributes_mask">a <see cref="T:Gdk.WindowAttributesType" /></param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="DebugUpdates">
-      <MemberSignature Language="C#" Value="public static bool DebugUpdates { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>For debugging use only.</summary>
-        <value>A <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Functions">
-      <MemberSignature Language="C#" Value="public Gdk.WMFunction Functions { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.WMFunction</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:Gdk.WMFunction" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="OverrideRedirect">
-      <MemberSignature Language="C#" Value="public bool OverrideRedirect { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="TransientFor">
-      <MemberSignature Language="C#" Value="public Gdk.Window TransientFor { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:Gdk.Window" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Toplevel">
-      <MemberSignature Language="C#" Value="public Gdk.Window Toplevel { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:Gdk.Window" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Cursor">
-      <MemberSignature Language="C#" Value="public Gdk.Cursor Cursor { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Cursor</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets the cursor for the window.</summary>
-        <value />
-        <remarks>Sets the mouse pointer for a <see cref="T:Gdk.Window" />. 
-
-<para>
- To make the cursor invisible, use pixmap constructor for the cursor to create a cursor with no pixels in it. Passing <see langword="null" /> for the cursor argument to this property means that window will use the cursor of its parent window. Most windows should use this default.
-</para></remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Events">
-      <MemberSignature Language="C#" Value="public Gdk.EventMask Events { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.EventMask</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:Gdk.EventMask" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="IconName">
-      <MemberSignature Language="C#" Value="public string IconName { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:System.String" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="WindowType">
-      <MemberSignature Language="C#" Value="public Gdk.WindowType WindowType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.WindowType</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:Gdk.WindowType" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="State">
-      <MemberSignature Language="C#" Value="public Gdk.WindowState State { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.WindowState</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:Gdk.WindowState" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Title">
-      <MemberSignature Language="C#" Value="public string Title { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:System.String" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ModalHint">
-      <MemberSignature Language="C#" Value="public bool ModalHint { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="TypeHint">
-      <MemberSignature Language="C#" Value="public Gdk.WindowTypeHint TypeHint { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.WindowTypeHint</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:Gdk.WindowTypeHint" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="UpdateArea">
-      <MemberSignature Language="C#" Value="public Gdk.Region UpdateArea { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Region</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:Gdk.Region" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Role">
-      <MemberSignature Language="C#" Value="public string Role { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:System.String" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Background">
-      <MemberSignature Language="C#" Value="public Gdk.Color Background { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Color</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets the background color for the window.</summary>
-        <value>A <see cref="T:Gdk.Color" /></value>
-        <remarks>Sets the background color of window. (However, when using GTK+, set the background of a widget with <see cref="M:Gtk.Widget.ModifyBg(Gtk.StateType, Gdk.Color)" /> - if you're an application - or <see cref="M:Gtk.Style.SetBackground(Gdk.Window, Gtk.StateType)" /> - if you're implementing a custom widget.
-<para>
-The color must be allocated; 
-</para></remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Parent">
-      <MemberSignature Language="C#" Value="public Gdk.Window Parent { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>A <see cref="T:Gdk.Window" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SkipPagerHint">
-      <MemberSignature Language="C#" Value="public bool SkipPagerHint { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SkipTaskbarHint">
-      <MemberSignature Language="C#" Value="public bool SkipTaskbarHint { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="LookupForDisplay">
-      <MemberSignature Language="C#" Value="public static Gdk.Window LookupForDisplay (Gdk.Display display, uint anid);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="display" Type="Gdk.Display" />
-        <Parameter Name="anid" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="display">a <see cref="T:Gdk.Display" /></param>
-        <param name="anid">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ForeignNewForDisplay">
-      <MemberSignature Language="C#" Value="public static Gdk.Window ForeignNewForDisplay (Gdk.Display display, uint anid);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="display" Type="Gdk.Display" />
-        <Parameter Name="anid" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="display">a <see cref="T:Gdk.Display" /></param>
-        <param name="anid">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Fullscreen">
-      <MemberSignature Language="C#" Value="public void Fullscreen ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Unfullscreen">
-      <MemberSignature Language="C#" Value="public void Unfullscreen ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetOrigin">
-      <MemberSignature Language="C#" Value="public int GetOrigin (out int x, out int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetInternalPaintInfo">
-      <MemberSignature Language="C#" Value="public void GetInternalPaintInfo (out Gdk.Drawable real_drawable, out int x_offset, out int y_offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="real_drawable" Type="Gdk.Drawable&amp;" RefType="out" />
-        <Parameter Name="x_offset" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y_offset" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="real_drawable">a <see cref="T:Gdk.Drawable&amp;" /></param>
-        <param name="x_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="y_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="AtPointer">
-      <MemberSignature Language="C#" Value="public static Gdk.Window AtPointer (out int win_x, out int win_y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="win_x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="win_y" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="win_x">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="win_y">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ConstrainSize">
-      <MemberSignature Language="C#" Value="public static void ConstrainSize (Gdk.Geometry geometry, uint flags, int width, int height, out int new_width, out int new_height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="geometry" Type="Gdk.Geometry" />
-        <Parameter Name="flags" Type="System.UInt32" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-        <Parameter Name="new_width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="new_height" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="geometry">a <see cref="T:Gdk.Geometry" /></param>
-        <param name="flags">a <see cref="T:System.UInt32" /></param>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <param name="height">a <see cref="T:System.Int32" /></param>
-        <param name="new_width">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="new_height">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetGeometry">
-      <MemberSignature Language="C#" Value="public void GetGeometry (out int x, out int y, out int width, out int height, out int depth);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="depth" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="width">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="height">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="depth">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetRootOrigin">
-      <MemberSignature Language="C#" Value="public void GetRootOrigin (out int x, out int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetDecorations">
-      <MemberSignature Language="C#" Value="public bool GetDecorations (out Gdk.WMDecoration decorations);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="decorations" Type="Gdk.WMDecoration&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Returns the decorations set on the window with <see cref="M:Gdk.Window.SetDecorations" />.
-	</summary>
-        <param name="decorations">a <see cref="T:Gdk.WMDecoration&amp;" /> to put the decorations in</param>
-        <returns>a <see cref="T:System.Boolean" />, true if the window has decorations set, false otherwise.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetPosition">
-      <MemberSignature Language="C#" Value="public void GetPosition (out int x, out int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="IsVisible">
-      <MemberSignature Language="C#" Value="public bool IsVisible { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="IsViewable">
-      <MemberSignature Language="C#" Value="public bool IsViewable { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Window (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Toplevels">
-      <MemberSignature Language="C#" Value="public static Gdk.Window[] Toplevels { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Window[]" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Children">
-      <MemberSignature Language="C#" Value="public Gdk.Window[] Children { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Gets the children of window known to Gdk. </summary>
-        <value>The array of windows.</value>
-        <remarks>This function only returns children created via GDK, so for example it's useless when used with the root window; it only returns windows an application created itself.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IconList">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf[] IconList { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Pixbuf[]</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Pixbuf[]" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="MoveResize">
-      <MemberSignature Language="C#" Value="public void MoveResize (Gdk.Rectangle rect);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="rect" Type="Gdk.Rectangle" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="rect">a <see cref="T:Gdk.Rectangle" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ClearArea">
-      <MemberSignature Language="C#" Value="public void ClearArea (Gdk.Rectangle rect, bool expose);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="rect" Type="Gdk.Rectangle" />
-        <Parameter Name="expose" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="rect">a <see cref="T:Gdk.Rectangle" /></param>
-        <param name="expose">a <see cref="T:System.Boolean" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="UserData">
-      <MemberSignature Language="C#" Value="public IntPtr UserData { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.IntPtr</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.IntPtr" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="KeepAbove">
-      <MemberSignature Language="C#" Value="public bool KeepAbove { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="KeepBelow">
-      <MemberSignature Language="C#" Value="public bool KeepBelow { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="AcceptFocus">
-      <MemberSignature Language="C#" Value="public bool AcceptFocus { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="Group">
-      <MemberSignature Language="C#" Value="public Gdk.Window Group { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Window" /></value>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="GetDeskrelativeOrigin">
-      <MemberSignature Language="C#" Value="public bool GetDeskrelativeOrigin (out int x, out int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32" /></param>
-        <param name="y">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="SetHints">
-      <MemberSignature Language="C#" Value="public void SetHints (int x, int y, int min_width, int min_height, int max_width, int max_height, int flags);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="min_width" Type="System.Int32" />
-        <Parameter Name="min_height" Type="System.Int32" />
-        <Parameter Name="max_width" Type="System.Int32" />
-        <Parameter Name="max_height" Type="System.Int32" />
-        <Parameter Name="flags" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32" /></param>
-        <param name="y">a <see cref="T:System.Int32" /></param>
-        <param name="min_width">a <see cref="T:System.Int32" /></param>
-        <param name="min_height">a <see cref="T:System.Int32" /></param>
-        <param name="max_width">a <see cref="T:System.Int32" /></param>
-        <param name="max_height">a <see cref="T:System.Int32" /></param>
-        <param name="flags">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="FrameExtents">
-      <MemberSignature Language="C#" Value="public Gdk.Rectangle FrameExtents { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Rectangle</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Obtains the bounding box of the window.</summary>
-        <value>a <see cref="T:Gdk.Rectangle" /></value>
-        <remarks>Area includes window manager titlebar/borders if any. The frame position is given in root window coordinates. To get the position of the window itself (rather than the frame) in root window coordinates, use <see cref="M:Gdk.Window.GetOrigin" />.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="AddFilterForAll">
-      <MemberSignature Language="C#" Value="public static void AddFilterForAll (Gdk.FilterFunc func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Gdk.FilterFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Adds an event filtering function for all Windows.</summary>
-        <param name="func">a <see cref="T:Gdk.FilterFunc" /></param>
-        <remarks>It is possible to do significant damage to Gdk's built in event processing using this capability if used improperly.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveFilterForAll">
-      <MemberSignature Language="C#" Value="public static void RemoveFilterForAll (Gdk.FilterFunc func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Gdk.FilterFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Removes an event filtering function for all Windows.</summary>
-        <param name="func">a <see cref="T:Gdk.FilterFunc" /></param>
-        <remarks />
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="FocusOnMap">
-      <MemberSignature Language="C#" Value="public bool FocusOnMap { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="ConfigureFinished">
-      <MemberSignature Language="C#" Value="public void ConfigureFinished ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="EnableSynchronizedConfigure">
-      <MemberSignature Language="C#" Value="public void EnableSynchronizedConfigure ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="MoveRegion">
-      <MemberSignature Language="C#" Value="public void MoveRegion (Gdk.Region region, int dx, int dy);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="region" Type="Gdk.Region" />
-        <Parameter Name="dx" Type="System.Int32" />
-        <Parameter Name="dy" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="region">The region to be moved.</param>
-        <param name="dx">The offset in the X direction.</param>
-        <param name="dy">The offset in the Y direction.</param>
-        <summary>Moves a region by a specified offset.</summary>
-        <remarks>The portions of <paramref name="region" /> that not covered by its new position are invalidated.</remarks>
-        <since version="Gtk# 2.8" />
-      </Docs>
-    </Member>
-    <Member MemberName="UrgencyHint">
-      <MemberSignature Language="C#" Value="public bool UrgencyHint { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Indicates if the window needs the user's urgent attention.</summary>
-        <value>
-          <see langword="true" /> to set the hint, or <see langword="false" /> to clear it.</value>
-        <remarks />
-        <since version="Gtk# 2.8" />
-      </Docs>
-    </Member>
-    <Member MemberName="InputShapeCombineMask">
-      <MemberSignature Language="C#" Value="public void InputShapeCombineMask (Gdk.Pixmap mask, int x, int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="mask" Type="Gdk.Pixmap" />
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="mask">a <see cref="T:Gdk.Pixmap" /> containing the mask.</param>
-        <param name="x">x offset within the Window.</param>
-        <param name="y">y offset within the Window.</param>
-        <summary>Applies an Input shape mask to the Window.</summary>
-        <remarks>Depends on optional features within the windowing environment.  If those features aren't supporting the method has no effect.</remarks>
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="SetChildInputShapes">
-      <MemberSignature Language="C#" Value="public void SetChildInputShapes ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Sets the input mask to the union of all child window masks.</summary>
-        <remarks>Ignores the windows own mask.  If you wish to add the child window masks to the parent, use <see cref="M:Gdk.Window.MergeChildInputShapes" />.</remarks>
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="InputShapeCombineRegion">
-      <MemberSignature Language="C#" Value="public void InputShapeCombineRegion (Gdk.Region shape_region, int offset_x, int offset_y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="shape_region" Type="Gdk.Region" />
-        <Parameter Name="offset_x" Type="System.Int32" />
-        <Parameter Name="offset_y" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="shape_region">a <see cref="T:Gdk.Region" /> containing the desired input mask.</param>
-        <param name="offset_x">x offset within the Window.</param>
-        <param name="offset_y">y offset within the Window.</param>
-        <summary>Applies an Input shape region to the Window.</summary>
-        <remarks>Depends on optional features within the windowing environment.  If those features aren't supporting the method has no effect.</remarks>
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="MergeChildInputShapes">
-      <MemberSignature Language="C#" Value="public void MergeChildInputShapes ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Merges the union of all child window masks into the Input mask.</summary>
-        <remarks>Includes the current window input mask.  To ignore the parent mask, use <see cref="M:Gdk.Window.SetChildInputShapes" />.</remarks>
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="Beep">
-      <MemberSignature Language="C#" Value="public void Beep ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emits a short beep.</summary>
-        <remarks />
-        <since version="Gtk# 2.12" />
-      </Docs>
-    </Member>
-    <Member MemberName="Composited">
-      <MemberSignature Language="C#" Value="public bool Composited { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Sets Composited indicator of window.</summary>
-        <value>If <see langword="true" /> window is composited.</value>
-        <remarks>Composited windows are not automatically drawn to the screen, but are instead rendered to an offscreen buffer and an expose event is sent to the window's parent.</remarks>
-        <since version="Gtk# 2.12" />
-      </Docs>
-    </Member>
-    <Member MemberName="Opacity">
-      <MemberSignature Language="C#" Value="public double Opacity { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Opacity Property.</summary>
-        <value>A double between 0 and 1.</value>
-        <remarks />
-        <since version="Gtk# 2.12" />
-      </Docs>
-    </Member>
-    <Member MemberName="StartupId">
-      <MemberSignature Language="C#" Value="public string StartupId { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Startup notification ID.</summary>
-        <value>A string.</value>
-        <remarks>When using Gtk, consider using <see cref="M:Gtk.Window.StartupId" /> instead.</remarks>
-        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
   </Members>

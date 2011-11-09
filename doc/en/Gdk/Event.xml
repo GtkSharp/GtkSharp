@@ -1,16 +1,12 @@
 <Type Name="Event" FullName="Gdk.Event">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class Event : GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Event extends System.Object implements class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>This object contains the fields that are common to all Event classes. Any Gdk.Event* can be safely cast to a Gdk.Event</summary>
-    <remarks>This class is equivalent to the GdkEventAny structure in the C API.</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
@@ -19,36 +15,48 @@
       <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
   </Interfaces>
+  <Docs>
+    <summary>This object contains the fields that are common to all Event classes. Any Gdk.Event* can be safely cast to a Gdk.Event</summary>
+    <remarks>This class is equivalent to the GdkEventAny structure in the C API.</remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Event (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Type">
-      <MemberSignature Language="C#" Value="public Gdk.EventType Type { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="GetEvent">
+      <MemberSignature Language="C#" Value="public static Gdk.Event GetEvent (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Event GetEvent(native int raw) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Gdk.EventType</ReturnType>
+        <ReturnType>Gdk.Event</ReturnType>
       </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
-        <summary>the type of the event.</summary>
-        <value>the type of the event.</value>
-        <remarks>None.</remarks>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Gets an Event or Event subclass for a native event pointer.</summary>
+        <returns>a <see cref="T:Gdk.Event" /></returns>
+        <remarks />
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -61,7 +69,8 @@
       </Docs>
     </Member>
     <Member MemberName="Handle">
-      <MemberSignature Language="C#" Value="public IntPtr Handle { get; };" />
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
@@ -73,51 +82,9 @@
         <remarks>This property should rarely if ever need to be accessed.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Window">
-      <MemberSignature Language="C#" Value="public Gdk.Window Window { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The window which received the event.</summary>
-        <value>The window which received the event.</value>
-        <remarks>This is a <see cref="T:Gdk.Window" /> not a <see cref="T:Gtk.Window" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SendEvent">
-      <MemberSignature Language="C#" Value="public bool SendEvent { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>true if the event was sent explicitly (e.g. using XSendEvent).</summary>
-        <value>true if the event was sent explicitly (e.g. using XSendEvent).</value>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetEvent">
-      <MemberSignature Language="C#" Value="public static Gdk.Event GetEvent (IntPtr raw);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Event</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Gets an Event or Event subclass for a native event pointer.</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Gdk.Event" /></returns>
-        <remarks />
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
     <Member MemberName="New">
       <MemberSignature Language="C#" Value="public static Gdk.Event New (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Event New(native int raw) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Event</ReturnType>
@@ -131,6 +98,47 @@
         <returns>A managed event instance.</returns>
         <remarks />
         <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="SendEvent">
+      <MemberSignature Language="C#" Value="public bool SendEvent { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SendEvent" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>true if the event was sent explicitly (e.g. using XSendEvent).</summary>
+        <value>true if the event was sent explicitly (e.g. using XSendEvent).</value>
+        <remarks>None.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Type">
+      <MemberSignature Language="C#" Value="public Gdk.EventType Type { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.EventType Type" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.EventType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>the type of the event.</summary>
+        <value>the type of the event.</value>
+        <remarks>None.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Window">
+      <MemberSignature Language="C#" Value="public Gdk.Window Window { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window Window" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The window which received the event.</summary>
+        <value>The window which received the event.</value>
+        <remarks>This is a <see cref="T:Gdk.Window" /> not a <see cref="T:Gtk.Window" />.</remarks>
       </Docs>
     </Member>
   </Members>

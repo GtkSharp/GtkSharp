@@ -1,40 +1,24 @@
 <Type Name="Item" FullName="Pango.Item">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class Item : GLib.Opaque" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Item extends GLib.Opaque" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Stores information about a segment of text.</summary>
-    <remarks />
-  </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>Stores information about a segment of text.</summary>
+    <remarks />
+  </Docs>
   <Members>
-    <Member MemberName="Zero">
-      <MemberSignature Language="C#" Value="public static Pango.Item Zero;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Item</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns an empty <see cref="T:Pango.Item" /></summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("Pango.Item is a reference type now, use null")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Item ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
@@ -42,49 +26,35 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Pango.Item New ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Item</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Obsolete: replaced by ordinary constructor</summary>
-        <returns>a new <see cref="T:Pango.Item" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Item (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal method.</summary>
         <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
+        <summary>Internal method.</summary>
         <remarks>This is an internal method, and should not be used by user code.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Pango.Item New (IntPtr raw);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Analysis">
+      <MemberSignature Language="C#" Value="public Pango.Analysis Analysis { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.Analysis Analysis" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Pango.Item</ReturnType>
+        <ReturnType>Pango.Analysis</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
       <Docs>
-        <summary>Obsolete internal constructor</summary>
-        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
-        <returns>an object of type <see cref="T:Pango.Item" /></returns>
-        <remarks>This is an internal method, and should not be used by user code.</remarks>
+        <summary>the properties of the segment.</summary>
+        <value>the properties of the segment.</value>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Copy">
       <MemberSignature Language="C#" Value="public Pango.Item Copy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.Item Copy() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Pango.Item</ReturnType>
@@ -96,38 +66,54 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Split">
-      <MemberSignature Language="C#" Value="public Pango.Item Split (int split_index, int split_offset);" />
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~Item ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Pango.Item</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="split_index" Type="System.Int32" />
-        <Parameter Name="split_offset" Type="System.Int32" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Modifies orig to cover only the text after <paramref name="split_index" />, and returns a new item that covers the text before <paramref name="split_index" /> that used to be in orig.</summary>
-        <param name="split_index"> byte index of position to split item, relative to the start of the item</param>
-        <param name="split_offset"> number of chars between start of orig and <paramref name="split_index" /></param>
-        <returns> new item representing text before <paramref name="split_index" /></returns>
-        <remarks>You can think of <paramref name="split_index" /> as the length of the returned item. <paramref name="split_index" /> may not be 0, and it may not be greater than or equal to the length of orig (that is, there must be at least one byte assigned to each item, you cannot create a zero-length item). <paramref name="split_offset" /> is the length of the first item in chars, and must be provided because the text used to generate the item is not available, so <see cref="M:Pango.Item.Split()" /> cannot count the char length of the split items itself.</remarks>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="Offset">
-      <MemberSignature Language="C#" Value="public int Offset { set; get; };" />
+    <Member MemberName="Free">
+      <MemberSignature Language="C#" Value="protected override void Free (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Free(native int raw) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>the offset of the segment from the beginning of the string in bytes.</summary>
-        <value>the offset of the segment from the beginning of the string in bytes.</value>
+        <summary>Native GLib type value.</summary>
+        <value>a <see cref="T:GLib.GType" />.</value>
         <remarks />
+        <since version="Gtk# 2.8" />
       </Docs>
     </Member>
     <Member MemberName="Length">
-      <MemberSignature Language="C#" Value="public int Length { set; get; };" />
+      <MemberSignature Language="C#" Value="public int Length { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Length" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -138,8 +124,50 @@
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="New">
+      <MemberSignature Language="C#" Value="public static Pango.Item New ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Pango.Item New() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by Item() constructor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Pango.Item</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Obsolete: replaced by ordinary constructor</summary>
+        <returns>a new <see cref="T:Pango.Item" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="New">
+      <MemberSignature Language="C#" Value="public static Pango.Item New (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Pango.Item New(native int raw) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by Item(IntPtr) constructor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Pango.Item</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
+        <summary>Obsolete internal constructor</summary>
+        <returns>an object of type <see cref="T:Pango.Item" /></returns>
+        <remarks>This is an internal method, and should not be used by user code.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="NumChars">
-      <MemberSignature Language="C#" Value="public int NumChars { set; get; };" />
+      <MemberSignature Language="C#" Value="public int NumChars { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NumChars" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -150,29 +178,54 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Analysis">
-      <MemberSignature Language="C#" Value="public Pango.Analysis Analysis { set; get; };" />
+    <Member MemberName="Offset">
+      <MemberSignature Language="C#" Value="public int Offset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Offset" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Pango.Analysis</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>the properties of the segment.</summary>
-        <value>the properties of the segment.</value>
+        <summary>the offset of the segment from the beginning of the string in bytes.</summary>
+        <value>the offset of the segment from the beginning of the string in bytes.</value>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="Split">
+      <MemberSignature Language="C#" Value="public Pango.Item Split (int split_index, int split_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.Item Split(int32 split_index, int32 split_offset) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
+        <ReturnType>Pango.Item</ReturnType>
       </ReturnValue>
+      <Parameters>
+        <Parameter Name="split_index" Type="System.Int32" />
+        <Parameter Name="split_offset" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>Native GLib type value.</summary>
-        <value>a <see cref="T:GLib.GType" />.</value>
+        <param name="split_index"> byte index of position to split item, relative to the start of the item</param>
+        <param name="split_offset"> number of chars between start of orig and <paramref name="split_index" /></param>
+        <summary>Modifies orig to cover only the text after <paramref name="split_index" />, and returns a new item that covers the text before <paramref name="split_index" /> that used to be in orig.</summary>
+        <returns> new item representing text before <paramref name="split_index" /></returns>
+        <remarks>You can think of <paramref name="split_index" /> as the length of the returned item. <paramref name="split_index" /> may not be 0, and it may not be greater than or equal to the length of orig (that is, there must be at least one byte assigned to each item, you cannot create a zero-length item). <paramref name="split_offset" /> is the length of the first item in chars, and must be provided because the text used to generate the item is not available, so <see cref="M:Pango.Item.Split()" /> cannot count the char length of the split items itself.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Zero">
+      <MemberSignature Language="C#" Value="public static Pango.Item Zero;" />
+      <MemberSignature Language="ILAsm" Value=".field public static class Pango.Item Zero" />
+      <MemberType>Field</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Pango.Item is a reference type now, use null")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Pango.Item</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns an empty <see cref="T:Pango.Item" /></summary>
         <remarks />
-        <since version="Gtk# 2.8" />
       </Docs>
     </Member>
   </Members>

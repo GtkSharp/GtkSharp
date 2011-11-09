@@ -1,12 +1,17 @@
 <Type Name="Socket" FullName="Gtk.Socket">
   <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Socket : Gtk.Container" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Socket extends Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Container</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>Container for widgets from other processes.</summary>
     <remarks>
@@ -26,48 +31,10 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
       <para>A socket can also be used to swallow arbitrary pre-existing top-level windows using <see cref="M:Gtk.Socket.Steal()" />, though the integration when this is done will not be as close as between a <see cref="T:Gtk.Plug" /> and a <see cref="T:Gtk.Socket" />.</para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Container</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="AddId">
-      <MemberSignature Language="C#" Value="public void AddId (uint window_id);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="window_id" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Adds an XEMBED client, such as a <see cref="T:Gtk.Plug" />, to the <see cref="T:Gtk.Socket" />.</summary>
-        <param name="window_id">an object of type <see cref="T:System.UInt32" /></param>
-        <remarks>
-          <para>The client may be in the same process or in a different process.</para>
-          <para>To embed a <see cref="T:Gtk.Plug" /> in a <see cref="T:Gtk.Socket" />, you can either create the <see cref="T:Gtk.Plug" /> with <see cref="C:Gtk.Plug()" />, call <see cref="M:Gtk.Plug.GetId()" /> to get the window ID of the plug, and then pass that to the <see cref="M:Gtk.Socket.AddId()" />, or you can call <see cref="M:Gtk.Socket.GetId()" /> to get the window ID for the socket, and call <see cref="C:Gtk.Plug()" /> passing in that ID.</para>
-          <para>The <see cref="T:Gtk.Socket" /> must have already be added into a toplevel window before you can make this call.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Socket (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Socket ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters />
@@ -77,55 +44,42 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Id">
-      <MemberSignature Language="C#" Value="public uint Id { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Socket (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
-        <summary>The window ID of a <see cref="T:Gtk.Socket" /> widget.</summary>
-        <value>an object of type <see cref="T:System.UInt32" /></value>
-        <remarks>This can be used to create a client embedded inside the socket, for instance with <see cref="C:Gtk.Plug()" />. The <see cref="T:Gtk.Socket" /> must have already be added into a toplevel window before you can make this call.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="PlugAdded">
-      <MemberSignature Language="C#" Value="public event EventHandler PlugAdded;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>This event is emitted when a client is successfully added to the socket.</summary>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("plug_added")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="PlugRemoved">
-      <MemberSignature Language="C#" Value="public event Gtk.PlugRemovedHandler PlugRemoved;" />
-      <MemberType>Event</MemberType>
+    <Member MemberName="AddId">
+      <MemberSignature Language="C#" Value="public void AddId (ulong window);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddId(unsigned int64 window) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.PlugRemovedHandler</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="window" Type="System.UInt64" />
+      </Parameters>
       <Docs>
-        <summary>This event is emitted when a client is removed from the socket.</summary>
-        <remarks>The default action is to destroy the <see cref="T:Gtk.Socket" /> widget, so if you want to reuse it you must add a signal handler that returns <see langword="true" />.</remarks>
+        <param name="window">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("plug_removed")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -137,9 +91,46 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Socket" />.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="Id">
+      <MemberSignature Language="C#" Value="public ulong Id { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int64 Id" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The window ID of a <see cref="T:Gtk.Socket" /> widget.</summary>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
+        <remarks>This can be used to create a client embedded inside the socket, for instance with <see cref="C:Gtk.Plug()" />. The <see cref="T:Gtk.Socket" /> must have already be added into a toplevel window before you can make this call.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPlugAdded">
+      <MemberSignature Language="C#" Value="protected virtual void OnPlugAdded ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPlugAdded() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePlugAdded", Type=typeof(Gtk.Socket))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Socket.PlugAdded" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Socket.PlugAdded" /> event.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="OnPlugRemoved">
       <MemberSignature Language="C#" Value="protected virtual bool OnPlugRemoved ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnPlugRemoved() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePlugRemoved", Type=typeof(Gtk.Socket))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -150,61 +141,55 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
         <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Socket.PlugRemoved" /> event.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="OnPlugAdded">
-      <MemberSignature Language="C#" Value="protected virtual void OnPlugAdded ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="PlugAdded">
+      <MemberSignature Language="C#" Value="public event EventHandler PlugAdded;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler PlugAdded" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("plug-added")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Socket.PlugAdded" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Socket.PlugAdded" /> event.</remarks>
+        <summary>This event is emitted when a client is successfully added to the socket.</summary>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Socket (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
+    <Member MemberName="PlugRemoved">
+      <MemberSignature Language="C#" Value="public event Gtk.PlugRemovedHandler PlugRemoved;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PlugRemovedHandler PlugRemoved" />
+      <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
+          <AttributeName>GLib.Signal("plug-removed")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="Steal">
-      <MemberSignature Language="C#" Value="public void Steal (uint wid);" />
-      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gtk.PlugRemovedHandler</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="wid" Type="System.UInt32" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>
-	  Reparents a pre-existing toplevel window into a <see cref="T:Gtk.Socket" />. 
-	</summary>
-        <param name="wid">a <see cref="T:System.UInt32" />, the window
-          ID of an existing toplevel window.</param>
-        <remarks>
-	  This is meant to embed clients that do not know about
-	  embedding into a <see cref="T:Gtk.Socket" />, however doing
-	  so is inherently unreliable, and using this function is not
-	  recommended.
- 
-	  The <see cref="T:Gtk.Socket" /> must have already been added
-	  into a toplevel window before you can make this call.
-	</remarks>
-        <since version="Gtk# 2.4" />
+        <summary>This event is emitted when a client is removed from the socket.</summary>
+        <remarks>The default action is to destroy the <see cref="T:Gtk.Socket" /> widget, so if you want to reuse it you must add a signal handler that returns <see langword="true" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PlugWindow">
+      <MemberSignature Language="C#" Value="public Gdk.Window PlugWindow { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window PlugWindow" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
   </Members>

@@ -1,12 +1,17 @@
 <Type Name="PixbufLoader" FullName="Gdk.PixbufLoader">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class PixbufLoader : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit PixbufLoader extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>
       <para>PixbufLoader is a 'passive' pixbuf loader. It's not actively read pix buf data, but 'listen' for incoming data instead. It's useful in a case where you want to read the image data in small chunks. Typical use of PixbufLoader is when you want to read a very large image data or reading image from a slow media (such as a slow network connection).</para>
@@ -127,62 +132,10 @@ namespace GtkDemo
       </example>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="Write">
-      <MemberSignature Language="C#" Value="public bool Write (byte[] buf, ulong count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="buf" Type="System.Byte[]" />
-        <Parameter Name="count" Type="System.UInt64" />
-      </Parameters>
-      <Docs>
-        <summary>Parses the next count bytes of image data from buffer buf.</summary>
-        <param name="buf">array of bytes buffer to parse.</param>
-        <param name="count">number of bytes to parse.</param>
-        <returns>returns true if data was parsed and loaded succesfully.</returns>
-        <remarks>
-          <para>If the return value is false, the PixbufLoader will be closed.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Close">
-      <MemberSignature Language="C#" Value="public bool Close ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Closes the loader.</summary>
-        <returns>returns true on successful close and false on error.</returns>
-        <remarks>During the close, PixbufLoader will parse any data that has not been parsed. If the data is incomplete or corrupted, this method will return false.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufLoader (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public PixbufLoader ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters />
@@ -191,20 +144,169 @@ namespace GtkDemo
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Pixbuf">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Pixbuf { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Pixbuf</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufLoader (byte[] buffer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(unsigned int8[] buffer) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="buffer" Type="System.Byte[]" />
+      </Parameters>
       <Docs>
-        <summary>The Pixbuf that is being loaded.</summary>
-        <value>an object of type <see cref="T:Gdk.Pixbuf" /></value>
-        <remarks />
+        <param name="buffer">The <see cref="T:System.Byte[]" /> containing the image.</param>
+        <summary>Loads a Pixbuf in a buffer.</summary>
+        <remarks>See also <see cref="C:Gdk.Pixbuf(System.Byte[])" /></remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufLoader (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufLoader (System.IO.Stream stream);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+      </Parameters>
+      <Docs>
+        <param name="stream">a <see cref="T:System.IO.Stream" /> containing the image.</param>
+        <summary>Loads a Pixbuf from a <see cref="T:System.IO.Stream" />.</summary>
+        <remarks>See also <see cref="C:Gdk.Pixbuf(System.IO.Stream)" /></remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufLoader (string mime_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string mime_type) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="mime_type" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="mime_type">a <see cref="T:System.String" /></param>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufLoader (System.Reflection.Assembly assembly, string resource);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Reflection.Assembly assembly, string resource) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+        <Parameter Name="resource" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
+<para>
+If the value is <see langword="null" />, the image will be looked up on the calling assembly.</para></param>
+        <param name="resource">The name given as the resource in the assembly.</param>
+        <summary>Loads a Pixbuf embedded in an assembly.</summary>
+        <remarks>See also <see cref="C:Gdk.Pixbuf(System.Reflection.Assembly,System.String)" /></remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufLoader (byte[] buffer, int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(unsigned int8[] buffer, int32 width, int32 height) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="buffer" Type="System.Byte[]" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">The <see cref="T:System.Byte[]" /> containing the image.</param>
+        <param name="width">The required width of the pixbuf.</param>
+        <param name="height">The required height of the pixbuf.</param>
+        <summary>Loads a Pixbuf in a buffer with a specific size.</summary>
+        <remarks>See also <see cref="C:Gdk.Pixbuf(System.Byte[], int, int)" /></remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufLoader (System.IO.Stream stream, int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream, int32 width, int32 height) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="stream">a <see cref="T:System.IO.Stream" /> containing the image.</param>
+        <param name="width">a <see cref="T:System.Int32" /> specifying the required width.</param>
+        <param name="height">a <see cref="T:System.Int32" /> specifying the required height.</param>
+        <summary>Loads a Pixbuf from a <see cref="T:System.IO.Stream" />, creating it with a specific size.</summary>
+        <remarks>See also <see cref="C:Gdk.Pixbuf(System.IO.Stream, int, int)" /></remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufLoader (string file, int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string file, int32 width, int32 height) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="file" Type="System.String" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="file">a <see cref="T:System.String" /></param>
+        <param name="width">a <see cref="T:System.Int32" /></param>
+        <param name="height">a <see cref="T:System.Int32" /></param>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufLoader (System.Reflection.Assembly assembly, string resource, int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Reflection.Assembly assembly, string resource, int32 width, int32 height) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+        <Parameter Name="resource" Type="System.String" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
+<para>
+If the value is <see langword="null" />, the image will be looked up on the calling assembly.</para></param>
+        <param name="resource">The name given as the resource in the assembly.</param>
+        <param name="width">The required width of the pixbuf.</param>
+        <param name="height">The required height of the pixbuf.</param>
+        <summary>Loads a Pixbuf embedded in an assembly with a specific size.</summary>
+        <remarks>See also <see cref="C:Gdk.Pixbuf(System.Reflection.Assembly,System.String, int, int)" /></remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="Animation">
-      <MemberSignature Language="C#" Value="public Gdk.PixbufAnimation Animation { get; };" />
+      <MemberSignature Language="C#" Value="public Gdk.PixbufAnimation Animation { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.PixbufAnimation Animation" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.PixbufAnimation</ReturnType>
@@ -217,7 +319,13 @@ namespace GtkDemo
     </Member>
     <Member MemberName="AreaPrepared">
       <MemberSignature Language="C#" Value="public event EventHandler AreaPrepared;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler AreaPrepared" />
       <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("area-prepared")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
@@ -226,15 +334,16 @@ namespace GtkDemo
         <summary>Emitted when the area of the PixbufLoader is prepared.</summary>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("area_prepared")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="AreaUpdated">
       <MemberSignature Language="C#" Value="public event Gdk.AreaUpdatedHandler AreaUpdated;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gdk.AreaUpdatedHandler AreaUpdated" />
       <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("area-updated")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gdk.AreaUpdatedHandler</ReturnType>
       </ReturnValue>
@@ -243,15 +352,30 @@ namespace GtkDemo
         <summary>Emitted when the area of the PixbufLoader is updated with data.</summary>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("area_updated")</AttributeName>
-        </Attribute>
-      </Attributes>
+    </Member>
+    <Member MemberName="Close">
+      <MemberSignature Language="C#" Value="public bool Close ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Close() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Closes the loader.</summary>
+        <returns>returns true on successful close and false on error.</returns>
+        <remarks>During the close, PixbufLoader will parse any data that has not been parsed. If the data is incomplete or corrupted, this method will return false.</remarks>
+      </Docs>
     </Member>
     <Member MemberName="Closed">
       <MemberSignature Language="C#" Value="public event EventHandler Closed;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Closed" />
       <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("closed")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
@@ -260,14 +384,10 @@ namespace GtkDemo
         <summary>Emitted when the PixbufLoader is closed.</summary>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("closed")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="Format">
-      <MemberSignature Language="C#" Value="public Gdk.PixbufFormat Format { get; };" />
+      <MemberSignature Language="C#" Value="public Gdk.PixbufFormat Format { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.PixbufFormat Format" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.PixbufFormat</ReturnType>
@@ -278,42 +398,9 @@ namespace GtkDemo
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SizePrepared">
-      <MemberSignature Language="C#" Value="public event Gdk.SizePreparedHandler SizePrepared;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.SizePreparedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when the PixbufLoader has prepared its size.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("size_prepared")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SetSize">
-      <MemberSignature Language="C#" Value="public void SetSize (int width, int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Set the size of the image that will be loaded.</summary>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <param name="height">a <see cref="T:System.Int32" /></param>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -325,9 +412,101 @@ namespace GtkDemo
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.PixbufLoader" />.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="LoadFromResource">
+      <MemberSignature Language="C#" Value="public static Gdk.PixbufLoader LoadFromResource (string resource);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.PixbufLoader LoadFromResource(string resource) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.PixbufLoader</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resource" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="resource">the name of the resource</param>
+        <summary>Loads a pixbuf from a resource file.</summary>
+        <returns>a <see cref="T:Gdk.PixbufLoader" /></returns>
+        <remarks>
+	    This creates a pixbuf loader to load from a resource in the calling assembly.
+	    This is equivalent to using the
+	    <see cref="C:Gdk.PixbufLoader(System.Reflection.Assembly, System.String)" />
+	    constructor with a <see langword="null" /> assembly.
+	</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="NewWithType">
+      <MemberSignature Language="C#" Value="public static Gdk.PixbufLoader NewWithType (string image_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.PixbufLoader NewWithType(string image_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.PixbufLoader</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image_type" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="image_type">a <see cref="T:System.String" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gdk.PixbufLoader" /></returns>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnAreaPrepared">
+      <MemberSignature Language="C#" Value="protected virtual void OnAreaPrepared ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAreaPrepared() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideAreaPrepared", Type=typeof(Gdk.PixbufLoader))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gdk.PixbufLoader.AreaPrepared" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gdk.PixbufLoader.AreaPrepared" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAreaUpdated">
+      <MemberSignature Language="C#" Value="protected virtual void OnAreaUpdated (int x, int y, int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAreaUpdated(int32 x, int32 y, int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideAreaUpdated", Type=typeof(Gdk.PixbufLoader))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="x">a <see cref="T:System.Int32" /></param>
+        <param name="y">a <see cref="T:System.Int32" /></param>
+        <param name="width">a <see cref="T:System.Int32" /></param>
+        <param name="height">a <see cref="T:System.Int32" /></param>
+        <summary>Default handler for the <see cref="M:Gdk.PixbufLoader.AreaUpdated" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gdk.PixbufLoader.AreaUpdated" /> event.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="OnClosed">
       <MemberSignature Language="C#" Value="protected virtual void OnClosed ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnClosed() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideClosed", Type=typeof(Gdk.PixbufLoader))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -339,7 +518,13 @@ namespace GtkDemo
     </Member>
     <Member MemberName="OnSizePrepared">
       <MemberSignature Language="C#" Value="protected virtual void OnSizePrepared (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSizePrepared(int32 width, int32 height) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSizePrepared", Type=typeof(Gdk.PixbufLoader))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -348,65 +533,64 @@ namespace GtkDemo
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gdk.PixbufLoader.SizePrepared" /> event.</summary>
         <param name="width">a <see cref="T:System.Int32" /></param>
         <param name="height">a <see cref="T:System.Int32" /></param>
+        <summary>Default handler for the <see cref="M:Gdk.PixbufLoader.SizePrepared" /> event.</summary>
         <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gdk.PixbufLoader.SizePrepared" /> event.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="OnAreaUpdated">
-      <MemberSignature Language="C#" Value="protected virtual void OnAreaUpdated (int x, int y, int width, int height);" />
+    <Member MemberName="Pixbuf">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Pixbuf { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf Pixbuf" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The Pixbuf that is being loaded.</summary>
+        <value>an object of type <see cref="T:Gdk.Pixbuf" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetSize">
+      <MemberSignature Language="C#" Value="public void SetSize (int width, int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetSize(int32 width, int32 height) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
         <Parameter Name="width" Type="System.Int32" />
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gdk.PixbufLoader.AreaUpdated" /> event.</summary>
-        <param name="x">a <see cref="T:System.Int32" /></param>
-        <param name="y">a <see cref="T:System.Int32" /></param>
         <param name="width">a <see cref="T:System.Int32" /></param>
         <param name="height">a <see cref="T:System.Int32" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gdk.PixbufLoader.AreaUpdated" /> event.</remarks>
+        <summary>Set the size of the image that will be loaded.</summary>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="OnAreaPrepared">
-      <MemberSignature Language="C#" Value="protected virtual void OnAreaPrepared ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="SizePrepared">
+      <MemberSignature Language="C#" Value="public event Gdk.SizePreparedHandler SizePrepared;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gdk.SizePreparedHandler SizePrepared" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("size-prepared")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gdk.SizePreparedHandler</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Default handler for the <see cref="M:Gdk.PixbufLoader.AreaPrepared" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gdk.PixbufLoader.AreaPrepared" /> event.</remarks>
+        <summary>Emitted when the PixbufLoader has prepared its size.</summary>
+        <remarks />
       </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected PixbufLoader (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="Write">
       <MemberSignature Language="C#" Value="public bool Write (byte[] bytes);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Write(unsigned int8[] bytes) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -415,190 +599,21 @@ namespace GtkDemo
         <Parameter Name="bytes" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <summary>Parses the bytes into the image data.</summary>
         <param name="bytes">a <see cref="T:System.Byte" /></param>
+        <summary>Parses the bytes into the image data.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>This is an overload to <see cref="M:Gdk.PixbufLoader.Write(System.Byte[],System.UInt32)" />, which determines the length automatically.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="NewWithType">
-      <MemberSignature Language="C#" Value="public static Gdk.PixbufLoader NewWithType (string image_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.PixbufLoader</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="image_type" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="image_type">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gdk.PixbufLoader" /></returns>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufLoader (string mime_type);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="mime_type" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="mime_type">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="LoadFromResource">
-      <MemberSignature Language="C#" Value="public static Gdk.PixbufLoader LoadFromResource (string resource);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.PixbufLoader</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="resource" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Loads a pixbuf from a resource file.</summary>
-        <param name="resource">the name of the resource</param>
-        <returns>a <see cref="T:Gdk.PixbufLoader" /></returns>
-        <remarks>
-	    This creates a pixbuf loader to load from a resource in the calling assembly.
-	    This is equivalent to using the
-	    <see cref="C:Gdk.PixbufLoader(System.Reflection.Assembly, System.String)" />
-	    constructor with a <see langword="null" /> assembly.
-	</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufLoader (System.IO.Stream stream);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="stream" Type="System.IO.Stream" />
-      </Parameters>
-      <Docs>
-        <summary>Loads a Pixbuf from a <see cref="T:System.IO.Stream" />.</summary>
-        <param name="stream">a <see cref="T:System.IO.Stream" /> containing the image.</param>
-        <remarks>See also <see cref="C:Gdk.Pixbuf(System.IO.Stream)" /></remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufLoader (System.IO.Stream stream, int width, int height);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="stream" Type="System.IO.Stream" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Loads a Pixbuf from a <see cref="T:System.IO.Stream" />, creating it with a specific size.</summary>
-        <param name="stream">a <see cref="T:System.IO.Stream" /> containing the image.</param>
-        <param name="width">a <see cref="T:System.Int32" /> specifying the required width.</param>
-        <param name="height">a <see cref="T:System.Int32" /> specifying the required height.</param>
-        <remarks>See also <see cref="C:Gdk.Pixbuf(System.IO.Stream, int, int)" /></remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufLoader (System.Reflection.Assembly assembly, string resource);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
-        <Parameter Name="resource" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Loads a Pixbuf embedded in an assembly.</summary>
-        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
-<para>
-If the value is <see langword="null" />, the image will be looked up on the calling assembly.</para></param>
-        <param name="resource">The name given as the resource in the assembly.</param>
-        <remarks>See also <see cref="C:Gdk.Pixbuf(System.Reflection.Assembly,System.String)" /></remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufLoader (System.Reflection.Assembly assembly, string resource, int width, int height);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
-        <Parameter Name="resource" Type="System.String" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Loads a Pixbuf embedded in an assembly with a specific size.</summary>
-        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
-<para>
-If the value is <see langword="null" />, the image will be looked up on the calling assembly.</para></param>
-        <param name="resource">The name given as the resource in the assembly.</param>
-        <param name="width">The required width of the pixbuf.</param>
-        <param name="height">The required height of the pixbuf.</param>
-        <remarks>See also <see cref="C:Gdk.Pixbuf(System.Reflection.Assembly,System.String, int, int)" /></remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufLoader (byte[] buffer);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="buffer" Type="System.Byte[]" />
-      </Parameters>
-      <Docs>
-        <summary>Loads a Pixbuf in a buffer.</summary>
-        <param name="buffer">The <see cref="T:System.Byte[]" /> containing the image.</param>
-        <remarks>See also <see cref="C:Gdk.Pixbuf(System.Byte[])" /></remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufLoader (byte[] buffer, int width, int height);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="buffer" Type="System.Byte[]" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Loads a Pixbuf in a buffer with a specific size.</summary>
-        <param name="buffer">The <see cref="T:System.Byte[]" /> containing the image.</param>
-        <param name="width">The required width of the pixbuf.</param>
-        <param name="height">The required height of the pixbuf.</param>
-        <remarks>See also <see cref="C:Gdk.Pixbuf(System.Byte[], int, int)" /></remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufLoader (string file, int width, int height);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="file" Type="System.String" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="file">a <see cref="T:System.String" /></param>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <param name="height">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
     <Member MemberName="Write">
       <MemberSignature Language="C#" Value="public bool Write (byte[] bytes, uint count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Write(unsigned int8[] bytes, unsigned int32 count) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by Write (byte[], ulong) for 64 bit portability")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -607,11 +622,32 @@ If the value is <see langword="null" />, the image will be looked up on the call
         <Parameter Name="count" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Writes a Pixbuf to a buffer.</summary>
         <param name="bytes">a <see cref="T:System.Byte" /></param>
         <param name="count">a <see cref="T:System.UInt32" /></param>
+        <summary>Writes a Pixbuf to a buffer.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>This overload is obsolete and has been replaced by a ulong version for 64 bit compatibility.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Write">
+      <MemberSignature Language="C#" Value="public bool Write (byte[] buf, ulong count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Write(unsigned int8[] buf, unsigned int64 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buf" Type="System.Byte[]" />
+        <Parameter Name="count" Type="System.UInt64" />
+      </Parameters>
+      <Docs>
+        <param name="buf">array of bytes buffer to parse.</param>
+        <param name="count">number of bytes to parse.</param>
+        <summary>Parses the next count bytes of image data from buffer buf.</summary>
+        <returns>returns true if data was parsed and loaded succesfully.</returns>
+        <remarks>
+          <para>If the return value is false, the PixbufLoader will be closed.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>

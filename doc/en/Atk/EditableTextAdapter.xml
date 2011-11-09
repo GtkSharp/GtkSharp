@@ -1,8 +1,8 @@
 <Type Name="EditableTextAdapter" FullName="Atk.EditableTextAdapter">
-  <TypeSignature Language="C#" Value="public class EditableTextAdapter : GLib.GInterfaceAdapter, Atk.EditableText" />
+  <TypeSignature Language="C#" Value="public class EditableTextAdapter : GLib.GInterfaceAdapter, Atk.EditableText, GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi EditableTextAdapter extends GLib.GInterfaceAdapter implements class Atk.EditableText, class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>GLib.GInterfaceAdapter</BaseTypeName>
@@ -11,10 +11,19 @@
     <Interface>
       <InterfaceName>Atk.EditableText</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
   </Interfaces>
+  <Docs>
+    <summary>EditableText adapter.</summary>
+    <remarks>Adapts <see cref="T:Atk.EditableTextImplementor" /> implementations to the full <see cref="T:Atk.EditableText" /> API.</remarks>
+    <since version="Gtk# 2.12" />
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public EditableTextAdapter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
@@ -24,6 +33,7 @@
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public EditableTextAdapter (Atk.EditableTextImplementor implementor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Atk.EditableTextImplementor implementor) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
         <Parameter Name="implementor" Type="Atk.EditableTextImplementor" />
@@ -34,8 +44,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public EditableTextAdapter (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="CopyText">
       <MemberSignature Language="C#" Value="public void CopyText (int start_pos, int end_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CopyText(int32 start_pos, int32 end_pos) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -53,6 +78,7 @@
     </Member>
     <Member MemberName="CutText">
       <MemberSignature Language="C#" Value="public void CutText (int start_pos, int end_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CutText(int32 start_pos, int32 end_pos) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -70,6 +96,7 @@
     </Member>
     <Member MemberName="DeleteText">
       <MemberSignature Language="C#" Value="public void DeleteText (int start_pos, int end_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DeleteText(int32 start_pos, int32 end_pos) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -86,7 +113,26 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public static Atk.EditableText GetObject (GLib.Object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.EditableText GetObject(class GLib.Object obj) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.EditableText</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="GLib.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
       <MemberSignature Language="C#" Value="public static Atk.EditableText GetObject (IntPtr handle, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.EditableText GetObject(native int handle, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.EditableText</ReturnType>
@@ -103,72 +149,37 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="InsertText">
-      <MemberSignature Language="C#" Value="public void InsertText (string str1ng, ref int position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="str1ng" Type="System.String" />
-        <Parameter Name="position" Type="System.Int32&amp;" RefType="ref" />
-      </Parameters>
-      <Docs>
-        <param name="str1ng">To be added.</param>
-        <param name="position">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="PasteText">
-      <MemberSignature Language="C#" Value="public void PasteText (int position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="position" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="position">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetRunAttributes">
-      <MemberSignature Language="C#" Value="public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="attrib_set" Type="GLib.SList" />
-        <Parameter Name="start_offset" Type="System.Int32" />
-        <Parameter Name="end_offset" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="attrib_set">To be added.</param>
-        <param name="start_offset">To be added.</param>
-        <param name="end_offset">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextContents">
-      <MemberSignature Language="C#" Value="public string TextContents { set; };" />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public override GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.String</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public override IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="Implementor">
-      <MemberSignature Language="C#" Value="public Atk.EditableTextImplementor Implementor { get; };" />
+      <MemberSignature Language="C#" Value="public Atk.EditableTextImplementor Implementor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Atk.EditableTextImplementor Implementor" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Atk.EditableTextImplementor</ReturnType>
@@ -181,6 +192,7 @@
     </Member>
     <Member MemberName="InsertText">
       <MemberSignature Language="C#" Value="public void InsertText (string str1ng, ref int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InsertText(string str1ng, int32 position) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -196,8 +208,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OwnedHandle">
+      <MemberSignature Language="C#" Value="public IntPtr OwnedHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int OwnedHandle" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="PasteText">
       <MemberSignature Language="C#" Value="public void PasteText (int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PasteText(int32 position) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -213,6 +240,7 @@
     </Member>
     <Member MemberName="SetRunAttributes">
       <MemberSignature Language="C#" Value="public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetRunAttributes(class GLib.SList attrib_set, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -232,7 +260,8 @@
       </Docs>
     </Member>
     <Member MemberName="TextContents">
-      <MemberSignature Language="C#" Value="public string TextContents { set; };" />
+      <MemberSignature Language="C#" Value="public string TextContents { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string TextContents" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -244,9 +273,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary>EditableText adapter.</summary>
-    <remarks>Adapts <see cref="T:Atk.EditableTextImplementor" /> implementations to the full <see cref="T:Atk.EditableText" /> API.</remarks>
-    <since version="Gtk# 2.12" />
-  </Docs>
 </Type>

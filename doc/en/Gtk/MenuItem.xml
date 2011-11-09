@@ -1,12 +1,20 @@
 <Type Name="MenuItem" FullName="Gtk.MenuItem">
-  <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class MenuItem : Gtk.Item" />
+  <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class MenuItem : Gtk.Bin, Gtk.Activatable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit MenuItem extends Gtk.Bin implements class GLib.IWrapper, class Gtk.Activatable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Bin</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Gtk.Activatable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>A widget used for items in menus.</summary>
     <remarks>
@@ -24,65 +32,75 @@
       </example>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Item</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="RemoveSubmenu">
-      <MemberSignature Language="C#" Value="public void RemoveSubmenu ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MenuItem ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Removes the submenu of the <see cref="T:Gtk.MenuItem" />, if it has one.</summary>
+        <summary>A constructor.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Deselect">
-      <MemberSignature Language="C#" Value="public void Deselect ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Fires the <see cref="F:Gtk.Item.Deselect" /> event.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Select">
-      <MemberSignature Language="C#" Value="public void Select ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Fires the <see cref="F:Gtk.Item.Select" /> event.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ToggleSizeAllocate">
-      <MemberSignature Language="C#" Value="public void ToggleSizeAllocate (int allocation);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MenuItem (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="allocation" Type="System.Int32" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Emits the <see cref="F:Gtk.MenuItem.ToggleSizeAllocated" /> event on the given item.</summary>
-        <param name="allocation">The allocation to use as signal data.</param>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MenuItem (string label);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string label) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="label" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="label">The label text on the menu item, with an underscore in front of the mnemonic character.</param>
+        <summary>Creates a new MenuItem containing a label.</summary>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="AccelPath">
+      <MemberSignature Language="C#" Value="public string AccelPath { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string AccelPath" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("accel-path")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets the accelerator path.</summary>
+        <value>The accelerator path of the menu item.</value>
+        <remarks>
+          <para>
+          Sets the accelerator path, through which runtime changes of the menu item's accelerator caused by the user can be identified and saved to persistant storage.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Activate">
       <MemberSignature Language="C#" Value="public void Activate ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Activate() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -93,47 +111,374 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public MenuItem (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public MenuItem ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="Activated">
+      <MemberSignature Language="C#" Value="public event EventHandler Activated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Activated" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("activate")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>A constructor.</summary>
+        <summary>Emitted when the item is activated.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public MenuItem (string label);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="ActivateItem">
+      <MemberSignature Language="C#" Value="public event EventHandler ActivateItem;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ActivateItem" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("activate-item")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when the item is activated, but also if the menu item has a submenu. For normal applications, the relevant event is <see cref="F:Gtk.MenuItem.Activated" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Deselect">
+      <MemberSignature Language="C#" Value="public void Deselect ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Deselect() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Fires the <see cref="F:Gtk.Item.Deselect" /> event.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Deselected">
+      <MemberSignature Language="C#" Value="public event EventHandler Deselected;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Deselected" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("deselect")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="DoSetRelatedAction">
+      <MemberSignature Language="C#" Value="public void DoSetRelatedAction (Gtk.Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DoSetRelatedAction(class Gtk.Action action) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="action" Type="Gtk.Action" />
+      </Parameters>
+      <Docs>
+        <param name="action">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.MenuItem" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Label">
+      <MemberSignature Language="C#" Value="public string Label { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Label" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("label")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnActivated">
+      <MemberSignature Language="C#" Value="protected virtual void OnActivated ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnActivated() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideActivated", Type=typeof(Gtk.MenuItem))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.MenuItem.Activated" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuItem.Activated" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnActivateItem">
+      <MemberSignature Language="C#" Value="protected virtual void OnActivateItem ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnActivateItem() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideActivateItem", Type=typeof(Gtk.MenuItem))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.MenuItem.ActivateItem" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuItem.ActivateItem" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnDeselected">
+      <MemberSignature Language="C#" Value="protected virtual void OnDeselected ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnDeselected() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideDeselected", Type=typeof(Gtk.MenuItem))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetLabel">
+      <MemberSignature Language="C#" Value="protected virtual string OnGetLabel ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string OnGetLabel() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetLabel", Type=typeof(Gtk.MenuItem))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSelected">
+      <MemberSignature Language="C#" Value="protected virtual void OnSelected ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSelected() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSelected", Type=typeof(Gtk.MenuItem))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetLabel">
+      <MemberSignature Language="C#" Value="protected virtual void OnSetLabel (string label);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSetLabel(string label) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSetLabel", Type=typeof(Gtk.MenuItem))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
       <Parameters>
         <Parameter Name="label" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Creates a new MenuItem containing a label.</summary>
-        <param name="label">The label text on the menu item, with an underscore in front of the mnemonic character.</param>
+        <param name="label">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnToggleSizeAllocated">
+      <MemberSignature Language="C#" Value="protected virtual void OnToggleSizeAllocated (int allocation);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnToggleSizeAllocated(int32 allocation) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideToggleSizeAllocated", Type=typeof(Gtk.MenuItem))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="allocation" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="allocation">a <see cref="T:System.Int32" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.MenuItem.ToggleSizeAllocated" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuItem.ToggleSizeAllocated" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnToggleSizeRequested">
+      <MemberSignature Language="C#" Value="protected virtual void OnToggleSizeRequested (out int requisition);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnToggleSizeRequested(int32 requisition) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideToggleSizeRequested", Type=typeof(Gtk.MenuItem))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requisition" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="requisition">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.MenuItem.ToggleSizeRequested" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuItem.ToggleSizeRequested" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RelatedAction">
+      <MemberSignature Language="C#" Value="public Gtk.Action RelatedAction { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Action RelatedAction" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("related-action")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Action</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ReserveIndicator">
+      <MemberSignature Language="C#" Value="public bool ReserveIndicator { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ReserveIndicator" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="RightJustified">
+      <MemberSignature Language="C#" Value="public bool RightJustified { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool RightJustified" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("right-justified")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains whether the menu item appears justified at the right side of a menu bar.</summary>
+        <value>Returns <see langword="true" /> if the menu item will appear at the far right if added to a menu bar.</value>
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="Select">
+      <MemberSignature Language="C#" Value="public void Select ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Select() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Fires the <see cref="F:Gtk.Item.Select" /> event.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Selected">
+      <MemberSignature Language="C#" Value="public event EventHandler Selected;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Selected" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("select")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="Submenu">
-      <MemberSignature Language="C#" Value="public Gtk.Widget Submenu { set; get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.Widget Submenu { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget Submenu" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("submenu")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
@@ -160,142 +505,27 @@ menuBar.Add (itmFile);
           </example>
         </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("submenu")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="AccelPath">
-      <MemberSignature Language="C#" Value="public string AccelPath { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets the accelerator path.</summary>
-        <value>The accelerator path of the menu item.</value>
-        <remarks>
-          <para>
-          Sets the accelerator path, through which runtime changes of the menu item's accelerator caused by the user can be identified and saved to persistant storage.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RightJustified">
-      <MemberSignature Language="C#" Value="public bool RightJustified { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains whether the menu item appears justified at the right side of a menu bar.</summary>
-        <value>Returns <see langword="true" /> if the menu item will appear at the far right if added to a menu bar.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Activated">
-      <MemberSignature Language="C#" Value="public event EventHandler Activated;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when the item is activated.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("activate")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ActivateItem">
-      <MemberSignature Language="C#" Value="public event EventHandler ActivateItem;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when the item is activated, but also if the menu item has a submenu. For normal applications, the relevant event is <see cref="F:Gtk.MenuItem.Activated" />.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("activate_item")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ToggleSizeAllocated">
-      <MemberSignature Language="C#" Value="public event Gtk.ToggleSizeAllocatedHandler ToggleSizeAllocated;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ToggleSizeAllocatedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when size is allocated.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("toggle_size_allocate")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ToggleSizeRequested">
-      <MemberSignature Language="C#" Value="public event Gtk.ToggleSizeRequestedHandler ToggleSizeRequested;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ToggleSizeRequestedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when size is requested.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("toggle_size_request")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.MenuItem" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnToggleSizeRequested">
-      <MemberSignature Language="C#" Value="protected virtual void OnToggleSizeRequested (out int requisition);" />
+    <Member MemberName="SyncActionProperties">
+      <MemberSignature Language="C#" Value="public void SyncActionProperties (Gtk.Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SyncActionProperties(class Gtk.Action action) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="requisition" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="action" Type="Gtk.Action" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.MenuItem.ToggleSizeRequested" /> event.</summary>
-        <param name="requisition">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuItem.ToggleSizeRequested" /> event.</remarks>
+        <param name="action">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="OnToggleSizeAllocated">
-      <MemberSignature Language="C#" Value="protected virtual void OnToggleSizeAllocated (int allocation);" />
+    <Member MemberName="ToggleSizeAllocate">
+      <MemberSignature Language="C#" Value="public void ToggleSizeAllocate (int allocation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ToggleSizeAllocate(int32 allocation) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -304,55 +534,32 @@ menuBar.Add (itmFile);
         <Parameter Name="allocation" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.MenuItem.ToggleSizeAllocated" /> event.</summary>
-        <param name="allocation">a <see cref="T:System.Int32" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuItem.ToggleSizeAllocated" /> event.</remarks>
+        <param name="allocation">The allocation to use as signal data.</param>
+        <summary>Emits the <see cref="F:Gtk.MenuItem.ToggleSizeAllocated" /> event on the given item.</summary>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="OnActivateItem">
-      <MemberSignature Language="C#" Value="protected virtual void OnActivateItem ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.MenuItem.ActivateItem" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuItem.ActivateItem" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnActivated">
-      <MemberSignature Language="C#" Value="protected virtual void OnActivated ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.MenuItem.Activated" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.MenuItem.Activated" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected MenuItem (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
+    <Member MemberName="ToggleSizeAllocated">
+      <MemberSignature Language="C#" Value="public event Gtk.ToggleSizeAllocatedHandler ToggleSizeAllocated;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ToggleSizeAllocatedHandler ToggleSizeAllocated" />
+      <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
+          <AttributeName>GLib.Signal("toggle-size-allocate")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ToggleSizeAllocatedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when size is allocated.</summary>
+        <remarks />
+      </Docs>
     </Member>
     <Member MemberName="ToggleSizeRequest">
       <MemberSignature Language="C#" Value="public int ToggleSizeRequest ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 ToggleSizeRequest() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -362,6 +569,62 @@ menuBar.Add (itmFile);
         <summary>Emits the <see cref="E:Gtk.MenuItem.ToggleSizeRequested" /> event on the given item.</summary>
         <returns>The requisition to use as signal data.</returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ToggleSizeRequested">
+      <MemberSignature Language="C#" Value="public event Gtk.ToggleSizeRequestedHandler ToggleSizeRequested;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ToggleSizeRequestedHandler ToggleSizeRequested" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("toggle-size-request")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ToggleSizeRequestedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when size is requested.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="UseActionAppearance">
+      <MemberSignature Language="C#" Value="public bool UseActionAppearance { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UseActionAppearance" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("use-action-appearance")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="UseUnderline">
+      <MemberSignature Language="C#" Value="public bool UseUnderline { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UseUnderline" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("use-underline")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
   </Members>

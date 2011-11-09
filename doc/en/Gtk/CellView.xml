@@ -1,16 +1,11 @@
 <Type Name="CellView" FullName="Gtk.CellView">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public class CellView : Gtk.Widget, Gtk.CellLayout" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class CellView : Gtk.Widget, Gtk.CellLayout, Gtk.Orientable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CellView extends Gtk.Widget implements class GLib.IWrapper, class Gtk.CellLayout, class Gtk.Orientable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>A widget displaying a single row of a <see cref="T:Gtk.TreeModel" /></summary>
-    <remarks>A <see cref="T:Gtk.CellView" /> displays a single row of a <see cref="T:Gtk.TreeModel" />, using cell renderers just like <see cref="T:Gtk.TreeView" />. <see cref="T:Gtk.CellView" /> does not support some of the more complex features of <see cref="T:Gtk.TreeView" />, like cell editing and drag and drop.</remarks>
-    <since version="Gtk# 2.4" />
-  </Docs>
   <Base>
     <BaseTypeName>Gtk.Widget</BaseTypeName>
   </Base>
@@ -18,106 +13,88 @@
     <Interface>
       <InterfaceName>Gtk.CellLayout</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>Gtk.Orientable</InterfaceName>
+    </Interface>
   </Interfaces>
+  <Docs>
+    <summary>A widget displaying a single row of a <see cref="T:Gtk.TreeModel" /></summary>
+    <remarks>A <see cref="T:Gtk.CellView" /> displays a single row of a <see cref="T:Gtk.TreeModel" />, using cell renderers just like <see cref="T:Gtk.TreeView" />. <see cref="T:Gtk.CellView" /> does not support some of the more complex features of <see cref="T:Gtk.TreeView" />, like cell editing and drag and drop.</remarks>
+    <since version="Gtk# 2.4" />
+  </Docs>
   <Members>
-    <Member MemberName="NewWithText">
-      <MemberSignature Language="C#" Value="public static Gtk.CellView NewWithText (string text);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.CellView</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String" />
-      </Parameters>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CellView ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
       <Docs>
-        <summary>Creates a new <see cref="T:Gtk.CellView" /> widget, adds a <see cref="T:Gtk.CellRendererText" /> to it, and makes it show <paramref name="text" />.</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gtk.CellView" /></returns>
+        <summary>Creates a new <see cref="T:Gtk.CellView" /> widget.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GetSizeOfRow">
-      <MemberSignature Language="C#" Value="public bool GetSizeOfRow (Gtk.TreePath path, Gtk.Requisition requisition);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CellView (Gdk.Pixbuf pixbuf);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Gdk.Pixbuf pixbuf) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-        <Parameter Name="requisition" Type="Gtk.Requisition" />
+        <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>Sets <paramref name="requisition" /> to the size needed by the CellView to display the model row pointed to by <paramref name="path" />.</summary>
-        <param name="path">a <see cref="T:Gtk.TreePath" /></param>
-        <param name="requisition">a <see cref="T:Gtk.Requisition" />,  return location for the size</param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <param name="pixbuf">a <see cref="T:Gdk.Pixbuf" /></param>
+        <summary>Creates a new <see cref="T:Gtk.CellView" /> widget, adds a <see cref="T:Gtk.CellRendererPixbuf" /> to it, and makes its show <paramref name="pixbuf" />.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Reorder">
-      <MemberSignature Language="C#" Value="public void Reorder (Gtk.CellRenderer cell, int position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CellView (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="cell" Type="Gtk.CellRenderer" />
-        <Parameter Name="position" Type="System.Int32" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Re-inserts <paramref name="cell" /> at <paramref name="position" />.</summary>
-        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="position">a <see cref="T:System.Int32" /></param>
-        <remarks>
-	  Note that <paramref name="cell" /> has already to be packed
-	  into its view for this to function properly.
-	</remarks>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Internal constructor</summary>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="PackEnd">
-      <MemberSignature Language="C#" Value="public void PackEnd (Gtk.CellRenderer cell, bool expand);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CellView (string markup);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string markup) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="cell" Type="Gtk.CellRenderer" />
-        <Parameter Name="expand" Type="System.Boolean" />
+        <Parameter Name="markup" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Adds the <paramref name="cell" /> into the end of the cell layout.</summary>
-        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="expand">a <see cref="T:System.Boolean" /></param>
-        <remarks>
-	  If <paramref name="expand" /> is <see langword="false" />, then the
-	  <paramref name="cell" /> is allocated no more space than it needs. Any unused space is
-	  divided evenly between cells for which <paramref name="expand" /> is <see langword="true" />.
-	</remarks>
+        <param name="markup">a <see cref="T:System.String" /></param>
+        <summary>Creates a new <see cref="T:Gtk.CellView" /> widget, adds a <see cref="T:Gtk.CellRendererText" /> to it, and makes it show <paramref name="markup" />.</summary>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="PackStart">
-      <MemberSignature Language="C#" Value="public void PackStart (Gtk.CellRenderer cell, bool expand);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CellView (Gtk.CellArea area, Gtk.CellAreaContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Gtk.CellArea area, class Gtk.CellAreaContext context) cil managed" />
+      <MemberType>Constructor</MemberType>
       <Parameters>
-        <Parameter Name="cell" Type="Gtk.CellRenderer" />
-        <Parameter Name="expand" Type="System.Boolean" />
+        <Parameter Name="area" Type="Gtk.CellArea" />
+        <Parameter Name="context" Type="Gtk.CellAreaContext" />
       </Parameters>
       <Docs>
-        <summary>Packs the <paramref name="cell" /> into the beginning of the cell layout.</summary>
-        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="expand">a <see cref="T:System.Boolean" /></param>
-        <remarks>
-	  If <paramref name="expand" /> is <see langword="false" />, then the
-	  <paramref name="cell" /> is allocated no more space than it needs. Any unused space is
-	  divided evenly between cells for which <paramref name="expand" /> is <see langword="true" />.
-	</remarks>
+        <param name="area">To be added.</param>
+        <param name="context">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="AddAttribute">
       <MemberSignature Language="C#" Value="public void AddAttribute (Gtk.CellRenderer cell, string attribute, int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddAttribute(class Gtk.CellRenderer cell, string attribute, int32 column) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -128,12 +105,12 @@
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>
-	  Adds an attribute mapping to the list for this cell layout. 
-	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="attribute">a <see cref="T:System.String" />, parameter on <paramref name="cell" /> to be set from the value</param>
         <param name="column">a <see cref="T:System.Int32" />, column of the model to get a value from.</param>
+        <summary>
+	  Adds an attribute mapping to the list for this cell layout. 
+	</summary>
         <remarks>
 	  The <paramref name="column" /> is the column of the model to get a value from, and the <paramref name="attribute" /> is the
 	  parameter on <paramref name="cell" /> to be set from the value. So for example if column 2
@@ -142,25 +119,144 @@
 	</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ClearAttributes">
-      <MemberSignature Language="C#" Value="public void ClearAttributes (Gtk.CellRenderer cell);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Area">
+      <MemberSignature Language="C#" Value="public Gtk.CellArea Area { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.CellArea Area" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gtk.CellArea</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="cell" Type="Gtk.CellRenderer" />
-      </Parameters>
       <Docs>
-        <see cref="M:Gtk.CellView.SetAttributes" />
-        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <remarks>
-        </remarks>
         <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Background">
+      <MemberSignature Language="C#" Value="public string Background { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Background" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("background")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Background color as a string.</summary>
+        <value>a <see cref="T:System.String" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BackgroundColor">
+      <MemberSignature Language="C#" Value="public Gdk.Color BackgroundColor { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.Color BackgroundColor" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Color</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The background color</summary>
+        <value>a <see cref="T:Gdk.Color" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BackgroundGdk">
+      <MemberSignature Language="C#" Value="public Gdk.Color BackgroundGdk { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.Color BackgroundGdk" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("background-gdk")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Color</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The background color as a <see cref="T:Gdk.Color" /></summary>
+        <value>a <see cref="T:Gdk.Color" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BackgroundRgba">
+      <MemberSignature Language="C#" Value="public Gdk.RGBA BackgroundRgba { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gdk.RGBA BackgroundRgba" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("background-rgba")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.RGBA</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="CellArea">
+      <MemberSignature Language="C#" Value="public Gtk.CellArea CellArea { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.CellArea CellArea" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("cell-area")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CellArea</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="CellAreaContext">
+      <MemberSignature Language="C#" Value="public Gtk.CellAreaContext CellAreaContext { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.CellAreaContext CellAreaContext" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("cell-area-context")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CellAreaContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Cells">
+      <MemberSignature Language="C#" Value="public Gtk.CellRenderer[] Cells { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.CellRenderer[] Cells" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.CellRenderer[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
     <Member MemberName="Clear">
       <MemberSignature Language="C#" Value="public void Clear ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Clear() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -172,139 +268,27 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected CellView (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="ClearAttributes">
+      <MemberSignature Language="C#" Value="public void ClearAttributes (Gtk.CellRenderer cell);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ClearAttributes(class Gtk.CellRenderer cell) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
       <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CellView (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CellView ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Creates a new <see cref="T:Gtk.CellView" /> widget.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CellView (Gdk.Pixbuf pixbuf);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new <see cref="T:Gtk.CellView" /> widget, adds a <see cref="T:Gtk.CellRendererPixbuf" /> to it, and makes its show <paramref name="pixbuf" />.</summary>
-        <param name="pixbuf">a <see cref="T:Gdk.Pixbuf" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.CellView" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BackgroundGdk">
-      <MemberSignature Language="C#" Value="public Gdk.Color BackgroundGdk { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Color</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The background color as a <see cref="T:Gdk.Color" /></summary>
-        <value>a <see cref="T:Gdk.Color" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("background-gdk")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Background">
-      <MemberSignature Language="C#" Value="public string Background { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Background color as a string.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("background")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Model">
-      <MemberSignature Language="C#" Value="public Gtk.TreeModel Model { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TreeModel</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Sets the model for the CellView.</summary>
-        <value>a <see cref="T:Gtk.TreeModel" /></value>
-        <remarks>If the CellView already has a model set, it will remove it before setting the new model. If <paramref name="model" /> is <see langword="null" />, then it will unset the old model.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("model")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="BackgroundColor">
-      <MemberSignature Language="C#" Value="public Gdk.Color BackgroundColor { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Color</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The background color</summary>
-        <value>a <see cref="T:Gdk.Color" /></value>
-        <remarks />
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
+        <summary>To be added.</summary>
+        <remarks>
+        </remarks>
+        <see cref="M:Gtk.CellView.SetAttributes" />
       </Docs>
     </Member>
     <Member MemberName="DisplayedRow">
-      <MemberSignature Language="C#" Value="public Gtk.TreePath DisplayedRow { set; get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.TreePath DisplayedRow { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TreePath DisplayedRow" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreePath</ReturnType>
@@ -316,30 +300,204 @@
         <remarks>If the path is unset, then the contents of the cellview "stick" at their last value; this is not normally a desired result, but may be a needed intermediate state if say, the model for the <see cref="T:Gtk.CellView" /> becomes temporarily empty.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetCellDataFunc">
-      <MemberSignature Language="C#" Value="public void SetCellDataFunc (Gtk.CellRenderer cell, Gtk.CellLayoutDataFunc func);" />
+    <Member MemberName="DrawSensitive">
+      <MemberSignature Language="C#" Value="public bool DrawSensitive { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool DrawSensitive" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("draw-sensitive")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="FitModel">
+      <MemberSignature Language="C#" Value="public bool FitModel { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool FitModel" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("fit-model")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSizeOfRow">
+      <MemberSignature Language="C#" Value="public bool GetSizeOfRow (Gtk.TreePath path, Gtk.Requisition requisition);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetSizeOfRow(class Gtk.TreePath path, valuetype Gtk.Requisition requisition) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+        <Parameter Name="requisition" Type="Gtk.Requisition" />
+      </Parameters>
+      <Docs>
+        <param name="path">a <see cref="T:Gtk.TreePath" /></param>
+        <param name="requisition">a <see cref="T:Gtk.Requisition" />,  return location for the size</param>
+        <summary>Sets <paramref name="requisition" /> to the size needed by the CellView to display the model row pointed to by <paramref name="path" />.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.CellView" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Model">
+      <MemberSignature Language="C#" Value="public Gtk.TreeModel Model { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TreeModel Model" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("model")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.TreeModel</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Sets the model for the CellView.</summary>
+        <value>a <see cref="T:Gtk.TreeModel" /></value>
+        <remarks>If the CellView already has a model set, it will remove it before setting the new model. If <paramref name="model" /> is <see langword="null" />, then it will unset the old model.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NewWithText">
+      <MemberSignature Language="C#" Value="public static Gtk.CellView NewWithText (string text);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gtk.CellView NewWithText(string text) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.CellView</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="text">a <see cref="T:System.String" /></param>
+        <summary>Creates a new <see cref="T:Gtk.CellView" /> widget, adds a <see cref="T:Gtk.CellRendererText" /> to it, and makes it show <paramref name="text" />.</summary>
+        <returns>a <see cref="T:Gtk.CellView" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Orientation">
+      <MemberSignature Language="C#" Value="public Gtk.Orientation Orientation { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.Orientation Orientation" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("orientation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Orientation</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PackEnd">
+      <MemberSignature Language="C#" Value="public void PackEnd (Gtk.CellRenderer cell, bool expand);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PackEnd(class Gtk.CellRenderer cell, bool expand) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="cell" Type="Gtk.CellRenderer" />
-        <Parameter Name="func" Type="Gtk.CellLayoutDataFunc" />
+        <Parameter Name="expand" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Sets a data function to use for the cell layout.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" /></param>
+        <param name="expand">a <see cref="T:System.Boolean" /></param>
+        <summary>Adds the <paramref name="cell" /> into the end of the cell layout.</summary>
         <remarks>
-	 The data function
-	 is used instead of the standard attributes mapping for setting the
-	 column value, and should set the value of the cell renderer 
-	 as appropriate. <paramref name="func" /> may be <see langword="null" /> to remove an older one.
+	  If <paramref name="expand" /> is <see langword="false" />, then the
+	  <paramref name="cell" /> is allocated no more space than it needs. Any unused space is
+	  divided evenly between cells for which <paramref name="expand" /> is <see langword="true" />.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PackStart">
+      <MemberSignature Language="C#" Value="public void PackStart (Gtk.CellRenderer cell, bool expand);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PackStart(class Gtk.CellRenderer cell, bool expand) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="expand" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
+        <param name="expand">a <see cref="T:System.Boolean" /></param>
+        <summary>Packs the <paramref name="cell" /> into the beginning of the cell layout.</summary>
+        <remarks>
+	  If <paramref name="expand" /> is <see langword="false" />, then the
+	  <paramref name="cell" /> is allocated no more space than it needs. Any unused space is
+	  divided evenly between cells for which <paramref name="expand" /> is <see langword="true" />.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Reorder">
+      <MemberSignature Language="C#" Value="public void Reorder (Gtk.CellRenderer cell, int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Reorder(class Gtk.CellRenderer cell, int32 position) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="position" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
+        <param name="position">a <see cref="T:System.Int32" /></param>
+        <summary>Re-inserts <paramref name="cell" /> at <paramref name="position" />.</summary>
+        <remarks>
+	  Note that <paramref name="cell" /> has already to be packed
+	  into its view for this to function properly.
 	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetAttributes">
       <MemberSignature Language="C#" Value="public void SetAttributes (Gtk.CellRenderer cell, object[] attrs);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetAttributes(class Gtk.CellRenderer cell, object[] attrs) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -355,50 +513,33 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <summary>Sets the attribute to model column bindings for a renderer.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="attrs">a <see cref="T:System.Object" /></param>
+        <summary>Sets the attribute to model column bindings for a renderer.</summary>
         <remarks>The <paramref name="attrs" /> array should consist of pairs of attribute name and column index.</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CellView (string markup);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="SetCellDataFunc">
+      <MemberSignature Language="C#" Value="public void SetCellDataFunc (Gtk.CellRenderer cell, Gtk.CellLayoutDataFunc func);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetCellDataFunc(class Gtk.CellRenderer cell, class Gtk.CellLayoutDataFunc func) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
       <Parameters>
-        <Parameter Name="markup" Type="System.String" />
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="func" Type="Gtk.CellLayoutDataFunc" />
       </Parameters>
       <Docs>
-        <summary>Creates a new <see cref="T:Gtk.CellView" /> widget, adds a <see cref="T:Gtk.CellRendererText" /> to it, and makes it show <paramref name="markup" />.</summary>
-        <param name="markup">a <see cref="T:System.String" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="CellRenderers">
-      <MemberSignature Language="C#" Value="public GLib.List CellRenderers { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.List</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:GLib.List" /></value>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="Cells">
-      <MemberSignature Language="C#" Value="public Gtk.CellRenderer[] Cells { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.CellRenderer[]</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
+        <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" /></param>
+        <summary>Sets a data function to use for the cell layout.</summary>
+        <remarks>
+	 The data function
+	 is used instead of the standard attributes mapping for setting the
+	 column value, and should set the value of the cell renderer 
+	 as appropriate. <paramref name="func" /> may be <see langword="null" /> to remove an older one.
+	</remarks>
       </Docs>
     </Member>
   </Members>

@@ -1,12 +1,17 @@
 <Type Name="Action" FullName="Atk.Action">
   <TypeSignature Language="C#" Maintainer="auto" Value="public interface Action : GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract Action implements class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>
       The ATK interface provided by UI components which the user can
@@ -49,80 +54,10 @@
       </para>
     </remarks>
   </Docs>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-  </Interfaces>
   <Members>
-    <Member MemberName="GetDescription">
-      <MemberSignature Language="C#" Value="public string GetDescription (int i);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="i" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Returns a description of the specified action of the object.</summary>
-        <param name="i">The action index corresponding to the action to be performed.</param>
-        <returns>A description string, or 0 if action does not implement this interface.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetDescription">
-      <MemberSignature Language="C#" Value="public bool SetDescription (int i, string desc);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="i" Type="System.Int32" />
-        <Parameter Name="desc" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Sets a description of the specified action of the object.</summary>
-        <param name="i">The action index corresponding to the action to be performed.</param>
-        <param name="desc">The description to be assigned to this action.</param>
-        <returns>A <see cref="T:System.Boolean" /> representing if the description was successfully set.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetKeybinding">
-      <MemberSignature Language="C#" Value="public string GetKeybinding (int i);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="i" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Returns a keybinding associated with this action, if one exists.</summary>
-        <param name="i">The action index corresponding to the action to be performed.</param>
-        <returns>A string representing the keybinding, or an empty string if there is no keybinding for this action.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetName">
-      <MemberSignature Language="C#" Value="public string GetName (int i);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="i" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Returns the name of the specified action of the object.</summary>
-        <param name="i">The action index corresponding to the action to be performed.</param>
-        <returns>A name string, or an empty string if action does not implement this interface.</returns>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="DoAction">
       <MemberSignature Language="C#" Value="public bool DoAction (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool DoAction(int32 i) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -131,15 +66,84 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Perform the specified action on the object.</summary>
         <param name="i">The action index corresponding to the action to be performed.</param>
+        <summary>Perform the specified action on the object.</summary>
         <returns>
           <see langword="true" /> if success, <see langword="false" /> otherwise.</returns>
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="GetDescription">
+      <MemberSignature Language="C#" Value="public string GetDescription (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetDescription(int32 i) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="i" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <summary>Returns a description of the specified action of the object.</summary>
+        <returns>A description string, or 0 if action does not implement this interface.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetKeybinding">
+      <MemberSignature Language="C#" Value="public string GetKeybinding (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetKeybinding(int32 i) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="i" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <summary>Returns a keybinding associated with this action, if one exists.</summary>
+        <returns>A string representing the keybinding, or an empty string if there is no keybinding for this action.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetLocalizedName">
+      <MemberSignature Language="C#" Value="public string GetLocalizedName (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetLocalizedName(int32 i) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="i" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <summary>Returns the localized name of the specified action of the object.</summary>
+        <returns>A name string, or an empty string if action does not implement this interface.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetName">
+      <MemberSignature Language="C#" Value="public string GetName (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetName(int32 i) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="i" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <summary>Returns the name of the specified action of the object.</summary>
+        <returns>A name string, or an empty string if action does not implement this interface.</returns>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="NActions">
-      <MemberSignature Language="C#" Value="public int NActions { get; };" />
+      <MemberSignature Language="C#" Value="public int NActions { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NActions" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -154,19 +158,22 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetLocalizedName">
-      <MemberSignature Language="C#" Value="public string GetLocalizedName (int i);" />
+    <Member MemberName="SetDescription">
+      <MemberSignature Language="C#" Value="public bool SetDescription (int i, string desc);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetDescription(int32 i, string desc) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.String</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="i" Type="System.Int32" />
+        <Parameter Name="desc" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Returns the localized name of the specified action of the object.</summary>
         <param name="i">The action index corresponding to the action to be performed.</param>
-        <returns>A name string, or an empty string if action does not implement this interface.</returns>
+        <param name="desc">The description to be assigned to this action.</param>
+        <summary>Sets a description of the specified action of the object.</summary>
+        <returns>A <see cref="T:System.Boolean" /> representing if the description was successfully set.</returns>
         <remarks />
       </Docs>
     </Member>

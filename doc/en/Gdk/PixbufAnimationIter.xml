@@ -1,26 +1,54 @@
 <Type Name="PixbufAnimationIter" FullName="Gdk.PixbufAnimationIter">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class PixbufAnimationIter : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit PixbufAnimationIter extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>
       An iterator used by <see cref="T:Gdk.PixbufAnimation" /> for displaying animations by stepping through frames.
     </summary>
     <remarks />
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected PixbufAnimationIter ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Protected constructor.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufAnimationIter (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Advance">
       <MemberSignature Language="C#" Value="public bool Advance (IntPtr current_time);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Advance(native int current_time) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -29,12 +57,12 @@
         <Parameter Name="current_time" Type="System.IntPtr" />
       </Parameters>
       <Docs>
+        <param name="current_time">A <see cref="T:IntPtr" />, pointer to a C time object</param>
         <summary>
 	  Possibly advances an animation to a new frame. Chooses the frame based
 	  on the start time passed to 
 	  <see cref="M:Gdk.PixbufAnimation.GetIter" />.
 	</summary>
-        <param name="current_time">A <see cref="T:IntPtr" />, pointer to a C time object</param>
         <returns>A <see cref="T:System.Boolean" />, true if the image may need updating.</returns>
         <remarks>
           <p>
@@ -61,8 +89,43 @@
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="DelayTime">
+      <MemberSignature Language="C#" Value="public int DelayTime { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 DelayTime" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+	  Gets the number of milliseconds the current pixbuf should be displayed,
+	  or -1 if the current pixbuf should be displayed forever. 
+	</summary>
+        <value>A <see cref="T:System.Int32" />,  delay time in milliseconds (thousandths of a second)</value>
+        <remarks>
+	  g_timeout_add() (FIXME: this doesn't seem to be bound)
+	  conveniently takes a timeout in milliseconds, so you can use a timeout
+	  to schedule the next update.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.PixbufAnimationIter" />.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="OnCurrentlyLoadingFrame">
       <MemberSignature Language="C#" Value="public bool OnCurrentlyLoadingFrame ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool OnCurrentlyLoadingFrame() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -82,42 +145,9 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufAnimationIter (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="DelayTime">
-      <MemberSignature Language="C#" Value="public int DelayTime { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-	  Gets the number of milliseconds the current pixbuf should be displayed,
-	  or -1 if the current pixbuf should be displayed forever. 
-	</summary>
-        <value>A <see cref="T:System.Int32" />,  delay time in milliseconds (thousandths of a second)</value>
-        <remarks>
-	  g_timeout_add() (FIXME: this doesn't seem to be bound)
-	  conveniently takes a timeout in milliseconds, so you can use a timeout
-	  to schedule the next update.
-	</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Pixbuf">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Pixbuf { get; };" />
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf Pixbuf { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf Pixbuf" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Pixbuf</ReturnType>
@@ -136,47 +166,6 @@
 	  the iterator.
 	</summary>
         <value>A <see cref="T:Gdk.Pixbuf" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.PixbufAnimationIter" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected PixbufAnimationIter (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>This is a constructor used by derivative types of <see cref="T:Gdk.PixbufAnimationIter" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected PixbufAnimationIter ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Protected constructor.</summary>
         <remarks />
       </Docs>
     </Member>

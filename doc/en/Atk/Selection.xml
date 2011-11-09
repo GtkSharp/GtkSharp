@@ -1,12 +1,17 @@
 <Type Name="Selection" FullName="Atk.Selection">
   <TypeSignature Language="C#" Maintainer="auto" Value="public interface Selection : GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract Selection implements class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>
       The ATK interface implemented by container objects whose <see cref="T:Atk.Object" /> children can be selected.
@@ -31,74 +36,29 @@
       </para>
     </remarks>
   </Docs>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-  </Interfaces>
   <Members>
-    <Member MemberName="SelectAllSelection">
-      <MemberSignature Language="C#" Value="public bool SelectAllSelection ();" />
+    <Member MemberName="AddSelection">
+      <MemberSignature Language="C#" Value="public bool AddSelection (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool AddSelection(int32 i) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="i" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>Causes every child of the object to be selected if the object supports multiple selections.</summary>
+        <param name="i">A <see langword="int" /> specifying the child index.</param>
+        <summary>Adds the specified accessible child of the object to the object's selection.</summary>
         <returns>
           <see langword="true" /> if success, <see langword="false" /> otherwise.
         </returns>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="RemoveSelection">
-      <MemberSignature Language="C#" Value="public bool RemoveSelection (int i);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="i" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Removes the specified child of the object from the object's selection.</summary>
-        <param name="i">
-          A <see langword="int" /> specifying the index in the selection set. (e.g. the
-          ith selection as opposed to the ith child).
-        </param>
-        <returns>
-          <see langword="true" /> if success, <see langword="false" />
-          otherwise.
-        </returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="IsChildSelected">
-      <MemberSignature Language="C#" Value="public bool IsChildSelected (int i);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="i" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Determines if the current child of this object is selected.</summary>
-        <param name="i">A <see langword="int" /> specifying the child index.</param>
-        <returns>A bool representing the specified child is selected, or 0 if selection does not implement this interface.</returns>
-        <remarks>
-          <para>
-            Callers should not rely on 0 or on a zero value for
-            indication of whether AtkSelectionIface is implemented, they
-            should use type checking/interface checking macros or the
-            atk_get_accessible_value() convenience method.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="ClearSelection">
       <MemberSignature Language="C#" Value="public bool ClearSelection ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ClearSelection() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -112,8 +72,9 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="AddSelection">
-      <MemberSignature Language="C#" Value="public bool AddSelection (int i);" />
+    <Member MemberName="IsChildSelected">
+      <MemberSignature Language="C#" Value="public bool IsChildSelected (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsChildSelected(int32 i) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -122,16 +83,22 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Adds the specified accessible child of the object to the object's selection.</summary>
         <param name="i">A <see langword="int" /> specifying the child index.</param>
-        <returns>
-          <see langword="true" /> if success, <see langword="false" /> otherwise.
-        </returns>
-        <remarks />
+        <summary>Determines if the current child of this object is selected.</summary>
+        <returns>A bool representing the specified child is selected, or 0 if selection does not implement this interface.</returns>
+        <remarks>
+          <para>
+            Callers should not rely on 0 or on a zero value for
+            indication of whether AtkSelectionIface is implemented, they
+            should use type checking/interface checking macros or the
+            atk_get_accessible_value() convenience method.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RefSelection">
       <MemberSignature Language="C#" Value="public Atk.Object RefSelection (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Atk.Object RefSelection(int32 i) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
@@ -140,14 +107,67 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="i">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
         <returns>To be added: an object of type 'Atk.Object'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
+    <Member MemberName="RemoveSelection">
+      <MemberSignature Language="C#" Value="public bool RemoveSelection (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool RemoveSelection(int32 i) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="i" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="i">
+          A <see langword="int" /> specifying the index in the selection set. (e.g. the
+          ith selection as opposed to the ith child).
+        </param>
+        <summary>Removes the specified child of the object from the object's selection.</summary>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" />
+          otherwise.
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SelectAllSelection">
+      <MemberSignature Language="C#" Value="public bool SelectAllSelection ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SelectAllSelection() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Causes every child of the object to be selected if the object supports multiple selections.</summary>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise.
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SelectionChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler SelectionChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler SelectionChanged" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Event raised when the selected is changed.</summary>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="SelectionCount">
-      <MemberSignature Language="C#" Value="public int SelectionCount { get; };" />
+      <MemberSignature Language="C#" Value="public int SelectionCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 SelectionCount" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -167,18 +187,6 @@
             the atk_get_accessible_value() convenience method.
           </para>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SelectionChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler SelectionChanged;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Event raised when the selected is changed.</summary>
-        <remarks />
       </Docs>
     </Member>
   </Members>

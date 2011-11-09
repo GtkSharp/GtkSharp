@@ -1,12 +1,16 @@
 <Type Name="Selection" FullName="Gdk.Selection">
   <TypeSignature Language="C#" Value="public class Selection" Maintainer="auto" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Selection extends System.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
   <Docs>
     <summary>Information exchange through the Window Server selection mechanism.</summary>
     <remarks>The X selection mechanism provides a way to transfer arbitrary chunks of data between programs. A selection is a essentially a named clipboard, identified by a string interned as a GdkAtom. By claiming ownership of a selection, an application indicates that it will be responsible for supplying its contents. The most common selections are PRIMARY and CLIPBOARD.
@@ -17,13 +21,141 @@ The contents of a selection can be represented in a number of formats, called ta
 The functions in this section only contain the lowlevel parts of the selection protocol. A considerably more complicated implementation is needed on top of this. GTK+ contains such an implementation in the functions in gtkselection.h and programmers should use those functions instead of the ones presented here. If you plan to implement selection handling directly on top of the functions here, you should refer to the X Inter-client Communication Conventions Manual (ICCCM). 
 </para></remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Selection ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Clipboard">
+      <MemberSignature Language="C#" Value="public static Gdk.Atom Clipboard;" />
+      <MemberSignature Language="ILAsm" Value=".field public static class Gdk.Atom Clipboard" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Atom</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The atom representing the clipboard.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Convert">
+      <MemberSignature Language="C#" Value="public static void Convert (Gdk.Window requestor, Gdk.Atom selection, Gdk.Atom target, uint time_);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Convert(class Gdk.Window requestor, class Gdk.Atom selection, class Gdk.Atom target, unsigned int32 time_) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestor" Type="Gdk.Window" />
+        <Parameter Name="selection" Type="Gdk.Atom" />
+        <Parameter Name="target" Type="Gdk.Atom" />
+        <Parameter Name="time_" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="requestor">The <see cref="T:Gdk.Window" /></param>
+        <param name="selection">An atom identifying the selection to get the contents of.</param>
+        <param name="target">the form in which to retrieve the selection.</param>
+        <param name="time_">the timestamp to use when retrieving the selection. The selection owner may refuse the request if it did not own the selection at the time indicated by the timestamp.</param>
+        <summary>Retrieves the contents of a selection in a given form.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="OwnerGet">
+      <MemberSignature Language="C#" Value="public static Gdk.Window OwnerGet (Gdk.Atom selection);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Window OwnerGet(class Gdk.Atom selection) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="selection" Type="Gdk.Atom" />
+      </Parameters>
+      <Docs>
+        <param name="selection">an atom indentifying a selection.</param>
+        <summary>Determines the owner of the given selection.</summary>
+        <returns>If there is a selection owner for this window, and it is a window known to the current process, the <see cref="T:Gdk.Window" /> that owns the selection, otherwise <see langword="null" />. Note that the return value may be owned by a different process if a foreign window was previously created for that window, but a new foreign window will never be created by this call.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="OwnerGetForDisplay">
+      <MemberSignature Language="C#" Value="public static Gdk.Window OwnerGetForDisplay (Gdk.Display display, Gdk.Atom selection);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Window OwnerGetForDisplay(class Gdk.Display display, class Gdk.Atom selection) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="display" Type="Gdk.Display" />
+        <Parameter Name="selection" Type="Gdk.Atom" />
+      </Parameters>
+      <Docs>
+        <param name="display">The <see cref="T:Gdk.Display" /> where the selection is</param>
+        <param name="selection"> an atom indentifying a selection.</param>
+        <summary>Determine the owner of the given selection.</summary>
+        <returns> if there is a selection owner for this window, and it is a window known to the current process, the <see cref="T:Gdk.Window" /> that owns the selection, otherwise <see langword="null" /></returns>
+        <remarks>Note that the return value may be owned by a different process if a foreign window was previously created for that window, but a new foreign window will never be created by this call.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OwnerSet">
+      <MemberSignature Language="C#" Value="public static bool OwnerSet (Gdk.Window owner, Gdk.Atom selection, uint time_, bool send_event);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool OwnerSet(class Gdk.Window owner, class Gdk.Atom selection, unsigned int32 time_, bool send_event) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="owner" Type="Gdk.Window" />
+        <Parameter Name="selection" Type="Gdk.Atom" />
+        <Parameter Name="time_" Type="System.UInt32" />
+        <Parameter Name="send_event" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="owner">a <see cref="T:Gdk.Window" /> or NULL to indicate that the the owner for the given should be unset.</param>
+        <param name="selection">An <see cref="T:Gdk.Atom" /> identifying a selection.</param>
+        <param name="time_">timestamp to use when setting the selection. If this is older than the timestamp given last time the owner was set for the given selection, the request will be ignored.</param>
+        <param name="send_event">If <see langword="true" />  and the new owner is different from the current owner, the current owner will be sent a SelectionClear event.</param>
+        <summary>Sets the owner of the given selection.</summary>
+        <returns>
+          <see langword="true" /> if the selection owner was successfully changed to owner, otherwise <see langword="false" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="OwnerSetForDisplay">
+      <MemberSignature Language="C#" Value="public static bool OwnerSetForDisplay (Gdk.Display display, Gdk.Window owner, Gdk.Atom selection, uint time_, bool send_event);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool OwnerSetForDisplay(class Gdk.Display display, class Gdk.Window owner, class Gdk.Atom selection, unsigned int32 time_, bool send_event) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="display" Type="Gdk.Display" />
+        <Parameter Name="owner" Type="Gdk.Window" />
+        <Parameter Name="selection" Type="Gdk.Atom" />
+        <Parameter Name="time_" Type="System.UInt32" />
+        <Parameter Name="send_event" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="display">The <see cref="T:Gdk.Display" /></param>
+        <param name="owner">a <see cref="T:Gdk.Window" /> or NULL to indicate that the the owner for the given should be unset.</param>
+        <param name="selection">An atom identifying a selection.</param>
+        <param name="time_">Timestamp to use when setting the selection. If this is older than the timestamp given last time the owner was set for the given selection, the request will be ignored.</param>
+        <param name="send_event"> if TRUE, and the new owner is different from the current owner, the current owner will be sent a SelectionClear event.</param>
+        <summary>Sets the <see cref="T:Gdk.Window" /> owner as the current owner of the selection selection.</summary>
+        <returns>TRUE if the selection owner was successfully changed to owner, otherwise FALSE.</returns>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Primary">
       <MemberSignature Language="C#" Value="public static Gdk.Atom Primary;" />
+      <MemberSignature Language="ILAsm" Value=".field public static class Gdk.Atom Primary" />
       <MemberType>Field</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Atom</ReturnType>
@@ -36,6 +168,7 @@ The functions in this section only contain the lowlevel parts of the selection p
     </Member>
     <Member MemberName="Secondary">
       <MemberSignature Language="C#" Value="public static Gdk.Atom Secondary;" />
+      <MemberSignature Language="ILAsm" Value=".field public static class Gdk.Atom Secondary" />
       <MemberType>Field</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Atom</ReturnType>
@@ -46,110 +179,9 @@ The functions in this section only contain the lowlevel parts of the selection p
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Clipboard">
-      <MemberSignature Language="C#" Value="public static Gdk.Atom Clipboard;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Atom</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The atom representing the clipboard.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="OwnerSetForDisplay">
-      <MemberSignature Language="C#" Value="public static bool OwnerSetForDisplay (Gdk.Display display, Gdk.Window owner, Gdk.Atom selection, uint time_, bool send_event);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="display" Type="Gdk.Display" />
-        <Parameter Name="owner" Type="Gdk.Window" />
-        <Parameter Name="selection" Type="Gdk.Atom" />
-        <Parameter Name="time_" Type="System.UInt32" />
-        <Parameter Name="send_event" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the <see cref="T:Gdk.Window" /> owner as the current owner of the selection selection.</summary>
-        <param name="display">The <see cref="T:Gdk.Display" /></param>
-        <param name="owner">a <see cref="T:Gdk.Window" /> or NULL to indicate that the the owner for the given should be unset.</param>
-        <param name="selection">An atom identifying a selection.</param>
-        <param name="time_">Timestamp to use when setting the selection. If this is older than the timestamp given last time the owner was set for the given selection, the request will be ignored.</param>
-        <param name="send_event"> if TRUE, and the new owner is different from the current owner, the current owner will be sent a SelectionClear event.</param>
-        <returns>TRUE if the selection owner was successfully changed to owner, otherwise FALSE.</returns>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="SendNotify">
-      <MemberSignature Language="C#" Value="public static void SendNotify (uint requestor, Gdk.Atom selection, Gdk.Atom target, Gdk.Atom property, uint time_);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="requestor" Type="System.UInt32" />
-        <Parameter Name="selection" Type="Gdk.Atom" />
-        <Parameter Name="target" Type="Gdk.Atom" />
-        <Parameter Name="property" Type="Gdk.Atom" />
-        <Parameter Name="time_" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Sends a response to SelectionRequest event.</summary>
-        <param name="requestor">window to which to deliver response.</param>
-        <param name="selection">selection that was requested.</param>
-        <param name="target">target that was selected.</param>
-        <param name="property">property in which the selection owner stored the data, or GDK_NONE to indicate that the request was rejected.</param>
-        <param name="time_">timestamp.</param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SendNotifyForDisplay">
-      <MemberSignature Language="C#" Value="public static void SendNotifyForDisplay (Gdk.Display display, uint requestor, Gdk.Atom selection, Gdk.Atom target, Gdk.Atom property, uint time_);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="display" Type="Gdk.Display" />
-        <Parameter Name="requestor" Type="System.UInt32" />
-        <Parameter Name="selection" Type="Gdk.Atom" />
-        <Parameter Name="target" Type="Gdk.Atom" />
-        <Parameter Name="property" Type="Gdk.Atom" />
-        <Parameter Name="time_" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Send a response to SelectionRequest event.</summary>
-        <param name="display">The <see cref="T:Gdk.Display" /></param>
-        <param name="requestor"> window to which to deliver response.</param>
-        <param name="selection"> selection that was requested.</param>
-        <param name="target"> target that was selected.</param>
-        <param name="property"> property in which the selection owner stored the data, or GDK_NONE to indicate that the request was rejected.</param>
-        <param name="time_">timestamp.</param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OwnerGetForDisplay">
-      <MemberSignature Language="C#" Value="public static Gdk.Window OwnerGetForDisplay (Gdk.Display display, Gdk.Atom selection);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="display" Type="Gdk.Display" />
-        <Parameter Name="selection" Type="Gdk.Atom" />
-      </Parameters>
-      <Docs>
-        <summary>Determine the owner of the given selection.</summary>
-        <param name="display">The <see cref="T:Gdk.Display" /> where the selection is</param>
-        <param name="selection"> an atom indentifying a selection.</param>
-        <returns> if there is a selection owner for this window, and it is a window known to the current process, the <see cref="T:Gdk.Window" /> that owns the selection, otherwise <see langword="null" /></returns>
-        <remarks>Note that the return value may be owned by a different process if a foreign window was previously created for that window, but a new foreign window will never be created by this call.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Convert">
-      <MemberSignature Language="C#" Value="public static void Convert (Gdk.Window requestor, Gdk.Atom selection, Gdk.Atom target, uint time_);" />
+      <MemberSignature Language="C#" Value="public static void SendNotify (Gdk.Window requestor, Gdk.Atom selection, Gdk.Atom target, Gdk.Atom property, uint time_);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SendNotify(class Gdk.Window requestor, class Gdk.Atom selection, class Gdk.Atom target, class Gdk.Atom property, unsigned int32 time_) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -158,64 +190,45 @@ The functions in this section only contain the lowlevel parts of the selection p
         <Parameter Name="requestor" Type="Gdk.Window" />
         <Parameter Name="selection" Type="Gdk.Atom" />
         <Parameter Name="target" Type="Gdk.Atom" />
+        <Parameter Name="property" Type="Gdk.Atom" />
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Retrieves the contents of a selection in a given form.</summary>
-        <param name="requestor">The <see cref="T:Gdk.Window" /></param>
-        <param name="selection">An atom identifying the selection to get the contents of.</param>
-        <param name="target">the form in which to retrieve the selection.</param>
-        <param name="time_">the timestamp to use when retrieving the selection. The selection owner may refuse the request if it did not own the selection at the time indicated by the timestamp.</param>
-        <remarks />
+        <param name="requestor">To be added.</param>
+        <param name="selection">To be added.</param>
+        <param name="target">To be added.</param>
+        <param name="property">To be added.</param>
+        <param name="time_">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="OwnerSet">
-      <MemberSignature Language="C#" Value="public static bool OwnerSet (Gdk.Window owner, Gdk.Atom selection, uint time_, bool send_event);" />
+    <Member MemberName="SendNotifyForDisplay">
+      <MemberSignature Language="C#" Value="public static void SendNotifyForDisplay (Gdk.Display display, Gdk.Window requestor, Gdk.Atom selection, Gdk.Atom target, Gdk.Atom property, uint time_);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SendNotifyForDisplay(class Gdk.Display display, class Gdk.Window requestor, class Gdk.Atom selection, class Gdk.Atom target, class Gdk.Atom property, unsigned int32 time_) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="owner" Type="Gdk.Window" />
+        <Parameter Name="display" Type="Gdk.Display" />
+        <Parameter Name="requestor" Type="Gdk.Window" />
         <Parameter Name="selection" Type="Gdk.Atom" />
+        <Parameter Name="target" Type="Gdk.Atom" />
+        <Parameter Name="property" Type="Gdk.Atom" />
         <Parameter Name="time_" Type="System.UInt32" />
-        <Parameter Name="send_event" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Sets the owner of the given selection.</summary>
-        <param name="owner">a <see cref="T:Gdk.Window" /> or NULL to indicate that the the owner for the given should be unset.</param>
-        <param name="selection">An <see cref="T:Gdk.Atom" /> identifying a selection.</param>
-        <param name="time_">timestamp to use when setting the selection. If this is older than the timestamp given last time the owner was set for the given selection, the request will be ignored.</param>
-        <param name="send_event">If <see langword="true" />  and the new owner is different from the current owner, the current owner will be sent a SelectionClear event.</param>
-        <returns>
-          <see langword="true" /> if the selection owner was successfully changed to owner, otherwise <see langword="false" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="OwnerGet">
-      <MemberSignature Language="C#" Value="public static Gdk.Window OwnerGet (Gdk.Atom selection);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="selection" Type="Gdk.Atom" />
-      </Parameters>
-      <Docs>
-        <summary>Determines the owner of the given selection.</summary>
-        <param name="selection">an atom indentifying a selection.</param>
-        <returns>If there is a selection owner for this window, and it is a window known to the current process, the <see cref="T:Gdk.Window" /> that owns the selection, otherwise <see langword="null" />. Note that the return value may be owned by a different process if a foreign window was previously created for that window, but a new foreign window will never be created by this call.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Selection ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <param name="display">To be added.</param>
+        <param name="requestor">To be added.</param>
+        <param name="selection">To be added.</param>
+        <param name="target">To be added.</param>
+        <param name="property">To be added.</param>
+        <param name="time_">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
   </Members>

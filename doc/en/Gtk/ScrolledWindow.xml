@@ -1,12 +1,17 @@
 <Type Name="ScrolledWindow" FullName="Gtk.ScrolledWindow">
   <TypeSignature Language="C#" Maintainer="Duncan Mak" Value="public class ScrolledWindow : Gtk.Bin" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ScrolledWindow extends Gtk.Bin" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Bin</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>Adds scrollbars to its child widget.</summary>
     <remarks>
@@ -21,14 +26,57 @@
       </para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Bin</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ScrolledWindow ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Basic constructor.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ScrolledWindow (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ScrolledWindow (Gtk.Adjustment hadjustment, Gtk.Adjustment vadjustment);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Gtk.Adjustment hadjustment, class Gtk.Adjustment vadjustment) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="hadjustment" Type="Gtk.Adjustment" />
+        <Parameter Name="vadjustment" Type="Gtk.Adjustment" />
+      </Parameters>
+      <Docs>
+        <param name="hadjustment">Horizontal adjustment.</param>
+        <param name="vadjustment">Vertical adjustment.</param>
+        <summary>Creates a new scrolled window.</summary>
+        <remarks>
+          <para>
+            Creates a new scrolled window. The two arguments are the scrolled window's adjustments; these will be shared with the scrollbars and the child widget to keep the bars in sync with the child. Usually you want to pass <see langword="null" /> for the adjustments, which will cause the scrolled window to create them for you.
+        </para>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="AddWithViewport">
       <MemberSignature Language="C#" Value="public void AddWithViewport (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddWithViewport(class Gtk.Widget child) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -37,8 +85,8 @@
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Used to add children without native scrolling capabilities.</summary>
         <param name="child">A <see cref="T:Gtk.Widget" /></param>
+        <summary>Used to add children without native scrolling capabilities.</summary>
         <remarks>
           <para>
             Used to add children without native scrolling capabilities. This is simply a convenience function; it is equivalent to adding the unscrollable child to a viewport, then adding the viewport to the scrolled window. If a child has native scrolling, use <see cref="M:Gtk.Container.Add" /> instead of this function.
@@ -52,29 +100,9 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetPolicy">
-      <MemberSignature Language="C#" Value="public void SetPolicy (Gtk.PolicyType hscrollbar_policy, Gtk.PolicyType vscrollbar_policy);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="hscrollbar_policy" Type="Gtk.PolicyType" />
-        <Parameter Name="vscrollbar_policy" Type="Gtk.PolicyType" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the scrollbar policy for the horizontal and vertical scrollbars.</summary>
-        <param name="hscrollbar_policy">Policy for horizontal bar.</param>
-        <param name="vscrollbar_policy">Policy for vertical bar.</param>
-        <remarks>
-          <para>
-            Sets the scrollbar policy for the horizontal and vertical scrollbars. The policy determines when the scrollbar should appear; it is a value from the <see cref="T:Gtk.PolicyType" /> enumeration. If <see cref="T:Gtk.PolicyType.Always" />, the scrollbar is always present; if <see cref="T:Gtk.PolicyType.Never" />, the scrollbar is never present; if <see cref="T:Gtk.PolicyType.Automatic" />, the scrollbar is present only if needed (that is, if the slider part of the bar would be smaller than the trough - the display is larger than the page size).
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GetPolicy">
       <MemberSignature Language="C#" Value="public void GetPolicy (out Gtk.PolicyType hscrollbar_policy, out Gtk.PolicyType vscrollbar_policy);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPolicy(valuetype Gtk.PolicyType hscrollbar_policy, valuetype Gtk.PolicyType vscrollbar_policy) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -84,9 +112,9 @@
         <Parameter Name="vscrollbar_policy" Type="Gtk.PolicyType&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>Retrieves the current policy values for the horizontal and vertical scrollbars.</summary>
         <param name="hscrollbar_policy">Location to store the policy for the horizontal scrollbar.</param>
         <param name="vscrollbar_policy">Location to store the policy for the horizontal scrollbar.</param>
+        <summary>Retrieves the current policy values for the horizontal and vertical scrollbars.</summary>
         <remarks>
           <para>
             Retrieves the current policy values for the horizontal and vertical scrollbars.
@@ -94,52 +122,177 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ScrolledWindow (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ScrolledWindow (Gtk.Adjustment hadjustment, Gtk.Adjustment vadjustment);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="hadjustment" Type="Gtk.Adjustment" />
-        <Parameter Name="vadjustment" Type="Gtk.Adjustment" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new scrolled window.</summary>
-        <param name="hadjustment">Horizontal adjustment.</param>
-        <param name="vadjustment">Vertical adjustment.</param>
-        <remarks>
-          <para>
-            Creates a new scrolled window. The two arguments are the scrolled window's adjustments; these will be shared with the scrollbars and the child widget to keep the bars in sync with the child. Usually you want to pass <see langword="null" /> for the adjustments, which will cause the scrolled window to create them for you.
-        </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ScrolledWindow ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Basic constructor.</summary>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.ScrolledWindow" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Hadjustment">
+      <MemberSignature Language="C#" Value="public Gtk.Adjustment Hadjustment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Adjustment Hadjustment" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("hadjustment")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Adjustment</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets the <see cref="T:Gtk.Adjustment" /> for the horizontal scrollbar.</summary>
+        <value>The horizontal GtkAdjustment.</value>
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="HScrollbar">
+      <MemberSignature Language="C#" Value="public Gtk.Widget HScrollbar { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget HScrollbar" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Horizontal Scrollbar.</summary>
+        <value>the horizontal <see cref="T:Gtk.Scrollbar" /> if it exists, or <see langword="null" />.</value>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="HscrollbarPolicy">
+      <MemberSignature Language="C#" Value="public Gtk.PolicyType HscrollbarPolicy { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.PolicyType HscrollbarPolicy" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("hscrollbar-policy")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PolicyType</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>When the horizontal scrollbar is displayed.</summary>
+        <value>A <see cref="T:Gtk.PolicyType" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="MinContentHeight">
+      <MemberSignature Language="C#" Value="public int MinContentHeight { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 MinContentHeight" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("min-content-height")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="MinContentWidth">
+      <MemberSignature Language="C#" Value="public int MinContentWidth { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 MinContentWidth" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("min-content-width")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveFocusOut">
+      <MemberSignature Language="C#" Value="public event Gtk.MoveFocusOutHandler MoveFocusOut;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MoveFocusOutHandler MoveFocusOut" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("move-focus-out")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.MoveFocusOutHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when the focus moves out of the scrolled window.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="OnMoveFocusOut">
+      <MemberSignature Language="C#" Value="protected virtual void OnMoveFocusOut (Gtk.DirectionType direction);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnMoveFocusOut(valuetype Gtk.DirectionType direction) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMoveFocusOut", Type=typeof(Gtk.ScrolledWindow))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="Gtk.DirectionType" />
+      </Parameters>
+      <Docs>
+        <param name="direction">a <see cref="T:Gtk.DirectionType" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.ScrolledWindow.MoveFocusOut" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ScrolledWindow.MoveFocusOut" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnScrollChild">
+      <MemberSignature Language="C#" Value="protected virtual void OnScrollChild (Gtk.ScrollType scroll, bool horizontal);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnScrollChild(valuetype Gtk.ScrollType scroll, bool horizontal) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideScrollChild", Type=typeof(Gtk.ScrolledWindow))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scroll" Type="Gtk.ScrollType" />
+        <Parameter Name="horizontal" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="scroll">a <see cref="T:Gtk.ScrollType" /></param>
+        <param name="horizontal">a <see cref="T:System.Boolean" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.ScrolledWindow.ScrollChild" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ScrolledWindow.ScrollChild" /> event.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Placement">
-      <MemberSignature Language="C#" Value="public Gtk.CornerType Placement { set; get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.CornerType Placement { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.CornerType Placement" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.CornerType</ReturnType>
@@ -156,85 +309,55 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="HscrollbarPolicy">
-      <MemberSignature Language="C#" Value="public Gtk.PolicyType HscrollbarPolicy { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.PolicyType</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>When the horizontal scrollbar is displayed.</summary>
-        <value>A <see cref="T:Gtk.PolicyType" /></value>
-        <remarks />
-      </Docs>
+    <Member MemberName="ScrollChild">
+      <MemberSignature Language="C#" Value="public event Gtk.ScrollChildHandler ScrollChild;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ScrollChildHandler ScrollChild" />
+      <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("hscrollbar-policy")</AttributeName>
+          <AttributeName>GLib.Signal("scroll-child")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ScrollChildHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when the child widget is scrolled.</summary>
+        <remarks />
+      </Docs>
     </Member>
-    <Member MemberName="Hadjustment">
-      <MemberSignature Language="C#" Value="public Gtk.Adjustment Hadjustment { set; get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="SetPolicy">
+      <MemberSignature Language="C#" Value="public void SetPolicy (Gtk.PolicyType hscrollbar_policy, Gtk.PolicyType vscrollbar_policy);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetPolicy(valuetype Gtk.PolicyType hscrollbar_policy, valuetype Gtk.PolicyType vscrollbar_policy) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.Adjustment</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
+        <Parameter Name="hscrollbar_policy" Type="Gtk.PolicyType" />
+        <Parameter Name="vscrollbar_policy" Type="Gtk.PolicyType" />
       </Parameters>
       <Docs>
-        <summary>Sets the <see cref="T:Gtk.Adjustment" /> for the horizontal scrollbar.</summary>
-        <value>The horizontal GtkAdjustment.</value>
-        <remarks />
+        <param name="hscrollbar_policy">Policy for horizontal bar.</param>
+        <param name="vscrollbar_policy">Policy for vertical bar.</param>
+        <summary>Sets the scrollbar policy for the horizontal and vertical scrollbars.</summary>
+        <remarks>
+          <para>
+            Sets the scrollbar policy for the horizontal and vertical scrollbars. The policy determines when the scrollbar should appear; it is a value from the <see cref="T:Gtk.PolicyType" /> enumeration. If <see cref="T:Gtk.PolicyType.Always" />, the scrollbar is always present; if <see cref="T:Gtk.PolicyType.Never" />, the scrollbar is never present; if <see cref="T:Gtk.PolicyType.Automatic" />, the scrollbar is present only if needed (that is, if the slider part of the bar would be smaller than the trough - the display is larger than the page size).
+          </para>
+        </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("hadjustment")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="VscrollbarPolicy">
-      <MemberSignature Language="C#" Value="public Gtk.PolicyType VscrollbarPolicy { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.PolicyType</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>When the vertical scrollbar is displayed.</summary>
-        <value>A <see cref="T:Gtk.PolicyType" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("vscrollbar-policy")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Vadjustment">
-      <MemberSignature Language="C#" Value="public Gtk.Adjustment Vadjustment { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Adjustment</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or Gets the <see cref="T:Gtk.Adjustment" /> for the vertical scrollbar.</summary>
-        <value>The vertical GtkAdjustment.</value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("vadjustment")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="ShadowType">
-      <MemberSignature Language="C#" Value="public Gtk.ShadowType ShadowType { set; get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.ShadowType ShadowType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.ShadowType ShadowType" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("shadow-type")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gtk.ShadowType</ReturnType>
       </ReturnValue>
@@ -245,156 +368,10 @@
         <value>The current shadow type.</value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("shadow-type")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="WindowPlacement">
-      <MemberSignature Language="C#" Value="public Gtk.CornerType WindowPlacement { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.CornerType</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Where the contents are located with respect to the scrollbars.</summary>
-        <value>A <see cref="T:Gtk.CornerType" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("window-placement")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ScrollChild">
-      <MemberSignature Language="C#" Value="public event Gtk.ScrollChildHandler ScrollChild;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ScrollChildHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when the child widget is scrolled.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("scroll_child")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="MoveFocusOut">
-      <MemberSignature Language="C#" Value="public event Gtk.MoveFocusOutHandler MoveFocusOut;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.MoveFocusOutHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when the focus moves out of the scrolled window.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("move_focus_out")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.ScrolledWindow" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnMoveFocusOut">
-      <MemberSignature Language="C#" Value="protected virtual void OnMoveFocusOut (Gtk.DirectionType direction);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="direction" Type="Gtk.DirectionType" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.ScrolledWindow.MoveFocusOut" /> event.</summary>
-        <param name="direction">a <see cref="T:Gtk.DirectionType" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ScrolledWindow.MoveFocusOut" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnScrollChild">
-      <MemberSignature Language="C#" Value="protected virtual void OnScrollChild (Gtk.ScrollType scroll, bool horizontal);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="scroll" Type="Gtk.ScrollType" />
-        <Parameter Name="horizontal" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.ScrolledWindow.ScrollChild" /> event.</summary>
-        <param name="scroll">a <see cref="T:Gtk.ScrollType" /></param>
-        <param name="horizontal">a <see cref="T:System.Boolean" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ScrolledWindow.ScrollChild" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected ScrolledWindow (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="VScrollbar">
-      <MemberSignature Language="C#" Value="public Gtk.Widget VScrollbar { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Vertical Scrollbar.</summary>
-        <value>the vertical <see cref="T:Gtk.Scrollbar" /> if it exists, or <see langword="null" />.</value>
-        <remarks />
-        <since version="Gtk# 2.8" />
-      </Docs>
-    </Member>
-    <Member MemberName="HScrollbar">
-      <MemberSignature Language="C#" Value="public Gtk.Widget HScrollbar { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Horizontal Scrollbar.</summary>
-        <value>the horizontal <see cref="T:Gtk.Scrollbar" /> if it exists, or <see langword="null" />.</value>
-        <remarks />
-        <since version="Gtk# 2.8" />
-      </Docs>
     </Member>
     <Member MemberName="UnsetPlacement">
       <MemberSignature Language="C#" Value="public void UnsetPlacement ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void UnsetPlacement() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -406,8 +383,83 @@
         <since version="Gtk# 2.10" />
       </Docs>
     </Member>
+    <Member MemberName="Vadjustment">
+      <MemberSignature Language="C#" Value="public Gtk.Adjustment Vadjustment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Adjustment Vadjustment" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("vadjustment")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Adjustment</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or Gets the <see cref="T:Gtk.Adjustment" /> for the vertical scrollbar.</summary>
+        <value>The vertical GtkAdjustment.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="VScrollbar">
+      <MemberSignature Language="C#" Value="public Gtk.Widget VScrollbar { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget VScrollbar" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Vertical Scrollbar.</summary>
+        <value>the vertical <see cref="T:Gtk.Scrollbar" /> if it exists, or <see langword="null" />.</value>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="VscrollbarPolicy">
+      <MemberSignature Language="C#" Value="public Gtk.PolicyType VscrollbarPolicy { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.PolicyType VscrollbarPolicy" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("vscrollbar-policy")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PolicyType</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>When the vertical scrollbar is displayed.</summary>
+        <value>A <see cref="T:Gtk.PolicyType" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="WindowPlacement">
+      <MemberSignature Language="C#" Value="public Gtk.CornerType WindowPlacement { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.CornerType WindowPlacement" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("window-placement")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CornerType</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Where the contents are located with respect to the scrollbars.</summary>
+        <value>A <see cref="T:Gtk.CornerType" /></value>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="WindowPlacementSet">
-      <MemberSignature Language="C#" Value="public bool WindowPlacementSet { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool WindowPlacementSet { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool WindowPlacementSet" />
       <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>

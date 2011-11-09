@@ -1,43 +1,86 @@
 <Type Name="FontDescription" FullName="Pango.FontDescription">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class FontDescription : GLib.Opaque" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit FontDescription extends GLib.Opaque" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Represents the description of an ideal font.</summary>
-    <remarks>This class is used both to list what fonts are available on the system and also for specifying the characteristics of a font to load.</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>Represents the description of an ideal font.</summary>
+    <remarks>This class is used both to list what fonts are available on the system and also for specifying the characteristics of a font to load.</remarks>
+  </Docs>
   <Members>
-    <Member MemberName="FromString">
-      <MemberSignature Language="C#" Value="public static Pango.FontDescription FromString (string str);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.FontDescription</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public FontDescription ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Default constructor</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public FontDescription (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="str" Type="System.String" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Creates a new font description from a string representation.</summary>
-        <param name="str">The string representation of the font description.</param>
-        <returns>The object of type <see cref="T:Pango.FontDescription" /> created.</returns>
-        <remarks>The form of the string representation is "[FAMILY-LIST] [STYLE-OPTIONS] [SIZE]", where:
-<list type="bullet"><item><term>FAMILY-LIST is a comma separated list of families optionally terminated by a comma.</term></item><item><term>STYLE-OPTIONS is a whitespace separated list of words where each WORD describes one of style, variant, weight, or stretch.</term></item><item><term>SIZE is a decimal number (size in points)</term></item></list><para>
-Any one of the options may be absent. If FAMILY-LIST is absent, then the family_name field of the resulting font description will be initialized to NULL. If STYLE-OPTIONS is missing, then all style options will be set to the default values. If SIZE is missing, the size in the resulting font description will be set to 0.
-</para></remarks>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AbsoluteSize">
+      <MemberSignature Language="C#" Value="public double AbsoluteSize { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 AbsoluteSize" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The size of the font in device units.</summary>
+        <value>A <see cref="T:System.Double" />, the new size in Pango units.</value>
+        <remarks>There are <see cref="F:Pango.Scale.PangoScale" /> Pango units in one device unit. For an output backend where a device unit is a pixel, an AbsoluteSize  value of 10 * <see cref="F:Pango.Scale.PangoScale" /> gives a 10 pixel font.</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="BetterMatch">
+      <MemberSignature Language="C#" Value="public bool BetterMatch (Pango.FontDescription old_match, Pango.FontDescription new_match);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool BetterMatch(class Pango.FontDescription old_match, class Pango.FontDescription new_match) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="old_match" Type="Pango.FontDescription" />
+        <Parameter Name="new_match" Type="Pango.FontDescription" />
+      </Parameters>
+      <Docs>
+        <param name="old_match">a <see cref="T:Pango.FontDescription" /> object</param>
+        <param name="new_match">a <see cref="T:Pango.FontDescription" /> object</param>
+        <summary>Determines which <see cref="T:Pango.FontDescription" /> better matches the current instance.</summary>
+        <returns>
+          <see langword="true" /> if new_match is a better match.</returns>
+        <remarks>Determines if the style attributes of new_match are a closer match for the current instance than old_match, or if old_match is <see langword="null" />, determines if new_match is a match at all. Approximate matching is done for weight and style; other attributes must match exactly.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Copy">
       <MemberSignature Language="C#" Value="public Pango.FontDescription Copy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.FontDescription Copy() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Pango.FontDescription</ReturnType>
@@ -49,86 +92,9 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="BetterMatch">
-      <MemberSignature Language="C#" Value="public bool BetterMatch (Pango.FontDescription old_match, Pango.FontDescription new_match);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="old_match" Type="Pango.FontDescription" />
-        <Parameter Name="new_match" Type="Pango.FontDescription" />
-      </Parameters>
-      <Docs>
-        <summary>Determines which <see cref="T:Pango.FontDescription" /> better matches the current instance.</summary>
-        <param name="old_match">a <see cref="T:Pango.FontDescription" /> object</param>
-        <param name="new_match">a <see cref="T:Pango.FontDescription" /> object</param>
-        <returns>
-          <see langword="true" /> if new_match is a better match.</returns>
-        <remarks>Determines if the style attributes of new_match are a closer match for the current instance than old_match, or if old_match is <see langword="null" />, determines if new_match is a match at all. Approximate matching is done for weight and style; other attributes must match exactly.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Free">
-      <MemberSignature Language="C#" Value="public void Free ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Frees a font description.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="MergeStatic">
-      <MemberSignature Language="C#" Value="public void MergeStatic (Pango.FontDescription desc_to_merge, bool replace_existing);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="desc_to_merge" Type="Pango.FontDescription" />
-        <Parameter Name="replace_existing" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Merges the fields of a font description into the current instance without copying the field data (shallow copy).</summary>
-        <param name="desc_to_merge">an object of type <see cref="T:Pango.FontDescription" /></param>
-        <param name="replace_existing">an object of type <see cref="T:System.Boolean" /></param>
-        <remarks>Like <see cref="T:Pango.FontDescription.Merge()" />, but only a shallow copy is made of the family name and other allocated fields. desc can only be used until <paramref name="desc_to_merge" /> is modified or freed. This is meant to be used when the merged font description is only needed temporarily.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ToFilename">
-      <MemberSignature Language="C#" Value="public string ToFilename ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Creates a filename representation of a font description.</summary>
-        <returns>an object of type <see cref="T:System.String" /></returns>
-        <remarks>The filename created is identical to the result from calling <see cref="M:Pango.FontDescription.ToString" />, but with underscores instead of characters that are untypical in filenames, and in lower case only.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Merge">
-      <MemberSignature Language="C#" Value="public void Merge (Pango.FontDescription desc_to_merge, bool replace_existing);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="desc_to_merge" Type="Pango.FontDescription" />
-        <Parameter Name="replace_existing" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Merges the fields of a font description into the current instance.</summary>
-        <param name="desc_to_merge">The <see cref="T:Pango.FontDescription" /> to merge from.</param>
-        <param name="replace_existing">If <see langword="true" />, replace fields in current instance with the corresponding values from <paramref name="desc_to_merge" />, even if they are already exist.</param>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="CopyStatic">
       <MemberSignature Language="C#" Value="public Pango.FontDescription CopyStatic ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.FontDescription CopyStatic() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Pango.FontDescription</ReturnType>
@@ -142,6 +108,7 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
     </Member>
     <Member MemberName="Equal">
       <MemberSignature Language="C#" Value="public bool Equal (Pango.FontDescription desc2);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Equal(class Pango.FontDescription desc2) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -150,84 +117,193 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
         <Parameter Name="desc2" Type="Pango.FontDescription" />
       </Parameters>
       <Docs>
-        <summary>Compares two font descriptions for equality.</summary>
         <param name="desc2">an object of type <see cref="T:Pango.FontDescription" /> to test for equality</param>
+        <summary>Compares two font descriptions for equality.</summary>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>
           <see langword="true" /> if the two font descriptions are proveably identical. (Two font descriptions may result in identical fonts being loaded, but still compare <see langword="false" />.)</remarks>
       </Docs>
     </Member>
-    <Member MemberName="UnsetFields">
-      <MemberSignature Language="C#" Value="public void UnsetFields (Pango.FontMask to_unset);" />
+    <Member MemberName="Family">
+      <MemberSignature Language="C#" Value="public string Family { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Family" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The family name of the font.</summary>
+        <value> The family name field. (Will be <see langword="null" /> if not previously set.)</value>
+        <remarks>The family name represents a family of related font styles, and will resolve to a particular <see cref="T:Pango.FontFamily" />. In some uses of <see cref="T:Pango.FontDescription" /> , it is also possible to use a comma separated list of family names for this property.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FamilyStatic">
+      <MemberSignature Language="C#" Value="public string FamilyStatic { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string FamilyStatic" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets the family name of the font without copying the string.</summary>
+        <value />
+        <remarks>The family name represents a family of related font styles, and will resolve to a particular <see cref="T:Pango.FontFamily" />. In some uses of <see cref="T:Pango.FontDescription" />, it is also possible to use a comma separated list of family names for this property.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~FontDescription ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Free">
+      <MemberSignature Language="C#" Value="public void Free ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Free() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Pango.FontDescription is now freed automatically")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Frees a font description.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Free">
+      <MemberSignature Language="C#" Value="protected override void Free (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Free(native int raw) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="to_unset" Type="Pango.FontMask" />
-      </Parameters>
-      <Docs>
-        <summary>Unsets some of the fields in the <see cref="T:Pango.FontDescription" />.</summary>
-        <param name="to_unset">an object of type <see cref="T:Pango.FontMask" />
-(bitmask of fields in the desc to unset).</param>
-        <remarks>This merely marks the fields cleared, it does not clear the settings for those fields. To clear a family name set with <see cref="P:Pango.FontDescription.FamilyStatic" /> so that it won't be returned by  <see cref="P:Pango.FontDescription.Family" />, you must actually set <see cref="P:Pango.FontDescription.Family" /> to <see langword="null" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public FontDescription (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
+        <param name="raw">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public FontDescription ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="FromString">
+      <MemberSignature Language="C#" Value="public static Pango.FontDescription FromString (string str);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Pango.FontDescription FromString(string str) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.FontDescription</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="str">The string representation of the font description.</param>
+        <summary>Creates a new font description from a string representation.</summary>
+        <returns>The object of type <see cref="T:Pango.FontDescription" /> created.</returns>
+        <remarks>The form of the string representation is "[FAMILY-LIST] [STYLE-OPTIONS] [SIZE]", where:
+<list type="bullet"><item><term>FAMILY-LIST is a comma separated list of families optionally terminated by a comma.</term></item><item><term>STYLE-OPTIONS is a whitespace separated list of words where each WORD describes one of style, variant, weight, or stretch.</term></item><item><term>SIZE is a decimal number (size in points)</term></item></list><para>
+Any one of the options may be absent. If FAMILY-LIST is absent, then the family_name field of the resulting font description will be initialized to NULL. If STYLE-OPTIONS is missing, then all style options will be set to the default values. If SIZE is missing, the size in the resulting font description will be set to 0.
+</para></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Gravity">
+      <MemberSignature Language="C#" Value="public Pango.Gravity Gravity { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.Gravity Gravity" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Gravity</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gravity orientation of the font.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Default constructor</summary>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Pango.FontDescription" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Hash">
+      <MemberSignature Language="C#" Value="public uint Hash { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 Hash" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Computes a hash of a <see cref="T:Pango.FontDescription" /> structure suitable to be used.</summary>
+        <value> the hash value.</value>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Style">
-      <MemberSignature Language="C#" Value="public Pango.Style Style { set; get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="Merge">
+      <MemberSignature Language="C#" Value="public void Merge (Pango.FontDescription desc_to_merge, bool replace_existing);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Merge(class Pango.FontDescription desc_to_merge, bool replace_existing) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Pango.Style</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
+        <Parameter Name="desc_to_merge" Type="Pango.FontDescription" />
+        <Parameter Name="replace_existing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>The style of the font.</summary>
-        <value> the style for the font description</value>
-        <remarks>Most fonts will either have a italic style or an oblique style, but not both, and font matching in Pango will match italic specifications with oblique fonts and vice-versa if an exact match is not found.</remarks>
+        <param name="desc_to_merge">The <see cref="T:Pango.FontDescription" /> to merge from.</param>
+        <param name="replace_existing">If <see langword="true" />, replace fields in current instance with the corresponding values from <paramref name="desc_to_merge" />, even if they are already exist.</param>
+        <summary>Merges the fields of a font description into the current instance.</summary>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Stretch">
-      <MemberSignature Language="C#" Value="public Pango.Stretch Stretch { set; get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="MergeStatic">
+      <MemberSignature Language="C#" Value="public void MergeStatic (Pango.FontDescription desc_to_merge, bool replace_existing);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void MergeStatic(class Pango.FontDescription desc_to_merge, bool replace_existing) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Pango.Stretch</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
+        <Parameter Name="desc_to_merge" Type="Pango.FontDescription" />
+        <Parameter Name="replace_existing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>The stretch of the font.</summary>
-        <value> the stretch field for the font description.</value>
-        <remarks>The stretch property specifies how narrow or wide the font should be.</remarks>
+        <param name="desc_to_merge">an object of type <see cref="T:Pango.FontDescription" /></param>
+        <param name="replace_existing">an object of type <see cref="T:System.Boolean" /></param>
+        <summary>Merges the fields of a font description into the current instance without copying the field data (shallow copy).</summary>
+        <remarks>Like <see cref="T:Pango.FontDescription.Merge()" />, but only a shallow copy is made of the family name and other allocated fields. desc can only be used until <paramref name="desc_to_merge" /> is modified or freed. This is meant to be used when the merged font description is only needed temporarily.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetFields">
-      <MemberSignature Language="C#" Value="public Pango.FontMask SetFields { get; };" />
+      <MemberSignature Language="C#" Value="public Pango.FontMask SetFields { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.FontMask SetFields" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.FontMask</ReturnType>
@@ -239,7 +315,8 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       </Docs>
     </Member>
     <Member MemberName="Size">
-      <MemberSignature Language="C#" Value="public int Size { set; get; };" />
+      <MemberSignature Language="C#" Value="public int Size { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Size" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -263,22 +340,100 @@ Returns 0 if the size field has not previously been set. Use <see cref="M:Pango.
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="FamilyStatic">
-      <MemberSignature Language="C#" Value="public string FamilyStatic { set; };" />
+    <Member MemberName="SizeIsAbsolute">
+      <MemberSignature Language="C#" Value="public bool SizeIsAbsolute { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SizeIsAbsolute" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.String</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Determines whether the size of the font is in points (not absolute) or device units (absolute).</summary>
+        <value>a <see cref="T:System.Boolean" />, indicating whether the Size for the FontDescription is in points or device units.</value>
+        <remarks>See <see cref="P:Pango.FontDescription.Size" /> and <see cref="P:Pango.FontDescription.AbsoluteSize" />.</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="Stretch">
+      <MemberSignature Language="C#" Value="public Pango.Stretch Stretch { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.Stretch Stretch" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Stretch</ReturnType>
       </ReturnValue>
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Sets the family name of the font without copying the string.</summary>
-        <value />
-        <remarks>The family name represents a family of related font styles, and will resolve to a particular <see cref="T:Pango.FontFamily" />. In some uses of <see cref="T:Pango.FontDescription" />, it is also possible to use a comma separated list of family names for this property.</remarks>
+        <summary>The stretch of the font.</summary>
+        <value> the stretch field for the font description.</value>
+        <remarks>The stretch property specifies how narrow or wide the font should be.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Style">
+      <MemberSignature Language="C#" Value="public Pango.Style Style { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.Style Style" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Style</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The style of the font.</summary>
+        <value> the style for the font description</value>
+        <remarks>Most fonts will either have a italic style or an oblique style, but not both, and font matching in Pango will match italic specifications with oblique fonts and vice-versa if an exact match is not found.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToFilename">
+      <MemberSignature Language="C#" Value="public string ToFilename ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string ToFilename() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Creates a filename representation of a font description.</summary>
+        <returns>an object of type <see cref="T:System.String" /></returns>
+        <remarks>The filename created is identical to the result from calling <see cref="M:Pango.FontDescription.ToString" />, but with underscores instead of characters that are untypical in filenames, and in lower case only.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="UnsetFields">
+      <MemberSignature Language="C#" Value="public void UnsetFields (Pango.FontMask to_unset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void UnsetFields(valuetype Pango.FontMask to_unset) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="to_unset" Type="Pango.FontMask" />
+      </Parameters>
+      <Docs>
+        <param name="to_unset">an object of type <see cref="T:Pango.FontMask" />
+(bitmask of fields in the desc to unset).</param>
+        <summary>Unsets some of the fields in the <see cref="T:Pango.FontDescription" />.</summary>
+        <remarks>This merely marks the fields cleared, it does not clear the settings for those fields. To clear a family name set with <see cref="P:Pango.FontDescription.FamilyStatic" /> so that it won't be returned by  <see cref="P:Pango.FontDescription.Family" />, you must actually set <see cref="P:Pango.FontDescription.Family" /> to <see langword="null" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Variant">
-      <MemberSignature Language="C#" Value="public Pango.Variant Variant { set; get; };" />
+      <MemberSignature Language="C#" Value="public Pango.Variant Variant { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.Variant Variant" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.Variant</ReturnType>
@@ -292,7 +447,8 @@ Returns 0 if the size field has not previously been set. Use <see cref="M:Pango.
       </Docs>
     </Member>
     <Member MemberName="Weight">
-      <MemberSignature Language="C#" Value="public Pango.Weight Weight { set; get; };" />
+      <MemberSignature Language="C#" Value="public Pango.Weight Weight { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.Weight Weight" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.Weight</ReturnType>
@@ -303,86 +459,6 @@ Returns 0 if the size field has not previously been set. Use <see cref="M:Pango.
         <summary>The weight (boldness) of the font.</summary>
         <value> the weight for the font description.</value>
         <remarks>The weight property specifies how bold or light the font should be. In addition to the values of the <see cref="T:Pango.Weight" /> enumeration, other intermediate numeric values are possible.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Family">
-      <MemberSignature Language="C#" Value="public string Family { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The family name of the font.</summary>
-        <value> The family name field. (Will be <see langword="null" /> if not previously set.)</value>
-        <remarks>The family name represents a family of related font styles, and will resolve to a particular <see cref="T:Pango.FontFamily" />. In some uses of <see cref="T:Pango.FontDescription" /> , it is also possible to use a comma separated list of family names for this property.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Hash">
-      <MemberSignature Language="C#" Value="public uint Hash { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Computes a hash of a <see cref="T:Pango.FontDescription" /> structure suitable to be used.</summary>
-        <value> the hash value.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Pango.FontDescription" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SizeIsAbsolute">
-      <MemberSignature Language="C#" Value="public bool SizeIsAbsolute { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Determines whether the size of the font is in points (not absolute) or device units (absolute).</summary>
-        <value>a <see cref="T:System.Boolean" />, indicating whether the Size for the FontDescription is in points or device units.</value>
-        <remarks>See <see cref="P:Pango.FontDescription.Size" /> and <see cref="P:Pango.FontDescription.AbsoluteSize" />.</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="AbsoluteSize">
-      <MemberSignature Language="C#" Value="public double AbsoluteSize { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The size of the font in device units.</summary>
-        <value>A <see cref="T:System.Double" />, the new size in Pango units.</value>
-        <remarks>There are <see cref="F:Pango.Scale.PangoScale" /> Pango units in one device unit. For an output backend where a device unit is a pixel, an AbsoluteSize  value of 10 * <see cref="F:Pango.Scale.PangoScale" /> gives a 10 pixel font.</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="Gravity">
-      <MemberSignature Language="C#" Value="public Pango.Gravity Gravity { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Gravity</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Gravity orientation of the font.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
   </Members>

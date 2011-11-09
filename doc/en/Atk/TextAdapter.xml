@@ -1,8 +1,8 @@
 <Type Name="TextAdapter" FullName="Atk.TextAdapter">
-  <TypeSignature Language="C#" Value="public class TextAdapter : GLib.GInterfaceAdapter, Atk.Text" />
+  <TypeSignature Language="C#" Value="public class TextAdapter : GLib.GInterfaceAdapter, Atk.Text, GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi TextAdapter extends GLib.GInterfaceAdapter implements class Atk.Text, class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>GLib.GInterfaceAdapter</BaseTypeName>
@@ -11,10 +11,19 @@
     <Interface>
       <InterfaceName>Atk.Text</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
   </Interfaces>
+  <Docs>
+    <summary>Text adapter.</summary>
+    <remarks>Adapts <see cref="T:Atk.TextImplementor" /> implementations to the full <see cref="T:Atk.Text" /> API.</remarks>
+    <since version="Gtk# 2.12" />
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public TextAdapter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
@@ -24,6 +33,7 @@
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public TextAdapter (Atk.TextImplementor implementor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Atk.TextImplementor implementor) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
         <Parameter Name="implementor" Type="Atk.TextImplementor" />
@@ -34,8 +44,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TextAdapter (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="AddSelection">
       <MemberSignature Language="C#" Value="public bool AddSelection (int start_offset, int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool AddSelection(int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -54,6 +79,7 @@
     </Member>
     <Member MemberName="AttributeForName">
       <MemberSignature Language="C#" Value="public static Atk.TextAttribute AttributeForName (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype Atk.TextAttribute AttributeForName(string name) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.TextAttribute</ReturnType>
@@ -70,6 +96,7 @@
     </Member>
     <Member MemberName="AttributeGetName">
       <MemberSignature Language="C#" Value="public static string AttributeGetName (Atk.TextAttribute attr);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string AttributeGetName(valuetype Atk.TextAttribute attr) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -86,6 +113,7 @@
     </Member>
     <Member MemberName="AttributeGetValue">
       <MemberSignature Language="C#" Value="public static string AttributeGetValue (Atk.TextAttribute attr, int index_);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string AttributeGetValue(valuetype Atk.TextAttribute attr, int32 index_) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -104,6 +132,7 @@
     </Member>
     <Member MemberName="AttributeRegister">
       <MemberSignature Language="C#" Value="public static Atk.TextAttribute AttributeRegister (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype Atk.TextAttribute AttributeRegister(string name) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.TextAttribute</ReturnType>
@@ -119,7 +148,8 @@
       </Docs>
     </Member>
     <Member MemberName="CaretOffset">
-      <MemberSignature Language="C#" Value="public int CaretOffset { get; };" />
+      <MemberSignature Language="C#" Value="public int CaretOffset { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CaretOffset" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -131,7 +161,8 @@
       </Docs>
     </Member>
     <Member MemberName="CharacterCount">
-      <MemberSignature Language="C#" Value="public int CharacterCount { get; };" />
+      <MemberSignature Language="C#" Value="public int CharacterCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CharacterCount" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -143,10 +174,11 @@
       </Docs>
     </Member>
     <Member MemberName="DefaultAttributes">
-      <MemberSignature Language="C#" Value="public GLib.SList DefaultAttributes { get; };" />
+      <MemberSignature Language="C#" Value="public Atk.Attribute[] DefaultAttributes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Atk.Attribute[] DefaultAttributes" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.SList</ReturnType>
+        <ReturnType>Atk.Attribute[]</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
@@ -154,8 +186,30 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="EmitTextChanged">
+      <MemberSignature Language="C#" Value="public void EmitTextChanged (Atk.TextChangedDetail detail, int position, int length);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void EmitTextChanged(valuetype Atk.TextChangedDetail detail, int32 position, int32 length) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="detail" Type="Atk.TextChangedDetail" />
+        <Parameter Name="position" Type="System.Int32" />
+        <Parameter Name="length" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="detail">To be added.</param>
+        <param name="position">To be added.</param>
+        <param name="length">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="FreeRanges">
       <MemberSignature Language="C#" Value="public static void FreeRanges (Atk.TextRange ranges);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void FreeRanges(valuetype Atk.TextRange ranges) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -171,6 +225,7 @@
     </Member>
     <Member MemberName="GetBoundedRanges">
       <MemberSignature Language="C#" Value="public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coord_type, Atk.TextClipType x_clip_type, Atk.TextClipType y_clip_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype Atk.TextRange GetBoundedRanges(valuetype Atk.TextRectangle rect, valuetype Atk.CoordType coord_type, valuetype Atk.TextClipType x_clip_type, valuetype Atk.TextClipType y_clip_type) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.TextRange</ReturnType>
@@ -193,6 +248,7 @@
     </Member>
     <Member MemberName="GetCharacterAtOffset">
       <MemberSignature Language="C#" Value="public char GetCharacterAtOffset (int offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance char GetCharacterAtOffset(int32 offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Char</ReturnType>
@@ -209,6 +265,7 @@
     </Member>
     <Member MemberName="GetCharacterExtents">
       <MemberSignature Language="C#" Value="public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetCharacterExtents(int32 offset, int32 x, int32 y, int32 width, int32 height, valuetype Atk.CoordType coords) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -233,7 +290,26 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public static Atk.Text GetObject (GLib.Object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.Text GetObject(class GLib.Object obj) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Text</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="GLib.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
       <MemberSignature Language="C#" Value="public static Atk.Text GetObject (IntPtr handle, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.Text GetObject(native int handle, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Text</ReturnType>
@@ -252,6 +328,7 @@
     </Member>
     <Member MemberName="GetOffsetAtPoint">
       <MemberSignature Language="C#" Value="public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetOffsetAtPoint(int32 x, int32 y, valuetype Atk.CoordType coords) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -271,31 +348,33 @@
       </Docs>
     </Member>
     <Member MemberName="GetRangeExtents">
-      <MemberSignature Language="C#" Value="public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, Atk.TextRectangle rect);" />
+      <MemberSignature Language="C#" Value="public Atk.TextRectangle GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype Atk.TextRectangle GetRangeExtents(int32 start_offset, int32 end_offset, valuetype Atk.CoordType coord_type) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Atk.TextRectangle</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="start_offset" Type="System.Int32" />
         <Parameter Name="end_offset" Type="System.Int32" />
         <Parameter Name="coord_type" Type="Atk.CoordType" />
-        <Parameter Name="rect" Type="Atk.TextRectangle" />
       </Parameters>
       <Docs>
         <param name="start_offset">To be added.</param>
         <param name="end_offset">To be added.</param>
         <param name="coord_type">To be added.</param>
-        <param name="rect">To be added.</param>
         <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="GetRunAttributes">
-      <MemberSignature Language="C#" Value="public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="C#" Value="public Atk.Attribute[] GetRunAttributes (int offset, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype Atk.Attribute[] GetRunAttributes(int32 offset, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.SList</ReturnType>
+        <ReturnType>Atk.Attribute[]</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="offset" Type="System.Int32" />
@@ -309,10 +388,12 @@
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="GetSelection">
       <MemberSignature Language="C#" Value="public string GetSelection (int selection_num, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetSelection(int32 selection_num, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -333,6 +414,7 @@
     </Member>
     <Member MemberName="GetText">
       <MemberSignature Language="C#" Value="public string GetText (int start_offset, int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetText(int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -351,6 +433,7 @@
     </Member>
     <Member MemberName="GetTextAfterOffset">
       <MemberSignature Language="C#" Value="public string GetTextAfterOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetTextAfterOffset(int32 offset, valuetype Atk.TextBoundary boundary_type, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -373,6 +456,7 @@
     </Member>
     <Member MemberName="GetTextAtOffset">
       <MemberSignature Language="C#" Value="public string GetTextAtOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetTextAtOffset(int32 offset, valuetype Atk.TextBoundary boundary_type, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -395,6 +479,7 @@
     </Member>
     <Member MemberName="GetTextBeforeOffset">
       <MemberSignature Language="C#" Value="public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetTextBeforeOffset(int32 offset, valuetype Atk.TextBoundary boundary_type, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -415,136 +500,37 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="NSelections">
-      <MemberSignature Language="C#" Value="public int NSelections { get; };" />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public override GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="RemoveSelection">
-      <MemberSignature Language="C#" Value="public bool RemoveSelection (int selection_num);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public override IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="selection_num" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="selection_num">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetCaretOffset">
-      <MemberSignature Language="C#" Value="public bool SetCaretOffset (int offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="offset" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="offset">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetSelection">
-      <MemberSignature Language="C#" Value="public bool SetSelection (int selection_num, int start_offset, int end_offset);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="selection_num" Type="System.Int32" />
-        <Parameter Name="start_offset" Type="System.Int32" />
-        <Parameter Name="end_offset" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="selection_num">To be added.</param>
-        <param name="start_offset">To be added.</param>
-        <param name="end_offset">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextAttributesChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler TextAttributesChanged;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("text_attributes_changed")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
+        <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
+        <value>To be added.</value>
         <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextCaretMoved">
-      <MemberSignature Language="C#" Value="public event Atk.TextCaretMovedHandler TextCaretMoved;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("text_caret_moved")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Atk.TextCaretMovedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextChanged">
-      <MemberSignature Language="C#" Value="public event Atk.TextChangedHandler TextChanged;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("text_changed")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Atk.TextChangedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextSelectionChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler TextSelectionChanged;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("text_selection_changed")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="Implementor">
-      <MemberSignature Language="C#" Value="public Atk.TextImplementor Implementor { get; };" />
+      <MemberSignature Language="C#" Value="public Atk.TextImplementor Implementor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Atk.TextImplementor Implementor" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Atk.TextImplementor</ReturnType>
@@ -556,7 +542,8 @@
       </Docs>
     </Member>
     <Member MemberName="NSelections">
-      <MemberSignature Language="C#" Value="public int NSelections { get; };" />
+      <MemberSignature Language="C#" Value="public int NSelections { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NSelections" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -567,8 +554,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OwnedHandle">
+      <MemberSignature Language="C#" Value="public IntPtr OwnedHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int OwnedHandle" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="RemoveSelection">
       <MemberSignature Language="C#" Value="public bool RemoveSelection (int selection_num);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool RemoveSelection(int32 selection_num) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -585,6 +587,7 @@
     </Member>
     <Member MemberName="SetCaretOffset">
       <MemberSignature Language="C#" Value="public bool SetCaretOffset (int offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetCaretOffset(int32 offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -601,6 +604,7 @@
     </Member>
     <Member MemberName="SetSelection">
       <MemberSignature Language="C#" Value="public bool SetSelection (int selection_num, int start_offset, int end_offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetSelection(int32 selection_num, int32 start_offset, int32 end_offset) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -621,6 +625,7 @@
     </Member>
     <Member MemberName="TextAttributesChanged">
       <MemberSignature Language="C#" Value="public event EventHandler TextAttributesChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler TextAttributesChanged" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
@@ -637,6 +642,7 @@
     </Member>
     <Member MemberName="TextCaretMoved">
       <MemberSignature Language="C#" Value="public event Atk.TextCaretMovedHandler TextCaretMoved;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.TextCaretMovedHandler TextCaretMoved" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
@@ -653,6 +659,7 @@
     </Member>
     <Member MemberName="TextChanged">
       <MemberSignature Language="C#" Value="public event Atk.TextChangedHandler TextChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.TextChangedHandler TextChanged" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
@@ -669,6 +676,7 @@
     </Member>
     <Member MemberName="TextSelectionChanged">
       <MemberSignature Language="C#" Value="public event EventHandler TextSelectionChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler TextSelectionChanged" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
@@ -684,9 +692,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary>Text adapter.</summary>
-    <remarks>Adapts <see cref="T:Atk.TextImplementor" /> implementations to the full <see cref="T:Atk.Text" /> API.</remarks>
-    <since version="Gtk# 2.12" />
-  </Docs>
 </Type>

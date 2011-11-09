@@ -1,12 +1,17 @@
 <Type Name="Menu" FullName="Gtk.Menu">
   <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class Menu : Gtk.MenuShell" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Menu extends Gtk.MenuShell" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.MenuShell</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>A <see cref="T:Gtk.Menu" /> is a <see cref="T:Gtk.MenuShell" /> that implements a drop down menu.</summary>
     <remarks>
@@ -65,19 +70,180 @@ public class MenuApp
       </example>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.MenuShell</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Menu ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>A constructor.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Menu (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AccelGroup">
+      <MemberSignature Language="C#" Value="public Gtk.AccelGroup AccelGroup { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.AccelGroup AccelGroup" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("accel-group")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.AccelGroup</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the <see cref="T:Gtk.AccelGroup" /> which holds global accelerators for the menu.</summary>
+        <value>The <see cref="T:Gtk.AccelGroup" /> associated with the menu.</value>
+        <remarks>
+          <para>
+          This accelerator group needs to also be added to all windows that this menu is being used in with <see cref="M:Gtk.Window.AddAccelGroup" />, in order for those windows to support all the accelerators contained in this group.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AccelPath">
+      <MemberSignature Language="C#" Value="public string AccelPath { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string AccelPath" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("accel-path")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets an accelerator path for this menu from which accelerator paths for its immediate children, its menu items, can be constructed.</summary>
+        <value>void</value>
+        <remarks>
+          <para>
+          The main purpose of this function is to spare the programmer the inconvenience of having to call <see cref="P:Gtk.MenuItem.AccelPath" /> on each menu item that should support runtime user changable accelerators. Instead, by just calling <see cref="P:Gtk.MenuItem.AccelPath" /> on their parent, each menu item of this menu, that contains a label describing its purpose, automatically gets an accel path assigned. 
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Active">
+      <MemberSignature Language="C#" Value="public Gtk.Widget Active { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget Active" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("active")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the selected menu item from the menu.</summary>
+        <value>The <see cref="T:Gtk.MenuItem" /> that was last selected in the menu. If a selection has not yet been made, the first menu item is selected.</value>
+        <remarks>
+          <para>
+          This is used by the <see cref="T:Gtk.OptionMenu" />.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Attach">
+      <MemberSignature Language="C#" Value="public void Attach (Gtk.Widget child, uint left_attach, uint right_attach, uint top_attach, uint bottom_attach);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Attach(class Gtk.Widget child, unsigned int32 left_attach, unsigned int32 right_attach, unsigned int32 top_attach, unsigned int32 bottom_attach) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="left_attach" Type="System.UInt32" />
+        <Parameter Name="right_attach" Type="System.UInt32" />
+        <Parameter Name="top_attach" Type="System.UInt32" />
+        <Parameter Name="bottom_attach" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="child">a <see cref="T:Gtk.Widget" />, should be a <see cref="T:Gtk.MenuItem" /></param>
+        <param name="left_attach">a <see cref="T:System.UInt32" /></param>
+        <param name="right_attach">a <see cref="T:System.UInt32" /></param>
+        <param name="top_attach">a <see cref="T:System.UInt32" /></param>
+        <param name="bottom_attach">a <see cref="T:System.UInt32" /></param>
+        <summary>Adds a new <see cref="T:Gtk.MenuItem" /> to a (table) menu.</summary>
+        <remarks>
+          <para>The number of 'cells' that
+	    an item will occupy is specified by <paramref name="left_attach" />, 
+	    <paramref name="right_attach" />, <paramref name="top_attach" /> and 
+	    <paramref name="bottom_attach" />. These each represent the leftmost,
+	    rightmost, uppermost and lower column and row numbers of the table.
+	    (Columns and rows are indexed from zero).</para>
+          <para>Note that this function is not related to <see cref="M:Gtk.Menu.Detach" />.</para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="AttachToWidget">
+      <MemberSignature Language="C#" Value="public void AttachToWidget (Gtk.Widget attach_widget, Gtk.MenuDetachFunc detacher);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AttachToWidget(class Gtk.Widget attach_widget, class Gtk.MenuDetachFunc detacher) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="attach_widget" Type="Gtk.Widget" />
+        <Parameter Name="detacher" Type="Gtk.MenuDetachFunc" />
+      </Parameters>
+      <Docs>
+        <param name="attach_widget">The <see cref="T:Gtk.Widget" /> that the menu will be attached to.</param>
+        <param name="detacher">The user supplied callback function that will be called when the menu calls <see cref="M:Gtk.Menu.Detach" />.</param>
+        <summary>Attaches the menu to the widget and provides a detacher.</summary>
+        <remarks>
+          <para>
+          Attaches the menu to the widget and provides a callback function that will be invoked when the menu calls <see cref="M:Gtk.Menu.Detach" /> during its destruction.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AttachWidget">
+      <MemberSignature Language="C#" Value="public Gtk.Widget AttachWidget { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget AttachWidget" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("attach-widget")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the <see cref="T:Gtk.Widget" /> that the menu is attached to.</summary>
+        <value>The <see cref="T:Gtk.Widget" /> that the menu is attached to.</value>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Detach">
       <MemberSignature Language="C#" Value="public void Detach ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Detach() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -92,8 +258,119 @@ public class MenuApp
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="GetForAttachWidget">
+      <MemberSignature Language="C#" Value="public static GLib.List GetForAttachWidget (Gtk.Widget widget);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.List GetForAttachWidget(class Gtk.Widget widget) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.List</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:GLib.List" /></returns>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Menu" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Item">
+      <MemberSignature Language="C#" Value="public override Gtk.Container.ContainerChild this[Gtk.Widget child] { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Container/ContainerChild Item(class Gtk.Widget)" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Container+ContainerChild</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Monitor">
+      <MemberSignature Language="C#" Value="public int Monitor { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Monitor" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("monitor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The number of the monitor on which the menu should be popped up.</summary>
+        <value>a <see cref="T:System.Int32" /></value>
+        <remarks>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveScroll">
+      <MemberSignature Language="C#" Value="public event Gtk.MoveScrollHandler MoveScroll;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MoveScrollHandler MoveScroll" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("move-scroll")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.MoveScrollHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnMoveScroll">
+      <MemberSignature Language="C#" Value="protected virtual void OnMoveScroll (Gtk.ScrollType p0);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnMoveScroll(valuetype Gtk.ScrollType p0) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMoveScroll", Type=typeof(Gtk.Menu))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="p0" Type="Gtk.ScrollType" />
+      </Parameters>
+      <Docs>
+        <param name="p0">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="Popdown">
       <MemberSignature Language="C#" Value="public void Popdown ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Popdown() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -104,29 +381,9 @@ public class MenuApp
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="AttachToWidget">
-      <MemberSignature Language="C#" Value="public void AttachToWidget (Gtk.Widget attach_widget, Gtk.MenuDetachFunc detacher);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="attach_widget" Type="Gtk.Widget" />
-        <Parameter Name="detacher" Type="Gtk.MenuDetachFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Attaches the menu to the widget and provides a detacher.</summary>
-        <param name="attach_widget">The <see cref="T:Gtk.Widget" /> that the menu will be attached to.</param>
-        <param name="detacher">The user supplied callback function that will be called when the menu calls <see cref="M:Gtk.Menu.Detach" />.</param>
-        <remarks>
-          <para>
-          Attaches the menu to the widget and provides a callback function that will be invoked when the menu calls <see cref="M:Gtk.Menu.Detach" /> during its destruction.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Popup">
       <MemberSignature Language="C#" Value="public void Popup ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Popup() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -140,6 +397,7 @@ public class MenuApp
     </Member>
     <Member MemberName="Popup">
       <MemberSignature Language="C#" Value="public void Popup (Gtk.Widget parent_menu_shell, Gtk.Widget parent_menu_item, Gtk.MenuPositionFunc func, uint button, uint activate_time);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Popup(class Gtk.Widget parent_menu_shell, class Gtk.Widget parent_menu_item, class Gtk.MenuPositionFunc func, unsigned int32 button, unsigned int32 activate_time) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -152,12 +410,12 @@ public class MenuApp
         <Parameter Name="activate_time" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Displays a menu and makes it available for selection.</summary>
         <param name="parent_menu_shell">The menu shell containing the triggering menu item, or <see langword="null" />.</param>
         <param name="parent_menu_item">The menu item whose activation triggered the popup, or <see langword="null" />.</param>
         <param name="func">A user supplied function used to position the menu, or <see langword="null" />.</param>
         <param name="button">The mouse button which was pressed to initiate the event.</param>
         <param name="activate_time">The time at which the activation event occurred.</param>
+        <summary>Displays a menu and makes it available for selection.</summary>
         <remarks>
           <para>
           Applications can use this function to display context-sensitive menus, and will typically supply <see langword="null" /> for the <paramref name="parent_menu_shell" />, <paramref name="parent_menu_item" />, and <paramref name="func" /> parameters. The default menu positioning function will position the menu at the current mouse cursor position.
@@ -231,7 +489,13 @@ class PopupSample
     </Member>
     <Member MemberName="Popup">
       <MemberSignature Language="C#" Value="public void Popup (Gtk.Widget parent_menu_shell, Gtk.Widget parent_menu_item, Gtk.MenuPositionFunc func, IntPtr data, uint button, uint activate_time);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Popup(class Gtk.Widget parent_menu_shell, class Gtk.Widget parent_menu_item, class Gtk.MenuPositionFunc func, native int data, unsigned int32 button, unsigned int32 activate_time) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by overload without IntPtr argument")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -244,18 +508,66 @@ class PopupSample
         <Parameter Name="activate_time" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Obsolete. Replaced by <see cref="Gtk.Menu.Popup(Gtk.Widget,Gtk.Widget,Gtk.MenuPositionFunc,System.UInt32,System.UInt32)" />.</summary>
         <param name="parent_menu_shell">The menu shell containing the triggering menu item, or <see langword="null" />.</param>
         <param name="parent_menu_item">The menu item whose activation triggered the popup, or <see langword="null" />.</param>
         <param name="func">A user supplied function used to position the menu, or <see langword="null" />.</param>
         <param name="data">Ignored.</param>
         <param name="button">The mouse button which was pressed to initiate the event.</param>
         <param name="activate_time">The time at which the activation event occurred.</param>
+        <summary>Obsolete. Replaced by <see cref="Gtk.Menu.Popup(Gtk.Widget,Gtk.Widget,Gtk.MenuPositionFunc,System.UInt32,System.UInt32)" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PopupForDevice">
+      <MemberSignature Language="C#" Value="public void PopupForDevice (Gdk.Device device, Gtk.Widget parent_menu_shell, Gtk.Widget parent_menu_item, Gtk.MenuPositionFunc func, GLib.DestroyNotify destroy, uint button, uint activate_time);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PopupForDevice(class Gdk.Device device, class Gtk.Widget parent_menu_shell, class Gtk.Widget parent_menu_item, class Gtk.MenuPositionFunc func, class GLib.DestroyNotify destroy, unsigned int32 button, unsigned int32 activate_time) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="device" Type="Gdk.Device" />
+        <Parameter Name="parent_menu_shell" Type="Gtk.Widget" />
+        <Parameter Name="parent_menu_item" Type="Gtk.Widget" />
+        <Parameter Name="func" Type="Gtk.MenuPositionFunc" />
+        <Parameter Name="destroy" Type="GLib.DestroyNotify" />
+        <Parameter Name="button" Type="System.UInt32" />
+        <Parameter Name="activate_time" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="device">To be added.</param>
+        <param name="parent_menu_shell">To be added.</param>
+        <param name="parent_menu_item">To be added.</param>
+        <param name="func">To be added.</param>
+        <param name="destroy">To be added.</param>
+        <param name="button">To be added.</param>
+        <param name="activate_time">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ReorderChild">
+      <MemberSignature Language="C#" Value="public void ReorderChild (Gtk.Widget child, int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReorderChild(class Gtk.Widget child, int32 position) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="position" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="child">The <see cref="T:Gtk.MenuItem" /> to move.</param>
+        <param name="position">The new position to place <paramref name="child" />. Positions are numbered from 0 to n-1.</param>
+        <summary>Moves a <see cref="T:Gtk.MenuItem" /> to a new position within the <see cref="T:Gtk.Menu" />.</summary>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Reposition">
       <MemberSignature Language="C#" Value="public void Reposition ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Reposition() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -266,97 +578,68 @@ class PopupSample
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="ReorderChild">
-      <MemberSignature Language="C#" Value="public void ReorderChild (Gtk.Widget child, int position);" />
+    <Member MemberName="ReserveToggleSize">
+      <MemberSignature Language="C#" Value="public bool ReserveToggleSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ReserveToggleSize" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("reserve-toggle-size")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Screen">
+      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Screen Screen" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Screen</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The physical screen this menu is placed on.</summary>
+        <value>a <see cref="T:Gdk.Screen" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetActive">
+      <MemberSignature Language="C#" Value="public void SetActive (uint index_);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetActive(unsigned int32 index_) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="position" Type="System.Int32" />
+        <Parameter Name="index_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Moves a <see cref="T:Gtk.MenuItem" /> to a new position within the <see cref="T:Gtk.Menu" />.</summary>
-        <param name="child">The <see cref="T:Gtk.MenuItem" /> to move.</param>
-        <param name="position">The new position to place <paramref name="child" />. Positions are numbered from 0 to n-1.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Menu (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Menu ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>A constructor.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Active">
-      <MemberSignature Language="C#" Value="public Gtk.Widget Active { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Returns the selected menu item from the menu.</summary>
-        <value>The <see cref="T:Gtk.MenuItem" /> that was last selected in the menu. If a selection has not yet been made, the first menu item is selected.</value>
+        <param name="index_">a <see cref="T:System.UInt32" /></param>
+        <summary>Selects the specified menu item within the menu.</summary>
         <remarks>
           <para>
-          This is used by the <see cref="T:Gtk.OptionMenu" />.
+          This is used by the <see cref="T:Gtk.OptionMenu" /> and should not be used by anyone else.
          </para>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AccelPath">
-      <MemberSignature Language="C#" Value="public string AccelPath { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets an accelerator path for this menu from which accelerator paths for its immediate children, its menu items, can be constructed.</summary>
-        <value>void</value>
-        <remarks>
-          <para>
-          The main purpose of this function is to spare the programmer the inconvenience of having to call <see cref="P:Gtk.MenuItem.AccelPath" /> on each menu item that should support runtime user changable accelerators. Instead, by just calling <see cref="P:Gtk.MenuItem.AccelPath" /> on their parent, each menu item of this menu, that contains a label describing its purpose, automatically gets an accel path assigned. 
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AttachWidget">
-      <MemberSignature Language="C#" Value="public Gtk.Widget AttachWidget { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Returns the <see cref="T:Gtk.Widget" /> that the menu is attached to.</summary>
-        <value>The <see cref="T:Gtk.Widget" /> that the menu is attached to.</value>
-        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TearoffState">
-      <MemberSignature Language="C#" Value="public bool TearoffState { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool TearoffState { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool TearoffState" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("tearoff-state")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -371,32 +654,30 @@ class PopupSample
          </para>
         </remarks>
       </Docs>
+    </Member>
+    <Member MemberName="TearoffTitle">
+      <MemberSignature Language="C#" Value="public string TearoffTitle { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string TearoffTitle" />
+      <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("tearoff-state")</AttributeName>
+          <AttributeName>GLib.Property("tearoff-title")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="AccelGroup">
-      <MemberSignature Language="C#" Value="public Gtk.AccelGroup AccelGroup { set; get; };" />
-      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.AccelGroup</ReturnType>
+        <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Sets or obtains the <see cref="T:Gtk.AccelGroup" /> which holds global accelerators for the menu.</summary>
-        <value>The <see cref="T:Gtk.AccelGroup" /> associated with the menu.</value>
-        <remarks>
-          <para>
-          This accelerator group needs to also be added to all windows that this menu is being used in with <see cref="M:Gtk.Window.AddAccelGroup" />, in order for those windows to support all the accelerators contained in this group.
-         </para>
-        </remarks>
+        <summary>The title of this menu when it is torn off</summary>
+        <value>an object of type <see cref="T:System.String" /></value>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Title">
-      <MemberSignature Language="C#" Value="public string Title { set; get; };" />
+      <MemberSignature Language="C#" Value="public string Title { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Title" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -411,151 +692,6 @@ class PopupSample
           The title is displayed when the menu is shown as a tearoff menu.
          </para>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TearoffTitle">
-      <MemberSignature Language="C#" Value="public string TearoffTitle { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The title of this menu when it is torn off</summary>
-        <value>an object of type <see cref="T:System.String" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("tearoff-title")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Screen">
-      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Screen</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The physical screen this menu is placed on.</summary>
-        <value>a <see cref="T:Gdk.Screen" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetActive">
-      <MemberSignature Language="C#" Value="public void SetActive (uint index_);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index_" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Selects the specified menu item within the menu.</summary>
-        <param name="index_">a <see cref="T:System.UInt32" /></param>
-        <remarks>
-          <para>
-          This is used by the <see cref="T:Gtk.OptionMenu" /> and should not be used by anyone else.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Menu" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Menu (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Monitor">
-      <MemberSignature Language="C#" Value="public int Monitor { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The number of the monitor on which the menu should be popped up.</summary>
-        <value>a <see cref="T:System.Int32" /></value>
-        <remarks>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="Attach">
-      <MemberSignature Language="C#" Value="public void Attach (Gtk.Widget child, uint left_attach, uint right_attach, uint top_attach, uint bottom_attach);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="left_attach" Type="System.UInt32" />
-        <Parameter Name="right_attach" Type="System.UInt32" />
-        <Parameter Name="top_attach" Type="System.UInt32" />
-        <Parameter Name="bottom_attach" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Adds a new <see cref="T:Gtk.MenuItem" /> to a (table) menu.</summary>
-        <param name="child">a <see cref="T:Gtk.Widget" />, should be a <see cref="T:Gtk.MenuItem" /></param>
-        <param name="left_attach">a <see cref="T:System.UInt32" /></param>
-        <param name="right_attach">a <see cref="T:System.UInt32" /></param>
-        <param name="top_attach">a <see cref="T:System.UInt32" /></param>
-        <param name="bottom_attach">a <see cref="T:System.UInt32" /></param>
-        <remarks>
-          <para>The number of 'cells' that
-	    an item will occupy is specified by <paramref name="left_attach" />, 
-	    <paramref name="right_attach" />, <paramref name="top_attach" /> and 
-	    <paramref name="bottom_attach" />. These each represent the leftmost,
-	    rightmost, uppermost and lower column and row numbers of the table.
-	    (Columns and rows are indexed from zero).</para>
-          <para>Note that this function is not related to <see cref="M:Gtk.Menu.Detach" />.</para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="GetForAttachWidget">
-      <MemberSignature Language="C#" Value="public static GLib.List GetForAttachWidget (Gtk.Widget widget);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.List</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <returns>a <see cref="T:GLib.List" /></returns>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
       </Docs>
     </Member>
   </Members>

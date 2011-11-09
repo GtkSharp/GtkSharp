@@ -1,25 +1,75 @@
 <Type Name="AttrIterator" FullName="Pango.AttrIterator">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class AttrIterator : GLib.Opaque" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AttrIterator extends GLib.Opaque" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Used to represent an iterator through a <see cref="T:Pango.List" />.</summary>
-    <remarks>A new iterator is created with <see cref="P:Pango.AttrList.Iterator" />. Once the iterator is created, it can be advanced through the style changes in the text using <see cref="M:Pango.AttrIterator.Next()" />. At each style change, the range of the current style segment and the attributes currently in effect can be queried.</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>Used to represent an iterator through a <see cref="T:Pango.List" />.</summary>
+    <remarks>A new iterator is created with <see cref="P:Pango.AttrList.Iterator" />. Once the iterator is created, it can be advanced through the style changes in the text using <see cref="M:Pango.AttrIterator.Next()" />. At each style change, the range of the current style segment and the attributes currently in effect can be queried.</remarks>
+  </Docs>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AttrIterator (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Attrs">
+      <MemberSignature Language="C#" Value="public Pango.Attribute[] Attrs { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.Attribute[] Attrs" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Attribute[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Gets a list all attributes a the current position of the iterator.</summary>
+        <value>a <see cref="T:Pango.Attribute[]" /></value>
+        <remarks> a list of all attributes for the current range.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Copy">
+      <MemberSignature Language="C#" Value="public Pango.AttrIterator Copy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.AttrIterator Copy() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.AttrIterator</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Make a copy of the iterator.</summary>
+        <returns>a <see cref="T:Pango.AttrIterator" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Destroy">
       <MemberSignature Language="C#" Value="public void Destroy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Destroy() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Pango.AttrIterator is now freed automatically")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -29,8 +79,77 @@
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~AttrIterator ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Free">
+      <MemberSignature Language="C#" Value="protected override void Free (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Free(native int raw) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Get">
+      <MemberSignature Language="C#" Value="public Pango.Attribute Get (Pango.AttrType type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.Attribute Get(valuetype Pango.AttrType type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Attribute</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="Pango.AttrType" />
+      </Parameters>
+      <Docs>
+        <param name="type"> the type of attribute to find.</param>
+        <summary>Find the current attribute of a particular type at the iterator location.</summary>
+        <returns> the current attribute of the given type, or <see langword="null" />  if no attribute of that type applies to the current location.</returns>
+        <remarks>When multiple attributes of the same type overlap, the attribute whose range starts closest to the current location is used.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetFont">
+      <MemberSignature Language="C#" Value="public void GetFont (out Pango.FontDescription desc, out Pango.Language language, out Pango.Attribute[] extra_attrs);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetFont(class Pango.FontDescription desc, class Pango.Language language, class Pango.Attribute[] extra_attrs) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="desc" Type="Pango.FontDescription&amp;" RefType="out" />
+        <Parameter Name="language" Type="Pango.Language&amp;" RefType="out" />
+        <Parameter Name="extra_attrs" Type="Pango.Attribute[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="desc"> a <see cref="T:Pango.FontDescription" /> to fill in with the current values. The family name in this structure will be set using <see cref="M:Pango.FontDescription.SetFamilyStatic()" /> using values from an attribute in the <see cref="T:Pango.AttrList" /> associated with the iterator, so if you plan to keep it around, you must call: <see cref="T:Pango.FontDescription.SetFamily (desc, pango_font_description_get_family (desc))" />.</param>
+        <param name="language"> if non-<see langword="null" />, location to store language tag for item, or <see langword="null" />  if non is found.</param>
+        <param name="extra_attrs"> if non-<see langword="null" />, location in which to store a list of non-font attributes at the the current position; only the highest priority value of each attribute will be added to this list.</param>
+        <summary>Get the font and other attributes at the current iterator position.</summary>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Next">
       <MemberSignature Language="C#" Value="public bool Next ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Next() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -43,52 +162,9 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Copy">
-      <MemberSignature Language="C#" Value="public Pango.AttrIterator Copy ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.AttrIterator</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Make a copy of the iterator.</summary>
-        <returns>a <see cref="T:Pango.AttrIterator" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Get">
-      <MemberSignature Language="C#" Value="public Pango.Attribute Get (Pango.AttrType type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Attribute</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="Pango.AttrType" />
-      </Parameters>
-      <Docs>
-        <summary>Find the current attribute of a particular type at the iterator location.</summary>
-        <param name="type"> the type of attribute to find.</param>
-        <returns> the current attribute of the given type, or <see langword="null" />  if no attribute of that type applies to the current location.</returns>
-        <remarks>When multiple attributes of the same type overlap, the attribute whose range starts closest to the current location is used.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public AttrIterator (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Range">
       <MemberSignature Language="C#" Value="public void Range (out int start, out int end);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Range(int32 start, int32 end) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -98,41 +174,9 @@
         <Parameter Name="end" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>Get the range of the current segment.</summary>
         <param name="start"> location to store the start of the range</param>
         <param name="end"> location to store the end of the range</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Attrs">
-      <MemberSignature Language="C#" Value="public Pango.Attribute[] Attrs { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Attribute[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Gets a list all attributes a the current position of the iterator.</summary>
-        <value>a <see cref="T:Pango.Attribute[]" /></value>
-        <remarks> a list of all attributes for the current range.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetFont">
-      <MemberSignature Language="C#" Value="public void GetFont (out Pango.FontDescription desc, out Pango.Language language, out Pango.Attribute[] extra_attrs);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="desc" Type="Pango.FontDescription&amp;" RefType="out" />
-        <Parameter Name="language" Type="Pango.Language&amp;" RefType="out" />
-        <Parameter Name="extra_attrs" Type="Pango.Attribute[]&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Get the font and other attributes at the current iterator position.</summary>
-        <param name="desc"> a <see cref="T:Pango.FontDescription" /> to fill in with the current values. The family name in this structure will be set using <see cref="M:Pango.FontDescription.SetFamilyStatic()" /> using values from an attribute in the <see cref="T:Pango.AttrList" /> associated with the iterator, so if you plan to keep it around, you must call: <see cref="T:Pango.FontDescription.SetFamily (desc, pango_font_description_get_family (desc))" />.</param>
-        <param name="language"> if non-<see langword="null" />, location to store language tag for item, or <see langword="null" />  if non is found.</param>
-        <param name="extra_attrs"> if non-<see langword="null" />, location in which to store a list of non-font attributes at the the current position; only the highest priority value of each attribute will be added to this list.</param>
+        <summary>Get the range of the current segment.</summary>
         <remarks />
       </Docs>
     </Member>

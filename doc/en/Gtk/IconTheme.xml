@@ -1,11 +1,16 @@
 <Type Name="IconTheme" FullName="Gtk.IconTheme">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class IconTheme : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit IconTheme extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>Looks up icons by name</summary>
     <remarks>
@@ -22,30 +27,145 @@ A good rule of thumb is that if there is a stock image for what you want to use,
     </remarks>
     <since version="Gtk# 2.4" />
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="GetForScreen">
-      <MemberSignature Language="C#" Value="public static Gtk.IconTheme GetForScreen (Gdk.Screen screen);" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public IconTheme ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Default constructor</summary>
+        <remarks>Icon theme objects are used to lookup up an icon by name in a particular icon theme. Usually, you will want to use <see cref="P:Gtk.IconTheme.Default" /> or <see cref="M:Gtk.IconTheme.GetForScreen()" /> rather than creating a new icon theme object for scratch.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public IconTheme (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Internal constructor.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="AddBuiltinIcon">
+      <MemberSignature Language="C#" Value="public static void AddBuiltinIcon (string icon_name, int size, Gdk.Pixbuf pixbuf);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void AddBuiltinIcon(string icon_name, int32 size, class Gdk.Pixbuf pixbuf) cil managed" />
       <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_name" Type="System.String" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
+      </Parameters>
+      <Docs>
+        <param name="icon_name">a <see cref="T:System.String" />,  the name of the icon to register</param>
+        <param name="size">a <see cref="T:System.Int32" />, the size at which to register the icon (different images can be registered for the same icon name at different sizes.)</param>
+        <param name="pixbuf">a <see cref="T:Gdk.Pixbuf" /> that contains the image to use for <paramref name="icon_name" />.</param>
+        <summary>Registers a built-in icon for icon theme lookups.</summary>
+        <remarks>
+          <para>
+The idea of built-in icons is to allow an application or library that uses themed icons to function requiring files to be present in the file system. For instance, the default images for all of Gtk's stock icons are registered as built-icons.
+</para>
+          <para>
+In general, if you use <see cref="M:Gtk.IconTheme.AddBuiltinIcon()" /> you should also install the icon in the icon theme, so that the icon is generally available.
+</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendSearchPath">
+      <MemberSignature Language="C#" Value="public void AppendSearchPath (string path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AppendSearchPath(string path) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="path">a <see cref="T:System.String" />,  directory name to append to the icon path</param>
+        <summary>Appends a directory to the search path.</summary>
+        <remarks>See <see cref="P:Gtk.IconTheme.SearchPath" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Changed">
+      <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Changed" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when the current icon theme is switched or Gtk detects that a change has occurred in the contents of the current icon theme.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ChooseIcon">
+      <MemberSignature Language="C#" Value="public Gtk.IconInfo ChooseIcon (string[] icon_names, int size, Gtk.IconLookupFlags flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.IconInfo ChooseIcon(string[] icon_names, int32 size, valuetype Gtk.IconLookupFlags flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.IconInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_names" Type="System.String[]" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="flags" Type="Gtk.IconLookupFlags" />
+      </Parameters>
+      <Docs>
+        <param name="icon_names">To be added.</param>
+        <param name="size">To be added.</param>
+        <param name="flags">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="CustomTheme">
+      <MemberSignature Language="C#" Value="public string CustomTheme { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string CustomTheme" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Sets the name of the icon theme that the <see cref="T:Gtk.IconTheme" /> object uses overriding system configuration.</summary>
+        <value>a <see cref="T:System.String" />,  name of icon theme to use instead of configured theme</value>
+        <remarks>This cannot be used on the icon theme objects returned from <see cref="P:Gtk.IconTheme.Default" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Default">
+      <MemberSignature Language="C#" Value="public static Gtk.IconTheme Default { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Gtk.IconTheme Default" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.IconTheme</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="screen" Type="Gdk.Screen" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Gets the icon theme object associated with <paramref name="screen" /></summary>
-        <param name="screen">a <see cref="T:Gdk.Screen" /></param>
-        <returns>a <see cref="T:Gtk.IconTheme" />.  A unique <see cref="T:Gtk.IconTheme" /> associated with the given screen. This icon theme is associated with the screen and can be used as long as the screen is open.</returns>
-        <remarks>If this function has not previously been called for the given screen, a new icon theme object will be created and associated with the screen. Icon theme objects are fairly expensive to create, so using this function is usually a better choice than calling than <see cref="C:Gtk.IconTheme()" /> and setting the screen yourself; by using this function a single icon theme object will be shared between users.</remarks>
+        <summary>Gets the icon theme for the default screen.</summary>
+        <value>a <see cref="T:Gtk.IconTheme" />.  A unique <see cref="T:Gtk.IconTheme" /> associated with the given screen. This icon theme is associated with the screen and can be used as long as the screen is open.</value>
+        <remarks>See <see cref="M:Gtk.IconTheme.GetForScreen()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ErrorQuark">
       <MemberSignature Language="C#" Value="public static int ErrorQuark ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig int32 ErrorQuark() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -58,35 +178,191 @@ A good rule of thumb is that if there is a stock image for what you want to use,
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="AddBuiltinIcon">
-      <MemberSignature Language="C#" Value="public static void AddBuiltinIcon (string icon_name, int size, Gdk.Pixbuf pixbuf);" />
+    <Member MemberName="ExampleIconName">
+      <MemberSignature Language="C#" Value="public string ExampleIconName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ExampleIconName" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The name of an icon that is representative of the current theme (for instance, to use when presenting a list of themes to the user.)</summary>
+        <value>a <see cref="T:System.String" />, the name of an example icon or <see langword="null" />.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetForScreen">
+      <MemberSignature Language="C#" Value="public static Gtk.IconTheme GetForScreen (Gdk.Screen screen);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gtk.IconTheme GetForScreen(class Gdk.Screen screen) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gtk.IconTheme</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="screen" Type="Gdk.Screen" />
+      </Parameters>
+      <Docs>
+        <param name="screen">a <see cref="T:Gdk.Screen" /></param>
+        <summary>Gets the icon theme object associated with <paramref name="screen" /></summary>
+        <returns>a <see cref="T:Gtk.IconTheme" />.  A unique <see cref="T:Gtk.IconTheme" /> associated with the given screen. This icon theme is associated with the screen and can be used as long as the screen is open.</returns>
+        <remarks>If this function has not previously been called for the given screen, a new icon theme object will be created and associated with the screen. Icon theme objects are fairly expensive to create, so using this function is usually a better choice than calling than <see cref="C:Gtk.IconTheme()" /> and setting the screen yourself; by using this function a single icon theme object will be shared between users.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconSizes">
+      <MemberSignature Language="C#" Value="public int[] GetIconSizes (string icon_name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32[] GetIconSizes(string icon_name) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="icon_name">a <see cref="T:System.String" /></param>
+        <summary>Gets a list of the sizes for an Icon by name.</summary>
+        <returns>a <see cref="T:System.Int32[]" /></returns>
+        <remarks>An entry of -1 indicates a scalable version of the icon.</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.IconTheme" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HasIcon">
+      <MemberSignature Language="C#" Value="public bool HasIcon (string icon_name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool HasIcon(string icon_name) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="icon_name">a <see cref="T:System.String" />,  the name of an icon</param>
+        <summary>Checks whether an icon theme includes an icon for a particular name.</summary>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if the IconTheme includes an icon for <paramref name="icon_name" />.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ListContexts">
+      <MemberSignature Language="C#" Value="public string[] ListContexts ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string[] ListContexts() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="ListIcons">
+      <MemberSignature Language="C#" Value="public string[] ListIcons (string context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string[] ListIcons(string context) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="context">a <see cref="T:System.String" />,  a string identifying a particular type of icon, or <see langword="null" /> to list all icons.</param>
+        <summary>Lists the icons in the current icon theme.</summary>
+        <returns>a <see cref="T:System.String[]" /> holding the names of all the icons in the theme.</returns>
+        <remarks>Only a subset of the icons can be listed by providing a context string. The set of values for the context string is system dependent, but will typically include such values as 'apps' and 'mimetypes'.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadIcon">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf LoadIcon (string icon_name, int size, Gtk.IconLookupFlags flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.Pixbuf LoadIcon(string icon_name, int32 size, valuetype Gtk.IconLookupFlags flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="icon_name" Type="System.String" />
         <Parameter Name="size" Type="System.Int32" />
-        <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
+        <Parameter Name="flags" Type="Gtk.IconLookupFlags" />
       </Parameters>
       <Docs>
-        <summary>Registers a built-in icon for icon theme lookups.</summary>
-        <param name="icon_name">a <see cref="T:System.String" />,  the name of the icon to register</param>
-        <param name="size">a <see cref="T:System.Int32" />, the size at which to register the icon (different images can be registered for the same icon name at different sizes.)</param>
-        <param name="pixbuf">a <see cref="T:Gdk.Pixbuf" /> that contains the image to use for <paramref name="icon_name" />.</param>
-        <remarks>
-          <para>
-The idea of built-in icons is to allow an application or library that uses themed icons to function requiring files to be present in the file system. For instance, the default images for all of Gtk's stock icons are registered as built-icons.
-</para>
-          <para>
-In general, if you use <see cref="M:Gtk.IconTheme.AddBuiltinIcon()" /> you should also install the icon in the icon theme, so that the icon is generally available.
-</para>
-        </remarks>
+        <param name="icon_name">a <see cref="T:System.String" />,  the name of the icon to lookup</param>
+        <param name="size">a <see cref="T:System.Int32" />, the desired icon size. The resulting icon may not be exactly this size; see <see cref="M:Gtk.IconInfo.LoadIcon()" />.</param>
+        <param name="flags">a <see cref="T:System.Int32" />,  flags modifying the behavior of the icon lookup</param>
+        <summary>Looks up an icon in an icon theme, scales it to the given size and renders it into a pixbuf.</summary>
+        <returns>a <see cref="T:Gdk.Pixbuf" />  the rendered icon or <see langword="null" /> if the icon is not found.</returns>
+        <remarks>This is a convenience function; if more details about the icon are needed, use <see cref="M:Gtk.IconTheme.LookupIcon()" /> followed by <see cref="M:Gtk.IconInfo.LoadIcon()" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LookupIcon">
+      <MemberSignature Language="C#" Value="public Gtk.IconInfo LookupIcon (GLib.Icon icon, int size, Gtk.IconLookupFlags flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.IconInfo LookupIcon(class GLib.Icon icon, int32 size, valuetype Gtk.IconLookupFlags flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.IconInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon" Type="GLib.Icon" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="flags" Type="Gtk.IconLookupFlags" />
+      </Parameters>
+      <Docs>
+        <param name="icon">To be added.</param>
+        <param name="size">To be added.</param>
+        <param name="flags">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupIcon">
+      <MemberSignature Language="C#" Value="public Gtk.IconInfo LookupIcon (string icon_name, int size, Gtk.IconLookupFlags flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.IconInfo LookupIcon(string icon_name, int32 size, valuetype Gtk.IconLookupFlags flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.IconInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_name" Type="System.String" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="flags" Type="Gtk.IconLookupFlags" />
+      </Parameters>
+      <Docs>
+        <param name="icon_name">a <see cref="T:System.String" />,  the name of the icon to lookup</param>
+        <param name="size">a <see cref="T:System.Int32" />,  desired icon size</param>
+        <param name="flags">a <see cref="T:System.Int32" />,  flags modifying the behavior of the icon lookup</param>
+        <summary>Looks up a named icon and returns a structure containing information such as the filename of the icon.</summary>
+        <returns>a <see cref="T:Gtk.IconInfo" /> containing information about the icon, or <see langword="null" /> if the icon was not found.</returns>
+        <remarks>The icon can then be rendered into a pixbuf using <see cref="M:Gtk.IconInfo.LoadIcon()" />. (<see cref="M:Gtk.IconTheme.LoadIcon()" /> combines these two steps if all you need is the pixbuf.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="OnChanged">
       <MemberSignature Language="C#" Value="protected virtual void OnChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnChanged() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideChanged", Type=typeof(Gtk.IconTheme))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -96,8 +372,25 @@ In general, if you use <see cref="M:Gtk.IconTheme.AddBuiltinIcon()" /> you shoul
         <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.IconTheme.Changed" /> event.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="PrependSearchPath">
+      <MemberSignature Language="C#" Value="public void PrependSearchPath (string path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PrependSearchPath(string path) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="path">a <see cref="T:System.String" />, directory name to prepend to the icon path</param>
+        <summary>Prepends a directory to the search path.</summary>
+        <remarks>See <see cref="P:Gtk.IconTheme.SearchPath" />.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="RescanIfNeeded">
       <MemberSignature Language="C#" Value="public bool RescanIfNeeded ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool RescanIfNeeded() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -109,54 +402,22 @@ In general, if you use <see cref="M:Gtk.IconTheme.AddBuiltinIcon()" /> you shoul
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="HasIcon">
-      <MemberSignature Language="C#" Value="public bool HasIcon (string icon_name);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Screen">
+      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Screen Screen" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>Gdk.Screen</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="icon_name" Type="System.String" />
-      </Parameters>
       <Docs>
-        <summary>Checks whether an icon theme includes an icon for a particular name.</summary>
-        <param name="icon_name">a <see cref="T:System.String" />,  the name of an icon</param>
-        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if the IconTheme includes an icon for <paramref name="icon_name" />.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="PrependSearchPath">
-      <MemberSignature Language="C#" Value="public void PrependSearchPath (string path);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Prepends a directory to the search path.</summary>
-        <param name="path">a <see cref="T:System.String" />, directory name to prepend to the icon path</param>
-        <remarks>See <see cref="P:Gtk.IconTheme.SearchPath" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AppendSearchPath">
-      <MemberSignature Language="C#" Value="public void AppendSearchPath (string path);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Appends a directory to the search path.</summary>
-        <param name="path">a <see cref="T:System.String" />,  directory name to append to the icon path</param>
-        <remarks>See <see cref="P:Gtk.IconTheme.SearchPath" />.</remarks>
+        <summary>Sets the screen for an icon theme</summary>
+        <value>a <see cref="T:Gdk.Screen" /></value>
+        <remarks>The screen is used to track the user's currently configured icon theme, which might be different for different screens.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SearchPath">
-      <MemberSignature Language="C#" Value="public string[] SearchPath { set; get; };" />
+      <MemberSignature Language="C#" Value="public string[] SearchPath { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string[] SearchPath" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String[]</ReturnType>
@@ -189,7 +450,13 @@ In general, if you use <see cref="M:Gtk.IconTheme.AddBuiltinIcon()" /> you shoul
     </Member>
     <Member MemberName="SetSearchPath">
       <MemberSignature Language="C#" Value="public void SetSearchPath (string[] path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetSearchPath(string[] path) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by SearchPath property.")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -197,238 +464,9 @@ In general, if you use <see cref="M:Gtk.IconTheme.AddBuiltinIcon()" /> you shoul
         <Parameter Name="path" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <summary>Deprecated method to set the current search path.</summary>
         <param name="path">a <see cref="T:System.String[]" />, array of directories that are searched for icon themes</param>
+        <summary>Deprecated method to set the current search path.</summary>
         <remarks>Replaced by the <see cref="M:Gtk.IconTheme:SearchPath" /> property.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LookupIcon">
-      <MemberSignature Language="C#" Value="public Gtk.IconInfo LookupIcon (string icon_name, int size, Gtk.IconLookupFlags flags);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.IconInfo</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="icon_name" Type="System.String" />
-        <Parameter Name="size" Type="System.Int32" />
-        <Parameter Name="flags" Type="Gtk.IconLookupFlags" />
-      </Parameters>
-      <Docs>
-        <summary>Looks up a named icon and returns a structure containing information such as the filename of the icon.</summary>
-        <param name="icon_name">a <see cref="T:System.String" />,  the name of the icon to lookup</param>
-        <param name="size">a <see cref="T:System.Int32" />,  desired icon size</param>
-        <param name="flags">a <see cref="T:System.Int32" />,  flags modifying the behavior of the icon lookup</param>
-        <returns>a <see cref="T:Gtk.IconInfo" /> containing information about the icon, or <see langword="null" /> if the icon was not found.</returns>
-        <remarks>The icon can then be rendered into a pixbuf using <see cref="M:Gtk.IconInfo.LoadIcon()" />. (<see cref="M:Gtk.IconTheme.LoadIcon()" /> combines these two steps if all you need is the pixbuf.)</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LoadIcon">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf LoadIcon (string icon_name, int size, Gtk.IconLookupFlags flags);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Pixbuf</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="icon_name" Type="System.String" />
-        <Parameter Name="size" Type="System.Int32" />
-        <Parameter Name="flags" Type="Gtk.IconLookupFlags" />
-      </Parameters>
-      <Docs>
-        <summary>Looks up an icon in an icon theme, scales it to the given size and renders it into a pixbuf.</summary>
-        <param name="icon_name">a <see cref="T:System.String" />,  the name of the icon to lookup</param>
-        <param name="size">a <see cref="T:System.Int32" />, the desired icon size. The resulting icon may not be exactly this size; see <see cref="M:Gtk.IconInfo.LoadIcon()" />.</param>
-        <param name="flags">a <see cref="T:System.Int32" />,  flags modifying the behavior of the icon lookup</param>
-        <returns>a <see cref="T:Gdk.Pixbuf" />  the rendered icon or <see langword="null" /> if the icon is not found.</returns>
-        <remarks>This is a convenience function; if more details about the icon are needed, use <see cref="M:Gtk.IconTheme.LookupIcon()" /> followed by <see cref="M:Gtk.IconInfo.LoadIcon()" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ListIcons">
-      <MemberSignature Language="C#" Value="public string[] ListIcons (string context);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String[]</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="context" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Lists the icons in the current icon theme.</summary>
-        <param name="context">a <see cref="T:System.String" />,  a string identifying a particular type of icon, or <see langword="null" /> to list all icons.</param>
-        <returns>a <see cref="T:System.String[]" /> holding the names of all the icons in the theme.</returns>
-        <remarks>Only a subset of the icons can be listed by providing a context string. The set of values for the context string is system dependent, but will typically include such values as 'apps' and 'mimetypes'.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected IconTheme (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public IconTheme (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor.</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public IconTheme ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Default constructor</summary>
-        <remarks>Icon theme objects are used to lookup up an icon by name in a particular icon theme. Usually, you will want to use <see cref="P:Gtk.IconTheme.Default" /> or <see cref="M:Gtk.IconTheme.GetForScreen()" /> rather than creating a new icon theme object for scratch.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Default">
-      <MemberSignature Language="C#" Value="public static Gtk.IconTheme Default { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.IconTheme</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Gets the icon theme for the default screen.</summary>
-        <value>a <see cref="T:Gtk.IconTheme" />.  A unique <see cref="T:Gtk.IconTheme" /> associated with the given screen. This icon theme is associated with the screen and can be used as long as the screen is open.</value>
-        <remarks>See <see cref="M:Gtk.IconTheme.GetForScreen()" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.IconTheme" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Screen">
-      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Screen</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Sets the screen for an icon theme</summary>
-        <value>a <see cref="T:Gdk.Screen" /></value>
-        <remarks>The screen is used to track the user's currently configured icon theme, which might be different for different screens.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CustomTheme">
-      <MemberSignature Language="C#" Value="public string CustomTheme { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Sets the name of the icon theme that the <see cref="T:Gtk.IconTheme" /> object uses overriding system configuration.</summary>
-        <value>a <see cref="T:System.String" />,  name of icon theme to use instead of configured theme</value>
-        <remarks>This cannot be used on the icon theme objects returned from <see cref="P:Gtk.IconTheme.Default" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ExampleIconName">
-      <MemberSignature Language="C#" Value="public string ExampleIconName { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The name of an icon that is representative of the current theme (for instance, to use when presenting a list of themes to the user.)</summary>
-        <value>a <see cref="T:System.String" />, the name of an example icon or <see langword="null" />.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Changed">
-      <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when the current icon theme is switched or Gtk detects that a change has occurred in the contents of the current icon theme.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("changed")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="GetIconSizes">
-      <MemberSignature Language="C#" Value="public int[] GetIconSizes (string icon_name);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32[]</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="icon_name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Gets a list of the sizes for an Icon by name.</summary>
-        <param name="icon_name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Int32[]" /></returns>
-        <remarks>An entry of -1 indicates a scalable version of the icon.</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="ChooseIcon">
-      <MemberSignature Language="C#" Value="public Gtk.IconInfo ChooseIcon (string[] icon_names, int size, Gtk.IconLookupFlags flags);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.IconInfo</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="icon_names" Type="System.String[]" />
-        <Parameter Name="size" Type="System.Int32" />
-        <Parameter Name="flags" Type="Gtk.IconLookupFlags" />
-      </Parameters>
-      <Docs>
-        <param name="icon_names">To be added.</param>
-        <param name="size">To be added.</param>
-        <param name="flags">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
-      </Docs>
-    </Member>
-    <Member MemberName="ListContexts">
-      <MemberSignature Language="C#" Value="public string[] ListContexts ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
   </Members>

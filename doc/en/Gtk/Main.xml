@@ -1,12 +1,16 @@
 <Type Name="Main" FullName="Gtk.Main">
   <TypeSignature Language="C#" Value="public class Main" Maintainer="auto" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Main extends System.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
   <Docs>
     <summary>Main loop event processing class.
 </summary>
@@ -18,43 +22,38 @@ When widgets receive an event, they frequently emit one or more signals. Signals
 When your callbacks are invoked, you would typically take some action - for example, when an Open button is clicked you might display a GtkFileSelectionDialog. After a callback finishes, GTK+ will return to the main loop and await more user input. 
 </para></remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
-    <Member MemberName="IterationDo">
-      <MemberSignature Language="C#" Value="public static bool IterationDo (bool blocking);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="blocking" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Runs one iteration of the main loop.</summary>
-        <param name="blocking">
-          <see langword="true" /> if you want Gtk# to block if no events are pending.</param>
-        <returns>Returns <see langword="true" /> if the <see cref="M:Gtk.Main.Quit" /> method was invoked to terminate the innermost loop.</returns>
-        <remarks>Runs a single iteration of the mainloop. If no events are available either return or block dependent on the value of blocking.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Level">
-      <MemberSignature Language="C#" Value="public static uint Level ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Main ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Returns the current main loop level.</summary>
-        <returns>The nesting level of the current main loop.</returns>
-        <remarks>Asks for the current nesting level of the main loop. This can be useful when calling the <see cref="T:Gtk.Main.Quit" /> method.</remarks>
+        <summary>Public constructor.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DoEvent">
+      <MemberSignature Language="C#" Value="public static void DoEvent (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void DoEvent(class Gdk.Event evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">	An event to process (normally) passed by GDK.</param>
+        <summary>Processes a single Gdk Event.</summary>
+        <remarks>Processes a single GDK event. This is public only to allow filtering of events between GDK and GTK+. You will not usually need to call this function directly.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Iteration">
       <MemberSignature Language="C#" Value="public static bool Iteration ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool Iteration() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -67,23 +66,41 @@ When your callbacks are invoked, you would typically take some action - for exam
         <remarks>Runs a single iteration of the main loop. If no events are waiting to be processed Gtk# will block until the next event is noticed. If you don't want to block look at <see cref="M:Gtk.Main.IterationDo()" /> or check if any events are pending with <see cref="M:Gtk.Global.EventsPending()" /> first. </remarks>
       </Docs>
     </Member>
-    <Member MemberName="DoEvent">
-      <MemberSignature Language="C#" Value="public static void DoEvent (Gdk.Event evnt);" />
+    <Member MemberName="IterationDo">
+      <MemberSignature Language="C#" Value="public static bool IterationDo (bool blocking);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool IterationDo(bool blocking) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="blocking" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Processes a single Gdk Event.</summary>
-        <param name="evnt">	An event to process (normally) passed by GDK.</param>
-        <remarks>Processes a single GDK event. This is public only to allow filtering of events between GDK and GTK+. You will not usually need to call this function directly.</remarks>
+        <param name="blocking">
+          <see langword="true" /> if you want Gtk# to block if no events are pending.</param>
+        <summary>Runs one iteration of the main loop.</summary>
+        <returns>Returns <see langword="true" /> if the <see cref="M:Gtk.Main.Quit" /> method was invoked to terminate the innermost loop.</returns>
+        <remarks>Runs a single iteration of the mainloop. If no events are available either return or block dependent on the value of blocking.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Level">
+      <MemberSignature Language="C#" Value="public static uint Level ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int32 Level() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns the current main loop level.</summary>
+        <returns>The nesting level of the current main loop.</returns>
+        <remarks>Asks for the current nesting level of the main loop. This can be useful when calling the <see cref="T:Gtk.Main.Quit" /> method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Quit">
       <MemberSignature Language="C#" Value="public static void Quit ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Quit() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -92,17 +109,6 @@ When your callbacks are invoked, you would typically take some action - for exam
       <Docs>
         <summary>Terminates the innermost main loop.</summary>
         <remarks>This terminates the innermost main loop.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Main ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Public constructor.</summary>
-        <remarks>
-        </remarks>
       </Docs>
     </Member>
   </Members>

@@ -1,11 +1,16 @@
 <Type Name="ActionGroup" FullName="Gtk.ActionGroup">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class ActionGroup : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ActionGroup extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>A group of actions</summary>
     <remarks>
@@ -23,19 +28,38 @@ Accelerators are handled by the Gtk accelerator map. All actions are assigned an
     </remarks>
     <since version="Gtk# 2.4" />
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
   <Members>
-    <Member MemberName="Remove">
-      <MemberSignature Language="C#" Value="public void Remove (Gtk.Action action);" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ActionGroup (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Internal constructor</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ActionGroup (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">a <see cref="T:System.String" />,  the name of the action group.</param>
+        <summary>Creates a new <see cref="T:Gtk.ActionGroup" /> object.</summary>
+        <remarks>The name of the action group is used when associating keybindings with the actions.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public void Add (Gtk.Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(class Gtk.Action action) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -44,13 +68,47 @@ Accelerators are handled by the Gtk accelerator map. All actions are assigned an
         <Parameter Name="action" Type="Gtk.Action" />
       </Parameters>
       <Docs>
-        <summary>Removes an action object from the action group.</summary>
         <param name="action">a <see cref="T:Gtk.Action" /></param>
+        <summary>Adds an action object to the action group.</summary>
+        <remarks>Note that this function does not set up the accel path of the action, which can lead to problems if a user tries to modify the accelerator of a menuitem associated with the action.
+Therefore you must either set the accel path yourself with <see cref="P:Gtk.Action.AccelPath" />, or use <see cref="M:Gtk.ActionGroup.Add(Gtk.Action,System.String)" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public void Add (Gtk.ActionEntry[] entries);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(valuetype Gtk.ActionEntry[] entries) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="entries" Type="Gtk.ActionEntry[]" />
+      </Parameters>
+      <Docs>
+        <param name="entries">a <see cref="T:Gtk.ActionEntry" /></param>
+        <summary>Ease of use function for adding multiple <see cref="T:Gtk.Action" />s in a single call using the <see cref="T:Gtk.ActionEntry" /> struct.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public void Add (Gtk.ToggleActionEntry[] entries);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(valuetype Gtk.ToggleActionEntry[] entries) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="entries" Type="Gtk.ToggleActionEntry[]" />
+      </Parameters>
+      <Docs>
+        <param name="entries">a <see cref="T:Gtk.ToggleActionEntry" /></param>
+        <summary>Ease of use function for adding multiple <see cref="T:Gtk.ToggleAction" />s in a single call using the <see cref="T:Gtk.ToggleActionEntry" /> struct.</summary>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Add">
       <MemberSignature Language="C#" Value="public void Add (Gtk.Action action, string accelerator);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(class Gtk.Action action, string accelerator) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -60,9 +118,9 @@ Accelerators are handled by the Gtk accelerator map. All actions are assigned an
         <Parameter Name="accelerator" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Adds an action object to the action group and sets up the accelerator.</summary>
         <param name="action">a <see cref="T:Gtk.Action" /></param>
         <param name="accelerator">a <see cref="T:System.String" />.  The accelerator for the action, in the format understood by <see cref="M:Gtk.Accelerator.Parse()" />, or "" for no accelerator, or <see langword="null" /> to use the stock accelerator</param>
+        <summary>Adds an action object to the action group and sets up the accelerator.</summary>
         <remarks>
           <para>
             <para>
@@ -75,8 +133,65 @@ Accel paths are set to &lt;Actions&gt;/group-name/action-name.
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public void Add (Gtk.RadioActionEntry[] entries, int value, Gtk.ChangedHandler changed);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(valuetype Gtk.RadioActionEntry[] entries, int32 value, class Gtk.ChangedHandler changed) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="entries" Type="Gtk.RadioActionEntry[]" />
+        <Parameter Name="value" Type="System.Int32" />
+        <Parameter Name="changed" Type="Gtk.ChangedHandler" />
+      </Parameters>
+      <Docs>
+        <param name="entries">a <see cref="T:Gtk.RadioActionEntry" /></param>
+        <param name="value">a <see cref="T:System.Int32" /></param>
+        <param name="changed">a <see cref="T:Gtk.ChangedHandler" /></param>
+        <summary>Ease of use function for adding multiple <see cref="T:Gtk.RadioAction" />s in a single call using the <see cref="T:Gtk.RadioActionEntry" /> struct.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ConnectProxy">
+      <MemberSignature Language="C#" Value="public event Gtk.ConnectProxyHandler ConnectProxy;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ConnectProxyHandler ConnectProxy" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("connect-proxy")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ConnectProxyHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The ConnectProxy signal is emitted after connecting a proxy to an action in the group.</summary>
+        <remarks>This is intended for simple customizations for which a custom action class would be too clumsy, e.g. showing tooltips for menuitems in the statusbar.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisconnectProxy">
+      <MemberSignature Language="C#" Value="public event Gtk.DisconnectProxyHandler DisconnectProxy;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.DisconnectProxyHandler DisconnectProxy" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("disconnect-proxy")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.DisconnectProxyHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The DisconnectProxy signal is emitted after disconnecting a proxy from an action in the group.</summary>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="GetAction">
       <MemberSignature Language="C#" Value="public Gtk.Action GetAction (string action_name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.Action GetAction(string action_name) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Action</ReturnType>
@@ -85,75 +200,16 @@ Accel paths are set to &lt;Actions&gt;/group-name/action-name.
         <Parameter Name="action_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Looks up an action in the action group by name.</summary>
         <param name="action_name">a <see cref="T:System.String" />,  the name of the action</param>
+        <summary>Looks up an action in the action group by name.</summary>
         <returns>a <see cref="T:Gtk.Action" />,  or <see langword="null" /> if no action by that name exists</returns>
         <remarks>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Add">
-      <MemberSignature Language="C#" Value="public void Add (Gtk.Action action);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="action" Type="Gtk.Action" />
-      </Parameters>
-      <Docs>
-        <summary>Adds an action object to the action group.</summary>
-        <param name="action">a <see cref="T:Gtk.Action" /></param>
-        <remarks>Note that this function does not set up the accel path of the action, which can lead to problems if a user tries to modify the accelerator of a menuitem associated with the action.
-Therefore you must either set the accel path yourself with <see cref="P:Gtk.Action.AccelPath" />, or use <see cref="M:Gtk.ActionGroup.Add(Gtk.Action,System.String)" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected ActionGroup (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ActionGroup (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ActionGroup (string name);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new <see cref="T:Gtk.ActionGroup" /> object.</summary>
-        <param name="name">a <see cref="T:System.String" />,  the name of the action group.</param>
-        <remarks>The name of the action group is used when associating keybindings with the actions.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -165,124 +221,26 @@ Therefore you must either set the accel path yourself with <see cref="P:Gtk.Acti
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.ActionGroup" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Visible">
-      <MemberSignature Language="C#" Value="public bool Visible { set; get; };" />
+    <Member MemberName="Item">
+      <MemberSignature Language="C#" Value="public Gtk.Action this[string name] { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Action Item(string)" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The visibility of the ActionGroup</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>The constituent actions can only be logically visible (see <see cref="P:Gtk.Action.IsVisible" />) if they are visible (see <see cref="P:Gtk.Action.Visible" />) and their group is visible.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("visible")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Sensitive">
-      <MemberSignature Language="C#" Value="public bool Sensitive { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The sensitivity of the ActionGroup</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>The constituent actions can only be logically sensitive (see <see cref="P:Gtk.Action.IsSensitive" />) if they are sensitive (see <see cref="P:Gtk.Action.Sensitive" />) and their group is sensitive.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("sensitive")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Name">
-      <MemberSignature Language="C#" Value="public string Name { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Gets the name of the action group.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("name")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="TranslationDomain">
-      <MemberSignature Language="C#" Value="public string TranslationDomain { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Sets the translation domain and uses dgettext() for translating the label and tooltip of <see cref="T:Gtk.ActionEntry" />s added by <see cref="M:Gtk.ActionGroup.AddActions()" />.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Add">
-      <MemberSignature Language="C#" Value="public void Add (Gtk.ActionEntry[] entries);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gtk.Action</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="entries" Type="Gtk.ActionEntry[]" />
+        <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Ease of use function for adding multiple <see cref="T:Gtk.Action" />s in a single call using the <see cref="T:Gtk.ActionEntry" /> struct.</summary>
-        <param name="entries">a <see cref="T:Gtk.ActionEntry" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Add">
-      <MemberSignature Language="C#" Value="public void Add (Gtk.ToggleActionEntry[] entries);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="entries" Type="Gtk.ToggleActionEntry[]" />
-      </Parameters>
-      <Docs>
-        <summary>Ease of use function for adding multiple <see cref="T:Gtk.ToggleAction" />s in a single call using the <see cref="T:Gtk.ToggleActionEntry" /> struct.</summary>
-        <param name="entries">a <see cref="T:Gtk.ToggleActionEntry" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Add">
-      <MemberSignature Language="C#" Value="public void Add (Gtk.RadioActionEntry[] entries, int value, Gtk.ChangedHandler changed);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="entries" Type="Gtk.RadioActionEntry[]" />
-        <Parameter Name="value" Type="System.Int32" />
-        <Parameter Name="changed" Type="Gtk.ChangedHandler" />
-      </Parameters>
-      <Docs>
-        <summary>Ease of use function for adding multiple <see cref="T:Gtk.RadioAction" />s in a single call using the <see cref="T:Gtk.RadioActionEntry" /> struct.</summary>
-        <param name="entries">a <see cref="T:Gtk.RadioActionEntry" /></param>
-        <param name="value">a <see cref="T:System.Int32" /></param>
-        <param name="changed">a <see cref="T:Gtk.ChangedHandler" /></param>
-        <remarks />
+        <param name="name">a <see cref="T:System.String" /></param>
+        <summary>Returns the <see cref="T:Gtk.Action" /> with the specified name.</summary>
+        <value>a <see cref="T:Gtk.Action" /></value>
+        <remarks>See <see cref="M:Gtk.ActionGroup.GetAction" /> for more info.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ListActions">
       <MemberSignature Language="C#" Value="public Gtk.Action[] ListActions ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.Action[] ListActions() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Action[]</ReturnType>
@@ -295,76 +253,145 @@ Therefore you must either set the accel path yourself with <see cref="P:Gtk.Acti
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public Gtk.Action this[string name] { get; };" />
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("name")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Gets the name of the action group.</summary>
+        <value>a <see cref="T:System.String" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="OnConnectProxy">
+      <MemberSignature Language="C#" Value="protected virtual void OnConnectProxy (Gtk.Action action, Gtk.Widget proxy);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnConnectProxy(class Gtk.Action action, class Gtk.Widget proxy) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideConnectProxy", Type=typeof(Gtk.ActionGroup))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="action" Type="Gtk.Action" />
+        <Parameter Name="proxy" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="action">a <see cref="T:Gtk.Action" /></param>
+        <param name="proxy">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.ActionGroup.ConnectProxy" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ActionGroup.ConnectProxy" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnDisconnectProxy">
+      <MemberSignature Language="C#" Value="protected virtual void OnDisconnectProxy (Gtk.Action action, Gtk.Widget proxy);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnDisconnectProxy(class Gtk.Action action, class Gtk.Widget proxy) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideDisconnectProxy", Type=typeof(Gtk.ActionGroup))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="action" Type="Gtk.Action" />
+        <Parameter Name="proxy" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="action">a <see cref="T:Gtk.Action" /></param>
+        <param name="proxy">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.ActionGroup.DisconnectProxy" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ActionGroup.DisconnectProxy" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetAction">
+      <MemberSignature Language="C#" Value="protected virtual Gtk.Action OnGetAction (string action_name);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gtk.Action OnGetAction(string action_name) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetAction", Type=typeof(Gtk.ActionGroup))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gtk.Action</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="action_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Returns the <see cref="T:Gtk.Action" /> with the specified name.</summary>
-        <param name="name">a <see cref="T:System.String" /></param>
-        <value>a <see cref="T:Gtk.Action" /></value>
-        <remarks>See <see cref="M:Gtk.ActionGroup.GetAction" /> for more info.</remarks>
+        <param name="action_name">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="PreActivate">
-      <MemberSignature Language="C#" Value="public event Gtk.PreActivateHandler PreActivate;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.PreActivateHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The PreActivate signal is emitted just before the action is activated.</summary>
-        <remarks>This is intended for applications to get notification just before any action is activated.</remarks>
-      </Docs>
+    <Member MemberName="OnPostActivate">
+      <MemberSignature Language="C#" Value="protected virtual void OnPostActivate (Gtk.Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPostActivate(class Gtk.Action action) cil managed" />
+      <MemberType>Method</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("pre_activate")</AttributeName>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePostActivate", Type=typeof(Gtk.ActionGroup))</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="action" Type="Gtk.Action" />
+      </Parameters>
+      <Docs>
+        <param name="action">a <see cref="T:Gtk.Action" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.ActionGroup.PostActivate" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ActionGroup.PostActivate" /> event.</remarks>
+      </Docs>
     </Member>
-    <Member MemberName="ConnectProxy">
-      <MemberSignature Language="C#" Value="public event Gtk.ConnectProxyHandler ConnectProxy;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ConnectProxyHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The ConnectProxy signal is emitted after connecting a proxy to an action in the group.</summary>
-        <remarks>This is intended for simple customizations for which a custom action class would be too clumsy, e.g. showing tooltips for menuitems in the statusbar.</remarks>
-      </Docs>
+    <Member MemberName="OnPreActivate">
+      <MemberSignature Language="C#" Value="protected virtual void OnPreActivate (Gtk.Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPreActivate(class Gtk.Action action) cil managed" />
+      <MemberType>Method</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("connect_proxy")</AttributeName>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePreActivate", Type=typeof(Gtk.ActionGroup))</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="DisconnectProxy">
-      <MemberSignature Language="C#" Value="public event Gtk.DisconnectProxyHandler DisconnectProxy;" />
-      <MemberType>Event</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.DisconnectProxyHandler</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="action" Type="Gtk.Action" />
+      </Parameters>
       <Docs>
-        <summary>The DisconnectProxy signal is emitted after disconnecting a proxy from an action in the group.</summary>
-        <remarks />
+        <param name="action">a <see cref="T:Gtk.Action" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.ActionGroup.PreActivate" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ActionGroup.PreActivate" /> event.</remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("disconnect_proxy")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="PostActivate">
       <MemberSignature Language="C#" Value="public event Gtk.PostActivateHandler PostActivate;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PostActivateHandler PostActivate" />
       <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("post-activate")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gtk.PostActivateHandler</ReturnType>
       </ReturnValue>
@@ -373,78 +400,63 @@ Therefore you must either set the accel path yourself with <see cref="P:Gtk.Acti
         <summary>The PostActivate signal is emitted just after the action is activated.</summary>
         <remarks>This is intended for applications to get notification just after any action is activated.</remarks>
       </Docs>
+    </Member>
+    <Member MemberName="PreActivate">
+      <MemberSignature Language="C#" Value="public event Gtk.PreActivateHandler PreActivate;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PreActivateHandler PreActivate" />
+      <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("post_activate")</AttributeName>
+          <AttributeName>GLib.Signal("pre-activate")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="OnPreActivate">
-      <MemberSignature Language="C#" Value="protected virtual void OnPreActivate (Gtk.Action action);" />
-      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gtk.PreActivateHandler</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="action" Type="Gtk.Action" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.ActionGroup.PreActivate" /> event.</summary>
-        <param name="action">a <see cref="T:Gtk.Action" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ActionGroup.PreActivate" /> event.</remarks>
+        <summary>The PreActivate signal is emitted just before the action is activated.</summary>
+        <remarks>This is intended for applications to get notification just before any action is activated.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="OnConnectProxy">
-      <MemberSignature Language="C#" Value="protected virtual void OnConnectProxy (Gtk.Action action, Gtk.Widget proxy);" />
+    <Member MemberName="Remove">
+      <MemberSignature Language="C#" Value="public void Remove (Gtk.Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Remove(class Gtk.Action action) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="action" Type="Gtk.Action" />
-        <Parameter Name="proxy" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.ActionGroup.ConnectProxy" /> event.</summary>
         <param name="action">a <see cref="T:Gtk.Action" /></param>
-        <param name="proxy">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ActionGroup.ConnectProxy" /> event.</remarks>
+        <summary>Removes an action object from the action group.</summary>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="OnDisconnectProxy">
-      <MemberSignature Language="C#" Value="protected virtual void OnDisconnectProxy (Gtk.Action action, Gtk.Widget proxy);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Sensitive">
+      <MemberSignature Language="C#" Value="public bool Sensitive { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Sensitive" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("sensitive")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="action" Type="Gtk.Action" />
-        <Parameter Name="proxy" Type="Gtk.Widget" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.ActionGroup.DisconnectProxy" /> event.</summary>
-        <param name="action">a <see cref="T:Gtk.Action" /></param>
-        <param name="proxy">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ActionGroup.DisconnectProxy" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnPostActivate">
-      <MemberSignature Language="C#" Value="protected virtual void OnPostActivate (Gtk.Action action);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="action" Type="Gtk.Action" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.ActionGroup.PostActivate" /> event.</summary>
-        <param name="action">a <see cref="T:Gtk.Action" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.ActionGroup.PostActivate" /> event.</remarks>
+        <summary>The sensitivity of the ActionGroup</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>The constituent actions can only be logically sensitive (see <see cref="P:Gtk.Action.IsSensitive" />) if they are sensitive (see <see cref="P:Gtk.Action.Sensitive" />) and their group is sensitive.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TranslateFunc">
-      <MemberSignature Language="C#" Value="public Gtk.TranslateFunc TranslateFunc { set; };" />
+      <MemberSignature Language="C#" Value="public Gtk.TranslateFunc TranslateFunc { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TranslateFunc TranslateFunc" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TranslateFunc</ReturnType>
@@ -457,6 +469,7 @@ Therefore you must either set the accel path yourself with <see cref="P:Gtk.Acti
     </Member>
     <Member MemberName="TranslateString">
       <MemberSignature Language="C#" Value="public string TranslateString (string str1ng);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string TranslateString(string str1ng) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -465,11 +478,44 @@ Therefore you must either set the accel path yourself with <see cref="P:Gtk.Acti
         <Parameter Name="str1ng" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Translates a string using the specified  <see cref="P:Gtk.ActionGroup.TranslateFunc" />.</summary>
         <param name="str1ng">A string.</param>
+        <summary>Translates a string using the specified  <see cref="P:Gtk.ActionGroup.TranslateFunc" />.</summary>
         <returns>The translation of <paramref name="string" />.</returns>
         <remarks>This is mainly intended for language bindings.</remarks>
         <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="TranslationDomain">
+      <MemberSignature Language="C#" Value="public string TranslationDomain { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string TranslationDomain" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Sets the translation domain and uses dgettext() for translating the label and tooltip of <see cref="T:Gtk.ActionEntry" />s added by <see cref="M:Gtk.ActionGroup.AddActions()" />.</summary>
+        <value>a <see cref="T:System.String" /></value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Visible">
+      <MemberSignature Language="C#" Value="public bool Visible { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Visible" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("visible")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The visibility of the ActionGroup</summary>
+        <value>a <see cref="T:System.Boolean" /></value>
+        <remarks>The constituent actions can only be logically visible (see <see cref="P:Gtk.Action.IsVisible" />) if they are visible (see <see cref="P:Gtk.Action.Visible" />) and their group is visible.</remarks>
       </Docs>
     </Member>
   </Members>

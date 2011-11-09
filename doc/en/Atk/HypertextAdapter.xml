@@ -1,8 +1,8 @@
 <Type Name="HypertextAdapter" FullName="Atk.HypertextAdapter">
-  <TypeSignature Language="C#" Value="public class HypertextAdapter : GLib.GInterfaceAdapter, Atk.Hypertext" />
+  <TypeSignature Language="C#" Value="public class HypertextAdapter : GLib.GInterfaceAdapter, Atk.Hypertext, GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi HypertextAdapter extends GLib.GInterfaceAdapter implements class Atk.Hypertext, class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>GLib.GInterfaceAdapter</BaseTypeName>
@@ -11,10 +11,19 @@
     <Interface>
       <InterfaceName>Atk.Hypertext</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
   </Interfaces>
+  <Docs>
+    <summary>Hypertext adapter.</summary>
+    <remarks>Adapts <see cref="T:Atk.HypertextImplementor" /> implementations to the full <see cref="T:Atk.Hypertext" /> API.</remarks>
+    <since version="Gtk# 2.12" />
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public HypertextAdapter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
@@ -24,6 +33,7 @@
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public HypertextAdapter (Atk.HypertextImplementor implementor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Atk.HypertextImplementor implementor) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
         <Parameter Name="implementor" Type="Atk.HypertextImplementor" />
@@ -34,8 +44,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HypertextAdapter (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GetLink">
       <MemberSignature Language="C#" Value="public Atk.Hyperlink GetLink (int link_index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Atk.Hyperlink GetLink(int32 link_index) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Hyperlink</ReturnType>
@@ -52,6 +77,7 @@
     </Member>
     <Member MemberName="GetLinkIndex">
       <MemberSignature Language="C#" Value="public int GetLinkIndex (int char_index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetLinkIndex(int32 char_index) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -67,7 +93,26 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public static Atk.Hypertext GetObject (GLib.Object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.Hypertext GetObject(class GLib.Object obj) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Hypertext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="GLib.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
       <MemberSignature Language="C#" Value="public static Atk.Hypertext GetObject (IntPtr handle, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.Hypertext GetObject(native int handle, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Hypertext</ReturnType>
@@ -84,36 +129,37 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="LinkSelected">
-      <MemberSignature Language="C#" Value="public event Atk.LinkSelectedHandler LinkSelected;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("link_selected")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Atk.LinkSelectedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="NLinks">
-      <MemberSignature Language="C#" Value="public int NLinks { get; };" />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public override GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public override IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="Implementor">
-      <MemberSignature Language="C#" Value="public Atk.HypertextImplementor Implementor { get; };" />
+      <MemberSignature Language="C#" Value="public Atk.HypertextImplementor Implementor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Atk.HypertextImplementor Implementor" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Atk.HypertextImplementor</ReturnType>
@@ -126,6 +172,7 @@
     </Member>
     <Member MemberName="LinkSelected">
       <MemberSignature Language="C#" Value="public event Atk.LinkSelectedHandler LinkSelected;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.LinkSelectedHandler LinkSelected" />
       <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
@@ -141,7 +188,8 @@
       </Docs>
     </Member>
     <Member MemberName="NLinks">
-      <MemberSignature Language="C#" Value="public int NLinks { get; };" />
+      <MemberSignature Language="C#" Value="public int NLinks { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NLinks" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -152,10 +200,19 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OwnedHandle">
+      <MemberSignature Language="C#" Value="public IntPtr OwnedHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int OwnedHandle" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
   </Members>
-  <Docs>
-    <summary>Hypertext adapter.</summary>
-    <remarks>Adapts <see cref="T:Atk.HypertextImplementor" /> implementations to the full <see cref="T:Atk.Hypertext" /> API.</remarks>
-    <since version="Gtk# 2.12" />
-  </Docs>
 </Type>

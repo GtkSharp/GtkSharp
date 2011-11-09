@@ -1,12 +1,17 @@
 <Type Name="Table" FullName="Atk.Table">
   <TypeSignature Language="C#" Maintainer="auto" Value="public interface Table : GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract Table implements class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>The interface implemented for UI components which contain tabular or row/column information.</summary>
     <remarks>
@@ -21,31 +26,10 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
 </para>
     </remarks>
   </Docs>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-  </Interfaces>
   <Members>
-    <Member MemberName="SetColumnHeader">
-      <MemberSignature Language="C#" Value="public void SetColumnHeader (int column, Atk.Object header);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="header" Type="Atk.Object" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'int'</param>
-        <param name="header">To be added: an object of type 'Atk.Object'</param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveColumnSelection">
-      <MemberSignature Language="C#" Value="public bool RemoveColumnSelection (int column);" />
+    <Member MemberName="AddColumnSelection">
+      <MemberSignature Language="C#" Value="public bool AddColumnSelection (int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool AddColumnSelection(int32 column) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -54,14 +38,15 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="column">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
         <returns>To be added: an object of type 'bool'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="RemoveRowSelection">
-      <MemberSignature Language="C#" Value="public bool RemoveRowSelection (int row);" />
+    <Member MemberName="AddRowSelection">
+      <MemberSignature Language="C#" Value="public bool AddRowSelection (int row);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool AddRowSelection(int32 row) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -70,14 +55,103 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
         <Parameter Name="row" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="row">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
         <returns>To be added: an object of type 'bool'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetRowExtentAt">
-      <MemberSignature Language="C#" Value="public int GetRowExtentAt (int row, int column);" />
+    <Member MemberName="Caption">
+      <MemberSignature Language="C#" Value="public Atk.Object Caption { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Atk.Object Caption" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <value>To be added: an object of type 'Atk.Object'</value>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ColumnDeleted">
+      <MemberSignature Language="C#" Value="public event Atk.ColumnDeletedHandler ColumnDeleted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.ColumnDeletedHandler ColumnDeleted" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.ColumnDeletedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ColumnInserted">
+      <MemberSignature Language="C#" Value="public event Atk.ColumnInsertedHandler ColumnInserted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.ColumnInsertedHandler ColumnInserted" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.ColumnInsertedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ColumnReordered">
+      <MemberSignature Language="C#" Value="public event EventHandler ColumnReordered;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ColumnReordered" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetColumnAtIndex">
+      <MemberSignature Language="C#" Value="public int GetColumnAtIndex (int index_);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetColumnAtIndex(int32 index_) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index_" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="index_">a <see cref="T:System.Int32" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetColumnDescription">
+      <MemberSignature Language="C#" Value="public string GetColumnDescription (int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetColumnDescription(int32 column) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="column" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="column">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
+        <returns>To be added: an object of type 'string'</returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetColumnExtentAt">
+      <MemberSignature Language="C#" Value="public int GetColumnExtentAt (int row, int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetColumnExtentAt(int32 row, int32 column) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -87,80 +161,33 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="row">To be added: an object of type 'int'</param>
         <param name="column">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
         <returns>To be added: an object of type 'int'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="IsRowSelected">
-      <MemberSignature Language="C#" Value="public bool IsRowSelected (int row);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="row" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="row">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetRowDescription">
-      <MemberSignature Language="C#" Value="public void SetRowDescription (int row, string description);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="row" Type="System.Int32" />
-        <Parameter Name="description" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="row">To be added: an object of type 'int'</param>
-        <param name="description">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsColumnSelected">
-      <MemberSignature Language="C#" Value="public bool IsColumnSelected (int column);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="column" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetRowHeader">
-      <MemberSignature Language="C#" Value="public Atk.Object GetRowHeader (int row);" />
+    <Member MemberName="GetColumnHeader">
+      <MemberSignature Language="C#" Value="public Atk.Object GetColumnHeader (int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Atk.Object GetColumnHeader(int32 column) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="row" Type="System.Int32" />
+        <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
+        <param name="column">To be added: an object of type 'int'</param>
         <summary>To be added</summary>
-        <param name="row">To be added: an object of type 'int'</param>
         <returns>To be added: an object of type 'Atk.Object'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIndexAt">
       <MemberSignature Language="C#" Value="public int GetIndexAt (int row, int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetIndexAt(int32 row, int32 column) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -170,50 +197,33 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="row">To be added: an object of type 'int'</param>
         <param name="column">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
         <returns>To be added: an object of type 'int'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetColumnDescription">
-      <MemberSignature Language="C#" Value="public void SetColumnDescription (int column, string description);" />
+    <Member MemberName="GetRowAtIndex">
+      <MemberSignature Language="C#" Value="public int GetRowAtIndex (int index_);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetRowAtIndex(int32 index_) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="description" Type="System.String" />
+        <Parameter Name="index_" Type="System.Int32" />
       </Parameters>
       <Docs>
+        <param name="index_">a <see cref="T:System.Int32" /></param>
         <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'int'</param>
-        <param name="description">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RefAt">
-      <MemberSignature Language="C#" Value="public Atk.Object RefAt (int row, int column);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Atk.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="row" Type="System.Int32" />
-        <Parameter Name="column" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="row">To be added: an object of type 'int'</param>
-        <param name="column">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Atk.Object'</returns>
+        <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetRowDescription">
       <MemberSignature Language="C#" Value="public string GetRowDescription (int row);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetRowDescription(int32 row) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -222,31 +232,85 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
         <Parameter Name="row" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="row">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
         <returns>To be added: an object of type 'string'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetRowHeader">
-      <MemberSignature Language="C#" Value="public void SetRowHeader (int row, Atk.Object header);" />
+    <Member MemberName="GetRowExtentAt">
+      <MemberSignature Language="C#" Value="public int GetRowExtentAt (int row, int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetRowExtentAt(int32 row, int32 column) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="row" Type="System.Int32" />
-        <Parameter Name="header" Type="Atk.Object" />
+        <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="row">To be added: an object of type 'int'</param>
-        <param name="header">To be added: an object of type 'Atk.Object'</param>
+        <param name="column">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
+        <returns>To be added: an object of type 'int'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="AddColumnSelection">
-      <MemberSignature Language="C#" Value="public bool AddColumnSelection (int column);" />
+    <Member MemberName="GetRowHeader">
+      <MemberSignature Language="C#" Value="public Atk.Object GetRowHeader (int row);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Atk.Object GetRowHeader(int32 row) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="row" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="row">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
+        <returns>To be added: an object of type 'Atk.Object'</returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSelectedColumns">
+      <MemberSignature Language="C#" Value="public int GetSelectedColumns (out int selected);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetSelectedColumns(int32 selected) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="selected" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="selected">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSelectedRows">
+      <MemberSignature Language="C#" Value="public int GetSelectedRows (out int selected);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 GetSelectedRows(int32 selected) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="selected" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="selected">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsColumnSelected">
+      <MemberSignature Language="C#" Value="public bool IsColumnSelected (int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsColumnSelected(int32 column) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -255,30 +319,32 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="column">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
         <returns>To be added: an object of type 'bool'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetColumnDescription">
-      <MemberSignature Language="C#" Value="public string GetColumnDescription (int column);" />
+    <Member MemberName="IsRowSelected">
+      <MemberSignature Language="C#" Value="public bool IsRowSelected (int row);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsRowSelected(int32 row) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.String</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="column" Type="System.Int32" />
+        <Parameter Name="row" Type="System.Int32" />
       </Parameters>
       <Docs>
+        <param name="row">To be added: an object of type 'int'</param>
         <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <returns>To be added: an object of type 'bool'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="IsSelected">
       <MemberSignature Language="C#" Value="public bool IsSelected (int row, int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsSelected(int32 row, int32 column) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -288,65 +354,29 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="row">To be added: an object of type 'int'</param>
         <param name="column">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
         <returns>To be added: an object of type 'bool'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetColumnHeader">
-      <MemberSignature Language="C#" Value="public Atk.Object GetColumnHeader (int column);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="ModelChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler ModelChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ModelChanged" />
+      <MemberType>Event</MemberType>
       <ReturnValue>
-        <ReturnType>Atk.Object</ReturnType>
+        <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="column" Type="System.Int32" />
-      </Parameters>
+      <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Atk.Object'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetColumnExtentAt">
-      <MemberSignature Language="C#" Value="public int GetColumnExtentAt (int row, int column);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="row" Type="System.Int32" />
-        <Parameter Name="column" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="row">To be added: an object of type 'int'</param>
-        <param name="column">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AddRowSelection">
-      <MemberSignature Language="C#" Value="public bool AddRowSelection (int row);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="row" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="row">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="NColumns">
-      <MemberSignature Language="C#" Value="public int NColumns { get; };" />
+      <MemberSignature Language="C#" Value="public int NColumns { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NColumns" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -354,39 +384,12 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
       <Docs>
         <summary>To be added</summary>
         <value>To be added: an object of type 'int'</value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Caption">
-      <MemberSignature Language="C#" Value="public Atk.Object Caption { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Atk.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>To be added: an object of type 'Atk.Object'</value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Summary">
-      <MemberSignature Language="C#" Value="public Atk.Object Summary { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Atk.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>To be added: an object of type 'Atk.Object'</value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="NRows">
-      <MemberSignature Language="C#" Value="public int NRows { get; };" />
+      <MemberSignature Language="C#" Value="public int NRows { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NRows" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -394,11 +397,65 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
       <Docs>
         <summary>To be added</summary>
         <value>To be added: an object of type 'int'</value>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RefAt">
+      <MemberSignature Language="C#" Value="public Atk.Object RefAt (int row, int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Atk.Object RefAt(int32 row, int32 column) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="row" Type="System.Int32" />
+        <Parameter Name="column" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="row">To be added: an object of type 'int'</param>
+        <param name="column">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
+        <returns>To be added: an object of type 'Atk.Object'</returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveColumnSelection">
+      <MemberSignature Language="C#" Value="public bool RemoveColumnSelection (int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool RemoveColumnSelection(int32 column) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="column" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="column">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
+        <returns>To be added: an object of type 'bool'</returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveRowSelection">
+      <MemberSignature Language="C#" Value="public bool RemoveRowSelection (int row);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool RemoveRowSelection(int32 row) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="row" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="row">To be added: an object of type 'int'</param>
+        <summary>To be added</summary>
+        <returns>To be added: an object of type 'bool'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="RowDeleted">
       <MemberSignature Language="C#" Value="public event Atk.RowDeletedHandler RowDeleted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.RowDeletedHandler RowDeleted" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.RowDeletedHandler</ReturnType>
@@ -411,6 +468,7 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
     </Member>
     <Member MemberName="RowInserted">
       <MemberSignature Language="C#" Value="public event Atk.RowInsertedHandler RowInserted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Atk.RowInsertedHandler RowInserted" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.RowInsertedHandler</ReturnType>
@@ -421,32 +479,9 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ModelChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler ModelChanged;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ColumnInserted">
-      <MemberSignature Language="C#" Value="public event Atk.ColumnInsertedHandler ColumnInserted;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Atk.ColumnInsertedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="RowReordered">
       <MemberSignature Language="C#" Value="public event EventHandler RowReordered;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler RowReordered" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -457,91 +492,90 @@ Since tables are often very complex, <see cref="T:Atk.Table" /> includes provisi
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ColumnDeleted">
-      <MemberSignature Language="C#" Value="public event Atk.ColumnDeletedHandler ColumnDeleted;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Atk.ColumnDeletedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ColumnReordered">
-      <MemberSignature Language="C#" Value="public event EventHandler ColumnReordered;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetRowAtIndex">
-      <MemberSignature Language="C#" Value="public int GetRowAtIndex (int index_);" />
+    <Member MemberName="SetColumnDescription">
+      <MemberSignature Language="C#" Value="public void SetColumnDescription (int column, string description);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetColumnDescription(int32 column, string description) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
+        <Parameter Name="column" Type="System.Int32" />
+        <Parameter Name="description" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="column">To be added: an object of type 'int'</param>
+        <param name="description">To be added: an object of type 'string'</param>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetColumnHeader">
+      <MemberSignature Language="C#" Value="public void SetColumnHeader (int column, Atk.Object header);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetColumnHeader(int32 column, class Atk.Object header) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="column" Type="System.Int32" />
+        <Parameter Name="header" Type="Atk.Object" />
+      </Parameters>
+      <Docs>
+        <param name="column">To be added: an object of type 'int'</param>
+        <param name="header">To be added: an object of type 'Atk.Object'</param>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetRowDescription">
+      <MemberSignature Language="C#" Value="public void SetRowDescription (int row, string description);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetRowDescription(int32 row, string description) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="row" Type="System.Int32" />
+        <Parameter Name="description" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="row">To be added: an object of type 'int'</param>
+        <param name="description">To be added: an object of type 'string'</param>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetRowHeader">
+      <MemberSignature Language="C#" Value="public void SetRowHeader (int row, Atk.Object header);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetRowHeader(int32 row, class Atk.Object header) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="row" Type="System.Int32" />
+        <Parameter Name="header" Type="Atk.Object" />
+      </Parameters>
+      <Docs>
+        <param name="row">To be added: an object of type 'int'</param>
+        <param name="header">To be added: an object of type 'Atk.Object'</param>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Summary">
+      <MemberSignature Language="C#" Value="public Atk.Object Summary { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Atk.Object Summary" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="index_">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetColumnAtIndex">
-      <MemberSignature Language="C#" Value="public int GetColumnAtIndex (int index_);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="index_">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetSelectedRows">
-      <MemberSignature Language="C#" Value="public int GetSelectedRows (out int selected);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="selected" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="selected">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetSelectedColumns">
-      <MemberSignature Language="C#" Value="public int GetSelectedColumns (out int selected);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="selected" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="selected">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>To be added: an object of type 'Atk.Object'</value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>

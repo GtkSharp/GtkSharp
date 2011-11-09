@@ -1,8 +1,8 @@
 <Type Name="ActionAdapter" FullName="Atk.ActionAdapter">
-  <TypeSignature Language="C#" Value="public class ActionAdapter : GLib.GInterfaceAdapter, Atk.Action" />
+  <TypeSignature Language="C#" Value="public class ActionAdapter : GLib.GInterfaceAdapter, Atk.Action, GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi ActionAdapter extends GLib.GInterfaceAdapter implements class Atk.Action, class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>GLib.GInterfaceAdapter</BaseTypeName>
@@ -11,10 +11,19 @@
     <Interface>
       <InterfaceName>Atk.Action</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
   </Interfaces>
+  <Docs>
+    <summary> Action adapter.</summary>
+    <remarks>Adapts <see cref="T:AtkActionImplementor" /> implementations to the full <see cref="T:Atk.Action" /> API.</remarks>
+    <since version="Gtk# 2.12" />
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ActionAdapter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
@@ -24,6 +33,7 @@
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ActionAdapter (Atk.ActionImplementor implementor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Atk.ActionImplementor implementor) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
         <Parameter Name="implementor" Type="Atk.ActionImplementor" />
@@ -34,8 +44,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ActionAdapter (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="DoAction">
       <MemberSignature Language="C#" Value="public bool DoAction (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool DoAction(int32 i) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -52,6 +77,7 @@
     </Member>
     <Member MemberName="GetDescription">
       <MemberSignature Language="C#" Value="public string GetDescription (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetDescription(int32 i) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -68,6 +94,7 @@
     </Member>
     <Member MemberName="GetKeybinding">
       <MemberSignature Language="C#" Value="public string GetKeybinding (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetKeybinding(int32 i) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -84,6 +111,7 @@
     </Member>
     <Member MemberName="GetLocalizedName">
       <MemberSignature Language="C#" Value="public string GetLocalizedName (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetLocalizedName(int32 i) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -100,6 +128,7 @@
     </Member>
     <Member MemberName="GetName">
       <MemberSignature Language="C#" Value="public string GetName (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetName(int32 i) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -115,7 +144,26 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public static Atk.Action GetObject (GLib.Object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.Action GetObject(class GLib.Object obj) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Action</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="GLib.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
       <MemberSignature Language="C#" Value="public static Atk.Action GetObject (IntPtr handle, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.Action GetObject(native int handle, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Action</ReturnType>
@@ -132,38 +180,37 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="NActions">
-      <MemberSignature Language="C#" Value="public int NActions { get; };" />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public override GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="SetDescription">
-      <MemberSignature Language="C#" Value="public bool SetDescription (int i, string desc);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public override IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="i" Type="System.Int32" />
-        <Parameter Name="desc" Type="System.String" />
-      </Parameters>
       <Docs>
-        <param name="i">To be added.</param>
-        <param name="desc">To be added.</param>
         <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="Implementor">
-      <MemberSignature Language="C#" Value="public Atk.ActionImplementor Implementor { get; };" />
+      <MemberSignature Language="C#" Value="public Atk.ActionImplementor Implementor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Atk.ActionImplementor Implementor" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Atk.ActionImplementor</ReturnType>
@@ -175,7 +222,8 @@
       </Docs>
     </Member>
     <Member MemberName="NActions">
-      <MemberSignature Language="C#" Value="public int NActions { get; };" />
+      <MemberSignature Language="C#" Value="public int NActions { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NActions" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -186,8 +234,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OwnedHandle">
+      <MemberSignature Language="C#" Value="public IntPtr OwnedHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int OwnedHandle" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="SetDescription">
       <MemberSignature Language="C#" Value="public bool SetDescription (int i, string desc);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetDescription(int32 i, string desc) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -205,9 +268,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary> Action adapter.</summary>
-    <remarks>Adapts <see cref="T:AtkActionImplementor" /> implementations to the full <see cref="T:Atk.Action" /> API.</remarks>
-    <since version="Gtk# 2.12" />
-  </Docs>
 </Type>

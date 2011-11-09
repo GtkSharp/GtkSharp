@@ -1,12 +1,17 @@
 <Type Name="Table" FullName="Gtk.Table">
   <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Table : Gtk.Container" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Table extends Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Container</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>Pack widgets in grid/table patterns.</summary>
     <remarks>
@@ -33,140 +38,46 @@ public Widget MakeTableTester()
     </code></example></para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Container</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
   <Members>
-    <Member MemberName="SetColSpacing">
-      <MemberSignature Language="C#" Value="public void SetColSpacing (uint column, uint spacing);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Table (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="column" Type="System.UInt32" />
-        <Parameter Name="spacing" Type="System.UInt32" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Sets the spacing around a specified column.</summary>
-        <param name="column">A zero-indexed column number to adjust the spacing of.</param>
-        <param name="spacing">The number of pixels on each side of the <paramref name="column" />.</param>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
-          <para>To adjust the spacing between all columns, use the <see cref="P:Gtk.Table.ColumnSpacing" /> property.</para>
+          <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetColSpacing">
-      <MemberSignature Language="C#" Value="public uint GetColSpacing (uint column);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="column" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>The spacing currently set for a given column.</summary>
-        <param name="column">A zero-indexed column number to retrieve spacing information from.</param>
-        <returns>The number of pixels of spacing assigned to the specified <paramref name="column" />.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetRowSpacing">
-      <MemberSignature Language="C#" Value="public void SetRowSpacing (uint row, uint spacing);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="row" Type="System.UInt32" />
-        <Parameter Name="spacing" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the spacing around a specified row.</summary>
-        <param name="row">A zero-indexed row number to adjust the spacing of.</param>
-        <param name="spacing">The number of pixels on each side of the <paramref name="row" />.</param>
-        <remarks>
-          <para>To adjust the spacing between all rows, use the <see cref="P:Gtk.Table.RowSpacing" /> property.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetRowSpacing">
-      <MemberSignature Language="C#" Value="public uint GetRowSpacing (uint row);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="row" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>The spacing currently set for a given row.</summary>
-        <param name="row">A zero-indexed row number to retrieve spacing information from.</param>
-        <returns>The number of pixels of spacing assigned to the specified <paramref name="row" />.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Resize">
-      <MemberSignature Language="C#" Value="public void Resize (uint rows, uint columns);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Table (uint rows, uint columns, bool homogeneous);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(unsigned int32 rows, unsigned int32 columns, bool homogeneous) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
         <Parameter Name="rows" Type="System.UInt32" />
         <Parameter Name="columns" Type="System.UInt32" />
+        <Parameter Name="homogeneous" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Resizes the table so that the specified number of <paramref name="rows" />  and <paramref name="columns" /> are available for widget packing.</summary>
-        <param name="rows">The new number of rows this table should allow.</param>
-        <param name="columns">The new number of columns this table should allow.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Attach">
-      <MemberSignature Language="C#" Value="public void Attach (Gtk.Widget child, uint left_attach, uint right_attach, uint top_attach, uint bottom_attach, Gtk.AttachOptions xoptions, Gtk.AttachOptions yoptions, uint xpadding, uint ypadding);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="left_attach" Type="System.UInt32" />
-        <Parameter Name="right_attach" Type="System.UInt32" />
-        <Parameter Name="top_attach" Type="System.UInt32" />
-        <Parameter Name="bottom_attach" Type="System.UInt32" />
-        <Parameter Name="xoptions" Type="Gtk.AttachOptions" />
-        <Parameter Name="yoptions" Type="Gtk.AttachOptions" />
-        <Parameter Name="xpadding" Type="System.UInt32" />
-        <Parameter Name="ypadding" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Packs a widget into the table.</summary>
-        <param name="child">The <see cref="T:Gtk.Widget" /> to add.</param>
-        <param name="left_attach">The column number to attach the left side of <paramref name="child" /> to.</param>
-        <param name="right_attach">The column number to attach the right side of <paramref name="child" /> to.</param>
-        <param name="top_attach">The row number to attach the top of <paramref name="child" /> to.</param>
-        <param name="bottom_attach">The row number to attach the bottom of <paramref name="child" /> to.</param>
-        <param name="xoptions">The horizontal packing options for this <paramref name="child" />.</param>
-        <param name="yoptions">The vertical packing options for this <paramref name="child" />.</param>
-        <param name="xpadding">The number of pixels of padding to add to the left and right of <paramref name="child" />.</param>
-        <param name="ypadding">The number of pixels of padding to add to the top and bottom of <paramref name="child" />.</param>
+        <param name="rows">The number of rows in this table.</param>
+        <param name="columns">The number of columns in this table.</param>
+        <param name="homogeneous">If homogeneous is TRUE, the table boxes (cells)  are resized to the size of the largest widget in the table. If homogeneous is FALSE, the size of a table boxes is dictated by the tallest widget in its same row, and the widest widget in its column (i.e. all cells are the same).</param>
+        <summary>Creates a new Table widget.</summary>
         <remarks>
-          <para>You can pack widgets into the Table using default packing and padding with the <see cref="M:Gtk.Table.Attach(Gtk.Widget,uint,uint,uint,uint)" /> convenience method.</para>
-          <para>Child widgets can span as many table cells as they wish, allowing the programmer to create complex grids of Widgets.</para>
+          <para>The size of the table can be altered after its creation using the <see cref="M:Gtk.Table.Resize" /> method.</para>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="Attach">
       <MemberSignature Language="C#" Value="public void Attach (Gtk.Widget widget, uint left_attach, uint right_attach, uint top_attach, uint bottom_attach);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Attach(class Gtk.Widget widget, unsigned int32 left_attach, unsigned int32 right_attach, unsigned int32 top_attach, unsigned int32 bottom_attach) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -190,67 +101,50 @@ public Widget MakeTableTester()
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Table (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="Attach">
+      <MemberSignature Language="C#" Value="public void Attach (Gtk.Widget child, uint left_attach, uint right_attach, uint top_attach, uint bottom_attach, Gtk.AttachOptions xoptions, Gtk.AttachOptions yoptions, uint xpadding, uint ypadding);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Attach(class Gtk.Widget child, unsigned int32 left_attach, unsigned int32 right_attach, unsigned int32 top_attach, unsigned int32 bottom_attach, valuetype Gtk.AttachOptions xoptions, valuetype Gtk.AttachOptions yoptions, unsigned int32 xpadding, unsigned int32 ypadding) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
       <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="left_attach" Type="System.UInt32" />
+        <Parameter Name="right_attach" Type="System.UInt32" />
+        <Parameter Name="top_attach" Type="System.UInt32" />
+        <Parameter Name="bottom_attach" Type="System.UInt32" />
+        <Parameter Name="xoptions" Type="Gtk.AttachOptions" />
+        <Parameter Name="yoptions" Type="Gtk.AttachOptions" />
+        <Parameter Name="xpadding" Type="System.UInt32" />
+        <Parameter Name="ypadding" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
+        <param name="child">The <see cref="T:Gtk.Widget" /> to add.</param>
+        <param name="left_attach">The column number to attach the left side of <paramref name="child" /> to.</param>
+        <param name="right_attach">The column number to attach the right side of <paramref name="child" /> to.</param>
+        <param name="top_attach">The row number to attach the top of <paramref name="child" /> to.</param>
+        <param name="bottom_attach">The row number to attach the bottom of <paramref name="child" /> to.</param>
+        <param name="xoptions">The horizontal packing options for this <paramref name="child" />.</param>
+        <param name="yoptions">The vertical packing options for this <paramref name="child" />.</param>
+        <param name="xpadding">The number of pixels of padding to add to the left and right of <paramref name="child" />.</param>
+        <param name="ypadding">The number of pixels of padding to add to the top and bottom of <paramref name="child" />.</param>
+        <summary>Packs a widget into the table.</summary>
         <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
+          <para>You can pack widgets into the Table using default packing and padding with the <see cref="M:Gtk.Table.Attach(Gtk.Widget,uint,uint,uint,uint)" /> convenience method.</para>
+          <para>Child widgets can span as many table cells as they wish, allowing the programmer to create complex grids of Widgets.</para>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Table (uint rows, uint columns, bool homogeneous);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="rows" Type="System.UInt32" />
-        <Parameter Name="columns" Type="System.UInt32" />
-        <Parameter Name="homogeneous" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new Table widget.</summary>
-        <param name="rows">The number of rows in this table.</param>
-        <param name="columns">The number of columns in this table.</param>
-        <param name="homogeneous">If homogeneous is TRUE, the table boxes (cells)  are resized to the size of the largest widget in the table. If homogeneous is FALSE, the size of a table boxes is dictated by the tallest widget in its same row, and the widest widget in its column (i.e. all cells are the same).</param>
-        <remarks>
-          <para>The size of the table can be altered after its creation using the <see cref="M:Gtk.Table.Resize" /> method.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="DefaultRowSpacing">
-      <MemberSignature Language="C#" Value="public uint DefaultRowSpacing { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Retrieve the spacing that gets placed between newly added rows by default.</summary>
-        <value>Spacing between rows that will be added, in pixels.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="DefaultColSpacing">
-      <MemberSignature Language="C#" Value="public uint DefaultColSpacing { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The default number of pixels between columns.</summary>
-        <value>A <see cref="T:System.UInt32" />.</value>
-        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ColumnSpacing">
-      <MemberSignature Language="C#" Value="public uint ColumnSpacing { set; get; };" />
+      <MemberSignature Language="C#" Value="public uint ColumnSpacing { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 ColumnSpacing" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("column-spacing")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
@@ -261,92 +155,89 @@ public Widget MakeTableTester()
         <value>A <see cref="T:System.UInt32" />.</value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("column-spacing")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="NColumns">
-      <MemberSignature Language="C#" Value="public uint NColumns { set; get; };" />
+    <Member MemberName="DefaultColSpacing">
+      <MemberSignature Language="C#" Value="public uint DefaultColSpacing { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 DefaultColSpacing" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
-        <summary>Manage the number of columns in this Table.</summary>
-        <value>The number of columns this table currently has.</value>
+        <summary>The default number of pixels between columns.</summary>
+        <value>A <see cref="T:System.UInt32" />.</value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("n-columns")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="Homogeneous">
-      <MemberSignature Language="C#" Value="public bool Homogeneous { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Manage whether all cells must be of equal size.</summary>
-        <value>
-          <see langword="true" /> if all cells are currently equally sized, <see langword="false" /> otherwise.</value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("homogeneous")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="RowSpacing">
-      <MemberSignature Language="C#" Value="public uint RowSpacing { set; get; };" />
+    <Member MemberName="DefaultRowSpacing">
+      <MemberSignature Language="C#" Value="public uint DefaultRowSpacing { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 DefaultRowSpacing" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
-        <summary>The space between table rows.</summary>
-        <value>
-          <see cref="T:System.UInt32" />.</value>
+        <summary>Retrieve the spacing that gets placed between newly added rows by default.</summary>
+        <value>Spacing between rows that will be added, in pixels.</value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("row-spacing")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="NRows">
-      <MemberSignature Language="C#" Value="public uint NRows { set; get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="GetColSpacing">
+      <MemberSignature Language="C#" Value="public uint GetColSpacing (uint column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int32 GetColSpacing(unsigned int32 column) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Parameters>
+        <Parameter Name="column" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Manage the number of rows in this Table.</summary>
-        <value>The number of rows this table currently has.</value>
+        <param name="column">A zero-indexed column number to retrieve spacing information from.</param>
+        <summary>The spacing currently set for a given column.</summary>
+        <returns>The number of pixels of spacing assigned to the specified <paramref name="column" />.</returns>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("n-rows")</AttributeName>
-        </Attribute>
-      </Attributes>
+    </Member>
+    <Member MemberName="GetRowSpacing">
+      <MemberSignature Language="C#" Value="public uint GetRowSpacing (uint row);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int32 GetRowSpacing(unsigned int32 row) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="row" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="row">A zero-indexed row number to retrieve spacing information from.</param>
+        <summary>The spacing currently set for a given row.</summary>
+        <returns>The number of pixels of spacing assigned to the specified <paramref name="row" />.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSize">
+      <MemberSignature Language="C#" Value="public void GetSize (out uint rows, out uint columns);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetSize(unsigned int32 rows, unsigned int32 columns) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rows" Type="System.UInt32&amp;" RefType="out" />
+        <Parameter Name="columns" Type="System.UInt32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="rows">To be added.</param>
+        <param name="columns">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
     </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -358,23 +249,163 @@ public Widget MakeTableTester()
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Table" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Table (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
+    <Member MemberName="Homogeneous">
+      <MemberSignature Language="C#" Value="public bool Homogeneous { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Homogeneous" />
+      <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
+          <AttributeName>GLib.Property("homogeneous")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Manage whether all cells must be of equal size.</summary>
+        <value>
+          <see langword="true" /> if all cells are currently equally sized, <see langword="false" /> otherwise.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Item">
+      <MemberSignature Language="C#" Value="public override Gtk.Container.ContainerChild this[Gtk.Widget child] { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Container/ContainerChild Item(class Gtk.Widget)" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Container+ContainerChild</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="NColumns">
+      <MemberSignature Language="C#" Value="public uint NColumns { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 NColumns" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("n-columns")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Manage the number of columns in this Table.</summary>
+        <value>The number of columns this table currently has.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="NRows">
+      <MemberSignature Language="C#" Value="public uint NRows { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 NRows" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("n-rows")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Manage the number of rows in this Table.</summary>
+        <value>The number of rows this table currently has.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Resize">
+      <MemberSignature Language="C#" Value="public void Resize (uint rows, uint columns);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Resize(unsigned int32 rows, unsigned int32 columns) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rows" Type="System.UInt32" />
+        <Parameter Name="columns" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="rows">The new number of rows this table should allow.</param>
+        <param name="columns">The new number of columns this table should allow.</param>
+        <summary>Resizes the table so that the specified number of <paramref name="rows" />  and <paramref name="columns" /> are available for widget packing.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="RowSpacing">
+      <MemberSignature Language="C#" Value="public uint RowSpacing { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 RowSpacing" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("row-spacing")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The space between table rows.</summary>
+        <value>
+          <see cref="T:System.UInt32" />.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetColSpacing">
+      <MemberSignature Language="C#" Value="public void SetColSpacing (uint column, uint spacing);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetColSpacing(unsigned int32 column, unsigned int32 spacing) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="column" Type="System.UInt32" />
+        <Parameter Name="spacing" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="column">A zero-indexed column number to adjust the spacing of.</param>
+        <param name="spacing">The number of pixels on each side of the <paramref name="column" />.</param>
+        <summary>Sets the spacing around a specified column.</summary>
+        <remarks>
+          <para>To adjust the spacing between all columns, use the <see cref="P:Gtk.Table.ColumnSpacing" /> property.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetRowSpacing">
+      <MemberSignature Language="C#" Value="public void SetRowSpacing (uint row, uint spacing);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetRowSpacing(unsigned int32 row, unsigned int32 spacing) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="row" Type="System.UInt32" />
+        <Parameter Name="spacing" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="row">A zero-indexed row number to adjust the spacing of.</param>
+        <param name="spacing">The number of pixels on each side of the <paramref name="row" />.</param>
+        <summary>Sets the spacing around a specified row.</summary>
+        <remarks>
+          <para>To adjust the spacing between all rows, use the <see cref="P:Gtk.Table.RowSpacing" /> property.</para>
+        </remarks>
+      </Docs>
     </Member>
   </Members>
 </Type>

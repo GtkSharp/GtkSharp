@@ -1,12 +1,16 @@
 <Type Name="Threads" FullName="Gdk.Threads">
   <TypeSignature Language="C#" Value="public class Threads" Maintainer="John Luke" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Threads extends System.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
   <Docs>
     <summary>Threads</summary>
     <remarks>
@@ -40,49 +44,10 @@ static void Main (string[] args)
 </code></example></para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
-    <Member MemberName="Leave">
-      <MemberSignature Language="C#" Value="public static void Leave ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Leaves a critical region begun with Gdk.Threads.Enter().</summary>
-        <remarks>This marks the end of a critical section begun with Gdk.Threads.Enter.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Enter">
-      <MemberSignature Language="C#" Value="public static void Enter ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>This marks the beginning of a critical section in which Gdk and Gtk functions can be called.</summary>
-        <remarks>Only one thread at a time can be in such a critial section.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Init">
-      <MemberSignature Language="C#" Value="public static void Init ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>This call must be made before any use of the main loop from Gtk#; to be safe, call it before <see cref="M:Gtk.Application.Init()" />. It must also be preceded by a call to <see cref="M:GLib.Thread.Init()" /> if GLib threading has not yet been initialized.</summary>
-        <remarks>Initializes <see cref="N:Gdk" /> so that it can be used from multiple threads in conjunction with <see cref="M:Gdk.Threads.Enter()" /> and <see cref="M:Gdk.Threads.Leave()" />.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Threads ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters />
@@ -93,6 +58,7 @@ static void Main (string[] args)
     </Member>
     <Member MemberName="AddIdle">
       <MemberSignature Language="C#" Value="public static uint AddIdle (int priority, GLib.GSourceFunc function);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int32 AddIdle(int32 priority, class GLib.GSourceFunc function) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
@@ -112,6 +78,7 @@ static void Main (string[] args)
     </Member>
     <Member MemberName="AddTimeout">
       <MemberSignature Language="C#" Value="public static uint AddTimeout (int priority, uint interval, GLib.GSourceFunc function);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int32 AddTimeout(int32 priority, unsigned int32 interval, class GLib.GSourceFunc function) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
@@ -129,6 +96,67 @@ static void Main (string[] args)
         <returns>A source id.</returns>
         <remarks />
         <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="AddTimeoutSeconds">
+      <MemberSignature Language="C#" Value="public static uint AddTimeoutSeconds (int priority, uint interval, GLib.GSourceFunc function);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int32 AddTimeoutSeconds(int32 priority, unsigned int32 interval, class GLib.GSourceFunc function) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="priority" Type="System.Int32" />
+        <Parameter Name="interval" Type="System.UInt32" />
+        <Parameter Name="function" Type="GLib.GSourceFunc" />
+      </Parameters>
+      <Docs>
+        <param name="priority">To be added.</param>
+        <param name="interval">To be added.</param>
+        <param name="function">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Enter">
+      <MemberSignature Language="C#" Value="public static void Enter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Enter() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>This marks the beginning of a critical section in which Gdk and Gtk functions can be called.</summary>
+        <remarks>Only one thread at a time can be in such a critial section.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Init">
+      <MemberSignature Language="C#" Value="public static void Init ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Init() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>This call must be made before any use of the main loop from Gtk#; to be safe, call it before <see cref="M:Gtk.Application.Init()" />. It must also be preceded by a call to <see cref="M:GLib.Thread.Init()" /> if GLib threading has not yet been initialized.</summary>
+        <remarks>Initializes <see cref="N:Gdk" /> so that it can be used from multiple threads in conjunction with <see cref="M:Gdk.Threads.Enter()" /> and <see cref="M:Gdk.Threads.Leave()" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Leave">
+      <MemberSignature Language="C#" Value="public static void Leave ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Leave() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Leaves a critical region begun with Gdk.Threads.Enter().</summary>
+        <remarks>This marks the end of a critical section begun with Gdk.Threads.Enter.</remarks>
       </Docs>
     </Member>
   </Members>

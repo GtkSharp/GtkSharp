@@ -1,148 +1,50 @@
 <Type Name="Matrix" FullName="Pango.Matrix">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public struct Matrix" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public struct Matrix : IEquatable&lt;Pango.Matrix&gt;" />
+  <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed Matrix extends System.ValueType implements class System.IEquatable`1&lt;valuetype Pango.Matrix&gt;" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>System.ValueType</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IEquatable&lt;Pango.Matrix&gt;</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>A structure specifying a transformation between user-space coordinates and device coordinates.</summary>
     <remarks />
     <since version="Gtk# 2.6" />
   </Docs>
-  <Base>
-    <BaseTypeName>System.ValueType</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
-    <Member MemberName="Zero">
-      <MemberSignature Language="C#" Value="public static Pango.Matrix Zero;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Matrix</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>An empty Pango.Matrix.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Xx">
-      <MemberSignature Language="C#" Value="public double Xx;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary> 1st component of the transformation matrix</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Xy">
-      <MemberSignature Language="C#" Value="public double Xy;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary> 2nd component of the transformation matrix </summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Yx">
-      <MemberSignature Language="C#" Value="public double Yx;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary> 3rd component of the transformation matrix</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Yy">
-      <MemberSignature Language="C#" Value="public double Yy;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary> 4th component of the transformation matrix</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="X0">
-      <MemberSignature Language="C#" Value="public double X0;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary> x translation</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Y0">
-      <MemberSignature Language="C#" Value="public double Y0;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary> y translation</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Pango.Matrix New (IntPtr raw);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Matrix</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new Matrix.</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Pango.Matrix" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Translate">
-      <MemberSignature Language="C#" Value="public void Translate (double tx, double ty);" />
+    <Member MemberName="Concat">
+      <MemberSignature Language="C#" Value="public void Concat (Pango.Matrix new_matrix);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Concat(valuetype Pango.Matrix new_matrix) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="tx" Type="System.Double" />
-        <Parameter Name="ty" Type="System.Double" />
+        <Parameter Name="new_matrix" Type="Pango.Matrix" />
       </Parameters>
       <Docs>
-        <summary>Changes the transformation represented by the matrix to be the transformation given by first translating by (tx, ty) then applying the original transformation.</summary>
-        <param name="tx"> amount to translate in the X direction</param>
-        <param name="ty"> amount to translate in the Y direction</param>
+        <param name="new_matrix">a <see cref="T:Pango.Matrix" /></param>
+        <summary>Changes the transformation represented by the matrix to be the transformation given by first applying transformation given by <paramref name="new_matrix" /> then applying the original transformation.</summary>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Copy">
       <MemberSignature Language="C#" Value="public Pango.Matrix Copy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Pango.Matrix Copy() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("This is a no-op")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Pango.Matrix</ReturnType>
       </ReturnValue>
@@ -153,55 +55,74 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Concat">
-      <MemberSignature Language="C#" Value="public void Concat (Pango.Matrix new_matrix);" />
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public bool Equals (Pango.Matrix other);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Equals(valuetype Pango.Matrix other) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="new_matrix" Type="Pango.Matrix" />
+        <Parameter Name="other" Type="Pango.Matrix" />
       </Parameters>
       <Docs>
-        <summary>Changes the transformation represented by the matrix to be the transformation given by first applying transformation given by <paramref name="new_matrix" /> then applying the original transformation.</summary>
-        <param name="new_matrix">a <see cref="T:Pango.Matrix" /></param>
-        <remarks />
+        <param name="other">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="Scale">
-      <MemberSignature Language="C#" Value="public void Scale (double scale_x, double scale_y);" />
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public override bool Equals (object other);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool Equals(object other) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="scale_x" Type="System.Double" />
-        <Parameter Name="scale_y" Type="System.Double" />
+        <Parameter Name="other" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>Changes the transformation represented by the matrix to be the transformation given by first scaling by sx in the X direction and sy in the Y direction then applying the original transformation.</summary>
-        <param name="scale_x"> amount to scale by in X direction</param>
-        <param name="scale_y"> amount to scale by in Y direction</param>
-        <remarks />
+        <param name="other">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="Rotate">
-      <MemberSignature Language="C#" Value="public void Rotate (double degrees);" />
+    <Member MemberName="FontScaleFactor">
+      <MemberSignature Language="C#" Value="public double FontScaleFactor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 FontScaleFactor" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The scaling factor on the font height.</summary>
+        <value>a floating point value where 1.0 indicates no scaling.</value>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetHashCode">
+      <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 GetHashCode() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="degrees" Type="System.Double" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Changes the transformation represented by the matrix to be the transformation given by first rotating by degrees degrees counter-clockwise then applying the original transformation.</summary>
-        <param name="degrees"> degrees to rotate counter-clockwise </param>
-        <remarks />
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -215,6 +136,7 @@
     </Member>
     <Member MemberName="Identity">
       <MemberSignature Language="C#" Value="public static Pango.Matrix Identity;" />
+      <MemberSignature Language="ILAsm" Value=".field public static valuetype Pango.Matrix Identity" />
       <MemberType>Field</MemberType>
       <ReturnValue>
         <ReturnType>Pango.Matrix</ReturnType>
@@ -226,24 +148,26 @@
         <remarks>This is the equivalent of PANGO_MATRIX_INIT in C.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static GLib.Value op_Explicit (Pango.Matrix boxed);" />
+    <Member MemberName="New">
+      <MemberSignature Language="C#" Value="public static Pango.Matrix New (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype Pango.Matrix New(native int raw) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.Value</ReturnType>
+        <ReturnType>Pango.Matrix</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="boxed" Type="Pango.Matrix" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="boxed">To be added.</param>
-        <summary>Converts a matrix to a GLib.Value.</summary>
-        <returns>a <see cref="T:GLib.Value" /> containing the matrix.</returns>
-        <remarks>This operator is primarily for internal use.</remarks>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Creates a new Matrix.</summary>
+        <returns>a <see cref="T:Pango.Matrix" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="op_Explicit">
       <MemberSignature Language="C#" Value="public static Pango.Matrix op_Explicit (GLib.Value val);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname valuetype Pango.Matrix op_Explicit(valuetype GLib.Value val) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Pango.Matrix</ReturnType>
@@ -258,21 +182,60 @@
         <remarks>This operator is primarily for internal use.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="FontScaleFactor">
-      <MemberSignature Language="C#" Value="public double FontScaleFactor { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static GLib.Value op_Explicit (Pango.Matrix boxed);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname valuetype GLib.Value op_Explicit(valuetype Pango.Matrix boxed) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
+        <ReturnType>GLib.Value</ReturnType>
       </ReturnValue>
+      <Parameters>
+        <Parameter Name="boxed" Type="Pango.Matrix" />
+      </Parameters>
       <Docs>
-        <summary>The scaling factor on the font height.</summary>
-        <value>a floating point value where 1.0 indicates no scaling.</value>
+        <param name="boxed">To be added.</param>
+        <summary>Converts a matrix to a GLib.Value.</summary>
+        <returns>a <see cref="T:GLib.Value" /> containing the matrix.</returns>
+        <remarks>This operator is primarily for internal use.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Rotate">
+      <MemberSignature Language="C#" Value="public void Rotate (double degrees);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Rotate(float64 degrees) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="degrees" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <param name="degrees"> degrees to rotate counter-clockwise </param>
+        <summary>Changes the transformation represented by the matrix to be the transformation given by first rotating by degrees degrees counter-clockwise then applying the original transformation.</summary>
         <remarks />
-        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="Scale">
+      <MemberSignature Language="C#" Value="public void Scale (double scale_x, double scale_y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Scale(float64 scale_x, float64 scale_y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scale_x" Type="System.Double" />
+        <Parameter Name="scale_y" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <param name="scale_x"> amount to scale by in X direction</param>
+        <param name="scale_y"> amount to scale by in Y direction</param>
+        <summary>Changes the transformation represented by the matrix to be the transformation given by first scaling by sx in the X direction and sy in the Y direction then applying the original transformation.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TransformDistance">
       <MemberSignature Language="C#" Value="public void TransformDistance (ref double dx, ref double dy);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TransformDistance(float64 dx, float64 dy) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -291,6 +254,7 @@
     </Member>
     <Member MemberName="TransformPixelRectangle">
       <MemberSignature Language="C#" Value="public void TransformPixelRectangle (ref Pango.Rectangle rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TransformPixelRectangle(valuetype Pango.Rectangle rect) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -307,6 +271,7 @@
     </Member>
     <Member MemberName="TransformPoint">
       <MemberSignature Language="C#" Value="public void TransformPoint (ref double x, ref double y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TransformPoint(float64 x, float64 y) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -325,6 +290,7 @@
     </Member>
     <Member MemberName="TransformRectangle">
       <MemberSignature Language="C#" Value="public void TransformRectangle (ref Pango.Rectangle rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TransformRectangle(valuetype Pango.Rectangle rect) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -337,6 +303,122 @@
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="Translate">
+      <MemberSignature Language="C#" Value="public void Translate (double tx, double ty);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Translate(float64 tx, float64 ty) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tx" Type="System.Double" />
+        <Parameter Name="ty" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <param name="tx"> amount to translate in the X direction</param>
+        <param name="ty"> amount to translate in the Y direction</param>
+        <summary>Changes the transformation represented by the matrix to be the transformation given by first translating by (tx, ty) then applying the original transformation.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="X0">
+      <MemberSignature Language="C#" Value="public double X0;" />
+      <MemberSignature Language="ILAsm" Value=".field public float64 X0" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary> x translation</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Xx">
+      <MemberSignature Language="C#" Value="public double Xx;" />
+      <MemberSignature Language="ILAsm" Value=".field public float64 Xx" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary> 1st component of the transformation matrix</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Xy">
+      <MemberSignature Language="C#" Value="public double Xy;" />
+      <MemberSignature Language="ILAsm" Value=".field public float64 Xy" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary> 2nd component of the transformation matrix </summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Y0">
+      <MemberSignature Language="C#" Value="public double Y0;" />
+      <MemberSignature Language="ILAsm" Value=".field public float64 Y0" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary> y translation</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Yx">
+      <MemberSignature Language="C#" Value="public double Yx;" />
+      <MemberSignature Language="ILAsm" Value=".field public float64 Yx" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary> 3rd component of the transformation matrix</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Yy">
+      <MemberSignature Language="C#" Value="public double Yy;" />
+      <MemberSignature Language="ILAsm" Value=".field public float64 Yy" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary> 4th component of the transformation matrix</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Zero">
+      <MemberSignature Language="C#" Value="public static Pango.Matrix Zero;" />
+      <MemberSignature Language="ILAsm" Value=".field public static valuetype Pango.Matrix Zero" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Matrix</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>An empty Pango.Matrix.</summary>
+        <remarks />
       </Docs>
     </Member>
   </Members>

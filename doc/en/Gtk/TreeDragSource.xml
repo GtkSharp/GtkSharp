@@ -1,24 +1,44 @@
 <Type Name="TreeDragSource" FullName="Gtk.TreeDragSource">
   <TypeSignature Language="C#" Maintainer="auto" Value="public interface TreeDragSource : GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract TreeDragSource implements class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>An interface to represent the rows of a tree when one of them is dragged to another location.</summary>
-    <remarks />
-  </Docs>
   <Interfaces>
     <Interface>
       <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
   </Interfaces>
+  <Docs>
+    <summary>An interface to represent the rows of a tree when one of them is dragged to another location.</summary>
+    <remarks />
+  </Docs>
   <Members>
+    <Member MemberName="DragDataDelete">
+      <MemberSignature Language="C#" Value="public bool DragDataDelete (Gtk.TreePath path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool DragDataDelete(class Gtk.TreePath path) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+      </Parameters>
+      <Docs>
+        <param name="path">a <see cref="M:Gtk.TreePath" /> to delete</param>
+        <summary>
+	  Asks the TreeDragSource to delete the row at path, because it was moved somewhere else via drag-and-drop. Returns FALSE if the deletion fails because path no longer exists, or for some model-specific reason. Should robustly handle a path no longer found in the model.
+</summary>
+        <returns>A boolean for whether the deletion succeeded.</returns>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="DragDataGet">
       <MemberSignature Language="C#" Value="public bool DragDataGet (Gtk.TreePath path, Gtk.SelectionData selection_data);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool DragDataGet(class Gtk.TreePath path, class Gtk.SelectionData selection_data) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -28,15 +48,16 @@
         <Parameter Name="selection_data" Type="Gtk.SelectionData" />
       </Parameters>
       <Docs>
-        <summary>Asks the <see cref="M:Gtk.TreeDragSource" /> to fill in <paramref name="selection_data" /> with a representation of the row at <paramref name="path" />.  Should robustly handle a path no longer found in the model.</summary>
         <param name="path">a <see cref="M:Gtk.TreePath" /></param>
         <param name="selection_data">a <see cref="M:Gtk.SelectionData" /> object to fill with data</param>
+        <summary>Asks the <see cref="M:Gtk.TreeDragSource" /> to fill in <paramref name="selection_data" /> with a representation of the row at <paramref name="path" />.  Should robustly handle a path no longer found in the model.</summary>
         <returns>A boolean; true if data of the required type was provided.</returns>
         <remarks>FIXME: the original doc says, "selection_data-&gt;target gives the required type of the data.", but there doesn't seem to be a parallel in Gtk#. Check this.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RowDraggable">
       <MemberSignature Language="C#" Value="public bool RowDraggable (Gtk.TreePath path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool RowDraggable(class Gtk.TreePath path) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -45,27 +66,9 @@
         <Parameter Name="path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>Check whether the row at <paramref name="path" /> is draggable. If the source doesn't implement this method, the row is assumed to be draggable.</summary>
         <param name="path">a <see cref="M:Gtk.TreePath" /></param>
+        <summary>Check whether the row at <paramref name="path" /> is draggable. If the source doesn't implement this method, the row is assumed to be draggable.</summary>
         <returns>A boolean, true if this row can be dragged.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="DragDataDelete">
-      <MemberSignature Language="C#" Value="public bool DragDataDelete (Gtk.TreePath path);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Asks the TreeDragSource to delete the row at path, because it was moved somewhere else via drag-and-drop. Returns FALSE if the deletion fails because path no longer exists, or for some model-specific reason. Should robustly handle a path no longer found in the model.
-</summary>
-        <param name="path">a <see cref="M:Gtk.TreePath" /> to delete</param>
-        <returns>A boolean for whether the deletion succeeded.</returns>
         <remarks />
       </Docs>
     </Member>

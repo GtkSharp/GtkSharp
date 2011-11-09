@@ -1,5 +1,6 @@
 <Type Name="MemoryOutputStream" FullName="GLib.MemoryOutputStream">
   <TypeSignature Language="C#" Value="public class MemoryOutputStream : GLib.OutputStream, GLib.Seekable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit MemoryOutputStream extends GLib.OutputStream implements class GLib.IWrapper, class GLib.Seekable" />
   <AssemblyInfo>
     <AssemblyName>gio-sharp</AssemblyName>
   </AssemblyInfo>
@@ -18,25 +19,8 @@
   </Docs>
   <Members>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected MemoryOutputStream (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <param name="gtype">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.14" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public MemoryOutputStream (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
         <Parameter Name="raw" Type="System.IntPtr" />
@@ -49,19 +33,20 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public MemoryOutputStream (IntPtr data, ulong len, GLib.ReallocFunc realloc_fn, GLib.DestroyNotify destroy);" />
+      <MemberSignature Language="C#" Value="public MemoryOutputStream (IntPtr data, ulong size, GLib.ReallocFunc realloc_function, GLib.DestroyNotify destroy_function);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int data, unsigned int64 size, class GLib.ReallocFunc realloc_function, class GLib.DestroyNotify destroy_function) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
         <Parameter Name="data" Type="System.IntPtr" />
-        <Parameter Name="len" Type="System.UInt64" />
-        <Parameter Name="realloc_fn" Type="GLib.ReallocFunc" />
-        <Parameter Name="destroy" Type="GLib.DestroyNotify" />
+        <Parameter Name="size" Type="System.UInt64" />
+        <Parameter Name="realloc_function" Type="GLib.ReallocFunc" />
+        <Parameter Name="destroy_function" Type="GLib.DestroyNotify" />
       </Parameters>
       <Docs>
         <param name="data">To be added.</param>
-        <param name="len">To be added.</param>
-        <param name="realloc_fn">To be added.</param>
-        <param name="destroy">To be added.</param>
+        <param name="size">To be added.</param>
+        <param name="realloc_function">To be added.</param>
+        <param name="destroy_function">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
@@ -69,6 +54,7 @@
     </Member>
     <Member MemberName="CanSeek">
       <MemberSignature Language="C#" Value="public bool CanSeek { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanSeek" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -82,6 +68,7 @@
     </Member>
     <Member MemberName="CanTruncate">
       <MemberSignature Language="C#" Value="public bool CanTruncate ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanTruncate() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -96,7 +83,13 @@
     </Member>
     <Member MemberName="Data">
       <MemberSignature Language="C#" Value="public IntPtr Data { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Data" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("data")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
@@ -109,7 +102,13 @@
     </Member>
     <Member MemberName="DataSize">
       <MemberSignature Language="C#" Value="public ulong DataSize { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int64 DataSize" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("data-size")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.UInt64</ReturnType>
       </ReturnValue>
@@ -120,8 +119,28 @@
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
+    <Member MemberName="DestroyFunction">
+      <MemberSignature Language="C#" Value="public IntPtr DestroyFunction { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int DestroyFunction" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("destroy-function")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -135,6 +154,7 @@
     </Member>
     <Member MemberName="Position">
       <MemberSignature Language="C#" Value="public long Position { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 Position" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int64</ReturnType>
@@ -146,8 +166,28 @@
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
+    <Member MemberName="ReallocFunction">
+      <MemberSignature Language="C#" Value="public IntPtr ReallocFunction { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ReallocFunction" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("realloc-function")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="Seek">
       <MemberSignature Language="C#" Value="public bool Seek (long offset, GLib.SeekType type, GLib.Cancellable cancellable);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Seek(int64 offset, valuetype GLib.SeekType type, class GLib.Cancellable cancellable) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -169,7 +209,13 @@
     </Member>
     <Member MemberName="Size">
       <MemberSignature Language="C#" Value="public ulong Size { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int64 Size" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("size")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.UInt64</ReturnType>
       </ReturnValue>
@@ -180,8 +226,24 @@
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
+    <Member MemberName="StealData">
+      <MemberSignature Language="C#" Value="public IntPtr StealData ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance native int StealData() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="Truncate">
       <MemberSignature Language="C#" Value="public bool Truncate (long offset, GLib.Cancellable cancellable);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Truncate(int64 offset, class GLib.Cancellable cancellable) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>

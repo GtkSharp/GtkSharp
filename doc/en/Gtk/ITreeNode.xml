@@ -1,12 +1,13 @@
 <Type Name="ITreeNode" FullName="Gtk.ITreeNode">
   <TypeSignature Language="C#" Maintainer="Mike Kestner" Value="public interface ITreeNode" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract ITreeNode" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Interfaces />
   <Docs>
     <summary>Tree Node navigation and update notification interface</summary>
     <remarks>
@@ -14,35 +15,63 @@
       Types which implement this interface can be used to instantiate a
       <see cref="T:Gtk.NodeStore" /> for a <see cref="T:Gtk.TreeView" /></remarks>
   </Docs>
-  <Interfaces />
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
   <Members>
-    <Member MemberName="IndexOf">
-      <MemberSignature Language="C#" Value="public int IndexOf (object o);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Changed">
+      <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Changed" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Changed event</summary>
+        <remarks>Emited when the tree-related contents of the node have changed.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChildAdded">
+      <MemberSignature Language="C#" Value="public event Gtk.TreeNodeAddedHandler ChildAdded;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.TreeNodeAddedHandler ChildAdded" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreeNodeAddedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>ChildAdded event</summary>
+        <remarks>Emited when a child <see cref="T:Gtk.ITreeNode" /> is added to the <see cref="T:Gtk.ITreeNode" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChildCount">
+      <MemberSignature Language="C#" Value="public int ChildCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 ChildCount" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="o" Type="System.Object" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>IndexOf method</summary>
-        <param name="o">a <see cref="T:System.Object" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>
-          Returns the position of the specified child object in the
-          list of children. If the child is not found, the returned
-          value should be less than 0, typically -1.
-	</remarks>
+        <summary>ChildCount property</summary>
+        <value>a <see cref="T:System.Int32" /></value>
+        <remarks>Read-only.  Indicates the number of children of this <see cref="T:Gtk.ITreeNode" /></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChildRemoved">
+      <MemberSignature Language="C#" Value="public event Gtk.TreeNodeRemovedHandler ChildRemoved;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.TreeNodeRemovedHandler ChildRemoved" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreeNodeRemovedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>ChildRemoved event</summary>
+        <remarks>Emited when a child <see cref="T:Gtk.ITreeNode" /> is removed from the <see cref="T:Gtk.ITreeNode" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ID">
-      <MemberSignature Language="C#" Value="public int ID { get; };" />
+      <MemberSignature Language="C#" Value="public int ID { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 ID" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -58,21 +87,30 @@
 	</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ChildCount">
-      <MemberSignature Language="C#" Value="public int ChildCount { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="IndexOf">
+      <MemberSignature Language="C#" Value="public int IndexOf (object o);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 IndexOf(object o) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="o" Type="System.Object" />
+      </Parameters>
       <Docs>
-        <summary>ChildCount property</summary>
-        <value>a <see cref="T:System.Int32" /></value>
-        <remarks>Read-only.  Indicates the number of children of this <see cref="T:Gtk.ITreeNode" /></remarks>
+        <param name="o">a <see cref="T:System.Object" /></param>
+        <summary>IndexOf method</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks>
+          Returns the position of the specified child object in the
+          list of children. If the child is not found, the returned
+          value should be less than 0, typically -1.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public Gtk.ITreeNode this[int index] { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.ITreeNode this[int index] { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.ITreeNode Item(int32)" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.ITreeNode</ReturnType>
@@ -81,52 +119,17 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Child indexer</summary>
         <param name="index">a <see cref="T:System.Int32" /></param>
+        <summary>Child indexer</summary>
         <value>a <see cref="T:Gtk.ITreeNode" /></value>
         <remarks>
           Returns the child at position <paramref name="index" /> in the list of children 
           of this <see cref="T:Gtk.ITreeNode" /></remarks>
       </Docs>
     </Member>
-    <Member MemberName="Changed">
-      <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Changed event</summary>
-        <remarks>Emited when the tree-related contents of the node have changed.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ChildAdded">
-      <MemberSignature Language="C#" Value="public event Gtk.TreeNodeAddedHandler ChildAdded;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TreeNodeAddedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>ChildAdded event</summary>
-        <remarks>Emited when a child <see cref="T:Gtk.ITreeNode" /> is added to the <see cref="T:Gtk.ITreeNode" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ChildRemoved">
-      <MemberSignature Language="C#" Value="public event Gtk.TreeNodeRemovedHandler ChildRemoved;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TreeNodeRemovedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>ChildRemoved event</summary>
-        <remarks>Emited when a child <see cref="T:Gtk.ITreeNode" /> is removed from the <see cref="T:Gtk.ITreeNode" />.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Parent">
-      <MemberSignature Language="C#" Value="public Gtk.ITreeNode Parent { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.ITreeNode Parent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.ITreeNode Parent" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.ITreeNode</ReturnType>

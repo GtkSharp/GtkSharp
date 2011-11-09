@@ -1,12 +1,23 @@
 <Type Name="Entry" FullName="Gtk.Entry">
   <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Entry : Gtk.Widget, Gtk.CellEditable, Gtk.Editable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Entry extends Gtk.Widget implements class GLib.IWrapper, class Gtk.CellEditable, class Gtk.Editable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Widget</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Gtk.CellEditable</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>Gtk.Editable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>An Entry is a single-line text entry widget.</summary>
     <remarks>
@@ -71,217 +82,10 @@ class EntrySample
       </example>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Widget</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>Gtk.CellEditable</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>Gtk.Editable</InterfaceName>
-    </Interface>
-  </Interfaces>
   <Members>
-    <Member MemberName="InsertText">
-      <MemberSignature Language="C#" Value="public int InsertText (string new_text);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="new_text" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Add arbitrary text to the entry.</summary>
-        <param name="new_text">the text to add</param>
-        <returns>
-          <para>The number of characters added.</para>
-        </returns>
-        <remarks>
-          <para>Use this method to insert a string at the current CursorPosition.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="StartEditing">
-      <MemberSignature Language="C#" Value="public void StartEditing (Gdk.Event evnt);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-      </Parameters>
-      <Docs>
-        <summary>Specific implementation of Gtk.CellEditable.StartEditing for the Entry widget.</summary>
-        <param name="evnt" />
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="FinishEditing">
-      <MemberSignature Language="C#" Value="public void FinishEditing ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Specific implementation of Gtk.CellEditable.FinishEditing for the Entry widget.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveWidget">
-      <MemberSignature Language="C#" Value="public void RemoveWidget ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Specific implementation of Gtk.CellEditable.RemoveWidget for the Entry widget.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SelectRegion">
-      <MemberSignature Language="C#" Value="public void SelectRegion (int start, int end);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="start" Type="System.Int32" />
-        <Parameter Name="end" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Specific implementation of Gtk.Editable.SelectRegion for the Entry widget.</summary>
-        <param name="start" />
-        <param name="end" />
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetChars">
-      <MemberSignature Language="C#" Value="public string GetChars (int start_pos, int end_pos);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="start_pos" Type="System.Int32" />
-        <Parameter Name="end_pos" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Specific implementation of Gtk.Editable.GetChars for the Entry widget.</summary>
-        <param name="start_pos">The index of the first character to get, (zero-indexed).</param>
-        <param name="end_pos">The index of the character to retrieve up to.</param>
-        <returns>
-          <para>A string representing the characters from <paramref name="start_pos" />, up to, but not including <paramref name="end_pos" />. If <paramref name="end_pos" /> is negative, then the the characters retrieved will be those characters from <paramref name="start_pos" /> to the end of the text.</para>
-        </returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="DeleteText">
-      <MemberSignature Language="C#" Value="public void DeleteText (int start_pos, int end_pos);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="start_pos" Type="System.Int32" />
-        <Parameter Name="end_pos" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Specific implementation of Gtk.Editable.DeleteText for the Entry widget.</summary>
-        <param name="start_pos" />
-        <param name="end_pos" />
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="CopyClipboard">
-      <MemberSignature Language="C#" Value="public void CopyClipboard ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Specific implementation of Gtk.Editable.CopyClipboard for the Entry widget.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="DeleteSelection">
-      <MemberSignature Language="C#" Value="public void DeleteSelection ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Specific implementation of Gtk.Editable.DeleteSelection for the Entry widget. Deletes the currently selected text from the Entry.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetSelectionBounds">
-      <MemberSignature Language="C#" Value="public bool GetSelectionBounds (out int start, out int end);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="start" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="end" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Get the the positions of the start and end of the current selection, if there is one.</summary>
-        <param name="start">output variable for the character index of the selection start</param>
-        <param name="end">output variable for the character index of the end of the selection</param>
-        <returns>
-          <para>
-            <see langword="true" /> if there is a selection, <see cref="langword:false" /> otherwise.</para>
-        </returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="CutClipboard">
-      <MemberSignature Language="C#" Value="public void CutClipboard ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Copies any selected text to the clipboard and deletes it from the entry.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="PasteClipboard">
-      <MemberSignature Language="C#" Value="public void PasteClipboard ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Causes the contents of the clipboard to be pasted into the Entry at the current cursor position.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Entry (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Entry ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters />
@@ -290,230 +94,79 @@ class EntrySample
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="IsEditable">
-      <MemberSignature Language="C#" Value="public bool IsEditable { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Entry (Gtk.EntryBuffer buffer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Gtk.EntryBuffer buffer) cil managed" />
+      <MemberType>Constructor</MemberType>
       <Parameters>
+        <Parameter Name="buffer" Type="Gtk.EntryBuffer" />
       </Parameters>
       <Docs>
-        <summary>Implements the concrete version of Gtk.Editable.IsEditable, to determine if the text of the Entry can be edited.</summary>
-        <value>
-          <para>true if the Entry is editable, false otherwise.</para>
-        </value>
+        <param name="buffer">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Entry (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Entry (string initialText);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string initialText) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="initialText" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="initialText">A <see cref="System.String" /></param>
+        <summary>Public constructor.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Position">
-      <MemberSignature Language="C#" Value="public int Position { set; get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="Activated">
+      <MemberSignature Language="C#" Value="public event EventHandler Activated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Activated" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("activate")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>The position of the cursor.</summary>
-        <value>
-          <para>the current cursor position</para>
-        </value>
+        <summary>Connect to this event to be notified when the user hits 'return'.</summary>
         <remarks>
-          <para>The cursor is displayed before the character with the given (base 0) index in the widget. The value must be less than or equal to the number of characters in the widget. A value of -1 indicates that the position should be set after the last character in the entry. Note that this position is in characters, not in bytes. </para>
+          <para>Connect to this event with a standard <see cref="T:System.EventHandler" />.</para>
         </remarks>
       </Docs>
-    </Member>
-    <Member MemberName="Layout">
-      <MemberSignature Language="C#" Value="public Pango.Layout Layout { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Layout</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Get the object used by this Entry for text layout.</summary>
-        <value>
-          <para>The Pango.Layout used to render the text of this entry.</para>
-        </value>
-        <remarks>
-          <para>This property is read only.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Visibility">
-      <MemberSignature Language="C#" Value="public bool Visibility { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Determine whether to display characters entered, or whether to mask them.</summary>
-        <value>
-          <para>true if characters are being displayed, false if they are being masked.</para>
-        </value>
-        <remarks>
-          <para>This property should be used to create entry widgets for sensitive data such as passwords.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("visibility")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="MaxLength">
-      <MemberSignature Language="C#" Value="public int MaxLength { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The maximum number of characters that can be placed in this Entry.</summary>
-        <value>
-          <para>The maximum number of characters that can currently be set in this Entry.</para>
-        </value>
-        <remarks>
-          <para>This property can be useful for ensuring no more than a specific number of characters are put in an entry.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("max-length")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="CursorPosition">
-      <MemberSignature Language="C#" Value="public int CursorPosition { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The position of the cursor in the text of the Entry.</summary>
-        <value>
-          <para>The current character of the cursor.</para>
-        </value>
-        <remarks>
-          <para>Use this property to manipulate the position of the cursor - it is displayed before the character with the given (base 0) index in the widget. The value must be less than or equal to the number of characters in the widget. A value of -1 indicates that the position should be set after the last character in the entry. Note that this position is in characters, not in bytes.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("cursor-position")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SelectionBound">
-      <MemberSignature Language="C#" Value="public int SelectionBound { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The length of the selected text.</summary>
-        <value>
-          <para>The number of selected characters.</para>
-        </value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("selection-bound")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Text">
-      <MemberSignature Language="C#" Value="public string Text { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Manipulate the current text contents of an Entry.</summary>
-        <value>
-          <para>The current text in an Entry.</para>
-        </value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("text")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ScrollOffset">
-      <MemberSignature Language="C#" Value="public int ScrollOffset { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Number of pixels the entry scrolled off the screen to the left.</summary>
-        <value>A <see cref="T:System.Int32" /></value>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("scroll-offset")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="WidthChars">
-      <MemberSignature Language="C#" Value="public int WidthChars { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Changes the size request of the entry to be about the right size for <paramref name="n_chars" /> characters.</summary>
-        <value>
-          <para>The number of characters requested.</para>
-        </value>
-        <remarks>
-          <para>Note that it changes the size request, the size can still be affected by how you pack the widget into containers. If n_chars is -1, the size reverts to the default entry size.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("width-chars")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Editable">
-      <MemberSignature Language="C#" Value="public bool Editable { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Whether or not this Entry is editable.</summary>
-        <value>
-          <para>
-            <see langword="true" /> if this entry can be edited, <see langword="false" /> otherwise.</para>
-        </value>
-        <remarks>
-          <para>Set this property to false if you need to stop input into an Entry widget. For displaying textual data, it is more normal to use a <see cref="T:Gtk.Label" /> instead.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("Replaced by IsEditable property")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="ActivatesDefault">
-      <MemberSignature Language="C#" Value="public bool ActivatesDefault { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool ActivatesDefault { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ActivatesDefault" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("activates-default")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -531,589 +184,10 @@ class EntrySample
   (For experts: if the value is <see langword="true" />, the entry calls <see cref="M:Gtk.Window.ActivateDefault" /> on the <see cref="T:Gtk.Window" /> containing the entry, in the default handler for the <see cref="E:Gtk.Window.Activated" /> event).</para>
         </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("activates-default")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="HasFrame">
-      <MemberSignature Language="C#" Value="public bool HasFrame { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Whether or not this Entry should be surrounded by a 3D frame.</summary>
-        <value>
-          <see langword="true" /> if a frame surrounds this Entry, <see langword="false" /> otherwise</value>
-        <remarks>
-          <para>Unless there is a very specific reason for doing so, this property is best left to its default to ensure consistency in Entry widgets across applications.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("has-frame")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="WidgetRemoved">
-      <MemberSignature Language="C#" Value="public event EventHandler WidgetRemoved;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Implements the WidgetRemoved method of the <see cref="T:Gtk.CellEditable" /> interface. This will effectively destroy the Entry.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("remove_widget")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="EditingDone">
-      <MemberSignature Language="C#" Value="public event EventHandler EditingDone;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Implements the EditingDone method of the <see cref="T:Gtk.CellEditable" /> interface.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("editing_done")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="TextInserted">
-      <MemberSignature Language="C#" Value="public event Gtk.TextInsertedHandler TextInserted;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextInsertedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event to be notified when text is inserted into the Entry.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("insert_text")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="TextDeleted">
-      <MemberSignature Language="C#" Value="public event Gtk.TextDeletedHandler TextDeleted;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextDeletedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event to be notified when text is deleted from the Entry.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("delete_text")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Changed">
-      <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>When the contents of the Entry change, this event is raised.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("changed")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="MoveCursor">
-      <MemberSignature Language="C#" Value="public event Gtk.MoveCursorHandler MoveCursor;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.MoveCursorHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event handler to be notified when the cursor of an Entry moves.</summary>
-        <remarks>Data pertaining to this event is passed with a <see cref="T:Gtk.MoveCursorHandler" />.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("move_cursor")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ClipboardCut">
-      <MemberSignature Language="C#" Value="public event EventHandler ClipboardCut;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event to be notified when the user 'cuts' a selection in the Entry.</summary>
-        <remarks>Connect to this event with a standard <see cref="T:System.EventHandler" />.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("cut_clipboard")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Activated">
-      <MemberSignature Language="C#" Value="public event EventHandler Activated;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event to be notified when the user hits 'return'.</summary>
-        <remarks>
-          <para>Connect to this event with a standard <see cref="T:System.EventHandler" />.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("activate")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="DeleteFromCursor">
-      <MemberSignature Language="C#" Value="public event Gtk.DeleteFromCursorHandler DeleteFromCursor;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.DeleteFromCursorHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event to find out when text is deleted from the Entry by the user.</summary>
-        <remarks>
-          <para>Data pertaining to this event is encapsulated in a <see cref="T:Gtk.DeleteFromCursorHandler" />.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("delete_from_cursor")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ClipboardPasted">
-      <MemberSignature Language="C#" Value="public event EventHandler ClipboardPasted;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event to be notified when the clipboard contents are pasted into this Entry.</summary>
-        <remarks>
-          <para>Connect to this event with a standard <see cref="T:System.EventHandler" />.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("paste_clipboard")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ClipboardCopied">
-      <MemberSignature Language="C#" Value="public event EventHandler ClipboardCopied;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event to be notified when the contents of the Entry are copied to the clipboard.</summary>
-        <remarks>
-          <para>Connect to this event with a standard <see cref="T:System.EventHandler" />.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("copy_clipboard")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="PopulatePopup">
-      <MemberSignature Language="C#" Value="public event Gtk.PopulatePopupHandler PopulatePopup;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.PopulatePopupHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when the popup handler needs to be filled with data.</summary>
-        <remarks>
-          <para>Data pertaining to this event is encapsulated in a <see cref="T:Gtk.PopulatePopupArgs" />.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("populate_popup")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ToggleOverwrite">
-      <MemberSignature Language="C#" Value="public event EventHandler ToggleOverwrite;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event to discover when the Overwrite state has been changed by the user. This is usually done by pressing the 'Insert' key on a keyboard.</summary>
-        <remarks>
-          <para>Connect to this event with a standard <see cref="T:System.EventHandler" />.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("toggle_overwrite")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="InsertAtCursor">
-      <MemberSignature Language="C#" Value="public event Gtk.InsertAtCursorHandler InsertAtCursor;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.InsertAtCursorHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Connect to this event to discover when text is inserted at the cursor position - usually when the user types something in.</summary>
-        <remarks>
-          <para>Data pertaining to this event is encapsulated in an <see cref="T:Gtk.InsertAtCursorHandler" />.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("insert_at_cursor")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="InsertText">
-      <MemberSignature Language="C#" Value="public void InsertText (string new_text, ref int position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="new_text" Type="System.String" />
-        <Parameter Name="position" Type="System.Int32&amp;" RefType="ref" />
-      </Parameters>
-      <Docs>
-        <summary>Add text <paramref name="new_text" /> to the entry just before <paramref name="position" />.</summary>
-        <param name="new_text">A <see cref="System.String" /></param>
-        <param name="position">A <see cref="System.Int32&amp;" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Entry (string initialText);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="initialText" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Public constructor.</summary>
-        <param name="initialText">A <see cref="System.String" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetLayoutOffsets">
-      <MemberSignature Language="C#" Value="public void GetLayoutOffsets (out int x, out int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Obtains the position of the PangoLayout used to render text in the entry, in widget coordinates.</summary>
-        <param name="x">X offset output of the layout.</param>
-        <param name="y">Y offset output of the layout.</param>
-        <remarks>
-          <para>Useful if you want to line up the text in an entry with some other text, e.g. when using the entry to implement editable cells in a sheet widget.</para>
--          <para>Also useful to convert mouse events into coordinates inside the PangoLayout, e.g. to take some action if some part of the entry text is clicked.</para></remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Entry" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnInsertAtCursor">
-      <MemberSignature Language="C#" Value="protected virtual void OnInsertAtCursor (string str);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="str" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.InsertAtCursor" /> event.</summary>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.InsertAtCursor" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnToggleOverwrite">
-      <MemberSignature Language="C#" Value="protected virtual void OnToggleOverwrite ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.ToggleOverwrite" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.ToggleOverwrite" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnPopulatePopup">
-      <MemberSignature Language="C#" Value="protected virtual void OnPopulatePopup (Gtk.Menu menu);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="menu" Type="Gtk.Menu" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.PopulatePopup" /> event.</summary>
-        <param name="menu">a <see cref="T:Gtk.Menu" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.PopulatePopup" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnClipboardCopied">
-      <MemberSignature Language="C#" Value="protected virtual void OnClipboardCopied ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.ClipboardCopied" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.ClipboardCopied" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnClipboardPasted">
-      <MemberSignature Language="C#" Value="protected virtual void OnClipboardPasted ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.ClipboardPasted" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.ClipboardPasted" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnDeleteFromCursor">
-      <MemberSignature Language="C#" Value="protected virtual void OnDeleteFromCursor (Gtk.DeleteType type, int count);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="Gtk.DeleteType" />
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.DeleteFromCursor" /> event.</summary>
-        <param name="type">a <see cref="T:Gtk.DeleteType" /></param>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.DeleteFromCursor" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnActivated">
-      <MemberSignature Language="C#" Value="protected virtual void OnActivated ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.Activated" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.Activated" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnClipboardCut">
-      <MemberSignature Language="C#" Value="protected virtual void OnClipboardCut ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.ClipboardCut" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.ClipboardCut" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnMoveCursor">
-      <MemberSignature Language="C#" Value="protected virtual void OnMoveCursor (Gtk.MovementStep step, int count, bool extend_selection);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="step" Type="Gtk.MovementStep" />
-        <Parameter Name="count" Type="System.Int32" />
-        <Parameter Name="extend_selection" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.MoveCursor" /> event.</summary>
-        <param name="step">a <see cref="T:Gtk.MovementStep" /></param>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <param name="extend_selection">a <see cref="T:System.Boolean" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.MoveCursor" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnChanged">
-      <MemberSignature Language="C#" Value="protected virtual void OnChanged ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.Changed" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.Changed" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnTextDeleted">
-      <MemberSignature Language="C#" Value="protected virtual void OnTextDeleted (int start_pos, int end_pos);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="start_pos" Type="System.Int32" />
-        <Parameter Name="end_pos" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.TextDeleted" /> event.</summary>
-        <param name="start_pos">a <see cref="T:System.Int32" /></param>
-        <param name="end_pos">a <see cref="T:System.Int32" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.TextDeleted" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnTextInserted">
-      <MemberSignature Language="C#" Value="protected virtual void OnTextInserted (string text, ref int position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String" />
-        <Parameter Name="position" Type="System.Int32&amp;" RefType="ref" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.TextInserted" /> event.</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <param name="position">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.TextInserted" /> event.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="OnEditingDone">
-      <MemberSignature Language="C#" Value="protected virtual void OnEditingDone ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.EditingDone" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.EditingDone" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnWidgetRemoved">
-      <MemberSignature Language="C#" Value="protected virtual void OnWidgetRemoved ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Entry.WidgetRemoved" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.WidgetRemoved" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Entry (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Xalign">
-      <MemberSignature Language="C#" Value="public float Xalign { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Single</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The horizontal alignment, from 0 (left) to 1 (right).</summary>
-        <value>a <see cref="T:System.Single" /></value>
-        <remarks>Reversed for RTL layouts.
-<para>
-Allowed values: [0,1]
-</para><para>
-Default value: 0
-</para></remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("xalign")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="Alignment">
-      <MemberSignature Language="C#" Value="public float Alignment { set; get; };" />
+      <MemberSignature Language="C#" Value="public float Alignment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Alignment" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Single</ReturnType>
@@ -1129,8 +203,142 @@ The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
+    <Member MemberName="Backspace">
+      <MemberSignature Language="C#" Value="public event EventHandler Backspace;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Backspace" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("backspace")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="Buffer">
+      <MemberSignature Language="C#" Value="public Gtk.EntryBuffer Buffer { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.EntryBuffer Buffer" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("buffer")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.EntryBuffer</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="CapsLockWarning">
+      <MemberSignature Language="C#" Value="public bool CapsLockWarning { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CapsLockWarning" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("caps-lock-warning")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Changed">
+      <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Changed" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>When the contents of the Entry change, this event is raised.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ClipboardCopied">
+      <MemberSignature Language="C#" Value="public event EventHandler ClipboardCopied;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ClipboardCopied" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("copy-clipboard")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Connect to this event to be notified when the contents of the Entry are copied to the clipboard.</summary>
+        <remarks>
+          <para>Connect to this event with a standard <see cref="T:System.EventHandler" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClipboardCut">
+      <MemberSignature Language="C#" Value="public event EventHandler ClipboardCut;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ClipboardCut" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("cut-clipboard")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Connect to this event to be notified when the user 'cuts' a selection in the Entry.</summary>
+        <remarks>Connect to this event with a standard <see cref="T:System.EventHandler" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClipboardPasted">
+      <MemberSignature Language="C#" Value="public event EventHandler ClipboardPasted;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ClipboardPasted" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("paste-clipboard")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Connect to this event to be notified when the clipboard contents are pasted into this Entry.</summary>
+        <remarks>
+          <para>Connect to this event with a standard <see cref="T:System.EventHandler" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Completion">
-      <MemberSignature Language="C#" Value="public Gtk.EntryCompletion Completion { set; get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.EntryCompletion Completion { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.EntryCompletion Completion" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.EntryCompletion</ReturnType>
@@ -1143,60 +351,667 @@ The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="PrependText">
-      <MemberSignature Language="C#" Value="public void PrependText (string text);" />
+    <Member MemberName="CopyClipboard">
+      <MemberSignature Language="C#" Value="public void CopyClipboard ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CopyClipboard() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Prepends the given text to the contents of the widget.</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
+        <summary>Specific implementation of Gtk.Editable.CopyClipboard for the Entry widget.</summary>
         <remarks />
-        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="AppendText">
-      <MemberSignature Language="C#" Value="public void AppendText (string text);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="CurrentIconDragSource">
+      <MemberSignature Language="C#" Value="public int CurrentIconDragSource { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CurrentIconDragSource" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String" />
-      </Parameters>
       <Docs>
-        <summary>Appends the given text to the contents of the widget.</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <remarks />
-        <since version="Gtk# 2.4" />
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Entry (int max);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="max" Type="System.Int32" />
-      </Parameters>
+    <Member MemberName="CursorHadjustment">
+      <MemberSignature Language="C#" Value="public Gtk.Adjustment CursorHadjustment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Adjustment CursorHadjustment" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Adjustment</ReturnType>
+      </ReturnValue>
       <Docs>
-        <summary>Creates a new <see cref="T:Gtk.Entry" /> with the given maximum length.</summary>
-        <param name="max">a <see cref="T:System.Int32" />, the maximum length of the entry, or 0 for no maximum.</param>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="CursorPosition">
+      <MemberSignature Language="C#" Value="public int CursorPosition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CursorPosition" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("cursor-position")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The position of the cursor in the text of the Entry.</summary>
+        <value>
+          <para>The current character of the cursor.</para>
+        </value>
         <remarks>
-          <block subset="none" type="note">
-            <para>the existence of this function is inconsistent with the rest of the Gtk API. The normal setup would be to just require the user to make an extra call to <see cref="P:Gtk.Entry.MaxLength" /> instead. It is not expected that this function will be removed, but it would be better practice not to use it.
-  </para>
-          </block>
+          <para>Use this property to manipulate the position of the cursor - it is displayed before the character with the given (base 0) index in the widget. The value must be less than or equal to the number of characters in the widget. A value of -1 indicates that the position should be set after the last character in the entry. Note that this position is in characters, not in bytes.</para>
         </remarks>
-        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="CutClipboard">
+      <MemberSignature Language="C#" Value="public void CutClipboard ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CutClipboard() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Copies any selected text to the clipboard and deletes it from the entry.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteFromCursor">
+      <MemberSignature Language="C#" Value="public event Gtk.DeleteFromCursorHandler DeleteFromCursor;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.DeleteFromCursorHandler DeleteFromCursor" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("delete-from-cursor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.DeleteFromCursorHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Connect to this event to find out when text is deleted from the Entry by the user.</summary>
+        <remarks>
+          <para>Data pertaining to this event is encapsulated in a <see cref="T:Gtk.DeleteFromCursorHandler" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteSelection">
+      <MemberSignature Language="C#" Value="public void DeleteSelection ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DeleteSelection() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Specific implementation of Gtk.Editable.DeleteSelection for the Entry widget. Deletes the currently selected text from the Entry.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteText">
+      <MemberSignature Language="C#" Value="public void DeleteText (int start_pos, int end_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DeleteText(int32 start_pos, int32 end_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_pos" Type="System.Int32" />
+        <Parameter Name="end_pos" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="start_pos" />
+        <param name="end_pos" />
+        <summary>Specific implementation of Gtk.Editable.DeleteText for the Entry widget.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Editable">
+      <MemberSignature Language="C#" Value="public bool Editable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Editable" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by IsEditable property")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Whether or not this Entry is editable.</summary>
+        <value>
+          <para>
+            <see langword="true" /> if this entry can be edited, <see langword="false" /> otherwise.</para>
+        </value>
+        <remarks>
+          <para>Set this property to false if you need to stop input into an Entry widget. For displaying textual data, it is more normal to use a <see cref="T:Gtk.Label" /> instead.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EditingDone">
+      <MemberSignature Language="C#" Value="public event EventHandler EditingDone;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler EditingDone" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("editing-done")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Implements the EditingDone method of the <see cref="T:Gtk.CellEditable" /> interface.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="FinishEditing">
+      <MemberSignature Language="C#" Value="public void FinishEditing ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void FinishEditing() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Specific implementation of Gtk.CellEditable.FinishEditing for the Entry widget.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetChars">
+      <MemberSignature Language="C#" Value="public string GetChars (int start_pos, int end_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetChars(int32 start_pos, int32 end_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_pos" Type="System.Int32" />
+        <Parameter Name="end_pos" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="start_pos">The index of the first character to get, (zero-indexed).</param>
+        <param name="end_pos">The index of the character to retrieve up to.</param>
+        <summary>Specific implementation of Gtk.Editable.GetChars for the Entry widget.</summary>
+        <returns>
+          <para>A string representing the characters from <paramref name="start_pos" />, up to, but not including <paramref name="end_pos" />. If <paramref name="end_pos" /> is negative, then the the characters retrieved will be those characters from <paramref name="start_pos" /> to the end of the text.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconActivatable">
+      <MemberSignature Language="C#" Value="public bool GetIconActivatable (Gtk.EntryIconPosition icon_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetIconActivatable(valuetype Gtk.EntryIconPosition icon_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconArea">
+      <MemberSignature Language="C#" Value="public void GetIconArea (Gtk.EntryIconPosition icon_pos, Gdk.Rectangle icon_area);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetIconArea(valuetype Gtk.EntryIconPosition icon_pos, valuetype Gdk.Rectangle icon_area) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="icon_area" Type="Gdk.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="icon_area">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconAtPos">
+      <MemberSignature Language="C#" Value="public int GetIconAtPos (int x, int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetIconAtPos(int32 x, int32 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconGicon">
+      <MemberSignature Language="C#" Value="public GLib.Icon GetIconGicon (Gtk.EntryIconPosition icon_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class GLib.Icon GetIconGicon(valuetype Gtk.EntryIconPosition icon_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Icon</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconName">
+      <MemberSignature Language="C#" Value="public string GetIconName (Gtk.EntryIconPosition icon_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetIconName(valuetype Gtk.EntryIconPosition icon_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconPixbuf">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf GetIconPixbuf (Gtk.EntryIconPosition icon_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.Pixbuf GetIconPixbuf(valuetype Gtk.EntryIconPosition icon_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconSensitive">
+      <MemberSignature Language="C#" Value="public bool GetIconSensitive (Gtk.EntryIconPosition icon_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetIconSensitive(valuetype Gtk.EntryIconPosition icon_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconStock">
+      <MemberSignature Language="C#" Value="public string GetIconStock (Gtk.EntryIconPosition icon_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetIconStock(valuetype Gtk.EntryIconPosition icon_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconStorageType">
+      <MemberSignature Language="C#" Value="public Gtk.ImageType GetIconStorageType (Gtk.EntryIconPosition icon_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gtk.ImageType GetIconStorageType(valuetype Gtk.EntryIconPosition icon_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.ImageType</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconTooltipMarkup">
+      <MemberSignature Language="C#" Value="public string GetIconTooltipMarkup (Gtk.EntryIconPosition icon_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetIconTooltipMarkup(valuetype Gtk.EntryIconPosition icon_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIconTooltipText">
+      <MemberSignature Language="C#" Value="public string GetIconTooltipText (Gtk.EntryIconPosition icon_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetIconTooltipText(valuetype Gtk.EntryIconPosition icon_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetLayoutOffsets">
+      <MemberSignature Language="C#" Value="public void GetLayoutOffsets (out int x, out int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetLayoutOffsets(int32 x, int32 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">X offset output of the layout.</param>
+        <param name="y">Y offset output of the layout.</param>
+        <summary>Obtains the position of the PangoLayout used to render text in the entry, in widget coordinates.</summary>
+        <remarks>
+          <para>Useful if you want to line up the text in an entry with some other text, e.g. when using the entry to implement editable cells in a sheet widget.</para>
+-          <para>Also useful to convert mouse events into coordinates inside the PangoLayout, e.g. to take some action if some part of the entry text is clicked.</para></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSelectionBounds">
+      <MemberSignature Language="C#" Value="public bool GetSelectionBounds (out int start_pos, out int end_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool GetSelectionBounds(int32 start_pos, int32 end_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_pos" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="end_pos" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="start_pos">To be added.</param>
+        <param name="end_pos">To be added.</param>
+        <summary>Get the the positions of the start and end of the current selection, if there is one.</summary>
+        <returns>
+          <para>
+            <see langword="true" /> if there is a selection, <see cref="langword:false" /> otherwise.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetTextArea">
+      <MemberSignature Language="C#" Value="public void GetTextArea (Gdk.Rectangle text_area);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetTextArea(valuetype Gdk.Rectangle text_area) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text_area" Type="Gdk.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="text_area">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Entry" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HasFrame">
+      <MemberSignature Language="C#" Value="public bool HasFrame { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasFrame" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("has-frame")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Whether or not this Entry should be surrounded by a 3D frame.</summary>
+        <value>
+          <see langword="true" /> if a frame surrounds this Entry, <see langword="false" /> otherwise</value>
+        <remarks>
+          <para>Unless there is a very specific reason for doing so, this property is best left to its default to ensure consistency in Entry widgets across applications.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IconPress">
+      <MemberSignature Language="C#" Value="public event Gtk.IconPressHandler IconPress;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.IconPressHandler IconPress" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("icon-press")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.IconPressHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="IconRelease">
+      <MemberSignature Language="C#" Value="public event Gtk.IconReleaseHandler IconRelease;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.IconReleaseHandler IconRelease" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("icon-release")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.IconReleaseHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ImContextFilterKeypress">
+      <MemberSignature Language="C#" Value="public bool ImContextFilterKeypress (Gdk.EventKey evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ImContextFilterKeypress(class Gdk.EventKey evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.EventKey" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ImModule">
+      <MemberSignature Language="C#" Value="public string ImModule { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ImModule" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("im-module")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="InnerBorder">
+      <MemberSignature Language="C#" Value="public Gtk.Border InnerBorder { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.Border InnerBorder" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("inner-border")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Border</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="InsertAtCursor">
+      <MemberSignature Language="C#" Value="public event Gtk.InsertAtCursorHandler InsertAtCursor;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.InsertAtCursorHandler InsertAtCursor" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("insert-at-cursor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.InsertAtCursorHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Connect to this event to discover when text is inserted at the cursor position - usually when the user types something in.</summary>
+        <remarks>
+          <para>Data pertaining to this event is encapsulated in an <see cref="T:Gtk.InsertAtCursorHandler" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertText">
+      <MemberSignature Language="C#" Value="public int InsertText (string new_text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 InsertText(string new_text) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="new_text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="new_text">the text to add</param>
+        <summary>Add arbitrary text to the entry.</summary>
+        <returns>
+          <para>The number of characters added.</para>
+        </returns>
+        <remarks>
+          <para>Use this method to insert a string at the current CursorPosition.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertText">
+      <MemberSignature Language="C#" Value="public void InsertText (string new_text, ref int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InsertText(string new_text, int32 position) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="new_text" Type="System.String" />
+        <Parameter Name="position" Type="System.Int32&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="new_text">A <see cref="System.String" /></param>
+        <param name="position">A <see cref="System.Int32&amp;" /></param>
+        <summary>Add text <paramref name="new_text" /> to the entry just before <paramref name="position" />.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="InvisibleChar">
-      <MemberSignature Language="C#" Value="public char InvisibleChar { set; get; };" />
+      <MemberSignature Language="C#" Value="public char InvisibleChar { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance char InvisibleChar" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("invisible-char")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Char</ReturnType>
       </ReturnValue>
@@ -1207,33 +1022,147 @@ The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
         <remarks>The is the character displayed in the entry in place of the actual characters of <see cref="P:Gtk.Entry.Text" /> when <see cref="P:Gtk.Entry.Visibility" /> is <see langword="false" />. The default invisible character is an asterisk ('*'). If you set this to 0, then no characters will be displayed at all.</remarks>
         <since version="Gtk# 2.4" />
       </Docs>
+    </Member>
+    <Member MemberName="InvisibleCharSet">
+      <MemberSignature Language="C#" Value="public bool InvisibleCharSet { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool InvisibleCharSet" />
+      <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("invisible-char")</AttributeName>
+          <AttributeName>GLib.Property("invisible-char-set")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="Backspace">
-      <MemberSignature Language="C#" Value="public event EventHandler Backspace;" />
-      <MemberType>Event</MemberType>
       <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters />
       <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsEditable">
+      <MemberSignature Language="C#" Value="public bool IsEditable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsEditable" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Implements the concrete version of Gtk.Editable.IsEditable, to determine if the text of the Entry can be edited.</summary>
+        <value>
+          <para>true if the Entry is editable, false otherwise.</para>
+        </value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Layout">
+      <MemberSignature Language="C#" Value="public Pango.Layout Layout { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.Layout Layout" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Layout</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Get the object used by this Entry for text layout.</summary>
+        <value>
+          <para>The Pango.Layout used to render the text of this entry.</para>
+        </value>
+        <remarks>
+          <para>This property is read only.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LayoutIndexToTextIndex">
+      <MemberSignature Language="C#" Value="public int LayoutIndexToTextIndex (int layout_index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 LayoutIndexToTextIndex(int32 layout_index) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="layout_index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="layout_index">a <see cref="T:System.Int32" /></param>
         <summary>To be added</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
         <since version="Gtk# 2.6" />
       </Docs>
+    </Member>
+    <Member MemberName="MaxLength">
+      <MemberSignature Language="C#" Value="public int MaxLength { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 MaxLength" />
+      <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("backspace")</AttributeName>
+          <AttributeName>GLib.Property("max-length")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The maximum number of characters that can be placed in this Entry.</summary>
+        <value>
+          <para>The maximum number of characters that can currently be set in this Entry.</para>
+        </value>
+        <remarks>
+          <para>This property can be useful for ensuring no more than a specific number of characters are put in an entry.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCursor">
+      <MemberSignature Language="C#" Value="public event Gtk.MoveCursorHandler MoveCursor;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MoveCursorHandler MoveCursor" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("move-cursor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.MoveCursorHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Connect to this event handler to be notified when the cursor of an Entry moves.</summary>
+        <remarks>Data pertaining to this event is passed with a <see cref="T:Gtk.MoveCursorHandler" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnActivated">
+      <MemberSignature Language="C#" Value="protected virtual void OnActivated ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnActivated() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideActivated", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.Activated" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.Activated" /> event.</remarks>
+      </Docs>
     </Member>
     <Member MemberName="OnBackspace">
       <MemberSignature Language="C#" Value="protected virtual void OnBackspace ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnBackspace() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideBackspace", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -1244,25 +1173,1184 @@ The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
-    <Member MemberName="LayoutIndexToTextIndex">
-      <MemberSignature Language="C#" Value="public int LayoutIndexToTextIndex (int layout_index);" />
+    <Member MemberName="OnChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnChanged() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideChanged", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.Changed" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.Changed" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnClipboardCopied">
+      <MemberSignature Language="C#" Value="protected virtual void OnClipboardCopied ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnClipboardCopied() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideClipboardCopied", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.ClipboardCopied" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.ClipboardCopied" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnClipboardCut">
+      <MemberSignature Language="C#" Value="protected virtual void OnClipboardCut ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnClipboardCut() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideClipboardCut", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.ClipboardCut" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.ClipboardCut" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnClipboardPasted">
+      <MemberSignature Language="C#" Value="protected virtual void OnClipboardPasted ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnClipboardPasted() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideClipboardPasted", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.ClipboardPasted" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.ClipboardPasted" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnDeleteFromCursor">
+      <MemberSignature Language="C#" Value="protected virtual void OnDeleteFromCursor (Gtk.DeleteType type, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnDeleteFromCursor(valuetype Gtk.DeleteType type, int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideDeleteFromCursor", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="Gtk.DeleteType" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="type">a <see cref="T:Gtk.DeleteType" /></param>
+        <param name="count">a <see cref="T:System.Int32" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.DeleteFromCursor" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.DeleteFromCursor" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEditingDone">
+      <MemberSignature Language="C#" Value="protected virtual void OnEditingDone ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnEditingDone() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideEditingDone", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.EditingDone" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.EditingDone" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetTextAreaSize">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetTextAreaSize (out int x, out int y, out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetTextAreaSize(int32 x, int32 y, int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetTextAreaSize", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnIconPress">
+      <MemberSignature Language="C#" Value="protected virtual void OnIconPress (Gtk.EntryIconPosition p0, Gdk.Event p1);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnIconPress(valuetype Gtk.EntryIconPosition p0, class Gdk.Event p1) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideIconPress", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="p0" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="p1" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="p0">To be added.</param>
+        <param name="p1">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnIconRelease">
+      <MemberSignature Language="C#" Value="protected virtual void OnIconRelease (Gtk.EntryIconPosition p0, Gdk.Event p1);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnIconRelease(valuetype Gtk.EntryIconPosition p0, class Gdk.Event p1) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideIconRelease", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="p0" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="p1" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="p0">To be added.</param>
+        <param name="p1">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnInsertAtCursor">
+      <MemberSignature Language="C#" Value="protected virtual void OnInsertAtCursor (string str);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnInsertAtCursor(string str) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideInsertAtCursor", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="str">a <see cref="T:System.String" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.InsertAtCursor" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.InsertAtCursor" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnMoveCursor">
+      <MemberSignature Language="C#" Value="protected virtual void OnMoveCursor (Gtk.MovementStep step, int count, bool extend_selection);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnMoveCursor(valuetype Gtk.MovementStep step, int32 count, bool extend_selection) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMoveCursor", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="step" Type="Gtk.MovementStep" />
+        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="extend_selection" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="step">a <see cref="T:Gtk.MovementStep" /></param>
+        <param name="count">a <see cref="T:System.Int32" /></param>
+        <param name="extend_selection">a <see cref="T:System.Boolean" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.MoveCursor" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.MoveCursor" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPopulatePopup">
+      <MemberSignature Language="C#" Value="protected virtual void OnPopulatePopup (Gtk.Menu menu);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPopulatePopup(class Gtk.Menu menu) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePopulatePopup", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="menu" Type="Gtk.Menu" />
+      </Parameters>
+      <Docs>
+        <param name="menu">a <see cref="T:Gtk.Menu" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.PopulatePopup" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.PopulatePopup" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPreeditChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnPreeditChanged (string p0);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPreeditChanged(string p0) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePreeditChanged", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="p0" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="p0">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnTextDeleted">
+      <MemberSignature Language="C#" Value="protected virtual void OnTextDeleted (int start_pos, int end_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnTextDeleted(int32 start_pos, int32 end_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideTextDeleted", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_pos" Type="System.Int32" />
+        <Parameter Name="end_pos" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="start_pos">a <see cref="T:System.Int32" /></param>
+        <param name="end_pos">a <see cref="T:System.Int32" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.TextDeleted" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.TextDeleted" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnTextInserted">
+      <MemberSignature Language="C#" Value="protected virtual void OnTextInserted (string new_text, ref int position);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnTextInserted(string new_text, int32 position) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideTextInserted", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="new_text" Type="System.String" />
+        <Parameter Name="position" Type="System.Int32&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="new_text">To be added.</param>
+        <param name="position">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.TextInserted" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.TextInserted" /> event.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnToggleOverwrite">
+      <MemberSignature Language="C#" Value="protected virtual void OnToggleOverwrite ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnToggleOverwrite() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideToggleOverwrite", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.ToggleOverwrite" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.ToggleOverwrite" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnWidgetRemoved">
+      <MemberSignature Language="C#" Value="protected virtual void OnWidgetRemoved ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnWidgetRemoved() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideWidgetRemoved", Type=typeof(Gtk.Entry))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Entry.WidgetRemoved" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Entry.WidgetRemoved" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OverwriteMode">
+      <MemberSignature Language="C#" Value="public bool OverwriteMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool OverwriteMode" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("overwrite-mode")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PasteClipboard">
+      <MemberSignature Language="C#" Value="public void PasteClipboard ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PasteClipboard() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Causes the contents of the clipboard to be pasted into the Entry at the current cursor position.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PopulatePopup">
+      <MemberSignature Language="C#" Value="public event Gtk.PopulatePopupHandler PopulatePopup;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PopulatePopupHandler PopulatePopup" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("populate-popup")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PopulatePopupHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when the popup handler needs to be filled with data.</summary>
+        <remarks>
+          <para>Data pertaining to this event is encapsulated in a <see cref="T:Gtk.PopulatePopupArgs" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Position">
+      <MemberSignature Language="C#" Value="public int Position { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Position" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="layout_index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="layout_index">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
+        <summary>The position of the cursor.</summary>
+        <value>
+          <para>the current cursor position</para>
+        </value>
+        <remarks>
+          <para>The cursor is displayed before the character with the given (base 0) index in the widget. The value must be less than or equal to the number of characters in the widget. A value of -1 indicates that the position should be set after the last character in the entry. Note that this position is in characters, not in bytes. </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreeditChanged">
+      <MemberSignature Language="C#" Value="public event Gtk.PreeditChangedHandler PreeditChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PreeditChangedHandler PreeditChanged" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("preedit-changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PreeditChangedHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryIconActivatable">
+      <MemberSignature Language="C#" Value="public bool PrimaryIconActivatable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PrimaryIconActivatable" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("primary-icon-activatable")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryIconGicon">
+      <MemberSignature Language="C#" Value="public GLib.Icon PrimaryIconGicon { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GLib.Icon PrimaryIconGicon" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("primary-icon-gicon")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLib.Icon</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryIconName">
+      <MemberSignature Language="C#" Value="public string PrimaryIconName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string PrimaryIconName" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("primary-icon-name")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryIconPixbuf">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf PrimaryIconPixbuf { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf PrimaryIconPixbuf" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("primary-icon-pixbuf")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryIconSensitive">
+      <MemberSignature Language="C#" Value="public bool PrimaryIconSensitive { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PrimaryIconSensitive" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("primary-icon-sensitive")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryIconStock">
+      <MemberSignature Language="C#" Value="public string PrimaryIconStock { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string PrimaryIconStock" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("primary-icon-stock")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryIconStorageType">
+      <MemberSignature Language="C#" Value="public Gtk.ImageType PrimaryIconStorageType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.ImageType PrimaryIconStorageType" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("primary-icon-storage-type")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ImageType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryIconTooltipMarkup">
+      <MemberSignature Language="C#" Value="public string PrimaryIconTooltipMarkup { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string PrimaryIconTooltipMarkup" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("primary-icon-tooltip-markup")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryIconTooltipText">
+      <MemberSignature Language="C#" Value="public string PrimaryIconTooltipText { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string PrimaryIconTooltipText" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("primary-icon-tooltip-text")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ProgressFraction">
+      <MemberSignature Language="C#" Value="public double ProgressFraction { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 ProgressFraction" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("progress-fraction")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ProgressPulse">
+      <MemberSignature Language="C#" Value="public void ProgressPulse ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ProgressPulse() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ProgressPulseStep">
+      <MemberSignature Language="C#" Value="public double ProgressPulseStep { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 ProgressPulseStep" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("progress-pulse-step")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveWidget">
+      <MemberSignature Language="C#" Value="public void RemoveWidget ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveWidget() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Specific implementation of Gtk.CellEditable.RemoveWidget for the Entry widget.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ResetImContext">
+      <MemberSignature Language="C#" Value="public void ResetImContext ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ResetImContext() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ScrollOffset">
+      <MemberSignature Language="C#" Value="public int ScrollOffset { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 ScrollOffset" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("scroll-offset")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Number of pixels the entry scrolled off the screen to the left.</summary>
+        <value>A <see cref="T:System.Int32" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryIconActivatable">
+      <MemberSignature Language="C#" Value="public bool SecondaryIconActivatable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SecondaryIconActivatable" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("secondary-icon-activatable")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryIconGicon">
+      <MemberSignature Language="C#" Value="public GLib.Icon SecondaryIconGicon { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GLib.Icon SecondaryIconGicon" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("secondary-icon-gicon")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLib.Icon</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryIconName">
+      <MemberSignature Language="C#" Value="public string SecondaryIconName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SecondaryIconName" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("secondary-icon-name")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryIconPixbuf">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf SecondaryIconPixbuf { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf SecondaryIconPixbuf" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("secondary-icon-pixbuf")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryIconSensitive">
+      <MemberSignature Language="C#" Value="public bool SecondaryIconSensitive { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SecondaryIconSensitive" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("secondary-icon-sensitive")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryIconStock">
+      <MemberSignature Language="C#" Value="public string SecondaryIconStock { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SecondaryIconStock" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("secondary-icon-stock")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryIconStorageType">
+      <MemberSignature Language="C#" Value="public Gtk.ImageType SecondaryIconStorageType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.ImageType SecondaryIconStorageType" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("secondary-icon-storage-type")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ImageType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryIconTooltipMarkup">
+      <MemberSignature Language="C#" Value="public string SecondaryIconTooltipMarkup { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SecondaryIconTooltipMarkup" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("secondary-icon-tooltip-markup")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryIconTooltipText">
+      <MemberSignature Language="C#" Value="public string SecondaryIconTooltipText { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SecondaryIconTooltipText" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("secondary-icon-tooltip-text")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SelectionBound">
+      <MemberSignature Language="C#" Value="public int SelectionBound { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 SelectionBound" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("selection-bound")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The length of the selected text.</summary>
+        <value>
+          <para>The number of selected characters.</para>
+        </value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SelectRegion">
+      <MemberSignature Language="C#" Value="public void SelectRegion (int start_pos, int end_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SelectRegion(int32 start_pos, int32 end_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_pos" Type="System.Int32" />
+        <Parameter Name="end_pos" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="start_pos">To be added.</param>
+        <param name="end_pos">To be added.</param>
+        <summary>Specific implementation of Gtk.Editable.SelectRegion for the Entry widget.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconActivatable">
+      <MemberSignature Language="C#" Value="public void SetIconActivatable (Gtk.EntryIconPosition icon_pos, bool activatable);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetIconActivatable(valuetype Gtk.EntryIconPosition icon_pos, bool activatable) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="activatable" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="activatable">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconDragSource">
+      <MemberSignature Language="C#" Value="public void SetIconDragSource (Gtk.EntryIconPosition icon_pos, Gtk.TargetList target_list, Gdk.DragAction actions);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetIconDragSource(valuetype Gtk.EntryIconPosition icon_pos, class Gtk.TargetList target_list, valuetype Gdk.DragAction actions) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="target_list" Type="Gtk.TargetList" />
+        <Parameter Name="actions" Type="Gdk.DragAction" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="target_list">To be added.</param>
+        <param name="actions">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconFromGicon">
+      <MemberSignature Language="C#" Value="public void SetIconFromGicon (Gtk.EntryIconPosition icon_pos, GLib.Icon icon);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetIconFromGicon(valuetype Gtk.EntryIconPosition icon_pos, class GLib.Icon icon) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="icon" Type="GLib.Icon" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="icon">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconFromIconName">
+      <MemberSignature Language="C#" Value="public void SetIconFromIconName (Gtk.EntryIconPosition icon_pos, string icon_name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetIconFromIconName(valuetype Gtk.EntryIconPosition icon_pos, string icon_name) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="icon_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="icon_name">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconFromPixbuf">
+      <MemberSignature Language="C#" Value="public void SetIconFromPixbuf (Gtk.EntryIconPosition icon_pos, Gdk.Pixbuf pixbuf);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetIconFromPixbuf(valuetype Gtk.EntryIconPosition icon_pos, class Gdk.Pixbuf pixbuf) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="pixbuf">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconFromStock">
+      <MemberSignature Language="C#" Value="public void SetIconFromStock (Gtk.EntryIconPosition icon_pos, string stock_id);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetIconFromStock(valuetype Gtk.EntryIconPosition icon_pos, string stock_id) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="stock_id" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="stock_id">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconSensitive">
+      <MemberSignature Language="C#" Value="public void SetIconSensitive (Gtk.EntryIconPosition icon_pos, bool sensitive);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetIconSensitive(valuetype Gtk.EntryIconPosition icon_pos, bool sensitive) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="sensitive" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="sensitive">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconTooltipMarkup">
+      <MemberSignature Language="C#" Value="public void SetIconTooltipMarkup (Gtk.EntryIconPosition icon_pos, string tooltip);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetIconTooltipMarkup(valuetype Gtk.EntryIconPosition icon_pos, string tooltip) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="tooltip" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="tooltip">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetIconTooltipText">
+      <MemberSignature Language="C#" Value="public void SetIconTooltipText (Gtk.EntryIconPosition icon_pos, string tooltip);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetIconTooltipText(valuetype Gtk.EntryIconPosition icon_pos, string tooltip) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="icon_pos" Type="Gtk.EntryIconPosition" />
+        <Parameter Name="tooltip" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="icon_pos">To be added.</param>
+        <param name="tooltip">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ShadowType">
+      <MemberSignature Language="C#" Value="public Gtk.ShadowType ShadowType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.ShadowType ShadowType" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("shadow-type")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ShadowType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="StartEditing">
+      <MemberSignature Language="C#" Value="public void StartEditing (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void StartEditing(class Gdk.Event evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="evnt" />
+        <summary>Specific implementation of Gtk.CellEditable.StartEditing for the Entry widget.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Text">
+      <MemberSignature Language="C#" Value="public string Text { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Text" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("text")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Manipulate the current text contents of an Entry.</summary>
+        <value>
+          <para>The current text in an Entry.</para>
+        </value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="TextDeleted">
+      <MemberSignature Language="C#" Value="public event Gtk.TextDeletedHandler TextDeleted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.TextDeletedHandler TextDeleted" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("delete-text")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.TextDeletedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Connect to this event to be notified when text is deleted from the Entry.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TextIndexToLayoutIndex">
       <MemberSignature Language="C#" Value="public int TextIndexToLayoutIndex (int text_index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 TextIndexToLayoutIndex(int32 text_index) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1271,15 +2359,73 @@ The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
         <Parameter Name="text_index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="text_index">a <see cref="T:System.Int32" /></param>
+        <summary>To be added</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
+    <Member MemberName="TextInserted">
+      <MemberSignature Language="C#" Value="public event Gtk.TextInsertedHandler TextInserted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.TextInsertedHandler TextInserted" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("insert-text")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.TextInsertedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Connect to this event to be notified when text is inserted into the Entry.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="TextLength">
+      <MemberSignature Language="C#" Value="public ushort TextLength { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int16 TextLength" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("text-length")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.UInt16</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="ToggleOverwrite">
+      <MemberSignature Language="C#" Value="public event EventHandler ToggleOverwrite;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler ToggleOverwrite" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("toggle-overwrite")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Connect to this event to discover when the Overwrite state has been changed by the user. This is usually done by pressing the 'Insert' key on a keyboard.</summary>
+        <remarks>
+          <para>Connect to this event with a standard <see cref="T:System.EventHandler" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="TruncateMultiline">
-      <MemberSignature Language="C#" Value="public bool TruncateMultiline { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool TruncateMultiline { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool TruncateMultiline" />
       <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
@@ -1296,35 +2442,109 @@ The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
         <since version="Gtk# 2.10" />
       </Docs>
     </Member>
-    <Member MemberName="CursorHadjustment">
-      <MemberSignature Language="C#" Value="public Gtk.Adjustment CursorHadjustment { set; get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="UnsetInvisibleChar">
+      <MemberSignature Language="C#" Value="public void UnsetInvisibleChar ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void UnsetInvisibleChar() cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.Adjustment</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
+      <Parameters />
       <Docs>
         <summary>To be added.</summary>
-        <value>To be added.</value>
         <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="ShadowType">
-      <MemberSignature Language="C#" Value="public Gtk.ShadowType ShadowType { set; get; };" />
+    <Member MemberName="Visibility">
+      <MemberSignature Language="C#" Value="public bool Visibility { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Visibility" />
       <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("shadow-type")</AttributeName>
+          <AttributeName>GLib.Property("visibility")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
-        <ReturnType>Gtk.ShadowType</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
+        <summary>Determine whether to display characters entered, or whether to mask them.</summary>
+        <value>
+          <para>true if characters are being displayed, false if they are being masked.</para>
+        </value>
+        <remarks>
+          <para>This property should be used to create entry widgets for sensitive data such as passwords.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WidgetRemoved">
+      <MemberSignature Language="C#" Value="public event EventHandler WidgetRemoved;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler WidgetRemoved" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("remove-widget")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Implements the WidgetRemoved method of the <see cref="T:Gtk.CellEditable" /> interface. This will effectively destroy the Entry.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="WidthChars">
+      <MemberSignature Language="C#" Value="public int WidthChars { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 WidthChars" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("width-chars")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Changes the size request of the entry to be about the right size for <paramref name="n_chars" /> characters.</summary>
+        <value>
+          <para>The number of characters requested.</para>
+        </value>
+        <remarks>
+          <para>Note that it changes the size request, the size can still be affected by how you pack the widget into containers. If n_chars is -1, the size reverts to the default entry size.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Xalign">
+      <MemberSignature Language="C#" Value="public float Xalign { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Xalign" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("xalign")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The horizontal alignment, from 0 (left) to 1 (right).</summary>
+        <value>a <see cref="T:System.Single" /></value>
+        <remarks>Reversed for RTL layouts.
+<para>
+Allowed values: [0,1]
+</para><para>
+Default value: 0
+</para></remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
   </Members>

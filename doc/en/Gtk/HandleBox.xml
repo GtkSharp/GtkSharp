@@ -1,12 +1,17 @@
 <Type Name="HandleBox" FullName="Gtk.HandleBox">
   <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class HandleBox : Gtk.Bin" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit HandleBox extends Gtk.Bin" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Bin</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>A container with a handle and a detachable child widget.</summary>
     <remarks>
@@ -16,29 +21,10 @@
       <para>The child of this widget is set using the <see cref="M:Gtk.Container.Add" /> method in <see cref="T:Gtk.Container" />.</para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Bin</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public HandleBox (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public HandleBox ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters />
@@ -49,44 +35,81 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="SnapEdge">
-      <MemberSignature Language="C#" Value="public Gtk.PositionType SnapEdge { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.PositionType</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HandleBox (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Manage which edge a detached HandleBox must reattach to.</summary>
-        <value>The current edge that snapping works with.</value>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
-          <para>To ensure good usability, this edge should be set to a side of the HandleBox whose position or size will not be altered when the child is detached.</para>
+          <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
+    </Member>
+    <Member MemberName="ChildAttached">
+      <MemberSignature Language="C#" Value="public event Gtk.ChildAttachedHandler ChildAttached;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ChildAttachedHandler ChildAttached" />
+      <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("snap-edge")</AttributeName>
+          <AttributeName>GLib.Signal("child-attached")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="ShadowType">
-      <MemberSignature Language="C#" Value="public Gtk.ShadowType ShadowType { set; get; };" />
-      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.ShadowType</ReturnType>
+        <ReturnType>Gtk.ChildAttachedHandler</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Manage the appearance of the <see cref="T:Gtk.Container" /> surrounding the child widget.</summary>
-        <value>The current style of shadow in use.</value>
+        <summary>This event is raised when the contents of the HandleBox are reattached to the main window. </summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="HandlePosition">
-      <MemberSignature Language="C#" Value="public Gtk.PositionType HandlePosition { set; get; };" />
+    <Member MemberName="ChildDetached">
+      <MemberSignature Language="C#" Value="public event Gtk.ChildDetachedHandler ChildDetached;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ChildDetachedHandler ChildDetached" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("child-detached")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ChildDetachedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>This event is raised when the contents of the handlebox are detached from the main window.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.HandleBox" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HandlePosition">
+      <MemberSignature Language="C#" Value="public Gtk.PositionType HandlePosition { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.PositionType HandlePosition" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("handle-position")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gtk.PositionType</ReturnType>
       </ReturnValue>
@@ -100,14 +123,66 @@
           <para>The reverse is likely to be true for cultures with languages that are written from right to left.</para>
         </remarks>
       </Docs>
+    </Member>
+    <Member MemberName="IsChildDetached">
+      <MemberSignature Language="C#" Value="public bool IsChildDetached { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsChildDetached" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnChildAttached">
+      <MemberSignature Language="C#" Value="protected virtual void OnChildAttached (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnChildAttached(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("handle-position")</AttributeName>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideChildAttached", Type=typeof(Gtk.HandleBox))</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.HandleBox.ChildAttached" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.HandleBox.ChildAttached" /> event.</remarks>
+      </Docs>
     </Member>
-    <Member MemberName="Shadow">
-      <MemberSignature Language="C#" Value="public Gtk.ShadowType Shadow { set; get; };" />
+    <Member MemberName="OnChildDetached">
+      <MemberSignature Language="C#" Value="protected virtual void OnChildDetached (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnChildDetached(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideChildDetached", Type=typeof(Gtk.HandleBox))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.HandleBox.ChildDetached" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.HandleBox.ChildDetached" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShadowType">
+      <MemberSignature Language="C#" Value="public Gtk.ShadowType ShadowType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.ShadowType ShadowType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.ShadowType</ReturnType>
@@ -119,49 +194,38 @@
         <value>The current style of shadow in use.</value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("shadow")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="ChildAttached">
-      <MemberSignature Language="C#" Value="public event Gtk.ChildAttachedHandler ChildAttached;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ChildAttachedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>This event is raised when the contents of the HandleBox are reattached to the main window. </summary>
-        <remarks />
-      </Docs>
+    <Member MemberName="SnapEdge">
+      <MemberSignature Language="C#" Value="public Gtk.PositionType SnapEdge { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.PositionType SnapEdge" />
+      <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("child_attached")</AttributeName>
+          <AttributeName>GLib.Property("snap-edge")</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="ChildDetached">
-      <MemberSignature Language="C#" Value="public event Gtk.ChildDetachedHandler ChildDetached;" />
-      <MemberType>Event</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.ChildDetachedHandler</ReturnType>
+        <ReturnType>Gtk.PositionType</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>This event is raised when the contents of the handlebox are detached from the main window.</summary>
-        <remarks />
+        <summary>Manage which edge a detached HandleBox must reattach to.</summary>
+        <value>The current edge that snapping works with.</value>
+        <remarks>
+          <para>To ensure good usability, this edge should be set to a side of the HandleBox whose position or size will not be altered when the child is detached.</para>
+        </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("child_detached")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="SnapEdgeSet">
-      <MemberSignature Language="C#" Value="public bool SnapEdgeSet { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool SnapEdgeSet { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SnapEdgeSet" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("snap-edge-set")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -172,72 +236,6 @@
         <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("snap-edge-set")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.HandleBox" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnChildDetached">
-      <MemberSignature Language="C#" Value="protected virtual void OnChildDetached (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.HandleBox.ChildDetached" /> event.</summary>
-        <param name="child">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.HandleBox.ChildDetached" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnChildAttached">
-      <MemberSignature Language="C#" Value="protected virtual void OnChildAttached (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.HandleBox.ChildAttached" /> event.</summary>
-        <param name="child">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.HandleBox.ChildAttached" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected HandleBox (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
   </Members>
 </Type>

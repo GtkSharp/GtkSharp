@@ -1,12 +1,17 @@
 <Type Name="TextMark" FullName="Gtk.TextMark">
   <TypeSignature Language="C#" Maintainer="duncan" Value="public class TextMark : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit TextMark extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>
       A <see cref="T:Gtk.TextMark" /> is like a bookmark in a text buffer; it preserves a position in the text.
@@ -35,49 +40,70 @@
       </para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
     <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected TextMark ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Default constructor</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public TextMark (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Name">
-      <MemberSignature Language="C#" Value="public string Name { get; };" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TextMark (string name, bool left_gravity);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, bool left_gravity) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="left_gravity" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
+        <param name="left_gravity">To be added.</param>
+        <summary>Public constructor.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="Buffer">
+      <MemberSignature Language="C#" Value="public Gtk.TextBuffer Buffer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.TextBuffer Buffer" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.String</ReturnType>
+        <ReturnType>Gtk.TextBuffer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The name of the mark</summary>
-        <value>
-          Returns the name of the mark and <see langword="null" /> if
-          it's an anonymous mark
-        </value>
-        <remarks />
+        <summary>
+          Gets the buffer where this mark is located
+        </summary>
+        <value>The buffer where this mark is applied</value>
+        <remarks>
+          <see langword="null" /> is returned if the mark has been deleted.
+        </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("name")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="Deleted">
-      <MemberSignature Language="C#" Value="public bool Deleted { get; };" />
+      <MemberSignature Language="C#" Value="public bool Deleted { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Deleted" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -94,9 +120,29 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="LeftGravity">
-      <MemberSignature Language="C#" Value="public bool LeftGravity { get; };" />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TextMark" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LeftGravity">
+      <MemberSignature Language="C#" Value="public bool LeftGravity { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool LeftGravity" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("left-gravity")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -113,14 +159,31 @@
           left when displayed.
         </remarks>
       </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("left-gravity")</AttributeName>
+          <AttributeName>GLib.Property("name")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The name of the mark</summary>
+        <value>
+          Returns the name of the mark and <see langword="null" /> if
+          it's an anonymous mark
+        </value>
+        <remarks />
+      </Docs>
     </Member>
     <Member MemberName="Visible">
-      <MemberSignature Language="C#" Value="public bool Visible { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool Visible { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Visible" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -140,78 +203,6 @@
             visible. Marks are not visible by default.
           </para>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Buffer">
-      <MemberSignature Language="C#" Value="public Gtk.TextBuffer Buffer { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextBuffer</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          Gets the buffer where this mark is located
-        </summary>
-        <value>The buffer where this mark is applied</value>
-        <remarks>
-          <see langword="null" /> is returned if the mark has been deleted.
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TextMark" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected TextMark (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected TextMark ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Default constructor</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public TextMark (string name, bool left_gravity);" />
-      <MemberType>Constructor</MemberType>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-        <Parameter Name="left_gravity" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="name">To be added.</param>
-        <param name="left_gravity">To be added.</param>
-        <summary>Public constructor.</summary>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
   </Members>

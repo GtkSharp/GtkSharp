@@ -1,8 +1,8 @@
 <Type Name="ImageAdapter" FullName="Atk.ImageAdapter">
-  <TypeSignature Language="C#" Value="public class ImageAdapter : GLib.GInterfaceAdapter, Atk.Image" />
+  <TypeSignature Language="C#" Value="public class ImageAdapter : GLib.GInterfaceAdapter, Atk.Image, GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi ImageAdapter extends GLib.GInterfaceAdapter implements class Atk.Image, class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>GLib.GInterfaceAdapter</BaseTypeName>
@@ -11,10 +11,19 @@
     <Interface>
       <InterfaceName>Atk.Image</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
   </Interfaces>
+  <Docs>
+    <summary>Image adapter.</summary>
+    <remarks>Adapts <see cref="T:Atk.ImageImplementor" /> implementations to the full <see cref="T:Atk.Image" /> API.</remarks>
+    <since version="Gtk# 2.12" />
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ImageAdapter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
@@ -24,6 +33,7 @@
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ImageAdapter (Atk.ImageImplementor implementor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Atk.ImageImplementor implementor) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
         <Parameter Name="implementor" Type="Atk.ImageImplementor" />
@@ -34,8 +44,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ImageAdapter (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GetImagePosition">
       <MemberSignature Language="C#" Value="public void GetImagePosition (out int x, out int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetImagePosition(int32 x, int32 y, valuetype Atk.CoordType coord_type) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -55,6 +80,7 @@
     </Member>
     <Member MemberName="GetImageSize">
       <MemberSignature Language="C#" Value="public void GetImageSize (out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetImageSize(int32 width, int32 height) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -71,7 +97,26 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public static Atk.Image GetObject (GLib.Object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.Image GetObject(class GLib.Object obj) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Atk.Image</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="GLib.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
       <MemberSignature Language="C#" Value="public static Atk.Image GetObject (IntPtr handle, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Atk.Image GetObject(native int handle, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Image</ReturnType>
@@ -88,36 +133,37 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="ImageDescription">
-      <MemberSignature Language="C#" Value="public string ImageDescription { get; };" />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public override GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.String</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="SetImageDescription">
-      <MemberSignature Language="C#" Value="public bool SetImageDescription (string description);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public override IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="description" Type="System.String" />
-      </Parameters>
       <Docs>
-        <param name="description">To be added.</param>
         <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="ImageDescription">
-      <MemberSignature Language="C#" Value="public string ImageDescription { get; };" />
+      <MemberSignature Language="C#" Value="public string ImageDescription { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ImageDescription" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -129,7 +175,8 @@
       </Docs>
     </Member>
     <Member MemberName="ImageLocale">
-      <MemberSignature Language="C#" Value="public string ImageLocale { get; };" />
+      <MemberSignature Language="C#" Value="public string ImageLocale { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ImageLocale" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -141,7 +188,8 @@
       </Docs>
     </Member>
     <Member MemberName="Implementor">
-      <MemberSignature Language="C#" Value="public Atk.ImageImplementor Implementor { get; };" />
+      <MemberSignature Language="C#" Value="public Atk.ImageImplementor Implementor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Atk.ImageImplementor Implementor" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Atk.ImageImplementor</ReturnType>
@@ -152,8 +200,23 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="OwnedHandle">
+      <MemberSignature Language="C#" Value="public IntPtr OwnedHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int OwnedHandle" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="SetImageDescription">
       <MemberSignature Language="C#" Value="public bool SetImageDescription (string description);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetImageDescription(string description) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -169,9 +232,4 @@
       </Docs>
     </Member>
   </Members>
-  <Docs>
-    <summary>Image adapter.</summary>
-    <remarks>Adapts <see cref="T:Atk.ImageImplementor" /> implementations to the full <see cref="T:Atk.Image" /> API.</remarks>
-    <since version="Gtk# 2.12" />
-  </Docs>
 </Type>

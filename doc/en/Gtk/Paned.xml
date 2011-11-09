@@ -1,12 +1,20 @@
 <Type Name="Paned" FullName="Gtk.Paned">
-  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Paned : Gtk.Container" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Paned : Gtk.Container, Gtk.Orientable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Paned extends Gtk.Container implements class GLib.IWrapper, class Gtk.Orientable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Container</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Gtk.Orientable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>Base class for containers that have two children separated by an adjustable pane.</summary>
     <remarks>
@@ -34,139 +42,118 @@ public Widget GetExampleFrame()
       </para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Container</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
   <Members>
-    <Member MemberName="Pack2">
-      <MemberSignature Language="C#" Value="public void Pack2 (Gtk.Widget child, bool resize, bool shrink);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Paned (Gtk.Orientation orientation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype Gtk.Orientation orientation) cil managed" />
+      <MemberType>Constructor</MemberType>
       <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="resize" Type="System.Boolean" />
-        <Parameter Name="shrink" Type="System.Boolean" />
+        <Parameter Name="orientation" Type="Gtk.Orientation" />
       </Parameters>
       <Docs>
-        <summary>Packs a child widget into the second part of the Paned container, (the bottom or right panes).</summary>
-        <param name="child">A widget for this container to manage.</param>
-        <param name="resize">Whether this child should expand when the Paned widget is resized.</param>
-        <param name="shrink">Whether this child can be made smaller than its default size by the user.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Pack1">
-      <MemberSignature Language="C#" Value="public void Pack1 (Gtk.Widget child, bool resize, bool shrink);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="resize" Type="System.Boolean" />
-        <Parameter Name="shrink" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Packs a child widget into the first part of the Paned container, (the top or left panes).</summary>
-        <param name="child">A widget for this container to manage.</param>
-        <param name="resize">Whether this child should expand when the Paned widget is resized.</param>
-        <param name="shrink">Whether this child can be made smaller than its default size by the user.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Add2">
-      <MemberSignature Language="C#" Value="public void Add2 (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Adds a child widget into the second part of the Paned container, (the bottom or right panes), with default packing settings.</summary>
-        <param name="child">A widget for this container to manage.</param>
-        <remarks>
-          <para>This is the same as calling <see cref="M:Gtk.Paned.Pack2" /> with resize set to <see langword="false" /> and shrink set to <see langword="true" />.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Add1">
-      <MemberSignature Language="C#" Value="public void Add1 (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Adds a child widget into the first part of the Paned container, (the top or left panes), with default packing settings.</summary>
-        <param name="child">A widget for this container to manage.</param>
-        <remarks>
-          <para>This is the same as calling <see cref="M:Gtk.Paned.Pack1" /> with resize set to <see langword="false" /> and shrink set to <see langword="true" />.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ComputePosition">
-      <MemberSignature Language="C#" Value="public void ComputePosition (int allocation, int child1_req, int child2_req);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="allocation" Type="System.Int32" />
-        <Parameter Name="child1_req" Type="System.Int32" />
-        <Parameter Name="child2_req" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Determines the position of the pane separator based on the 
-	  size and shrinkability of the widget's children.</summary>
-        <param name="allocation">A <see cref="T:System.Int32" /></param>
-        <param name="child1_req">A <see cref="T:System.Int32" /></param>
-        <param name="child2_req">A <see cref="T:System.Int32" /></param>
-        <remarks>
-        </remarks>
+        <param name="orientation">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Paned (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Child2">
-      <MemberSignature Language="C#" Value="public Gtk.Widget Child2 { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="AcceptPosition">
+      <MemberSignature Language="C#" Value="public event Gtk.AcceptPositionHandler AcceptPosition;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.AcceptPositionHandler AcceptPosition" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("accept-position")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
+        <ReturnType>Gtk.AcceptPositionHandler</ReturnType>
       </ReturnValue>
+      <Parameters />
       <Docs>
-        <summary>An accessor to the second child widget of this container</summary>
-        <value>The child widget added with <see cref="M:Gtk.Paned.Pack2" /> or <see cref="M:Gtk.Paned.Add2" />.</value>
+        <summary>Emitted when the paned has focus</summary>
+        <remarks>
+          This signal is emitted when paned has the focus and any of
+          the Return, Enter, Space keys are pressed. This will also
+          cause the child widget with the focus to be activated.
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Add1">
+      <MemberSignature Language="C#" Value="public void Add1 (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add1(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">A widget for this container to manage.</param>
+        <summary>Adds a child widget into the first part of the Paned container, (the top or left panes), with default packing settings.</summary>
+        <remarks>
+          <para>This is the same as calling <see cref="M:Gtk.Paned.Pack1" /> with resize set to <see langword="false" /> and shrink set to <see langword="true" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Add2">
+      <MemberSignature Language="C#" Value="public void Add2 (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add2(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">A widget for this container to manage.</param>
+        <summary>Adds a child widget into the second part of the Paned container, (the bottom or right panes), with default packing settings.</summary>
+        <remarks>
+          <para>This is the same as calling <see cref="M:Gtk.Paned.Pack2" /> with resize set to <see langword="false" /> and shrink set to <see langword="true" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CancelPosition">
+      <MemberSignature Language="C#" Value="public event Gtk.CancelPositionHandler CancelPosition;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.CancelPositionHandler CancelPosition" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("cancel-position")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CancelPositionHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Emitted when the Esc key is pressed while paned has the focus.
+        </summary>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Child1">
-      <MemberSignature Language="C#" Value="public Gtk.Widget Child1 { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.Widget Child1 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget Child1" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Widget</ReturnType>
@@ -177,48 +164,46 @@ public Widget GetExampleFrame()
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Position">
-      <MemberSignature Language="C#" Value="public int Position { set; get; };" />
+    <Member MemberName="Child2">
+      <MemberSignature Language="C#" Value="public Gtk.Widget Child2 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget Child2" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
-        <summary>Manage the position of the splitter bar that separates the 2 child widgets.</summary>
-        <value>The current position ofh</value>
+        <summary>An accessor to the second child widget of this container</summary>
+        <value>The child widget added with <see cref="M:Gtk.Paned.Pack2" /> or <see cref="M:Gtk.Paned.Add2" />.</value>
         <remarks />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("position")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
-    <Member MemberName="PositionSet">
-      <MemberSignature Language="C#" Value="public bool PositionSet { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Whether the position property (related to <see cref="P:Gtk.Paned.MinPosition" /> and
-	  <see cref="P:Gtk.Paned.MaxPosition" />) should be used.</summary>
-        <value>an object of type <see cref="T:System.Boolean" /></value>
-        <remarks />
-      </Docs>
+    <Member MemberName="CycleChildFocus">
+      <MemberSignature Language="C#" Value="public event Gtk.CycleChildFocusHandler CycleChildFocus;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.CycleChildFocusHandler CycleChildFocus" />
+      <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("position-set")</AttributeName>
+          <AttributeName>GLib.Signal("cycle-child-focus")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CycleChildFocusHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when F6 or Shift-F6 is pressed while paned has the focus.</summary>
+        <remarks />
+      </Docs>
     </Member>
     <Member MemberName="CycleHandleFocus">
       <MemberSignature Language="C#" Value="public event Gtk.CycleHandleFocusHandler CycleHandleFocus;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.CycleHandleFocusHandler CycleHandleFocus" />
       <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("cycle-handle-focus")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gtk.CycleHandleFocusHandler</ReturnType>
       </ReturnValue>
@@ -236,109 +221,10 @@ public Widget GetExampleFrame()
           set reversed to <see langword="true" />.
         </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("cycle_handle_focus")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="MoveHandle">
-      <MemberSignature Language="C#" Value="public event Gtk.MoveHandleHandler MoveHandle;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.MoveHandleHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          Emitted when paned has the focus and the separator is moved.
-        </summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("move_handle")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="CancelPosition">
-      <MemberSignature Language="C#" Value="public event Gtk.CancelPositionHandler CancelPosition;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.CancelPositionHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          Emitted when the Esc key is pressed while paned has the focus.
-        </summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("cancel_position")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="AcceptPosition">
-      <MemberSignature Language="C#" Value="public event Gtk.AcceptPositionHandler AcceptPosition;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.AcceptPositionHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when the paned has focus</summary>
-        <remarks>
-          This signal is emitted when paned has the focus and any of
-          the Return, Enter, Space keys are pressed. This will also
-          cause the child widget with the focus to be activated.
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("accept_position")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ToggleHandleFocus">
-      <MemberSignature Language="C#" Value="public event Gtk.ToggleHandleFocusHandler ToggleHandleFocus;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ToggleHandleFocusHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          Emitted when paned has the focus and F8 is pressed to give the focus to or take the focus from the separator handle.
-        </summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("toggle_handle_focus")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="CycleChildFocus">
-      <MemberSignature Language="C#" Value="public event Gtk.CycleChildFocusHandler CycleChildFocus;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.CycleChildFocusHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when F6 or Shift-F6 is pressed while paned has the focus.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("cycle_child_focus")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -350,124 +236,47 @@ public Widget GetExampleFrame()
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Paned" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="OnCycleChildFocus">
-      <MemberSignature Language="C#" Value="protected virtual bool OnCycleChildFocus (bool reverse);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="HandleWindow">
+      <MemberSignature Language="C#" Value="public Gdk.Window HandleWindow { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window HandleWindow" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Item">
+      <MemberSignature Language="C#" Value="public override Gtk.Container.ContainerChild this[Gtk.Widget child] { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Container/ContainerChild Item(class Gtk.Widget)" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Container+ContainerChild</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="reverse" Type="System.Boolean" />
+        <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Paned.CycleChildFocus" /> event.</summary>
-        <param name="reverse">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.CycleChildFocus" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnToggleHandleFocus">
-      <MemberSignature Language="C#" Value="protected virtual bool OnToggleHandleFocus ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Paned.ToggleHandleFocus" /> event.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.ToggleHandleFocus" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnAcceptPosition">
-      <MemberSignature Language="C#" Value="protected virtual bool OnAcceptPosition ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Paned.AcceptPosition" /> event.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.AcceptPosition" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnCancelPosition">
-      <MemberSignature Language="C#" Value="protected virtual bool OnCancelPosition ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Paned.CancelPosition" /> event.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.CancelPosition" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnMoveHandle">
-      <MemberSignature Language="C#" Value="protected virtual bool OnMoveHandle (Gtk.ScrollType scroll);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="scroll" Type="Gtk.ScrollType" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Paned.MoveHandle" /> event.</summary>
-        <param name="scroll">a <see cref="T:Gtk.ScrollType" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.MoveHandle" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnCycleHandleFocus">
-      <MemberSignature Language="C#" Value="protected virtual bool OnCycleHandleFocus (bool reverse);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="reverse" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Paned.CycleHandleFocus" /> event.</summary>
-        <param name="reverse">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.CycleHandleFocus" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Paned (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Paned ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Default constructor.</summary>
-        <remarks />
+        <param name="child">To be added.</param>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="MaxPosition">
-      <MemberSignature Language="C#" Value="public int MaxPosition { get; };" />
+      <MemberSignature Language="C#" Value="public int MaxPosition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 MaxPosition" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("max-position")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
@@ -481,15 +290,16 @@ public Widget GetExampleFrame()
         </remarks>
         <since version="Gtk# 2.4" />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("max-position")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="MinPosition">
-      <MemberSignature Language="C#" Value="public int MinPosition { get; };" />
+      <MemberSignature Language="C#" Value="public int MinPosition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 MinPosition" />
       <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("min-position")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
@@ -503,11 +313,269 @@ public Widget GetExampleFrame()
         </remarks>
         <since version="Gtk# 2.4" />
       </Docs>
+    </Member>
+    <Member MemberName="MoveHandle">
+      <MemberSignature Language="C#" Value="public event Gtk.MoveHandleHandler MoveHandle;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MoveHandleHandler MoveHandle" />
+      <MemberType>Event</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property("min-position")</AttributeName>
+          <AttributeName>GLib.Signal("move-handle")</AttributeName>
         </Attribute>
       </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.MoveHandleHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Emitted when paned has the focus and the separator is moved.
+        </summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="OnAcceptPosition">
+      <MemberSignature Language="C#" Value="protected virtual bool OnAcceptPosition ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnAcceptPosition() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideAcceptPosition", Type=typeof(Gtk.Paned))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Paned.AcceptPosition" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.AcceptPosition" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnCancelPosition">
+      <MemberSignature Language="C#" Value="protected virtual bool OnCancelPosition ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnCancelPosition() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCancelPosition", Type=typeof(Gtk.Paned))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Paned.CancelPosition" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.CancelPosition" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnCycleChildFocus">
+      <MemberSignature Language="C#" Value="protected virtual bool OnCycleChildFocus (bool reverse);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnCycleChildFocus(bool reverse) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCycleChildFocus", Type=typeof(Gtk.Paned))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reverse" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="reverse">a <see cref="T:System.Boolean" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Paned.CycleChildFocus" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.CycleChildFocus" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnCycleHandleFocus">
+      <MemberSignature Language="C#" Value="protected virtual bool OnCycleHandleFocus (bool reverse);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnCycleHandleFocus(bool reverse) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCycleHandleFocus", Type=typeof(Gtk.Paned))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reverse" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="reverse">a <see cref="T:System.Boolean" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Paned.CycleHandleFocus" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.CycleHandleFocus" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnMoveHandle">
+      <MemberSignature Language="C#" Value="protected virtual bool OnMoveHandle (Gtk.ScrollType scroll);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnMoveHandle(valuetype Gtk.ScrollType scroll) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMoveHandle", Type=typeof(Gtk.Paned))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scroll" Type="Gtk.ScrollType" />
+      </Parameters>
+      <Docs>
+        <param name="scroll">a <see cref="T:Gtk.ScrollType" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Paned.MoveHandle" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.MoveHandle" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnToggleHandleFocus">
+      <MemberSignature Language="C#" Value="protected virtual bool OnToggleHandleFocus ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnToggleHandleFocus() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideToggleHandleFocus", Type=typeof(Gtk.Paned))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.Paned.ToggleHandleFocus" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Paned.ToggleHandleFocus" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Orientation">
+      <MemberSignature Language="C#" Value="public Gtk.Orientation Orientation { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.Orientation Orientation" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("orientation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.Orientation</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Pack1">
+      <MemberSignature Language="C#" Value="public void Pack1 (Gtk.Widget child, bool resize, bool shrink);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Pack1(class Gtk.Widget child, bool resize, bool shrink) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="resize" Type="System.Boolean" />
+        <Parameter Name="shrink" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="child">A widget for this container to manage.</param>
+        <param name="resize">Whether this child should expand when the Paned widget is resized.</param>
+        <param name="shrink">Whether this child can be made smaller than its default size by the user.</param>
+        <summary>Packs a child widget into the first part of the Paned container, (the top or left panes).</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Pack2">
+      <MemberSignature Language="C#" Value="public void Pack2 (Gtk.Widget child, bool resize, bool shrink);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Pack2(class Gtk.Widget child, bool resize, bool shrink) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="resize" Type="System.Boolean" />
+        <Parameter Name="shrink" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="child">A widget for this container to manage.</param>
+        <param name="resize">Whether this child should expand when the Paned widget is resized.</param>
+        <param name="shrink">Whether this child can be made smaller than its default size by the user.</param>
+        <summary>Packs a child widget into the second part of the Paned container, (the bottom or right panes).</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Position">
+      <MemberSignature Language="C#" Value="public int Position { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Position" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("position")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Manage the position of the splitter bar that separates the 2 child widgets.</summary>
+        <value>The current position ofh</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PositionSet">
+      <MemberSignature Language="C#" Value="public bool PositionSet { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PositionSet" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("position-set")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Whether the position property (related to <see cref="P:Gtk.Paned.MinPosition" /> and
+	  <see cref="P:Gtk.Paned.MaxPosition" />) should be used.</summary>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ToggleHandleFocus">
+      <MemberSignature Language="C#" Value="public event Gtk.ToggleHandleFocusHandler ToggleHandleFocus;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ToggleHandleFocusHandler ToggleHandleFocus" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("toggle-handle-focus")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ToggleHandleFocusHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Emitted when paned has the focus and F8 is pressed to give the focus to or take the focus from the separator handle.
+        </summary>
+        <remarks />
+      </Docs>
     </Member>
   </Members>
 </Type>

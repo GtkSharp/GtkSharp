@@ -1,12 +1,17 @@
 <Type Name="Notebook" FullName="Gtk.Notebook">
   <TypeSignature Language="C#" Maintainer="miguel" Value="public class Notebook : Gtk.Container" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Notebook extends Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>Gtk.Container</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>Notebook widget container.</summary>
     <remarks>
@@ -72,19 +77,242 @@ class NotebookSample
       elements, and this doc needs a good proofreading.)
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>Gtk.Container</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
   <Members>
-    <Member MemberName="GetTabLabelText">
-      <MemberSignature Language="C#" Value="public string GetTabLabelText (Gtk.Widget child);" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Notebook ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Creates a new <see cref="T:Gtk.Notebook" /> object.</summary>
+        <remarks>This is the default constructor for <see cref="T:Gtk.Notebook" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Notebook (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendPage">
+      <MemberSignature Language="C#" Value="public int AppendPage (Gtk.Widget child, Gtk.Widget tab_label);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 AppendPage(class Gtk.Widget child, class Gtk.Widget tab_label) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="tab_label" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">The <see cref="T:Gtk.Widget" /> to use as the contents of the page. </param>
+        <param name="tab_label">The <see cref="T:Gtk.Widget" /> to be used as the label for the page, or <see langword="null" /> to use the default label, 'page N'.</param>
+        <summary>Appends a page.</summary>
+        <returns>A <see cref="T:System.Int32" /> specifying the index (starting from 0) of the appended page in the notebook, or -1 if the method fails.</returns>
+        <remarks>
+          <para>
+	 Appends a page to notebook.  The tab widget is the <paramref name="tab_label" /> and the content is <paramref name="child" />.
+          </para>
+          <para>
+          Don't forget to call the Show method on the widget or else the new page will not be shown.
+          </para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="AppendPageMenu">
+      <MemberSignature Language="C#" Value="public int AppendPageMenu (Gtk.Widget child, Gtk.Widget tab_label, Gtk.Widget menu_label);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 AppendPageMenu(class Gtk.Widget child, class Gtk.Widget tab_label, class Gtk.Widget menu_label) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="tab_label" Type="Gtk.Widget" />
+        <Parameter Name="menu_label" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">The <see cref="T:Gtk.Widget" /> to use as the contents of the page. </param>
+        <param name="tab_label">The <see cref="T:Gtk.Widget" /> to be used as the label for the page, or <see langword="null" /> to use the default label, 'page N'.</param>
+        <param name="menu_label">The widget to use as a label for the page-switch menu, if its enabled.  If <see langword="null" /> is passed, and <paramref name="tab_label" /> is a <see cref="T:Gtk.Label" /> or <see langword="null" />, then the menu label will be a newly created label with the same text as <paramref name="tab_label" />; If <paramref name="tab_label" /> is not a <see cref="T:Gtk.Label" />, <paramref name="menu_label" /> must be specified if the page-switch menu is to be used.  </param>
+        <summary>Appends a page, with a custom popup-label.</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks>
+          <para>Appends a page to notebook, specifying the widget to use as the label in the popup menu.</para>
+          <para> Don't forget to call the Show method on the widget or else the new page will not be shown.  </para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="ChangeCurrentPage">
+      <MemberSignature Language="C#" Value="public event Gtk.ChangeCurrentPageHandler ChangeCurrentPage;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ChangeCurrentPageHandler ChangeCurrentPage" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("change-current-page")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ChangeCurrentPageHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Signaled when a request is made to change the current
+        page</summary>
+        <remarks>
+          <para>
+	    This event is raised when a request is made to change the
+	    current page in the notebook.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateWindow">
+      <MemberSignature Language="C#" Value="public event Gtk.CreateWindowHandler CreateWindow;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.CreateWindowHandler CreateWindow" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("create-window")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.CreateWindowHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentPage">
+      <MemberSignature Language="C#" Value="public int CurrentPage { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CurrentPage" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the index of the curent page.
+</summary>
+        <value>Returns the index of the current page .</value>
+        <remarks>The index (starting from 0) of the current page in the notebook. If the notebook has no pages, then -1 will be returned. </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentPageWidget">
+      <MemberSignature Language="C#" Value="public Gtk.Widget CurrentPageWidget { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Widget CurrentPageWidget" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Obtains the widget that represents the current page.</summary>
+        <value>The <see cref="T:Gtk.Widget" /> object in the current page.</value>
+        <remarks>
+          <para>
+            This property uses <see cref="P:Gtk.Notebook.CurrentPage" /> and <see cref="M:Gtk.Notebook.GetNthPage" /> together to
+            provide a quicker way of getting the current page widget.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EnablePopup">
+      <MemberSignature Language="C#" Value="public bool EnablePopup { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool EnablePopup" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("enable-popup")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Indicates if  the popup menu is enabled.</summary>
+        <value>Returns true if the popup menu is enabled and false if not.</value>
+        <remarks>if true and the user clicks with the right mouse button on the tabs, a menu with all the pages will be popped up. </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FocusTab">
+      <MemberSignature Language="C#" Value="public event Gtk.FocusTabHandler FocusTab;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.FocusTabHandler FocusTab" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("focus-tab")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.FocusTabHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Signaled when a Tab is focused</summary>
+        <remarks>
+          <para>
+	    This event is raised when a tab has been focused.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetActionWidget">
+      <MemberSignature Language="C#" Value="public Gtk.Widget GetActionWidget (Gtk.PackType pack_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.Widget GetActionWidget(valuetype Gtk.PackType pack_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pack_type" Type="Gtk.PackType" />
+      </Parameters>
+      <Docs>
+        <param name="pack_type">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetMenuLabel">
+      <MemberSignature Language="C#" Value="public Gtk.Widget GetMenuLabel (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.Widget GetMenuLabel(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">The child widget in the page.</param>
+        <summary>Returns the label for the menu of the notebookpage containing the given widget.</summary>
+        <returns>The <see cref="T:Gtk.Widget" />, or null if the page does not have a menu label other than the default menu label.</returns>
+        <remarks>the label of a menu doesn't have to be a <see cref="T:Gtk.Label" />. it can be any <see cref="T:Gtk.Widget" /></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetMenuLabelText">
+      <MemberSignature Language="C#" Value="public string GetMenuLabelText (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetMenuLabelText(class Gtk.Widget child) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -93,8 +321,91 @@ class NotebookSample
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Returns the label caption for the Notebookpage containing the given widget.</summary>
+        <param name="child">The child widget in the page</param>
+        <summary>Returns the label caption for the menu of the notebookpage containing the given widget.</summary>
+        <returns>
+          <para>
+	    The text of the menu label, or <see langword="null" /> if
+	    the widget does not have a menu label other than the
+	    default menu label, or the menu label page is not a <see cref="T:Gtk.Label" />. 
+	    </para>
+        </returns>
+        <remarks>
+          <para>
+	    Retrieves the text of the menu label for the page
+	    containing <paramref name="child" />.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNthPage">
+      <MemberSignature Language="C#" Value="public Gtk.Widget GetNthPage (int page_num);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.Widget GetNthPage(int32 page_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="page_num" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="page_num">the zero-based index of the page to return. use -1 for the last page.</param>
+        <summary>Returns the notebookpage with the given index.</summary>
+        <returns>returns the <see cref="T:Gtk.Widget" /> with the given index.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetTabDetachable">
+      <MemberSignature Language="C#" Value="public bool GetTabDetachable (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetTabDetachable(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <summary>Gets the detachable property of a child..</summary>
+        <returns>if <see langword="true" />, the child is detachable.</returns>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetTabLabel">
+      <MemberSignature Language="C#" Value="public Gtk.Widget GetTabLabel (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.Widget GetTabLabel(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">The child widget in the page.</param>
+        <summary>Returns the <see cref="T:Gtk.Widget" /> for the Notebook page containing the given widget.</summary>
+        <returns>The label, or null if the page does not have a tab label other than the default tab label.</returns>
+        <remarks>
+          <para>
+the label of a menu doesn't have to be a <see cref="T:Gtk.Label" />. it can be any <see cref="T:Gtk.Widget" /></para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTabLabelText">
+      <MemberSignature Language="C#" Value="public string GetTabLabelText (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetTabLabelText(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
         <param name="child">The widget in the page.</param>
+        <summary>Returns the label caption for the Notebookpage containing the given widget.</summary>
         <returns>
           <para>
 	    The text of the tab label, or <see langword="null" /> if
@@ -111,221 +422,166 @@ class NotebookSample
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetMenuLabelText">
-      <MemberSignature Language="C#" Value="public string GetMenuLabelText (Gtk.Widget child);" />
+    <Member MemberName="GetTabReorderable">
+      <MemberSignature Language="C#" Value="public bool GetTabReorderable (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetTabReorderable(class Gtk.Widget child) cil managed" />
       <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">child page.</param>
+        <summary>Gets the tab reorder property of a child.</summary>
+        <returns>if <see langword="true" />, the child is reorderable.</returns>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="GroupName">
+      <MemberSignature Language="C#" Value="public string GroupName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string GroupName" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("group-name")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
       <Docs>
-        <summary>Returns the label caption for the menu of the notebookpage containing the given widget.</summary>
-        <param name="child">The child widget in the page</param>
-        <returns>
-          <para>
-	    The text of the menu label, or <see langword="null" /> if
-	    the widget does not have a menu label other than the
-	    default menu label, or the menu label page is not a <see cref="T:Gtk.Label" />. 
-	    </para>
-        </returns>
-        <remarks>
-          <para>
-	    Retrieves the text of the menu label for the page
-	    containing <paramref name="child" />.
-	  </para>
-        </remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="PopupEnable">
-      <MemberSignature Language="C#" Value="public void PopupEnable ();" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Enables the page-selection popup.</summary>
-        <remarks>
-          <para>
-	    Enables the popup menu: if the user clicks with the right
-	    mouse button on the bookmarks, a menu with all the pages
-	    will be popped up.
-	  </para>
-        </remarks>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Notebook" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetTabLabelText">
-      <MemberSignature Language="C#" Value="public void SetTabLabelText (Gtk.Widget child, string tab_text);" />
+    <Member MemberName="InsertPage">
+      <MemberSignature Language="C#" Value="public int InsertPage (Gtk.Widget child, Gtk.Widget tab_label, int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 InsertPage(class Gtk.Widget child, class Gtk.Widget tab_label, int32 position) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="tab_text" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the label for the page containing a widget</summary>
-        <param name="child">The child widget whose label will be changed</param>
-        <param name="tab_text">The new caption for the tab.</param>
-        <remarks>
-          <para>
-	    Creates a new label and sets it as the tab label for the
-	    page containing <paramref name="child" />.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="PrevPage">
-      <MemberSignature Language="C#" Value="public void PrevPage ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Switches to the previous page.</summary>
-        <remarks>
-          <para>
-	    Switches to the previous page. Nothing happens if the
-	    current page is the first page.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="PopupDisable">
-      <MemberSignature Language="C#" Value="public void PopupDisable ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Enables the page-selection popup.</summary>
-        <remarks>
-          <para>
-	    Disables the popup menu.  Inverse operation of <see cref="M:Gtk.Notebook.PopupEnable()" /></para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemovePage">
-      <MemberSignature Language="C#" Value="public void RemovePage (int page_num);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="page_num" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Removes a page.</summary>
-        <param name="page_num">The page number to remove starting from
-        zero.  You can use minus one to remove the last page.</param>
-        <remarks>
-          <para>
-	    Removes a page from the notebook given its index in the
-	    notebook.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetMenuLabel">
-      <MemberSignature Language="C#" Value="public Gtk.Widget GetMenuLabel (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Returns the label for the menu of the notebookpage containing the given widget.</summary>
-        <param name="child">The child widget in the page.</param>
-        <returns>The <see cref="T:Gtk.Widget" />, or null if the page does not have a menu label other than the default menu label.</returns>
-        <remarks>the label of a menu doesn't have to be a <see cref="T:Gtk.Label" />. it can be any <see cref="T:Gtk.Widget" /></remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReorderChild">
-      <MemberSignature Language="C#" Value="public void ReorderChild (Gtk.Widget child, int position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="tab_label" Type="Gtk.Widget" />
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Changes the position of a widget in the notebook.</summary>
-        <param name="child">The widget to move.</param>
-        <param name="position">The new position, or -1 to move to the end</param>
+        <param name="child">The <see cref="T:Gtk.Widget" /> to use as
+        the contents of the page.</param>
+        <param name="tab_label">
+	  The <see cref="T:Gtk.Widget" /> to be used as the label for
+	  the page, or <see langword="null" /> to use the default
+	  label, 'page N'.
+	</param>
+        <param name="position">
+	  The index (starting at 0) at which to insert the page, or -1
+	  to append the page after all other pages.
+	</param>
+        <summary>Inserts a page into the notebook at the given position.</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>
           <para>
-	    Reorders the page containing <paramref name="child" />, so
-	    that it appears in position position. If position is greater
-	    than or equal to the number of children in the list or
-	    negative, <paramref name="child" /> will be moved to the end
-	    of the list.
+	    Insert a page into the notebook at the given position.
+	  </para>
+          <para>
+Don't forget to call the Show method on the widget or else the new page will not be shown.
+</para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="InsertPageMenu">
+      <MemberSignature Language="C#" Value="public int InsertPageMenu (Gtk.Widget child, Gtk.Widget tab_label, Gtk.Widget menu_label, int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 InsertPageMenu(class Gtk.Widget child, class Gtk.Widget tab_label, class Gtk.Widget menu_label, int32 position) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="tab_label" Type="Gtk.Widget" />
+        <Parameter Name="menu_label" Type="Gtk.Widget" />
+        <Parameter Name="position" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="child">The <see cref="T:Gtk.Widget" /> to use as th content of the page.</param>
+        <param name="tab_label">the<see cref="T:Gtk.Widget" /> to use as a label. use null for the default label.</param>
+        <param name="menu_label">the  <see cref="T:Gtk.Widget" /> to use as menu label. use null to get the same label as the tab label, this only works if the tab label is a <see cref="T:Gtk.Label" /></param>
+        <param name="position">the zero-based position to insert the page. use -1 make it the last page.</param>
+        <summary>Insert a page into notebook at the given position, with a custom popup-label.</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks>
+          <para>
+Don't forget to call the Show method on the widget or else the new page will not be shown.
+</para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="Item">
+      <MemberSignature Language="C#" Value="public override Gtk.Container.ContainerChild this[Gtk.Widget child] { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gtk.Container/ContainerChild Item(class Gtk.Widget)" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Container+ContainerChild</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveFocusOut">
+      <MemberSignature Language="C#" Value="public event Gtk.MoveFocusOutHandler MoveFocusOut;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MoveFocusOutHandler MoveFocusOut" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("move-focus-out")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.MoveFocusOutHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Signaled when Focus is being moved out.</summary>
+        <remarks>
+          <para>
+	    This event is raised before the focus is removed from the
+	    current widget
 	  </para>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetTabLabel">
-      <MemberSignature Language="C#" Value="public Gtk.Widget GetTabLabel (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Returns the <see cref="T:Gtk.Widget" /> for the Notebook page containing the given widget.</summary>
-        <param name="child">The child widget in the page.</param>
-        <returns>The label, or null if the page does not have a tab label other than the default tab label.</returns>
-        <remarks>
-          <para>
-the label of a menu doesn't have to be a <see cref="T:Gtk.Label" />. it can be any <see cref="T:Gtk.Widget" /></para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetNthPage">
-      <MemberSignature Language="C#" Value="public Gtk.Widget GetNthPage (int page_num);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="page_num" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Returns the notebookpage with the given index.</summary>
-        <param name="page_num">the zero-based index of the page to return. use -1 for the last page.</param>
-        <returns>returns the <see cref="T:Gtk.Widget" /> with the given index.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetMenuLabelText">
-      <MemberSignature Language="C#" Value="public void SetMenuLabelText (Gtk.Widget child, string menu_text);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="menu_text" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>sets the text of a menu label of a page.</summary>
-        <param name="child">the page.</param>
-        <param name="menu_text">the text of the label.</param>
-        <remarks />
       </Docs>
     </Member>
     <Member MemberName="NextPage">
       <MemberSignature Language="C#" Value="public void NextPage ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void NextPage() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -345,410 +601,9 @@ the label of a menu doesn't have to be a <see cref="T:Gtk.Label" />. it can be a
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetMenuLabel">
-      <MemberSignature Language="C#" Value="public void SetMenuLabel (Gtk.Widget child, Gtk.Widget menu_label);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="menu_label" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the menu label of a page.</summary>
-        <param name="child">the page</param>
-        <param name="menu_label">the  <see cref="T:Gtk.Widget" /> to use as menu label. use null to get the same label as the tab label, this only works if the tab label is a <see cref="T:Gtk.Label" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetTabLabelPacking">
-      <MemberSignature Language="C#" Value="public void SetTabLabelPacking (Gtk.Widget child, bool expand, bool fill, Gtk.PackType pack_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="expand" Type="System.Boolean" />
-        <Parameter Name="fill" Type="System.Boolean" />
-        <Parameter Name="pack_type" Type="Gtk.PackType" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the packing of the tab label of a page.</summary>
-        <param name="child">a page.</param>
-        <param name="expand">sets true to expand the label.</param>
-        <param name="fill">sets true to fill to fill the allocated area.</param>
-        <param name="pack_type">sets <see cref="T:Gtk.PackType" /> of the label.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Notebook (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Notebook ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Creates a new <see cref="T:Gtk.Notebook" /> object.</summary>
-        <remarks>This is the default constructor for <see cref="T:Gtk.Notebook" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CurrentPage">
-      <MemberSignature Language="C#" Value="public int CurrentPage { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the index of the curent page.
-</summary>
-        <value>Returns the index of the current page .</value>
-        <remarks>The index (starting from 0) of the current page in the notebook. If the notebook has no pages, then -1 will be returned. </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Scrollable">
-      <MemberSignature Language="C#" Value="public bool Scrollable { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Indicates if scroll arrows are added if there are too many tabs.</summary>
-        <value>Returns true if arrows are added and false if not.</value>
-        <remarks>Default is false.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("scrollable")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ShowTabs">
-      <MemberSignature Language="C#" Value="public bool ShowTabs { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Indicates if the tabs are shown.</summary>
-        <value>Returns true if the tabs are shown and false if not.</value>
-        <remarks>Default value is true.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("show-tabs")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ShowBorder">
-      <MemberSignature Language="C#" Value="public bool ShowBorder { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Indicates if the border is shown.</summary>
-        <value>Returns true if the border is shown and false if not.</value>
-        <remarks>Default value is true.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("show-border")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="TabHborder">
-      <MemberSignature Language="C#" Value="public uint TabHborder { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the width of the horizontal border around the tabs.</summary>
-        <value>Returns the horizontal width of the border.</value>
-        <remarks>Default value is 2.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("tab-hborder")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Homogeneous">
-      <MemberSignature Language="C#" Value="public bool Homogeneous { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Indicates if all the tabs have the same size.</summary>
-        <value>Returns a boolean to indicate if the tabs have the same size or not.</value>
-        <remarks>True if the tabs have the same size and false if not. Default is false.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("homogeneous")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="TabVborder">
-      <MemberSignature Language="C#" Value="public uint TabVborder { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the width of the vertical border around the tabs.</summary>
-        <value>Returns the vertical width of the border.</value>
-        <remarks>Default value is 2.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("tab-vborder")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="TabBorder">
-      <MemberSignature Language="C#" Value="public uint TabBorder { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets the width of the border around the tabs..</summary>
-        <value />
-        <remarks>Default value is 2. This is a easy the change  <see cref="P:Gtk.Notebook.TabHborder" /> and <see cref="P:Gtk.Notebook.TabVborder" /> at the same time. Use those properties to read the width.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("tab-border")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="Page">
-      <MemberSignature Language="C#" Value="public int Page { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the index of the curent page.</summary>
-        <value>Returns the index of the curent page.</value>
-        <remarks>use <see cref="P:Gtk.Notebook.CurrentPage" /> instead.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("page")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="TabPos">
-      <MemberSignature Language="C#" Value="public Gtk.PositionType TabPos { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.PositionType</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains  The position of the tabs.</summary>
-        <value>the <see cref="T:Gtk.PositionType" /> of this notebook.</value>
-        <remarks>default is top.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("tab-pos")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="EnablePopup">
-      <MemberSignature Language="C#" Value="public bool EnablePopup { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Indicates if  the popup menu is enabled.</summary>
-        <value>Returns true if the popup menu is enabled and false if not.</value>
-        <remarks>if true and the user clicks with the right mouse button on the tabs, a menu with all the pages will be popped up. </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("enable-popup")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SelectPage">
-      <MemberSignature Language="C#" Value="public event Gtk.SelectPageHandler SelectPage;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.SelectPageHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Raised when a page of the notebook is selected.</summary>
-        <remarks />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("select_page")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SwitchPage">
-      <MemberSignature Language="C#" Value="public event Gtk.SwitchPageHandler SwitchPage;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.SwitchPageHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Signaled when the page changes</summary>
-        <remarks>
-          <para>
-	    This signal is raised when the page is changed either by
-	    the user or programatically.
-	  </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("switch_page")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="MoveFocusOut">
-      <MemberSignature Language="C#" Value="public event Gtk.MoveFocusOutHandler MoveFocusOut;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.MoveFocusOutHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Signaled when Focus is being moved out.</summary>
-        <remarks>
-          <para>
-	    This event is raised before the focus is removed from the
-	    current widget
-	  </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("move_focus_out")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ChangeCurrentPage">
-      <MemberSignature Language="C#" Value="public event Gtk.ChangeCurrentPageHandler ChangeCurrentPage;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ChangeCurrentPageHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Signaled when a request is made to change the current
-        page</summary>
-        <remarks>
-          <para>
-	    This event is raised when a request is made to change the
-	    current page in the notebook.
-	  </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("change_current_page")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="FocusTab">
-      <MemberSignature Language="C#" Value="public event Gtk.FocusTabHandler FocusTab;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.FocusTabHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Signaled when a Tab is focused</summary>
-        <remarks>
-          <para>
-	    This event is raised when a tab has been focused.
-	  </para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("focus_tab")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="SetTabLabel">
-      <MemberSignature Language="C#" Value="public void SetTabLabel (Gtk.Widget child, Gtk.Widget tab_label);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="tab_label" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the label for the page containing a widget</summary>
-        <param name="child">the page</param>
-        <param name="tab_label">the <see cref="T:Gtk.Widget" /> to use as label. use null for the default label.</param>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="NPages">
-      <MemberSignature Language="C#" Value="public int NPages { get; };" />
+      <MemberSignature Language="C#" Value="public int NPages { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NPages" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -759,76 +614,15 @@ the label of a menu doesn't have to be a <see cref="T:Gtk.Label" />. it can be a
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="CurrentPageWidget">
-      <MemberSignature Language="C#" Value="public Gtk.Widget CurrentPageWidget { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Obtains the widget that represents the current page.</summary>
-        <value>The <see cref="T:Gtk.Widget" /> object in the current page.</value>
-        <remarks>
-          <para>
-            This property uses <see cref="P:Gtk.Notebook.CurrentPage" /> and <see cref="M:Gtk.Notebook.GetNthPage" /> together to
-            provide a quicker way of getting the current page widget.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="QueryTabLabelPacking">
-      <MemberSignature Language="C#" Value="public void QueryTabLabelPacking (Gtk.Widget child, out bool expand, out bool fill, out Gtk.PackType pack_type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="expand" Type="System.Boolean&amp;" RefType="out" />
-        <Parameter Name="fill" Type="System.Boolean&amp;" RefType="out" />
-        <Parameter Name="pack_type" Type="Gtk.PackType&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Query the packing attributes for the tab label of the page containing child.</summary>
-        <param name="child">the page.</param>
-        <param name="expand">indicates if expand is true or false.</param>
-        <param name="fill">indicates if fill is true or false.</param>
-        <param name="pack_type">returns to <see cref="T:Gtk.PackType;" />which is used.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Notebook" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnFocusTab">
-      <MemberSignature Language="C#" Value="protected virtual bool OnFocusTab (Gtk.NotebookTab type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="Gtk.NotebookTab" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Notebook.FocusTab" /> event.</summary>
-        <param name="type">a <see cref="T:Gtk.NotebookTab" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.FocusTab" /> event.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="OnChangeCurrentPage">
       <MemberSignature Language="C#" Value="protected virtual void OnChangeCurrentPage (int offset);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnChangeCurrentPage(int32 offset) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideChangeCurrentPage", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -836,552 +630,20 @@ the label of a menu doesn't have to be a <see cref="T:Gtk.Label" />. it can be a
         <Parameter Name="offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Notebook.ChangeCurrentPage" /> event.</summary>
         <param name="offset">a <see cref="T:System.Int32" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Notebook.ChangeCurrentPage" /> event.</summary>
         <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.ChangeCurrentPage" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnMoveFocusOut">
-      <MemberSignature Language="C#" Value="protected virtual void OnMoveFocusOut (Gtk.DirectionType direction);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="direction" Type="Gtk.DirectionType" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Notebook.MoveFocusOut" /> event.</summary>
-        <param name="direction">a <see cref="T:Gtk.DirectionType" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.MoveFocusOut" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnSwitchPage">
-      <MemberSignature Language="C#" Value="protected virtual void OnSwitchPage (Gtk.NotebookPage page, uint page_num);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="page" Type="Gtk.NotebookPage" />
-        <Parameter Name="page_num" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Notebook.SwitchPage" /> event.</summary>
-        <param name="page">a <see cref="T:Gtk.NotebookPage" /></param>
-        <param name="page_num">a <see cref="T:System.UInt32" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.SwitchPage" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnSelectPage">
-      <MemberSignature Language="C#" Value="protected virtual bool OnSelectPage (bool move_focus);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="move_focus" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.Notebook.SelectPage" /> event.</summary>
-        <param name="move_focus">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.SelectPage" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Notebook (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="PageNum">
-      <MemberSignature Language="C#" Value="public int PageNum (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Returns the page number that a child <see cref="T:Gtk.Widget" /> exists on.</summary>
-        <param name="child">
-          <see cref="T:Gtk.Widget" /> to look for.</param>
-        <returns>Page number that the widget exists on, -1 if the widget isn't in the notebook.</returns>
-        <remarks>This function returns -1 if the <see cref="T:Gtk.Widget" /> is not a direct child of the notebook.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="HomogeneousTabs">
-      <MemberSignature Language="C#" Value="public bool HomogeneousTabs { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Whether tabs should have homogeneous sizes.</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="PrependPageMenu">
-      <MemberSignature Language="C#" Value="public int PrependPageMenu (Gtk.Widget child, Gtk.Widget tab_label, Gtk.Widget menu_label);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="tab_label" Type="Gtk.Widget" />
-        <Parameter Name="menu_label" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>prepends a page, with a custom popup-label.</summary>
-        <param name="child">the <see cref="T:Gtk.Widget" /> to use as contents of the page.</param>
-        <param name="tab_label">the <see cref="T:Gtk.Widget" /> to use as tab label. use null to use the default label.</param>
-        <param name="menu_label">the  <see cref="T:Gtk.Widget" /> to use as menu label. use null to get the same label as the tab label, this only works if the tab label is a <see cref="T:Gtk.Label" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>
-          <para> Don't forget to call the Show method on the widget or else the new page will not be shown.  </para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="PrependPage">
-      <MemberSignature Language="C#" Value="public int PrependPage (Gtk.Widget child, Gtk.Widget tab_label);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="tab_label" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>prepends a page.</summary>
-        <param name="child">a <see cref="T:Gtk.Widget" /> t use as content of the page.</param>
-        <param name="tab_label">the <see cref="T:Gtk.Widget" /> to use as the tab label. use null to use the default label.</param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>
-          <para> Don't forget to call the Show method on the widget or else the new page will not be shown.  </para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="InsertPageMenu">
-      <MemberSignature Language="C#" Value="public int InsertPageMenu (Gtk.Widget child, Gtk.Widget tab_label, Gtk.Widget menu_label, int position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="tab_label" Type="Gtk.Widget" />
-        <Parameter Name="menu_label" Type="Gtk.Widget" />
-        <Parameter Name="position" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Insert a page into notebook at the given position, with a custom popup-label.</summary>
-        <param name="child">The <see cref="T:Gtk.Widget" /> to use as th content of the page.</param>
-        <param name="tab_label">the<see cref="T:Gtk.Widget" /> to use as a label. use null for the default label.</param>
-        <param name="menu_label">the  <see cref="T:Gtk.Widget" /> to use as menu label. use null to get the same label as the tab label, this only works if the tab label is a <see cref="T:Gtk.Label" /></param>
-        <param name="position">the zero-based position to insert the page. use -1 make it the last page.</param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>
-          <para>
-Don't forget to call the Show method on the widget or else the new page will not be shown.
-</para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="InsertPage">
-      <MemberSignature Language="C#" Value="public int InsertPage (Gtk.Widget child, Gtk.Widget tab_label, int position);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="tab_label" Type="Gtk.Widget" />
-        <Parameter Name="position" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Inserts a page into the notebook at the given position.</summary>
-        <param name="child">The <see cref="T:Gtk.Widget" /> to use as
-        the contents of the page.</param>
-        <param name="tab_label">
-	  The <see cref="T:Gtk.Widget" /> to be used as the label for
-	  the page, or <see langword="null" /> to use the default
-	  label, 'page N'.
-	</param>
-        <param name="position">
-	  The index (starting at 0) at which to insert the page, or -1
-	  to append the page after all other pages.
-	</param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>
-          <para>
-	    Insert a page into the notebook at the given position.
-	  </para>
-          <para>
-Don't forget to call the Show method on the widget or else the new page will not be shown.
-</para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="AppendPageMenu">
-      <MemberSignature Language="C#" Value="public int AppendPageMenu (Gtk.Widget child, Gtk.Widget tab_label, Gtk.Widget menu_label);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="tab_label" Type="Gtk.Widget" />
-        <Parameter Name="menu_label" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Appends a page, with a custom popup-label.</summary>
-        <param name="child">The <see cref="T:Gtk.Widget" /> to use as the contents of the page. </param>
-        <param name="tab_label">The <see cref="T:Gtk.Widget" /> to be used as the label for the page, or <see langword="null" /> to use the default label, 'page N'.</param>
-        <param name="menu_label">The widget to use as a label for the page-switch menu, if its enabled.  If <see langword="null" /> is passed, and <paramref name="tab_label" /> is a <see cref="T:Gtk.Label" /> or <see langword="null" />, then the menu label will be a newly created label with the same text as <paramref name="tab_label" />; If <paramref name="tab_label" /> is not a <see cref="T:Gtk.Label" />, <paramref name="menu_label" /> must be specified if the page-switch menu is to be used.  </param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>
-          <para>Appends a page to notebook, specifying the widget to use as the label in the popup menu.</para>
-          <para> Don't forget to call the Show method on the widget or else the new page will not be shown.  </para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="AppendPage">
-      <MemberSignature Language="C#" Value="public int AppendPage (Gtk.Widget child, Gtk.Widget tab_label);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="tab_label" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <summary>Appends a page.</summary>
-        <param name="child">The <see cref="T:Gtk.Widget" /> to use as the contents of the page. </param>
-        <param name="tab_label">The <see cref="T:Gtk.Widget" /> to be used as the label for the page, or <see langword="null" /> to use the default label, 'page N'.</param>
-        <returns>A <see cref="T:System.Int32" /> specifying the index (starting from 0) of the appended page in the notebook, or -1 if the method fails.</returns>
-        <remarks>
-          <para>
-	 Appends a page to notebook.  The tab widget is the <paramref name="tab_label" /> and the content is <paramref name="child" />.
-          </para>
-          <para>
-          Don't forget to call the Show method on the widget or else the new page will not be shown.
-          </para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="PageRemoved">
-      <MemberSignature Language="C#" Value="public event Gtk.PageRemovedHandler PageRemoved;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("page_removed")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.PageRemovedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Raised when a notebook page is removed.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="PageAdded">
-      <MemberSignature Language="C#" Value="public event Gtk.PageAddedHandler PageAdded;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("page_added")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.PageAddedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Raised when a notebook page is added.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="PageReordered">
-      <MemberSignature Language="C#" Value="public event Gtk.PageReorderedHandler PageReordered;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("page_reordered")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.PageReorderedHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Raised when a notebook page is reordered.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="ReorderTab">
-      <MemberSignature Language="C#" Value="public event Gtk.ReorderTabHandler ReorderTab;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("reorder_tab")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.ReorderTabHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Raised when a tab is reordered.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="OnPageRemoved">
-      <MemberSignature Language="C#" Value="protected virtual void OnPageRemoved (Gtk.Widget p0, uint p1);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="p0" Type="Gtk.Widget" />
-        <Parameter Name="p1" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <param name="p0">removed page.</param>
-        <param name="p1">index of removed page.</param>
-        <summary>Default handler for <see cref="M:Gtk.Notebook.PageRemoved" /> event.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="OnPageAdded">
-      <MemberSignature Language="C#" Value="protected virtual void OnPageAdded (Gtk.Widget p0, uint p1);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="p0" Type="Gtk.Widget" />
-        <Parameter Name="p1" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <param name="p0">added page.</param>
-        <param name="p1">index of added page.</param>
-        <summary>Default handler for <see cref="M:Gtk.Notebook.PageAdded" /> event.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="OnPageReordered">
-      <MemberSignature Language="C#" Value="protected virtual void OnPageReordered (Gtk.Widget p0, uint p1);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="p0" Type="Gtk.Widget" />
-        <Parameter Name="p1" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <param name="p0">reordered page.</param>
-        <param name="p1">index of reordered page.</param>
-        <summary>Default handler for <see cref="M:Gtk.Notebook.PageReordered" /> event.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="OnReorderTab">
-      <MemberSignature Language="C#" Value="protected virtual void OnReorderTab (Gtk.DirectionType direction, bool move_to_last);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="direction" Type="Gtk.DirectionType" />
-        <Parameter Name="move_to_last" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="direction">To be added.</param>
-        <param name="move_to_last">To be added.</param>
-        <summary>Default handler for the <see cref="M:Gtk.Notebook.ReorderTab" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.ReorderTab" /> event.</remarks>
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="SetTabDetachable">
-      <MemberSignature Language="C#" Value="public void SetTabDetachable (Gtk.Widget child, bool detachable);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="detachable" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="child">child to update.</param>
-        <param name="detachable">if <see langword="true" />, the child is detachable.</param>
-        <summary>Sets a child's detachable property.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="GetTabReorderable">
-      <MemberSignature Language="C#" Value="public bool GetTabReorderable (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <param name="child">child page.</param>
-        <summary>Gets the tab reorder property of a child.</summary>
-        <returns>if <see langword="true" />, the child is reorderable.</returns>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="SetTabReorderable">
-      <MemberSignature Language="C#" Value="public void SetTabReorderable (Gtk.Widget child, bool reorderable);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="reorderable" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="child">child page.</param>
-        <param name="reorderable">if <see langword="true" />, the child is reorderable.</param>
-        <summary>Sets the tab reorder property of a child.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="GetTabDetachable">
-      <MemberSignature Language="C#" Value="public bool GetTabDetachable (Gtk.Widget child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="child" Type="Gtk.Widget" />
-      </Parameters>
-      <Docs>
-        <param name="child">To be added.</param>
-        <summary>Gets the detachable property of a child..</summary>
-        <returns>if <see langword="true" />, the child is detachable.</returns>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="GroupId">
-      <MemberSignature Language="C#" Value="public int GroupId { set; get; };" />
-      <MemberType>Property</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("group-id")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Group ID for tab drag and drop.</summary>
-        <value>default value is -1.</value>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="WindowCreationHook">
-      <MemberSignature Language="C#" Value="public static Gtk.NotebookWindowCreationFunc WindowCreationHook { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.NotebookWindowCreationFunc</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Sets a delegate to create windows for detached tabs.</summary>
-        <value>a <see cref="Gtk.NotebookWindowCreationFunc" />.</value>
-        <remarks />
-        <since version="Gtk# 2.10" />
-      </Docs>
-    </Member>
-    <Member MemberName="CreateWindow">
-      <MemberSignature Language="C#" Value="public event Gtk.CreateWindowHandler CreateWindow;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("create_window")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>Gtk.CreateWindowHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
-      </Docs>
-    </Member>
-    <Member MemberName="Group">
-      <MemberSignature Language="C#" Value="public IntPtr Group { set; get; };" />
-      <MemberType>Property</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("group")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.IntPtr</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
     <Member MemberName="OnCreateWindow">
       <MemberSignature Language="C#" Value="protected virtual Gtk.Notebook OnCreateWindow (Gtk.Widget page, int x, int y);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gtk.Notebook OnCreateWindow(class Gtk.Widget page, int32 x, int32 y) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCreateWindow", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gtk.Notebook</ReturnType>
       </ReturnValue>
@@ -1398,6 +660,762 @@ Don't forget to call the Show method on the widget or else the new page will not
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnFocusTab">
+      <MemberSignature Language="C#" Value="protected virtual bool OnFocusTab (Gtk.NotebookTab type);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnFocusTab(valuetype Gtk.NotebookTab type) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideFocusTab", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="Gtk.NotebookTab" />
+      </Parameters>
+      <Docs>
+        <param name="type">a <see cref="T:Gtk.NotebookTab" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Notebook.FocusTab" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.FocusTab" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnInsertPage">
+      <MemberSignature Language="C#" Value="protected virtual int OnInsertPage (Gtk.Widget child, Gtk.Widget tab_label, Gtk.Widget menu_label, int position);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnInsertPage(class Gtk.Widget child, class Gtk.Widget tab_label, class Gtk.Widget menu_label, int32 position) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideInsertPage", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="tab_label" Type="Gtk.Widget" />
+        <Parameter Name="menu_label" Type="Gtk.Widget" />
+        <Parameter Name="position" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <param name="tab_label">To be added.</param>
+        <param name="menu_label">To be added.</param>
+        <param name="position">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnMoveFocusOut">
+      <MemberSignature Language="C#" Value="protected virtual void OnMoveFocusOut (Gtk.DirectionType direction);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnMoveFocusOut(valuetype Gtk.DirectionType direction) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMoveFocusOut", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="Gtk.DirectionType" />
+      </Parameters>
+      <Docs>
+        <param name="direction">a <see cref="T:Gtk.DirectionType" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Notebook.MoveFocusOut" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.MoveFocusOut" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPageAdded">
+      <MemberSignature Language="C#" Value="protected virtual void OnPageAdded (Gtk.Widget child, uint page_num);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPageAdded(class Gtk.Widget child, unsigned int32 page_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePageAdded", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="page_num" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <param name="page_num">To be added.</param>
+        <summary>Default handler for <see cref="M:Gtk.Notebook.PageAdded" /> event.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnPageRemoved">
+      <MemberSignature Language="C#" Value="protected virtual void OnPageRemoved (Gtk.Widget child, uint page_num);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPageRemoved(class Gtk.Widget child, unsigned int32 page_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePageRemoved", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="page_num" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <param name="page_num">To be added.</param>
+        <summary>Default handler for <see cref="M:Gtk.Notebook.PageRemoved" /> event.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnPageReordered">
+      <MemberSignature Language="C#" Value="protected virtual void OnPageReordered (Gtk.Widget child, uint page_num);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPageReordered(class Gtk.Widget child, unsigned int32 page_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverridePageReordered", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="page_num" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="child">To be added.</param>
+        <param name="page_num">To be added.</param>
+        <summary>Default handler for <see cref="M:Gtk.Notebook.PageReordered" /> event.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnReorderTab">
+      <MemberSignature Language="C#" Value="protected virtual void OnReorderTab (Gtk.DirectionType direction, bool move_to_last);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnReorderTab(valuetype Gtk.DirectionType direction, bool move_to_last) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideReorderTab", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="Gtk.DirectionType" />
+        <Parameter Name="move_to_last" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="direction">To be added.</param>
+        <param name="move_to_last">To be added.</param>
+        <summary>Default handler for the <see cref="M:Gtk.Notebook.ReorderTab" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.ReorderTab" /> event.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSelectPage">
+      <MemberSignature Language="C#" Value="protected virtual bool OnSelectPage (bool move_focus);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnSelectPage(bool move_focus) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSelectPage", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="move_focus" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="move_focus">a <see cref="T:System.Boolean" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.Notebook.SelectPage" /> event.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Notebook.SelectPage" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSwitchPage">
+      <MemberSignature Language="C#" Value="protected virtual void OnSwitchPage (Gtk.Widget page, uint page_num);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSwitchPage(class Gtk.Widget page, unsigned int32 page_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSwitchPage", Type=typeof(Gtk.Notebook))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="page" Type="Gtk.Widget" />
+        <Parameter Name="page_num" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="page">To be added.</param>
+        <param name="page_num">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Page">
+      <MemberSignature Language="C#" Value="public int Page { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Page" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("page")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the index of the curent page.</summary>
+        <value>Returns the index of the curent page.</value>
+        <remarks>use <see cref="P:Gtk.Notebook.CurrentPage" /> instead.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PageAdded">
+      <MemberSignature Language="C#" Value="public event Gtk.PageAddedHandler PageAdded;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PageAddedHandler PageAdded" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("page-added")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PageAddedHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Raised when a notebook page is added.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="PageNum">
+      <MemberSignature Language="C#" Value="public int PageNum (Gtk.Widget child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 PageNum(class Gtk.Widget child) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">
+          <see cref="T:Gtk.Widget" /> to look for.</param>
+        <summary>Returns the page number that a child <see cref="T:Gtk.Widget" /> exists on.</summary>
+        <returns>Page number that the widget exists on, -1 if the widget isn't in the notebook.</returns>
+        <remarks>This function returns -1 if the <see cref="T:Gtk.Widget" /> is not a direct child of the notebook.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PageRemoved">
+      <MemberSignature Language="C#" Value="public event Gtk.PageRemovedHandler PageRemoved;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PageRemovedHandler PageRemoved" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("page-removed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PageRemovedHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Raised when a notebook page is removed.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="PageReordered">
+      <MemberSignature Language="C#" Value="public event Gtk.PageReorderedHandler PageReordered;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.PageReorderedHandler PageReordered" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("page-reordered")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PageReorderedHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Raised when a notebook page is reordered.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="PopupDisable">
+      <MemberSignature Language="C#" Value="public void PopupDisable ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PopupDisable() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Enables the page-selection popup.</summary>
+        <remarks>
+          <para>
+	    Disables the popup menu.  Inverse operation of <see cref="M:Gtk.Notebook.PopupEnable()" /></para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PopupEnable">
+      <MemberSignature Language="C#" Value="public void PopupEnable ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PopupEnable() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Enables the page-selection popup.</summary>
+        <remarks>
+          <para>
+	    Enables the popup menu: if the user clicks with the right
+	    mouse button on the bookmarks, a menu with all the pages
+	    will be popped up.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrependPage">
+      <MemberSignature Language="C#" Value="public int PrependPage (Gtk.Widget child, Gtk.Widget tab_label);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 PrependPage(class Gtk.Widget child, class Gtk.Widget tab_label) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="tab_label" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">a <see cref="T:Gtk.Widget" /> t use as content of the page.</param>
+        <param name="tab_label">the <see cref="T:Gtk.Widget" /> to use as the tab label. use null to use the default label.</param>
+        <summary>prepends a page.</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks>
+          <para> Don't forget to call the Show method on the widget or else the new page will not be shown.  </para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrependPageMenu">
+      <MemberSignature Language="C#" Value="public int PrependPageMenu (Gtk.Widget child, Gtk.Widget tab_label, Gtk.Widget menu_label);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 PrependPageMenu(class Gtk.Widget child, class Gtk.Widget tab_label, class Gtk.Widget menu_label) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="tab_label" Type="Gtk.Widget" />
+        <Parameter Name="menu_label" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">the <see cref="T:Gtk.Widget" /> to use as contents of the page.</param>
+        <param name="tab_label">the <see cref="T:Gtk.Widget" /> to use as tab label. use null to use the default label.</param>
+        <param name="menu_label">the  <see cref="T:Gtk.Widget" /> to use as menu label. use null to get the same label as the tab label, this only works if the tab label is a <see cref="T:Gtk.Label" /></param>
+        <summary>prepends a page, with a custom popup-label.</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks>
+          <para> Don't forget to call the Show method on the widget or else the new page will not be shown.  </para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrevPage">
+      <MemberSignature Language="C#" Value="public void PrevPage ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PrevPage() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Switches to the previous page.</summary>
+        <remarks>
+          <para>
+	    Switches to the previous page. Nothing happens if the
+	    current page is the first page.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemovePage">
+      <MemberSignature Language="C#" Value="public void RemovePage (int page_num);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemovePage(int32 page_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="page_num" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="page_num">The page number to remove starting from
+        zero.  You can use minus one to remove the last page.</param>
+        <summary>Removes a page.</summary>
+        <remarks>
+          <para>
+	    Removes a page from the notebook given its index in the
+	    notebook.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReorderChild">
+      <MemberSignature Language="C#" Value="public void ReorderChild (Gtk.Widget child, int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReorderChild(class Gtk.Widget child, int32 position) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="position" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="child">The widget to move.</param>
+        <param name="position">The new position, or -1 to move to the end</param>
+        <summary>Changes the position of a widget in the notebook.</summary>
+        <remarks>
+          <para>
+	    Reorders the page containing <paramref name="child" />, so
+	    that it appears in position position. If position is greater
+	    than or equal to the number of children in the list or
+	    negative, <paramref name="child" /> will be moved to the end
+	    of the list.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReorderTab">
+      <MemberSignature Language="C#" Value="public event Gtk.ReorderTabHandler ReorderTab;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.ReorderTabHandler ReorderTab" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("reorder-tab")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ReorderTabHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Raised when a tab is reordered.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="Scrollable">
+      <MemberSignature Language="C#" Value="public bool Scrollable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Scrollable" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("scrollable")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Indicates if scroll arrows are added if there are too many tabs.</summary>
+        <value>Returns true if arrows are added and false if not.</value>
+        <remarks>Default is false.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SelectPage">
+      <MemberSignature Language="C#" Value="public event Gtk.SelectPageHandler SelectPage;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.SelectPageHandler SelectPage" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("select-page")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.SelectPageHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Raised when a page of the notebook is selected.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetActionWidget">
+      <MemberSignature Language="C#" Value="public void SetActionWidget (Gtk.Widget widget, Gtk.PackType pack_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetActionWidget(class Gtk.Widget widget, valuetype Gtk.PackType pack_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="pack_type" Type="Gtk.PackType" />
+      </Parameters>
+      <Docs>
+        <param name="widget">To be added.</param>
+        <param name="pack_type">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetMenuLabel">
+      <MemberSignature Language="C#" Value="public void SetMenuLabel (Gtk.Widget child, Gtk.Widget menu_label);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetMenuLabel(class Gtk.Widget child, class Gtk.Widget menu_label) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="menu_label" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">the page</param>
+        <param name="menu_label">the  <see cref="T:Gtk.Widget" /> to use as menu label. use null to get the same label as the tab label, this only works if the tab label is a <see cref="T:Gtk.Label" /></param>
+        <summary>Sets the menu label of a page.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetMenuLabelText">
+      <MemberSignature Language="C#" Value="public void SetMenuLabelText (Gtk.Widget child, string menu_text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetMenuLabelText(class Gtk.Widget child, string menu_text) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="menu_text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="child">the page.</param>
+        <param name="menu_text">the text of the label.</param>
+        <summary>sets the text of a menu label of a page.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetTabDetachable">
+      <MemberSignature Language="C#" Value="public void SetTabDetachable (Gtk.Widget child, bool detachable);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetTabDetachable(class Gtk.Widget child, bool detachable) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="detachable" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="child">child to update.</param>
+        <param name="detachable">if <see langword="true" />, the child is detachable.</param>
+        <summary>Sets a child's detachable property.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetTabLabel">
+      <MemberSignature Language="C#" Value="public void SetTabLabel (Gtk.Widget child, Gtk.Widget tab_label);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetTabLabel(class Gtk.Widget child, class Gtk.Widget tab_label) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="tab_label" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="child">the page</param>
+        <param name="tab_label">the <see cref="T:Gtk.Widget" /> to use as label. use null for the default label.</param>
+        <summary>Sets the label for the page containing a widget</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetTabLabelText">
+      <MemberSignature Language="C#" Value="public void SetTabLabelText (Gtk.Widget child, string tab_text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetTabLabelText(class Gtk.Widget child, string tab_text) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="tab_text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="child">The child widget whose label will be changed</param>
+        <param name="tab_text">The new caption for the tab.</param>
+        <summary>Sets the label for the page containing a widget</summary>
+        <remarks>
+          <para>
+	    Creates a new label and sets it as the tab label for the
+	    page containing <paramref name="child" />.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetTabReorderable">
+      <MemberSignature Language="C#" Value="public void SetTabReorderable (Gtk.Widget child, bool reorderable);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetTabReorderable(class Gtk.Widget child, bool reorderable) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="reorderable" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="child">child page.</param>
+        <param name="reorderable">if <see langword="true" />, the child is reorderable.</param>
+        <summary>Sets the tab reorder property of a child.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="ShowBorder">
+      <MemberSignature Language="C#" Value="public bool ShowBorder { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ShowBorder" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("show-border")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Indicates if the border is shown.</summary>
+        <value>Returns true if the border is shown and false if not.</value>
+        <remarks>Default value is true.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShowTabs">
+      <MemberSignature Language="C#" Value="public bool ShowTabs { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ShowTabs" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("show-tabs")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Indicates if the tabs are shown.</summary>
+        <value>Returns true if the tabs are shown and false if not.</value>
+        <remarks>Default value is true.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SwitchPage">
+      <MemberSignature Language="C#" Value="public event Gtk.SwitchPageHandler SwitchPage;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.SwitchPageHandler SwitchPage" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("switch-page")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.SwitchPageHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Signaled when the page changes</summary>
+        <remarks>
+          <para>
+	    This signal is raised when the page is changed either by
+	    the user or programatically.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TabHborder">
+      <MemberSignature Language="C#" Value="public ushort TabHborder { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int16 TabHborder" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt16</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the width of the horizontal border around the tabs.</summary>
+        <value>Returns the horizontal width of the border.</value>
+        <remarks>Default value is 2.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TabPos">
+      <MemberSignature Language="C#" Value="public Gtk.PositionType TabPos { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.PositionType TabPos" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("tab-pos")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.PositionType</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains  The position of the tabs.</summary>
+        <value>the <see cref="T:Gtk.PositionType" /> of this notebook.</value>
+        <remarks>default is top.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TabVborder">
+      <MemberSignature Language="C#" Value="public ushort TabVborder { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int16 TabVborder" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt16</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>Sets or obtains the width of the vertical border around the tabs.</summary>
+        <value>Returns the vertical width of the border.</value>
+        <remarks>Default value is 2.</remarks>
       </Docs>
     </Member>
   </Members>

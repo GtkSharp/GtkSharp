@@ -1,12 +1,17 @@
 <Type Name="TreeModel" FullName="Gtk.TreeModel">
   <TypeSignature Language="C#" Maintainer="John Luke" Value="public interface TreeModel : GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract TreeModel implements class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>The tree interface used by <see cref="T:Gtk.TreeView" /></summary>
     <remarks>
@@ -36,14 +41,351 @@
       </para>
     </remarks>
   </Docs>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-  </Interfaces>
   <Members>
+    <Member MemberName="EmitRowChanged">
+      <MemberSignature Language="C#" Value="public void EmitRowChanged (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowChanged(class Gtk.TreePath path, valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+      </Parameters>
+      <Docs>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Emits the <see cref="E:Gtk.TreeModel.RowChanged" /> signal.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EmitRowDeleted">
+      <MemberSignature Language="C#" Value="public void EmitRowDeleted (Gtk.TreePath path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowDeleted(class Gtk.TreePath path) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+      </Parameters>
+      <Docs>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
+        <summary>Emits the <see cref="E:Gtk.TreeModel.RowDeleted" /> event.</summary>
+        <remarks>This should be called by models after a row has been removed. The location pointed to by <paramref name="path" /> should be the location that the row previously was at. It may not be a valid location anymore.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EmitRowHasChildToggled">
+      <MemberSignature Language="C#" Value="public void EmitRowHasChildToggled (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowHasChildToggled(class Gtk.TreePath path, valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+      </Parameters>
+      <Docs>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Emits the <see cref="E:Gtk.TreeModelSort.RowHasChildToggled" /> event.</summary>
+        <remarks>This should be called by models after the child state of a node changes.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EmitRowInserted">
+      <MemberSignature Language="C#" Value="public void EmitRowInserted (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowInserted(class Gtk.TreePath path, valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+      </Parameters>
+      <Docs>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" />, path of the inserted row.</param>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" />, points to the inserted row.</param>
+        <summary>Emits the <see cref="E:Gtk.TreeModel.RowInserted" /> event.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EmitRowsReordered">
+      <MemberSignature Language="C#" Value="public void EmitRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter, int[] new_order);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EmitRowsReordered(class Gtk.TreePath path, valuetype Gtk.TreeIter iter, int32[] new_order) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+        <Parameter Name="new_order" Type="System.Int32[]" />
+      </Parameters>
+      <Docs>
+        <param name="path">To be added.</param>
+        <param name="iter">To be added.</param>
+        <param name="new_order">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Flags">
+      <MemberSignature Language="C#" Value="public Gtk.TreeModelFlags Flags { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Gtk.TreeModelFlags Flags" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreeModelFlags</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns a set of flags supported by this interface.</summary>
+        <value>an object of type <see cref="T:Gtk.TreeModelFlags" /></value>
+        <remarks>The flags are a bitwise combination of <see cref="T:Gtk.TreeModelFlags" />. The flags supported should not change during the lifecycle of the <see cref="T:Gtk.TreeModel" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Foreach">
+      <MemberSignature Language="C#" Value="public void Foreach (Gtk.TreeModelForeachFunc func);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Foreach(class Gtk.TreeModelForeachFunc func) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="func" Type="Gtk.TreeModelForeachFunc" />
+      </Parameters>
+      <Docs>
+        <param name="func">an object of type <see cref="T:Gtk.TreeModelForeachFunc" /></param>
+        <summary>Calls <paramref name="func" /> on each node in model in a depth-first fashion.</summary>
+        <remarks>If func returns <see langword="true" />, then the tree ceases to be walked, and this method returns.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetColumnType">
+      <MemberSignature Language="C#" Value="public GLib.GType GetColumnType (int index_);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype GLib.GType GetColumnType(int32 index_) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index_" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="index_">a <see cref="T:System.Int32" />, the column number.</param>
+        <summary>Returns the type of the column  at the given index.</summary>
+        <returns>a <see cref="T:GLib.GType" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIter">
+      <MemberSignature Language="C#" Value="public bool GetIter (out Gtk.TreeIter iter, Gtk.TreePath path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool GetIter(valuetype Gtk.TreeIter iter, class Gtk.TreePath path) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
+        <Parameter Name="path" Type="Gtk.TreePath" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
+        <summary>Sets <paramref name="iter" /> to a valid iterator pointing to <paramref name="path" />.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIterFirst">
+      <MemberSignature Language="C#" Value="public bool GetIterFirst (out Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool GetIterFirst(valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Gets the first iterator in the tree (the one at the path "0") and returns <see langword="true" />.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>Returns <see langword="false" /> if the tree is empty.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIterFromString">
+      <MemberSignature Language="C#" Value="public bool GetIterFromString (out Gtk.TreeIter iter, string path_string);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool GetIterFromString(valuetype Gtk.TreeIter iter, string path_string) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
+        <Parameter Name="path_string" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="path_string">an object of type <see cref="T:System.String" /></param>
+        <summary>Gets the <see cref="T:Gtk.TreeIter" /> at <paramref name="path_string" />.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>Otherwise, <paramref name="iter" /> is left invalid and <see langword="false" /> is returned.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPath">
+      <MemberSignature Language="C#" Value="public Gtk.TreePath GetPath (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Gtk.TreePath GetPath(valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreePath</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Gets the <see cref="T:Gtk.TreePath" /> of <paramref name="iter" />.</summary>
+        <returns>an object of type <see cref="T:Gtk.TreePath" /></returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetStringFromIter">
+      <MemberSignature Language="C#" Value="public string GetStringFromIter (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetStringFromIter(valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+      </Parameters>
+      <Docs>
+        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Generates a string representation of the path of <paramref name="iter" />.</summary>
+        <returns>a <see cref="T:System.String" /></returns>
+        <remarks>This string is a ':' separated list of numbers. For example, "4:10:0:3" would be an acceptable return value for this string.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetValist">
+      <MemberSignature Language="C#" Value="public void GetValist (Gtk.TreeIter iter, IntPtr var_args);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetValist(valuetype Gtk.TreeIter iter, native int var_args) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+        <Parameter Name="var_args" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="var_args">a <see cref="T:System.IntPtr" />, pointer to the va_list data structure of arguments (FIXME: clarify what va_lists look like)</param>
+        <summary>Gets the values of child properties for the row pointed to by <paramref name="iter" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetValue">
+      <MemberSignature Language="C#" Value="public object GetValue (Gtk.TreeIter iter, int column);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object GetValue(valuetype Gtk.TreeIter iter, int32 column) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+        <Parameter Name="column" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
+        <param name="column">a <see cref="T:System.Int32" /></param>
+        <summary>Gets the value stored in column <paramref name="column" /> of the row pointed to by <paramref name="iter" />.</summary>
+        <returns>a <see cref="T:System.Object" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetValue">
+      <MemberSignature Language="C#" Value="public void GetValue (Gtk.TreeIter iter, int column, ref GLib.Value value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetValue(valuetype Gtk.TreeIter iter, int32 column, valuetype GLib.Value value) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+        <Parameter Name="column" Type="System.Int32" />
+        <Parameter Name="value" Type="GLib.Value&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
+        <param name="column">a <see cref="T:System.Int32" /></param>
+        <param name="value">a <see cref="T:GLib.Value" /></param>
+        <summary>Gets the value stored in column <paramref name="column" /> of the row pointed to by <paramref name="iter" /> and stores it in <paramref name="value" /></summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IterChildren">
+      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterChildren(valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Sets the TreeIter object pointed to by <paramref name="iter" /> to point to the first child of this tree. </summary>
+        <returns>an object of type <see cref="T:System.Boolean" />, true if the iter has been set to the first child.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IterChildren">
+      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter, Gtk.TreeIter parent);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterChildren(valuetype Gtk.TreeIter iter, valuetype Gtk.TreeIter parent) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
+        <Parameter Name="parent" Type="Gtk.TreeIter" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="parent">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Sets <paramref name="iter" /> to point to the first child of <paramref name="parent" />.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>If <paramref name="parent" /> has no children, <see langword="false" /> is returned and <paramref name="iter" /> is set to be invalid. <paramref name="parent" /> will remain a valid node after this function has been called.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IterHasChild">
+      <MemberSignature Language="C#" Value="public bool IterHasChild (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterHasChild(valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Returns <see langword="true" /> if <paramref name="iter" /> has children, <see langword="false" /> otherwise.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="IterNChildren">
       <MemberSignature Language="C#" Value="public int IterNChildren ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 IterNChildren() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -55,143 +397,9 @@
         <remarks>As a special case, if iter is <see langword="null" />, then the number of toplevel nodes is returned.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="IterChildren">
-      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the TreeIter object pointed to by <paramref name="iter" /> to point to the first child of this tree. </summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" />, true if the iter has been set to the first child.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="EmitRowChanged">
-      <MemberSignature Language="C#" Value="public void EmitRowChanged (Gtk.TreePath path, Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <summary>Emits the <see cref="E:Gtk.TreeModel.RowChanged" /> signal.</summary>
-        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Foreach">
-      <MemberSignature Language="C#" Value="public void Foreach (Gtk.TreeModelForeachFunc func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Gtk.TreeModelForeachFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Calls <paramref name="func" /> on each node in model in a depth-first fashion.</summary>
-        <param name="func">an object of type <see cref="T:Gtk.TreeModelForeachFunc" /></param>
-        <remarks>If func returns <see langword="true" />, then the tree ceases to be walked, and this method returns.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetIterFirst">
-      <MemberSignature Language="C#" Value="public bool GetIterFirst (out Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the first iterator in the tree (the one at the path "0") and returns <see langword="true" />.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>Returns <see langword="false" /> if the tree is empty.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="EmitRowHasChildToggled">
-      <MemberSignature Language="C#" Value="public void EmitRowHasChildToggled (Gtk.TreePath path, Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <summary>Emits the <see cref="E:Gtk.TreeModelSort.RowHasChildToggled" /> event.</summary>
-        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <remarks>This should be called by models after the child state of a node changes.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetPath">
-      <MemberSignature Language="C#" Value="public Gtk.TreePath GetPath (Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TreePath</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the <see cref="T:Gtk.TreePath" /> of <paramref name="iter" />.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <returns>an object of type <see cref="T:Gtk.TreePath" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterHasChild">
-      <MemberSignature Language="C#" Value="public bool IterHasChild (Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <summary>Returns <see langword="true" /> if <paramref name="iter" /> has children, <see langword="false" /> otherwise.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RefNode">
-      <MemberSignature Language="C#" Value="public void RefNode (Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <summary>Lets the tree ref the node.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <remarks>
-          <para>This is an optional method for models to implement. To be more specific, models may ignore this call as it exists primarily for performance reasons.</para>
-          <para>This function is primarily meant as a way for views to let caching models know when nodes are being displayed (and hence, whether or not to cache that node.) For example, a file-system based model would not want to keep the entire file-hierarchy in memory, just the sections that are currently being displayed by every current view.</para>
-          <para>A model should be expected to be able to get an iter independent of its referenced state.</para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="IterNChildren">
       <MemberSignature Language="C#" Value="public int IterNChildren (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 IterNChildren(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -200,79 +408,109 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>Returns the number of children that <paramref name="iter" /> has.</summary>
         <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Returns the number of children that <paramref name="iter" /> has.</summary>
         <returns>an object of type <see cref="T:System.Int32" /></returns>
         <remarks>As a special case, if <paramref name="iter" /> is <see langword="null" />, then the number of toplevel nodes is returned.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="EmitRowInserted">
-      <MemberSignature Language="C#" Value="public void EmitRowInserted (Gtk.TreePath path, Gtk.TreeIter iter);" />
+    <Member MemberName="IterNext">
+      <MemberSignature Language="C#" Value="public bool IterNext (ref Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterNext(valuetype Gtk.TreeIter iter) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <summary>Emits the <see cref="E:Gtk.TreeModel.RowInserted" /> event.</summary>
-        <param name="path">an object of type <see cref="T:Gtk.TreePath" />, path of the inserted row.</param>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" />, points to the inserted row.</param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="EmitRowDeleted">
-      <MemberSignature Language="C#" Value="public void EmitRowDeleted (Gtk.TreePath path);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-      </Parameters>
-      <Docs>
-        <summary>Emits the <see cref="E:Gtk.TreeModel.RowDeleted" /> event.</summary>
-        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
-        <remarks>This should be called by models after a row has been removed. The location pointed to by <paramref name="path" /> should be the location that the row previously was at. It may not be a valid location anymore.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetValist">
-      <MemberSignature Language="C#" Value="public void GetValist (Gtk.TreeIter iter, IntPtr var_args);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="var_args" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the values of child properties for the row pointed to by <paramref name="iter" />.</summary>
         <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <param name="var_args">a <see cref="T:System.IntPtr" />, pointer to the va_list data structure of arguments (FIXME: clarify what va_lists look like)</param>
-        <remarks />
+        <summary>Sets <paramref name="iter" /> to point to the node following it at the current level.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>If there is no next iter, <see langword="false" /> is returned and iter is set to be invalid.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="UnrefNode">
-      <MemberSignature Language="C#" Value="public void UnrefNode (Gtk.TreeIter iter);" />
+    <Member MemberName="IterNthChild">
+      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, int n);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterNthChild(valuetype Gtk.TreeIter iter, int32 n) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
+        <Parameter Name="n" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Lets the tree unref the node.</summary>
         <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <remarks>This is an optional method for models to implement. To be more specific, models may ignore this call as it exists primarily for performance reasons.  For more information on what this means, see <see cref="M:Gtk.TreeModel.RefNode()" />. Please note that nodes that are deleted are not unreferenced.</remarks>
+        <param name="n">an object of type <see cref="T:System.Int32" /></param>
+        <summary>Sets <paramref name="iter" /> to be the child of the root node, using the given index.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>In this case, the nth root node is set.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IterNthChild">
+      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, Gtk.TreeIter parent, int n);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterNthChild(valuetype Gtk.TreeIter iter, valuetype Gtk.TreeIter parent, int32 n) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
+        <Parameter Name="parent" Type="Gtk.TreeIter" />
+        <Parameter Name="n" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="parent">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="n">an object of type <see cref="T:System.Int32" /></param>
+        <summary>Sets <paramref name="iter" /> to be the child of <paramref name="parent" />, using the given index.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>The first index is 0. If <paramref name="n" /> is too big, or <paramref name="parent" /> has no children, <paramref name="iter" /> is set to an invalid iterator and <see langword="false" /> is returned. <paramref name="parent" /> will remain a valid node after this function has been called.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IterParent">
+      <MemberSignature Language="C#" Value="public bool IterParent (out Gtk.TreeIter iter, Gtk.TreeIter child);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterParent(valuetype Gtk.TreeIter iter, valuetype Gtk.TreeIter child) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
+        <Parameter Name="child" Type="Gtk.TreeIter" />
+      </Parameters>
+      <Docs>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="child">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Sets <paramref name="iter" /> to be the parent of <paramref name="child" />.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>If <paramref name="child" /> is at the toplevel, and does not have a parent, then <paramref name="iter" /> is set to an invalid iterator and <see langword="false" /> is returned. <paramref name="child" /> will remain a valid node after this function has been called.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IterPrevious">
+      <MemberSignature Language="C#" Value="public bool IterPrevious (ref Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IterPrevious(valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="iter">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="NColumns">
-      <MemberSignature Language="C#" Value="public int NColumns { get; };" />
+      <MemberSignature Language="C#" Value="public int NColumns { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NColumns" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -284,20 +522,57 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Flags">
-      <MemberSignature Language="C#" Value="public Gtk.TreeModelFlags Flags { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="RefNode">
+      <MemberSignature Language="C#" Value="public void RefNode (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RefNode(valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Gtk.TreeModelFlags</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+      </Parameters>
       <Docs>
-        <summary>Returns a set of flags supported by this interface.</summary>
-        <value>an object of type <see cref="T:Gtk.TreeModelFlags" /></value>
-        <remarks>The flags are a bitwise combination of <see cref="T:Gtk.TreeModelFlags" />. The flags supported should not change during the lifecycle of the <see cref="T:Gtk.TreeModel" />.</remarks>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <summary>Lets the tree ref the node.</summary>
+        <remarks>
+          <para>This is an optional method for models to implement. To be more specific, models may ignore this call as it exists primarily for performance reasons.</para>
+          <para>This function is primarily meant as a way for views to let caching models know when nodes are being displayed (and hence, whether or not to cache that node.) For example, a file-system based model would not want to keep the entire file-hierarchy in memory, just the sections that are currently being displayed by every current view.</para>
+          <para>A model should be expected to be able to get an iter independent of its referenced state.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RowChanged">
+      <MemberSignature Language="C#" Value="public event Gtk.RowChangedHandler RowChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowChangedHandler RowChanged" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.RowChangedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when a row has changed.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RowDeleted">
+      <MemberSignature Language="C#" Value="public event Gtk.RowDeletedHandler RowDeleted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowDeletedHandler RowDeleted" />
+      <MemberType>Event</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.RowDeletedHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Emitted when a row is deleted.</summary>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RowHasChildToggled">
       <MemberSignature Language="C#" Value="public event Gtk.RowHasChildToggledHandler RowHasChildToggled;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowHasChildToggledHandler RowHasChildToggled" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowHasChildToggledHandler</ReturnType>
@@ -311,6 +586,7 @@
     </Member>
     <Member MemberName="RowInserted">
       <MemberSignature Language="C#" Value="public event Gtk.RowInsertedHandler RowInserted;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowInsertedHandler RowInserted" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowInsertedHandler</ReturnType>
@@ -322,34 +598,9 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="RowDeleted">
-      <MemberSignature Language="C#" Value="public event Gtk.RowDeletedHandler RowDeleted;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.RowDeletedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when a row is deleted.</summary>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RowChanged">
-      <MemberSignature Language="C#" Value="public event Gtk.RowChangedHandler RowChanged;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.RowChangedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Emitted when a row has changed.</summary>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="RowsReordered">
       <MemberSignature Language="C#" Value="public event Gtk.RowsReorderedHandler RowsReordered;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.RowsReorderedHandler RowsReordered" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowsReorderedHandler</ReturnType>
@@ -361,135 +612,9 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="IterNthChild">
-      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, int n);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="n" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Sets <paramref name="iter" /> to be the child of the root node, using the given index.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <param name="n">an object of type <see cref="T:System.Int32" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>In this case, the nth root node is set.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterNthChild">
-      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, Gtk.TreeIter parent, int n);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="parent" Type="Gtk.TreeIter" />
-        <Parameter Name="n" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Sets <paramref name="iter" /> to be the child of <paramref name="parent" />, using the given index.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <param name="parent">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <param name="n">an object of type <see cref="T:System.Int32" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>The first index is 0. If <paramref name="n" /> is too big, or <paramref name="parent" /> has no children, <paramref name="iter" /> is set to an invalid iterator and <see langword="false" /> is returned. <paramref name="parent" /> will remain a valid node after this function has been called.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetIterFromString">
-      <MemberSignature Language="C#" Value="public bool GetIterFromString (out Gtk.TreeIter iter, string path_string);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="path_string" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the <see cref="T:Gtk.TreeIter" /> at <paramref name="path_string" />.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <param name="path_string">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>Otherwise, <paramref name="iter" /> is left invalid and <see langword="false" /> is returned.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterChildren">
-      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter, Gtk.TreeIter parent);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="parent" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <summary>Sets <paramref name="iter" /> to point to the first child of <paramref name="parent" />.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <param name="parent">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>If <paramref name="parent" /> has no children, <see langword="false" /> is returned and <paramref name="iter" /> is set to be invalid. <paramref name="parent" /> will remain a valid node after this function has been called.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetIter">
-      <MemberSignature Language="C#" Value="public bool GetIter (out Gtk.TreeIter iter, Gtk.TreePath path);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="path" Type="Gtk.TreePath" />
-      </Parameters>
-      <Docs>
-        <summary>Sets <paramref name="iter" /> to a valid iterator pointing to <paramref name="path" />.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IterParent">
-      <MemberSignature Language="C#" Value="public bool IterParent (out Gtk.TreeIter iter, Gtk.TreeIter child);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
-        <Parameter Name="child" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <summary>Sets <paramref name="iter" /> to be the parent of <paramref name="child" />.</summary>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <param name="child">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>If <paramref name="child" /> is at the toplevel, and does not have a parent, then <paramref name="iter" /> is set to an invalid iterator and <see langword="false" /> is returned. <paramref name="child" /> will remain a valid node after this function has been called.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetStringFromIter">
-      <MemberSignature Language="C#" Value="public string GetStringFromIter (Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <summary>Generates a string representation of the path of <paramref name="iter" />.</summary>
-        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>This string is a ':' separated list of numbers. For example, "4:10:0:3" would be an acceptable return value for this string.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, bool value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, bool value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -500,15 +625,16 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is a boolean.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Boolean" /></param>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is a boolean.</summary>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, double value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, float64 value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -519,15 +645,16 @@
         <Parameter Name="value" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is a <see cref="T:System.Double" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Double" /></param>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is a <see cref="T:System.Double" />.</summary>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, int value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, int32 value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -538,72 +665,16 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.Int32" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Int32" /></param>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.Int32" />.</summary>
         <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, string value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.String" />.</summary>
-        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <param name="column">a <see cref="T:System.Int32" /></param>
-        <param name="value">a <see cref="T:System.String" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, float value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.Single" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.Single" />.</summary>
-        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <param name="column">a <see cref="T:System.Int32" /></param>
-        <param name="value">a <see cref="T:System.Single" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, uint value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.UInt32" />.</summary>
-        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <param name="column">a <see cref="T:System.Int32" /></param>
-        <param name="value">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
       <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, object value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -614,67 +685,16 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.Object" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Object" /></param>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.Object" />.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GetValue">
-      <MemberSignature Language="C#" Value="public object GetValue (Gtk.TreeIter iter, int column);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-        <Parameter Name="column" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the value stored in column <paramref name="column" /> of the row pointed to by <paramref name="iter" />.</summary>
-        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <param name="column">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Object" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetColumnType">
-      <MemberSignature Language="C#" Value="public GLib.GType GetColumnType (int index_);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Returns the type of the column  at the given index.</summary>
-        <param name="index_">a <see cref="T:System.Int32" />, the column number.</param>
-        <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="EmitRowsReordered">
-      <MemberSignature Language="C#" Value="public int EmitRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-        <Parameter Name="iter" Type="Gtk.TreeIter" />
-      </Parameters>
-      <Docs>
-        <summary>Sends out a <see cref="E:Gtk.TreeModel.RowsReordered" /> event.</summary>
-        <param name="path">a <see cref="T:Gtk.TreePath" /> that points to the row whose children have been reordered.</param>
-        <param name="iter">a <see cref="T:Gtk.TreeIter" />that points to the row whose children have been reordered.</param>
-        <returns>a <see cref="T:System.Int32" />, pointer to an array of integers with the new indices of the children.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetValue">
-      <MemberSignature Language="C#" Value="public void GetValue (Gtk.TreeIter iter, int column, ref GLib.Value value);" />
+    <Member MemberName="SetValue">
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, float value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, float32 value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -682,30 +702,70 @@
       <Parameters>
         <Parameter Name="iter" Type="Gtk.TreeIter" />
         <Parameter Name="column" Type="System.Int32" />
-        <Parameter Name="value" Type="GLib.Value&amp;" RefType="ref" />
+        <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>Gets the value stored in column <paramref name="column" /> of the row pointed to by <paramref name="iter" /> and stores it in <paramref name="value" /></summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
-        <param name="value">a <see cref="T:GLib.Value" /></param>
+        <param name="value">a <see cref="T:System.Single" /></param>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.Single" />.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="IterNext">
-      <MemberSignature Language="C#" Value="public bool IterNext (ref Gtk.TreeIter iter);" />
+    <Member MemberName="SetValue">
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, string value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, string value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="ref" />
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+        <Parameter Name="column" Type="System.Int32" />
+        <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Sets <paramref name="iter" /> to point to the node following it at the current level.</summary>
+        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
+        <param name="column">a <see cref="T:System.Int32" /></param>
+        <param name="value">a <see cref="T:System.String" /></param>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.String" />.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetValue">
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, uint value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetValue(valuetype Gtk.TreeIter iter, int32 column, unsigned int32 value) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+        <Parameter Name="column" Type="System.Int32" />
+        <Parameter Name="value" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
+        <param name="column">a <see cref="T:System.Int32" /></param>
+        <param name="value">a <see cref="T:System.UInt32" /></param>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.UInt32" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnrefNode">
+      <MemberSignature Language="C#" Value="public void UnrefNode (Gtk.TreeIter iter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UnrefNode(valuetype Gtk.TreeIter iter) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TreeIter" />
+      </Parameters>
+      <Docs>
         <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>If there is no next iter, <see langword="false" /> is returned and iter is set to be invalid.</remarks>
+        <summary>Lets the tree unref the node.</summary>
+        <remarks>This is an optional method for models to implement. To be more specific, models may ignore this call as it exists primarily for performance reasons.  For more information on what this means, see <see cref="M:Gtk.TreeModel.RefNode()" />. Please note that nodes that are deleted are not unreferenced.</remarks>
       </Docs>
     </Member>
   </Members>

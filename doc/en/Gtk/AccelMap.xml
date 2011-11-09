@@ -1,43 +1,266 @@
 <Type Name="AccelMap" FullName="Gtk.AccelMap">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class AccelMap : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AccelMap extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Global accelerator map for an entire application.</summary>
-    <remarks>This class is a singleton; only one can exist at a time.</remarks>
-    <since version="Gtk# 2.4" />
-  </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>Global accelerator map for an entire application.</summary>
+    <remarks>This class is a singleton; only one can exist at a time.</remarks>
+    <since version="Gtk# 2.4" />
+  </Docs>
   <Members>
-    <Member MemberName="LookupEntry">
-      <MemberSignature Language="C#" Value="public static bool LookupEntry (string accel_path, Gtk.AccelKey key);" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected AccelMap ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Protected constructor.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AccelMap (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Internal constructor</summary>
+        <remarks>This is not typically used by C# code.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddEntry">
+      <MemberSignature Language="C#" Value="public static void AddEntry (string accel_path, uint accel_key, Gdk.ModifierType accel_mods);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void AddEntry(string accel_path, unsigned int32 accel_key, valuetype Gdk.ModifierType accel_mods) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accel_path" Type="System.String" />
+        <Parameter Name="accel_key" Type="System.UInt32" />
+        <Parameter Name="accel_mods" Type="Gdk.ModifierType" />
+      </Parameters>
+      <Docs>
+        <param name="accel_path">a <see cref="T:System.String" /></param>
+        <param name="accel_key">a <see cref="T:System.UInt32" /></param>
+        <param name="accel_mods">a <see cref="T:System.Int32" /></param>
+        <summary>
+	  Registers a new accelerator with the global accelerator map.
+	</summary>
+        <remarks>
+	  This function should only be called once per <paramref name="accel_path" />
+	  with the canonical <paramref name="accel_key" /> and <paramref name="accel_mods" /> for this path.
+	  To change the accelerator during runtime programatically, use
+	  <see cref="M:Gtk.AccelMap.ChangeEntry" />.
+	  The accelerator path must consist of "&lt;WINDOWTYPE&gt;/Category1/Category2/.../Action",
+	  where &lt;WINDOWTYPE&gt; should be a unique application-specific identifier, that
+	  corresponds to the kind of window the accelerator is being used in, e.g. "Gimp-Image",
+	  "Abiword-Document" or "Gnumeric-Settings".
+	  The Category1/.../Action portion is most appropriately chosen by the action the
+	  accelerator triggers, i.e. for accelerators on menu items, choose the item's menu path,
+	  e.g. "File/Save As", "Image/View/Zoom" or "Edit/Select All".
+	  So a full valid accelerator path may look like:
+	  "&lt;Gimp-Toolbox&gt;/File/Dialogs/Tool Options...".
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddFilter">
+      <MemberSignature Language="C#" Value="public static void AddFilter (string filter_pattern);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void AddFilter(string filter_pattern) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filter_pattern" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="filter_pattern">a <see cref="T:System.String" /></param>
+        <summary>
+	  Adds a filter to the global list of accel path filters.
+	</summary>
+        <remarks>
+          <para>
+	    Accel map entries whose accel path matches one of the filters
+	    are skipped by <see cref="M:Gtk.AccelMap.Foreach" />.
+	  </para>
+          <para>
+	    This function is intended for Gtk# modules that create their own
+	    menus but don't want them to be saved into the applications 
+	    accelerator map dump.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChangeEntry">
+      <MemberSignature Language="C#" Value="public static bool ChangeEntry (string accel_path, uint accel_key, Gdk.ModifierType accel_mods, bool replace);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool ChangeEntry(string accel_path, unsigned int32 accel_key, valuetype Gdk.ModifierType accel_mods, bool replace) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="accel_path" Type="System.String" />
-        <Parameter Name="key" Type="Gtk.AccelKey" />
+        <Parameter Name="accel_key" Type="System.UInt32" />
+        <Parameter Name="accel_mods" Type="Gdk.ModifierType" />
+        <Parameter Name="replace" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Looks up the accelerator entry for <paramref name="accel_path" /> and fills in <paramref name="key" />.</summary>
-        <param name="accel_path">a <see cref="T:System.String" />, a valid accelerator path</param>
-        <param name="key">a <see cref="T:Gtk.AccelKey" />, the accelerator key to be filled in (optional)</param>
-        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if <paramref name="accel_path" /> is known, <see langword="false" /> otherwise.</returns>
+        <param name="accel_path">a <see cref="T:System.String" /></param>
+        <param name="accel_key">a <see cref="T:System.UInt32" /></param>
+        <param name="accel_mods">a <see cref="T:System.Int32" /></param>
+        <param name="replace">a <see cref="T:System.Boolean" /></param>
+        <summary> 
+	  Changes the <paramref name="accel_key" /> and <paramref name="accel_mods" /> currently associated with 
+	  <paramref name="accel_path" />. 
+	</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+	  Due to conflicts with other accelerators, a change may not always be possible. The
+	  <paramref name="replace" /> parameter indicates whether other accelerators may be deleted to resolve such
+	  conflicts. A change will only occur if all conflicts could be resolved (which  might not be the case if conflicting accelerators are locked). Successful
+	  changes are indicated by a <see langword="true" /> return value.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Foreach">
+      <MemberSignature Language="C#" Value="public static void Foreach (IntPtr data, Gtk.AccelMapForeach foreach_func);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Foreach(native int data, class Gtk.AccelMapForeach foreach_func) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="System.IntPtr" />
+        <Parameter Name="foreach_func" Type="Gtk.AccelMapForeach" />
+      </Parameters>
+      <Docs>
+        <param name="data">a <see cref="T:System.IntPtr" />, data to pass to <paramref name="foreach_func" /></param>
+        <param name="foreach_func">a <see cref="T:Gtk.AccelMapForeach" />, function to execute on each accel map entrey</param>
+        <summary>
+	  Loops over the entries in the accelerator map whose accel path
+	  doesn't match any of the filters added with 
+	  <see cref="M:Gtk.AccelMap.AddFilter" />
+	  and executes <paramref name="foreach_func" /> on each. 
+	</summary>
+        <remarks>
+	  See also  <see cref="M:Gtk.AccelMap.ForeachUnfiltered" />.
+	  XXX: See http://bugzilla.ximian.com/show_bug.cgi?id=70912.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForeachUnfiltered">
+      <MemberSignature Language="C#" Value="public static void ForeachUnfiltered (IntPtr data, Gtk.AccelMapForeach foreach_func);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void ForeachUnfiltered(native int data, class Gtk.AccelMapForeach foreach_func) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="System.IntPtr" />
+        <Parameter Name="foreach_func" Type="Gtk.AccelMapForeach" />
+      </Parameters>
+      <Docs>
+        <param name="data">a <see cref="T:System.IntPtr" /></param>
+        <param name="foreach_func">a <see cref="T:Gtk.AccelMapForeach" /></param>
+        <summary>Loops over all entries in the accelerator map and executes
+ * <paramref name="foreach_func" /> on each.</summary>
+        <remarks>
+	  See also  <see cref="M:Gtk.AccelMap.Foreach" />.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Get">
+      <MemberSignature Language="C#" Value="public static Gtk.AccelMap Get ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gtk.AccelMap Get() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.AccelMap</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+	  Gets the singleton global<see cref="T:Gtk.AccelMap" />. object. This object
+	  is useful only for notification of changes to the accelerator
+	  map via the internal "changed" signal; it isn't a parameter to the
+	  other accelerator map functions.
+	</summary>
+        <returns>a <see cref="T:Gtk.AccelMap" /></returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.AccelMap" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Load">
+      <MemberSignature Language="C#" Value="public static void Load (string file_name);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Load(string file_name) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="file_name">a <see cref="T:System.String" /></param>
+        <summary>
+	  Parses a file previously saved with <see cref="M:Gtk.AccelMap.Save" />
+	  for accelerator specifications, and propagates them accordingly.
+	</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadFd">
+      <MemberSignature Language="C#" Value="public static void LoadFd (int fd);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void LoadFd(int32 fd) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fd" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="fd">a <see cref="T:System.Int32" />, a valid readable file descriptor.</param>
+        <summary>
+	  File descriptor variant of <see cref="M:Gtk.AccelMap.Load" />.
+	</summary>
         <remarks>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="LockPath">
       <MemberSignature Language="C#" Value="public static void LockPath (string accel_path);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void LockPath(string accel_path) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -46,11 +269,11 @@
         <Parameter Name="accel_path" Type="System.String" />
       </Parameters>
       <Docs>
+        <param name="accel_path">a <see cref="T:System.String" /></param>
         <summary>  
 	  Locks the given accelerator path. If the accelerator map doesn't yet contain
 	  an entry for <paramref name="accel_path" />, a new one is created.
 	</summary>
-        <param name="accel_path">a <see cref="T:System.String" /></param>
         <remarks>
           <para>
 	    Locking an accelerator path prevents its accelerator from being changed 
@@ -73,316 +296,35 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="UnlockPath">
-      <MemberSignature Language="C#" Value="public static void UnlockPath (string accel_path);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="accel_path" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Undoes the last call to <see cref="M:Gtk.AccelMap.LockPath" />
-	  on this <paramref name="accel_path" />.
-	</summary>
-        <param name="accel_path">a <see cref="T:System.String" />, a valid accelerator path</param>
-        <remarks>
-	  Refer to <see cref="M:Gtk.AccelMap.LockPath" /> for information
-	  about accelerator path locking.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ChangeEntry">
-      <MemberSignature Language="C#" Value="public static bool ChangeEntry (string accel_path, uint accel_key, Gdk.ModifierType accel_mods, bool replace);" />
+    <Member MemberName="LookupEntry">
+      <MemberSignature Language="C#" Value="public static bool LookupEntry (string accel_path, Gtk.AccelKey key);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool LookupEntry(string accel_path, valuetype Gtk.AccelKey key) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="accel_path" Type="System.String" />
-        <Parameter Name="accel_key" Type="System.UInt32" />
-        <Parameter Name="accel_mods" Type="Gdk.ModifierType" />
-        <Parameter Name="replace" Type="System.Boolean" />
+        <Parameter Name="key" Type="Gtk.AccelKey" />
       </Parameters>
       <Docs>
-        <summary> 
-	  Changes the <paramref name="accel_key" /> and <paramref name="accel_mods" /> currently associated with 
-	  <paramref name="accel_path" />. 
-	</summary>
-        <param name="accel_path">a <see cref="T:System.String" /></param>
-        <param name="accel_key">a <see cref="T:System.UInt32" /></param>
-        <param name="accel_mods">a <see cref="T:System.Int32" /></param>
-        <param name="replace">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>
-	  Due to conflicts with other accelerators, a change may not always be possible. The
-	  <paramref name="replace" /> parameter indicates whether other accelerators may be deleted to resolve such
-	  conflicts. A change will only occur if all conflicts could be resolved (which  might not be the case if conflicting accelerators are locked). Successful
-	  changes are indicated by a <see langword="true" /> return value.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Load">
-      <MemberSignature Language="C#" Value="public static void Load (string file_name);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="file_name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Parses a file previously saved with <see cref="M:Gtk.AccelMap.Save" />
-	  for accelerator specifications, and propagates them accordingly.
-	</summary>
-        <param name="file_name">a <see cref="T:System.String" /></param>
+        <param name="accel_path">a <see cref="T:System.String" />, a valid accelerator path</param>
+        <param name="key">a <see cref="T:Gtk.AccelKey" />, the accelerator key to be filled in (optional)</param>
+        <summary>Looks up the accelerator entry for <paramref name="accel_path" /> and fills in <paramref name="key" />.</summary>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if <paramref name="accel_path" /> is known, <see langword="false" /> otherwise.</returns>
         <remarks>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SaveFd">
-      <MemberSignature Language="C#" Value="public static void SaveFd (int fd);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="fd" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  File descriptor variant of <see cref="M:Gtk.AccelMap.Save" />.
-	</summary>
-        <param name="fd">a <see cref="T:System.Int32" />, a valid writeable file descriptor</param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Save">
-      <MemberSignature Language="C#" Value="public static void Save (string file_name);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="file_name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Saves current accelerator specifications (accelerator path, key
-	  and modifiers) to <paramref name="file_name" />.
-	  The file is written in a format suitable to be read back in by
-	  <see cref="M:Gtk.AccelMap.Load" />.
-	</summary>
-        <param name="file_name">a <see cref="T:System.String" />, a file to contain accelerator specifications</param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LoadFd">
-      <MemberSignature Language="C#" Value="public static void LoadFd (int fd);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="fd" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  File descriptor variant of <see cref="M:Gtk.AccelMap.Load" />.
-	</summary>
-        <param name="fd">a <see cref="T:System.Int32" />, a valid readable file descriptor.</param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AddEntry">
-      <MemberSignature Language="C#" Value="public static void AddEntry (string accel_path, uint accel_key, Gdk.ModifierType accel_mods);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="accel_path" Type="System.String" />
-        <Parameter Name="accel_key" Type="System.UInt32" />
-        <Parameter Name="accel_mods" Type="Gdk.ModifierType" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Registers a new accelerator with the global accelerator map.
-	</summary>
-        <param name="accel_path">a <see cref="T:System.String" /></param>
-        <param name="accel_key">a <see cref="T:System.UInt32" /></param>
-        <param name="accel_mods">a <see cref="T:System.Int32" /></param>
-        <remarks>
-	  This function should only be called once per <paramref name="accel_path" />
-	  with the canonical <paramref name="accel_key" /> and <paramref name="accel_mods" /> for this path.
-	  To change the accelerator during runtime programatically, use
-	  <see cref="M:Gtk.AccelMap.ChangeEntry" />.
-	  The accelerator path must consist of "&lt;WINDOWTYPE&gt;/Category1/Category2/.../Action",
-	  where &lt;WINDOWTYPE&gt; should be a unique application-specific identifier, that
-	  corresponds to the kind of window the accelerator is being used in, e.g. "Gimp-Image",
-	  "Abiword-Document" or "Gnumeric-Settings".
-	  The Category1/.../Action portion is most appropriately chosen by the action the
-	  accelerator triggers, i.e. for accelerators on menu items, choose the item's menu path,
-	  e.g. "File/Save As", "Image/View/Zoom" or "Edit/Select All".
-	  So a full valid accelerator path may look like:
-	  "&lt;Gimp-Toolbox&gt;/File/Dialogs/Tool Options...".
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AddFilter">
-      <MemberSignature Language="C#" Value="public static void AddFilter (string filter_pattern);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="filter_pattern" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Adds a filter to the global list of accel path filters.
-	</summary>
-        <param name="filter_pattern">a <see cref="T:System.String" /></param>
-        <remarks>
-          <para>
-	    Accel map entries whose accel path matches one of the filters
-	    are skipped by <see cref="M:Gtk.AccelMap.Foreach" />.
-	  </para>
-          <para>
-	    This function is intended for Gtk# modules that create their own
-	    menus but don't want them to be saved into the applications 
-	    accelerator map dump.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Get">
-      <MemberSignature Language="C#" Value="public static Gtk.AccelMap Get ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.AccelMap</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-	  Gets the singleton global<see cref="T:Gtk.AccelMap" />. object. This object
-	  is useful only for notification of changes to the accelerator
-	  map via the internal "changed" signal; it isn't a parameter to the
-	  other accelerator map functions.
-	</summary>
-        <returns>a <see cref="T:Gtk.AccelMap" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Foreach">
-      <MemberSignature Language="C#" Value="public static void Foreach (IntPtr data, Gtk.AccelMapForeach foreach_func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="data" Type="System.IntPtr" />
-        <Parameter Name="foreach_func" Type="Gtk.AccelMapForeach" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Loops over the entries in the accelerator map whose accel path
-	  doesn't match any of the filters added with 
-	  <see cref="M:Gtk.AccelMap.AddFilter" />
-	  and executes <paramref name="foreach_func" /> on each. 
-	</summary>
-        <param name="data">a <see cref="T:System.IntPtr" />, data to pass to <paramref name="foreach_func" /></param>
-        <param name="foreach_func">a <see cref="T:Gtk.AccelMapForeach" />, function to execute on each accel map entrey</param>
-        <remarks>
-	  See also  <see cref="M:Gtk.AccelMap.ForeachUnfiltered" />.
-	  XXX: See http://bugzilla.ximian.com/show_bug.cgi?id=70912.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ForeachUnfiltered">
-      <MemberSignature Language="C#" Value="public static void ForeachUnfiltered (IntPtr data, Gtk.AccelMapForeach foreach_func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="data" Type="System.IntPtr" />
-        <Parameter Name="foreach_func" Type="Gtk.AccelMapForeach" />
-      </Parameters>
-      <Docs>
-        <summary>Loops over all entries in the accelerator map and executes
- * <paramref name="foreach_func" /> on each.</summary>
-        <param name="data">a <see cref="T:System.IntPtr" /></param>
-        <param name="foreach_func">a <see cref="T:Gtk.AccelMapForeach" /></param>
-        <remarks>
-	  See also  <see cref="M:Gtk.AccelMap.Foreach" />.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected AccelMap (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public AccelMap (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <remarks>This is not typically used by C# code.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected AccelMap ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Protected constructor.</summary>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.AccelMap" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MapChanged">
       <MemberSignature Language="C#" Value="public event Gtk.MapChangedHandler MapChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class Gtk.MapChangedHandler MapChanged" />
       <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("changed")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Gtk.MapChangedHandler</ReturnType>
       </ReturnValue>
@@ -392,15 +334,16 @@
         <remarks>
         </remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("changed")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="OnMapChanged">
       <MemberSignature Language="C#" Value="protected virtual void OnMapChanged (string accel_path, uint accel_key, Gdk.ModifierType accel_mods);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnMapChanged(string accel_path, unsigned int32 accel_key, valuetype Gdk.ModifierType accel_mods) cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMapChanged", Type=typeof(Gtk.AccelMap))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -410,11 +353,73 @@
         <Parameter Name="accel_mods" Type="Gdk.ModifierType" />
       </Parameters>
       <Docs>
-        <summary>Default handler for the <see cref="M:Gtk.AccelMap.MapChanged" /> event.</summary>
         <param name="accel_path">a <see cref="T:System.String" /></param>
         <param name="accel_key">a <see cref="T:System.UInt32" /></param>
         <param name="accel_mods">a <see cref="T:System.Int32" /></param>
+        <summary>Default handler for the <see cref="M:Gtk.AccelMap.MapChanged" /> event.</summary>
         <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.AccelMap.MapChanged" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public static void Save (string file_name);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Save(string file_name) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="file_name">a <see cref="T:System.String" />, a file to contain accelerator specifications</param>
+        <summary>
+	  Saves current accelerator specifications (accelerator path, key
+	  and modifiers) to <paramref name="file_name" />.
+	  The file is written in a format suitable to be read back in by
+	  <see cref="M:Gtk.AccelMap.Load" />.
+	</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveFd">
+      <MemberSignature Language="C#" Value="public static void SaveFd (int fd);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SaveFd(int32 fd) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fd" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="fd">a <see cref="T:System.Int32" />, a valid writeable file descriptor</param>
+        <summary>
+	  File descriptor variant of <see cref="M:Gtk.AccelMap.Save" />.
+	</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnlockPath">
+      <MemberSignature Language="C#" Value="public static void UnlockPath (string accel_path);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void UnlockPath(string accel_path) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accel_path" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="accel_path">a <see cref="T:System.String" />, a valid accelerator path</param>
+        <summary>
+	  Undoes the last call to <see cref="M:Gtk.AccelMap.LockPath" />
+	  on this <paramref name="accel_path" />.
+	</summary>
+        <remarks>
+	  Refer to <see cref="M:Gtk.AccelMap.LockPath" /> for information
+	  about accelerator path locking.</remarks>
       </Docs>
     </Member>
   </Members>

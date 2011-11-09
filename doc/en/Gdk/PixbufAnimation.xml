@@ -1,24 +1,122 @@
 <Type Name="PixbufAnimation" FullName="Gdk.PixbufAnimation">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class PixbufAnimation : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit PixbufAnimation extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>A base class for animations that are rendered using <see cref="T:Gdk.Pixbuf" /></summary>
-    <remarks />
-  </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>A base class for animations that are rendered using <see cref="T:Gdk.Pixbuf" /></summary>
+    <remarks />
+  </Docs>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufAnimation (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufAnimation (System.IO.Stream stream);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+      </Parameters>
+      <Docs>
+        <param name="stream">a <see cref="T:System.IO.Stream" /></param>
+        <summary>Makes a new animation object from a <see cref="T:System.IO.Stream" />.</summary>
+        <remarks>Useful for creating an animation from an image file that resides in memory.
+
+<example><code lang="C#">
+/* buffer containing an image */
+System.Byte[] buffer = new System.Byte[256];
+
+/* create a memory stream to the buffer */
+System.IO.MemoryStream memorystream = new System.IO.MemoryStream(buffer);    
+
+/* create an animation from the stream as if it was a file */
+Gdk.PixbufAnimation pba = new Gdk.PixbufAnimation(memorystream);
+  </code></example></remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufAnimation (string filename);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string filename) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="filename" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="filename">A <see cref="T:System.String" />, the filename to load into this object.</param>
+        <summary>Public constructor; creates a new animation by 
+	  loading it from a file.  The file format is
+	  detected automatically.  If the file's format does not support 
+	  multi-frame images, then an animation with a single frame will 
+	  be created. Possible errors are in the 
+	  <see cref="T:Gdk.PixbufError" /> and <see cref="T:Gdk.Error" /> domains.
+	</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufAnimation (System.Reflection.Assembly assembly, string resource);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Reflection.Assembly assembly, string resource) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+        <Parameter Name="resource" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
+<para>
+If the value is <see langword="null" />,  the image will be looked up on the calling assembly.</para></param>
+        <param name="resource">The name given as the resource in the assembly</param>
+        <summary>Constructor for images embedded in an assembly</summary>
+        <remarks>
+          <para>
+   This method is used to construct a <see cref="T:Gdk.PixbufAnimation" /> from an embedded resource in an assembly. 
+</para>
+          <para>
+   Typically this is used when application developers want to distribute images in a single executable.
+</para>
+
+If the assembly parameter is <see langword="null" />,  the image will be looked up on the calling assembly.
+
+<para>
+For example:
+</para><example><code lang="C#">
+Gdk.PixbufAnimation p = new PixbufAnimation (null, "anim.gif");
+  </code></example><para>Compile with:</para><example><code lang="Compilation">
+mcs -resource:anim.gif sample.cs
+  </code></example></remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
     <Member MemberName="GetIter">
       <MemberSignature Language="C#" Value="public Gdk.PixbufAnimationIter GetIter (IntPtr start_time);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.PixbufAnimationIter GetIter(native int start_time) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.PixbufAnimationIter</ReturnType>
@@ -27,12 +125,12 @@
         <Parameter Name="start_time" Type="System.IntPtr" />
       </Parameters>
       <Docs>
+        <param name="start_time">A <see cref="T:IntPtr" /></param>
         <summary>
 	  Get an iterator for displaying an animation. The iterator provides
 	  the frames that should be displayed at a given time.
 	  It should be freed after use with g_object_unref().
 	</summary>
-        <param name="start_time">A <see cref="T:IntPtr" /></param>
         <returns>A <see cref="T:Gdk.PixbufAnimationIter" /> to move over the animation</returns>
         <remarks>
           <p>
@@ -78,67 +176,23 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufAnimation (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufAnimation (string filename);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="filename" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Public constructor; creates a new animation by 
-	  loading it from a file.  The file format is
-	  detected automatically.  If the file's format does not support 
-	  multi-frame images, then an animation with a single frame will 
-	  be created. Possible errors are in the 
-	  <see cref="T:Gdk.PixbufError" /> and <see cref="T:Gdk.Error" /> domains.
-	</summary>
-        <param name="filename">A <see cref="T:System.String" />, the filename to load into this object.</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Width">
-      <MemberSignature Language="C#" Value="public int Width { get; };" />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
+      <Parameters />
       <Docs>
-        <summary>The width of the animation.</summary>
-        <value>A <see cref="T:System.Int32" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="StaticImage">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf StaticImage { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Pixbuf</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Gets the image if this animation is actually a static, 
-	  unanimaged file.</summary>
-        <value>A <see cref="T:Gdk.Pixbuf" /></value>
-        <remarks />
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.PixbufAnimation" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Height">
-      <MemberSignature Language="C#" Value="public int Height { get; };" />
+      <MemberSignature Language="C#" Value="public int Height { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Height" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -150,7 +204,8 @@
       </Docs>
     </Member>
     <Member MemberName="IsStaticImage">
-      <MemberSignature Language="C#" Value="public bool IsStaticImage { get; };" />
+      <MemberSignature Language="C#" Value="public bool IsStaticImage { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsStaticImage" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -168,40 +223,37 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="LoadFromResource">
+      <MemberSignature Language="C#" Value="public static Gdk.PixbufAnimation LoadFromResource (string resource);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.PixbufAnimation LoadFromResource(string resource) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
+        <ReturnType>Gdk.PixbufAnimation</ReturnType>
       </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.PixbufAnimation" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected PixbufAnimation (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
       <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
+        <Parameter Name="resource" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>This is a constructor used by derivative types of <see cref="T:Gdk.PixbufAnimation" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.</remarks>
+        <param name="resource">the name of the resource</param>
+        <summary>Loads a pixbuf from a resource file.</summary>
+        <returns>a <see cref="T:Gdk.PixbufAnimation" /></returns>
+        <remarks>
+	    This loads an animation from a resource in the calling assembly. This is equivalent to
+	    using the <see cref="C:Gdk.PixbufAnimation(System.Reflection.Assembly, System.String)" />
+	    constructor with a <see langword="null" /> assembly.
+	</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
+    </Member>
+    <Member MemberName="Ref">
+      <MemberSignature Language="C#" Value="public Gdk.PixbufAnimation Ref ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.PixbufAnimation Ref() cil managed" />
+      <MemberType>Method</MemberType>
       <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="Ref">
-      <MemberSignature Language="C#" Value="public Gdk.PixbufAnimation Ref ();" />
-      <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.PixbufAnimation</ReturnType>
       </ReturnValue>
@@ -213,9 +265,29 @@
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
+    <Member MemberName="StaticImage">
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf StaticImage { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Pixbuf StaticImage" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the image if this animation is actually a static, 
+	  unanimaged file.</summary>
+        <value>A <see cref="T:Gdk.Pixbuf" /></value>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Unref">
       <MemberSignature Language="C#" Value="public void Unref ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unref() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -226,84 +298,17 @@
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="LoadFromResource">
-      <MemberSignature Language="C#" Value="public static Gdk.PixbufAnimation LoadFromResource (string resource);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Width">
+      <MemberSignature Language="C#" Value="public int Width { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Width" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Gdk.PixbufAnimation</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="resource" Type="System.String" />
-      </Parameters>
       <Docs>
-        <summary>Loads a pixbuf from a resource file.</summary>
-        <param name="resource">the name of the resource</param>
-        <returns>a <see cref="T:Gdk.PixbufAnimation" /></returns>
-        <remarks>
-	    This loads an animation from a resource in the calling assembly. This is equivalent to
-	    using the <see cref="C:Gdk.PixbufAnimation(System.Reflection.Assembly, System.String)" />
-	    constructor with a <see langword="null" /> assembly.
-	</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufAnimation (System.IO.Stream stream);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="stream" Type="System.IO.Stream" />
-      </Parameters>
-      <Docs>
-        <summary>Makes a new animation object from a <see cref="T:System.IO.Stream" />.</summary>
-        <param name="stream">a <see cref="T:System.IO.Stream" /></param>
-        <remarks>Useful for creating an animation from an image file that resides in memory.
-
-<example><code lang="C#">
-/* buffer containing an image */
-System.Byte[] buffer = new System.Byte[256];
-
-/* create a memory stream to the buffer */
-System.IO.MemoryStream memorystream = new System.IO.MemoryStream(buffer);    
-
-/* create an animation from the stream as if it was a file */
-Gdk.PixbufAnimation pba = new Gdk.PixbufAnimation(memorystream);
-  </code></example></remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PixbufAnimation (System.Reflection.Assembly assembly, string resource);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
-        <Parameter Name="resource" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Constructor for images embedded in an assembly</summary>
-        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
-<para>
-If the value is <see langword="null" />,  the image will be looked up on the calling assembly.</para></param>
-        <param name="resource">The name given as the resource in the assembly</param>
-        <remarks>
-          <para>
-   This method is used to construct a <see cref="T:Gdk.PixbufAnimation" /> from an embedded resource in an assembly. 
-</para>
-          <para>
-   Typically this is used when application developers want to distribute images in a single executable.
-</para>
-
-If the assembly parameter is <see langword="null" />,  the image will be looked up on the calling assembly.
-
-<para>
-For example:
-</para><example><code lang="C#">
-Gdk.PixbufAnimation p = new PixbufAnimation (null, "anim.gif");
-  </code></example><para>Compile with:</para><example><code lang="Compilation">
-mcs -resource:anim.gif sample.cs
-  </code></example></remarks>
-        <since version="Gtk# 2.4" />
+        <summary>The width of the animation.</summary>
+        <value>A <see cref="T:System.Int32" /></value>
+        <remarks />
       </Docs>
     </Member>
   </Members>

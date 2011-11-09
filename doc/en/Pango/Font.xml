@@ -1,74 +1,52 @@
 <Type Name="Font" FullName="Pango.Font">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class Font : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Font extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Used to represent a font in a rendering-system-independent matter.</summary>
-    <remarks />
-  </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>Used to represent a font in a rendering-system-independent matter.</summary>
+    <remarks />
+  </Docs>
   <Members>
-    <Member MemberName="GetMetrics">
-      <MemberSignature Language="C#" Value="public Pango.FontMetrics GetMetrics (Pango.Language language);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.FontMetrics</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="language" Type="Pango.Language" />
-      </Parameters>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Font ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
       <Docs>
-        <summary>Gets overall metric information for a font.</summary>
-        <param name="language"> language tag used to determine which script to get the metrics for, or <see langword="null" /> to indicate to get the metrics for the entire font.</param>
-        <returns> a new <see cref="T:Pango.FontMetrics" /> object.</returns>
-        <remarks>Since the metrics may be substantially different for different scripts, a language tag can be provided to indicate that the metrics should be retrieved that correspond to the script(s) used by that language.</remarks>
+        <summary>Protected constructor.</summary>
+        <remarks>Default constuctor for children of this type.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetCoverage">
-      <MemberSignature Language="C#" Value="public Pango.Coverage GetCoverage (Pango.Language language);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Coverage</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Font (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="language" Type="Pango.Language" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Computes the coverage map for a given font and language tag.</summary>
-        <param name="language"> the language tag</param>
-        <returns>a new <see cref="T:Pango.Coverage" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="FindShaper">
-      <MemberSignature Language="C#" Value="public Pango.EngineShape FindShaper (Pango.Language language, uint ch);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.EngineShape</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="language" Type="Pango.Language" />
-        <Parameter Name="ch" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Finds the best matching shaper for a font for a particular language tag and character point.</summary>
-        <param name="language"> the language tag</param>
-        <param name="ch"> the ISO-10646 character code.</param>
-        <returns> the best matching shaper.</returns>
-        <remarks />
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Describe">
       <MemberSignature Language="C#" Value="public Pango.FontDescription Describe ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.FontDescription Describe() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Pango.FontDescription</ReturnType>
@@ -80,83 +58,43 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GetGlyphExtents">
-      <MemberSignature Language="C#" Value="public void GetGlyphExtents (uint glyph, Pango.Rectangle ink_rect, Pango.Rectangle logical_rect);" />
+    <Member MemberName="DescribeWithAbsoluteSize">
+      <MemberSignature Language="C#" Value="public Pango.FontDescription DescribeWithAbsoluteSize ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.FontDescription DescribeWithAbsoluteSize() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Pango.FontDescription</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="glyph" Type="System.UInt32" />
-        <Parameter Name="ink_rect" Type="Pango.Rectangle" />
-        <Parameter Name="logical_rect" Type="Pango.Rectangle" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Gets the logical and ink extents of a glyph within a font.</summary>
-        <param name="glyph"> the glyph index</param>
-        <param name="ink_rect">a  <see cref="T:Pango.Rectangle" /> used to store the extents of the glyph as drawn or <see langword="null" /> to indicate that the result is not needed.</param>
-        <param name="logical_rect">a <see cref="T:Pango.Rectangle" /> used to store the logical extents of the glyph or <see langword="null" /> to indicate that the result is not needed.</param>
-        <remarks>The coordinate system for each rectangle has its origin at the base line and horizontal origin of the character with increasing coordinates extending to the right and down. The units of the rectangles are in 1 / <see cref="F:Pango.Scale.PangoScale" /> of a device unit.</remarks>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Font (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="FindShaper">
+      <MemberSignature Language="C#" Value="public Pango.EngineShape FindShaper (Pango.Language language, uint ch);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.EngineShape FindShaper(class Pango.Language language, unsigned int32 ch) cil managed" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
+        <ReturnType>Pango.EngineShape</ReturnType>
       </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Pango.Font" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Font (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
       <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
+        <Parameter Name="language" Type="Pango.Language" />
+        <Parameter Name="ch" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Font ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Protected constructor.</summary>
-        <remarks>Default constuctor for children of this type.</remarks>
+        <param name="language"> the language tag</param>
+        <param name="ch"> the ISO-10646 character code.</param>
+        <summary>Finds the best matching shaper for a font for a particular language tag and character point.</summary>
+        <returns> the best matching shaper.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="FontMap">
-      <MemberSignature Language="C#" Value="public Pango.FontMap FontMap { get; };" />
+      <MemberSignature Language="C#" Value="public Pango.FontMap FontMap { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.FontMap FontMap" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.FontMap</ReturnType>
@@ -168,18 +106,72 @@
         <since version="Gtk# 2.8" />
       </Docs>
     </Member>
-    <Member MemberName="DescribeWithAbsoluteSize">
-      <MemberSignature Language="C#" Value="public Pango.FontDescription DescribeWithAbsoluteSize ();" />
+    <Member MemberName="GetCoverage">
+      <MemberSignature Language="C#" Value="public Pango.Coverage GetCoverage (Pango.Language language);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.Coverage GetCoverage(class Pango.Language language) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Pango.FontDescription</ReturnType>
+        <ReturnType>Pango.Coverage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="language" Type="Pango.Language" />
+      </Parameters>
+      <Docs>
+        <param name="language"> the language tag</param>
+        <summary>Computes the coverage map for a given font and language tag.</summary>
+        <returns>a new <see cref="T:Pango.Coverage" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetGlyphExtents">
+      <MemberSignature Language="C#" Value="public void GetGlyphExtents (uint glyph, Pango.Rectangle ink_rect, Pango.Rectangle logical_rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetGlyphExtents(unsigned int32 glyph, valuetype Pango.Rectangle ink_rect, valuetype Pango.Rectangle logical_rect) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="glyph" Type="System.UInt32" />
+        <Parameter Name="ink_rect" Type="Pango.Rectangle" />
+        <Parameter Name="logical_rect" Type="Pango.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="glyph"> the glyph index</param>
+        <param name="ink_rect">a  <see cref="T:Pango.Rectangle" /> used to store the extents of the glyph as drawn or <see langword="null" /> to indicate that the result is not needed.</param>
+        <param name="logical_rect">a <see cref="T:Pango.Rectangle" /> used to store the logical extents of the glyph or <see langword="null" /> to indicate that the result is not needed.</param>
+        <summary>Gets the logical and ink extents of a glyph within a font.</summary>
+        <remarks>The coordinate system for each rectangle has its origin at the base line and horizontal origin of the character with increasing coordinates extending to the right and down. The units of the rectangles are in 1 / <see cref="F:Pango.Scale.PangoScale" /> of a device unit.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetMetrics">
+      <MemberSignature Language="C#" Value="public Pango.FontMetrics GetMetrics (Pango.Language language);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.FontMetrics GetMetrics(class Pango.Language language) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.FontMetrics</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="language" Type="Pango.Language" />
+      </Parameters>
+      <Docs>
+        <param name="language"> language tag used to determine which script to get the metrics for, or <see langword="null" /> to indicate to get the metrics for the entire font.</param>
+        <summary>Gets overall metric information for a font.</summary>
+        <returns> a new <see cref="T:Pango.FontMetrics" /> object.</returns>
+        <remarks>Since the metrics may be substantially different for different scripts, a language tag can be provided to indicate that the metrics should be retrieved that correspond to the script(s) used by that language.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Pango.Font" />.</remarks>
       </Docs>
     </Member>
   </Members>

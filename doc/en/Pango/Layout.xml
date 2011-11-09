@@ -1,11 +1,16 @@
 <Type Name="Layout" FullName="Pango.Layout">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class Layout : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Layout extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>High-level driver for formatting entire paragraphs of text at once.</summary>
     <remarks>
@@ -63,366 +68,38 @@ class LayoutSample : DrawingArea
 	  </code>
     </example>
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
-    <Member MemberName="MoveCursorVisually">
-      <MemberSignature Language="C#" Value="public void MoveCursorVisually (bool strong, int old_index, int old_trailing, int direction, out int new_index, out int new_trailing);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="strong" Type="System.Boolean" />
-        <Parameter Name="old_index" Type="System.Int32" />
-        <Parameter Name="old_trailing" Type="System.Int32" />
-        <Parameter Name="direction" Type="System.Int32" />
-        <Parameter Name="new_index" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="new_trailing" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Computes a new cursor position from an old position and a count of positions to move visually.</summary>
-        <param name="strong"> whether the moving cursor is the strong cursor or the weak cursor. The strong cursor is the cursor corresponding to text insertion in the base direction for the layout.</param>
-        <param name="old_index">	 the byte index of the grapheme for the old index </param>
-        <param name="old_trailing"> if 0, the cursor was at the trailing edge of the grapheme indicated by old_index, if &gt; 0, the cursor was at the leading edge.</param>
-        <param name="direction">	 direction to move cursor. A negative value indicates motion to the left.</param>
-        <param name="new_index"> location to store the new cursor byte index. A value of -1 indicates that the cursor has been moved off the beginning of the layout. A value of G_MAXINT indicates that the cursor has been moved off the end of the layout.</param>
-        <param name="new_trailing"> number of characters to move forward from the location returned for <paramref name="new_index" /> to get the position where the cursor should be displayed. This allows distinguishing the position at the beginning of one line from the position at the end of the preceding line. <paramref name="new_index" /> is always on the line where the cursor should be displayed.</param>
-        <remarks>
-          <para>If <paramref name="count" /> is positive, then the new strong cursor position will be one position to the right of the old cursor position. If <paramref name="count" /> is negative then the new strong cursor position will be one position to the left of the old cursor position.
-</para>
-          <para>In the presence of bi-directional text, the correspondence between logical and visual order will depend on the direction of the current run, and there may be jumps when the cursor is moved off of the end of a run.
-</para>
-          <para>Motion here is in cursor positions, not in characters, so a single call may move the cursor over multiple characters when multiple characters combine to form a single grapheme.
-</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetText">
-      <MemberSignature Language="C#" Value="public void SetText (string text);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Set the text of the layout.</summary>
-        <param name="text">an object of type <see cref="T:System.String" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetPixelSize">
-      <MemberSignature Language="C#" Value="public void GetPixelSize (out int width, out int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Determine the logical width and height of a <see cref="T:Pango.Layout" /> in device units.</summary>
-        <param name="width">an object of type <see cref="T:System.Int32" /></param>
-        <param name="height">an object of type <see cref="T:System.Int32" /></param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetExtents">
-      <MemberSignature Language="C#" Value="public void GetExtents (out Pango.Rectangle ink_rect, out Pango.Rectangle logical_rect);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ink_rect" Type="Pango.Rectangle&amp;" RefType="out" />
-        <Parameter Name="logical_rect" Type="Pango.Rectangle&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Computes the logical and ink extents</summary>
-        <param name="ink_rect"> rectangle used to store the extents of the layout as drawn.</param>
-        <param name="logical_rect"> rectangle used to store the logical extents of the layout.</param>
-        <remarks>Logical extents are usually what you want for positioning things. The extents are given in layout coordinates; layout coordinates begin at the top left corner of the layout.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IndexToPos">
-      <MemberSignature Language="C#" Value="public Pango.Rectangle IndexToPos (int index_);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Rectangle</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Obtains the graphical position of an offset in the <see cref="T:Pango.Layout" />.</summary>
-        <param name="index_">a byte offset within the text buffer.</param>
-        <returns>a <see cref="T:Pango.Rectangle" /> representing the position of the grapheme associated with <paramref name="index_" />.</returns>
-        <remarks>
-          <para>
-The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents the leading edge of the grapheme.  If the direction of the grapheme is right to left, the Width value will be negative.
-</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetMarkup">
-      <MemberSignature Language="C#" Value="public void SetMarkup (string markup);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="markup" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the layout text and attribute list from marked-up text (see markup format).</summary>
-        <param name="markup">marked-up text</param>
-        <remarks>Replaces the current text and attribute list.
-</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetPixelExtents">
-      <MemberSignature Language="C#" Value="public void GetPixelExtents (out Pango.Rectangle ink_rect, out Pango.Rectangle logical_rect);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ink_rect" Type="Pango.Rectangle&amp;" RefType="out" />
-        <Parameter Name="logical_rect" Type="Pango.Rectangle&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Compute the logical and ink extents of layout.</summary>
-        <param name="ink_rect">Rectangle used to store the extents of the layout as drawn.</param>
-        <param name="logical_rect">Rectangle used to store the logical extents of the layout.</param>
-        <remarks>
-          <para>
-	  Logical extents are usually what you want for positioning things. The extents are given in layout coordinates; layout coordinates begin at the top left corner of the layout.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Copy">
-      <MemberSignature Language="C#" Value="public Pango.Layout Copy ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Layout</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Copies an existing layout into a new one.</summary>
-        <returns>an object of type <see cref="T:Pango.Layout" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GetSize">
-      <MemberSignature Language="C#" Value="public void GetSize (out int width, out int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Determines the logical width and height of a <see cref="T:Pango.Layout" /> in Pango units (device units divided by <see cref="F:Pango.Scale.PangoScale" />).</summary>
-        <param name="width"> location to store the logical width, or <see langword="null" /></param>
-        <param name="height"> location to store the logical height, or <see langword="null" /></param>
-        <remarks>This is simply a convenience function around <see cref="M:Pango.Layout.GetExtents()" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetCursorPos">
-      <MemberSignature Language="C#" Value="public void GetCursorPos (int index_, out Pango.Rectangle strong_pos, out Pango.Rectangle weak_pos);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
-        <Parameter Name="strong_pos" Type="Pango.Rectangle&amp;" RefType="out" />
-        <Parameter Name="weak_pos" Type="Pango.Rectangle&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Given an index within a layout, determines the positions that of the strong and weak cursors if the insertion point is at that index.</summary>
-        <param name="index_"> the byte index of the cursor</param>
-        <param name="strong_pos"> location to store the strong cursor position (may be <see langword="null" />)</param>
-        <param name="weak_pos"> location to store the weak cursor position (may be <see langword="null" />)</param>
-        <remarks>The position of each cursor is stored as a zero-width rectangle. The strong cursor location is the location where characters of the directionality equal to the base direction of the layout are inserted. The weak cursor location is the location where characters of the directionality opposite to the base direction of the layout are inserted.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="XyToIndex">
-      <MemberSignature Language="C#" Value="public bool XyToIndex (int x, int y, out int index_, out int trailing);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-        <Parameter Name="index_" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="trailing" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Convert from X and Y position within a layout to the byte index to the character at that logical position.</summary>
-        <param name="x">a <see cref="T:System.Int32" />, the X offset (in thousandths of a device unit) from the left edge of the layout.</param>
-        <param name="y">a <see cref="T:System.Int32" />, the Y offset (in thousandths of a device unit) from the top edge of the layout.</param>
-        <param name="index_">a <see cref="T:System.Int32" /> for storing the calculated byte index</param>
-        <param name="trailing">a <see cref="T:System.Int32" /> to store where in the grapheme the user clicked. It will either
-	  be zero or the number of characters in the grapheme. 0 represents the trailing edge of the grapheme.</param>
-        <returns>a <see cref="T:System.Boolean" />, true if the coordinates are inside the Layout.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ContextChanged">
-      <MemberSignature Language="C#" Value="public void ContextChanged ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Forces recomputation of any state in the <see cref="T:Pango.Layout" /> that might depend on the layout's context.</summary>
-        <remarks>This function should be called if you make changes to the context subsequent to creating the layout.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetLine">
-      <MemberSignature Language="C#" Value="public Pango.LayoutLine GetLine (int line);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.LayoutLine</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="line" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Retrieves a particular line.</summary>
-        <param name="line">the index of a line.</param>
-        <returns>the requested <see cref="T:Pango.LayoutLine" />, or null if the index is out of range.</returns>
-        <remarks>This layout line can be referenced and retained, but will become invalid
-          if changes are made to the Layout.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Layout (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="gtype">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Layout (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Create a new PangoLayout object with attributes initialized to default values for a particular <see cref="T:Pango.Context" />.</summary>
-        <param name="raw">a <see cref="T:Pango.Context" />.</param>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Layout (Pango.Context context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Pango.Context context) cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
         <Parameter Name="context" Type="Pango.Context" />
       </Parameters>
       <Docs>
-        <summary>Create a new PangoLayout object with attributes initialized to default values for a particular <see cref="T:Pango.Context" />.</summary>
         <param name="context">a <see cref="T:Pango.Context" />.</param>
+        <summary>Create a new PangoLayout object with attributes initialized to default values for a particular <see cref="T:Pango.Context" />.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Layout (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Pango.Layout" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="FontDescription">
-      <MemberSignature Language="C#" Value="public Pango.FontDescription FontDescription { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.FontDescription</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The default font description for the layout.</summary>
-        <value>a <see cref="T:Pango.FontDescription" /></value>
-        <remarks>If no font description is set on the layout, the font description from the layout's context is used.</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
-    <Member MemberName="Wrap">
-      <MemberSignature Language="C#" Value="public Pango.WrapMode Wrap { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.WrapMode</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Gets or sets the wrap mode</summary>
-        <value> Active wrap mode.</value>
-        <remarks>The wrap mode only has an effect if a width is set on the layout using <see cref="P:Pango.Layout.Width" />. To turn off wrapping, set the width to -1.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Text">
-      <MemberSignature Language="C#" Value="public string Text { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Sets the text of the layout.</summary>
-        <value>a <see cref="T:System.String" /> in UTF-8 encoding.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Width">
-      <MemberSignature Language="C#" Value="public int Width { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Sets the width to which the lines of the Layout should be wrapped.</summary>
-        <value>an object of type <see cref="T:System.String" /></value>
+        <param name="raw">a <see cref="T:Pango.Context" />.</param>
+        <summary>Create a new PangoLayout object with attributes initialized to default values for a particular <see cref="T:Pango.Context" />.</summary>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Alignment">
-      <MemberSignature Language="C#" Value="public Pango.Alignment Alignment { set; get; };" />
+      <MemberSignature Language="C#" Value="public Pango.Alignment Alignment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.Alignment Alignment" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.Alignment</ReturnType>
@@ -436,34 +113,9 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Justify">
-      <MemberSignature Language="C#" Value="public bool Justify { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Sets whether or not each complete line should be stretched to fill the entire width of the layout.</summary>
-        <value>an object of type <see cref="T:System.Int32" /></value>
-        <remarks>This stretching is typically done by adding whitespace, but for some scripts (such as Arabic), the justification is done by extending the characters.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Spacing">
-      <MemberSignature Language="C#" Value="public int Spacing { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>the amount of spacing between the lines of the layout.</summary>
-        <value>the amount of spacing (in <see cref="T:Pango.GlyphUnit" />)            </value>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="Attributes">
-      <MemberSignature Language="C#" Value="public Pango.AttrList Attributes { set; get; };" />
+      <MemberSignature Language="C#" Value="public Pango.AttrList Attributes { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.AttrList Attributes" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.AttrList</ReturnType>
@@ -475,139 +127,9 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Iter">
-      <MemberSignature Language="C#" Value="public Pango.LayoutIter Iter { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.LayoutIter</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>An iterator to iterate over the visual extents of the layout.</summary>
-        <value>a new <see cref="T:Pango.LayoutIter" />.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Context">
-      <MemberSignature Language="C#" Value="public Pango.Context Context { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Context</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>the <see cref="T:Pango.Context" /> used for this layout.</summary>
-        <value>an object of type <see cref="T:Pango.LayoutIter" /></value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SingleParagraphMode">
-      <MemberSignature Language="C#" Value="public bool SingleParagraphMode { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Whether or not to treat newlines and similar characters as paragraph separators.</summary>
-        <value>an object of type <see cref="T:Pango.Context" /></value>
-        <remarks>
-          <para>If set to true, do not treat newlines and similar characters as paragraph separators; instead, keep all text in a single paragraph, and display a glyph for paragraph separator characters.</para>
-          <para>Used when you want to allow editing of newlines on a single text line.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Tabs">
-      <MemberSignature Language="C#" Value="public Pango.TabArray Tabs { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.TabArray</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The tabs to use for the layout.</summary>
-        <value>the current <see cref="T:Pango.TabArray" /> used by this layout. If no <see cref="T:Pango.TabArray" /> has been set, then the default tabs are in use and null is returned.</value>
-        <remarks>
-          <para>By default, tabs are every 8 spaces.</para>
-          <para>Setting new tabs overrides the default tabs. If Tabs is set to null, the default tabs are reinstated.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Indent">
-      <MemberSignature Language="C#" Value="public int Indent { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Set or return the amount by which the first line should be shorter than the rest of the lines.</summary>
-        <value>an object of type <see cref="T:System.Int32" /></value>
-        <remarks>The value can be negative, in which case the subsequent lines will be shorter than the first line. (However, in either case, the entire width of the layout will be given by the value.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LineCount">
-      <MemberSignature Language="C#" Value="public int LineCount { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Retrieves the count of lines for the layout.</summary>
-        <value>An integer, the line count</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Lines">
-      <MemberSignature Language="C#" Value="public Pango.LayoutLine[] Lines { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.LayoutLine[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The count of lines for the layout.</summary>
-        <value>The count of lines for the layout.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LogAttrs">
-      <MemberSignature Language="C#" Value="public Pango.LogAttr[] LogAttrs { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.LogAttr[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Retrieves an array of logical attributes for each character in the layout.</summary>
-        <value>a <see cref="T:Pango.LogAttr[]" /></value>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetMarkupWithAccel">
-      <MemberSignature Language="C#" Value="public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="markup" Type="System.String" />
-        <Parameter Name="accel_marker" Type="System.Char" />
-        <Parameter Name="accel_char" Type="System.Char&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the text of a Layout includ</summary>
-        <summary>Sets the layout text and attribute list from marked-up text with an accelerator marker (see markup format).</summary>
-        <param name="markup">marked-up text</param>
-        <param name="accel_marker">the character following this char is underlined.</param>
-        <param name="accel_char">returns a parsed accelerator char from the marked-up text.</param>
-        <remarks>Replaces the current text and attribute list.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="AutoDir">
-      <MemberSignature Language="C#" Value="public bool AutoDir { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool AutoDir { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AutoDir" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -620,8 +142,64 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
+    <Member MemberName="Baseline">
+      <MemberSignature Language="C#" Value="public int Baseline { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Baseline" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Context">
+      <MemberSignature Language="C#" Value="public Pango.Context Context { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.Context Context" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Context</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>the <see cref="T:Pango.Context" /> used for this layout.</summary>
+        <value>an object of type <see cref="T:Pango.LayoutIter" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ContextChanged">
+      <MemberSignature Language="C#" Value="public void ContextChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ContextChanged() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Forces recomputation of any state in the <see cref="T:Pango.Layout" /> that might depend on the layout's context.</summary>
+        <remarks>This function should be called if you make changes to the context subsequent to creating the layout.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Copy">
+      <MemberSignature Language="C#" Value="public Pango.Layout Copy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.Layout Copy() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Layout</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Copies an existing layout into a new one.</summary>
+        <returns>an object of type <see cref="T:Pango.Layout" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Ellipsize">
-      <MemberSignature Language="C#" Value="public Pango.EllipsizeMode Ellipsize { set; get; };" />
+      <MemberSignature Language="C#" Value="public Pango.EllipsizeMode Ellipsize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.EllipsizeMode Ellipsize" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.EllipsizeMode</ReturnType>
@@ -634,8 +212,199 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
+    <Member MemberName="FontDescription">
+      <MemberSignature Language="C#" Value="public Pango.FontDescription FontDescription { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.FontDescription FontDescription" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.FontDescription</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The default font description for the layout.</summary>
+        <value>a <see cref="T:Pango.FontDescription" /></value>
+        <remarks>If no font description is set on the layout, the font description from the layout's context is used.</remarks>
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCursorPos">
+      <MemberSignature Language="C#" Value="public void GetCursorPos (int index_, out Pango.Rectangle strong_pos, out Pango.Rectangle weak_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetCursorPos(int32 index_, valuetype Pango.Rectangle strong_pos, valuetype Pango.Rectangle weak_pos) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index_" Type="System.Int32" />
+        <Parameter Name="strong_pos" Type="Pango.Rectangle&amp;" RefType="out" />
+        <Parameter Name="weak_pos" Type="Pango.Rectangle&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="index_"> the byte index of the cursor</param>
+        <param name="strong_pos"> location to store the strong cursor position (may be <see langword="null" />)</param>
+        <param name="weak_pos"> location to store the weak cursor position (may be <see langword="null" />)</param>
+        <summary>Given an index within a layout, determines the positions that of the strong and weak cursors if the insertion point is at that index.</summary>
+        <remarks>The position of each cursor is stored as a zero-width rectangle. The strong cursor location is the location where characters of the directionality equal to the base direction of the layout are inserted. The weak cursor location is the location where characters of the directionality opposite to the base direction of the layout are inserted.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetExtents">
+      <MemberSignature Language="C#" Value="public void GetExtents (out Pango.Rectangle ink_rect, out Pango.Rectangle logical_rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetExtents(valuetype Pango.Rectangle ink_rect, valuetype Pango.Rectangle logical_rect) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ink_rect" Type="Pango.Rectangle&amp;" RefType="out" />
+        <Parameter Name="logical_rect" Type="Pango.Rectangle&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="ink_rect"> rectangle used to store the extents of the layout as drawn.</param>
+        <param name="logical_rect"> rectangle used to store the logical extents of the layout.</param>
+        <summary>Computes the logical and ink extents</summary>
+        <remarks>Logical extents are usually what you want for positioning things. The extents are given in layout coordinates; layout coordinates begin at the top left corner of the layout.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLine">
+      <MemberSignature Language="C#" Value="public Pango.LayoutLine GetLine (int line);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.LayoutLine GetLine(int32 line) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.LayoutLine</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="line" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="line">the index of a line.</param>
+        <summary>Retrieves a particular line.</summary>
+        <returns>the requested <see cref="T:Pango.LayoutLine" />, or null if the index is out of range.</returns>
+        <remarks>This layout line can be referenced and retained, but will become invalid
+          if changes are made to the Layout.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLineReadonly">
+      <MemberSignature Language="C#" Value="public Pango.LayoutLine GetLineReadonly (int line);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Pango.LayoutLine GetLineReadonly(int32 line) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.LayoutLine</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="line" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="line">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPixelExtents">
+      <MemberSignature Language="C#" Value="public void GetPixelExtents (out Pango.Rectangle ink_rect, out Pango.Rectangle logical_rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPixelExtents(valuetype Pango.Rectangle ink_rect, valuetype Pango.Rectangle logical_rect) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ink_rect" Type="Pango.Rectangle&amp;" RefType="out" />
+        <Parameter Name="logical_rect" Type="Pango.Rectangle&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="ink_rect">Rectangle used to store the extents of the layout as drawn.</param>
+        <param name="logical_rect">Rectangle used to store the logical extents of the layout.</param>
+        <summary>Compute the logical and ink extents of layout.</summary>
+        <remarks>
+          <para>
+	  Logical extents are usually what you want for positioning things. The extents are given in layout coordinates; layout coordinates begin at the top left corner of the layout.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPixelSize">
+      <MemberSignature Language="C#" Value="public void GetPixelSize (out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetPixelSize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="width">an object of type <see cref="T:System.Int32" /></param>
+        <param name="height">an object of type <see cref="T:System.Int32" /></param>
+        <summary>Determine the logical width and height of a <see cref="T:Pango.Layout" /> in device units.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSize">
+      <MemberSignature Language="C#" Value="public void GetSize (out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetSize(int32 width, int32 height) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="width"> location to store the logical width, or <see langword="null" /></param>
+        <param name="height"> location to store the logical height, or <see langword="null" /></param>
+        <summary>Determines the logical width and height of a <see cref="T:Pango.Layout" /> in Pango units (device units divided by <see cref="F:Pango.Scale.PangoScale" />).</summary>
+        <remarks>This is simply a convenience function around <see cref="M:Pango.Layout.GetExtents()" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Pango.Layout" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Height">
+      <MemberSignature Language="C#" Value="public int Height { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Height" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Indent">
+      <MemberSignature Language="C#" Value="public int Indent { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Indent" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Set or return the amount by which the first line should be shorter than the rest of the lines.</summary>
+        <value>an object of type <see cref="T:System.Int32" /></value>
+        <remarks>The value can be negative, in which case the subsequent lines will be shorter than the first line. (However, in either case, the entire width of the layout will be given by the value.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="IndexToLineX">
       <MemberSignature Language="C#" Value="public void IndexToLineX (int index_, bool trailing, out int line, out int x_pos);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void IndexToLineX(int32 index_, bool trailing, int32 line, int32 x_pos) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -656,25 +425,30 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <since version="Gtk# 2.10" />
       </Docs>
     </Member>
-    <Member MemberName="GetLineReadonly">
-      <MemberSignature Language="C#" Value="public Pango.LayoutLine GetLineReadonly (int line);" />
+    <Member MemberName="IndexToPos">
+      <MemberSignature Language="C#" Value="public Pango.Rectangle IndexToPos (int index_);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Pango.Rectangle IndexToPos(int32 index_) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Pango.LayoutLine</ReturnType>
+        <ReturnType>Pango.Rectangle</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="line" Type="System.Int32" />
+        <Parameter Name="index_" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="line">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-        <since version="Gtk# 2.12" />
+        <param name="index_">a byte offset within the text buffer.</param>
+        <summary>Obtains the graphical position of an offset in the <see cref="T:Pango.Layout" />.</summary>
+        <returns>a <see cref="T:Pango.Rectangle" /> representing the position of the grapheme associated with <paramref name="index_" />.</returns>
+        <remarks>
+          <para>
+The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents the leading edge of the grapheme.  If the direction of the grapheme is right to left, the Width value will be negative.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsEllipsized">
-      <MemberSignature Language="C#" Value="public bool IsEllipsized { get; };" />
+      <MemberSignature Language="C#" Value="public bool IsEllipsized { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsEllipsized" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -687,7 +461,8 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       </Docs>
     </Member>
     <Member MemberName="IsWrapped">
-      <MemberSignature Language="C#" Value="public bool IsWrapped { get; };" />
+      <MemberSignature Language="C#" Value="public bool IsWrapped { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsWrapped" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -699,8 +474,65 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <since version="Gtk# 2.12" />
       </Docs>
     </Member>
+    <Member MemberName="Iter">
+      <MemberSignature Language="C#" Value="public Pango.LayoutIter Iter { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.LayoutIter Iter" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.LayoutIter</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>An iterator to iterate over the visual extents of the layout.</summary>
+        <value>a new <see cref="T:Pango.LayoutIter" />.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Justify">
+      <MemberSignature Language="C#" Value="public bool Justify { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Justify" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Sets whether or not each complete line should be stretched to fill the entire width of the layout.</summary>
+        <value>an object of type <see cref="T:System.Int32" /></value>
+        <remarks>This stretching is typically done by adding whitespace, but for some scripts (such as Arabic), the justification is done by extending the characters.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LineCount">
+      <MemberSignature Language="C#" Value="public int LineCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 LineCount" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Retrieves the count of lines for the layout.</summary>
+        <value>An integer, the line count</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Lines">
+      <MemberSignature Language="C#" Value="public Pango.LayoutLine[] Lines { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.LayoutLine[] Lines" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.LayoutLine[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The count of lines for the layout.</summary>
+        <value>The count of lines for the layout.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="LinesReadOnly">
-      <MemberSignature Language="C#" Value="public Pango.LayoutLine[] LinesReadOnly { get; };" />
+      <MemberSignature Language="C#" Value="public Pango.LayoutLine[] LinesReadOnly { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.LayoutLine[] LinesReadOnly" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.LayoutLine[]</ReturnType>
@@ -712,8 +544,173 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <since version="Gtk# 2.12" />
       </Docs>
     </Member>
+    <Member MemberName="LogAttrs">
+      <MemberSignature Language="C#" Value="public Pango.LogAttr[] LogAttrs { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.LogAttr[] LogAttrs" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.LogAttr[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Retrieves an array of logical attributes for each character in the layout.</summary>
+        <value>a <see cref="T:Pango.LogAttr[]" /></value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCursorVisually">
+      <MemberSignature Language="C#" Value="public void MoveCursorVisually (bool strong, int old_index, int old_trailing, int direction, out int new_index, out int new_trailing);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void MoveCursorVisually(bool strong, int32 old_index, int32 old_trailing, int32 direction, int32 new_index, int32 new_trailing) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="strong" Type="System.Boolean" />
+        <Parameter Name="old_index" Type="System.Int32" />
+        <Parameter Name="old_trailing" Type="System.Int32" />
+        <Parameter Name="direction" Type="System.Int32" />
+        <Parameter Name="new_index" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="new_trailing" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="strong"> whether the moving cursor is the strong cursor or the weak cursor. The strong cursor is the cursor corresponding to text insertion in the base direction for the layout.</param>
+        <param name="old_index">	 the byte index of the grapheme for the old index </param>
+        <param name="old_trailing"> if 0, the cursor was at the trailing edge of the grapheme indicated by old_index, if &gt; 0, the cursor was at the leading edge.</param>
+        <param name="direction">	 direction to move cursor. A negative value indicates motion to the left.</param>
+        <param name="new_index"> location to store the new cursor byte index. A value of -1 indicates that the cursor has been moved off the beginning of the layout. A value of G_MAXINT indicates that the cursor has been moved off the end of the layout.</param>
+        <param name="new_trailing"> number of characters to move forward from the location returned for <paramref name="new_index" /> to get the position where the cursor should be displayed. This allows distinguishing the position at the beginning of one line from the position at the end of the preceding line. <paramref name="new_index" /> is always on the line where the cursor should be displayed.</param>
+        <summary>Computes a new cursor position from an old position and a count of positions to move visually.</summary>
+        <remarks>
+          <para>If <paramref name="count" /> is positive, then the new strong cursor position will be one position to the right of the old cursor position. If <paramref name="count" /> is negative then the new strong cursor position will be one position to the left of the old cursor position.
+</para>
+          <para>In the presence of bi-directional text, the correspondence between logical and visual order will depend on the direction of the current run, and there may be jumps when the cursor is moved off of the end of a run.
+</para>
+          <para>Motion here is in cursor positions, not in characters, so a single call may move the cursor over multiple characters when multiple characters combine to form a single grapheme.
+</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetMarkup">
+      <MemberSignature Language="C#" Value="public void SetMarkup (string markup);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetMarkup(string markup) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="markup" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="markup">marked-up text</param>
+        <summary>Sets the layout text and attribute list from marked-up text (see markup format).</summary>
+        <remarks>Replaces the current text and attribute list.
+</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetMarkupWithAccel">
+      <MemberSignature Language="C#" Value="public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetMarkupWithAccel(string markup, char accel_marker, char accel_char) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="markup" Type="System.String" />
+        <Parameter Name="accel_marker" Type="System.Char" />
+        <Parameter Name="accel_char" Type="System.Char&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="markup">marked-up text</param>
+        <param name="accel_marker">the character following this char is underlined.</param>
+        <param name="accel_char">returns a parsed accelerator char from the marked-up text.</param>
+        <summary>Sets the text of a Layout includ</summary>
+        <summary>Sets the layout text and attribute list from marked-up text with an accelerator marker (see markup format).</summary>
+        <remarks>Replaces the current text and attribute list.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetText">
+      <MemberSignature Language="C#" Value="public void SetText (string text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetText(string text) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="text">an object of type <see cref="T:System.String" /></param>
+        <summary>Set the text of the layout.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SingleParagraphMode">
+      <MemberSignature Language="C#" Value="public bool SingleParagraphMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SingleParagraphMode" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not to treat newlines and similar characters as paragraph separators.</summary>
+        <value>an object of type <see cref="T:Pango.Context" /></value>
+        <remarks>
+          <para>If set to true, do not treat newlines and similar characters as paragraph separators; instead, keep all text in a single paragraph, and display a glyph for paragraph separator characters.</para>
+          <para>Used when you want to allow editing of newlines on a single text line.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Spacing">
+      <MemberSignature Language="C#" Value="public int Spacing { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Spacing" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>the amount of spacing between the lines of the layout.</summary>
+        <value>the amount of spacing (in <see cref="T:Pango.GlyphUnit" />)            </value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Tabs">
+      <MemberSignature Language="C#" Value="public Pango.TabArray Tabs { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Pango.TabArray Tabs" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.TabArray</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The tabs to use for the layout.</summary>
+        <value>the current <see cref="T:Pango.TabArray" /> used by this layout. If no <see cref="T:Pango.TabArray" /> has been set, then the default tabs are in use and null is returned.</value>
+        <remarks>
+          <para>By default, tabs are every 8 spaces.</para>
+          <para>Setting new tabs overrides the default tabs. If Tabs is set to null, the default tabs are reinstated.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Text">
+      <MemberSignature Language="C#" Value="public string Text { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Text" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Sets the text of the layout.</summary>
+        <value>a <see cref="T:System.String" /> in UTF-8 encoding.</value>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="UnknownGlyphsCount">
-      <MemberSignature Language="C#" Value="public int UnknownGlyphsCount { get; };" />
+      <MemberSignature Language="C#" Value="public int UnknownGlyphsCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 UnknownGlyphsCount" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -723,6 +720,58 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <value>To be added.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="Width">
+      <MemberSignature Language="C#" Value="public int Width { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Width" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Sets the width to which the lines of the Layout should be wrapped.</summary>
+        <value>an object of type <see cref="T:System.String" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Wrap">
+      <MemberSignature Language="C#" Value="public Pango.WrapMode Wrap { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Pango.WrapMode Wrap" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.WrapMode</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Gets or sets the wrap mode</summary>
+        <value> Active wrap mode.</value>
+        <remarks>The wrap mode only has an effect if a width is set on the layout using <see cref="P:Pango.Layout.Width" />. To turn off wrapping, set the width to -1.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XyToIndex">
+      <MemberSignature Language="C#" Value="public bool XyToIndex (int x, int y, out int index_, out int trailing);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool XyToIndex(int32 x, int32 y, int32 index_, int32 trailing) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="index_" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="trailing" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">a <see cref="T:System.Int32" />, the X offset (in thousandths of a device unit) from the left edge of the layout.</param>
+        <param name="y">a <see cref="T:System.Int32" />, the Y offset (in thousandths of a device unit) from the top edge of the layout.</param>
+        <param name="index_">a <see cref="T:System.Int32" /> for storing the calculated byte index</param>
+        <param name="trailing">a <see cref="T:System.Int32" /> to store where in the grapheme the user clicked. It will either
+	  be zero or the number of characters in the grapheme. 0 represents the trailing edge of the grapheme.</param>
+        <summary>Convert from X and Y position within a layout to the byte index to the character at that logical position.</summary>
+        <returns>a <see cref="T:System.Boolean" />, true if the coordinates are inside the Layout.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

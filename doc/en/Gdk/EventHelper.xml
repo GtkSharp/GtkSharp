@@ -1,23 +1,35 @@
 <Type Name="EventHelper" FullName="Gdk.EventHelper">
   <TypeSignature Language="C#" Value="public class EventHelper" Maintainer="auto" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit EventHelper extends System.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>A utility class that contains methods that operate on Event classes.</summary>
-    <remarks>This class contains static methods.</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>A utility class that contains methods that operate on Event classes.</summary>
+    <remarks>This class contains static methods.</remarks>
+  </Docs>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public EventHelper ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>This constructor is never used.</summary>
+        <remarks>This class contains only static methods, and this constructor should never be used.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Copy">
       <MemberSignature Language="C#" Value="public static Gdk.Event Copy (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Event Copy(class Gdk.Event evnt) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Event</ReturnType>
@@ -26,14 +38,32 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>Copies a <see cref="T:Gdk.Event" />.</summary>
         <param name="evnt">The <see cref="T:Gdk.Event" /> to copy.</param>
+        <summary>Copies a <see cref="T:Gdk.Event" />.</summary>
         <returns>The copied <see cref="T:Gdk.Event" />.</returns>
         <remarks>None.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="Free">
+      <MemberSignature Language="C#" Value="public static void Free (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Free(class Gdk.Event evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">
+          <see cref="T:Gdk.Event" /> to free.</param>
+        <summary>Frees a <see cref="T:Gdk.Event" />.</summary>
+        <remarks>This should only be called with events returned from functions such as <see cref="M:Gdk.EventHelper.Peek" />, <see cref="M:Gdk.EventHelper.Get" />, <see cref="M:Gdk.EventHelper.GetGraphicsExpose" /> and <see cref="M:Gdk.EventHelper.Copy" />.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Get">
       <MemberSignature Language="C#" Value="public static Gdk.Event Get ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Event Get() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Event</ReturnType>
@@ -45,235 +75,9 @@
         <remarks>None.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetScreen">
-      <MemberSignature Language="C#" Value="public static Gdk.Screen GetScreen (Gdk.Event evnt);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Screen</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-      </Parameters>
-      <Docs>
-        <summary>Returns the screen for the event. The screen is typically the screen for <see cref="P:Gdk.Event.Window" />, but for events such as mouse events, it is the screen where the pointer was when the event occurs.</summary>
-        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
-        <returns>The <see cref="T:Gdk.Screen" /> for the event.</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Peek">
-      <MemberSignature Language="C#" Value="public static Gdk.Event Peek ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Event</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>If there is an event waiting in the event queue of some open display, returns a copy of it. See <see cref="M:Gdk.Display.PeekEvent" />.</summary>
-        <returns>A copy of the first <see cref="T:Gdk.Event" /> on some event queue, or null if no events are in any queues.</returns>
-        <remarks>The returned <see cref="T:Gdk.Event" /> should be freed with <see cref="M:Gdk.EventHelper.Free" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Gdk.Event New (Gdk.EventType type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Event</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="Gdk.EventType" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new event of the given type. All fields are set to 0.</summary>
-        <param name="type">A <see cref="T:Gdk.EventType" /></param>
-        <returns>A <see cref="T:Gdk.Event" /></returns>
-        <remarks>The returned event should be freed with <see cref="M:Gdk.EventHelper.Free" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SendClientMessageForDisplay">
-      <MemberSignature Language="C#" Value="public static bool SendClientMessageForDisplay (Gdk.Display display, Gdk.Event evnt, uint winid);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="display" Type="Gdk.Display" />
-        <Parameter Name="evnt" Type="Gdk.Event" />
-        <Parameter Name="winid" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>On X11, sends an X ClientMessage event to a given window. On Windows, sends a message registered with the name GDK_WIN32_CLIENT_MESSAGE.
-This could be used for communicating between different applications, though the amount of data is limited to 20 bytes on X11, and to just four bytes on Windows.</summary>
-        <param name="display">The <see cref="T:Gdk.Display" /> for the window where the message is to be sent.</param>
-        <param name="evnt">The <see cref="T:Gdk.Event" /> to send, which should be a <see cref="T.Gdk.EventClient" />.</param>
-        <param name="winid">The window to send the client message to.</param>
-        <returns>True on success.</returns>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Free">
-      <MemberSignature Language="C#" Value="public static void Free (Gdk.Event evnt);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-      </Parameters>
-      <Docs>
-        <summary>Frees a <see cref="T:Gdk.Event" />.</summary>
-        <param name="evnt">
-          <see cref="T:Gdk.Event" /> to free.</param>
-        <remarks>This should only be called with events returned from functions such as <see cref="M:Gdk.EventHelper.Peek" />, <see cref="M:Gdk.EventHelper.Get" />, <see cref="M:Gdk.EventHelper.GetGraphicsExpose" /> and <see cref="M:Gdk.EventHelper.Copy" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SendClientmessageToall">
-      <MemberSignature Language="C#" Value="public static void SendClientmessageToall (Gdk.Event evnt);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-      </Parameters>
-      <Docs>
-        <summary>Sends an X ClientMessage event to all toplevel windows on the default <see cref="T:Gdk.Screen" />. Toplevel windows are determined by checking for the WM_STATE property, as described in the Inter-Client Communication Conventions Manual (ICCCM). If no windows are found with the WM_STATE property set, the message is sent to all children of the root window.</summary>
-        <param name="evnt">The <see cref="T:Gdk.Event" /> to send, which should be a <see cref="T:Gdk.EventClient" />.</param>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SendClientMessage">
-      <MemberSignature Language="C#" Value="public static bool SendClientMessage (Gdk.Event evnt, uint winid);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-        <Parameter Name="winid" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Sends an X ClientMessage event to a given window (which must be on the default <see cref="T:Gdk.Display" />.) This could be used for communicating between different applications, though the amount of data is limited to 20 bytes.</summary>
-        <param name="evnt">The <see cref="T:Gdk.Event" /> to send, which should be a <see cref="T:Gdk.EventClient" />.</param>
-        <param name="winid">The window to send the X ClientMessage event to.</param>
-        <returns>True on success.</returns>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetTime">
-      <MemberSignature Language="C#" Value="public static uint GetTime (Gdk.Event evnt);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-      </Parameters>
-      <Docs>
-        <summary>Returns the time stamp from event, if there is one. Otherwise returns the current time. If event is null, returns the current time..</summary>
-        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
-        <returns>Time stamp field from event.</returns>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetGraphicsExpose">
-      <MemberSignature Language="C#" Value="public static Gdk.Event GetGraphicsExpose (Gdk.Window window);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Event</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="window" Type="Gdk.Window" />
-      </Parameters>
-      <Docs>
-        <summary>Waits for a GraphicsExpose or NoExpose event from the X server. This is used in the GtkText and GtkCList widgets in Gtk# to make sure any Graphics Expose events are handled before the widget is scrolled.</summary>
-        <param name="window">The <see cref="T:Gdk.Window" /> to wait for the events for.</param>
-        <returns>A <see cref="T:Gdk.EventExpose" /> if a GraphicsExpose was received, or null if a NoExpose event was received.</returns>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetScreen">
-      <MemberSignature Language="C#" Value="public static void SetScreen (Gdk.Event evnt, Gdk.Screen screen);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-        <Parameter Name="screen" Type="Gdk.Screen" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the screen for event to screen. The event must have been allocated by GTK+, for instance, by <see cref="M:Gdk.EventHelper.Copy" />.</summary>
-        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
-        <param name="screen">A <see cref="T:Gdk.Screen" /></param>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Put">
-      <MemberSignature Language="C#" Value="public static void Put (Gdk.Event evnt);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-      </Parameters>
-      <Docs>
-        <summary>Appends a copy of the given event onto the front of the event queue for <see cref="P:Gdk.Event.Window" />'s display, or the default queue if that window is null. See <see cref="M:Gdk.Display.PutEvent" />.</summary>
-        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public EventHelper ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>This constructor is never used.</summary>
-        <remarks>This class contains only static methods, and this constructor should never be used.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetCoords">
-      <MemberSignature Language="C#" Value="public static bool GetCoords (Gdk.Event evnt, out double x_win, out double y_win);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-        <Parameter Name="x_win" Type="System.Double&amp;" RefType="out" />
-        <Parameter Name="y_win" Type="System.Double&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Extract the event window relative x/y coordinates from an event.</summary>
-        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
-        <param name="x_win">Event window x coordinate.</param>
-        <param name="y_win">Event window y coordinate.</param>
-        <returns>True if the event delivered event coordinates.</returns>
-        <remarks>None.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetState">
-      <MemberSignature Language="C#" Value="public static bool GetState (Gdk.Event evnt, out Gdk.ModifierType state);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-        <Parameter Name="state" Type="Gdk.ModifierType&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>If the event contains a "state" field, puts that field in state. Otherwise stores an empty state (0).</summary>
-        <param name="evnt">A <see cref="T:Gdk.Event" /> or null.</param>
-        <param name="state">The <see cref="T:Gdk.ModifierType" /> of the event.</param>
-        <returns>True if there was a state field in the event.</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GetAxis">
       <MemberSignature Language="C#" Value="public static bool GetAxis (Gdk.Event evnt, Gdk.AxisUse axis_use, out double value);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool GetAxis(class Gdk.Event evnt, valuetype Gdk.AxisUse axis_use, float64 value) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -284,16 +88,56 @@ This could be used for communicating between different applications, though the 
         <Parameter Name="value" Type="System.Double&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>Extract the axis value for a particular axis use from an event.</summary>
         <param name="evnt">A <see cref="T:Gdk.Event" /></param>
         <param name="axis_use">The axis use to look for.</param>
         <param name="value">The value found.</param>
+        <summary>Extract the axis value for a particular axis use from an event.</summary>
         <returns>True if the specified axis was found, otherwise false.</returns>
         <remarks>None.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="GetCoords">
+      <MemberSignature Language="C#" Value="public static bool GetCoords (Gdk.Event evnt, out double x_win, out double y_win);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool GetCoords(class Gdk.Event evnt, float64 x_win, float64 y_win) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="x_win" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="y_win" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <param name="x_win">Event window x coordinate.</param>
+        <param name="y_win">Event window y coordinate.</param>
+        <summary>Extract the event window relative x/y coordinates from an event.</summary>
+        <returns>True if the event delivered event coordinates.</returns>
+        <remarks>None.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDevice">
+      <MemberSignature Language="C#" Value="public static Gdk.Device GetDevice (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Device GetDevice(class Gdk.Event evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Device</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GetRootCoords">
       <MemberSignature Language="C#" Value="public static bool GetRootCoords (Gdk.Event evnt, out double x_root, out double y_root);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool GetRootCoords(class Gdk.Event evnt, float64 x_root, float64 y_root) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -304,16 +148,88 @@ This could be used for communicating between different applications, though the 
         <Parameter Name="y_root" Type="System.Double&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>Extract the root window relative x/y coordinates from an event.</summary>
         <param name="evnt">A <see cref="T:Gdk.Event" /></param>
         <param name="x_root">Root window x coordinate.</param>
         <param name="y_root">Root window y coordinate.</param>
+        <summary>Extract the root window relative x/y coordinates from an event.</summary>
         <returns>True if the event delivered root window coordinates.</returns>
         <remarks>None.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="GetScreen">
+      <MemberSignature Language="C#" Value="public static Gdk.Screen GetScreen (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Screen GetScreen(class Gdk.Event evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Screen</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <summary>Returns the screen for the event. The screen is typically the screen for <see cref="P:Gdk.Event.Window" />, but for events such as mouse events, it is the screen where the pointer was when the event occurs.</summary>
+        <returns>The <see cref="T:Gdk.Screen" /> for the event.</returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSourceDevice">
+      <MemberSignature Language="C#" Value="public static Gdk.Device GetSourceDevice (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Device GetSourceDevice(class Gdk.Event evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Device</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetState">
+      <MemberSignature Language="C#" Value="public static bool GetState (Gdk.Event evnt, out Gdk.ModifierType state);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool GetState(class Gdk.Event evnt, valuetype Gdk.ModifierType state) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="state" Type="Gdk.ModifierType&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">A <see cref="T:Gdk.Event" /> or null.</param>
+        <param name="state">The <see cref="T:Gdk.ModifierType" /> of the event.</param>
+        <summary>If the event contains a "state" field, puts that field in state. Otherwise stores an empty state (0).</summary>
+        <returns>True if there was a state field in the event.</returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTime">
+      <MemberSignature Language="C#" Value="public static uint GetTime (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int32 GetTime(class Gdk.Event evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <summary>Returns the time stamp from event, if there is one. Otherwise returns the current time. If event is null, returns the current time..</summary>
+        <returns>Time stamp field from event.</returns>
+        <remarks>None.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -325,8 +241,56 @@ This could be used for communicating between different applications, though the 
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.EventHelper" />.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="New">
+      <MemberSignature Language="C#" Value="public static Gdk.Event New (Gdk.EventType type);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Event New(valuetype Gdk.EventType type) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Event</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="Gdk.EventType" />
+      </Parameters>
+      <Docs>
+        <param name="type">A <see cref="T:Gdk.EventType" /></param>
+        <summary>Creates a new event of the given type. All fields are set to 0.</summary>
+        <returns>A <see cref="T:Gdk.Event" /></returns>
+        <remarks>The returned event should be freed with <see cref="M:Gdk.EventHelper.Free" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Peek">
+      <MemberSignature Language="C#" Value="public static Gdk.Event Peek ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gdk.Event Peek() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Event</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>If there is an event waiting in the event queue of some open display, returns a copy of it. See <see cref="M:Gdk.Display.PeekEvent" />.</summary>
+        <returns>A copy of the first <see cref="T:Gdk.Event" /> on some event queue, or null if no events are in any queues.</returns>
+        <remarks>The returned <see cref="T:Gdk.Event" /> should be freed with <see cref="M:Gdk.EventHelper.Free" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Put">
+      <MemberSignature Language="C#" Value="public static void Put (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Put(class Gdk.Event evnt) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <summary>Appends a copy of the given event onto the front of the event queue for <see cref="P:Gdk.Event.Window" />'s display, or the default queue if that window is null. See <see cref="M:Gdk.Display.PutEvent" />.</summary>
+        <remarks>None.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="RequestMotions">
       <MemberSignature Language="C#" Value="public static void RequestMotions (Gdk.EventMotion evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void RequestMotions(class Gdk.EventMotion evnt) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -339,6 +303,62 @@ This could be used for communicating between different applications, though the 
         <summary>Requests additional motion notify events.</summary>
         <remarks />
         <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetDevice">
+      <MemberSignature Language="C#" Value="public static void SetDevice (Gdk.Event evnt, Gdk.Device device);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SetDevice(class Gdk.Event evnt, class Gdk.Device device) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="device" Type="Gdk.Device" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">To be added.</param>
+        <param name="device">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetScreen">
+      <MemberSignature Language="C#" Value="public static void SetScreen (Gdk.Event evnt, Gdk.Screen screen);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SetScreen(class Gdk.Event evnt, class Gdk.Screen screen) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="screen" Type="Gdk.Screen" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <param name="screen">A <see cref="T:Gdk.Screen" /></param>
+        <summary>Sets the screen for event to screen. The event must have been allocated by GTK+, for instance, by <see cref="M:Gdk.EventHelper.Copy" />.</summary>
+        <remarks>None.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetSourceDevice">
+      <MemberSignature Language="C#" Value="public static void SetSourceDevice (Gdk.Event evnt, Gdk.Device device);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SetSourceDevice(class Gdk.Event evnt, class Gdk.Device device) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="device" Type="Gdk.Device" />
+      </Parameters>
+      <Docs>
+        <param name="evnt">To be added.</param>
+        <param name="device">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
   </Members>

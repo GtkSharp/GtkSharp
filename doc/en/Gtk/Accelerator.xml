@@ -1,68 +1,24 @@
 <Type Name="Accelerator" FullName="Gtk.Accelerator">
   <TypeSignature Language="C#" Value="public class Accelerator" Maintainer="auto" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Accelerator extends System.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>An accelerator.</summary>
-    <remarks>TODO: explain the relationship between this class and <see cref="T:Gtk.Accel" />.</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>An accelerator.</summary>
+    <remarks>TODO: explain the relationship between this class and <see cref="T:Gtk.Accel" />.</remarks>
+  </Docs>
   <Members>
-    <Member MemberName="Valid">
-      <MemberSignature Language="C#" Value="public static bool Valid (uint keyval, Gdk.ModifierType modifiers);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="keyval" Type="System.UInt32" />
-        <Parameter Name="modifiers" Type="Gdk.ModifierType" />
-      </Parameters>
-      <Docs>
-        <summary>Determines whether a given keyval and modifier mask constitute
-	  a valid keyboard accelerator. For example, <see cref="F:Gdk.Key.A" /> 
-	  keyval plus <see cref="F:Gdk.ModifierType.ControlMask" /> is valid; 
-	  this is a "Ctrl+a" accelerator. However, you can't use the 
-	  <see cref="F:Gdk.Control_L" /> keyval as an accelerator.</summary>
-        <param name="keyval">a <see cref="T:System.UInt32" />, see <see cref="Gkd.Key" /> for useful values</param>
-        <param name="modifiers">a <see cref="T:Gdk.ModifierType" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Name">
-      <MemberSignature Language="C#" Value="public static string Name (uint accelerator_key, Gdk.ModifierType accelerator_mods);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="accelerator_key" Type="System.UInt32" />
-        <Parameter Name="accelerator_mods" Type="Gdk.ModifierType" />
-      </Parameters>
-      <Docs>
-        <summary>Converts an accelerator keyval and modifier mask into 
-	  a string parseable by <see cref="M:Gtk.Accelerator.Parse" />.
-	  For example, if you pass in <see cref="F:Gdk.Key.Q" /> and 
-	  <see cref="F:Gdk.ModifierType.ControlMask" />,
-	  this function returns "&lt;Control&gt;q". 
-	</summary>
-        <param name="accelerator_key">a <see cref="T:System.UInt32" /></param>
-        <param name="accelerator_mods">a <see cref="T:Gdk.ModifierType" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>In Gtk+, the return value must be freed by the caller, but not in Gtk#.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Accelerator ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters />
@@ -72,7 +28,8 @@
       </Docs>
     </Member>
     <Member MemberName="DefaultModMask">
-      <MemberSignature Language="C#" Value="public static Gdk.ModifierType DefaultModMask { set; get; };" />
+      <MemberSignature Language="C#" Value="public static Gdk.ModifierType DefaultModMask { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype Gdk.ModifierType DefaultModMask" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.ModifierType</ReturnType>
@@ -85,8 +42,53 @@
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="GetLabel">
+      <MemberSignature Language="C#" Value="public static string GetLabel (uint accelerator_key, Gdk.ModifierType accelerator_mods);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string GetLabel(unsigned int32 accelerator_key, valuetype Gdk.ModifierType accelerator_mods) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accelerator_key" Type="System.UInt32" />
+        <Parameter Name="accelerator_mods" Type="Gdk.ModifierType" />
+      </Parameters>
+      <Docs>
+        <param name="accelerator_key">A <see cref="T:System.UInt32" /> representing the accelerator keyval.</param>
+        <param name="accelerator_mods">A <see cref="T:System.Int32" /> representing the accelerator modifier mask.</param>
+        <summary>Converts an accelerator keyval and modifier mask into a string which can be used to represent the accelerator to the user.</summary>
+        <returns>A newly-allocated string representing the accelerator.</returns>
+        <remarks />
+        <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public static string Name (uint accelerator_key, Gdk.ModifierType accelerator_mods);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string Name(unsigned int32 accelerator_key, valuetype Gdk.ModifierType accelerator_mods) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accelerator_key" Type="System.UInt32" />
+        <Parameter Name="accelerator_mods" Type="Gdk.ModifierType" />
+      </Parameters>
+      <Docs>
+        <param name="accelerator_key">a <see cref="T:System.UInt32" /></param>
+        <param name="accelerator_mods">a <see cref="T:Gdk.ModifierType" /></param>
+        <summary>Converts an accelerator keyval and modifier mask into 
+	  a string parseable by <see cref="M:Gtk.Accelerator.Parse" />.
+	  For example, if you pass in <see cref="F:Gdk.Key.Q" /> and 
+	  <see cref="F:Gdk.ModifierType.ControlMask" />,
+	  this function returns "&lt;Control&gt;q". 
+	</summary>
+        <returns>a <see cref="T:System.String" /></returns>
+        <remarks>In Gtk+, the return value must be freed by the caller, but not in Gtk#.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Parse">
       <MemberSignature Language="C#" Value="public static void Parse (string accelerator, out uint accelerator_key, out Gdk.ModifierType accelerator_mods);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Parse(string accelerator, unsigned int32 accelerator_key, valuetype Gdk.ModifierType accelerator_mods) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -97,30 +99,34 @@
         <Parameter Name="accelerator_mods" Type="Gdk.ModifierType&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary> Parses a string representing an accelerator. The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1" or "&lt;Release&gt;z" (the last one is for key release). The parser is fairly liberal and allows lower or upper case, and also abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;".</summary>
         <param name="accelerator">a <see cref="T:System.String" /></param>
         <param name="accelerator_key">a <see cref="T:System.UInt32&amp;" />, thekey to map to.</param>
         <param name="accelerator_mods">a <see cref="T:Gdk.ModifierType&amp;" /> to fill with data.</param>
+        <summary> Parses a string representing an accelerator. The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1" or "&lt;Release&gt;z" (the last one is for key release). The parser is fairly liberal and allows lower or upper case, and also abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;".</summary>
         <remarks>If the parse fails, <paramref name="accelerator_key" /> and <paramref name="accelerator_mods" /> will be set to 0 (zero).</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetLabel">
-      <MemberSignature Language="C#" Value="public static string GetLabel (uint accelerator_key, Gdk.ModifierType accelerator_mods);" />
+    <Member MemberName="Valid">
+      <MemberSignature Language="C#" Value="public static bool Valid (uint keyval, Gdk.ModifierType modifiers);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool Valid(unsigned int32 keyval, valuetype Gdk.ModifierType modifiers) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.String</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="accelerator_key" Type="System.UInt32" />
-        <Parameter Name="accelerator_mods" Type="Gdk.ModifierType" />
+        <Parameter Name="keyval" Type="System.UInt32" />
+        <Parameter Name="modifiers" Type="Gdk.ModifierType" />
       </Parameters>
       <Docs>
-        <summary>Converts an accelerator keyval and modifier mask into a string which can be used to represent the accelerator to the user.</summary>
-        <param name="accelerator_key">A <see cref="T:System.UInt32" /> representing the accelerator keyval.</param>
-        <param name="accelerator_mods">A <see cref="T:System.Int32" /> representing the accelerator modifier mask.</param>
-        <returns>A newly-allocated string representing the accelerator.</returns>
+        <param name="keyval">a <see cref="T:System.UInt32" />, see <see cref="Gkd.Key" /> for useful values</param>
+        <param name="modifiers">a <see cref="T:Gdk.ModifierType" /></param>
+        <summary>Determines whether a given keyval and modifier mask constitute
+	  a valid keyboard accelerator. For example, <see cref="F:Gdk.Key.A" /> 
+	  keyval plus <see cref="F:Gdk.ModifierType.ControlMask" /> is valid; 
+	  this is a "Ctrl+a" accelerator. However, you can't use the 
+	  <see cref="F:Gdk.Control_L" /> keyval as an accelerator.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks />
-        <since version="Gtk# 2.6" />
       </Docs>
     </Member>
   </Members>

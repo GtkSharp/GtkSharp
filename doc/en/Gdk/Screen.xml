@@ -1,39 +1,84 @@
 <Type Name="Screen" FullName="Gdk.Screen">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class Screen : GLib.Object" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Screen extends GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Object representing a physical screen.</summary>
-    <remarks>To be added</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>Object representing a physical screen.</summary>
+    <remarks>To be added</remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Screen ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Screen (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="ActiveWindow">
+      <MemberSignature Language="C#" Value="public Gdk.Window ActiveWindow { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window ActiveWindow" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The current active window for the screen.</summary>
+        <value>a <see cref="Gdk.Window" />.</value>
+        <remarks>Returns <see langword="null" /> if there is no current active window or the window manager doesn't support the necessary properties to determine the active window.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="CompositedChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler CompositedChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler CompositedChanged" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("composited-changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Raised when the composited status of the screen changes.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
     <Member MemberName="Default">
-      <MemberSignature Language="C#" Value="public static Gdk.Screen Default { get; };" />
+      <MemberSignature Language="C#" Value="public static Gdk.Screen Default { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Gdk.Screen Default" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Screen</ReturnType>
@@ -44,8 +89,267 @@
         <remarks>Returns null if there iss no default display.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="Display">
+      <MemberSignature Language="C#" Value="public Gdk.Display Display { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Display Display" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Display</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:Gdk.Display" /></value>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FontOptions">
+      <MemberSignature Language="C#" Value="public Cairo.FontOptions FontOptions { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Cairo.FontOptions FontOptions" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("font-options")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Cairo.FontOptions</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The default font options for the screen.</summary>
+        <value>The default <see cref="Cairo.FontOptions" />.</value>
+        <remarks>If multiple accesses to this information are needed, you may want to consider cacheing the result.  The get accessor needs to use reflection to create the FontOptions instance and could possibly cause performance issues if called frequently.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetMonitorAtPoint">
+      <MemberSignature Language="C#" Value="public int GetMonitorAtPoint (int x, int y);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetMonitorAtPoint(int32 x, int32 y) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="x">A <see cref="T:System.Int32" /> representing the x coordinate on the virtual screen.</param>
+        <param name="y">A <see cref="T:System.Int32" /> representing the y coordinate on the virtual screen.</param>
+        <summary>Gets the monitor number where the point is located.</summary>
+        <returns>A <see cref="T:System.Int32" /> indicating the monitor where the point is located.</returns>
+        <remarks>If the point isn't in any monitor, then the nearest monitor is returned.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetMonitorAtWindow">
+      <MemberSignature Language="C#" Value="public int GetMonitorAtWindow (Gdk.Window window);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetMonitorAtWindow(class Gdk.Window window) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="window" Type="Gdk.Window" />
+      </Parameters>
+      <Docs>
+        <param name="window">A <see cref="T:Gdk.Window" /> whose main monitor is claimed.</param>
+        <summary>Gets the monitor that contains most of the given window.</summary>
+        <returns>A <see cref="T:System.Int32" /> indicating the required monitor.</returns>
+        <remarks>If the window does not intersect any of the monitors, then the a close one is returned.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetMonitorGeometry">
+      <MemberSignature Language="C#" Value="public Gdk.Rectangle GetMonitorGeometry (int monitor_num);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype Gdk.Rectangle GetMonitorGeometry(int32 monitor_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Rectangle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="monitor_num" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="monitor_num">a <see cref="T:System.Int32" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gdk.Rectangle" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetMonitorHeightMm">
+      <MemberSignature Language="C#" Value="public int GetMonitorHeightMm (int monitor_num);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetMonitorHeightMm(int32 monitor_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="monitor_num" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="monitor_num">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetMonitorPlugName">
+      <MemberSignature Language="C#" Value="public string GetMonitorPlugName (int monitor_num);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetMonitorPlugName(int32 monitor_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="monitor_num" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="monitor_num">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetMonitorWidthMm">
+      <MemberSignature Language="C#" Value="public int GetMonitorWidthMm (int monitor_num);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetMonitorWidthMm(int32 monitor_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="monitor_num" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="monitor_num">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSetting">
+      <MemberSignature Language="C#" Value="public bool GetSetting (string name, GLib.Value value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetSetting(string name, valuetype GLib.Value value) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="value" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="name">a <see cref="T:System.String" /></param>
+        <param name="value">a <see cref="T:GLib.Value" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.Screen" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Height">
+      <MemberSignature Language="C#" Value="public int Height { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Height" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The height of the screen in pixels.</summary>
+        <value>A <see cref="T:System.Int32" /> with the number of pixels of the screen.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="HeightMm">
+      <MemberSignature Language="C#" Value="public int HeightMm { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 HeightMm" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The height of the screen in millimeters.</summary>
+        <value>A <see cref="T:System.Int32" /> with the height of the screen in millimeters.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsComposited">
+      <MemberSignature Language="C#" Value="public bool IsComposited { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsComposited" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Indicates if compositing is supported.</summary>
+        <value>If <see langword="true" /> compositing is supported.</value>
+        <remarks>Indicates if RGBA visuals with an alpha value can be expected to have their alpha channel drawn properly on screen.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="ListVisuals">
+      <MemberSignature Language="C#" Value="public Gdk.Visual[] ListVisuals ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gdk.Visual[] ListVisuals() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gdk.Visual[]" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MakeDisplayName">
+      <MemberSignature Language="C#" Value="public string MakeDisplayName ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string MakeDisplayName() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.String" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MonitorsChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler MonitorsChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler MonitorsChanged" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("monitors-changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="NMonitors">
-      <MemberSignature Language="C#" Value="public int NMonitors { get; };" />
+      <MemberSignature Language="C#" Value="public int NMonitors { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NMonitors" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -66,44 +370,9 @@ Console.WriteLine("You have {0} monitors.",numMonitors);
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="RootWindow">
-      <MemberSignature Language="C#" Value="public Gdk.Window RootWindow { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Window" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Height">
-      <MemberSignature Language="C#" Value="public int Height { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The height of the screen in pixels.</summary>
-        <value>A <see cref="T:System.Int32" /> with the number of pixels of the screen.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Display">
-      <MemberSignature Language="C#" Value="public Gdk.Display Display { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Display</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Display" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Number">
-      <MemberSignature Language="C#" Value="public int Number { get; };" />
+      <MemberSignature Language="C#" Value="public int Number { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Number" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -114,158 +383,15 @@ Console.WriteLine("You have {0} monitors.",numMonitors);
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SystemVisual">
-      <MemberSignature Language="C#" Value="public Gdk.Visual SystemVisual { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Visual</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Visual" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="HeightMm">
-      <MemberSignature Language="C#" Value="public int HeightMm { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The height of the screen in millimeters.</summary>
-        <value>A <see cref="T:System.Int32" /> with the height of the screen in millimeters.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Width">
-      <MemberSignature Language="C#" Value="public int Width { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The width of the screen in pixels.</summary>
-        <value>A <see cref="T:System.Int32" /> with the number of pixels of the screen.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="WidthMm">
-      <MemberSignature Language="C#" Value="public int WidthMm { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The width of the screen in millimeters.</summary>
-        <value>A <see cref="T:System.Int32" /> with the width of the screen in millimeters.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="DefaultColormap">
-      <MemberSignature Language="C#" Value="public Gdk.Colormap DefaultColormap { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Colormap</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Colormap" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RgbVisual">
-      <MemberSignature Language="C#" Value="public Gdk.Visual RgbVisual { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Visual</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Visual" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SystemColormap">
-      <MemberSignature Language="C#" Value="public Gdk.Colormap SystemColormap { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Colormap</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Colormap" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RgbColormap">
-      <MemberSignature Language="C#" Value="public Gdk.Colormap RgbColormap { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Colormap</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Colormap" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SizeChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler SizeChanged;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
+    <Member MemberName="OnBroadcastClientMessage">
+      <MemberSignature Language="C#" Value="protected virtual void OnBroadcastClientMessage (Gdk.Event evnt);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnBroadcastClientMessage(class Gdk.Event evnt) cil managed" />
+      <MemberType>Method</MemberType>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal("size_changed")</AttributeName>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideBroadcastClientMessage", Type=typeof(Gdk.Screen))</AttributeName>
         </Attribute>
       </Attributes>
-    </Member>
-    <Member MemberName="GetMonitorAtWindow">
-      <MemberSignature Language="C#" Value="public int GetMonitorAtWindow (Gdk.Window window);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="window" Type="Gdk.Window" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the monitor that contains most of the given window.</summary>
-        <param name="window">A <see cref="T:Gdk.Window" /> whose main monitor is claimed.</param>
-        <returns>A <see cref="T:System.Int32" /> indicating the required monitor.</returns>
-        <remarks>If the window does not intersect any of the monitors, then the a close one is returned.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetMonitorAtPoint">
-      <MemberSignature Language="C#" Value="public int GetMonitorAtPoint (int x, int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the monitor number where the point is located.</summary>
-        <param name="x">A <see cref="T:System.Int32" /> representing the x coordinate on the virtual screen.</param>
-        <param name="y">A <see cref="T:System.Int32" /> representing the y coordinate on the virtual screen.</param>
-        <returns>A <see cref="T:System.Int32" /> indicating the monitor where the point is located.</returns>
-        <remarks>If the point isn't in any monitor, then the nearest monitor is returned.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BroadcastClientMessage">
-      <MemberSignature Language="C#" Value="public void BroadcastClientMessage (Gdk.Event evnt);" />
-      <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -273,183 +399,21 @@ Console.WriteLine("You have {0} monitors.",numMonitors);
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetSetting">
-      <MemberSignature Language="C#" Value="public bool GetSetting (string name, GLib.Value value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-        <Parameter Name="value" Type="GLib.Value" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="name">a <see cref="T:System.String" /></param>
-        <param name="value">a <see cref="T:GLib.Value" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="MakeDisplayName">
-      <MemberSignature Language="C#" Value="public string MakeDisplayName ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.Screen" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnSizeChanged">
-      <MemberSignature Language="C#" Value="protected virtual void OnSizeChanged ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Default handler for the <see cref="M:Gdk.Screen.SizeChanged" /> event.</summary>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gdk.Screen.SizeChanged" /> event.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Screen (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="ToplevelWindows">
-      <MemberSignature Language="C#" Value="public Gdk.Window[] ToplevelWindows { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Window[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:Gdk.Window[]" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ListVisuals">
-      <MemberSignature Language="C#" Value="public Gdk.Visual[] ListVisuals ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Visual[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Visual[]" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetMonitorGeometry">
-      <MemberSignature Language="C#" Value="public Gdk.Rectangle GetMonitorGeometry (int monitor_num);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Rectangle</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="monitor_num" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="monitor_num">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Rectangle" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Screen ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RgbaVisual">
-      <MemberSignature Language="C#" Value="public Gdk.Visual RgbaVisual { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Visual</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>A Visual to use for creating Drawables with an alpha channel.</summary>
-        <value>a  <see cref="T:Gdk.Visual" /> or <see langword="null" />.</value>
-        <remarks>Returns <see langword="null" /> if the capability is not available. See <see cref="M:Gdk.Screen.RgbaColormap" /> for caveats.</remarks>
-        <since version="Gtk# 2.8" />
-      </Docs>
-    </Member>
-    <Member MemberName="RgbaColormap">
-      <MemberSignature Language="C#" Value="public Gdk.Colormap RgbaColormap { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.Colormap</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>A Colormap to use for creating Drawables with an alpha channel.</summary>
-        <value>a  <see cref="T:Gdk.Colormap" /> or <see langword="null" />.</value>
-        <remarks>The windowing system may not support this capability, in which case <see langword="null" /> will be returned. Even if a non-<see langword="null" /> value is returned, its possible that the drawable's alpha channel won't be honored when displaying on screen: in particular, for X an appropriate windowing manager and compositing manager must be running to provide appropriate display.</remarks>
-        <since version="Gtk# 2.8" />
-      </Docs>
-    </Member>
-    <Member MemberName="CompositedChanged">
-      <MemberSignature Language="C#" Value="public event EventHandler CompositedChanged;" />
-      <MemberType>Event</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal("composited_changed")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.EventHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Raised when the composited status of the screen changes.</summary>
-        <remarks />
-        <since version="Gtk# 2.10" />
+        <param name="evnt">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="OnCompositedChanged">
       <MemberSignature Language="C#" Value="protected virtual void OnCompositedChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCompositedChanged() cil managed" />
       <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideCompositedChanged", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -460,8 +424,677 @@ Console.WriteLine("You have {0} monitors.",numMonitors);
         <since version="Gtk# 2.10" />
       </Docs>
     </Member>
+    <Member MemberName="OnGetActiveWindow">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Window OnGetActiveWindow ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Window OnGetActiveWindow() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetActiveWindow", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetDisplay">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Display OnGetDisplay ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Display OnGetDisplay() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetDisplay", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Display</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetHeight">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetHeight ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetHeight() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetHeight", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetHeightMm">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetHeightMm ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetHeightMm() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetHeightMm", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetMonitorGeometry">
+      <MemberSignature Language="C#" Value="protected virtual void OnGetMonitorGeometry (int monitor_num, Gdk.Rectangle dest);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnGetMonitorGeometry(int32 monitor_num, valuetype Gdk.Rectangle dest) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetMonitorGeometry", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="monitor_num" Type="System.Int32" />
+        <Parameter Name="dest" Type="Gdk.Rectangle" />
+      </Parameters>
+      <Docs>
+        <param name="monitor_num">To be added.</param>
+        <param name="dest">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetMonitorHeightMm">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetMonitorHeightMm (int monitor_num);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetMonitorHeightMm(int32 monitor_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetMonitorHeightMm", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="monitor_num" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="monitor_num">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetMonitorPlugName">
+      <MemberSignature Language="C#" Value="protected virtual string OnGetMonitorPlugName (int monitor_num);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string OnGetMonitorPlugName(int32 monitor_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetMonitorPlugName", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="monitor_num" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="monitor_num">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetMonitorWidthMm">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetMonitorWidthMm (int monitor_num);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetMonitorWidthMm(int32 monitor_num) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetMonitorWidthMm", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="monitor_num" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="monitor_num">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetNMonitors">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetNMonitors ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetNMonitors() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetNMonitors", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetNumber">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetNumber ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetNumber() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetNumber", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetPrimaryMonitor">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetPrimaryMonitor ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetPrimaryMonitor() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetPrimaryMonitor", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetRgbaVisual">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Visual OnGetRgbaVisual ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Visual OnGetRgbaVisual() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetRgbaVisual", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetRootWindow">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Window OnGetRootWindow ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Window OnGetRootWindow() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetRootWindow", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetSetting">
+      <MemberSignature Language="C#" Value="protected virtual bool OnGetSetting (string name, GLib.Value value);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnGetSetting(string name, valuetype GLib.Value value) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetSetting", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="value" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetSystemVisual">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Visual OnGetSystemVisual ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Visual OnGetSystemVisual() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetSystemVisual", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetWidth">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetWidth ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetWidth() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetWidth", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetWidthMm">
+      <MemberSignature Language="C#" Value="protected virtual int OnGetWidthMm ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnGetWidthMm() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetWidthMm", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnGetWindowStack">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Window[] OnGetWindowStack ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Window[] OnGetWindowStack() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideGetWindowStack", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Window[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnIsComposited">
+      <MemberSignature Language="C#" Value="protected virtual bool OnIsComposited ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnIsComposited() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideIsComposited", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnListVisuals">
+      <MemberSignature Language="C#" Value="protected virtual GLib.List OnListVisuals ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class GLib.List OnListVisuals() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideListVisuals", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLib.List</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnMakeDisplayName">
+      <MemberSignature Language="C#" Value="protected virtual string OnMakeDisplayName ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string OnMakeDisplayName() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMakeDisplayName", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnMonitorsChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnMonitorsChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnMonitorsChanged() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideMonitorsChanged", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnQueryDepths">
+      <MemberSignature Language="C#" Value="protected virtual void OnQueryDepths (out int depths, out int count);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnQueryDepths(int32 depths, int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideQueryDepths", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="depths" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="count" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="depths">To be added.</param>
+        <param name="count">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnQueryVisualTypes">
+      <MemberSignature Language="C#" Value="protected virtual void OnQueryVisualTypes (out Gdk.VisualType visual_types, out int count);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnQueryVisualTypes(valuetype Gdk.VisualType visual_types, int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideQueryVisualTypes", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="visual_types" Type="Gdk.VisualType&amp;" RefType="out" />
+        <Parameter Name="count" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="visual_types">To be added.</param>
+        <param name="count">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSizeChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnSizeChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSizeChanged() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideSizeChanged", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gdk.Screen.SizeChanged" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gdk.Screen.SizeChanged" /> event.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnVisualGetBest">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Visual OnVisualGetBest ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Visual OnVisualGetBest() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideVisualGetBest", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnVisualGetBestDepth">
+      <MemberSignature Language="C#" Value="protected virtual int OnVisualGetBestDepth ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance int32 OnVisualGetBestDepth() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideVisualGetBestDepth", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnVisualGetBestType">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.VisualType OnVisualGetBestType ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance valuetype Gdk.VisualType OnVisualGetBestType() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideVisualGetBestType", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.VisualType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnVisualGetBestWithBoth">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Visual OnVisualGetBestWithBoth (int depth, Gdk.VisualType visual_type);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Visual OnVisualGetBestWithBoth(int32 depth, valuetype Gdk.VisualType visual_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideVisualGetBestWithBoth", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="depth" Type="System.Int32" />
+        <Parameter Name="visual_type" Type="Gdk.VisualType" />
+      </Parameters>
+      <Docs>
+        <param name="depth">To be added.</param>
+        <param name="visual_type">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnVisualGetBestWithDepth">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Visual OnVisualGetBestWithDepth (int depth);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Visual OnVisualGetBestWithDepth(int32 depth) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideVisualGetBestWithDepth", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="depth" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="depth">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnVisualGetBestWithType">
+      <MemberSignature Language="C#" Value="protected virtual Gdk.Visual OnVisualGetBestWithType (Gdk.VisualType visual_type);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class Gdk.Visual OnVisualGetBestWithType(valuetype Gdk.VisualType visual_type) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.DefaultSignalHandler(ConnectionMethod="OverrideVisualGetBestWithType", Type=typeof(Gdk.Screen))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gdk.Visual</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="visual_type" Type="Gdk.VisualType" />
+      </Parameters>
+      <Docs>
+        <param name="visual_type">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryMonitor">
+      <MemberSignature Language="C#" Value="public int PrimaryMonitor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 PrimaryMonitor" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="Resolution">
-      <MemberSignature Language="C#" Value="public double Resolution { set; get; };" />
+      <MemberSignature Language="C#" Value="public double Resolution { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 Resolution" />
       <MemberType>Property</MemberType>
       <Attributes>
         <Attribute>
@@ -478,52 +1111,107 @@ Console.WriteLine("You have {0} monitors.",numMonitors);
         <since version="Gtk# 2.10" />
       </Docs>
     </Member>
-    <Member MemberName="FontOptions">
-      <MemberSignature Language="C#" Value="public Cairo.FontOptions FontOptions { set; get; };" />
+    <Member MemberName="RgbaVisual">
+      <MemberSignature Language="C#" Value="public Gdk.Visual RgbaVisual { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Visual RgbaVisual" />
       <MemberType>Property</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property("font-options")</AttributeName>
-        </Attribute>
-      </Attributes>
       <ReturnValue>
-        <ReturnType>Cairo.FontOptions</ReturnType>
+        <ReturnType>Gdk.Visual</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The default font options for the screen.</summary>
-        <value>The default <see cref="Cairo.FontOptions" />.</value>
-        <remarks>If multiple accesses to this information are needed, you may want to consider cacheing the result.  The get accessor needs to use reflection to create the FontOptions instance and could possibly cause performance issues if called frequently.</remarks>
-        <since version="Gtk# 2.10" />
+        <summary>A Visual to use for creating Drawables with an alpha channel.</summary>
+        <value>a  <see cref="T:Gdk.Visual" /> or <see langword="null" />.</value>
+        <remarks>Returns <see langword="null" /> if the capability is not available. See <see cref="M:Gdk.Screen.RgbaColormap" /> for caveats.</remarks>
+        <since version="Gtk# 2.8" />
       </Docs>
     </Member>
-    <Member MemberName="ActiveWindow">
-      <MemberSignature Language="C#" Value="public Gdk.Window ActiveWindow { get; };" />
+    <Member MemberName="RootWindow">
+      <MemberSignature Language="C#" Value="public Gdk.Window RootWindow { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window RootWindow" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Window</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The current active window for the screen.</summary>
-        <value>a <see cref="Gdk.Window" />.</value>
-        <remarks>Returns <see langword="null" /> if there is no current active window or the window manager doesn't support the necessary properties to determine the active window.</remarks>
-        <since version="Gtk# 2.10" />
+        <summary>To be added</summary>
+        <value>a <see cref="T:Gdk.Window" /></value>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="IsComposited">
-      <MemberSignature Language="C#" Value="public bool IsComposited { get; };" />
+    <Member MemberName="SizeChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler SizeChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler SizeChanged" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal("size-changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SystemVisual">
+      <MemberSignature Language="C#" Value="public Gdk.Visual SystemVisual { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Visual SystemVisual" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
+        <ReturnType>Gdk.Visual</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates if compositing is supported.</summary>
-        <value>If <see langword="true" /> compositing is supported.</value>
-        <remarks>Indicates if RGBA visuals with an alpha value can be expected to have their alpha channel drawn properly on screen.</remarks>
-        <since version="Gtk# 2.10" />
+        <summary>To be added</summary>
+        <value>a <see cref="T:Gdk.Visual" /></value>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToplevelWindows">
+      <MemberSignature Language="C#" Value="public Gdk.Window[] ToplevelWindows { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window[] ToplevelWindows" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:Gdk.Window[]" /></value>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Width">
+      <MemberSignature Language="C#" Value="public int Width { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Width" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The width of the screen in pixels.</summary>
+        <value>A <see cref="T:System.Int32" /> with the number of pixels of the screen.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="WidthMm">
+      <MemberSignature Language="C#" Value="public int WidthMm { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 WidthMm" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The width of the screen in millimeters.</summary>
+        <value>A <see cref="T:System.Int32" /> with the width of the screen in millimeters.</value>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="WindowStack">
-      <MemberSignature Language="C#" Value="public Gdk.Window[] WindowStack { get; };" />
+      <MemberSignature Language="C#" Value="public Gdk.Window[] WindowStack { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Gdk.Window[] WindowStack" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Window[]</ReturnType>

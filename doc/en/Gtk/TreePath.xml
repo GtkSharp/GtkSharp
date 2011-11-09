@@ -1,37 +1,114 @@
 <Type Name="TreePath" FullName="Gtk.TreePath">
   <TypeSignature Language="C#" Maintainer="auto" Value="public class TreePath : GLib.Opaque" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit TreePath extends GLib.Opaque" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Represents a particular node of a <see cref="T:Gtk.TreeView" />.</summary>
-    <remarks>A TreePath can be converted into either an array of unsigned integers or a string. The string form is a list of numbers separated by a colon. Each number refers to the offset at that level. Thus, the path "0" refers to the root node and the path "2:4" refers to the fifth child of the third node.</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>Represents a particular node of a <see cref="T:Gtk.TreeView" />.</summary>
+    <remarks>A TreePath can be converted into either an array of unsigned integers or a string. The string form is a list of numbers separated by a colon. Each number refers to the offset at that level. Thus, the path "0" refers to the root node and the path "2:4" refers to the fifth child of the third node.</remarks>
+  </Docs>
   <Members>
-    <Member MemberName="NewFirst">
-      <MemberSignature Language="C#" Value="public static Gtk.TreePath NewFirst ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TreePath</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TreePath ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Creates a new GtkTreePath.</summary>
-        <returns>an object of type <see cref="T:Gtk.TreePath" /></returns>
-        <remarks>The string representation of this path is "0".</remarks>
+        <summary>Constructor; builds an empty TreePath.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TreePath (int[] indices);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(int32[] indices) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="indices" Type="System.Int32[]" />
+      </Parameters>
+      <Docs>
+        <param name="indices">a <see cref="T:System.Int32" /></param>
+        <summary>Creates a path for a set of indices.</summary>
+        <remarks />
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TreePath (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int raw) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TreePath (string path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string path) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="path">an object of type <see cref="T:System.String" /></param>
+        <summary>Creates a new <see cref="T:Gtk.TreePath" /> object.</summary>
+        <remarks>The <paramref name="path" /> is expressed in the form "3:2:5".  The toplevel or root path would thus be "0".</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendIndex">
+      <MemberSignature Language="C#" Value="public void AppendIndex (int index_);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AppendIndex(int32 index_) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index_" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="index_">a <see cref="T:System.Int32" />, the index to append</param>
+        <summary>Appends a new index to a path. As a result, the depth of the path is increased.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Compare">
+      <MemberSignature Language="C#" Value="public int Compare (Gtk.TreePath b);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 Compare(class Gtk.TreePath b) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="b" Type="Gtk.TreePath" />
+      </Parameters>
+      <Docs>
+        <param name="b">an object of type <see cref="T:Gtk.TreePath" />, the path to compare</param>
+        <summary>Compares two paths. If this path appears before <see cref="T:Gtk.TreePath" /> b in a tree, then -1 is returned. If the parameter path appears before this path, then 1 is returned. If the two nodes are equal, then 0 is returned.</summary>
+        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Copy">
       <MemberSignature Language="C#" Value="public Gtk.TreePath Copy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.TreePath Copy() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreePath</ReturnType>
@@ -43,156 +120,9 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="IsDescendant">
-      <MemberSignature Language="C#" Value="public bool IsDescendant (Gtk.TreePath ancestor);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ancestor" Type="Gtk.TreePath" />
-      </Parameters>
-      <Docs>
-        <summary>Tests whether this TreePath is a descendant of a particular TreePath.</summary>
-        <param name="ancestor">an object of type <see cref="T:Gtk.TreePath" />, the potential ancestor to test</param>
-        <returns>an object of type <see cref="T:System.Boolean" />, true if this TreePath is the other TreePath's descendant.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="IsAncestor">
-      <MemberSignature Language="C#" Value="public bool IsAncestor (Gtk.TreePath descendant);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="descendant" Type="Gtk.TreePath" />
-      </Parameters>
-      <Docs>
-        <summary>Tests whether this TreePath is an ancestor of a given TreePath</summary>
-        <param name="descendant">an object of type <see cref="T:Gtk.TreePath" />, the potential descendant</param>
-        <returns>an object of type <see cref="T:System.Boolean" />, returns true if this TreePath is an ancestor of the given TreePath.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Down">
-      <MemberSignature Language="C#" Value="public void Down ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Changes this TreePath object to refer to its own first child.</summary>
-        <remarks>FIXME: make sure this is right.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Compare">
-      <MemberSignature Language="C#" Value="public int Compare (Gtk.TreePath b);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="b" Type="Gtk.TreePath" />
-      </Parameters>
-      <Docs>
-        <summary>Compares two paths. If this path appears before <see cref="T:Gtk.TreePath" /> b in a tree, then -1 is returned. If the parameter path appears before this path, then 1 is returned. If the two nodes are equal, then 0 is returned.</summary>
-        <param name="b">an object of type <see cref="T:Gtk.TreePath" />, the path to compare</param>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Free">
-      <MemberSignature Language="C#" Value="public void Free ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Disposes of the TreePath object and any resources it was using.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Next">
-      <MemberSignature Language="C#" Value="public void Next ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves the TreePath to point to the next node at the current depth.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Prev">
-      <MemberSignature Language="C#" Value="public bool Prev ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves the TreePath to point to the previous node at the current depth, if it exists.</summary>
-        <returns>an object of type <see cref="T:System.Boolean" />, true if the path has a previous node and the move was made successfully.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Up">
-      <MemberSignature Language="C#" Value="public bool Up ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Moves the TreePath to point to its parent node, if it has a parent.</summary>
-        <returns>an object of type <see cref="T:System.Boolean" />, true if the path has a previous node and the move was made successfully.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public TreePath (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public TreePath ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Constructor; builds an empty TreePath.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public TreePath (string path);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="path" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new <see cref="T:Gtk.TreePath" /> object.</summary>
-        <param name="path">an object of type <see cref="T:System.String" /></param>
-        <remarks>The <paramref name="path" /> is expressed in the form "3:2:5".  The toplevel or root path would thus be "0".</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Depth">
-      <MemberSignature Language="C#" Value="public int Depth { get; };" />
+      <MemberSignature Language="C#" Value="public int Depth { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Depth" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -203,51 +133,122 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="PrependIndex">
-      <MemberSignature Language="C#" Value="public void PrependIndex (int index_);" />
+    <Member MemberName="Down">
+      <MemberSignature Language="C#" Value="public void Down ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Down() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Prepends a new index to a path. As a result, the depth of the path is increased.</summary>
-        <param name="index_">a <see cref="T:System.Int32" />, the index to prepend</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="AppendIndex">
-      <MemberSignature Language="C#" Value="public void AppendIndex (int index_);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Appends a new index to a path. As a result, the depth of the path is increased.</summary>
-        <param name="index_">a <see cref="T:System.Int32" />, the index to append</param>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Indices">
-      <MemberSignature Language="C#" Value="public int[] Indices { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32[]</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the current indices of the TreePath. This is an array of integers, each representing a node in a tree. This value should not be freed.</summary>
-        <value>a <see cref="T:System.Int32[]" /></value>
+        <summary>Changes this TreePath object to refer to its own first child.</summary>
+        <remarks>FIXME: make sure this is right.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public override bool Equals (object o);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool Equals(object o) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="o" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="o">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~TreePath ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Free">
+      <MemberSignature Language="C#" Value="public void Free ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Free() cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Gtk.TreePath is now freed automatically")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Disposes of the TreePath object and any resources it was using.</summary>
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="Free">
+      <MemberSignature Language="C#" Value="protected override void Free (IntPtr raw);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Free(native int raw) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetHashCode">
+      <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 GetHashCode() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetIndicesWithDepth">
+      <MemberSignature Language="C#" Value="public int GetIndicesWithDepth (out int depth);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetIndicesWithDepth(int32 depth) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="depth" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="depth">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -259,18 +260,138 @@
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TreePath" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public TreePath (int[] indices);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="Indices">
+      <MemberSignature Language="C#" Value="public int[] Indices { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32[] Indices" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns the current indices of the TreePath. This is an array of integers, each representing a node in a tree. This value should not be freed.</summary>
+        <value>a <see cref="T:System.Int32[]" /></value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsAncestor">
+      <MemberSignature Language="C#" Value="public bool IsAncestor (Gtk.TreePath descendant);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool IsAncestor(class Gtk.TreePath descendant) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
       <Parameters>
-        <Parameter Name="indices" Type="System.Int32[]" />
+        <Parameter Name="descendant" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>Creates a path for a set of indices.</summary>
-        <param name="indices">a <see cref="T:System.Int32" /></param>
+        <param name="descendant">an object of type <see cref="T:Gtk.TreePath" />, the potential descendant</param>
+        <summary>Tests whether this TreePath is an ancestor of a given TreePath</summary>
+        <returns>an object of type <see cref="T:System.Boolean" />, returns true if this TreePath is an ancestor of the given TreePath.</returns>
         <remarks />
-        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsDescendant">
+      <MemberSignature Language="C#" Value="public bool IsDescendant (Gtk.TreePath ancestor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool IsDescendant(class Gtk.TreePath ancestor) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ancestor" Type="Gtk.TreePath" />
+      </Parameters>
+      <Docs>
+        <param name="ancestor">an object of type <see cref="T:Gtk.TreePath" />, the potential ancestor to test</param>
+        <summary>Tests whether this TreePath is a descendant of a particular TreePath.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" />, true if this TreePath is the other TreePath's descendant.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="NewFirst">
+      <MemberSignature Language="C#" Value="public static Gtk.TreePath NewFirst ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Gtk.TreePath NewFirst() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreePath</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Creates a new GtkTreePath.</summary>
+        <returns>an object of type <see cref="T:Gtk.TreePath" /></returns>
+        <remarks>The string representation of this path is "0".</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Next">
+      <MemberSignature Language="C#" Value="public void Next ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Next() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves the TreePath to point to the next node at the current depth.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PrependIndex">
+      <MemberSignature Language="C#" Value="public void PrependIndex (int index_);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PrependIndex(int32 index_) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index_" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="index_">a <see cref="T:System.Int32" />, the index to prepend</param>
+        <summary>Prepends a new index to a path. As a result, the depth of the path is increased.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Prev">
+      <MemberSignature Language="C#" Value="public bool Prev ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Prev() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves the TreePath to point to the previous node at the current depth, if it exists.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" />, true if the path has a previous node and the move was made successfully.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="Up">
+      <MemberSignature Language="C#" Value="public bool Up ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Up() cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves the TreePath to point to its parent node, if it has a parent.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" />, true if the path has a previous node and the move was made successfully.</returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>

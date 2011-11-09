@@ -1,12 +1,20 @@
 <Type Name="NodeStore" FullName="Gtk.NodeStore">
   <TypeSignature Language="C#" Maintainer="Mike Kestner" Value="public class NodeStore : GLib.Object, System.Collections.IEnumerable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit NodeStore extends GLib.Object implements class System.Collections.IEnumerable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.Collections.IEnumerable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>A store for <see cref="T:Gtk.TreeView" /> that provides data from an arbitrary class.  It is simpler to use than the <see cref="T:Gtk.ListStore" />.</summary>
     <remarks>
@@ -64,17 +72,27 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>System.Collections.IEnumerable</InterfaceName>
-    </Interface>
-  </Interfaces>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NodeStore (Type node_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Type node_type) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="node_type" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="node_type">a <see cref="T:System.Type" /></param>
+        <summary>NodeStore constructor</summary>
+        <remarks>
+          Creates a <see cref="T:Gtk.NodeStore" /> for nodes of the specified <paramref name="node_type" />.
+          The type provided in <paramref name="node_type" /> must implement <see cref="T:Gtk.ITreeNode" />.
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="AddNode">
       <MemberSignature Language="C#" Value="public void AddNode (Gtk.ITreeNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddNode(class Gtk.ITreeNode node) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -83,8 +101,8 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <Parameter Name="node" Type="Gtk.ITreeNode" />
       </Parameters>
       <Docs>
-        <summary>Appends the node to the root level of the tree</summary>
         <param name="node">a <see cref="T:Gtk.ITreeNode" /></param>
+        <summary>Appends the node to the root level of the tree</summary>
         <remarks>
           Adds <paramref name="node" /> to the end of the list of root level nodes.
         </remarks>
@@ -92,6 +110,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
     </Member>
     <Member MemberName="AddNode">
       <MemberSignature Language="C#" Value="public void AddNode (Gtk.ITreeNode node, int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddNode(class Gtk.ITreeNode node, int32 position) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -101,9 +120,9 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Inserts the node into the root level of the tree</summary>
         <param name="node">a <see cref="T:Gtk.ITreeNode" /></param>
         <param name="position">the position to insert it at</param>
+        <summary>Inserts the node into the root level of the tree</summary>
         <remarks>
           Adds <paramref name="node" /> to the list of root level nodes before the node
 	  currently at <paramref name="position" />.
@@ -111,74 +130,23 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="GetNode">
-      <MemberSignature Language="C#" Value="public Gtk.ITreeNode GetNode (Gtk.TreePath path);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.ITreeNode</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-      </Parameters>
-      <Docs>
-        <summary>Returns a node given a <see cref="T:Gtk.TreePath" />.</summary>
-        <param name="path">The path to look up.</param>
-        <remarks>
-          Looks up the node corresponding to <paramref name="path" /> and returns it,
-	  or null if the node cannot be found.
-        </remarks>
-        <returns>To be added.</returns>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveNode">
-      <MemberSignature Language="C#" Value="public void RemoveNode (Gtk.ITreeNode node);" />
+    <Member MemberName="Clear">
+      <MemberSignature Language="C#" Value="public void Clear ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Clear() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="node" Type="Gtk.ITreeNode" />
-      </Parameters>
-      <Docs>
-        <summary>Removes a node from the store.</summary>
-        <param name="node">a <see cref="T:Gtk.ITreeNode" /></param>
-        <remarks>
-          Removes <paramref name="node" /> from the list of root level nodes.
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public NodeStore (Type node_type);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="node_type" Type="System.Type" />
-      </Parameters>
-      <Docs>
-        <summary>NodeStore constructor</summary>
-        <param name="node_type">a <see cref="T:System.Type" /></param>
-        <remarks>
-          Creates a <see cref="T:Gtk.NodeStore" /> for nodes of the specified <paramref name="node_type" />.
-          The type provided in <paramref name="node_type" /> must implement <see cref="T:Gtk.ITreeNode" />.
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Native type value.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
+        <summary>Removes all nodes from the store.</summary>
         <remarks>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
       <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Collections.IEnumerator GetEnumerator() cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Collections.IEnumerator</ReturnType>
@@ -191,16 +159,41 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="Clear">
-      <MemberSignature Language="C#" Value="public void Clear ();" />
+    <Member MemberName="GetNode">
+      <MemberSignature Language="C#" Value="public Gtk.ITreeNode GetNode (Gtk.TreePath path);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Gtk.ITreeNode GetNode(class Gtk.TreePath path) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.ITreeNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+      </Parameters>
+      <Docs>
+        <param name="path">The path to look up.</param>
+        <summary>Returns a node given a <see cref="T:Gtk.TreePath" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          Looks up the node corresponding to <paramref name="path" /> and returns it,
+	  or null if the node cannot be found.
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveNode">
+      <MemberSignature Language="C#" Value="public void RemoveNode (Gtk.ITreeNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveNode(class Gtk.ITreeNode node) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="node" Type="Gtk.ITreeNode" />
+      </Parameters>
       <Docs>
-        <summary>Removes all nodes from the store.</summary>
+        <param name="node">a <see cref="T:Gtk.ITreeNode" /></param>
+        <summary>Removes a node from the store.</summary>
         <remarks>
+          Removes <paramref name="node" /> from the list of root level nodes.
         </remarks>
       </Docs>
     </Member>

@@ -1,12 +1,17 @@
 <Type Name="Image" FullName="Atk.Image">
   <TypeSignature Language="C#" Maintainer="auto" Value="public interface Image : GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract Image implements class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Docs>
     <summary>
       Implemented by AtkObject subtypes on behalf of components which
@@ -33,43 +38,10 @@
       </para>
     </remarks>
   </Docs>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-  </Interfaces>
   <Members>
-    <Member MemberName="SetImageDescription">
-      <MemberSignature Language="C#" Value="public bool SetImageDescription (string description);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="description" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the textual description for this image.</summary>
-        <param name="description">a description to set for image</param>
-        <returns>
-          <see langword="true" />, or <see langword="false" /> if operation could not be completed.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="ImageDescription">
-      <MemberSignature Language="C#" Value="public string ImageDescription { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Get a textual description of this image.</summary>
-        <value>a string representing the image description</value>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="GetImagePosition">
       <MemberSignature Language="C#" Value="public void GetImagePosition (out int x, out int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetImagePosition(int32 x, int32 y, valuetype Atk.CoordType coord_type) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -80,13 +52,13 @@
         <Parameter Name="coord_type" Type="Atk.CoordType" />
       </Parameters>
       <Docs>
-        <summary>Gets the position of the image in the form of a point specifying the images top-left corner.</summary>
         <param name="x">x coordinate position</param>
         <param name="y">y coordinate position</param>
         <param name="coord_type">
             specifies whether the coordinates are relative to the
             screen or to the components top level window
           </param>
+        <summary>Gets the position of the image in the form of a point specifying the images top-left corner.</summary>
         <remarks>
           <para>
             The values of <paramref name="x" /> and <paramref name="y" />are returned as -1 if the values cannot be obtained.
@@ -96,6 +68,7 @@
     </Member>
     <Member MemberName="GetImageSize">
       <MemberSignature Language="C#" Value="public void GetImageSize (out int width, out int height);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetImageSize(int32 width, int32 height) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -105,17 +78,31 @@
         <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>Get the width and height in pixels for the specified image.</summary>
         <param name="width">the image width</param>
         <param name="height">the image height</param>
+        <summary>Get the width and height in pixels for the specified image.</summary>
         <remarks>
           The values of <paramref name="width" /> and <paramref name="height" /> are returned as -1 if the values cannot be
           obtained.
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="ImageDescription">
+      <MemberSignature Language="C#" Value="public string ImageDescription { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ImageDescription" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Get a textual description of this image.</summary>
+        <value>a string representing the image description</value>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="ImageLocale">
-      <MemberSignature Language="C#" Value="public string ImageLocale { get; };" />
+      <MemberSignature Language="C#" Value="public string ImageLocale { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ImageLocale" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -125,6 +112,24 @@
         <value>To be added.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetImageDescription">
+      <MemberSignature Language="C#" Value="public bool SetImageDescription (string description);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetImageDescription(string description) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="description" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="description">a description to set for image</param>
+        <summary>Sets the textual description for this image.</summary>
+        <returns>
+          <see langword="true" />, or <see langword="false" /> if operation could not be completed.</returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>
