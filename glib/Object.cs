@@ -34,6 +34,7 @@ namespace GLib {
 		IntPtr handle;
 		ToggleRef tref;
 		bool disposed = false;
+		static uint idx = 1;
 		static Dictionary<IntPtr, ToggleRef> Objects = new Dictionary<IntPtr, ToggleRef>();
 
 		~Object ()
@@ -161,6 +162,15 @@ namespace GLib {
 			}
 		}
 
+		static Dictionary<IntPtr, Dictionary<Type, PropertyInfo>> interface_properties;
+		static Dictionary<IntPtr, Dictionary<Type, PropertyInfo>> IProperties {
+			get {
+				if (interface_properties == null)
+					interface_properties = new Dictionary<IntPtr, Dictionary<Type, PropertyInfo>> ();
+				return interface_properties;
+			}
+		}
+
 		struct GTypeClass {
 			public IntPtr gtype;
 		}
@@ -231,6 +241,36 @@ namespace GLib {
 		}
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void g_object_class_override_property (IntPtr klass, uint prop_id, IntPtr name);
+
+		public static void OverrideProperty (IntPtr declaring_class, string name)
+		{
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			g_object_class_override_property (declaring_class, idx, native_name);
+			idx++;
+		}
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_object_class_find_property (IntPtr klass, IntPtr name);
+
+		static IntPtr FindClassProperty (GType type, string name)
+		{
+			IntPtr g_iface = type.GetDefaultInterfacePtr ();
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			return g_object_class_find_property (g_iface, native_name);
+		}
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_object_interface_find_property (IntPtr klass, IntPtr name);
+
+		static IntPtr FindInterfaceProperty (GType type, string name)
+		{
+			IntPtr g_iface = type.GetDefaultInterfacePtr ();
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			return g_object_interface_find_property (g_iface, native_name);
+		}
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_class_install_property (IntPtr klass, uint prop_id, IntPtr param_spec);
 
 		static IntPtr RegisterProperty (GType type, string name, string nick, string blurb, uint property_id, GType property_type, bool can_read, bool can_write)
@@ -242,10 +282,8 @@ namespace GLib {
 			return pspec.Handle;
 		}
 
-		static void AddProperties (GType gtype, System.Type t, bool register_instance_prop)
+		static void AddProperties (GType gtype, System.Type t, bool register_instance_prop, ref bool handlers_overridden)
 		{
-			uint idx = 1;
-			
 			if (register_instance_prop) {
 				IntPtr declaring_class = gtype.GetClassPtr ();
 				ParamSpec pspec = new ParamSpec ("gtk-sharp-managed-instance", "", "", GType.Pointer, ParamFlags.Writable | ParamFlags.ConstructOnly);
@@ -253,7 +291,6 @@ namespace GLib {
 				idx++;				
 			}
 
-			bool handlers_overridden = register_instance_prop;
 			foreach (PropertyInfo pinfo in t.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
 				foreach (object attr in pinfo.GetCustomAttributes (typeof (PropertyAttribute), false)) {
 					if(pinfo.GetIndexParameters().Length > 0)
@@ -305,6 +342,16 @@ namespace GLib {
 
 		static void SetPropertyCallback(IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
 		{
+			// FIXME: Here is a big quick hack to avoid race condition when trying to set up adjustment with contructor
+			// Because Raw is set too late
+			if (param_spec != IntPtr.Zero) {
+				ParamSpec foo =	new ParamSpec(param_spec);
+				if (foo.Name == "gtk-sharp-managed-instance") {
+					GCHandle gch = (GCHandle) (IntPtr) value.Val;
+					Object o = (GLib.Object) gch.Target;
+					o.Raw = handle;
+				}
+			}
 			if (!Properties.ContainsKey (param_spec))
 				return;
 
@@ -324,17 +371,43 @@ namespace GLib {
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_type_add_interface_static (IntPtr gtype, IntPtr iface_type, ref GInterfaceInfo info);
 
-		static void AddInterfaces (GType gtype, Type t)
+		static void AddInterfaces (GType gtype, Type t, ref bool handlers_overridden)
 		{
 			foreach (Type iface in t.GetInterfaces ()) {
-				if (!iface.IsDefined (typeof (GInterfaceAttribute), true) || iface.IsAssignableFrom (t.BaseType))
+				if (!iface.IsDefined (typeof (GInterfaceAttribute), true))
 					continue;
 
 				GInterfaceAttribute attr = iface.GetCustomAttributes (typeof (GInterfaceAttribute), false) [0] as GInterfaceAttribute;
 				GInterfaceAdapter adapter = Activator.CreateInstance (attr.AdapterType, null) as GInterfaceAdapter;
-				
-				GInterfaceInfo info = adapter.Info;
-				g_type_add_interface_static (gtype.Val, adapter.GType.Val, ref info);
+				if (!handlers_overridden) {
+					IntPtr class_ptr = gtype.GetClassPtr ();
+					GObjectClass gobject_class = (GObjectClass) Marshal.PtrToStructure (class_ptr, typeof (GObjectClass));
+					gobject_class.get_prop_cb = GetPropertyHandler;
+					gobject_class.set_prop_cb = SetPropertyHandler;
+					Marshal.StructureToPtr (gobject_class, class_ptr, false);
+					handlers_overridden = true;
+				}
+
+				if (!iface.IsAssignableFrom (t.BaseType)) {
+					GInterfaceInfo info = adapter.Info;
+					info.Data = gtype.GetClassPtr ();
+					//FIXME:  overiding prop is done inside the init of interface adapter
+					// not sure that it is the good solution but 
+					// it is the only one I found without exception or loop
+					g_type_add_interface_static (gtype.Val, adapter.GType.Val, ref info);
+				}
+				foreach (PropertyInfo p in iface.GetProperties ()) {
+					PropertyAttribute[] attrs = p.GetCustomAttributes (typeof (PropertyAttribute), true) as PropertyAttribute [];
+					if (attrs.Length == 0)
+						continue;
+					PropertyAttribute property_attr = attrs [0];
+					PropertyInfo declared_prop = t.GetProperty (p.Name, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+					if (declared_prop == null)
+						continue;
+					IntPtr param_spec = FindInterfaceProperty (adapter.GType, property_attr.Name);
+
+					Properties [param_spec] = declared_prop;
+				}
 			}
 		}
 
@@ -342,6 +415,7 @@ namespace GLib {
 		{
 			GType gtype = GType.RegisterGObjectType (t);
 			bool is_first_subclass = gtype.GetBaseType () == gtype.GetThresholdType ();
+
 			if (is_first_subclass) {
 				IntPtr class_ptr = gtype.GetClassPtr ();
 				GObjectClass gobject_class = (GObjectClass) Marshal.PtrToStructure (class_ptr, typeof (GObjectClass));
@@ -350,10 +424,12 @@ namespace GLib {
 				gobject_class.set_prop_cb = SetPropertyHandler;
 				Marshal.StructureToPtr (gobject_class, class_ptr, false);
 			}
-			AddProperties (gtype, t, is_first_subclass);
+			idx = 1;
+			bool handlers_overridden = is_first_subclass;
+			AddProperties (gtype, t, is_first_subclass, ref handlers_overridden);
 			ConnectDefaultHandlers (gtype, t);
 			InvokeTypeInitializers (gtype, t);
-			AddInterfaces (gtype, t);
+			AddInterfaces (gtype, t, ref handlers_overridden);
 			return gtype;
 		}
 

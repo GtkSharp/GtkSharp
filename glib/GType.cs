@@ -296,6 +296,14 @@ namespace GLib {
 			return klass;
 		}
 
+		public IntPtr GetDefaultInterfacePtr ()
+		{
+			IntPtr klass = g_type_default_interface_peek (val);
+			if (klass == IntPtr.Zero)
+				klass = g_type_default_interface_ref (val);
+			return klass;
+		}
+
 		public GType GetBaseType ()
 		{
 			IntPtr parent = g_type_parent (this.Val);
@@ -370,7 +378,7 @@ namespace GLib {
 				if (gtypes.Contains (t))
 					return (GType) gtypes [t];
 			}
-			
+
 			PropertyInfo pi = t.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
 			if (pi != null)
 				return (GType) pi.GetValue (null, null);
@@ -404,6 +412,12 @@ namespace GLib {
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_type_class_ref (IntPtr gtype);
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_type_default_interface_peek (IntPtr gtype);
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_type_default_interface_ref (IntPtr gtype);
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_type_from_name (string name);

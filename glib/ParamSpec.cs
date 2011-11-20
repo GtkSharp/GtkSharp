@@ -64,10 +64,11 @@ namespace GLib {
 				handle = g_param_spec_int64 (p_name, p_nick, p_blurb, Int64.MinValue, Int64.MaxValue, 0, flags);
 			else if (type == GType.UInt64)
 				handle = g_param_spec_uint64 (p_name, p_nick, p_blurb, 0, UInt64.MaxValue, 0, flags);
-			/*
-			else if (type == GType.Enum)
-			else if (type == GType.Flags)
-			* TODO: 
+			else if (type.GetBaseType () == GType.Enum)
+				handle = g_param_spec_enum (p_name, p_nick, p_blurb, type.Val, (int) (Enum.GetValues((Type)type).GetValue (0)), flags);
+			/*else if (type == GType.Flags)
+			*	g_param_spec_flags (p_name, p_nick, p_blurb, type.Val, Enum.GetValues((Type)type) [0], flags);
+			* TODO:
 			* Both g_param_spec_enum and g_param_spec_flags expect default property values and the members of the enum seemingly cannot be enumerated
 			*/
 			else if (type == GType.Float)
@@ -85,7 +86,7 @@ namespace GLib {
 			else if (g_type_is_a (type.Val, GType.Object.Val))
 				handle = g_param_spec_object (p_name, p_nick, p_blurb, type.Val, flags);
 			else
-				throw new ArgumentException ("type");
+				throw new ArgumentException ("type:" + type.ToString ());
 
 			GLib.Marshaller.Free (p_name);
 			GLib.Marshaller.Free (p_nick);
@@ -106,6 +107,21 @@ namespace GLib {
 				GParamSpec spec = (GParamSpec) Marshal.PtrToStructure (Handle, typeof (GParamSpec));
 				return new GType (spec.value_type);
 			}
+		}
+
+		public string Name {
+			get {
+				GParamSpec spec = (GParamSpec) Marshal.PtrToStructure (Handle, typeof (GParamSpec));
+				return Marshaller.Utf8PtrToString (spec.name);
+			}
+		}
+
+		public string ToString ()
+		{
+			GParamSpec spec = (GParamSpec) Marshal.PtrToStructure (Handle, typeof (GParamSpec));
+			GType valtype= new GType (spec.value_type);
+			GType ownertype= new GType (spec.owner_type);
+			return "ParamSpec: name=" +  Marshaller.Utf8PtrToString (spec.name) + " value_type=" + valtype.ToString() + " owner_type=" + ownertype.ToString();
 		}
 
 		struct GTypeInstance {
@@ -135,6 +151,9 @@ namespace GLib {
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_param_spec_boolean (IntPtr name, IntPtr nick, IntPtr blurb, bool dval, int flags);
+
+		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_param_spec_enum (IntPtr name, IntPtr nick, IntPtr blurb, IntPtr enum_type, int dval, int flags);
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_param_spec_int (IntPtr name, IntPtr nick, IntPtr blurb, int min, int max, int dval, int flags);

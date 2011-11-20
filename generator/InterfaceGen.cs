@@ -107,13 +107,20 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tstatic void Initialize (IntPtr ptr, IntPtr data)");
 			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tIntPtr ifaceptr = new IntPtr (ptr.ToInt64 () + class_offset);");
-			sw.WriteLine ("\t\t\t{0} native_iface = ({0}) Marshal.PtrToStructure (ifaceptr, typeof ({0}));", class_struct_name);
-			foreach (InterfaceVM vm in interface_vms)
-				sw.WriteLine ("\t\t\tnative_iface." + vm.Name + " = iface." + vm.Name + ";");
-			sw.WriteLine ("\t\t\tMarshal.StructureToPtr (native_iface, ifaceptr, false);");
-			sw.WriteLine ("\t\t\tGCHandle gch = (GCHandle) data;");
-			sw.WriteLine ("\t\t\tgch.Free ();");
+			if (interface_vms.Count > 0) {
+				sw.WriteLine ("\t\t\tIntPtr ifaceptr = new IntPtr (ptr.ToInt64 () + class_offset);");
+				sw.WriteLine ("\t\t\t{0} native_iface = ({0}) Marshal.PtrToStructure (ifaceptr, typeof ({0}));", class_struct_name);
+				foreach (InterfaceVM vm in interface_vms) {
+					sw.WriteLine ("\t\t\tnative_iface." + vm.Name + " = iface." + vm.Name + ";");
+				}
+				sw.WriteLine ("\t\t\tMarshal.StructureToPtr (native_iface, ifaceptr, false);");
+				sw.WriteLine ("\t\t\tGCHandle gch = (GCHandle) data;");
+				sw.WriteLine ("\t\t\tgch.Free ();");
+			}
+
+			foreach (Property prop in props.Values) {
+					sw.WriteLine ("\t\t\tGLib.Object.OverrideProperty (data, \"" + prop.CName + "\");");
+			}
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 		}
@@ -309,7 +316,10 @@ namespace GtkSharp.Generation {
 					vm_table.Remove (vm.Name);
 				}
 			}
-
+			foreach (Property prop in props.Values) {
+				sw.WriteLine ("\t\t[GLib.Property (\"" + prop.CName + "\")]");
+				prop.GenerateDecl (sw, "\t\t");
+			}
 			AppendCustom (sw, gen_info.CustomDir, Name + "Implementor");
 
 			sw.WriteLine ("\t}");

@@ -8,7 +8,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe native-instantiation.exe polarfixed.exe cairo-sample.exe scribble.exe testdnd.exe custom-cellrenderer.exe custom-widget.exe #scribble-xinput.exe $(DOTNET_TARGETS)
+TARGETS = gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe native-instantiation.exe polarfixed.exe cairo-sample.exe scribble.exe testdnd.exe custom-cellrenderer.exe custom-widget.exe custom-scrollable.exe #scribble-xinput.exe $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -79,6 +79,9 @@ drawing-sample.exe: $(srcdir)/DrawingSample.cs $(assemblies) $(DOTNET_ASSEMBLIES
 custom-widget.exe: $(srcdir)/CustomWidget.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -out:custom-widget.exe $(references) $(srcdir)/CustomWidget.cs
 
+custom-scrollable.exe: $(srcdir)/CustomScrollableWidget.cs $(assemblies)
+	$(CSC) $(CSFLAGS) -out:custom-scrollable.exe $(references) $(srcdir)/CustomScrollableWidget.cs
+
 actions.exe: $(srcdir)/Actions.cs
 	$(CSC) $(CSFLAGS) -unsafe -out:actions.exe $(references) $(srcdir)/Actions.cs
 
@@ -118,6 +121,7 @@ EXTRA_DIST = 				\
 	CustomCellRenderer.cs		\
 	DrawingSample.cs		\
 	CustomWidget.cs			\
+	CustomScrollableWidget.cs	\
 	Actions.cs			\
 	PropertyRegistration.cs		\
 	PolarFixed.cs
