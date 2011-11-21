@@ -316,7 +316,16 @@ namespace GtkSharp.Generation {
 				p = (Property) klass.GetProperty (name);
 				klass = klass.Parent;
 			}
-
+			if (p == null) {
+				foreach (string iface in interfaces) {
+					ClassBase igen = SymbolTable.Table.GetClassGen (iface);
+					if (igen == null)
+						continue;
+					p = igen.GetPropertyRecursively (name);
+					if (p != null)
+						break;
+				}
+			}
 			return p;
 		}
 
