@@ -151,13 +151,14 @@ namespace GLib {
 			}
  		}
 		
-		//  Key: The pointer to the ParamSpec of the property
-		//  Value: The corresponding PropertyInfo object
-		static Dictionary<IntPtr, PropertyInfo> properties;
-		static Dictionary<IntPtr, PropertyInfo> Properties {
+		//  Key: The Type for the set of properties
+		//  Value->SubKey: The pointer to the ParamSpec of the property
+		//  Value->SubValue: The corresponding PropertyInfo object
+		static Dictionary<Type, Dictionary<IntPtr, PropertyInfo>> properties;
+		static Dictionary<Type, Dictionary<IntPtr, PropertyInfo>> Properties {
 			get {
 				if (properties == null)
-					properties = new Dictionary<IntPtr, PropertyInfo> ();
+					properties = new Dictionary<Type, Dictionary<IntPtr, PropertyInfo>> ();
 				return properties;
 			}
 		}
@@ -307,7 +308,13 @@ namespace GLib {
 					PropertyAttribute property_attr = attr as PropertyAttribute;
 					try {
 						IntPtr param_spec = RegisterProperty (gtype, property_attr.Name, property_attr.Nickname, property_attr.Blurb, idx, (GType) pinfo.PropertyType, pinfo.CanRead, pinfo.CanWrite);
-						Properties.Add (param_spec, pinfo);
+						Type type = (Type)gtype;
+						Dictionary<IntPtr, PropertyInfo> gtype_properties;
+						if (!Properties.TryGetValue (type, out gtype_properties)) {
+							gtype_properties = new Dictionary<IntPtr, PropertyInfo> ();
+							Properties [type] = gtype_properties;
+						}
+						gtype_properties.Add (param_spec, pinfo);
 						idx++;
 					} catch (ArgumentException) {
 						throw new InvalidOperationException (String.Format ("GLib.PropertyAttribute cannot be applied to property {0} of type {1} because the return type of the property is not supported", pinfo.Name, t.FullName));
@@ -321,11 +328,18 @@ namespace GLib {
 
 		static void GetPropertyCallback (IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
 		{
-			if (!Properties.ContainsKey (param_spec))
+			GLib.Object obj = GLib.Object.GetObject (handle, false);
+			var type = (Type)obj.LookupGType ();
+
+			Dictionary<IntPtr, PropertyInfo> props;
+			if (!Properties.TryGetValue (type, out props))
 				return;
 
-			GLib.Object obj = GLib.Object.GetObject (handle, false);
-			value.Val = Properties [param_spec].GetValue (obj, new object [0]);
+			PropertyInfo prop;			
+			if (!props.TryGetValue (param_spec, out prop))
+				return;
+
+			value.Val = prop.GetValue (obj, new object [0]);
 		}
 
 		static GetPropertyDelegate get_property_handler;
@@ -352,11 +366,18 @@ namespace GLib {
 					o.Raw = handle;
 				}
 			}
-			if (!Properties.ContainsKey (param_spec))
+			GLib.Object obj = GLib.Object.GetObject (handle, false);
+			var type = (Type)obj.LookupGType ();
+
+			Dictionary<IntPtr, PropertyInfo> props;
+			if (!Properties.TryGetValue (type, out props))
 				return;
 
-			GLib.Object obj = GLib.Object.GetObject (handle, false);
-			Properties [param_spec].SetValue (obj, value.Val, new object [0]);
+			PropertyInfo prop;			
+			if (!props.TryGetValue (param_spec, out prop))
+				return;
+
+			prop.SetValue (obj, value.Val, new object [0]);
 		}
 
 		static SetPropertyDelegate set_property_handler;
@@ -405,8 +426,14 @@ namespace GLib {
 					if (declared_prop == null)
 						continue;
 					IntPtr param_spec = FindInterfaceProperty (adapter.GType, property_attr.Name);
-
-					Properties [param_spec] = declared_prop;
+					
+					Type type = (Type)adapter.GType;
+					Dictionary<IntPtr, PropertyInfo> props;
+					if (!Properties.TryGetValue (type, out props)) {
+						props = new Dictionary<IntPtr, PropertyInfo> ();
+						Properties [type] = props;
+					}
+					props [param_spec] = declared_prop;
 				}
 			}
 		}
