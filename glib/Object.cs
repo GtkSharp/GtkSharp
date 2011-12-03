@@ -422,16 +422,15 @@ namespace GLib {
 					if (attrs.Length == 0)
 						continue;
 					PropertyAttribute property_attr = attrs [0];
-					PropertyInfo declared_prop = t.GetProperty (p.Name, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+					PropertyInfo declared_prop = t.GetProperty (p.Name, BindingFlags.Public | BindingFlags.Instance);
 					if (declared_prop == null)
 						continue;
 					IntPtr param_spec = FindInterfaceProperty (adapter.GType, property_attr.Name);
 					
-					Type type = (Type)adapter.GType;
 					Dictionary<IntPtr, PropertyInfo> props;
-					if (!Properties.TryGetValue (type, out props)) {
+					if (!Properties.TryGetValue (t, out props)) {
 						props = new Dictionary<IntPtr, PropertyInfo> ();
-						Properties [type] = props;
+						Properties [t] = props;
 					}
 					props [param_spec] = declared_prop;
 				}
