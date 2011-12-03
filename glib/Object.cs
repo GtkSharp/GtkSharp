@@ -289,7 +289,7 @@ namespace GLib {
 				IntPtr declaring_class = gtype.GetClassPtr ();
 				ParamSpec pspec = new ParamSpec ("gtk-sharp-managed-instance", "", "", GType.Pointer, ParamFlags.Writable | ParamFlags.ConstructOnly);
 				g_object_class_install_property (declaring_class, idx, pspec.Handle);
-				idx++;				
+				idx++;
 			}
 
 			foreach (PropertyInfo pinfo in t.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
@@ -335,7 +335,7 @@ namespace GLib {
 			if (!Properties.TryGetValue (type, out props))
 				return;
 
-			PropertyInfo prop;			
+			PropertyInfo prop;
 			if (!props.TryGetValue (param_spec, out prop))
 				return;
 
@@ -373,7 +373,7 @@ namespace GLib {
 			if (!Properties.TryGetValue (type, out props))
 				return;
 
-			PropertyInfo prop;			
+			PropertyInfo prop;
 			if (!props.TryGetValue (param_spec, out prop))
 				return;
 
