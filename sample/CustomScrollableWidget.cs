@@ -9,14 +9,25 @@ class CustomScrollableWidgetTest {
 		Window win = new Window ("Custom Scrollable Widget Test");
 		win.DeleteEvent += new DeleteEventHandler (OnQuit);
 		
+		VPaned paned = new VPaned ();
+		
 		ScrolledWindow scroll = new ScrolledWindow ();
 		scroll.HscrollbarPolicy = PolicyType.Automatic;
 		scroll.VscrollbarPolicy = PolicyType.Automatic;
 		
-		CustomScrollableWidget cw = new CustomScrollableWidget ("This one label that is repeated");
+		var cw = new DerivedScrollableWidget<string> ("This one label that is repeated");
 		scroll.Add (cw);
+		paned.Pack1 (scroll, true, false);
+
+		scroll = new ScrolledWindow ();
+		scroll.HscrollbarPolicy = PolicyType.Automatic;
+		scroll.VscrollbarPolicy = PolicyType.Automatic;
 		
-		win.Add (scroll);
+		var cw2 = new DerivedScrollableWidget<object> ("Another label that is repeated");
+		scroll.Add (cw2);
+		paned.Pack2 (scroll, true, false);
+
+		win.Add (paned);
 		win.DefaultWidth = 200;
 		win.DefaultHeight = 200;
 		win.ShowAll ();
@@ -36,7 +47,13 @@ abstract class CustomBase : Widget
 	{ }
 }
 
-class CustomScrollableWidget : CustomBase, ScrollableImplementor {
+class DerivedScrollableWidget<T> : CustomScrollableWidget<T>
+{
+	public DerivedScrollableWidget (string label) : base (label)
+	{ }
+}
+
+class CustomScrollableWidget<T> : CustomBase, ScrollableImplementor {
 	private int num_rows = 20;
 	private string label;
 	private Pango.Layout layout;
@@ -166,8 +183,6 @@ class CustomScrollableWidget : CustomBase, ScrollableImplementor {
 			if (hadjustment.Value + hadjustment.PageSize > hadjustment.Upper) {
 				hadjustment.Value = hadjustment.Upper - hadjustment.PageSize;
 			}
-			Console.WriteLine (String.Format ("H adj={0} upper={1} PageSize={2} PageInc={3}",
-				HadjustmentValue, hadjustment.Upper, hadjustment.PageSize, hadjustment.PageIncrement));
 			hadjustment.Change ();
 		}
 		
@@ -177,8 +192,6 @@ class CustomScrollableWidget : CustomBase, ScrollableImplementor {
 			if (vadjustment.Value + vadjustment.PageSize > vadjustment.Upper) {
 				vadjustment.Value = vadjustment.Upper - vadjustment.PageSize;
 			}
-			Console.WriteLine (String.Format ("V adj={0} upper={1} PageSize={2} PageInc={3}",
-				VadjustmentValue, vadjustment.Upper, vadjustment.PageSize, vadjustment.PageIncrement));
 			vadjustment.Change ();
 		}
 	}

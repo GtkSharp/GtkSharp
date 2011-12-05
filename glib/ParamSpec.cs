@@ -116,7 +116,7 @@ namespace GLib {
 			}
 		}
 
-		public string ToString ()
+		public override string ToString ()
 		{
 			GParamSpec spec = (GParamSpec) Marshal.PtrToStructure (Handle, typeof (GParamSpec));
 			GType valtype= new GType (spec.value_type);
