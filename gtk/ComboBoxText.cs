@@ -27,7 +27,8 @@ namespace Gtk {
 		protected ComboBoxText (bool has_entry) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (ComboBoxText)) {
-				CreateNativeObject (new string[] { "has-entry" }, new GLib.Value[] { new GLib.Value (has_entry) });
+				CreateNativeObject (new string[] { "has-entry", "entry-text-column", "id-column" },
+									new GLib.Value[] { new GLib.Value (has_entry), new GLib.Value (0), new GLib.Value (1) });
 				return;
 			}
 				
