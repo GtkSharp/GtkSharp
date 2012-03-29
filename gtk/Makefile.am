@@ -80,7 +80,6 @@ customs = 				\
 	Notebook.custom			\
 	PaperSize.custom		\
 	Plug.custom			\
-	PrintContext.custom		\
 	Printer.custom			\
 	RadioButton.custom		\
 	RadioMenuItem.custom		\
