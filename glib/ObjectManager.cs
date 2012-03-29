@@ -44,7 +44,7 @@ namespace GLib {
 			try {
 				obj = Activator.CreateInstance (type, flags, null, new object[] {raw}, null) as GLib.Object;
 			} catch (MissingMethodException) {
-				throw new GLib.MissingIntPtrCtorException ("GLib.Object subclass " + type + " must provide a protected or public IntPtr ctor to support wrapping of native object handles.");
+				throw new GLib.MissingIntPtrCtorException ("Unable to construct instance of type " + type + " from native object handle. Instance of managed subclass may have been prematurely disposed.");
 			}
 			return obj;
 		}
