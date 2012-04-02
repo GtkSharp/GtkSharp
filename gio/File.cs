@@ -1,4 +1,4 @@
-// AppInfoAdapter.custom - customizations to GLib.AppInfoAdapter
+// File.cs - customizations to GLib.File
 //
 // Authors: Stephane Delcroix  <stephane@delcroix.org>
 //
@@ -18,11 +18,18 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[DllImport ("libgio-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_app_info_get_all();
-
-		public static GLib.AppInfo[] GetAll() { 
-			IntPtr raw_ret = g_app_info_get_all();
-			GLib.AppInfo[] ret = (GLib.AppInfo[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.List), true, false, typeof(GLib.AppInfo));
-			return ret;
+namespace GLib {
+	public partial interface File : GLib.IWrapper {
+		bool Exists
+		{
+			get;
 		}
+		
+		System.Uri Uri
+		{
+			get;
+		}
+		
+		bool Delete();
+	}
+}

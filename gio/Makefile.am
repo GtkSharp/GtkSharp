@@ -12,14 +12,12 @@ glue_includes = gio/gio.h
 POLICY_VERSIONS=
 
 sources =			\
+	AppInfoAdapter.cs	\
+	File.cs			\
+	FileAdapter.cs		\
+	FileEnumerator.cs	\
 	FileFactory.cs		\
 	GioStream.cs
-
-customs =			\
-	AppInfoAdapter.custom	\
-	File.custom		\
-	FileAdapter.custom	\
-	FileEnumerator.custom
 
 add_dist = gio-sharp-3.0.pc.in
 

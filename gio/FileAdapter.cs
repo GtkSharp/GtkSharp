@@ -1,4 +1,4 @@
-// FileEnumerator.custom - customizations to GLib.FileEnumerator
+// FileAdapter.cs - customizations to GLib.FileAdapter
 //
 // Authors: Stephane Delcroix  <stephane@delcroix.org>
 //
@@ -18,42 +18,34 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-public IEnumerator GetEnumerator ()
-{
-	return new Enumerator (this);
-}
-
-public FileInfo NextFile ()
-{
-	return NextFile ((Cancellable) null);
-}
-
-class Enumerator : IEnumerator
-{
-	FileEnumerator file_enumerator;
-
-	public Enumerator (FileEnumerator file_enumerator)
-	{
-		this.file_enumerator = file_enumerator;
-	}
-
-	FileInfo current=null;
-	public object Current {
-		get {
-			return current;
+namespace GLib {
+	using System;
+	using System.Runtime.InteropServices;
+	
+	public partial class FileAdapter {
+		public override string ToString ()
+		{
+			return Uri.ToString ();
 		}
-	}
-
-	public bool MoveNext ()
-	{
-		current = file_enumerator.NextFile ();
-		if (current == null)
-			return false;
-		return true;
-	}
-
-	public void Reset ()
-	{
-		throw new NotImplementedException ();
+		
+		public bool Exists {
+			get { return QueryExists (null); }
+		}
+		
+		public bool Delete ()
+		{
+			return Delete (null);
+		}
+		
+		[DllImport ("libgio-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_file_get_uri(IntPtr raw);
+		
+		public System.Uri Uri {
+			get {
+				IntPtr raw_ret = g_file_get_uri(Handle);
+				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+				return new System.Uri (ret);
+			}
+		}
 	}
 }
