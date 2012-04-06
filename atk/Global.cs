@@ -1,6 +1,6 @@
-// Hyperlink.custom - Atk Hyperlink class customizations
+// Global.cs - Atk Global class customizations
 //
-// Author: Mike Gorse <mgorse@novell.com>
+// Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2008 Novell, Inc.
 //
@@ -21,8 +21,22 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		protected void EmitLinkActivated ()
-		{
-			GLib.Signal.Emit (this, "link_activated");
-		}
+namespace Atk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Global {
+
+		[DllImport ("libatk-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern uint atk_add_global_event_listener (GLib.Signal.EmissionHookNative hook, IntPtr event_type);
 		
+		public static uint AddGlobalEventListener (GLib.Signal.EmissionHook hook, string event_type)
+		{
+			IntPtr native_event_type = GLib.Marshaller.StringToPtrGStrdup (event_type);
+			uint id = atk_add_global_event_listener (new GLib.Signal.EmissionHookMarshaler (hook).Callback, native_event_type);
+			GLib.Marshaller.Free (native_event_type);
+			return id;
+		}
+	}
+}

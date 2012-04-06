@@ -1,6 +1,6 @@
-// TextAdapter.custom - Atk TextAdapter class customizations
+// Hyperlink.cs - Atk Hyperlink class customizations
 //
-// Author: Brad Taylor <brad@getcoded.net>
+// Author: Mike Gorse <mgorse@novell.com>
 //
 // Copyright (c) 2008 Novell, Inc.
 //
@@ -20,10 +20,13 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
-		
-		public void EmitTextChanged (TextChangedDetail detail, int position, int length)
+
+namespace Atk {
+	public partial class Hyperlink {
+
+		protected void EmitLinkActivated ()
 		{
-			GLib.Signal.Emit (GLib.Object.GetObject (Handle),
-			                  "text_changed::" + detail.ToString ().ToLower (),
-			                  position, length);
+			GLib.Signal.Emit (this, "link_activated");
 		}
+	}
+}

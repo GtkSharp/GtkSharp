@@ -1,4 +1,4 @@
-// Object.custom - Atk Object class customizations
+// Object.cs - Atk Object class customizations
 //
 // Author: Andres G. Aragoneses <aaragoneses@novell.com>
 //
@@ -20,7 +20,11 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
-		
+
+namespace Atk {
+
+	public partial class Object {
+
 		protected void EmitChildrenChanged (ChildrenChangedDetail detail, uint child_index, Atk.Object child)
 		{
 			GLib.Signal.Emit (this, 
@@ -47,3 +51,5 @@
 		{
 			GLib.Signal.Emit (this, "focus-event", gained);
 		}
+	}
+}

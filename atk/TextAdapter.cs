@@ -1,6 +1,6 @@
-// SelectionAdapter.custom - Atk SelectionAdapter class customizations
+// TextAdapter.cs - Atk TextAdapter class customizations
 //
-// Author: Andrés G. Aragoneses <aaragoneses@novell.com>
+// Author: Brad Taylor <brad@getcoded.net>
 //
 // Copyright (c) 2008 Novell, Inc.
 //
@@ -20,8 +20,15 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
-		
-		public void EmitSelectionChanged ()
+
+namespace Atk {
+	public partial class TextAdapter {
+
+		public void EmitTextChanged (TextChangedDetail detail, int position, int length)
 		{
-			GLib.Signal.Emit (GLib.Object.GetObject (Handle), "selection_changed");
+			GLib.Signal.Emit (GLib.Object.GetObject (Handle),
+			                  "text_changed::" + detail.ToString ().ToLower (),
+			                  position, length);
 		}
+	}
+}

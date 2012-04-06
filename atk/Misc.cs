@@ -1,4 +1,4 @@
-// Misc.custom - Atk Misc class customizations
+// Misc.cs - Atk Misc class customizations
 //
 // Author: Mike Kestner <mkestner@novell.com>
 //
@@ -21,6 +21,13 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Atk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Misc {
+
 		[DllImport("atksharpglue-3")]
 		static extern void atksharp_misc_set_singleton_instance (IntPtr misc);
 		
@@ -28,4 +35,5 @@
 		{
 			atksharp_misc_set_singleton_instance (misc.Handle);
 		}
-
+	}
+}

@@ -1,4 +1,4 @@
-// Util.custom - Atk Util class customizations
+// Util.cs - Atk Util class customizations
 //
 // Author: Mike Kestner <mkestner@novell.com>
 //
@@ -21,6 +21,12 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Atk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Util {
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate uint AddGlobalEventListenerNativeDelegate (GLib.Signal.EmissionHookNative hook, IntPtr event_type);
@@ -103,3 +109,5 @@
 				atksharp_util_override_remove_key_event_listener (remove_key_event_listener_callback);
 			}
 		}
+	}
+}

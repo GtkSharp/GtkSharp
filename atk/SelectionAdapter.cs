@@ -1,6 +1,6 @@
-// Global.custom - Atk Global class customizations
+// SelectionAdapter.cs - Atk SelectionAdapter class customizations
 //
-// Author: Mike Kestner <mkestner@novell.com>
+// Author: Andrés G. Aragoneses <aaragoneses@novell.com>
 //
 // Copyright (c) 2008 Novell, Inc.
 //
@@ -21,15 +21,12 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Atk {
+	public partial class SelectionAdapter {
 
-		[DllImport ("libatk-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern uint atk_add_global_event_listener (GLib.Signal.EmissionHookNative hook, IntPtr event_type);
-		
-		public static uint AddGlobalEventListener (GLib.Signal.EmissionHook hook, string event_type)
+		public void EmitSelectionChanged ()
 		{
-			IntPtr native_event_type = GLib.Marshaller.StringToPtrGStrdup (event_type);
-			uint id = atk_add_global_event_listener (new GLib.Signal.EmissionHookMarshaler (hook).Callback, native_event_type);
-			GLib.Marshaller.Free (native_event_type);
-			return id;
+			GLib.Signal.Emit (GLib.Object.GetObject (Handle), "selection_changed");
 		}
-               
+	}
+}
