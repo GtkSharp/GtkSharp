@@ -1,4 +1,4 @@
-// Keymap.custom - customizations to Gdk.Keymap
+// Keymap.cs - customizations to Gdk.Keymap
 //
 // Authors: Mike Kestner  <mkestner@ximian.com>
 //
@@ -18,6 +18,13 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+namespace Gdk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Keymap {
 
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
                 static extern void g_free(IntPtr ptr);
@@ -65,4 +72,6 @@
 			} else
 				return new KeymapKey [0];
 		}
+	}
+}
 

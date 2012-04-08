@@ -1,4 +1,4 @@
-// Gdk.Property.custom - Custom implementation for Property class
+// Gdk.Property.cs - Custom implementation for Property class
 //
 // Authors: Mike Kestner <mkestner@novell.com>
 //
@@ -19,6 +19,12 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Gdk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Property {
 
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_property_change(IntPtr window, IntPtr property, IntPtr type, int format, int mode, out byte data, int nelements);
@@ -155,3 +161,6 @@
 			return true;
 		}
 #endif
+	}
+}
+

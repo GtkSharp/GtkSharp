@@ -1,4 +1,4 @@
-// Global.custom - customizations to Gdk.Global
+// Global.cs - customizations to Gdk.Global
 //
 // Authors: Mike Kestner  <mkestner@ximian.com>
 //          Boyd Timothy  <btimothy@novell.com>
@@ -18,6 +18,13 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
+
+namespace Gdk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Global {
 
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_devices_list ();
@@ -172,4 +179,6 @@
 		{
 			Gdk.Display.Default.AddClientMessageFilter (message_type, func);
 		}
+	}
+}
 

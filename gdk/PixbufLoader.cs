@@ -1,4 +1,4 @@
-// PixbufLoader.custom - Gdk PixbufLoader class customizations
+// PixbufLoader.cs - Gdk PixbufLoader class customizations
 //
 // Authors: 
 //	Mike Kestner <mkestner@ximian.com>
@@ -20,6 +20,13 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
+
+namespace Gdk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class PixbufLoader {
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_ref (IntPtr handle);
@@ -141,3 +148,6 @@
 		{
 			return new PixbufLoader (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
+	}
+}
+

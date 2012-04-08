@@ -6,6 +6,11 @@ references = $(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.d
 glue_includes = gdk/gdk.h
 
 sources = 			\
+	Atom.cs			\
+	Color.cs		\
+	Device.cs		\
+	Display.cs		\
+	DisplayManager.cs	\
 	EventButton.cs		\
 	EventConfigure.cs	\
 	EventCrossing.cs	\
@@ -24,30 +29,23 @@ sources = 			\
 	EventSetting.cs		\
 	EventVisibility.cs	\
 	EventWindowState.cs	\
+	Global.cs		\
 	Key.cs			\
+	Keymap.cs		\
+	Pixbuf.cs		\
+	PixbufAnimation.cs	\
+	PixbufFrame.cs		\
+	PixbufLoader.cs		\
+	Pixdata.cs		\
+	Point.cs		\
+	Property.cs		\
 	Rectangle.cs		\
+	Screen.cs		\
+	Selection.cs		\
 	Size.cs			\
-	TextProperty.cs
-
-customs = 			\
-	Atom.custom		\
-	Color.custom		\
-	Device.custom		\
-	Display.custom		\
-	DisplayManager.custom	\
-	Global.custom		\
-	Keymap.custom		\
-	Pixbuf.custom		\
-	PixbufAnimation.custom	\
-	PixbufFrame.custom	\
-	PixbufLoader.custom	\
-	Pixdata.custom		\
-	Point.custom		\
-	Property.custom		\
-	Screen.custom		\
-	Selection.custom	\
-	WindowAttr.custom	\
-	Window.custom
+	TextProperty.cs		\
+	WindowAttr.cs		\
+	Window.cs
 
 add_dist = 
 

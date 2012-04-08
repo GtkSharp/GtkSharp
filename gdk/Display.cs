@@ -1,4 +1,4 @@
-// Display.custom - customizations to Gdk.Display
+// Display.cs - customizations to Gdk.Display
 //
 // Authors: Mike Kestner  <mkestner@ximian.com>
 //
@@ -17,6 +17,14 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
+
+namespace Gdk {
+
+	using System;
+	using System.Collections;
+	using System.Runtime.InteropServices;
+
+	public partial class Display {
 
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_display_get_pointer(IntPtr raw, IntPtr screen, out int x, out int y, out int mask);
@@ -85,4 +93,6 @@
 			func_list.Add (func_wrapper);
 			gdk_display_add_client_message_filter (Handle, message_type == null ? IntPtr.Zero : message_type.Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
 		}
+	}
+}
 

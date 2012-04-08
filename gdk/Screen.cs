@@ -1,4 +1,4 @@
-// Screen.custom - customizations to Gdk.Screen
+// Screen.cs - customizations to Gdk.Screen
 //
 // Authors: Mike Kestner  <mkestner@ximian.com>
 //
@@ -17,6 +17,13 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
+
+namespace Gdk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Screen {
 
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_screen_get_toplevel_windows (IntPtr raw);
@@ -69,4 +76,6 @@
 				gdk_screen_set_font_options(Handle, value == null ? IntPtr.Zero : value.Handle);
 			}
 		}
+	}
+}
 

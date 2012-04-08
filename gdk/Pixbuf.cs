@@ -1,4 +1,4 @@
-// Pixbuf.custom - Gdk Pixbuf class customizations
+// Pixbuf.cs - Gdk Pixbuf class customizations
 //
 // Authors: 
 // 	Vladimir Vukicevic <vladimir@pobox.com>
@@ -31,6 +31,13 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
+
+namespace Gdk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Pixbuf {
 
 		public Pixbuf (System.IO.Stream stream) : base (IntPtr.Zero)
 		{
@@ -322,4 +329,6 @@
 				throw new GLib.GException (error);
 			return saved;
 		}
+	}
+}
 

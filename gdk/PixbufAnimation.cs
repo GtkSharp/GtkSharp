@@ -1,8 +1,6 @@
-// Gdk.Selection.custom - Gdk Selection class customizations
+// PixbufAnimation.cs - GdkPixbufAnimation class customizations
 //
-// Author: Mike Kestner <mkestner@novell.com>
-//
-// Copyright (c) 2009 Novell, Inc.
+// Copyright (c) 2005 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 //
@@ -20,9 +18,25 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		public static Atom Primary = new Atom (new IntPtr (1));
+namespace Gdk {
 
-		public static Atom Secondary = new Atom (new IntPtr (2));
+	using System;
 
-		public static Atom Clipboard = new Atom (new IntPtr (69));
+	public partial class PixbufAnimation {
+
+		public PixbufAnimation (System.IO.Stream stream) : base (new PixbufLoader (stream).AnimationHandle) {}
+
+		public PixbufAnimation (System.Reflection.Assembly assembly, string resource) : base (IntPtr.Zero)
+		{
+			if (assembly == null)
+				assembly = System.Reflection.Assembly.GetCallingAssembly ();
+			Raw = new PixbufLoader (assembly, resource).AnimationHandle;
+		}
+
+		static public PixbufAnimation LoadFromResource (string resource)
+		{
+			return new PixbufAnimation (System.Reflection.Assembly.GetCallingAssembly (), resource);
+		}
+	}
+}
 

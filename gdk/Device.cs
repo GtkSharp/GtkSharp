@@ -1,4 +1,4 @@
-// Device.custom - customizations to Gdk.Device
+// Device.cs - customizations to Gdk.Device
 //
 // Authors: Manuel V. Santos  <mvsl@telefonica.net>
 //
@@ -18,6 +18,12 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Gdk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Device {
 
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
                 static extern void gdk_device_free_history(IntPtr events, int n_events);
@@ -41,4 +47,6 @@
 			} else
 				return new TimeCoord [0];
 		}
+	}
+}
 

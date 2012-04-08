@@ -1,8 +1,8 @@
-// Gdk.PixbufFrame.custom - Gdk PixbufFrame class customizations
+// Gdk.WindowAttr.cs - Gdk Window class customizations
 //
-// Author:   Mike Kestner <mkestner@novell.com>
+// Author: Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2005 Novell, Inc.
+// Copyright (c) 2004 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 //
@@ -20,30 +20,39 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[Obsolete ("Replaced by Pixbuf property.")]
-		public Gdk.Pixbuf pixbuf {
-			get { 
-				Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(_pixbuf);
-				return ret;
+namespace Gdk {
+
+	using System;
+
+	public partial struct WindowAttr {
+
+		public EventMask Mask {
+			get {
+				return (EventMask) EventMask;
 			}
-			set { _pixbuf = value.Handle; }
+			set {
+				EventMask = (int) value;
+			}
 		}
 
-		[Obsolete ("Replaced by Composited property.")]
-		public Gdk.Pixbuf composited {
+		[Obsolete ("Replaced by Visual property.")]
+		public Gdk.Visual visual {
 			get { 
-				Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(_composited);
+				Gdk.Visual ret = (Gdk.Visual) GLib.Object.GetObject(_visual);
 				return ret;
 			}
-			set { _composited = value.Handle; }
+			set { _visual = value.Handle; }
 		}
 
-		[Obsolete ("Replaced by Revert property.")]
-		public Gdk.Pixbuf revert {
+		[Obsolete ("Replaced by Cursor property.")]
+		public Gdk.Cursor cursor {
 			get { 
-				Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(_revert);
+				Gdk.Cursor ret = new Gdk.Cursor(_cursor);
+				if (ret == null) ret = new Gdk.Cursor(_cursor);
 				return ret;
 			}
-			set { _revert = value.Handle; }
+			set { _cursor = value.Handle; }
 		}
+	}
+}
 

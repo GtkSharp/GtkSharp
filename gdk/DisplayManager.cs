@@ -1,4 +1,4 @@
-// DisplayManager.custom - customizations to Gdk.DisplayManager
+// DisplayManager.cs - customizations to Gdk.DisplayManager
 //
 // Authors: Mike Kestner  <mkestner@ximian.com>
 //
@@ -18,6 +18,13 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Gdk {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class DisplayManager {
+
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_display_manager_list_displays (IntPtr raw);
 
@@ -32,4 +39,6 @@
 				result [i] = list [i] as Display;
 			return result;
 		}
+	}
+}
 
