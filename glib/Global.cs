@@ -48,7 +48,7 @@ namespace GLib {
 
 		public static string ProgramName {
 			get {
-				return GLib.Marshaller.PtrToStringGFree(g_get_prgname());
+				return GLib.Marshaller.Utf8PtrToString (g_get_prgname());
 			}
 			set { 
 				IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (value);
@@ -65,7 +65,7 @@ namespace GLib {
 
 		public static string ApplicationName {
 			get {
-				return GLib.Marshaller.PtrToStringGFree(g_get_application_name());	
+				return GLib.Marshaller.Utf8PtrToString (g_get_application_name());	
 			}
 			set {
 				IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (value);
