@@ -81,15 +81,9 @@ EXTRA_DIST =				\
 	glib-sharp-3.0.pc.in		\
 	glib-api.xml
 
-if DISABLE_GTHREAD_CHECK
-BUILD_DEFINES=-define:DISABLE_GTHREAD_CHECK
-else
-BUILD_DEFINES=
-endif
-
 $(ASSEMBLY): $(build_sources) $(SNK)
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -unsafe -out:$(ASSEMBLY) -target:library $(references) $(build_sources) $(BUILD_DEFINES)
+	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -unsafe -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 
 policy.%.config: $(top_builddir)/policy.config
 	sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$*/" $(top_builddir)/policy.config > $@
