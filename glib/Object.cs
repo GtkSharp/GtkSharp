@@ -60,7 +60,6 @@ namespace GLib {
 			ToggleRef tref;
 			lock (Objects) {
 				if (Objects.TryGetValue (Handle, out tref)) {
-					tref.QueueUnref ();
 					Objects.Remove (Handle);
 				}
 			}
