@@ -97,15 +97,6 @@ namespace Gdk {
 			gdk_window_move_resize (Handle, rect.X, rect.Y, rect.Width, rect.Height);
 		}
 
-#if FIXME30
-		public void ClearArea (Gdk.Rectangle rect, bool expose) {
-			if (expose)
-				gdk_window_clear_area_e (Handle, rect.X, rect.Y, rect.Width, rect.Height);
-			else
-				gdk_window_clear_area (Handle, rect.X, rect.Y, rect.Width, rect.Height);
-		}
-#endif
-
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_window_get_user_data (IntPtr raw, out IntPtr data);
 
