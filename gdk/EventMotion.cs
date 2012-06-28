@@ -51,21 +51,17 @@ namespace Gdk {
 		public double[] Axes {
 			get {
 				double[] result = null;
-#if FIXME30
 				IntPtr axes = Native.axes;
 				if (axes != IntPtr.Zero) {
 					result = new double [Device.NumAxes];
 					Marshal.Copy (axes, result, 0, result.Length);
 				}
-#endif
 				return result;
 			}
 			set {
 				NativeStruct native = Native;
-#if FIXME30
 				if (native.axes == IntPtr.Zero || value.Length != Device.NumAxes)
 					throw new InvalidOperationException ();
-#endif
 				Marshal.Copy (value, 0, native.axes, value.Length);
 			}
 		}
