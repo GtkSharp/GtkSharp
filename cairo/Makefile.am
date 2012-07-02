@@ -1,5 +1,5 @@
 ASSEMBLY_NAME = cairo-sharp
-ASSEMBLY_NAME_VERSION = $(ASSEMBLY_NAME),Version=$(API_VERSION)
+ASSEMBLY_NAME_VERSION = $(ASSEMBLY_NAME),Version=$(CAIRO_API_VERSION)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 SNK = $(srcdir)/mono.snk
 
@@ -11,7 +11,6 @@ CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb
 
 sources = \
 	Antialias.cs \
-	AssemblyInfo.cs \
 	Cairo.cs \
 	Content.cs \
 	Context.cs \
@@ -62,7 +61,7 @@ sources = \
 	XlibSurface.cs \
 	#
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) $(builddir)/AssemblyInfo.cs
 
 $(ASSEMBLY): $(build_sources) $(SNK)
 	@rm -f $(ASSEMBLY).mdb

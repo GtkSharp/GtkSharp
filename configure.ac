@@ -7,6 +7,8 @@ AM_MAINTAINER_MODE
 
 API_VERSION=3.0.0.0
 AC_SUBST(API_VERSION)
+CAIRO_API_VERSION=1.10.0.0
+AC_SUBST(CAIRO_API_VERSION)
 POLICY_VERSIONS=""
 AC_SUBST(POLICY_VERSIONS)
 
@@ -230,6 +232,7 @@ gio/Makefile
 gio/gio-sharp-3.0.pc
 gio/gio-sharp.dll.config
 gio/glue/Makefile
+cairo/AssemblyInfo.cs
 cairo/Makefile
 pango/Makefile
 pango/pango-sharp.dll.config
