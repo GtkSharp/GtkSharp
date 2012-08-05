@@ -11,117 +11,112 @@ references = $(top_builddir)/glib/glib-sharp.dll $(top_builddir)/cairo/cairo-sha
 glue_includes = gtk/gtk.h
 
 sources = 				\
+	Accel.cs			\
+	AccelKey.cs			\
+	Action.cs			\
 	ActionEntry.cs			\
+	ActionGroup.cs		\
+	Adjustment.cs			\
 	Application.cs			\
+	Bin.cs				\
 	BindingAttribute.cs		\
+	Builder.cs			\
+	Button.cs			\
+	Calendar.cs			\
 	CellAreaBox.cs			\
+	CellLayout.cs			\
+	CellLayoutAdapter.cs		\
+	CellRenderer.cs		\
+	CellView.cs			\
+	CheckMenuItem.cs		\
 	ChildPropertyAttribute.cs	\
+	Clipboard.cs			\
+	ColorSelection.cs		\
+	ColorSelectionDialog.cs	\
+	ComboBox.cs			\
 	ComboBoxText.cs			\
+	Container.cs			\
+	Dialog.cs			\
+	Drag.cs			\
+	Entry.cs			\
+	EntryCompletion.cs		\
+	FileChooserDialog.cs		\
+	Frame.cs			\
 	Global.cs			\
+	HBox.cs			\
+	HScale.cs			\
+	IconFactory.cs		\
+	IconSet.cs			\
+	IconTheme.cs			\
+	IconView.cs			\
+	Image.cs			\
+	ImageMenuItem.cs		\
+	Init.cs			\
 	ITreeNode.cs			\
 	Key.cs				\
+	Label.cs			\
+	ListStore.cs			\
+	Menu.cs			\
+	MenuItem.cs			\
+	MessageDialog.cs		\
 	NodeCellDataFunc.cs		\
 	NodeSelection.cs		\
 	NodeStore.cs			\
 	NodeView.cs			\
+	Notebook.cs			\
+	PaperSize.cs			\
+	Plug.cs			\
+	Printer.cs			\
 	RadioActionEntry.cs		\
+	RadioButton.cs		\
+	RadioMenuItem.cs		\
+	RadioToolButton.cs		\
+	RecentManager.cs		\
 	RowsReorderedHandler.cs		\
+	ScrolledWindow.cs		\
+	SelectionData.cs		\
+	Settings.cs			\
+	SpinButton.cs			\
+	StatusIcon.cs			\
+	Stock.cs			\
+	StockItem.cs			\
 	StockManager.cs			\
+	Style.cs			\
 	StyleContext.cs			\
+	Table.cs			\
+	Target.cs			\
+	TargetEntry.cs		\
+	TargetList.cs			\
+	TextAttributes.cs		\
+	TextBuffer.cs			\
+	TextChildAnchor.cs		\
+	TextIter.cs			\
+	TextMark.cs			\
+	TextTag.cs			\
+	TextView.cs			\
 	ThreadNotify.cs			\
 	ToggleActionEntry.cs		\
 	TreeEnumerator.cs		\
+	TreeIter.cs			\
 	TreeMenu.cs			\
-	TreeNodeAttribute.cs		\
+	TreeModel.cs			\
+	TreeModelAdapter.cs		\
+	TreeModelFilter.cs		\
+	TreeModelSort.cs		\
 	TreeNode.cs			\
-	TreeNodeValueAttribute.cs
-
-customs = 				\
-	Accel.custom			\
-	AccelKey.custom			\
-	Action.custom			\
-	ActionGroup.custom		\
-	Adjustment.custom		\
-	Bin.custom			\
-	Builder.custom			\
-	Button.custom			\
-	Calendar.custom			\
-	CellRenderer.custom		\
-	CellLayout.custom		\
-	CellLayoutAdapter.custom	\
-	CellView.custom			\
-	CheckMenuItem.custom		\
-	Clipboard.custom		\
-	ColorSelection.custom		\
-	ColorSelectionDialog.custom	\
-	ComboBox.custom			\
-	Container.custom		\
-	Dialog.custom			\
-	Drag.custom			\
-	Entry.custom			\
-	EntryCompletion.custom		\
-	FileChooserDialog.custom	\
-	Frame.custom			\
-	HBox.custom			\
-	HScale.custom			\
-	IconFactory.custom		\
-	IconSet.custom			\
-	IconTheme.custom		\
-	IconView.custom			\
-	Image.custom			\
-	ImageMenuItem.custom		\
-	Init.custom			\
-	ItemFactory.custom		\
-	Label.custom			\
-	ListStore.custom		\
-	MessageDialog.custom		\
-	Menu.custom			\
-	MenuItem.custom			\
-	Notebook.custom			\
-	PaperSize.custom		\
-	Plug.custom			\
-	Printer.custom			\
-	RadioButton.custom		\
-	RadioMenuItem.custom		\
-	RadioToolButton.custom		\
-	RecentManager.custom		\
-	ScrolledWindow.custom		\
-	SelectionData.custom		\
-	Settings.custom			\
-	SpinButton.custom		\
-	StatusIcon.custom		\
-	Stock.custom			\
-	StockItem.custom		\
-	Style.custom			\
-	Table.custom			\
-	Target.custom			\
-	TargetEntry.custom		\
-	TargetList.custom		\
-	TargetPair.custom		\
-	TextAttributes.custom		\
-	TextBuffer.custom		\
-	TextChildAnchor.custom		\
-	TextIter.custom			\
-	TextMark.custom			\
-	TextTag.custom			\
-	TextView.custom			\
-	TooltipsData.custom		\
-	TreeIter.custom			\
-	TreeModel.custom		\
-	TreeModelAdapter.custom		\
-	TreeModelFilter.custom		\
-	TreeModelSort.custom		\
-	TreePath.custom			\
-	TreeSelection.custom		\
-	TreeStore.custom		\
-	TreeViewColumn.custom		\
-	TreeView.custom			\
-	UIManager.custom		\
-	VBox.custom			\
-	VScale.custom			\
-	Viewport.custom			\
-	Widget.custom			\
-	Window.custom
+	TreeNodeAttribute.cs		\
+	TreeNodeValueAttribute.cs	\
+	TreePath.cs			\
+	TreeSelection.cs		\
+	TreeStore.cs			\
+	TreeView.cs			\
+	TreeViewColumn.cs		\
+	UIManager.cs			\
+	VBox.cs			\
+	Viewport.cs			\
+	VScale.cs			\
+	Widget.cs			\
+	Window.cs
 
 add_dist = gtk-sharp-3.0.pc.in
 
