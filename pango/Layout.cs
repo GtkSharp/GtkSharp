@@ -26,33 +26,34 @@ namespace Pango {
 
 	public partial class Layout {
 
-[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-static extern IntPtr pango_layout_get_lines(IntPtr raw);
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr pango_layout_get_lines(IntPtr raw);
 
-public LayoutLine[] Lines {
-	get {
-		IntPtr list_ptr = pango_layout_get_lines(Handle);
-		if (list_ptr == IntPtr.Zero)
-			return new LayoutLine [0];
-		GLib.SList list = new GLib.SList(list_ptr, typeof (IntPtr));
-		LayoutLine[] result = new LayoutLine [list.Count];
-		for (int i = 0; i < list.Count; i++)
-			result[i] = new LayoutLine ((IntPtr)list[i]);
-		return result;
-	}
-}
+		public LayoutLine[] Lines {
+			get {
+				IntPtr list_ptr = pango_layout_get_lines(Handle);
+				if (list_ptr == IntPtr.Zero)
+					return new LayoutLine [0];
+				GLib.SList list = new GLib.SList(list_ptr, typeof (IntPtr));
+				LayoutLine[] result = new LayoutLine [list.Count];
+				for (int i = 0; i < list.Count; i++)
+					result[i] = new LayoutLine ((IntPtr)list[i]);
 
-[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-static extern void pango_layout_set_markup_with_accel (IntPtr raw, IntPtr markup, int length, uint accel_marker, out uint accel_char);
+				return result;
+			}
+		}
 
-public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char)
-{
-	uint ucs4_accel_char;
-	IntPtr native_markup = GLib.Marshaller.StringToPtrGStrdup (markup);
-	pango_layout_set_markup_with_accel (Handle, native_markup, -1, GLib.Marshaller.CharToGUnichar (accel_marker), out ucs4_accel_char);
-	GLib.Marshaller.Free (native_markup);
-	accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
-}
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void pango_layout_set_markup_with_accel (IntPtr raw, IntPtr markup, int length, uint accel_marker, out uint accel_char);
+
+		public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char)
+		{
+			uint ucs4_accel_char;
+			IntPtr native_markup = GLib.Marshaller.StringToPtrGStrdup (markup);
+			pango_layout_set_markup_with_accel (Handle, native_markup, -1, GLib.Marshaller.CharToGUnichar (accel_marker), out ucs4_accel_char);
+			GLib.Marshaller.Free (native_markup);
+			accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
+		}
 
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_free (IntPtr raw);

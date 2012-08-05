@@ -26,28 +26,28 @@ namespace Pango {
 	public partial class LayoutLine {
 
 #if NOT_BROKEN
-[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-static extern void pango_layout_line_get_x_ranges(IntPtr raw, int start_index, int end_index, out IntPtr ranges_handle, out int n_ranges);
+		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void pango_layout_line_get_x_ranges(IntPtr raw, int start_index, int end_index, out IntPtr ranges_handle, out int n_ranges);
 #endif
 
-public void GetXRanges(int start_index, int end_index, out int[][] ranges) 
-{
-	// FIXME: this is broken
-	throw new NotImplementedException ();
+		public void GetXRanges(int start_index, int end_index, out int[][] ranges)
+		{
+			// FIXME: this is broken
+			throw new NotImplementedException ();
 #if NOT_BROKEN
-	int count;
-	IntPtr array_ptr;
-	pango_layout_line_get_x_ranges(Handle, start_index, end_index, out array_ptr, out count);
-	ranges = new int[count] [];
-	for (int i = 0; i < count; i++) {
-		IntPtr tmp = new IntPtr (array_ptr + 2 * i * IntPtr.Size);
-		IntPtr rng_ptr = Marshal.ReadIntPtr (tmp);
-		IntPtr end_ptr = Marshal.ReadIntPtr (tmp, IntPtr.Size);
-		
-	}
-	Marshal.Copy (array_ptr, ranges, 0, count);
-	g_free (array_ptr);
+			int count;
+			IntPtr array_ptr;
+			pango_layout_line_get_x_ranges(Handle, start_index, end_index, out array_ptr, out count);
+			ranges = new int[count] [];
+			for (int i = 0; i < count; i++) {
+				IntPtr tmp = new IntPtr (array_ptr + 2 * i * IntPtr.Size);
+				IntPtr rng_ptr = Marshal.ReadIntPtr (tmp);
+				IntPtr end_ptr = Marshal.ReadIntPtr (tmp, IntPtr.Size);
+
+			}
+			Marshal.Copy (array_ptr, ranges, 0, count);
+			g_free (array_ptr);
 #endif
-}
+		}
 	}
 }
