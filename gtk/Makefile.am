@@ -32,7 +32,6 @@ sources = 				\
 	ChildPropertyAttribute.cs	\
 	Clipboard.cs			\
 	ColorSelection.cs		\
-	ColorSelectionDialog.cs	\
 	ComboBox.cs			\
 	ComboBoxText.cs			\
 	Container.cs			\
