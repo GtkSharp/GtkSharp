@@ -83,7 +83,6 @@ sources = 				\
 	StockManager.cs			\
 	Style.cs			\
 	StyleContext.cs			\
-	Table.cs			\
 	Target.cs			\
 	TargetEntry.cs		\
 	TargetList.cs			\
