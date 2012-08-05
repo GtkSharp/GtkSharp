@@ -23,17 +23,18 @@ namespace Gtk {
 	using System;
 
 	public partial class ColorSelectionDialog {
-[Obsolete ("Do not use this class. It will cause your app to crash in mysterious ways.")]
-public class ColorSelectionButton : Gtk.Button {
-	private ColorSelectionDialog color_sel;
 
-	public ColorSelectionDialog ColorSelectionDialog {
-		get { return color_sel; }
-	}
+		[Obsolete ("Do not use this class. It will cause your app to crash in mysterious ways.")]
+		public class ColorSelectionButton : Gtk.Button {
+			private ColorSelectionDialog color_sel;
 
-	public ColorSelectionButton (ColorSelectionDialog cs, IntPtr raw) : base (raw) {
-		color_sel = cs;
-	}
-}
+			public ColorSelectionDialog ColorSelectionDialog {
+				get { return color_sel; }
+			}
+
+			public ColorSelectionButton (ColorSelectionDialog cs, IntPtr raw) : base (raw) {
+				color_sel = cs;
+			}
+		}
 	}
 }

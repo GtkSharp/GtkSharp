@@ -15,38 +15,38 @@
 
 namespace Gtk {
 
-    using System;
-    using System.Runtime.InteropServices;
+	using System;
+	using System.Runtime.InteropServices;
 
-    public partial class IconSet {
+	public partial class IconSet {
 
-                [DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-                unsafe static extern void gtk_icon_set_get_sizes (
-                        IntPtr raw, out int *pointer_to_enum, out int n_sizes);
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		unsafe static extern void gtk_icon_set_get_sizes (
+			IntPtr raw, out int *pointer_to_enum, out int n_sizes);
 
-                [DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		unsafe static extern void g_free (int *mem);
 
-                /// <summary> Sizes Property </summary>
-                /// <remarks> To be completed </remarks>
-                public Gtk.IconSize [] Sizes {
-                        get {
+		/// <summary> Sizes Property </summary>
+		/// <remarks> To be completed </remarks>
+		public Gtk.IconSize [] Sizes {
+			get {
 
-                            Gtk.IconSize [] retval;
-                            
-                            unsafe {
-                                    int length;
-                                    int *pointer_to_enum;
-                                    gtk_icon_set_get_sizes (Handle, out pointer_to_enum, out length);
-                                    retval = new Gtk.IconSize [length];
-                                    for (int i = 0; i < length; i++)
-                                            retval [i] = (Gtk.IconSize) pointer_to_enum [i];
+				Gtk.IconSize [] retval;
 
-                                    g_free (pointer_to_enum);
-                            }
-                            
-                            return retval;
-                        }
-                }
-    }
+				unsafe {
+					int length;
+					int *pointer_to_enum;
+					gtk_icon_set_get_sizes (Handle, out pointer_to_enum, out length);
+					retval = new Gtk.IconSize [length];
+					for (int i = 0; i < length; i++)
+						retval [i] = (Gtk.IconSize) pointer_to_enum [i];
+
+					g_free (pointer_to_enum);
+				}
+
+				return retval;
+			}
+		}
+	}
 }

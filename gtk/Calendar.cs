@@ -25,38 +25,37 @@ namespace Gtk {
 
 	public partial class Calendar {
 
-public DateTime GetDate ()
-{
-	uint year, month, day;
-	GetDate (out year, out month, out day);
-	DateTime result;
-	try {
-		result = new DateTime ((int) year, (int) month + 1, (int) day);
-	} catch (ArgumentOutOfRangeException) {
-		// Kluge to workaround GtkCalendar being in an invalid state
-		// when raising month_changed signals, like in bug #78524.
-		result = new DateTime ((int) year, (int) month + 1, DateTime.DaysInMonth ((int) year, (int) month + 1));
-	}
-	return result;
-}
+		public DateTime GetDate ()
+		{
+			uint year, month, day;
+			GetDate (out year, out month, out day);
+			DateTime result;
+			try {
+				result = new DateTime ((int) year, (int) month + 1, (int) day);
+			} catch (ArgumentOutOfRangeException) {
+				// Kluge to workaround GtkCalendar being in an invalid state
+				// when raising month_changed signals, like in bug #78524.
+				result = new DateTime ((int) year, (int) month + 1, DateTime.DaysInMonth ((int) year, (int) month + 1));
+			}
+			return result;
+		}
 
 
-// This defines a Date property for Calendar
-// Note that the setter causes CalendarChange events to be fired
-public DateTime Date
+		// This defines a Date property for Calendar
+		// Note that the setter causes CalendarChange events to be fired
+		public DateTime Date
+		{
+			get {
+				return this.GetDate();
+			}
+			set {
+				uint month= (uint) value.Month-1;
+				uint year= (uint) value.Year;
+				uint day = (uint) value.Day;
 
-{
-        get {
-                return this.GetDate();
-        }
-        set {
-                uint month= (uint) value.Month-1;
-                uint year= (uint) value.Year;
-                uint day = (uint) value.Day;
-             
-                SelectMonth(month,year);
-                SelectDay(day);
-        }        
-}
+				SelectMonth(month,year);
+				SelectDay(day);
+			}
+		}
 	}
 }

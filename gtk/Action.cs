@@ -20,27 +20,26 @@
 
 namespace Gtk {
 
-    using System;
-    using System.Runtime.InteropServices;
+	using System;
+	using System.Runtime.InteropServices;
 
-    public partial class Action {
+	public partial class Action {
 
-	public Action (string name, string label) : this (name, label, null, null)
-	{
+		public Action (string name, string label) : this (name, label, null, null)
+		{}
+
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr gtk_action_get_proxies (IntPtr raw);
+
+		public Gtk.Widget[] Proxies {
+			get {
+				IntPtr raw_ret = gtk_action_get_proxies (Handle);
+				GLib.SList list = new GLib.SList (raw_ret);
+				Widget[] result = new Widget [list.Count];
+				for (int i = 0; i < list.Count; i++)
+					result [i] = list [i] as Widget;
+				return result;
+			}
+		}
 	}
-
-	[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern IntPtr gtk_action_get_proxies (IntPtr raw);
-
-        public Gtk.Widget[] Proxies {
-            get {
-                IntPtr raw_ret = gtk_action_get_proxies (Handle);
-                GLib.SList list = new GLib.SList (raw_ret);
- 				Widget[] result = new Widget [list.Count];
-            	for (int i = 0; i < list.Count; i++)
-                	result [i] = list [i] as Widget;
-            	return result;
-            }
-        }
-    }
 }

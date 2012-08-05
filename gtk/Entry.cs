@@ -20,24 +20,25 @@ namespace Gtk {
 	using System;
 
 	public partial class Entry {
-public int InsertText (string new_text)
-{
-	int position = 0;
 
-	InsertText (new_text, ref position);
+		public int InsertText (string new_text)
+		{
+			int position = 0;
 
-	return position;
-}
+			InsertText (new_text, ref position);
 
-public Entry(string initialText): this()
-{
-	Text = initialText;
-}
+			return position;
+		}
 
-[Obsolete("Replaced by IsEditable property")]
-public bool Editable {
-	get { return IsEditable; }
-	set { IsEditable = value; }
-}
+		public Entry(string initialText): this()
+		{
+			Text = initialText;
+		}
+
+		[Obsolete("Replaced by IsEditable property")]
+		public bool Editable {
+			get { return IsEditable; }
+			set { IsEditable = value; }
+		}
 	}
 }

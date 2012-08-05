@@ -129,8 +129,7 @@ namespace Gtk {
 							throw new Exception (String.Format ("You have two TreeNodeValueAttributes with the Column={0}", col));
 					
 						getters [col] = mi;
-						Type t = mi is PropertyInfo ? ((PropertyInfo) mi).PropertyType
-					                            : ((FieldInfo) mi).FieldType;
+						Type t = mi is PropertyInfo ? ((PropertyInfo) mi).PropertyType : ((FieldInfo) mi).FieldType;
 						ctypes [col] = (GLib.GType) t;
 					}
 				}

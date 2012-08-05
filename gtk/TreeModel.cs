@@ -24,27 +24,27 @@ namespace Gtk {
 
 	public partial interface TreeModel {
 
-	/// <summary>IterChildren Method</summary>
-	/// <remarks>To be completed</remarks>
-	bool IterChildren (out Gtk.TreeIter iter);
+		/// <summary>IterChildren Method</summary>
+		/// <remarks>To be completed</remarks>
+		bool IterChildren (out Gtk.TreeIter iter);
 
-	/// <summary>IterNChildren Method</summary>
-	/// <remarks>To be completed</remarks>
-	int IterNChildren ();
+		/// <summary>IterNChildren Method</summary>
+		/// <remarks>To be completed</remarks>
+		int IterNChildren ();
 
-	/// <summary>IterNthChild Method</summary>
-	/// <remarks>To be completed</remarks>
-	bool IterNthChild (out Gtk.TreeIter iter, int n);
+		/// <summary>IterNthChild Method</summary>
+		/// <remarks>To be completed</remarks>
+		bool IterNthChild (out Gtk.TreeIter iter, int n);
 
-        void SetValue (Gtk.TreeIter iter, int column, bool value);
-        void SetValue (Gtk.TreeIter iter, int column, double value);
-	void SetValue (Gtk.TreeIter iter, int column, int value);
-	void SetValue (Gtk.TreeIter iter, int column, string value);
-	void SetValue (Gtk.TreeIter iter, int column, float value);
-	void SetValue (Gtk.TreeIter iter, int column, uint value);
-	void SetValue (Gtk.TreeIter iter, int column, object value);
-	object GetValue(Gtk.TreeIter iter, int column);
+		void SetValue (Gtk.TreeIter iter, int column, bool value);
+		void SetValue (Gtk.TreeIter iter, int column, double value);
+		void SetValue (Gtk.TreeIter iter, int column, int value);
+		void SetValue (Gtk.TreeIter iter, int column, string value);
+		void SetValue (Gtk.TreeIter iter, int column, float value);
+		void SetValue (Gtk.TreeIter iter, int column, uint value);
+		void SetValue (Gtk.TreeIter iter, int column, object value);
+		object GetValue(Gtk.TreeIter iter, int column);
 
-	event RowsReorderedHandler RowsReordered;
+		event RowsReorderedHandler RowsReordered;
 	}
 }

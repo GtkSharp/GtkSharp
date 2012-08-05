@@ -25,29 +25,29 @@ namespace Gtk {
 
 	public partial class Button {
 
-[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-static extern IntPtr gtk_button_new_from_stock(IntPtr stock_id);
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr gtk_button_new_from_stock(IntPtr stock_id);
 
-public Button (string stock_id) : base (IntPtr.Zero)
-{
-	if (GetType () != typeof (Button)) {
-		GLib.Value[] vals = new GLib.Value [2];
-		string[] names = new string [2];
-		names [0] = "label";
-		vals [0] = new GLib.Value (stock_id);
-		names [1] = "use_stock";
-		vals [1] = new GLib.Value (true);
-		CreateNativeObject (names, vals);
-		return;
-	}
-	IntPtr native = GLib.Marshaller.StringToPtrGStrdup (stock_id);
-	Raw = gtk_button_new_from_stock (native);
-	GLib.Marshaller.Free (native);
-}
+		public Button (string stock_id) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Button)) {
+				GLib.Value[] vals = new GLib.Value [2];
+				string[] names = new string [2];
+				names [0] = "label";
+				vals [0] = new GLib.Value (stock_id);
+				names [1] = "use_stock";
+				vals [1] = new GLib.Value (true);
+				CreateNativeObject (names, vals);
+				return;
+			}
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (stock_id);
+			Raw = gtk_button_new_from_stock (native);
+			GLib.Marshaller.Free (native);
+		}
 
-public Button (Widget widget) : this ()
-{
-	Add (widget);
-}
+		public Button (Widget widget) : this ()
+		{
+			Add (widget);
+		}
 	}
 }

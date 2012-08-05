@@ -19,7 +19,7 @@ namespace Gtk {
 
 	public partial class VBox {
 
-public VBox () : this (false, 0) {}
+		public VBox () : this (false, 0) {}
 
 	}
 }

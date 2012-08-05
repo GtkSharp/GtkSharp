@@ -19,7 +19,7 @@ namespace Gtk {
 
 	public partial class HBox {
 
-public HBox () : this (false, 0) {}
+		public HBox () : this (false, 0) {}
 
 	}
 }

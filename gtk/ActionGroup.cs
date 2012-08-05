@@ -64,7 +64,7 @@ namespace Gtk {
 			RadioAction[] actions = new RadioAction[entries.Length];
 			for (int i = 0; i < entries.Length; i++) {
 				actions[i] = new RadioAction (entries[i].name, entries[i].label,
-							      entries[i].tooltip, entries[i].stock_id, entries[i].value);
+				                              entries[i].tooltip, entries[i].stock_id, entries[i].value);
 				actions[i].Group = group;
 				group = actions[i].Group;
 				actions[i].Active = value == entries[i].value;

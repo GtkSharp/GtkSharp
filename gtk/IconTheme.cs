@@ -76,10 +76,10 @@ namespace Gtk {
 			}
 		}
 
-                public string[] SearchPath {
-                        get {
+		public string[] SearchPath {
+			get {
 				string[] retval;
-                            
+
 				unsafe {
 					int length;
 					IntPtr raw_ret;
@@ -97,7 +97,7 @@ namespace Gtk {
 
 					g_strfreev (raw_ret);
 				}
-                            
+
 				return retval;
 			}
 			set {

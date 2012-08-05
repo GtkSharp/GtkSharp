@@ -25,34 +25,34 @@ namespace Gtk {
 
 	public partial class Menu {
 
-	[Obsolete("Replaced by overload without IntPtr argument")]
-	public void Popup (Gtk.Widget parent_menu_shell, Gtk.Widget parent_menu_item, Gtk.MenuPositionFunc func, IntPtr data, uint button, uint activate_time) {
-		Popup (parent_menu_shell, parent_menu_item, func, button, activate_time);
-	}
-
-	public void Popup ()
-	{
-		Popup (null, null, null, 3, Global.CurrentEventTime);
-	}
-
-	[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-	static extern void gtk_menu_set_screen (IntPtr raw, IntPtr screen);
-
-	public new Gdk.Screen Screen {
-		get {
-			return base.Screen;
+		[Obsolete("Replaced by overload without IntPtr argument")]
+		public void Popup (Gtk.Widget parent_menu_shell, Gtk.Widget parent_menu_item, Gtk.MenuPositionFunc func, IntPtr data, uint button, uint activate_time) {
+			Popup (parent_menu_shell, parent_menu_item, func, button, activate_time);
 		}
-		set {
-			gtk_menu_set_screen (Handle, value.Handle);
+
+		public void Popup ()
+		{
+			Popup (null, null, null, 3, Global.CurrentEventTime);
 		}
-	}
 
-	[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-	static extern void gtk_menu_set_active (IntPtr raw, uint index_);
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void gtk_menu_set_screen (IntPtr raw, IntPtr screen);
 
-	public void SetActive (uint index_)
-	{
-		gtk_menu_set_active (Handle, index_);
-	}
+		public new Gdk.Screen Screen {
+			get {
+				return base.Screen;
+			}
+			set {
+				gtk_menu_set_screen (Handle, value.Handle);
+			}
+		}
+
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void gtk_menu_set_active (IntPtr raw, uint index_);
+
+		public void SetActive (uint index_)
+		{
+			gtk_menu_set_active (Handle, index_);
+		}
 	}
 }

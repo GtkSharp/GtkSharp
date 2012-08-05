@@ -19,12 +19,12 @@ namespace Gtk {
 
 	public partial struct AccelKey {
 
-public AccelKey (Gdk.Key key, Gdk.ModifierType mods, Gtk.AccelFlags flags)
-{
-	this.Key = key;
-	this.AccelMods = mods;
-	this._bitfield0 = 0;
-	this.AccelFlags = flags;
-}
+		public AccelKey (Gdk.Key key, Gdk.ModifierType mods, Gtk.AccelFlags flags)
+		{
+			this.Key = key;
+			this.AccelMods = mods;
+			this._bitfield0 = 0;
+			this.AccelFlags = flags;
+		}
 	}
 }

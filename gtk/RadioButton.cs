@@ -25,15 +25,15 @@ namespace Gtk {
 
 	public partial class RadioButton {
 
-	[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-	static extern IntPtr gtk_radio_button_new_with_mnemonic (IntPtr group, IntPtr label);
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr gtk_radio_button_new_with_mnemonic (IntPtr group, IntPtr label);
 
-	// creates a new group for this RadioButton
-	public RadioButton (string label)
-	{
-		IntPtr native = GLib.Marshaller.StringToPtrGStrdup (label);
-		Raw = gtk_radio_button_new_with_mnemonic (IntPtr.Zero, native);
-		GLib.Marshaller.Free (native);
-	}
+		// creates a new group for this RadioButton
+		public RadioButton (string label)
+		{
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (label);
+			Raw = gtk_radio_button_new_with_mnemonic (IntPtr.Zero, native);
+			GLib.Marshaller.Free (native);
+		}
 	}
 }

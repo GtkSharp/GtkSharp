@@ -52,8 +52,9 @@ namespace Gtk {
 			IntPtr raw_ret = gtk_ui_manager_get_toplevels (Handle, (int) types);
 			GLib.SList list = new GLib.SList (raw_ret);
  			Widget[] result = new Widget [list.Count];
-            for (int i = 0; i < list.Count; i++)
-               	result [i] = list [i] as Widget;
+			for (int i = 0; i < list.Count; i++)
+				result [i] = list [i] as Widget;
+
 			return result;
 		}
 
@@ -65,8 +66,9 @@ namespace Gtk {
 				IntPtr raw_ret = gtk_ui_manager_get_action_groups (Handle);
 				GLib.List list = new GLib.List(raw_ret);
  				ActionGroup[] result = new ActionGroup [list.Count];
-            	for (int i = 0; i < list.Count; i++)
-                	result [i] = list [i] as ActionGroup;
+				for (int i = 0; i < list.Count; i++)
+					result [i] = list [i] as ActionGroup;
+
 				return result;
 			}
 		}

@@ -24,13 +24,13 @@ namespace Gtk {
 
 	public partial struct StockItem {
 
-	public StockItem (string stock_id, string label, uint keyval, Gdk.ModifierType modifier, string domain)
-	{
-		this.StockId = stock_id;
-		this.Label = label;
-		this.Keyval = keyval;
-		this.Modifier = modifier;
-		this.TranslationDomain = domain;
-	}	
+		public StockItem (string stock_id, string label, uint keyval, Gdk.ModifierType modifier, string domain)
+		{
+			this.StockId = stock_id;
+			this.Label = label;
+			this.Keyval = keyval;
+			this.Modifier = modifier;
+			this.TranslationDomain = domain;
+		}
 	}
 }

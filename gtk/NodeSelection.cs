@@ -51,7 +51,7 @@ namespace Gtk {
 			return selection.PathIsSelected (path);
 		}
 
-		public void SelectAll ()			    
+		public void SelectAll ()
 		{
 			selection.SelectAll ();
 		}

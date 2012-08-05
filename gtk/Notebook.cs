@@ -26,18 +26,18 @@ namespace Gtk {
 
 	public partial class Notebook {
 
-public Widget CurrentPageWidget {
-        get {
-                return GetNthPage (CurrentPage);
-        }
-}       
+		public Widget CurrentPageWidget {
+			get {
+				return GetNthPage (CurrentPage);
+			}
+		}
 
-[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-static extern int gtk_notebook_page_num (IntPtr handle, IntPtr child);
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern int gtk_notebook_page_num (IntPtr handle, IntPtr child);
 
-public int PageNum (Widget child)
-{
-	return gtk_notebook_page_num (Handle, child.Handle);
-}
+		public int PageNum (Widget child)
+		{
+			return gtk_notebook_page_num (Handle, child.Handle);
+		}
 	}
 }

@@ -52,7 +52,7 @@ namespace Gtk {
 		// TODO: Implement "nullable" attribute for value type parameters in GAPI
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void OnGetSizeDelegate (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height);
-                
+
 		static void OnGetSize_cb (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height)
 		{
 			try {
@@ -87,7 +87,7 @@ namespace Gtk {
 				OnGetSizeCallback = new OnGetSizeDelegate (OnGetSize_cb);
 			gtksharp_cellrenderer_override_get_size (gtype.Val, OnGetSizeCallback);
 		}
-               
+
 		[GLib.DefaultSignalHandler (Type=typeof(Gtk.CellRenderer), ConnectionMethod="OverrideOnGetSize")] 
 		protected virtual void OnGetSize (Gtk.Widget widget, ref Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height) 
 		{
