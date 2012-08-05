@@ -29,7 +29,6 @@ namespace GtkSharp.Generation {
 	public class GenerationInfo {
 		
 		string dir;
-		string custom_dir;
 		string assembly_name;
 		string gluelib_name;
 		bool glue_enabled;
@@ -41,16 +40,14 @@ namespace GtkSharp.Generation {
 			string ns_name = ns.GetAttribute ("name");
 			char sep = Path.DirectorySeparatorChar;
 			dir = ".." + sep + ns_name.ToLower () + sep + "generated";
-			custom_dir = ".." + sep + ns_name.ToLower ();
 			assembly_name = ns_name.ToLower () + "-sharp";
 		}
 
-		public GenerationInfo (string dir, string assembly_name) : this (dir, dir, assembly_name, "", "", "") {}
+		public GenerationInfo (string dir, string assembly_name) : this (dir, assembly_name, "", "", "") {}
 
-		public GenerationInfo (string dir, string custom_dir, string assembly_name, string glue_filename, string glue_includes, string gluelib_name)
+		public GenerationInfo (string dir, string assembly_name, string glue_filename, string glue_includes, string gluelib_name)
 		{
 			this.dir = dir;
-			this.custom_dir = custom_dir;
 			this.assembly_name = assembly_name;
 			this.gluelib_name = gluelib_name;
 			InitializeGlue (glue_filename, glue_includes, gluelib_name);
@@ -87,12 +84,6 @@ namespace GtkSharp.Generation {
 		public string AssemblyName {
 			get {
 				return assembly_name;
-			}
-		}
-
-		public string CustomDir {
-			get {
-				return custom_dir;
 			}
 		}
 

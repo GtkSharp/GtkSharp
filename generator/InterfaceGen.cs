@@ -270,8 +270,6 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine ("#endregion");
 
-			AppendCustom (sw, gen_info.CustomDir, Name + "Adapter");
-
 			sw.WriteLine ("\t}");
 			sw.WriteLine ("}");
 			sw.Close ();
@@ -320,7 +318,6 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t[GLib.Property (\"" + prop.CName + "\")]");
 				prop.GenerateDecl (sw, "\t\t");
 			}
-			AppendCustom (sw, gen_info.CustomDir, Name + "Implementor");
 
 			sw.WriteLine ("\t}");
 		}
@@ -352,8 +349,6 @@ namespace GtkSharp.Generation {
 
 			foreach (Property prop in props.Values)
 				prop.GenerateDecl (sw, "\t\t");
-
-			AppendCustom (sw, gen_info.CustomDir);
 
 			sw.WriteLine ("\t}");
 			GenerateImplementorIface (gen_info);

@@ -94,26 +94,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected void AppendCustom (StreamWriter sw, string custom_dir)
-		{
-			AppendCustom (sw, custom_dir, Name);
-		}
-
-		protected void AppendCustom (StreamWriter sw, string custom_dir, string type_name)
-		{
-			char sep = Path.DirectorySeparatorChar;
-			string custom = custom_dir + sep + type_name + ".custom";
-			if (File.Exists(custom)) {
-				sw.WriteLine ("#region Customized extensions");
-				sw.WriteLine ("#line 1 \"" + type_name + ".custom\"");
-				FileStream custstream = new FileStream(custom, FileMode.Open, FileAccess.Read);
-				StreamReader sr = new StreamReader(custstream);
-				sw.WriteLine (sr.ReadToEnd ());
-				sw.WriteLine ("#endregion");
-				sr.Close ();
-			}
-		}
-
 		public abstract string CallByName (string var);
 
 		public abstract string FromNative (string var);

@@ -17,7 +17,7 @@ DISTCLEANFILES = $(ASSEMBLY).config
 POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
 POLICY_CONFIGS = $(addsuffix .config, $(addprefix policy., $(POLICY_VERSIONS)))
 
-EXTRA_DIST = $(RAW_API) $(SYMBOLS) $(ASSEMBLY).config.in $(METADATA) $(customs) $(sources) $(add_dist)
+EXTRA_DIST = $(RAW_API) $(SYMBOLS) $(ASSEMBLY).config.in $(METADATA) $(sources) $(add_dist)
 
 build_symbols = $(addprefix --symbols=$(srcdir)/, $(SYMBOLS))
 
@@ -29,14 +29,13 @@ $(API): $(METADATA) $(RAW_API) $(SYMBOLS) $(top_builddir)/parser/gapi-fixup.exe
 		$(RUNTIME) $(top_builddir)/parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols); \
 	fi
 
-build_customs = $(addprefix $(srcdir)/, $(customs))
 api_includes = $(addprefix -I:, $(INCLUDE_API))
 
-generated-stamp: $(API) $(INCLUDE_API) $(top_builddir)/generator/gapi_codegen.exe $(build_customs)
+generated-stamp: $(API) $(INCLUDE_API) $(top_builddir)/generator/gapi_codegen.exe
 	rm -f generated/* &&	\
 	$(RUNTIME) $(top_builddir)/generator/gapi_codegen.exe --generate $(API) \
 	$(api_includes)	\
-	--outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME)	\
+	--outdir=generated --assembly-name=$(ASSEMBLY_NAME)	\
 	--gluelib-name=$(pkg)sharpglue-3 --glue-filename=glue/generated.c		\
 	--glue-includes=$(glue_includes)						\
 	&& touch generated-stamp

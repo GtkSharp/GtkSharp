@@ -37,7 +37,6 @@ namespace GtkSharp.Generation {
 
 			bool generate = false;
 			string dir = "";
-			string custom_dir = "";
 			string assembly_name = "";
 			string glue_filename = "";
 			string glue_includes = "";
@@ -46,6 +45,10 @@ namespace GtkSharp.Generation {
 			SymbolTable table = SymbolTable.Table;
 			ArrayList gens = new ArrayList ();
 			foreach (string arg in args) {
+				if (arg.StartsWith ("--customdir=")) {
+					Console.WriteLine ("Using .custom files is not supported anymore, use partial classes instead.");
+					return 0;
+				}
 				string filename = arg;
 				if (arg == "--generate") {
 					generate = true;
@@ -59,10 +62,6 @@ namespace GtkSharp.Generation {
 				} else if (arg.StartsWith ("--outdir=")) {
 					generate = false;
 					dir = arg.Substring (9);
-					continue;
-				} else if (arg.StartsWith ("--customdir=")) {
-					generate = false;
-					custom_dir = arg.Substring (12);
 					continue;
 				} else if (arg.StartsWith ("--assembly-name=")) {
 					generate = false;
@@ -101,7 +100,7 @@ namespace GtkSharp.Generation {
 
 			GenerationInfo gen_info = null;
 			if (dir != "" || assembly_name != "" || glue_filename != "" || glue_includes != "" || gluelib_name != "")
-				gen_info = new GenerationInfo (dir, custom_dir, assembly_name, glue_filename, glue_includes, gluelib_name);
+				gen_info = new GenerationInfo (dir, assembly_name, glue_filename, glue_includes, gluelib_name);
 			
 			foreach (IGeneratable gen in gens) {
 				if (gen_info == null)

@@ -190,7 +190,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\t{0}Internal{1} ({2});", retval.IsVoid ? "" : "return ", this.Name, Signature.GetCallString (false));
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
-			// This method is to be invoked from existing VM implementations in the .customs
+			// This method is to be invoked from existing VM implementations in the custom code
 			sw.WriteLine ("\t\tprivate {0} Internal{1} ({2})", retval.CSType, this.Name, Signature.ToString ());
 			sw.WriteLine ("\t\t{");
 		}

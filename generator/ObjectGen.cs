@@ -239,7 +239,6 @@ namespace GtkSharp.Generation {
 			}
 
 			sw.WriteLine ("#endregion");
-			AppendCustom (sw, gen_info.CustomDir);
 
 			sw.WriteLine ("\t}");
 			sw.WriteLine ("}");

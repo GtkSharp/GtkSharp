@@ -72,9 +72,8 @@ namespace GtkSharp.Generation {
 			}
 
 			sw.WriteLine ("#endregion");
-                        AppendCustom(sw, gen_info.CustomDir);
-                        sw.WriteLine ("\t}");
-                        sw.WriteLine ("}");
+			sw.WriteLine ("\t}");
+			sw.WriteLine ("}");
 			sw.Close ();
 			gen_info.Writer = null;
 			Statistics.BoxedCount++;
