@@ -1,11 +1,9 @@
-// Pango.LayoutLine.custom - Pango LayoutLine class customizations
+// Pango.LayoutLine.cs - Pango LayoutLine class customizations
 //
 // Authors: Jeroen Zwartepoorte <jeroen@xs4all.nl
 //	    Mike Kestner <mkestner@ximian.com>
 //
 // Copyright (c) 2004 Novell, Inc.
-//
-// This code is inserted after the automatically generated code.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -20,6 +18,12 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
+
+namespace Pango {
+
+	using System;
+
+	public partial class LayoutLine {
 
 #if NOT_BROKEN
 [DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -45,4 +49,5 @@ public void GetXRanges(int start_index, int end_index, out int[][] ranges)
 	g_free (array_ptr);
 #endif
 }
-
+	}
+}

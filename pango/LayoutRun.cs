@@ -1,8 +1,6 @@
-// Pango.LayoutRun.custom - Pango.LayoutRun class customizations
+// Pango.LayoutRun.cs - Pango.LayoutRun class customizations
 //
 // Copyright (c) 2005 Novell, Inc.
-//
-// This code is inserted after the automatically generated code.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -18,6 +16,12 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Pango {
+
+	using System;
+
+	public partial struct LayoutRun {
+
 		[Obsolete ("Replaced by Glyphs property")]
 		public Pango.GlyphString glyphs {
 			get { return Glyphs; }
@@ -27,3 +31,5 @@
 		public Pango.Item item {
 			get { return Item; }
 		}
+	}
+}

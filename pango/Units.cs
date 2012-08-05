@@ -1,4 +1,4 @@
-// Pango.Units.custom - Unit customizations.
+// Pango.Units.cs - Unit customizations.
 //
 // Author: Mike Kestner <mkestner@novell.com>
 //
@@ -18,6 +18,12 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Pango {
+
+	using System;
+
+	public partial class Units {
+
 		private Units () {}
 		
 		public static int FromPixels (int pixels)
@@ -29,4 +35,5 @@
 		{
 			return (units + 512) >> 10;
 		}
-
+	}
+}

@@ -1,10 +1,8 @@
-// Pango.Context.custom - Pango Context class customizations
+// Pango.FontMap.cs - Pango FontMap class customizations
 //
 // Authors:  Mike Kestner  <mkestner@ximian.com>
 //
 // Copyright (c) 2004 Novell, Inc.
-//
-// This code is inserted after the automatically generated code.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -20,17 +18,24 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Pango {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class FontMap {
+
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_free (IntPtr raw);
 
 		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_context_list_families(IntPtr raw, out IntPtr families, out int n_families);
+		static extern void pango_font_map_list_families(IntPtr raw, out IntPtr families, out int n_families);
 
 		public FontFamily [] Families {
 			get {
 				int count;
 				IntPtr array_ptr;
-				pango_context_list_families (Handle, out array_ptr, out count);
+				pango_font_map_list_families (Handle, out array_ptr, out count);
 				if (array_ptr == IntPtr.Zero)
 					return new FontFamily [0];
 				FontFamily [] result = new FontFamily [count];
@@ -45,12 +50,13 @@
 		}
 
 		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_context_list_families(IntPtr raw, IntPtr families, out int n_families);
+		static extern void pango_font_map_list_families(IntPtr raw, IntPtr families, out int n_families);
 
 		[Obsolete]
 		public int ListFamilies(Pango.FontFamily families) {
 			int n_families;
-			pango_context_list_families(Handle, families.Handle, out n_families);
+			pango_font_map_list_families(Handle, families.Handle, out n_families);
 			return n_families;
 		}
-
+	}
+}

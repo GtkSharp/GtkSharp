@@ -1,8 +1,6 @@
-// Pango.GlyphString.custom - Pango GlyphString class customizations
+// Pango.Item.cs - Pango Item class customizations
 //
 // Copyright (c) 2005 Novell, Inc.
-//
-// This code is inserted after the automatically generated code.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -18,17 +16,25 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[Obsolete("Pango.GlyphString is a reference type now, use null")]
-		public static GlyphString Zero = null;
+namespace Pango {
 
-		[Obsolete("Replaced by GlyphString(IntPtr) constructor")]
-		public static GlyphString New (IntPtr raw)
+	using System;
+
+	public partial class Item {
+
+		[Obsolete("Pango.Item is a reference type now, use null")]
+		public static Item Zero = null;
+
+		[Obsolete("Replaced by Item(IntPtr) constructor")]
+		public static Item New (IntPtr raw)
 		{
-			return new GlyphString (raw);
+			return new Item (raw);
 		}
 
-		[Obsolete("Replaced by GlyphString() constructor")]
-		public static GlyphString New ()
+		[Obsolete("Replaced by Item() constructor")]
+		public static Item New ()
 		{
-			return new GlyphString ();
+			return new Item ();
 		}
+	}
+}

@@ -1,11 +1,9 @@
-// Pango.Layout.custom - Pango Layout class customizations
+// Pango.Layout.cs - Pango Layout class customizations
 //
 // Authors: Pedro Abelleira Seco <pedroabelleira@yahoo.es>
 //          Mike Kestner  <mkestner@ximian.com>
 //
 // Copyright (c) 2004 Novell, Inc.
-//
-// This code is inserted after the automatically generated code.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -20,6 +18,13 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
+
+namespace Pango {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Layout {
 
 [DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr pango_layout_get_lines(IntPtr raw);
@@ -92,3 +97,5 @@ public void SetMarkupWithAccel (string markup, char accel_marker, out char accel
 			pango_layout_set_markup (Handle, native_markup, -1);
 			GLib.Marshaller.Free (native_markup);
 		}
+	}
+}

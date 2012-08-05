@@ -1,10 +1,8 @@
-// Pango.Global.custom - Pango Global class customizations
+// Pango.Global.cs - Pango Global class customizations
 //
 // Authors:  Mike Kestner  <mkestner@ximian.com>
 //
 // Copyright (c) 2004 Novell, Inc.
-//
-// This code is inserted after the automatically generated code.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -19,6 +17,13 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
+
+namespace Pango {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class Global {
 
 		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool pango_scan_int(IntPtr pos, out int out_param);
@@ -48,5 +53,7 @@
 			attrs = new Pango.AttrList (attrs_handle);
 			return result;
 		}
+	}
+}
 
 

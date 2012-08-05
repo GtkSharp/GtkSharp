@@ -1,10 +1,8 @@
-// Pango.Coverage.custom - Pango Coverage class customizations
+// Pango.TabArray.cs - Pango TabArray class customizations
 //
 // Author: Mike Kestner <mkestner@ximian.com>
 //
 // Copyright (c) 2004 Novell, Inc.
-//
-// This code is inserted after the automatically generated code.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -20,19 +18,35 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Pango {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public partial class TabArray {
+
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_free (IntPtr raw);
 
 		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_coverage_to_bytes (IntPtr raw, out IntPtr bytes, out int n_bytes);
+		static extern void pango_tab_array_get_tabs (IntPtr raw, out IntPtr alignments, out IntPtr locations);
 
-		public void ToBytes(out byte[] bytes) 
+		public void GetTabs (out TabAlign[] alignments, out int[] locations) 
 		{
-			int count;
-			IntPtr array_ptr;
-			pango_coverage_to_bytes (Handle, out array_ptr, out count);
-			bytes = new byte [count];
-			Marshal.Copy (array_ptr, bytes, 0, count);
-			g_free (array_ptr);
+			int sz = Size;
+			IntPtr align_ptr, loc_ptr;
+			alignments = new TabAlign [sz];
+			locations = new int [sz];
+			int[] tmp = new int [sz];
+			if (sz == 0)
+				return;
+			pango_tab_array_get_tabs (Handle, out align_ptr, out loc_ptr);
+			Marshal.Copy (loc_ptr, locations, 0, sz);
+			Marshal.Copy (align_ptr, tmp, 0, sz);
+			for (int i = 0; i < sz; i++)
+				alignments [i] = (TabAlign) tmp [i];
+			g_free (align_ptr);
+			g_free (loc_ptr);
 		}
-
+	}
+}

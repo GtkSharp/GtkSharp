@@ -1,10 +1,8 @@
-// Pango.Matrix.custom - Pango Matrix class customizations
+// Pango.Matrix.cs - Pango Matrix class customizations
 //
 // Authors: John Luke <john.luke@gmail.com>
 //
 // Copyright (c) 2005 John Luke.
-//
-// This code is inserted after the automatically generated code.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -20,6 +18,12 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Pango {
+
+	using System;
+
+	public partial struct Matrix {
+
 	static Matrix ()
 	{
 		Identity.Xx = 1.0;
@@ -32,3 +36,5 @@
 
 	public static Matrix Identity;
 
+	}
+}
