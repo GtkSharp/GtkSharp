@@ -79,40 +79,29 @@ namespace Gtk {
 		public string[] SearchPath {
 			get {
 				string[] retval;
+				int length;
+				IntPtr raw_ret;
+				if (IsWindowsPlatform)
+					gtk_icon_theme_get_search_path_utf8 (Handle, out raw_ret, out length);
+				else
+					gtk_icon_theme_get_search_path (Handle, out raw_ret, out length);
 
-				unsafe {
-					int length;
-					IntPtr raw_ret;
-					if (IsWindowsPlatform)
-						gtk_icon_theme_get_search_path_utf8 (Handle, out raw_ret, out length);
-					else
-						gtk_icon_theme_get_search_path (Handle, out raw_ret, out length);
-
-					int size = Marshal.SizeOf (typeof (IntPtr));
-					retval = new string[length];
-					for (int i = 0, j = 0; i < length; i++, j += size) {
-						IntPtr string_ptr = Marshal.ReadIntPtr (new IntPtr (raw_ret.ToInt32 () + j));
-						retval[i] = GLib.Marshaller.Utf8PtrToString (string_ptr);
-					}
-
-					g_strfreev (raw_ret);
-				}
-
-				return retval;
+				return GLib.Marshaller.NullTermPtrToStringArray (raw_ret, true);
 			}
+
 			set {
-				int cnt_path = value == null ? 0 : value.Length;
-				IntPtr[] native_path = new IntPtr [cnt_path];
-				for (int i = 0; i < cnt_path; i++)
-					native_path [i] = GLib.Marshaller.StringToPtrGStrdup (value[i]);
+				IntPtr[] native_path;
+				if (value == null)
+					native_path = new IntPtr [0];
+				else
+					native_path = GLib.Marshaller.StringArrayToNullTermPointer (value);
 
 				if (IsWindowsPlatform)
 					gtk_icon_theme_set_search_path_utf8 (Handle, native_path, native_path.Length);
 				else
 					gtk_icon_theme_set_search_path (Handle, native_path, native_path.Length);
 
-				for (int i = 0; i < native_path.Length; i++)
-					GLib.Marshaller.Free (native_path[i]);
+				GLib.Marshaller.Free (native_path);
 			}
 		}
 
