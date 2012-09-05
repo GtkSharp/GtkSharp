@@ -78,7 +78,6 @@ namespace Gtk {
 
 		public string[] SearchPath {
 			get {
-				string[] retval;
 				int length;
 				IntPtr raw_ret;
 				if (IsWindowsPlatform)
@@ -97,9 +96,9 @@ namespace Gtk {
 					native_path = GLib.Marshaller.StringArrayToNullTermPointer (value);
 
 				if (IsWindowsPlatform)
-					gtk_icon_theme_set_search_path_utf8 (Handle, native_path, native_path.Length);
+					gtk_icon_theme_set_search_path_utf8 (Handle, native_path, value.Length);
 				else
-					gtk_icon_theme_set_search_path (Handle, native_path, native_path.Length);
+					gtk_icon_theme_set_search_path (Handle, native_path, value.Length);
 
 				GLib.Marshaller.Free (native_path);
 			}
