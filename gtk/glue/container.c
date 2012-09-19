@@ -20,15 +20,24 @@
  */
 
 #include <gtk/gtk.h>
+#include <string.h>
 
 void gtksharp_container_base_forall (GtkContainer *container, gboolean include_internals, GtkCallback cb, gpointer data);
 
 void 
 gtksharp_container_base_forall (GtkContainer *container, gboolean include_internals, GtkCallback cb, gpointer data)
 {
-	GtkContainerClass *parent = g_type_class_peek_parent (G_OBJECT_GET_CLASS (container));
-	if (parent->forall)
-		(*parent->forall) (container, include_internals, cb, data);
+	// Find and call the first base callback that's not the GTK# callback. The GTK# callback calls down the whole
+	// managed override chain, so calling it on a subclass-of-a-managed-container-subclass causes a stack overflow.
+	GtkContainerClass *parent = (GtkContainerClass *) G_OBJECT_GET_CLASS (container);
+	while ((parent = g_type_class_peek_parent (parent))) {
+		if (strncmp (G_OBJECT_CLASS_NAME (parent), "__gtksharp_", 11) != 0) {
+			if (parent->forall) {
+				(*parent->forall) (container, include_internals, cb, data);
+			}
+			return;
+		}
+	}
 }
 
 void gtksharp_container_override_forall (GType gtype, gpointer cb);
