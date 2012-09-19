@@ -134,9 +134,16 @@ namespace Gtk {
 		static void ForallOld_cb (IntPtr container, bool include_internals, IntPtr cb, IntPtr data)
 		{
 			try {
-				Container obj = GLib.Object.GetObject (container, false) as Container;
-				CallbackInvoker invoker = new CallbackInvoker (cb, data);
-				obj.ForAll (include_internals, invoker);
+				//GtkContainer's unmanaged dispose calls forall, but by that time the managed object is gone
+				//so it couldn't do anything useful, and resurrecting it would cause a resurrection cycle.
+				//In that case, just chain to the native base in case it can do something.
+				Container obj = (Container) GLib.Object.TryGetObject (container);
+				if (obj != null) {
+					CallbackInvoker invoker = new CallbackInvoker (cb, data);
+					obj.ForAll (include_internals, invoker);
+				} else {
+					gtksharp_container_base_forall (container, include_internals, cb, data);
+				}
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -159,9 +166,16 @@ namespace Gtk {
 		static void Forall_cb (IntPtr container, bool include_internals, IntPtr cb, IntPtr data)
 		{
 			try {
-				Container obj = GLib.Object.GetObject (container, false) as Container;
-				CallbackInvoker invoker = new CallbackInvoker (cb, data);
-				obj.ForAll (include_internals, new Gtk.Callback (invoker.Invoke));
+				//GtkContainer's unmanaged dispose calls forall, but by that time the managed object is gone
+				//so it couldn't do anything useful, and resurrecting it would cause a resurrection cycle.
+				//In that case, just chain to the native base in case it can do something.
+				Container obj = (Container) GLib.Object.TryGetObject (container);
+				if (obj != null) {
+					CallbackInvoker invoker = new CallbackInvoker (cb, data);
+					obj.ForAll (include_internals, new Gtk.Callback (invoker.Invoke));
+				} else {
+					gtksharp_container_base_forall (container, include_internals, cb, data);
+				}
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
