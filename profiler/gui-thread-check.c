@@ -62,6 +62,7 @@ simple_method_enter (MonoProfiler *prof, MonoMethod *method)
 			guithread_set = TRUE;
 			guithread = current_thread_id;
 			printf ("*** GUI THREAD INITIALIZED: %u\n", guithread); 
+			return;
 		}
 		if (current_thread_id != guithread &&
 			!(strcmp (klass_name, "Object")==0 && strcmp (method_name, "Dispose")==0) &&
