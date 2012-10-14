@@ -191,9 +191,6 @@ PKG_CHECK_MODULES(GTK, gtk+-3.0 >= $GTK_REQUIRED_VERSION)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 
-GDK_BACKEND=`pkg-config --variable=target gtk+-3.0`
-AC_SUBST(GDK_BACKEND)
-
 AC_PATH_PROG(MDOC, mdoc, no)
 if test "x$MDOC" = "xno"; then
   enable_monodoc=no
