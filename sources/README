@@ -1,50 +1,26 @@
 The contents of this directory are (basically) the first step
 in creating .NET bindings, to libraries based on GObject.
 
-QUICK INSTRUCTIONS
-------------------
-
-    Edit the .metadata file(s), then do a:
-
-        make get-source-code
-        make api
-
-   You only have to do a "make get-source-code" once!  After
-    you have run "make get-source-code" once, do the following...
-
-
-    Edit the .metadata file(s), then do a:
-
-        make api
-
-
-    Note, these instructions only generate XML files in the "api"
-    directory.  To turn those XML files (in the "api" directory)
-    into C# code; and then turn that C# code into a .DLL, you'll
-    need to perform extra steps, which are NOT described in this
-    document.
-
-    (If you are going to create a new .NET binding, then you will need
-    to do more than just this.)
-
-
 WHO USES THE SOURCES DIRECTORY
 ------------------------------
 
-    This directory is essentially the "starting point" in the creation
-    of a .NET binding.  Most people can safely ignore it.  (If all
+    This directory is essentially the starting point in the creation
+    of a .NET binding. Most people can safely ignore it. (If all
     you want to do is build Gtk#, then you can ignore what's in this
     directory.)
 
-    This directory is not part of the normal "build process" for Gtk#.
+    This directory is not part of the normal build process for Gtk#.
     But is instead used by people wishing to update an existing .NET
     binding; or to create a new .NET binding (for a GObject based library).
 
     The result of running "make api" on this directory (once everything
-    is set up) are the XML files that you find in the "api" directory.
-    (Those XML files, that you find in the "api" directory,  are then used
-    to generate the C# code.  And then that C# code is used to create
-    the various .DLL files.)
+    is set up) are the various '*-api.raw' XML files that you find in the
+    corresponding directories. Those XML files will then be used to generate
+    the C# code. And then that C# code is used to create the various .DLL
+    files.
+
+    Please refer to http://www.mono-project.com/GAPI for a more complete and
+    up-to-date guide to this process.
 
 
 WHAT'S REQUIRED
@@ -52,63 +28,32 @@ WHAT'S REQUIRED
 
     Before you can do anything here, you need to get the source
     code to the various libraries (which you are generating .NET
-    bindings for).  And then do a little configuring.  The current
-    list of libraries that Gtk# supports is:
+    bindings for). And then do a little configuring. The current
+    list of libraries that Gtk# supports is in the sources.xml and Makefile.am
+    files.
 
-        pango-1.4.0
-        atk-1.6.0
-        gtk+-2.4.1
-        libgnome-2.6.0
-        libgnomecanvas-2.6.0
-        libgnomeui-2.6.0
-        libgnomeprint-2.6.0
-        libgnomeprintui-2.6.0
-        gtkhtml-3.0.10 files: gtkhtml.[ch], gtkhtml-types.h,
-                 gtkhtml-enums.h, gtkhtml-stream.[ch]
-        libglade-2.3.6
-        libart_lgpl-2.3.16
-        librsvg-2.6.4
-		gnome-vfs-2.6.0
-		gnome-panel-2.6.0
+    If you create a new binding that is part of Gtk#, be sure to add it to this
+    list.
 
-    (If you create a new binding, that is part of Gtk#, be sure to add it
-    to this list.  Also, you'll need to add an entry in "gtk-sharp.sources".
-    And you should add it to the "makefile" so that it is part of the
-    "get-source-code" rule.)
-
-    (There are two ways to get this source code.  As you will see in the
-    next section.)
+    There are two ways to get this source code, as you will see in the
+    next section.
 
 
 SETTING THINGS UP
 -----------------
 
     To set things up, you need to get the source code to the libraries listed
-    above.  There are two (alternate) methods of doing this.
+    above. There are two (alternate) methods of doing this.
 
         Method 1)
-            Download it.  Unpack the source code (if necessary).  Then do the extra
-            cofiguration stuff listed above.
+            Download and unpack the source code manually.
 
         Method 2)
             Run:
                 make get-source-code
 
+    (Method 2 is probably the easiest way to do it for most people. It
+    automatically goes and downloads everything you need, and sets everything
+    up for you.)
 
-    (Method 2 is probably the easiest way to do it for most people.  It automatically
-    goes and downloads everything you need.  And configures everything for you.)
-
-
-EDITING .METADATA FILES
------------------------
-
-    Part of updating a .NET binding involves editing a .metadata file.  
-    (Assuming you already have the required source code, to the
-    libraries...) once you update a binding, you then run:
-
-        make api
-
-    ...to create the new updated XML file(s) that will be placed in the "api"
-    directory.
-
-
+    For more information, please refer to http://www.mono-project.com/GAPI
