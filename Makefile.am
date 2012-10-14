@@ -4,7 +4,6 @@ EXTRA_DIST = 			\
 	gtk-sharp.snk		\
 	policy.config.in	\
 	AssemblyInfo.cs.in	\
-	ChangeLog		\
 	HACKING			\
 	README			\
 	README.generator
