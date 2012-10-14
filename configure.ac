@@ -89,12 +89,6 @@ if test "x$PKG_CONFIG" = "xno"; then
 	AC_MSG_ERROR([You need to install pkg-config])
 fi
 
-dnl for use on the build system
-BUILD_GTK_CFLAGS=`$PKG_CONFIG --cflags gtk+-2.0`
-BUILD_GTK_LIBS=`$PKG_CONFIG --libs gtk+-2.0`
-AC_SUBST(BUILD_GTK_CFLAGS)
-AC_SUBST(BUILD_GTK_LIBS)
-
 AC_CHECK_SIZEOF(off_t)
 OFF_T_FLAGS="-define:OFF_T_$ac_cv_sizeof_off_t"
 AC_SUBST(OFF_T_FLAGS)
