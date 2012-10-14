@@ -1,8 +1,9 @@
 
-AC_INIT(README)
-AC_CANONICAL_SYSTEM
+AC_INIT(gtk-sharp, 2.99.0)
+
+AM_INIT_AUTOMAKE([1.10 no-dist-gzip dist-bzip2 tar-ustar foreign])
+AC_CANONICAL_HOST
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(gtk-sharp, 2.99.0)
 AM_MAINTAINER_MODE
 
 API_VERSION=3.0.0.0
