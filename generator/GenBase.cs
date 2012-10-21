@@ -58,11 +58,7 @@ namespace GtkSharp.Generation {
 
 		public bool IsInternal {
 			get {
-				if (elem.HasAttribute ("internal")) {
-					string attr = elem.GetAttribute ("internal");
-					return attr == "1" || attr == "true";
-				}
-				return false;
+				return elem.GetAttributeAsBoolean ("internal");
 			}
 		}
 

@@ -40,11 +40,11 @@ namespace GtkSharp.Generation {
 		public ReturnValue (XmlElement elem) 
 		{
 			if (elem != null) {
-				is_null_term = elem.HasAttribute ("null_term_array");
-				is_array = elem.HasAttribute ("array") || elem.HasAttribute ("array_length_param");
+				is_null_term = elem.GetAttributeAsBoolean ("null_term_array");
+				is_array = elem.GetAttributeAsBoolean ("array") || elem.HasAttribute ("array_length_param");
 				array_length_param = elem.GetAttribute ("array_length_param");
-				elements_owned = elem.GetAttribute ("elements_owned") == "true";
-				owned = elem.GetAttribute ("owned") == "true";
+				elements_owned = elem.GetAttributeAsBoolean ("elements_owned");
+				owned = elem.GetAttributeAsBoolean ("owned");
 				ctype = elem.GetAttribute("type");
 				default_value = elem.GetAttribute ("default_value");
 				element_ctype = elem.GetAttribute ("element_type");

@@ -69,7 +69,7 @@ namespace GtkSharp.Generation {
 					else
 						signal_vms.Add (member.GetAttribute ("field_name"), member);
 
-					if (member.GetAttribute ("hidden") != "1") {
+					if (!member.GetAttributeAsBoolean ("hidden")) {
 						string name = member.GetAttribute("name");
 						while (sigs.ContainsKey(name))
 							name += "mangled";
@@ -130,7 +130,7 @@ namespace GtkSharp.Generation {
 			} else
 				vm = new GObjectVM (vm_elem, this);
 
-			if (vm_elem.GetAttribute ("padding") == "true" || vm_elem.GetAttribute ("hidden") == "1")
+			if (vm_elem.GetAttributeAsBoolean ("padding") || vm_elem.GetAttributeAsBoolean ("hidden"))
 				hidden_vms.Add (vm);
 			else {
 				if (vm is GObjectVM)

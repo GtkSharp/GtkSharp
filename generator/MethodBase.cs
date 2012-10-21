@@ -41,7 +41,7 @@ namespace GtkSharp.Generation {
 			this.name = elem.GetAttribute ("name");
 			parms = new Parameters (elem ["parameters"]);
 			IsStatic = elem.GetAttribute ("shared") == "true";
-			if (elem.HasAttribute ("new_flag"))
+			if (elem.GetAttributeAsBoolean ("new_flag"))
 				mods = "new ";
 			if (elem.HasAttribute ("accessibility")) {
 				string attr = elem.GetAttribute ("accessibility");

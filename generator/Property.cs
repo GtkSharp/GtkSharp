@@ -45,22 +45,21 @@ namespace GtkSharp.Generation {
 
 		bool Readable {
 			get {
-				return elem.GetAttribute ("readable") == "true";
+				return elem.GetAttributeAsBoolean ("readable");
 			}
 		}
 
 		bool Writable {
 			get {
-				return elem.GetAttribute ("writeable") == "true" &&
-					!elem.HasAttribute ("construct-only");
+				return elem.GetAttributeAsBoolean ("writeable") &&
+					!elem.GetAttributeAsBoolean ("construct-only");
 			}
 		}
 
 		bool IsDeprecated {
 			get {
 				return !container_type.IsDeprecated &&
-					(elem.GetAttribute ("deprecated") == "1" ||
-					 elem.GetAttribute ("deprecated") == "true");
+					elem.GetAttributeAsBoolean ("deprecated");
 			}
 		}
 

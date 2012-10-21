@@ -61,20 +61,13 @@ namespace GtkSharp.Generation {
 
 		protected ClassBase (XmlElement ns, XmlElement elem) : base (ns, elem) {
 					
-			if (elem.HasAttribute ("deprecated")) {
-				string attr = elem.GetAttribute ("deprecated");
-				deprecated = attr == "1" || attr == "true";
-			}
-			
-			if (elem.HasAttribute ("abstract")) {
-				string attr = elem.GetAttribute ("abstract");
-				isabstract = attr == "1" || attr == "true";
-			}
+			deprecated = elem.GetAttributeAsBoolean ("deprecated");
+			isabstract = elem.GetAttributeAsBoolean ("abstract");
 
 			foreach (XmlNode node in elem.ChildNodes) {
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
-				if (member.HasAttribute ("hidden"))
+				if (member.GetAttributeAsBoolean ("hidden"))
 					continue;
 				
 				string name;
@@ -227,7 +220,7 @@ namespace GtkSharp.Generation {
 				if (node.Name != "interface")
 					continue;
 				XmlElement element = (XmlElement) node;
-				if (element.HasAttribute ("hidden"))
+				if (element.GetAttributeAsBoolean ("hidden"))
 					continue;
 				if (element.HasAttribute ("cname"))
 					interfaces.Add (element.GetAttribute ("cname"));

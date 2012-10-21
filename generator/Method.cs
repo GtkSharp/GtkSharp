@@ -40,15 +40,11 @@ namespace GtkSharp.Generation {
 		{
 			this.retval = new ReturnValue (elem["return-type"]);
 			
-			if (!container_type.IsDeprecated && elem.HasAttribute ("deprecated")) {
-				string attr = elem.GetAttribute ("deprecated");
-				deprecated = attr == "1" || attr == "true";
+			if (!container_type.IsDeprecated) {
+				deprecated = elem.GetAttributeAsBoolean ("deprecated");
 			}
 			
-			if (elem.HasAttribute ("win32_utf8_variant")) {
-				string attr = elem.GetAttribute ("win32_utf8_variant");
-				win32_utf8_variant = attr == "1" || attr.ToLower () == "true";
-			}
+			win32_utf8_variant = elem.GetAttributeAsBoolean ("win32_utf8_variant");
 
 			if (Name == "GetType")
 				Name = "GetGType";

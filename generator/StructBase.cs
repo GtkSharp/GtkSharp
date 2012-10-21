@@ -103,7 +103,7 @@ namespace GtkSharp.Generation {
 
 		private bool DisableNew {
 			get {
-				return Elem.HasAttribute ("disable_new");
+				return Elem.GetAttributeAsBoolean ("disable_new");
 			}
 		}
 

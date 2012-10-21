@@ -107,13 +107,10 @@ namespace GtkSharp.Generation {
 				if (elem == null)
 					continue;
 
-				if (elem.HasAttribute("hidden"))
+				if (elem.GetAttributeAsBoolean ("hidden"))
 					continue;
 
-				bool is_opaque = false;
-				if (elem.GetAttribute ("opaque") == "true" ||
-				    elem.GetAttribute ("opaque") == "1")
-					is_opaque = true;
+				bool is_opaque = elem.GetAttributeAsBoolean ("opaque");
 
 				switch (def.Name) {
 				case "alias":

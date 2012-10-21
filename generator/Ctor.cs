@@ -35,8 +35,7 @@ namespace GtkSharp.Generation {
 
 		public Ctor (XmlElement elem, ClassBase implementor) : base (elem, implementor) 
 		{
-			if (elem.HasAttribute ("preferred"))
-				preferred = true;
+			preferred = elem.GetAttributeAsBoolean ("preferred");
 			if (implementor is ObjectGen)
 				needs_chaining = true;
 			name = implementor.Name;

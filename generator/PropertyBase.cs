@@ -74,13 +74,13 @@ namespace GtkSharp.Generation {
 
 		public bool Hidden {
 			get {
-				return elem.HasAttribute("hidden");
+				return elem.GetAttributeAsBoolean ("hidden");
 			}
 		}
 
 		protected bool IsNew {
 			get {
-				return elem.HasAttribute("new_flag");
+				return elem.GetAttributeAsBoolean ("new_flag");
 			}
 		}
 

@@ -40,7 +40,8 @@ namespace GtkSharp.Generation {
 			foreach (XmlNode node in elem.ChildNodes) {
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
-				if (member.HasAttribute ("hidden") && member.GetAttribute ("hidden") == "1") continue;
+				if (member.GetAttributeAsBoolean ("hidden"))
+					continue;
 
 				switch (node.Name) {
 				case "callback":
@@ -93,7 +94,7 @@ namespace GtkSharp.Generation {
 
 		private bool DisableVoidCtor {
 			get {
-				return Elem.HasAttribute ("disable_void_ctor");
+				return Elem.GetAttributeAsBoolean ("disable_void_ctor");
 			}
 		}
 

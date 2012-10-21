@@ -33,7 +33,7 @@ namespace GtkSharp.Generation {
 
 		public InterfaceGen (XmlElement ns, XmlElement elem) : base (ns, elem, true) 
 		{
-			consume_only = elem.HasAttribute ("consume_only");
+			consume_only = elem.GetAttributeAsBoolean ("consume_only");
 			foreach (XmlNode node in elem.ChildNodes) {
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;

@@ -76,7 +76,7 @@ namespace GtkSharp.Generation {
 
  		public void GenerateDecl (StreamWriter sw)
  		{
-			if (elem.HasAttribute("new_flag") || (container_type != null && container_type.GetSignalRecursively (Name) != null))
+			if (elem.GetAttributeAsBoolean ("new_flag") || (container_type != null && container_type.GetSignalRecursively (Name) != null))
 				sw.Write("new ");
 
  			sw.WriteLine ("\t\tevent " + EventHandlerQualifiedName + " " + Name + ";");
@@ -242,7 +242,7 @@ namespace GtkSharp.Generation {
 
 		private bool NeedNew (ObjectBase implementor)
 		{
-			return elem.HasAttribute ("new_flag") ||
+			return elem.GetAttributeAsBoolean ("new_flag") ||
 				(container_type != null && container_type.GetSignalRecursively (Name) != null) ||
 				(implementor != null && implementor.GetSignalRecursively (Name) != null);
 		}

@@ -62,7 +62,7 @@ namespace GtkSharp.Generation {
 
 		public bool IsArray {
 			get {
-				return elem.HasAttribute("array_len") || elem.HasAttribute("array");
+				return elem.HasAttribute ("array_len") || elem.GetAttributeAsBoolean ("array");
 			}
 		}
 
@@ -153,7 +153,7 @@ namespace GtkSharp.Generation {
 
 			SymbolTable table = SymbolTable.Table;
 			StreamWriter sw = gen_info.Writer;
-			string modifiers = elem.HasAttribute ("new_flag") ? "new " : "";
+			string modifiers = elem.GetAttributeAsBoolean ("new_flag") ? "new " : "";
 			bool is_struct = table.IsStruct (CType) || table.IsBoxed (CType);
 
 			sw.WriteLine (indent + "public " + modifiers + CSType + " " + Name + " {");

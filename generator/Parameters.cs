@@ -81,13 +81,13 @@ namespace GtkSharp.Generation {
 
 		public bool IsArray {
 			get {
-				return elem.HasAttribute("array") || elem.HasAttribute("null_term_array");
+				return elem.GetAttributeAsBoolean ("array") || elem.GetAttributeAsBoolean ("null_term_array");
 			}
 		}
 
 		public bool IsEllipsis {
 			get {
-				return elem.HasAttribute("ellipsis");
+				return elem.GetAttributeAsBoolean ("ellipsis");
 			}
 		}
 
@@ -330,7 +330,7 @@ namespace GtkSharp.Generation {
 
 		public ArrayParameter (XmlElement elem) : base (elem) 
 		{
-			null_terminated = elem.HasAttribute ("null_term_array");
+			null_terminated = elem.GetAttributeAsBoolean ("null_term_array");
 		}
 
 		public override string MarshalType {

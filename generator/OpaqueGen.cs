@@ -37,7 +37,7 @@ namespace GtkSharp.Generation {
 
 		private bool DisableRawCtor {
 			get {
-				return Elem.HasAttribute ("disable_raw_ctor");
+				return Elem.GetAttributeAsBoolean ("disable_raw_ctor");
 			}
 		}
 

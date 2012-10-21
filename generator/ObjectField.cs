@@ -34,7 +34,7 @@ namespace GtkSharp.Generation {
 
 		protected override bool Writable {
 			get {
-				return elem.GetAttribute ("writeable") == "true";
+				return elem.GetAttributeAsBoolean ("writeable");
 			}
 		}
 
