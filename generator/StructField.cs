@@ -73,7 +73,6 @@ namespace GtkSharp.Generation {
 		public string EqualityName {
 			get {
 				SymbolTable table = SymbolTable.Table;
-				string wrapped = table.GetCSType (CType);
 				string wrapped_name = SymbolTable.Table.MangleName (CName);
 				IGeneratable gen = table [CType];
 

@@ -107,7 +107,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected new void GenEqualsAndHash (StreamWriter sw)
+		protected void GenEqualsAndHash (StreamWriter sw)
 		{
 			int bitfields = 0;
 			bool need_field = true;
