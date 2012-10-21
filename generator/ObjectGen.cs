@@ -150,7 +150,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t[Obsolete]");
 			foreach (string attr in custom_attrs)
 				sw.WriteLine ("\t" + attr);
-			sw.Write ("\t{0} partial {1}class " + Name, IsInternal ? "internal" : "public", IsAbstract ? "abstract " : "");
+			sw.Write ("\t{0} {1}partial class " + Name, IsInternal ? "internal" : "public", IsAbstract ? "abstract " : "");
 			string cs_parent = table.GetCSType(Elem.GetAttribute("parent"));
 			if (cs_parent != "") {
 				di.objects.Add (CName, QualifiedName);
