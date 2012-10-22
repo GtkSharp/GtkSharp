@@ -1,1 +1,50 @@
-try CNN
+===============================================================================
+Gtk# 2.99.0 - 2012-10-23
+===============================================================================
+
+Gtk# 2.99.0 is the first release of C# bindings for GTK 3.x. This is a beta
+release, primarily intended for applications developers who want to start
+porting their application to GTK 3.x.
+
+This version of Gtk# provides bindings for the API exposed by these libraries:
+  * cairo 1.10.0
+  * glib 2.28.0
+  * pango 1.28.3
+  * atk 1.32.0
+  * gdk-pixbuf 2.22.1
+  * gtk+ 3.0.0
+
+There is no API stability guarantee for now, but we will try to keep breaking
+changes to a minimum.
+
+This version of Gtk# can be installed in parallel with Gtk# 2.x, and should not
+have any impact on applications using Gtk# 2.x.
+
+Changes
+-------
+
+  * All the new APIs provided by GTK 3.0 and friends are now available.
+
+  * Gtk# now provides bindings for cairo 1.10 in cairo-sharp.dll, as some
+    required APIs are not available in the Mono.Cairo.dll binding included
+    in Mono.
+
+  * Bindings for Gio are now included, instead of requiring a separate
+    gio-sharp package.
+
+  * GLib.Object now uses the Dispose pattern. Subclasses that need to do
+    resource clean-up should implement a Dispose(bool) method.
+
+  * Custom code is now provided solely using partial classes. The Foo.custom
+    files that were used before are now proper Foo.cs files.
+
+  * Various enhancements to the parser and the generator.
+
+Bug fixes
+---------
+
+  * generator: Properly handle boolean attributes when parsing the XML
+  * glib: do not call g_thread_ functions in GLib >= 2.31
+  * gtk: Fix resurrection cycles in container subclasses (bxc#3801)
+  * Lots of other bug fixes are included, in particular all the relevant fixes
+    from the stable 2.12 branch.
