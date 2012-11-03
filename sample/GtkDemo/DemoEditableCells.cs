@@ -7,7 +7,7 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Gtk;
 
 namespace GtkDemo
@@ -17,7 +17,7 @@ namespace GtkDemo
 	{
 		private ListStore store;
 		private TreeView treeView;
-		private ArrayList articles;
+		private IList<Item> articles;
 
 		public DemoEditableCells () : base ("Shopping list")
 		{
@@ -82,7 +82,7 @@ namespace GtkDemo
 		private ListStore CreateModel ()
 		{
 			// create array
-			articles = new ArrayList ();
+			articles = new List<Item> ();
 			AddItems ();
 
 			// create list store
@@ -130,7 +130,7 @@ namespace GtkDemo
 
 			Item foo;
 			try {
-				foo = (Item) articles[i];
+				foo = articles[i];
  				foo.Number = int.Parse (args.NewText);
 			} catch (Exception e) {
 				Console.WriteLine (e);
@@ -147,7 +147,7 @@ namespace GtkDemo
  			store.GetIter (out iter, path);
 			int i = path.Indices[0];
 
-			Item foo = (Item) articles[i];
+			Item foo = articles[i];
 			foo.Product = args.NewText;
 			store.SetValue (iter, (int) Column.Product, foo.Product);
 		}

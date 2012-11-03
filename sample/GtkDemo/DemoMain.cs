@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -197,7 +197,7 @@ namespace GtkDemo
 		{
 			// title, filename, italic
 			store = new TreeStore (typeof (string), typeof (System.Type), typeof (bool));
-			Hashtable parents = new Hashtable ();
+			Dictionary<string, TreeIter> parents = new Dictionary<string, TreeIter> ();
 			TreeIter parent;
 
 			Type[] types = Assembly.GetExecutingAssembly ().GetTypes ();
@@ -205,10 +205,10 @@ namespace GtkDemo
 				object[] att = t.GetCustomAttributes (typeof (DemoAttribute), false);
 				foreach (DemoAttribute demo in att) {
 					if (demo.Parent != null) {
-						if (!parents.Contains (demo.Parent))
+						if (!parents.ContainsKey (demo.Parent))
 							parents.Add (demo.Parent, store.AppendValues (demo.Parent));
 
-						parent = (TreeIter) parents[demo.Parent];
+						parent = parents[demo.Parent];
 						store.AppendValues (parent, demo.Label, t, false);
 					} else {
 						store.AppendValues (demo.Label, t, false);

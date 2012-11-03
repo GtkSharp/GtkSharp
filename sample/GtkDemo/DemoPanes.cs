@@ -13,7 +13,7 @@
 
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Gtk;
 
 namespace GtkDemo
@@ -21,7 +21,7 @@ namespace GtkDemo
 	[Demo ("Paned Widget", "DemoPanes.cs")]
 	public class DemoPanes : Gtk.Window
 	{
-		Hashtable children = new Hashtable ();
+		Dictionary<ToggleButton, Widget> children = new Dictionary<ToggleButton, Widget> ();
 
 		public DemoPanes () : base ("Panes")
 		{
@@ -113,7 +113,7 @@ namespace GtkDemo
 		private void ToggleResize (object obj, EventArgs args)
 		{
 			ToggleButton toggle = obj as ToggleButton;
-			Widget child = children[obj] as Widget;
+			Widget child = children[toggle];
 			Paned paned = child.Parent as Paned;
 
 			Paned.PanedChild pc = paned[child] as Paned.PanedChild;
@@ -123,7 +123,7 @@ namespace GtkDemo
 		private void ToggleShrink (object obj, EventArgs args)
 		{
 			ToggleButton toggle = obj as ToggleButton;
-			Widget child = children[obj] as Widget;
+			Widget child = children[toggle];
 			Paned paned = child.Parent as Paned;
 
 			Paned.PanedChild pc = paned[child] as Paned.PanedChild;

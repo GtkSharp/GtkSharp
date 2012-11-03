@@ -1,16 +1,16 @@
 // This is a completely pointless widget, but it shows how to subclass container...
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Gtk;
 using Gdk;
 
 class PolarFixed : Container {
-	ArrayList children;
+	IList<PolarFixedChild> children;
 
 	public PolarFixed ()
 	{
-		children = new ArrayList ();
+		children = new List<PolarFixedChild> ();
 		HasWindow = false;
 	}
 

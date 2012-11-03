@@ -7,7 +7,7 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Gtk;
 
 namespace GtkDemo
@@ -41,7 +41,7 @@ namespace GtkDemo
 			ShowAll ();
 		}
 
-		Hashtable tag_pages = new Hashtable ();
+		Dictionary<TextTag, int> tag_pages = new Dictionary<TextTag, int> ();
 
 		// Inserts a piece of text into the buffer, giving it the usual
 		// appearance of a hyperlink in a web browser: blue and underlined.
@@ -100,9 +100,8 @@ namespace GtkDemo
 		void FollowIfLink (TextView view, TextIter iter)
 		{
 			foreach (TextTag tag in iter.Tags) {
-				object page = tag_pages [tag];
-				if (page is int)
-					ShowPage (view.Buffer, (int)page);
+				int page = tag_pages [tag];
+				ShowPage (view.Buffer, (int)page);
 			}
 		}
 

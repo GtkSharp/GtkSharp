@@ -8,7 +8,7 @@ namespace GtkSamples {
 
 	using Gtk;
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 
 	public class Actions {
 		static VBox box = null;
@@ -19,7 +19,7 @@ namespace GtkSamples {
 		static ActionGroup dynGroup = null;
 		static uint mergeId = 0;
 		static UIManager uim = null;
-		static Hashtable actions = new Hashtable ();
+		static Dictionary<Widget, Gtk.Action> actions = new Dictionary<Widget, Gtk.Action> ();
 
 		/* XML description of the menus for the test app.  The parser understands
 		 * a subset of the Bonobo UI XML format, and uses GMarkup for parsing */
@@ -299,7 +299,7 @@ namespace GtkSamples {
 
 		static void OnSelect (object obj, EventArgs args)
 		{
-			Gtk.Action action = (Gtk.Action) actions[obj];
+			Gtk.Action action = actions[(Widget)obj];
 			if (action.Tooltip != null)
 				statusbar.Push (0, action.Tooltip);
 		}
