@@ -24,7 +24,7 @@ namespace Gtk {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
-	public partial class Container {
+	public partial class Container : IEnumerable {
 
 		[DllImport("gtksharpglue-3")]
 		static extern void gtksharp_container_child_get_property (IntPtr container, IntPtr child, IntPtr property, ref GLib.Value value);
