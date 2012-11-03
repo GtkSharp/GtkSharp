@@ -24,11 +24,12 @@ namespace GtkSharp.Generation {
 
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	using System.Xml;
 
-	public class Parameters : IEnumerable {
+	public class Parameters : IEnumerable<Parameter> {
 		
-		ArrayList param_list = new ArrayList ();
+		List<Parameter> param_list = new List<Parameter> ();
 		XmlElement elem;
 		bool first_is_instance;
 
@@ -61,7 +62,7 @@ namespace GtkSharp.Generation {
 
 		public Parameter this [int idx] {
 			get {
-				return param_list [idx] as Parameter;
+				return param_list [idx];
 			}
 		}
 
@@ -138,9 +139,14 @@ namespace GtkSharp.Generation {
 			param_list = null;
 		}
 
-		public IEnumerator GetEnumerator ()
+		public IEnumerator<Parameter> GetEnumerator ()
 		{
 			return param_list.GetEnumerator ();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator ()
+		{
+			return GetEnumerator ();
 		}
 
 		bool valid = false;
