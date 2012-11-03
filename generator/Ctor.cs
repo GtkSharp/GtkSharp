@@ -33,7 +33,7 @@ namespace GtkSharp.Generation {
 		private string name;
 		private bool needs_chaining = false;
 
-		public Ctor (XmlElement elem, ClassBase implementor) : base (elem, implementor) 
+		public Ctor (XmlElement elem, ClassBase implementor) : base (elem, implementor)
 		{
 			preferred = elem.GetAttributeAsBoolean ("preferred");
 			if (implementor is ObjectGen)
@@ -76,7 +76,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t" + Protection + " static " + Safety + Modifiers +  name + " " + StaticName + "(" + Signature + ")");
 			sw.WriteLine("\t\t{");
 
-			Body.Initialize(gen_info, false, false, ""); 
+			Body.Initialize(gen_info, false, false, "");
 
 			sw.Write("\t\t\t" + name + " result = ");
 			if (container_type is StructBase)
@@ -85,7 +85,7 @@ namespace GtkSharp.Generation {
 				sw.Write ("new {0} (", name);
 			sw.WriteLine (CName + "(" + Body.GetCallString (false) + "));");
 			Body.Finish (sw, ""); 
-			Body.HandleException (sw, ""); 
+			Body.HandleException (sw, "");
 			sw.WriteLine ("\t\t\treturn result;");
 		}
 

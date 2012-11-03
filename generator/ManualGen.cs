@@ -28,7 +28,7 @@ namespace GtkSharp.Generation {
 		
 		string from_fmt;
 
-		public ManualGen (string ctype, string type) : base (ctype, type, "null") 
+		public ManualGen (string ctype, string type) : base (ctype, type, "null")
 		{
 			from_fmt = "new " + QualifiedName + "({0})";
 		}

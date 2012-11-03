@@ -37,7 +37,7 @@ namespace GtkSharp.Generation {
 		string element_ctype = String.Empty;
 		Parameter count_param;
 
-		public ReturnValue (XmlElement elem) 
+		public ReturnValue (XmlElement elem)
 		{
 			if (elem != null) {
 				is_null_term = elem.GetAttributeAsBoolean ("null_term_array");

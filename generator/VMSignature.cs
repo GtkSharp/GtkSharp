@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 		
 		private ArrayList parms = new ArrayList ();
 
-		public VMSignature (Parameters parms) 
+		public VMSignature (Parameters parms)
 		{
 			bool has_cb = parms.HideData;
 			for (int i = 0; i < parms.Count; i++) {
@@ -42,7 +42,7 @@ namespace GtkSharp.Generation {
 					continue;
 
 				has_cb = has_cb || p.Generatable is CallbackGen;
-				if (p.IsUserData && has_cb) 
+				if (p.IsUserData && has_cb)
 					continue;
 
 				if (p.CType == "GError**")

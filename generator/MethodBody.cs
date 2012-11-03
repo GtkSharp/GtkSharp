@@ -30,7 +30,7 @@ namespace GtkSharp.Generation {
 		
 		Parameters parameters;
 
-		public MethodBody (Parameters parms) 
+		public MethodBody (Parameters parms)
 		{
 			parameters = parms;
 		}
@@ -66,7 +66,7 @@ namespace GtkSharp.Generation {
 
 				if (p.IsUserData && parameters.IsHidden (p) && !parameters.HideData &&
 					   (i == 0 || parameters [i - 1].Scope != "notified")) {
-					call_parm = "IntPtr.Zero"; 
+					call_parm = "IntPtr.Zero";
 				}
 
 				result [i] += call_parm;

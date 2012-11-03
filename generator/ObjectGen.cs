@@ -35,7 +35,7 @@ namespace GtkSharp.Generation {
 		private Hashtable childprops = new Hashtable();
 		private static Hashtable dirs = new Hashtable ();
 
-		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem, false) 
+		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem, false)
 		{
 			foreach (XmlNode node in elem.ChildNodes) {
 				if (!(node is XmlElement)) continue;

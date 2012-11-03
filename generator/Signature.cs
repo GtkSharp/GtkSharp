@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 		
 		private ArrayList parms = new ArrayList ();
 
-		public Signature (Parameters parms) 
+		public Signature (Parameters parms)
 		{
 			foreach (Parameter p in parms) {
 				if (!parms.IsHidden (p))
@@ -84,7 +84,7 @@ namespace GtkSharp.Generation {
 
 		public string AccessorType {
 			get {
-				foreach (Parameter p in parms) 
+				foreach (Parameter p in parms)
 					if (p.PassAs == "out")
 						return p.CSType;
 				
@@ -94,7 +94,7 @@ namespace GtkSharp.Generation {
 
 		public string AccessorName {
 			get {
-				foreach (Parameter p in parms) 
+				foreach (Parameter p in parms)
 					if (p.PassAs == "out")
 						return p.Name;
 				

@@ -105,7 +105,7 @@ namespace GtkSharp.Generation {
 					case "long":
 					case "ulong":
 					case "short":
-					case "ushort": 
+					case "ushort":
 						return true;
 					default:
 						return false;
@@ -134,7 +134,7 @@ namespace GtkSharp.Generation {
 					case "long":
 					case "ulong":
 					case "short":
-					case "ushort": 
+					case "ushort":
 						return true;
 					default:
 						return false;
@@ -244,7 +244,7 @@ namespace GtkSharp.Generation {
 					string result = "IntPtr native_" + CallName;
 					if (PassAs != "out")
 						result += " = " + (gen as IManualMarshaler).AllocNative (CallName);
-					return new string [] { result + ";" }; 
+					return new string [] { result + ";" };
 				} else if (PassAs == "out" && CSType != MarshalType) {
 					return new string [] { gen.MarshalType + " native_" + CallName + ";" };
 				} else if (PassAs == "ref" && CSType != MarshalType) {
@@ -290,7 +290,7 @@ namespace GtkSharp.Generation {
 						result [i] = (gen as IManualMarshaler).ReleaseNative ("native_" + CallName) + ";";
 					return result;
 				} else if (PassAs != String.Empty && MarshalType != CSType)
-					if (gen is IOwnable) 
+					if (gen is IOwnable)
 						return new string [] { CallName + " = " + (gen as IOwnable).FromNative ("native_" + CallName, Owned) + ";" };
 					else
 						return new string [] { CallName + " = " + gen.FromNative ("native_" + CallName) + ";" };
@@ -328,7 +328,7 @@ namespace GtkSharp.Generation {
 
 		bool null_terminated;
 
-		public ArrayParameter (XmlElement elem) : base (elem) 
+		public ArrayParameter (XmlElement elem) : base (elem)
 		{
 			null_terminated = elem.GetAttributeAsBoolean ("null_term_array");
 		}
@@ -464,7 +464,7 @@ namespace GtkSharp.Generation {
 
 	public class ErrorParameter : Parameter {
 
-		public ErrorParameter (XmlElement elem) : base (elem) 
+		public ErrorParameter (XmlElement elem) : base (elem)
 		{
 			PassAs = "out";
 		}
@@ -525,7 +525,7 @@ namespace GtkSharp.Generation {
 
 		public Parameters (XmlElement elem) : this (elem, false) { }
 
-		public Parameters (XmlElement elem, bool first_is_instance) 
+		public Parameters (XmlElement elem, bool first_is_instance)
 		{
 			if (elem == null)
 				valid = true;
@@ -674,7 +674,7 @@ namespace GtkSharp.Generation {
 							if (c.IsCount) {
 								p = new ArrayCountPair (parm, next, false);
 								i++;
-							} 
+							}
 						}
 					}
 				} else if (p.IsCount) {

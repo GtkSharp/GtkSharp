@@ -32,7 +32,7 @@ namespace GtkSharp.Generation {
 		string enum_type = String.Empty;
 		ArrayList members = new ArrayList ();
 
-		public EnumGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
+		public EnumGen (XmlElement ns, XmlElement elem) : base (ns, elem)
 		{
 			foreach (XmlElement member in elem.ChildNodes) {
 				if (member.Name != "member")

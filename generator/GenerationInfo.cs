@@ -146,7 +146,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public StreamWriter OpenStream (string name) 
+		public StreamWriter OpenStream (string name)
 		{
 			char sep = Path.DirectorySeparatorChar;
 			if (!Directory.Exists(dir))

@@ -121,7 +121,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine ("\t\t[Obsolete(\"" + QualifiedName + " is now refcounted automatically\")]");
 					sw.WriteLine ("\t\tpublic void Unref () {}");
 					sw.WriteLine ();
-				}	
+				}
 				finalizer_needed = true;
 			}
 
@@ -137,7 +137,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine ("\t\t[Obsolete(\"" + QualifiedName + " is now freed automatically\")]");
 					sw.WriteLine ("\t\tpublic void " + dispose.Name + " () {}");
 					sw.WriteLine ();
-				}	
+				}
 				finalizer_needed = true;
 			}
 

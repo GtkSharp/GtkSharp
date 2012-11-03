@@ -77,7 +77,7 @@ namespace GtkSharp.Generation {
 			sw.Close ();
 			gen_info.Writer = null;
 			Statistics.BoxedCount++;
-		}		
+		}
 	}
 }
 

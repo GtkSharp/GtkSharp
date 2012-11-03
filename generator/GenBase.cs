@@ -51,7 +51,7 @@ namespace GtkSharp.Generation {
 
 		public int ParserVersion {
 			get {
-				XmlElement root = elem.OwnerDocument.DocumentElement;	
+				XmlElement root = elem.OwnerDocument.DocumentElement;
 				return root.HasAttribute ("parser_version") ? int.Parse (root.GetAttribute ("parser_version")) : 1;
 			}
 		}

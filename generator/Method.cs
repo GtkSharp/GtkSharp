@@ -314,7 +314,7 @@ namespace GtkSharp.Generation {
 			Body.Finish (sw, indent);
 			Body.HandleException (sw, indent);
 
-			if (is_get && Parameters.Count > 0) 
+			if (is_get && Parameters.Count > 0)
 				sw.WriteLine (indent + "\t\t\treturn " + Parameters.AccessorName + ";");
 			else if (!retval.IsVoid)
 				sw.WriteLine (indent + "\t\t\treturn ret;");
@@ -324,10 +324,10 @@ namespace GtkSharp.Generation {
 			sw.Write(indent + "\t\t}");
 		}
 
-		bool IsAccessor { 
-			get { 
-				return retval.IsVoid && Signature.IsAccessor; 
-			} 
+		bool IsAccessor {
+			get {
+				return retval.IsVoid && Signature.IsAccessor;
+			}
 		}
 	}
 }

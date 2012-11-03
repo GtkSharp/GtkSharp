@@ -34,7 +34,7 @@ namespace GtkSharp.Generation {
 		string name;
 		private string protection = "public";
 
-		protected MethodBase (XmlElement elem, ClassBase container_type) 
+		protected MethodBase (XmlElement elem, ClassBase container_type)
 		{
 			this.elem = elem;
 			this.container_type = container_type;

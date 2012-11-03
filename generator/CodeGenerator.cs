@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// Copyright (c) 2001-2003 Mike Kestner 
+// Copyright (c) 2001-2003 Mike Kestner
 // Copyright (c) 2003-2004 Novell Inc.
 //
 // This program is free software; you can redistribute it and/or

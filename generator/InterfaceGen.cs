@@ -31,7 +31,7 @@ namespace GtkSharp.Generation {
 
 		bool consume_only;
 
-		public InterfaceGen (XmlElement ns, XmlElement elem) : base (ns, elem, true) 
+		public InterfaceGen (XmlElement ns, XmlElement elem) : base (ns, elem, true)
 		{
 			consume_only = elem.GetAttributeAsBoolean ("consume_only");
 			foreach (XmlNode node in elem.ChildNodes) {
@@ -306,7 +306,7 @@ namespace GtkSharp.Generation {
 						else
 							vm.GenerateDeclaration (sw, cmp);
 						vm_table.Remove (cmp.Name);
-					} else 
+					} else
 						vm.GenerateDeclaration (sw, null);
 					vm_table.Remove (vm.Name);
 				} else {

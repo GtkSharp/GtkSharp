@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// Copyright (c) 2001-2003 Mike Kestner 
+// Copyright (c) 2001-2003 Mike Kestner
 // Copyright (c) 2003-2005 Novell, Inc.
 // Copyright (c) 2007 Novell, Inc.
 //
@@ -53,7 +53,7 @@ namespace GtkSharp.Generation {
 
 		public string Name {
 			get {
-				return name; 
+				return name;
 			}
 			set {
 				name = value;

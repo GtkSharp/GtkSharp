@@ -43,17 +43,17 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public override string CallByName () 
+		public override string CallByName ()
 		{
 			return String.Empty;
 		}
 
-		public override string CallByName (string var) 
+		public override string CallByName (string var)
 		{
 			return String.Empty;
 		}
 
-		public override string FromNative (string var) 
+		public override string FromNative (string var)
 		{
 			return String.Empty;
 		}
