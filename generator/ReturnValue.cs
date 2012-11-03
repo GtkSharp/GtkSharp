@@ -182,6 +182,11 @@ namespace GtkSharp.Generation {
 			} else if ((CSType == "GLib.List" || CSType == "GLib.SList") && String.IsNullOrEmpty (ElementType))
 				log.Warn ("Returns {0} with unknown element type.  Add element_type attribute with gapi-fixup.", CType);
 
+			if (is_array && !is_null_term && String.IsNullOrEmpty (array_length_param)) {
+				log.Warn ("Returns an array with undeterminable length. Add null_term_array or array_length_param attribute with gapi-fixup.");
+				return false;
+			}
+
 			return true;
 		}
 	}
