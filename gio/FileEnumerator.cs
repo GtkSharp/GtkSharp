@@ -21,34 +21,47 @@
 namespace GLib {
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	
-	public partial class FileEnumerator {
-		public IEnumerator GetEnumerator ()
+	public partial class FileEnumerator : IEnumerable<FileInfo> {
+		public IEnumerator<FileInfo> GetEnumerator ()
 		{
 			return new Enumerator (this);
 		}
-		
+
+		IEnumerator IEnumerable.GetEnumerator ()
+		{
+			return GetEnumerator ();
+		}
+
 		public FileInfo NextFile ()
 		{
 			return NextFile ((Cancellable) null);
 		}
-		
-		class Enumerator : IEnumerator
+
+		class Enumerator : IEnumerator<FileInfo>
 		{
 			FileEnumerator file_enumerator;
-		
+
 			public Enumerator (FileEnumerator file_enumerator)
 			{
 				this.file_enumerator = file_enumerator;
 			}
-		
-			FileInfo current=null;
-			public object Current {
+
+			void IDisposable.Dispose() { }
+
+			FileInfo current;
+			public FileInfo Current {
 				get {
 					return current;
 				}
 			}
-		
+
+			object IEnumerator.Current
+			{
+				get { return Current; }
+			}
+
 			public bool MoveNext ()
 			{
 				current = file_enumerator.NextFile ();
