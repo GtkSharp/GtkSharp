@@ -8,6 +8,7 @@ references =
 
 sources = 				\
 	AliasGen.cs			\
+	ArrayParameter.cs		\
 	BoxedGen.cs			\
 	ByRefGen.cs			\
 	CallbackGen.cs			\
@@ -46,6 +47,7 @@ sources = 				\
 	ObjectGen.cs			\
 	OpaqueGen.cs			\
 	OwnableGen.cs			\
+	Parameter.cs			\
 	Parameters.cs			\
 	Parser.cs			\
 	Property.cs			\
