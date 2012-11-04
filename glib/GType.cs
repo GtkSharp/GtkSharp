@@ -23,7 +23,7 @@
 namespace GLib {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Reflection;
 	using System.Runtime.InteropServices;
@@ -88,8 +88,8 @@ namespace GLib {
 		public static readonly GType Param = new GType ((IntPtr) TypeFundamentals.TypeParam);
 		public static readonly GType Object = new GType ((IntPtr) TypeFundamentals.TypeObject);
 
-		static Hashtable types = new Hashtable ();
-		static Hashtable gtypes = new Hashtable ();
+		static IDictionary<IntPtr, Type> types = new Dictionary<IntPtr, Type> ();
+		static IDictionary<Type, GType> gtypes = new Dictionary<Type, GType> ();
 
 		public static void Register (GType native_type, System.Type type)
 		{
@@ -131,8 +131,8 @@ namespace GLib {
 			GType gtype;
 
 			lock (types) {
-				if (gtypes.Contains (type))
-					return (GType)gtypes[type];
+				if (gtypes.ContainsKey (type))
+					return gtypes[type];
 			}
 
 			if (type.IsSubclassOf (typeof (GLib.Object))) {
@@ -189,8 +189,8 @@ namespace GLib {
 		public static Type LookupType (IntPtr typeid)
 		{
 			lock (types) {
-				if (types.Contains (typeid))
-					return (Type)types[typeid];
+				if (types.ContainsKey (typeid))
+					return types[typeid];
 			}
 
 			string native_name = Marshaller.Utf8PtrToString (g_type_name (typeid));
@@ -375,8 +375,8 @@ namespace GLib {
 		internal static GType LookupGObjectType (System.Type t)
 		{
 			lock (types) {
-				if (gtypes.Contains (t))
-					return (GType) gtypes [t];
+				if (gtypes.ContainsKey (t))
+					return gtypes [t];
 			}
 
 			PropertyInfo pi = t.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
