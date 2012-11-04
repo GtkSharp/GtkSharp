@@ -23,7 +23,7 @@
 namespace Gtk {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.Runtime.InteropServices;
 
 	public partial class IconTheme {
@@ -117,7 +117,7 @@ namespace Gtk {
 		{
 			IntPtr icon_name_as_native = GLib.Marshaller.StringToPtrGStrdup (icon_name);
 			IntPtr raw_ret = gtk_icon_theme_get_icon_sizes(Handle, icon_name_as_native);
-			ArrayList result = new ArrayList ();
+			var result = new List<int> ();
 			int offset = 0;
 			int size = Marshal.ReadInt32 (raw_ret, offset);
 			while (size != 0) {
@@ -127,7 +127,7 @@ namespace Gtk {
 			}
 			GLib.Marshaller.Free (icon_name_as_native);
 			GLib.Marshaller.Free (raw_ret);
-			return (int[]) result.ToArray (typeof (int));
+			return result.ToArray ();
 		}
 	}
 }

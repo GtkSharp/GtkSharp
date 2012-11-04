@@ -24,7 +24,7 @@
 namespace Gtk {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.Runtime.InteropServices;
 
 	public partial class Widget {
@@ -134,10 +134,11 @@ namespace Gtk {
 			}
 		}
 
-		/* As gtk_binding_entry_add_signall only allows passing long, double and string parameters to the specified signal, we cannot pass a pointer to the BindingInvoker directly
-		* to the signal. Instead, the signal takes the index of the BindingInvoker in binding_invokers.
-		*/
-		static ArrayList binding_invokers;
+		/* As gtk_binding_entry_add_signall only allows passing long, double and string parameters
+		 * to the specified signal, we cannot pass a pointer to the BindingInvoker directly to the signal.
+		 * Instead, the signal takes the index of the BindingInvoker in binding_invokers.
+		 */
+		static IList<BindingInvoker> binding_invokers;
 
 		static void BindingMarshal_cb (IntPtr raw_closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data)
 		{
@@ -148,7 +149,7 @@ namespace Gtk {
 					inst_and_params [idx] = (GLib.Value) Marshal.PtrToStructure (new IntPtr (param_values.ToInt64 () + idx * gvalue_size), typeof (GLib.Value));
 
 				Widget w = inst_and_params [0].Val as Widget;
-				BindingInvoker invoker = binding_invokers [(int) (long) inst_and_params [1]] as BindingInvoker;
+				BindingInvoker invoker = binding_invokers [(int) (long) inst_and_params [1]];
 				invoker.Invoke (w);
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
@@ -197,7 +198,7 @@ namespace Gtk {
 			RegisterSignal (signame, gtype, GLib.Signal.Flags.RunLast | GLib.Signal.Flags.Action, GLib.GType.None, new GLib.GType[] {GLib.GType.Long}, BindingDelegate);
 
 			if (binding_invokers == null)
-				binding_invokers = new ArrayList ();
+				binding_invokers = new List<BindingInvoker> ();
 
 			foreach (BindingAttribute attr in attrs) {
 				System.Reflection.MethodInfo mi = t.GetMethod (attr.Handler, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
@@ -206,7 +207,10 @@ namespace Gtk {
 
 				GtkBindingArg arg = new GtkBindingArg ();
 				arg.arg_type = GLib.GType.Long.Val;
-				int binding_invoker_idx = binding_invokers.Add (new BindingInvoker (mi, attr.Parms));
+
+				var bi = new BindingInvoker (mi, attr.Parms);
+				binding_invokers.Add (bi);
+				int binding_invoker_idx = binding_invokers.IndexOf (bi);
 #if WIN64LONGS
 				arg.data.long_data = binding_invoker_idx;
 #else
@@ -296,15 +300,11 @@ namespace Gtk {
 			Path (out len, out path, out path_reversed);
 		}
 
-
-// Code from custom code for Gtk.Object in 2.x
-// Object is gone in 3.x
-
-		static Hashtable destroy_handlers;
-		static Hashtable DestroyHandlers {
+		static IDictionary<IntPtr, Delegate> destroy_handlers;
+		static IDictionary<IntPtr, Delegate> DestroyHandlers {
 			get {
 				if (destroy_handlers == null)
-					destroy_handlers = new Hashtable ();
+					destroy_handlers = new Dictionary<IntPtr, Delegate> ();
 				return destroy_handlers;
 			}
 		}
@@ -320,7 +320,7 @@ namespace Gtk {
 		[GLib.DefaultSignalHandler(Type=typeof(Gtk.Widget), ConnectionMethod="OverrideDestroyed")]
 		protected virtual void OnDestroyed ()
 		{
-			if (DestroyHandlers.Contains (Handle)) {
+			if (DestroyHandlers.ContainsKey (Handle)) {
 				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
 				handler (this, EventArgs.Empty);
 				DestroyHandlers.Remove (Handle);

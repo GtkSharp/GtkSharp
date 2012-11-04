@@ -24,6 +24,7 @@ namespace Gtk {
 
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	using System.Reflection;
 	using System.Runtime.InteropServices;
 
@@ -107,7 +108,7 @@ namespace Gtk {
 				if (tna != null)
 					list_only = tna.ListOnly;
 			
-				ArrayList minfos = new ArrayList ();
+				var minfos = new List<MemberInfo> ();
 			
 				foreach (PropertyInfo pi in type.GetProperties ())
 					foreach (TreeNodeValueAttribute attr in pi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false))
@@ -199,12 +200,12 @@ namespace Gtk {
 #endregion
 
 #region Gtk.TreeIter handling
-			ArrayList gc_handles = new ArrayList ();
+			IList<GCHandle> gc_handles = new List<GCHandle> ();
 
 			protected override void Dispose (bool disposing)
 			{
 				// Free all the GCHandles pointing to the iters since they won't be garbage collected
-				foreach (System.Runtime.InteropServices.GCHandle handle in gc_handles)
+				foreach (GCHandle handle in gc_handles)
 					handle.Free ();
 
 				base.Dispose (disposing);

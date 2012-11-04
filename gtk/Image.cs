@@ -22,7 +22,7 @@
 namespace Gtk {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.Runtime.InteropServices;
 
 	public partial class Image {
@@ -33,13 +33,13 @@ namespace Gtk {
 		public Image (Gtk.IconSet icon_set, Gtk.IconSize size) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Image)) {
-				ArrayList vals = new ArrayList();
-				ArrayList names = new ArrayList();
+				var vals = new List<GLib.Value> ();
+				var names = new List<string> ();
 				names.Add ("icon_set");
 				vals.Add (new GLib.Value (icon_set));
 				names.Add ("icon_size");
 				vals.Add (new GLib.Value ((int)size));
-				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+				CreateNativeObject (names.ToArray (), vals.ToArray ());
 				return;
 			}
 			Raw = gtk_image_new_from_icon_set(icon_set.Handle, (int) size);
@@ -51,13 +51,13 @@ namespace Gtk {
 		public Image (string stock_id, Gtk.IconSize size) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Image)) {
-				ArrayList vals = new ArrayList();
-				ArrayList names = new ArrayList();
+				var vals = new List<GLib.Value> ();
+				var names = new List<string> ();
 				names.Add ("stock");
 				vals.Add (new GLib.Value (stock_id));
 				names.Add ("icon_size");
 				vals.Add (new GLib.Value ((int)size));
-				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
+				CreateNativeObject (names.ToArray (), vals.ToArray ());
 				return;
 			}
 			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (stock_id);
