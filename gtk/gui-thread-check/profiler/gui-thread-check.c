@@ -23,11 +23,12 @@
  * USA.
  */
 
+#include <string.h>
 #include <glib.h>
 #include <mono/metadata/profiler.h>
 
 
-extern pthread_t pthread_self ();
+extern pthread_t pthread_self (void);
 
 static gboolean
 stack_walk_fn (MonoMethod *method, gint32 native_offset, gint32 il_offset, gboolean managed, gpointer data)
