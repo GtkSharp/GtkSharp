@@ -23,13 +23,14 @@ namespace GLib {
 
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	using System.Runtime.InteropServices;
 
 	public class ValueArray : IDisposable, ICollection, ICloneable, IWrapper {
 
 		private IntPtr handle = IntPtr.Zero;
 
-		static private ArrayList PendingFrees = new ArrayList ();
+		static private IList<IntPtr> PendingFrees = new List<IntPtr> ();
 		static private bool idle_queued = false;
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
