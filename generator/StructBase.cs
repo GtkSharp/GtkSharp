@@ -30,7 +30,7 @@ namespace GtkSharp.Generation {
 
 	public abstract class StructBase : ClassBase, IManualMarshaler {
 	
-		new IList<StructField> fields = new List<StructField> ();
+		IList<StructField> fields = new List<StructField> ();
 		bool need_read_native = false;
 
 		protected StructBase (XmlElement ns, XmlElement elem) : base (ns, elem)

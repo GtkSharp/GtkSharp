@@ -127,7 +127,7 @@ namespace GtkSharp.Generation {
 				vm = new DefaultSignalHandler (vm_elem, this);
 			else if (is_interface) {
 				string target_name = vm_elem.HasAttribute ("target_method") ? vm_elem.GetAttribute ("target_method") : vm_elem.GetAttribute ("name");
-				vm = new InterfaceVM (vm_elem, methods [target_name] as Method, this);
+				vm = new InterfaceVM (vm_elem, GetMethod (target_name), this);
 			} else
 				vm = new GObjectVM (vm_elem, this);
 

@@ -31,9 +31,9 @@ namespace GtkSharp.Generation {
 	using System.Xml;
 
 	public abstract class ClassBase : GenBase {
-		protected Hashtable props = new Hashtable();
-		protected Hashtable fields = new Hashtable();
-		protected Hashtable methods = new Hashtable();
+		private IDictionary<string, Property> props = new Dictionary<string, Property> ();
+		private IDictionary<string, ObjectField> fields = new Dictionary<string, ObjectField> ();
+		private IDictionary<string, Method> methods = new Dictionary<string, Method> ();
 		protected IList<string> interfaces = new List<string>();
 		protected IList<string> managed_interfaces = new List<string>();
 		protected IList<Ctor> ctors = new List<Ctor>();
@@ -43,11 +43,17 @@ namespace GtkSharp.Generation {
 		private bool deprecated = false;
 		private bool isabstract = false;
 
-		public Hashtable Methods {
+		public IDictionary<string, Method> Methods {
 			get {
 				return methods;
 			}
-		}	
+		}
+
+		public IDictionary<string, Property> Properties {
+			get {
+				return props;
+			}
+		}
 
 		public ClassBase Parent {
 			get {
@@ -267,12 +273,16 @@ namespace GtkSharp.Generation {
 
 		public Method GetMethod (string name)
 		{
-			return (Method) methods[name];
+			Method m = null;
+			methods.TryGetValue (name, out m);
+			return m;
 		}
 
 		public Property GetProperty (string name)
 		{
-			return (Property) props[name];
+			Property prop = null;
+			props.TryGetValue (name, out prop);
+			return prop;
 		}
 
 		public Method GetMethodRecursively (string name)

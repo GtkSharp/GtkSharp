@@ -31,10 +31,10 @@ namespace GtkSharp.Generation {
 		
 		public override void Generate (GenerationInfo gen_info)
 		{
-			Method copy = methods["Copy"] as Method;
-			Method free = methods["Free"] as Method;
-			methods.Remove ("Copy");
-			methods.Remove ("Free");
+			Method copy = GetMethod ("Copy");
+			Method free = GetMethod ("Free");
+			Methods.Remove ("Copy");
+			Methods.Remove ("Free");
 
 			gen_info.CurrentType = QualifiedName;
 

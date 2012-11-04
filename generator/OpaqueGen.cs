@@ -217,7 +217,7 @@ namespace GtkSharp.Generation {
 			if (method.Signature.ToString () != "")
 				return null;
 
-			methods.Remove (method.Name);
+			Methods.Remove (method.Name);
 			return method;
 		}
 

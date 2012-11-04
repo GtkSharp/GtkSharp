@@ -75,12 +75,12 @@ namespace GtkSharp.Generation {
 
 			LogWriter log = new LogWriter (QualifiedName);
 			var invalids = new List<Method> ();
-			foreach (Method method in methods.Values) {
+			foreach (Method method in Methods.Values) {
 				if (!method.Validate (log))
 					invalids.Add (method);
 			}
 			foreach (Method method in invalids)
-				methods.Remove (method.Name);
+				Methods.Remove (method.Name);
 			invalids.Clear ();
 
 			return true;
@@ -118,7 +118,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t\tgch.Free ();");
 			}
 
-			foreach (Property prop in props.Values) {
+			foreach (Property prop in Properties.Values) {
 					sw.WriteLine ("\t\t\tGLib.Object.OverrideProperty (data, \"" + prop.CName + "\");");
 			}
 			sw.WriteLine ("\t\t}");
@@ -261,12 +261,12 @@ namespace GtkSharp.Generation {
 			foreach (Signal sig in sigs.Values)
 				sig.GenEvent (sw, null, "GLib.Object.GetObject (Handle)");
 
-			Method temp = methods ["GetType"] as Method;
+			Method temp = GetMethod ("GetType");
 			if (temp != null)
-				methods.Remove ("GetType");
+				Methods.Remove ("GetType");
 			GenMethods (gen_info, null, this);
 			if (temp != null)
-				methods ["GetType"] = temp;
+				Methods ["GetType"] = temp;
 
 			sw.WriteLine ("#endregion");
 
@@ -314,7 +314,7 @@ namespace GtkSharp.Generation {
 					vm_table.Remove (vm.Name);
 				}
 			}
-			foreach (Property prop in props.Values) {
+			foreach (Property prop in Properties.Values) {
 				sw.WriteLine ("\t\t[GLib.Property (\"" + prop.CName + "\")]");
 				prop.GenerateDecl (sw, "\t\t");
 			}
@@ -341,13 +341,13 @@ namespace GtkSharp.Generation {
 				sig.GenEventHandler (gen_info);
 			}
 
-			foreach (Method method in methods.Values) {
+			foreach (Method method in Methods.Values) {
 				if (IgnoreMethod (method, this))
 					continue;
 				method.GenerateDecl (sw);
 			}
 
-			foreach (Property prop in props.Values)
+			foreach (Property prop in Properties.Values)
 				prop.GenerateDecl (sw, "\t\t");
 
 			sw.WriteLine ("\t}");
