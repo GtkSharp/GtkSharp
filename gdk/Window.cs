@@ -25,7 +25,7 @@
 namespace Gdk {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.Runtime.InteropServices;
 
 	public partial class Window {
@@ -119,11 +119,12 @@ namespace Gdk {
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_window_remove_filter (IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
 
-		static Hashtable filter_all_hash;
-		static Hashtable FilterAllHash {
+		static IDictionary<FilterFunc, GdkSharp.FilterFuncWrapper> filter_all_hash;
+		static IDictionary<FilterFunc, GdkSharp.FilterFuncWrapper> FilterAllHash {
 			get {
-				if (filter_all_hash == null)
-					filter_all_hash = new Hashtable ();
+				if (filter_all_hash == null) {
+					filter_all_hash = new Dictionary<FilterFunc, GdkSharp.FilterFuncWrapper> ();
+				}
 				return filter_all_hash;
 			}
 		}
@@ -137,18 +138,19 @@ namespace Gdk {
 
 		public static void RemoveFilterForAll (FilterFunc func)
 		{
-			GdkSharp.FilterFuncWrapper wrapper = FilterAllHash [func] as GdkSharp.FilterFuncWrapper;
-			if (wrapper == null)
-				return;
-			FilterAllHash.Remove (func);
-			gdk_window_remove_filter (IntPtr.Zero, wrapper.NativeDelegate, IntPtr.Zero);
+			GdkSharp.FilterFuncWrapper wrapper = null;
+			if (FilterAllHash.TryGetValue (func, out wrapper)) {
+				FilterAllHash.Remove (func);
+				gdk_window_remove_filter (IntPtr.Zero, wrapper.NativeDelegate, IntPtr.Zero);
+			}
 		}
 
 		public void AddFilter (FilterFunc function)
 		{
-			if (!Data.Contains ("filter_func_hash"))
-				Data ["filter_func_hash"] = new Hashtable ();
-			Hashtable hash = Data ["filter_func_hash"] as Hashtable;
+			if (!Data.ContainsKey ("filter_func_hash")) {
+				Data ["filter_func_hash"] = new Dictionary<FilterFunc, GdkSharp.FilterFuncWrapper> ();
+			}
+			var hash = Data ["filter_func_hash"] as Dictionary<FilterFunc, GdkSharp.FilterFuncWrapper>;
 			GdkSharp.FilterFuncWrapper wrapper = new GdkSharp.FilterFuncWrapper (function);
 			hash [function] = wrapper;
 			gdk_window_add_filter (Handle, wrapper.NativeDelegate, IntPtr.Zero);
@@ -156,12 +158,12 @@ namespace Gdk {
 
 		public void RemoveFilter (FilterFunc function)
 		{
-			Hashtable hash = Data ["filter_func_hash"] as Hashtable;
-			GdkSharp.FilterFuncWrapper wrapper = hash [function] as GdkSharp.FilterFuncWrapper;
-			if (wrapper == null)
-				return;
-			hash.Remove (function);
-			gdk_window_remove_filter (Handle, wrapper.NativeDelegate, IntPtr.Zero);
+			var hash = Data ["filter_func_hash"] as Dictionary<FilterFunc, GdkSharp.FilterFuncWrapper>;
+			GdkSharp.FilterFuncWrapper wrapper = null;
+			if (hash.TryGetValue (function, out wrapper)) {
+				hash.Remove (function);
+				gdk_window_remove_filter (Handle, wrapper.NativeDelegate, IntPtr.Zero);
+			}
 		}
 
 #if MANLY_ENOUGH_TO_INCLUDE
