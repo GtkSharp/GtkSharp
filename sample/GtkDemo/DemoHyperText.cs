@@ -41,7 +41,7 @@ namespace GtkDemo
 			ShowAll ();
 		}
 
-		Dictionary<TextTag, int> tag_pages = new Dictionary<TextTag, int> ();
+		IDictionary<TextTag, int> tag_pages = new Dictionary<TextTag, int> ();
 
 		// Inserts a piece of text into the buffer, giving it the usual
 		// appearance of a hyperlink in a web browser: blue and underlined.
@@ -114,10 +114,8 @@ namespace GtkDemo
 			TextIter iter = view.GetIterAtLocation (x, y);
 
 			foreach (TextTag tag in iter.Tags) {
-				if (tag_pages [tag] is int) {
-					hovering = true;
-					break;
-				}
+				hovering = true;
+				break;
 			}
 
 			if (hovering != hoveringOverLink) {
