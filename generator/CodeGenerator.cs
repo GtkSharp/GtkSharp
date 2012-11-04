@@ -23,7 +23,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.Xml;
 
 	public class CodeGenerator  {
@@ -43,7 +43,7 @@ namespace GtkSharp.Generation {
 			string gluelib_name = "";
 
 			SymbolTable table = SymbolTable.Table;
-			ArrayList gens = new ArrayList ();
+			var gens = new List<IGeneratable> ();
 			foreach (string arg in args) {
 				if (arg.StartsWith ("--customdir=")) {
 					Console.WriteLine ("Using .custom files is not supported anymore, use partial classes instead.");
@@ -90,7 +90,7 @@ namespace GtkSharp.Generation {
 
 			// Now that everything is loaded, validate all the to-be-
 			// generated generatables and then remove the invalid ones.
-			ArrayList invalids = new ArrayList ();
+			var invalids = new List<IGeneratable> ();
 			foreach (IGeneratable gen in gens) {
 				if (!gen.Validate ())
 					invalids.Add (gen);

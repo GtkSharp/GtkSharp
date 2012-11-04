@@ -22,7 +22,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Text;
 	using System.Text.RegularExpressions;
@@ -30,7 +30,7 @@ namespace GtkSharp.Generation {
 
 	public abstract class StructBase : ClassBase, IManualMarshaler {
 	
-		new ArrayList fields = new ArrayList ();
+		new IList<StructField> fields = new List<StructField> ();
 		bool need_read_native = false;
 
 		protected StructBase (XmlElement ns, XmlElement elem) : base (ns, elem)

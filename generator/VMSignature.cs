@@ -22,12 +22,12 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.Xml;
 
 	public class VMSignature  {
 		
-		private ArrayList parms = new ArrayList ();
+		private IList<Parameter> parms = new List<Parameter> ();
 
 		public VMSignature (Parameters parms)
 		{

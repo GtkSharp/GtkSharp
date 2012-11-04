@@ -23,7 +23,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
 
@@ -74,7 +74,7 @@ namespace GtkSharp.Generation {
 			if (parser_version > curr_parser_version)
 				Console.WriteLine ("WARNING: The input file {0} was created by a parser that was released after this version of the generator. Consider updating the code generator if you experience problems.", filename);
 
-			ArrayList gens = new ArrayList ();
+			var gens = new List<IGeneratable> ();
 
 			foreach (XmlNode child in root.ChildNodes) {
 				XmlElement elem = child as XmlElement;
@@ -94,12 +94,12 @@ namespace GtkSharp.Generation {
 				}
 			}
 
-			return (IGeneratable[]) gens.ToArray (typeof (IGeneratable));
+			return gens.ToArray ();
 		}
 
-		private ArrayList ParseNamespace (XmlElement ns)
+		private IList<IGeneratable> ParseNamespace (XmlElement ns)
 		{
-			ArrayList result = new ArrayList ();
+			var result = new List<IGeneratable> ();
 
 			foreach (XmlNode def in ns.ChildNodes) {
 
@@ -121,7 +121,11 @@ namespace GtkSharp.Generation {
 					result.Add (new AliasGen (aname, atype));
 					break;
 				case "boxed":
-					result.Add (is_opaque ? new OpaqueGen (ns, elem) as object : new BoxedGen (ns, elem) as object);
+					if (is_opaque) {
+						result.Add (new OpaqueGen (ns, elem));
+					} else {
+						result.Add (new BoxedGen (ns, elem));
+					}
 					break;
 				case "callback":
 					result.Add (new CallbackGen (ns, elem));
@@ -139,7 +143,11 @@ namespace GtkSharp.Generation {
 					result.Add (new ClassGen (ns, elem));
 					break;
 				case "struct":
-					result.Add (is_opaque ? new OpaqueGen (ns, elem) as object : new StructGen (ns, elem) as object);
+					if (is_opaque) {
+						result.Add (new OpaqueGen (ns, elem));
+					} else {
+						result.Add (new StructGen (ns, elem));
+					}
 					break;
 				default:
 					Console.WriteLine ("Parser::ParseNamespace - Unexpected node: " + def.Name);

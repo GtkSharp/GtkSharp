@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 
 	public class Parameters : IEnumerable<Parameter> {
 		
-		List<Parameter> param_list = new List<Parameter> ();
+		IList<Parameter> param_list = new List<Parameter> ();
 		XmlElement elem;
 		bool first_is_instance;
 

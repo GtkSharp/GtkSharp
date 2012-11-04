@@ -23,7 +23,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
 
@@ -74,7 +74,7 @@ namespace GtkSharp.Generation {
 				return false;
 
 			LogWriter log = new LogWriter (QualifiedName);
-			ArrayList invalids = new ArrayList ();
+			var invalids = new List<Method> ();
 			foreach (Method method in methods.Values) {
 				if (!method.Validate (log))
 					invalids.Add (method);
@@ -264,7 +264,7 @@ namespace GtkSharp.Generation {
 			Method temp = methods ["GetType"] as Method;
 			if (temp != null)
 				methods.Remove ("GetType");
-			GenMethods (gen_info, new Hashtable (), this);
+			GenMethods (gen_info, null, this);
 			if (temp != null)
 				methods ["GetType"] = temp;
 
@@ -287,20 +287,20 @@ namespace GtkSharp.Generation {
 			string access = IsInternal ? "internal" : "public";
 			sw.WriteLine ("\t" + access + " partial interface " + Name + "Implementor : GLib.IWrapper {");
 			sw.WriteLine ();
-			Hashtable vm_table = new Hashtable ();
+			var vm_table = new Dictionary<string, InterfaceVM> ();
 			foreach (InterfaceVM vm in interface_vms) {
 				vm_table [vm.Name] = vm;
 			}
 			foreach (InterfaceVM vm in interface_vms) {
-				if (vm_table [vm.Name] == null)
+				if (!vm_table.ContainsKey (vm.Name)) {
 					continue;
-				else if (!vm.Validate (new LogWriter (QualifiedName))) {
+				} else if (!vm.Validate (new LogWriter (QualifiedName))) {
 					vm_table.Remove (vm.Name);
 					continue;
 				} else if (vm.IsGetter || vm.IsSetter) {
 					string cmp_name = (vm.IsGetter ? "Set" : "Get") + vm.Name.Substring (3);
-					InterfaceVM cmp = vm_table [cmp_name] as InterfaceVM;
-					if (cmp != null && (cmp.IsGetter || cmp.IsSetter)) {
+					InterfaceVM cmp = null;
+					if (vm_table.TryGetValue (cmp_name, out cmp) && (cmp.IsGetter || cmp.IsSetter)) {
 						if (vm.IsSetter)
 							cmp.GenerateDeclaration (sw, vm);
 						else

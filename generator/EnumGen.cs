@@ -22,7 +22,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
 	using System.Text.RegularExpressions;
@@ -30,7 +30,7 @@ namespace GtkSharp.Generation {
 	public class EnumGen : GenBase {
 		
 		string enum_type = String.Empty;
-		ArrayList members = new ArrayList ();
+		IList<string> members = new List<string> ();
 
 		public EnumGen (XmlElement ns, XmlElement elem) : base (ns, elem)
 		{

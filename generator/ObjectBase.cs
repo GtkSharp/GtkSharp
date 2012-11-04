@@ -24,6 +24,7 @@ namespace GtkSharp.Generation {
 
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
 
@@ -32,12 +33,12 @@ namespace GtkSharp.Generation {
 		protected string class_struct_name = null;
 		bool class_fields_valid; // false if the class structure contains a bitfield or fields of unknown types
 		ArrayList class_members = new ArrayList ();
-		protected ArrayList class_fields = new ArrayList ();
+		protected IList<ClassField> class_fields = new List<ClassField> ();
 		// The default handlers of these signals need to be overridden with g_signal_override_class_closure
-		protected ArrayList virtual_methods = new ArrayList ();
+		protected IList<GObjectVM> virtual_methods = new List<GObjectVM> ();
 		// virtual methods that are generated as an IntPtr in the class struct
-		protected ArrayList hidden_vms = new ArrayList ();
-		protected ArrayList interface_vms = new ArrayList ();
+		protected IList<VirtualMethod> hidden_vms = new List<VirtualMethod> ();
+		protected IList<InterfaceVM> interface_vms = new List<InterfaceVM> ();
 		protected Hashtable sigs = new Hashtable();
 
 		protected ObjectBase (XmlElement ns, XmlElement elem, bool is_interface) : base (ns, elem) 
@@ -133,10 +134,11 @@ namespace GtkSharp.Generation {
 			if (vm_elem.GetAttributeAsBoolean ("padding") || vm_elem.GetAttributeAsBoolean ("hidden"))
 				hidden_vms.Add (vm);
 			else {
-				if (vm is GObjectVM)
-					virtual_methods.Add (vm);
-				else 
-					interface_vms.Add (vm);
+				if (vm is GObjectVM) {
+					virtual_methods.Add ((GObjectVM)vm);
+				} else {
+					interface_vms.Add ((InterfaceVM)vm);
+				}
 			}
 			if (vm.CName != "")
 				class_members.Add (vm);
@@ -273,7 +275,7 @@ namespace GtkSharp.Generation {
 				if (!vm.Validate (log))
 					invalids.Add (vm);
 
-			foreach (VirtualMethod invalid_vm in invalids) {
+			foreach (GObjectVM invalid_vm in invalids) {
 				virtual_methods.Remove (invalid_vm);
 				hidden_vms.Add (invalid_vm);
 			}

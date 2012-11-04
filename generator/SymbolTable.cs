@@ -23,13 +23,13 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 
 	public class SymbolTable {
 		
 		static SymbolTable table = null;
 
-		Hashtable types = new Hashtable ();
+		IDictionary<string, IGeneratable> types = new Dictionary<string, IGeneratable> ();
 		
 		public static SymbolTable Table {
 			get {
@@ -168,7 +168,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public IEnumerable Generatables {
+		public IEnumerable<IGeneratable> Generatables {
 			get {
 				return types.Values;
 			}
@@ -176,7 +176,7 @@ namespace GtkSharp.Generation {
 		
 		public IGeneratable this [string ctype] {
 			get {
-				return DeAlias (ctype) as IGeneratable;
+				return DeAlias (ctype);
 			}
 		}
 
@@ -208,16 +208,17 @@ namespace GtkSharp.Generation {
 			return trim_type;
 		}
 
-		private object DeAlias (string type)
+		private IGeneratable DeAlias (string type)
 		{
 			type = Trim (type);
-			while (types [type] is AliasGen) {
+			IGeneratable cur_type = null;
+			while (types.TryGetValue (type, out cur_type) && cur_type is AliasGen) {
 				IGeneratable igen = types [type] as AliasGen;
 				types [type] = types [igen.Name];
 				type = igen.Name;
 			}
 
-			return types [type];
+			return cur_type;
 		}
 
 		public string FromNative(string c_type, string val)

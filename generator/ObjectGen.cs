@@ -23,23 +23,26 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Text;
 	using System.Xml;
 
 	public class ObjectGen : ObjectBase  {
 
-		private ArrayList custom_attrs = new ArrayList();
-		private ArrayList strings = new ArrayList();
-		private Hashtable childprops = new Hashtable();
-		private static Hashtable dirs = new Hashtable ();
+		private IList<string> custom_attrs = new List<string> ();
+		private IList<XmlElement> strings = new List<XmlElement> ();
+		private IDictionary<string, ChildProperty> childprops = new Dictionary<string, ChildProperty> ();
+		private static IDictionary<string, DirectoryInfo> dirs = new Dictionary<string, DirectoryInfo> ();
 
 		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem, false)
 		{
 			foreach (XmlNode node in elem.ChildNodes) {
-				if (!(node is XmlElement)) continue;
-				XmlElement member = (XmlElement) node;
+				XmlElement member = node as XmlElement;
+				if (member == null) {
+					continue;
+				}
+
 				if (member.GetAttributeAsBoolean ("hidden"))
 					continue;
 
@@ -53,7 +56,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "static-string":
-					strings.Add (node);
+					strings.Add (member);
 					break;
 
 				case "childprop":
@@ -80,14 +83,14 @@ namespace GtkSharp.Generation {
 		{
 			LogWriter log = new LogWriter (QualifiedName);
 
-			ArrayList invalids = new ArrayList ();
+			var invalids = new List<string> ();
 
-			foreach (ChildProperty prop in childprops.Values) {
-				if (!prop.Validate (log))
-					invalids.Add (prop);
+			foreach (string prop_name in childprops.Keys) {
+				if (!childprops [prop_name].Validate (log))
+					invalids.Add (prop_name);
 			}
-			foreach (ChildProperty prop in invalids)
-				childprops.Remove (prop);
+			foreach (string prop_name in invalids)
+				childprops.Remove (prop_name);
 
 			return base.Validate ();
 		}
@@ -100,11 +103,12 @@ namespace GtkSharp.Generation {
 
 		private class DirectoryInfo {
 			public string assembly_name;
-			public Hashtable objects;
+			public IDictionary<string, string> objects;
 
-			public DirectoryInfo (string assembly_name) {
+			public DirectoryInfo (string assembly_name)
+			{
 				this.assembly_name = assembly_name;
-				objects = new Hashtable ();
+				objects = new Dictionary<string, string> ();
 			}
 		}
 
@@ -113,7 +117,7 @@ namespace GtkSharp.Generation {
 			DirectoryInfo result;
 
 			if (dirs.ContainsKey (dir)) {
-				result = dirs [dir] as DirectoryInfo;
+				result = dirs [dir];
 				if  (result.assembly_name != assembly_name) {
 					Console.WriteLine ("Can't put multiple assemblies in one directory.");
 					return null;
@@ -195,10 +199,11 @@ namespace GtkSharp.Generation {
 			GenMethods (gen_info, null, null);
 			
 			if (interfaces.Count != 0) {
-				Hashtable all_methods = new Hashtable ();
-				foreach (Method m in Methods.Values)
+				var all_methods = new Dictionary<string, Method> ();
+				foreach (Method m in Methods.Values) {
 					all_methods[m.Name] = m;
-				Hashtable collisions = new Hashtable ();
+				}
+				var collisions = new Dictionary<string, bool> ();
 				foreach (string iface in interfaces) {
 					ClassBase igen = table.GetClassGen (iface);
 					foreach (Method m in igen.Methods.Values) {
@@ -208,7 +213,8 @@ namespace GtkSharp.Generation {
 								continue;
 							}
 						}
-						Method collision = all_methods[m.Name] as Method;
+						Method collision = null;
+						all_methods.TryGetValue (m.Name, out collision);
 						if (collision != null && collision.Signature.Types == m.Signature.Types)
 							collisions[m.Name] = true;
 						else
@@ -351,12 +357,14 @@ namespace GtkSharp.Generation {
 			throw new ArgumentException ("cname doesn't follow the NamespaceType capitalization style: " + cname);
 		}
 
-		private static bool NeedsMap (Hashtable objs, string assembly_name)
+		private static bool NeedsMap (IDictionary<string, string> objs, string assembly_name)
 		{
-			foreach (string key in objs.Keys)
-				if (GetExpected (key) != ((string) objs[key]))
+			foreach (string key in objs.Keys) {
+				if (GetExpected (key) != objs[key]) {
 					return true;
-			
+				}
+			}
+
 			return false;
 		}
 
@@ -375,7 +383,7 @@ namespace GtkSharp.Generation {
 		{
 			foreach (string dir in dirs.Keys) {
 
-				DirectoryInfo di = dirs[dir] as DirectoryInfo;
+				DirectoryInfo di = dirs[dir];
 
 				if (!NeedsMap (di.objects, di.assembly_name))
 					continue;
@@ -404,8 +412,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tinitialized = true;");
 	
 			foreach (string key in dir_info.objects.Keys) {
-				if (GetExpected(key) != ((string) dir_info.objects[key]))
+				if (GetExpected(key) != dir_info.objects[key]) {
 					sw.WriteLine ("\t\t\tGLib.GType.Register ({0}.GType, typeof ({0}));", dir_info.objects [key]);
+				}
 			}
 					
 			sw.WriteLine ("\t\t}");

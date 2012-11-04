@@ -23,7 +23,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.Xml;
 
 	public class ArrayParameter : Parameter {
@@ -55,7 +55,7 @@ namespace GtkSharp.Generation {
 				if (CSType == MarshalType)
 					return new string [0];
 
-				ArrayList result = new ArrayList ();
+				var result = new List<string> ();
 				result.Add (String.Format ("int cnt_{0} = {0} == null ? 0 : {0}.Length;", CallName));
 				result.Add (String.Format ("{0}[] native_{1} = new {0} [cnt_{1}" + (NullTerminated ? " + 1" : "") + "];", MarshalType.TrimEnd('[', ']'), CallName));
 				result.Add (String.Format ("for (int i = 0; i < cnt_{0}; i++)", CallName));
@@ -67,7 +67,7 @@ namespace GtkSharp.Generation {
 
 				if (NullTerminated)
 					result.Add (String.Format ("native_{0} [cnt_{0}] = IntPtr.Zero;", CallName));
-				return (string[]) result.ToArray (typeof (string));
+				return result.ToArray ();
 			}
 		}
 

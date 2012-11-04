@@ -26,6 +26,7 @@
 namespace GtkSharp.Generation {
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
 
@@ -33,12 +34,12 @@ namespace GtkSharp.Generation {
 		protected Hashtable props = new Hashtable();
 		protected Hashtable fields = new Hashtable();
 		protected Hashtable methods = new Hashtable();
-		protected ArrayList interfaces = new ArrayList();
-		protected ArrayList managed_interfaces = new ArrayList();
-		protected ArrayList ctors = new ArrayList();
+		protected IList<string> interfaces = new List<string>();
+		protected IList<string> managed_interfaces = new List<string>();
+		protected IList<Ctor> ctors = new List<Ctor>();
 
 		private bool ctors_initted = false;
-		private Hashtable clash_map;
+		private Dictionary<string, Ctor> clash_map;
 		private bool deprecated = false;
 		private bool isabstract = false;
 
@@ -240,8 +241,8 @@ namespace GtkSharp.Generation {
 				 (fields != null) && fields.ContainsKey(mname.Substring(3))));
 		}
 
-		public void GenMethods (GenerationInfo gen_info, Hashtable collisions, ClassBase implementor)
-		{		
+		public void GenMethods (GenerationInfo gen_info, IDictionary<string, bool> collisions, ClassBase implementor)
+		{
 			if (methods == null)
 				return;
 
@@ -250,7 +251,7 @@ namespace GtkSharp.Generation {
 				    	continue;
 
 				string oname = null, oprotection = null;
-				if (collisions != null && collisions.Contains (method.Name)) {
+				if (collisions != null && collisions.ContainsKey (method.Name)) {
 					oname = method.Name;
 					oprotection = method.Protection;
 					method.Name = QualifiedName + "." + method.Name;
@@ -332,7 +333,7 @@ namespace GtkSharp.Generation {
 				return false;
 		}
 
-		public ArrayList Ctors { get { return ctors; } }
+		public IList<Ctor> Ctors { get { return ctors; } }
 
 		bool HasStaticCtor (string name) 
 		{
@@ -354,12 +355,12 @@ namespace GtkSharp.Generation {
 			if (Parent != null)
 				Parent.InitializeCtors ();
 
-			ArrayList valid_ctors = new ArrayList();
-			clash_map = new Hashtable();
+			var valid_ctors = new List<Ctor>();
+			clash_map = new Dictionary<string, Ctor>();
 
 			foreach (Ctor ctor in ctors) {
-				if (clash_map.Contains (ctor.Signature.Types)) {
-					Ctor clash = clash_map [ctor.Signature.Types] as Ctor;
+				if (clash_map.ContainsKey (ctor.Signature.Types)) {
+					Ctor clash = clash_map [ctor.Signature.Types];
 					Ctor alter = ctor.Preferred ? clash : ctor;
 					alter.IsStatic = true;
 					if (Parent != null && Parent.HasStaticCtor (alter.StaticName))
