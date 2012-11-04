@@ -1,4 +1,4 @@
-SUBDIRS = . glue
+SUBDIRS = . glue gui-thread-check
 
 pkg = gtk
 pkgconfigdir=$(libdir)/pkgconfig

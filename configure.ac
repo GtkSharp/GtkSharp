@@ -97,6 +97,9 @@ AC_SUBST(OFF_T_FLAGS)
 MONO_REQUIRED_VERSION=2.8
 PKG_CHECK_MODULES(MONO_DEPENDENCY, mono >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
 
+#libmono and glib required for gui-thread-check profiler module
+PKG_CHECK_MODULES(PROFILER, mono-2 glib-2.0)
+
 AC_PATH_PROG(GACUTIL, gacutil, no)
 if test "x$GACUTIL" = "xno" ; then
 	AC_MSG_ERROR([No gacutil tool found. You need to install either the mono or .Net SDK.])
@@ -238,6 +241,8 @@ gtk/Makefile
 gtk/gtk-sharp-3.0.pc
 gtk/gtk-sharp.dll.config
 gtk/glue/Makefile
+gtk/gui-thread-check/Makefile
+gtk/gui-thread-check/profiler/Makefile
 gtkdotnet/Makefile
 gtkdotnet/gtk-dotnet.dll.config
 gtkdotnet/gtk-dotnet-3.0.pc
