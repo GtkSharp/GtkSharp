@@ -174,11 +174,6 @@ namespace Gdk {
 				result [i] = (VisualType) tmp [i];
 			return result;
 		}
-
-		public static void AddClientMessageFilter (Gdk.Atom message_type, Gdk.FilterFunc func)
-		{
-			Gdk.Display.Default.AddClientMessageFilter (message_type, func);
-		}
 	}
 }
 
