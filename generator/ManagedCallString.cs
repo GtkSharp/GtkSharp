@@ -22,13 +22,12 @@
 namespace GtkSharp.Generation {
 
 	using System;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 
 	public class ManagedCallString {
 		
-		ArrayList parms = new ArrayList ();
-		ArrayList special = new ArrayList ();
+		IDictionary<Parameter, bool> parms = new Dictionary<Parameter, bool> ();
 		string error_param = null;
 		string user_data_param = null;
 		string destroy_param = null;
@@ -50,20 +49,20 @@ namespace GtkSharp.Generation {
 					error_param = p.Name;
 					continue;
 				}
-				this.parms.Add (p);
 
+				bool special = false;
 				if (p.PassAs != String.Empty && (p.Name != p.FromNative (p.Name)))
-					this.special.Add (true);
+					special = true;
 				else if (p.Generatable is CallbackGen)
-					this.special.Add (true);
-				else
-					this.special.Add (false);
+					special = true;
+
+				this.parms.Add (p, special);
 			}
 		}
 
 		public bool HasOutParam {
 			get {
-				foreach (Parameter p in parms) {
+				foreach (Parameter p in parms.Keys) {
 					if (p.PassAs == "out")
 						return true;
 				}
@@ -82,11 +81,11 @@ namespace GtkSharp.Generation {
 		{
 			string ret = "";
 
-			for (int i = 0; i < parms.Count; i ++) {
-				if ((bool)special[i] == false)
+			foreach (Parameter p in parms.Keys) {
+				if (parms [p] == false) {
 					continue;
+				}
 
-				Parameter p = parms [i] as Parameter;
 				IGeneratable igen = p.Generatable;
 
 				if (igen is CallbackGen) {
@@ -114,13 +113,15 @@ namespace GtkSharp.Generation {
 
 			string[] result = new string [parms.Count];
 
-			for (int i = 0; i < parms.Count; i ++) {
-				Parameter p = parms [i] as Parameter;
+			int i = 0;
+			foreach (Parameter p in parms.Keys) {
 				result [i] = p.PassAs == "" ? "" : p.PassAs + " ";
-				if (p.Generatable is CallbackGen)
+				if (p.Generatable is CallbackGen) {
 					result [i] += p.Name + "_invoker.Handler";
-				else
-					result [i] += ((bool)special[i]) ? "my" + p.Name : p.FromNative (p.Name);
+				} else {
+					result [i] += (parms [p]) ? "my" + p.Name : p.FromNative (p.Name);
+				}
+				i++;
 			}
 
 			return String.Join (", ", result);
@@ -130,11 +131,11 @@ namespace GtkSharp.Generation {
 		{
 			string ret = "";
 
-			for (int i = 0; i < parms.Count; i ++) {
-				if ((bool)special[i] == false)
+			foreach (Parameter p in parms.Keys) {
+				if (parms [p] == false) {
 					continue;
+				}
 
-				Parameter p = parms [i] as Parameter;
 				IGeneratable igen = p.Generatable;
 
 				if (igen is CallbackGen)
