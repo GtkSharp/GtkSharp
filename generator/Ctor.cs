@@ -123,8 +123,8 @@ namespace GtkSharp.Generation {
 						}
 
 						if (names.Count == Parameters.Count) {
-							sw.WriteLine ("\t\t\t\tArrayList vals = new ArrayList();");
-							sw.WriteLine ("\t\t\t\tArrayList names = new ArrayList();");
+							sw.WriteLine ("\t\t\t\tvar vals = new List<GLib.Value> ();");
+							sw.WriteLine ("\t\t\t\tvar names = new List<string> ();");
 							for (int i = 0; i < names.Count; i++) {
 								Parameter p = Parameters [i];
 								string indent = "\t\t\t\t";
@@ -139,7 +139,7 @@ namespace GtkSharp.Generation {
 									sw.WriteLine ("\t\t\t\t}");
 							}
 
-							sw.WriteLine ("\t\t\t\tCreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));");
+							sw.WriteLine ("\t\t\t\tCreateNativeObject (names.ToArray (), vals.ToArray ());");
 							sw.WriteLine ("\t\t\t\treturn;");
 						} else
 							sw.WriteLine ("\t\t\t\tthrow new InvalidOperationException (\"Can't override this constructor.\");");
