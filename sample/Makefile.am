@@ -8,7 +8,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe native-instantiation.exe polarfixed.exe cairo-sample.exe scribble.exe testdnd.exe custom-cellrenderer.exe custom-widget.exe custom-scrollable.exe #scribble-xinput.exe $(DOTNET_TARGETS)
+TARGETS = gtk-hello-world.exe async-sample.exe button.exe calendar.exe subclass.exe menu.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe native-instantiation.exe polarfixed.exe cairo-sample.exe scribble.exe testdnd.exe custom-cellrenderer.exe custom-widget.exe custom-scrollable.exe #scribble-xinput.exe $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -28,6 +28,9 @@ CLEANFILES = $(TARGETS) $(DEBUGS)
 
 gtk-hello-world.exe: $(srcdir)/HelloWorld.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -out:gtk-hello-world.exe $(references) $(srcdir)/HelloWorld.cs
+
+async-sample.exe: $(srcdir)/AsyncSample.cs $(assemblies)
+	$(CSC) $(CSFLAGS) -out:async-sample.exe $(references) $(srcdir)/AsyncSample.cs
 
 button.exe: $(srcdir)/ButtonApp.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -out:button.exe $(references) $(srcdir)/ButtonApp.cs
@@ -103,6 +106,7 @@ gexceptiontest.exe: $(srcdir)/GExceptionTest.cs $(assemblies)
 EXTRA_DIST = 				\
 	HelloWorld.cs			\
 	Assistant.cs			\
+	AsyncSample.cs			\
 	ButtonApp.cs			\
 	CalendarApp.cs			\
 	Subclass.cs			\
