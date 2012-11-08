@@ -29,6 +29,7 @@ sources =		 			\
 	GException.cs				\
 	GInterfaceAdapter.cs			\
 	GInterfaceAttribute.cs			\
+	GLibSynchronizationContext.cs		\
 	Global.cs				\
 	GString.cs				\
 	GType.cs				\

@@ -23,6 +23,7 @@ namespace Gtk {
 	using System;
 	using System.Reflection;
 	using System.Runtime.InteropServices;
+	using System.Threading;
 	using Gdk;
 
 	public partial class Application {
@@ -73,6 +74,8 @@ namespace Gtk {
 			int argc = 0;
 
 			gtk_init (ref argc, ref argv);
+
+			SynchronizationContext.SetSynchronizationContext (new GLib.GLibSynchronizationContext ());
 		}
 
 		static bool do_init (string progname, ref string[] args, bool check)
