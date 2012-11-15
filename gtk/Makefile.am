@@ -66,6 +66,7 @@ sources = 				\
 	PaperSize.cs			\
 	Plug.cs			\
 	Printer.cs			\
+	RadioAction.cs		\
 	RadioActionEntry.cs		\
 	RadioButton.cs		\
 	RadioMenuItem.cs		\

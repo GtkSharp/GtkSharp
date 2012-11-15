@@ -76,7 +76,7 @@ namespace GtkDemo
 				return null;
 
 			Menu menu = new Menu ();
-			GLib.SList group = new GLib.SList (IntPtr.Zero);
+			RadioMenuItem[] group = null;
 
 			if (tearoff) {
 				TearoffMenuItem menuitem = new TearoffMenuItem ();

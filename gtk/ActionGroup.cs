@@ -60,7 +60,7 @@ namespace Gtk {
 
 		public void Add (RadioActionEntry[] entries, int value, ChangedHandler changed)
 		{
-			GLib.SList group = new GLib.SList (typeof (RadioAction));
+			RadioAction[] group = null;
 			RadioAction[] actions = new RadioAction[entries.Length];
 			for (int i = 0; i < entries.Length; i++) {
 				actions[i] = new RadioAction (entries[i].name, entries[i].label,

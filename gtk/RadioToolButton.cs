@@ -28,20 +28,28 @@ namespace Gtk {
 		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_tool_button_new (IntPtr group);
 
-		public RadioToolButton (GLib.SList group) : base (IntPtr.Zero)
+		public RadioToolButton (RadioToolButton[] group) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (RadioToolButton)) {
 				CreateNativeObject (new string [0], new GLib.Value [0]);
 				Group = group;
 				return;
 			}
-			Raw = gtk_radio_tool_button_new(group == null ? IntPtr.Zero : group.Handle);
+			IntPtr native_group = IntPtr.Zero;
+			if (group != null) {
+				GLib.List list = new GLib.List(IntPtr.Zero);
+				foreach (RadioToolButton item in group) {
+					list.Append (item.Handle);
+				}
+				native_group = list.Handle;
+			}
+			Raw = gtk_radio_tool_button_new(native_group);
 		}
 
 		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_tool_button_new_from_stock (IntPtr group, IntPtr stock_id);
 
-		public RadioToolButton (GLib.SList group, string stock_id) : base (IntPtr.Zero)
+		public RadioToolButton (RadioToolButton[] group, string stock_id) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (RadioToolButton)) {
 				GLib.Value[] vals = new GLib.Value [1];
@@ -52,8 +60,42 @@ namespace Gtk {
 				return;
 			}
 			IntPtr stock_id_as_native = GLib.Marshaller.StringToPtrGStrdup (stock_id);
-			Raw = gtk_radio_tool_button_new_from_stock(group == null ? IntPtr.Zero : group.Handle, stock_id_as_native);
+			IntPtr native_group = IntPtr.Zero;
+			if (group != null) {
+				GLib.List list = new GLib.List(IntPtr.Zero);
+				foreach (RadioToolButton item in group) {
+					list.Append (item.Handle);
+				}
+				native_group = list.Handle;
+			}
+			Raw = gtk_radio_tool_button_new_from_stock(native_group, stock_id_as_native);
 			GLib.Marshaller.Free (stock_id_as_native);
+		}
+
+		[DllImport("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr gtk_radio_tool_button_get_group(IntPtr raw);
+
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void gtk_radio_tool_button_set_group(IntPtr raw, IntPtr list);
+
+		[GLib.Property ("group")]
+		public RadioToolButton[] Group {
+			get  {
+				IntPtr raw_ret = gtk_radio_tool_button_get_group(Handle);
+				RadioToolButton[] ret = (RadioToolButton[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(RadioToolButton));
+				return ret;
+			}
+			set {
+				IntPtr native_group = IntPtr.Zero;
+				if (value != null) {
+					GLib.List list = new GLib.List(IntPtr.Zero);
+					foreach (RadioToolButton item in value) {
+						list.Append (item.Handle);
+					}
+					native_group = list.Handle;
+				}
+				gtk_radio_tool_button_set_group(Handle, native_group);
+			}
 		}
 	}
 }

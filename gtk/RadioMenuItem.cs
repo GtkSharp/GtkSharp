@@ -43,11 +43,10 @@ namespace Gtk {
 			GLib.Marshaller.Free (label_as_native);
 		}
 
-
 		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_menu_item_new_with_mnemonic(IntPtr group, IntPtr label);
 
-		public RadioMenuItem (GLib.SList group, string label) : base (IntPtr.Zero)
+		public RadioMenuItem (RadioMenuItem[] group, string label) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (RadioMenuItem)) {
 				CreateNativeObject (new string [0], new GLib.Value [0]);
@@ -60,8 +59,42 @@ namespace Gtk {
 				return;
 			}
 			IntPtr native_label = GLib.Marshaller.StringToPtrGStrdup (label);
-			Raw = gtk_radio_menu_item_new_with_mnemonic(group == null ? IntPtr.Zero : group.Handle, native_label);
+			IntPtr native_group = IntPtr.Zero;
+			if (group != null) {
+				GLib.List list = new GLib.List(IntPtr.Zero);
+				foreach (RadioMenuItem item in group) {
+					list.Append (item.Handle);
+				}
+				native_group = list.Handle;
+			}
+			Raw = gtk_radio_menu_item_new_with_mnemonic(native_group, native_label);
 			GLib.Marshaller.Free (native_label);
+		}
+
+		[DllImport("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr gtk_radio_menu_item_get_group(IntPtr raw);
+
+		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		static extern void gtk_radio_menu_item_set_group(IntPtr raw, IntPtr list);
+
+		[GLib.Property ("group")]
+		public RadioMenuItem[] Group {
+			get  {
+				IntPtr raw_ret = gtk_radio_menu_item_get_group(Handle);
+				RadioMenuItem[] ret = (RadioMenuItem[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof(GLib.SList), false, false, typeof(RadioMenuItem));
+				return ret;
+			}
+			set {
+				IntPtr native_group = IntPtr.Zero;
+				if (value != null) {
+					GLib.List list = new GLib.List(IntPtr.Zero);
+					foreach (RadioMenuItem item in value) {
+						list.Append (item.Handle);
+					}
+					native_group = list.Handle;
+				}
+				gtk_radio_menu_item_set_group(Handle, native_group);
+			}
 		}
 	}
 }
