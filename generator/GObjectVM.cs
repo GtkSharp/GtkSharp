@@ -54,6 +54,8 @@ namespace GtkSharp.Generation {
 
 		public void Generate (GenerationInfo gen_info, ObjectBase implementor)
 		{
+			gen_info.CurrentMember = Name;
+
 			if (!CanGenerate (gen_info, implementor))
 				throw new NotSupportedException (String.Format ("Cannot generate virtual method {0}.{1}. Make sure a writable glue path was provided to the generator.", container_type.Name, this.CallString));
 
