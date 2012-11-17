@@ -105,10 +105,12 @@ namespace GtkSamples {
 		TreeIter IterFromNode (object node)
 		{
 			GCHandle gch;
-			if (node_hash [node] != null)
+			if (node_hash [node] != null) {
 				gch = (GCHandle) node_hash [node];
-			else
+			} else {
 				gch = GCHandle.Alloc (node);
+				node_hash [node] = gch;
+			}
 			TreeIter result = TreeIter.Zero;
 			result.UserData = (IntPtr) gch;
 			return result;
@@ -128,7 +130,7 @@ namespace GtkSamples {
 			object work = node;
 			TreePath path = new TreePath ();
 
-			if (work is MemberInfo) {
+			if ((work is MemberInfo) && !(work is Type)) {
 				Type parent = (work as MemberInfo).ReflectedType;
 				path.PrependIndex (Array.IndexOf (parent.GetMembers (), work));
 				work = parent;
@@ -140,8 +142,9 @@ namespace GtkSamples {
 				work = assm;
 			}
 
-			if (work is Assembly)
-				path.PrependIndex (Array.IndexOf (assemblies, node));
+			if (work is Assembly) {
+				path.PrependIndex (Array.IndexOf (assemblies, work));
+			}
 				
 			return path;
 		}
