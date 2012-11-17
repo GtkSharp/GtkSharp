@@ -55,12 +55,7 @@ namespace GLib {
 		public abstract IntPtr Handle { get; }
 
 		internal GInterfaceInfo Info {
-			get {
-				if (info.Data == IntPtr.Zero)
-					info.Data = (IntPtr) GCHandle.Alloc (this);
-
-				return info;
-			}
+			get { return info; }
 		}
 	}
 }

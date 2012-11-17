@@ -114,8 +114,6 @@ namespace GtkSharp.Generation {
 					sw.WriteLine ("\t\t\tnative_iface." + vm.Name + " = iface." + vm.Name + ";");
 				}
 				sw.WriteLine ("\t\t\tMarshal.StructureToPtr (native_iface, ifaceptr, false);");
-				sw.WriteLine ("\t\t\tGCHandle gch = (GCHandle) data;");
-				sw.WriteLine ("\t\t\tgch.Free ();");
 			}
 
 			foreach (Property prop in Properties.Values) {
