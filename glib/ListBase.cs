@@ -188,14 +188,17 @@ namespace GLib {
 
 		public void Empty ()
 		{
-			if (elements_owned)
-				for (uint i = 0; i < Count; i++)
-					if (typeof (GLib.Object).IsAssignableFrom (element_type))
-						g_object_unref (NthData (i));
-					else if (typeof (GLib.Opaque).IsAssignableFrom (element_type))
+			if (elements_owned) {
+				for (uint i = 0; i < Count; i++) {
+					if (typeof (GLib.Opaque).IsAssignableFrom (element_type)) {
 						GLib.Opaque.GetOpaque (NthData (i), element_type, true).Dispose ();
-					else 
+					} else if (typeof (GLib.IWrapper).IsAssignableFrom (element_type)) {
+						g_object_unref (NthData (i));
+					} else {
 						g_free (NthData (i));
+					}
+				}
+			}
 
 			if (managed)
 				FreeList ();
