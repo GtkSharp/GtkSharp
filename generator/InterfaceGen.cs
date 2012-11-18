@@ -103,8 +103,10 @@ namespace GtkSharp.Generation {
 
 		void GenerateInitialize (StreamWriter sw)
 		{
-			sw.WriteLine ("\t\tstatic int class_offset = 2 * IntPtr.Size;"); // Class size of GTypeInterface struct
-			sw.WriteLine ();
+			if (interface_vms.Count > 0) {
+				sw.WriteLine ("\t\tstatic int class_offset = 2 * IntPtr.Size;"); // Class size of GTypeInterface struct
+				sw.WriteLine ();
+			}
 			sw.WriteLine ("\t\tstatic void Initialize (IntPtr ptr, IntPtr data)");
 			sw.WriteLine ("\t\t{");
 			if (interface_vms.Count > 0) {
