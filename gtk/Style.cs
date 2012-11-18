@@ -27,6 +27,7 @@ namespace Gtk {
 	using System;
 	using System.Runtime.InteropServices;
 
+	[Obsolete ("Replaced by StyleContext")]
 	public partial class Style {
 
 		[DllImport("gtksharpglue-3")]
