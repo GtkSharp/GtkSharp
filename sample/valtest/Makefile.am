@@ -18,7 +18,10 @@ libvalobj_la_LIBADD = $(GTK_LIBS)
 INCLUDES = $(GTK_CFLAGS)
 
 Valobj.cs: valobj-api.xml
-	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/valobj-api.xml --include=../../gtk/gtk-api.xml --include=../../gdk/gdk-api.xml --outdir=. --assembly-name=valobj-sharp
+	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/valobj-api.xml	\
+	--include=../../gtk/gtk-api.xml --include=../../gdk/gdk-api.xml					\
+	--outdir=. --assembly-name=valobj-sharp											\
+	--schema=$(top_srcdir)/gapi.xsd
 
 api:
 	PATH=../../parser:$(PATH) $(RUNTIME) ../../parser/gapi-parser.exe valobj-sources.xml

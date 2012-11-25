@@ -1,6 +1,7 @@
 SUBDIRS = sources generator parser glib gio cairo pango atk gdk gtk gtkdotnet sample doc
 
 EXTRA_DIST = 			\
+	gapi.xsd		\
 	gtk-sharp.snk		\
 	policy.config.in	\
 	AssemblyInfo.cs.in	\

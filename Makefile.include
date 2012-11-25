@@ -6,11 +6,13 @@ ASSEMBLY_NAME = $(pkg)-sharp
 ASSEMBLY_NAME_VERSION = $(ASSEMBLY_NAME),Version=$(API_VERSION)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 
+GAPI_XSD=$(top_srcdir)/gapi.xsd
+
 TARGET = $(pkg:=-sharp.dll) $(pkg:=-sharp.dll.config) $(POLICY_ASSEMBLIES)
 noinst_DATA = $(TARGET)
 TARGET_API = $(pkg:=-api.xml)
 gapidir = $(datadir)/gapi-3.0
-gapi_DATA = $(TARGET_API)
+gapi_DATA = $(TARGET_API) $(GAPI_XSD)
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLIES) generated-stamp generated/*.cs $(API) glue/generated.c $(POLICY_CONFIGS)
 DISTCLEANFILES = $(ASSEMBLY).config
 
@@ -31,13 +33,14 @@ $(API): $(METADATA) $(RAW_API) $(SYMBOLS) $(top_builddir)/parser/gapi-fixup.exe
 
 api_includes = $(addprefix -I:, $(INCLUDE_API))
 
-generated-stamp: $(API) $(INCLUDE_API) $(top_builddir)/generator/gapi_codegen.exe
+generated-stamp: $(API) $(INCLUDE_API) $(top_builddir)/generator/gapi_codegen.exe $(GAPI_XSD)
 	rm -f generated/* &&	\
 	$(RUNTIME) $(top_builddir)/generator/gapi_codegen.exe --generate $(API) \
 	$(api_includes)	\
 	--outdir=generated --assembly-name=$(ASSEMBLY_NAME)	\
 	--gluelib-name=$(pkg)sharpglue-3 --glue-filename=glue/generated.c		\
 	--glue-includes=$(glue_includes)						\
+	--schema=$(GAPI_XSD)								\
 	&& touch generated-stamp
 
 policy.%.config: $(top_builddir)/policy.config

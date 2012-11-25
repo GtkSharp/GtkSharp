@@ -1,0 +1,362 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="en">
+            GAPI XML schema.
+            Copyright 2013 Bertrand Lorentz.
+
+            This program is free software; you can redistribute it and/or
+            modify it under the terms of version 2 of the Lesser GNU General
+            Public License as published by the Free Software Foundation.
+
+            This program is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+            Lesser General Public License for more details.
+
+            You should have received a copy of the GNU Lesser General Public
+            License along with this program; if not, write to the
+            Free Software	Foundation, Inc., 51 Franklin Street, Fifth Floor,
+            Boston, MA  02110-1301  USA
+        </xs:documentation>
+    </xs:annotation>
+
+    <!-- Top-level tag-->
+	<xs:element name="api">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="namespace" type="namespaceType" maxOccurs="unbounded"/>
+                <xs:element name="symbol" type="symbolType" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute type="xs:positiveInteger" name="parser_version"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="namespaceType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="enum" type="enumType"/>
+            <xs:element name="callback" type="callbackType"/>
+            <xs:element name="interface" type="interfaceType"/>
+            <xs:element name="object" type="objectType"/>
+            <xs:element name="struct" type="structType"/>
+            <xs:element name="boxed" type="boxedType"/>
+            <xs:element name="alias" type="aliasType"/>
+            <xs:element name="class" type="classType"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="library"/>
+    </xs:complexType>
+
+    <xs:complexType name="symbolType">
+        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="default_value" use="optional"/>
+        <xs:attribute type="xs:string" name="marshal_type" use="optional"/>
+        <xs:attribute type="xs:string" name="call_fmt" use="optional"/>
+        <xs:attribute type="xs:string" name="from_fmt" use="optional"/>
+    </xs:complexType>
+
+    <!-- Definitions for Generatables -->
+    <xs:complexType name="aliasType">
+        <xs:sequence>
+            <xs:element name="field" type="fieldType" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:string" name="type"/>
+    </xs:complexType>
+
+    <xs:complexType name="boxedType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="method" type="methodType"/>
+            <xs:element name="constructor" type="constructorType"/>
+            <xs:element name="field" type="fieldType"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:boolean" name="opaque" use="optional"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute type="xs:boolean" name="nohash" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="callbackType">
+        <xs:sequence>
+            <xs:element name="return-type" type="return-typeType"/>
+            <xs:element name="parameters" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="parameter" type="method-parameterType" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="classType">
+        <xs:sequence>
+            <xs:element name="method" type="methodType" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute type="xs:boolean" name="internal" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="enumType">
+        <xs:sequence>
+            <xs:element name="member" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute type="xs:string" name="cname"/>
+                    <xs:attribute type="xs:string" name="name"/>
+                    <xs:attribute type="xs:string" name="value"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:string" name="gtype" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:boolean" name="deprecated" use="optional"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="interfaceType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="class_struct" type="class_structType"/>
+            <xs:element name="constructor" type="constructorType"/>
+            <xs:element name="property" type="propertyType"/>
+            <xs:element name="method" type="methodType"/>
+            <xs:element name="virtual_method" type="virtual_methodType"/>
+            <xs:element name="signal" type="signalType"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:boolean" name="consume_only" use="optional"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="objectType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="class_struct" type="class_structType"/>
+            <xs:element name="implements" type="implementsType"/>
+            <xs:element name="constructor" type="constructorType"/>
+            <xs:element name="field" type="fieldType"/>
+            <xs:element name="property" type="propertyType"/>
+            <xs:element name="childprop" type="propertyType"/>
+            <xs:element name="method" type="methodType"/>
+            <xs:element name="virtual_method" type="virtual_methodType"/>
+            <xs:element name="signal" type="signalType"/>
+            <xs:element name="static-string" type="static-stringType"/>
+            <xs:element name="custom-attribute" type="xs:string"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute type="xs:string" name="parent" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="structType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="method" type="methodType"/>
+            <xs:element name="constructor" type="constructorType"/>
+            <xs:element name="field" type="fieldType"/>
+            <xs:element name="callback" type="callbackType"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:boolean" name="deprecated" use="optional"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute type="xs:boolean" name="opaque" use="optional"/>
+    </xs:complexType>
+
+
+    <!-- Definitions for the elements in Generatables -->
+    <xs:complexType name="class_structType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="field" type="fieldType" maxOccurs="unbounded"/>
+            <xs:element name="method" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute type="xs:string" name="vm" use="optional"/>
+                    <xs:attribute type="xs:string" name="signal_vm" use="optional"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="cname"/>
+    </xs:complexType>
+
+    <xs:complexType name="constructorType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="parameters">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="parameter" type="constructor-parameterType" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="return-type" type="return-typeType"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:boolean" name="deprecated" use="optional"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute type="xs:boolean" name="preferred" use="optional"/>
+        <xs:attribute type="xs:boolean" name="shared" use="optional"/>
+        <xs:attribute type="xs:boolean" name="win32_utf8_variant" use="optional"/>
+    </xs:complexType>
+
+	<xs:complexType name="fieldType">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute type="xs:boolean" name="array" use="optional"/>
+        <xs:attribute type="xs:string" name="array_len" use="optional"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute type="xs:string" name="access" use="optional"/>
+        <xs:attribute type="xs:boolean" name="writeable" use="optional"/>
+        <xs:attribute type="xs:positiveInteger" name="bits" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="implementsType">
+        <xs:sequence>
+            <xs:element name="interface" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute type="xs:string" name="cname"/>
+                    <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+   <xs:complexType name="methodType">
+        <xs:sequence>
+            <xs:element name="return-type" type="return-typeType"/>
+            <xs:element name="parameters" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="parameter" type="method-parameterType" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:boolean" name="shared" use="optional"/>
+        <xs:attribute type="xs:boolean" name="new_flag" use="optional"/>
+        <xs:attribute type="xs:string" name="library" use="optional"/>
+        <xs:attribute type="xs:boolean" name="deprecated" use="optional"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute type="xs:boolean" name="win32_utf8_variant" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="propertyType">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute type="xs:boolean" name="construct" use="optional"/>
+        <xs:attribute type="xs:boolean" name="construct-only" use="optional"/>
+        <xs:attribute type="xs:boolean" name="new_flag" use="optional"/>
+        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute type="xs:boolean" name="readable" use="optional"/>
+        <xs:attribute type="xs:boolean" name="writeable" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="signalType">
+        <xs:complexContent>
+            <xs:extension base="methodType">
+                <xs:attribute type="whenType" name="when" use="optional"/>
+                <xs:attribute type="xs:string" name="field_name" use="optional"/>
+                <xs:attribute type="xs:boolean" name="block_glue" use="optional"/>
+                <xs:attribute type="xs:boolean" name="manual" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="static-stringType">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute type="xs:string" name="value"/>
+    </xs:complexType>
+
+    <xs:complexType name="virtual_methodType">
+        <xs:complexContent>
+            <xs:extension base="methodType">
+                <xs:attribute type="override_inType" name="override_in" use="optional"/>
+                <xs:attribute type="xs:boolean" name="padding" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Definitions for lower-level elements -->
+    <xs:complexType name="parameterType">
+        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:boolean" name="array" use="optional"/>
+        <xs:attribute type="xs:boolean" name="null_term_array" use="optional"/>
+        <xs:attribute type="xs:boolean" name="ellipsis" use="optional"/>
+        <xs:attribute type="xs:boolean" name="owned" use="optional"/>
+        <xs:attribute type="xs:boolean" name="printf_format" use="optional"/>
+        <xs:attribute type="xs:boolean" name="printf_format_args" use="optional"/>
+        <xs:attribute type="scopeType" name="scope" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="constructor-parameterType">
+        <xs:complexContent>
+            <xs:extension base="parameterType">
+                <xs:attribute type="xs:string" name="property_name" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="method-parameterType">
+        <xs:complexContent>
+            <xs:extension base="parameterType">
+                <xs:attribute type="pass_asType" name="pass_as" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="return-typeType">
+        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute type="xs:string" name="element_type" use="optional"/>
+        <xs:attribute type="xs:boolean" name="owned" use="optional"/>
+        <xs:attribute type="xs:boolean" name="elements_owned" use="optional"/>
+        <xs:attribute type="xs:boolean" name="null_term_array" use="optional"/>
+        <xs:attribute type="xs:string" name="array_length_param" use="optional"/>
+    </xs:complexType>
+
+    <!-- Definitions for allowed values -->
+    <xs:simpleType name="pass_asType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="out"/>
+            <xs:enumeration value="ref"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="override_inType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="declaring_class"/>
+            <xs:enumeration value="implementing_class"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="scopeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="call"/>
+            <xs:enumeration value="async"/>
+            <xs:enumeration value="notify"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="whenType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CLEANUP"/>
+            <xs:enumeration value="FIRST"/>
+            <xs:enumeration value="LAST"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
