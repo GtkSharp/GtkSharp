@@ -26,17 +26,28 @@ namespace GtkSharp.Generation {
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
+	using System.Xml.Schema;
 
 	public class Parser  {
 		const int curr_parser_version = 2;
 
-		private XmlDocument Load (string filename)
+		private XmlDocument Load (string filename, string schema_file)
 		{
 			XmlDocument doc = new XmlDocument ();
 
 			try {
+				XmlReaderSettings settings = new XmlReaderSettings ();
+				if (!String.IsNullOrEmpty (schema_file)) {
+					settings.Schemas.Add (null, schema_file);
+					settings.ValidationType = ValidationType.Schema;
+					settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
+					settings.ValidationEventHandler += ValidationEventHandler;
+				}
+
 				Stream stream = File.OpenRead (filename);
-				doc.Load (stream);
+				XmlReader reader = XmlReader.Create (stream, settings);
+				doc.Load (reader);
+
 				stream.Close ();
 			} catch (XmlException e) {
 				Console.WriteLine ("Invalid XML file.");
@@ -47,9 +58,27 @@ namespace GtkSharp.Generation {
 			return doc;
 		}
 
+		private void ValidationEventHandler(object sender, ValidationEventArgs e)
+		{
+			switch (e.Severity)
+			{
+			case XmlSeverityType.Error:
+				Console.WriteLine("Error: {0}", e.Message);
+				break;
+			case XmlSeverityType.Warning:
+				Console.WriteLine("Warning: {0}", e.Message);
+				break;
+			}
+		}
+
 		public IGeneratable[] Parse (string filename)
 		{
-			XmlDocument doc = Load (filename);
+			return Parse (filename, null);
+		}
+
+		public IGeneratable[] Parse (string filename, string schema_file)
+		{
+			XmlDocument doc = Load (filename, schema_file);
 			if (doc == null)
 				return null;
 

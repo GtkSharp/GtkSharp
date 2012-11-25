@@ -24,6 +24,7 @@ namespace GtkSharp.Generation {
 
 	using System;
 	using System.Collections.Generic;
+	using System.IO;
 	using System.Xml;
 
 	public class CodeGenerator  {
@@ -36,6 +37,7 @@ namespace GtkSharp.Generation {
 			string glue_filename = "";
 			string glue_includes = "";
 			string gluelib_name = "";
+			string schema_name = "";
 
 			SymbolTable table = SymbolTable.Table;
 			var gens = new List<IGeneratable> ();
@@ -59,6 +61,8 @@ namespace GtkSharp.Generation {
 				{ "gluelib-name=", "Name of the C library into which the C glue code will be compiled. " +
 					"Used to generated correct DllImport attributes.",
 					(string v) => { gluelib_name = v; } },
+				{ "schema=", "Validate all GAPI XML files against this XSD schema.",
+					(string v) => { schema_name  = v; } },
 				{ "h|help",  "Show this message and exit",
 					v => show_help = v != null },
 			};
@@ -90,14 +94,19 @@ namespace GtkSharp.Generation {
 				return 0;
 			}
 
+			if (!String.IsNullOrEmpty (schema_name) && !File.Exists (schema_name)) {
+				Console.WriteLine ("WARNING: Could not find schema file at '{0}', no validation will be done.", schema_name);
+				schema_name = null;
+			}
+
 			Parser p = new Parser ();
 			foreach (string include in includes) {
-				IGeneratable[] curr_gens = p.Parse (include);
+				IGeneratable[] curr_gens = p.Parse (include, schema_name);
 				table.AddTypes (curr_gens);
 			}
 
 			foreach (string filename in filenames) {
-				IGeneratable[] curr_gens = p.Parse (filename);
+				IGeneratable[] curr_gens = p.Parse (filename, schema_name);
 				table.AddTypes (curr_gens);
 				gens.AddRange (curr_gens);
 			}
