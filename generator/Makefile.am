@@ -46,6 +46,7 @@ sources = 				\
 	ObjectBase.cs			\
 	ObjectGen.cs			\
 	OpaqueGen.cs			\
+	Options.cs			\
 	OwnableGen.cs			\
 	Parameter.cs			\
 	Parameters.cs			\

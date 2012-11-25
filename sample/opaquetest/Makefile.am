@@ -18,7 +18,7 @@ libopaque_la_LIBADD = $(GTK_LIBS)
 INCLUDES = $(GTK_CFLAGS)
 
 generated/*.cs: opaque-api.xml
-	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/opaque-api.xml --include ../../gtk/gtk-api.xml ../../gdk/gdk-api.xml --outdir=generated --assembly-name=opaque-sharp
+	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/opaque-api.xml --include=../../gtk/gtk-api.xml --include=../../gdk/gdk-api.xml --outdir=generated --assembly-name=opaque-sharp
 
 api:
 	PATH=../../parser:$(PATH) $(RUNTIME) ../../parser/gapi-parser.exe opaque-sources.xml
