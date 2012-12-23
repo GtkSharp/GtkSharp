@@ -578,7 +578,7 @@ namespace Cairo {
 		{
 			double x1, y1, x2, y2;
 			NativeMethods.cairo_stroke_extents (state, out x1, out y1, out x2, out y2);
-			return new Rectangle (x1, y1, x2, y2);
+			return new Rectangle (x1, y1, x2 - x1, y2 - y1);
 		}
 
                 public void Fill ()
@@ -590,7 +590,7 @@ namespace Cairo {
 		{
 			double x1, y1, x2, y2;
 			NativeMethods.cairo_fill_extents (state, out x1, out y1, out x2, out y2);
-			return new Rectangle (x1, y1, x2, y2);
+			return new Rectangle (x1, y1, x2 - x1, y2 - y1);
 		}
 
 		public void FillPreserve ()
