@@ -4,9 +4,10 @@
 //
 // Authors:
 //	Gonzalo Paniagua Javier (gonzalo@ximian.com)
+//	Marek Safar		(marek.safar@gmail.com)
 //
 // (C) 2003 Novell, Inc (http://www.novell.com)
-//
+// (C) 2009,2010 Collier Technologies (http://www.colliertech.org)
 
 using System;
 using System.Collections;
@@ -21,12 +22,14 @@ namespace Mono.AssemblyCompare
 	{
 		static int Main (string [] args)
 		{
-			if (args.Length != 2)
+			if (args.Length != 2) {
+				Console.WriteLine ("Usage: mono mono-api-diff.exe <assembly 1 xml> <assembly 2 xml>");
 				return 1;
+			}
 
-			XMLAssembly ms = CreateXMLAssembly (args [0]);
-			XMLAssembly mono = CreateXMLAssembly (args [1]);
-			XmlDocument doc = ms.CompareAndGetDocument (mono);
+			XMLAssembly asm_base = CreateXMLAssembly (args [0]);
+			XMLAssembly asm_curr = CreateXMLAssembly (args [1]);
+			XmlDocument doc = asm_base.CompareAndGetDocument (asm_curr);
 
 			XmlTextWriter writer = new XmlTextWriter (Console.Out);
 			writer.Formatting = Formatting.Indented;
@@ -177,6 +180,27 @@ namespace Mono.AssemblyCompare
 			return (object []) list.ToArray (type);
 		}
 
+		public static bool IsMeaninglessAttribute (string s)
+		{
+			if (s == null)
+				return false;
+			if (s == "System.Runtime.CompilerServices.CompilerGeneratedAttribute")
+				return true;
+			return false;
+		}
+
+		public static bool IsTODOAttribute (string s)
+		{
+			if (s == null)
+				return false;
+			if (s.EndsWith ("MonoDocumentationNoteAttribute") ||
+			    s.EndsWith ("MonoExtensionAttribute") ||
+			    s.EndsWith ("MonoLimitationAttribute") ||
+			    s.EndsWith ("MonoNotSupportedAttribute"))
+				return true;
+			return s.EndsWith ("TODOAttribute");
+		}
+
 		protected void AddAttribute (XmlNode node, string name, string value)
 		{
 			XmlAttribute attr = document.CreateAttribute (name);
@@ -266,14 +290,14 @@ namespace Mono.AssemblyCompare
 		public bool HaveWarnings {
 			get { return haveWarnings; }
 		}
-		
+
 		public Counters Counters {
 			get { return counters; }
 		}
-		
+
 		public abstract void CompareTo (XmlDocument doc, XmlNode parent, object other);
 	}
-	
+
 	abstract class XMLNameGroup : XMLData
 	{
 		protected XmlNode group;
@@ -448,19 +472,17 @@ namespace Mono.AssemblyCompare
 				newNS.Add (node);
 				AddAttribute (node, "name", xns.Name);
 
-				if (oh.ContainsKey (xns.Name)) {
-					int idx = (int) oh [xns.Name];
-					xns.CompareTo (document, node, other [idx]);
+				int idx = -1;
+				if (oh.ContainsKey (xns.Name))
+					idx = (int) oh [xns.Name];
+				XMLNamespace ons = idx >= 0 ? (XMLNamespace) other [idx] : null;
+				xns.CompareTo (document, node, ons);
+				if (idx >= 0)
 					other [idx] = null;
-					xns.AddCountersAttributes (node);
-					counters.Present++;
-					counters.PresentTotal++;
-					counters.AddPartialToTotal (xns.Counters);
-				} else {
-					AddAttribute (node, "presence", "missing");
-					counters.Missing++;
-					counters.MissingTotal++;
-				}
+				xns.AddCountersAttributes (node);
+				counters.Present++;
+				counters.PresentTotal++;
+				counters.AddPartialToTotal (xns.Counters);
 			}
 
 			if (other != null) {
@@ -503,7 +525,7 @@ namespace Mono.AssemblyCompare
 			this.document = doc;
 			XmlNode parent = doc.CreateElement ("assemblies", null);
 			doc.AppendChild (parent);
-			
+
 			CompareTo (doc, parent, other);
 
 			XmlNode decl = doc.CreateXmlDeclaration ("1.0", null, null);
@@ -547,7 +569,7 @@ namespace Mono.AssemblyCompare
 			XmlNode childA = doc.CreateElement ("classes", null);
 			parent.AppendChild (childA);
 
-			CompareTypes (childA, nspace.types);
+			CompareTypes (childA, nspace != null ? nspace.types : new XMLClass [0]);
 		}
 
 		void CompareTypes (XmlNode parent, XMLClass [] other)
@@ -564,23 +586,20 @@ namespace Mono.AssemblyCompare
 				AddAttribute (node, "name", xclass.Name);
 				AddAttribute (node, "type", xclass.Type);
 
-				if (oh.ContainsKey (xclass.Name)) {
-					int idx = (int) oh [xclass.Name];
-					xclass.CompareTo (document, node, other [idx]);
+				int idx = -1;
+				if (oh.ContainsKey (xclass.Name))
+					idx = (int) oh [xclass.Name];
+				xclass.CompareTo (document, node, idx >= 0 ? other [idx] : new XMLClass ());
+				if (idx >= 0)
 					other [idx] = null;
-					counters.AddPartialToPartial (xclass.Counters);
-				} else {
-					AddAttribute (node, "presence", "missing");
-					counters.Missing++;
-					counters.MissingTotal++;
-				}
+				counters.AddPartialToPartial (xclass.Counters);
 			}
 
 			if (other != null) {
 				count = other.Length;
 				for (int i = 0; i < count; i++) {
 					XMLClass c = other [i];
-					if (c == null || c.Name.EndsWith ("TODOAttribute"))
+					if (c == null || IsTODOAttribute (c.Name))
 						continue;
 
 					node = document.CreateElement ("class", null);
@@ -636,7 +655,7 @@ namespace Mono.AssemblyCompare
 		XMLEvents events;
 		XMLMethods methods;
 		XMLClass [] nested;
-		
+
 		public override void LoadData (XmlNode node)
 		{
 			if (node == null)
@@ -670,7 +689,7 @@ namespace Mono.AssemblyCompare
 				// Console.Error.WriteLine ("Empty class {0} {1}", name, type);
 				return;
 			}
-				
+
 			if (child.Name == "attributes") {
 				attributes = new XMLAttributes ();
 				attributes.LoadData (child);
@@ -719,6 +738,12 @@ namespace Mono.AssemblyCompare
 				child = child.NextSibling;
 			}
 
+			if (child != null && child.Name == "generic-parameters") {
+				// HACK: ignore this tag as it doesn't seem to
+				// add any value when checking for differences
+				return;
+			}
+
 			if (child == null)
 				return;
 
@@ -752,28 +777,28 @@ namespace Mono.AssemblyCompare
 			}
 
 			if (type != oclass.type)
-				AddWarning (parent, "Class type is wrong: {0} != {1}", type, oclass.type);
+				AddWarning (parent, "Class type is different: {0} != {1}", type, oclass.type);
 
 			if (baseName != oclass.baseName)
-				AddWarning (parent, "Base class is wrong: {0} != {1}", baseName, oclass.baseName);
+				AddWarning (parent, "Base class is different: {0} != {1}", baseName, oclass.baseName);
 
 			if (isAbstract != oclass.isAbstract || isSealed != oclass.isSealed) {
 				if ((isAbstract && isSealed) || (oclass.isAbstract && oclass.isSealed))
-					AddWarning (parent, "Should {0}be static", (isAbstract && isSealed) ? "" : "not ");
+					AddWarning (parent, "Was {0}static", (isAbstract && isSealed) ? "" : "not ");
 				else if (isAbstract != oclass.isAbstract)
-					AddWarning (parent, "Should {0}be abstract", isAbstract ? "" : "not ");
+					AddWarning (parent, "Was {0}abstract", isAbstract ? "" : "not ");
 				else if (isSealed != oclass.isSealed)
-					AddWarning (parent, "Should {0}be sealed", isSealed ? "" : "not ");
+					AddWarning (parent, "Was {0}sealed", isSealed ? "" : "not ");
 			}
 
 			if (isSerializable != oclass.isSerializable)
-				AddWarning (parent, "Should {0}be serializable", isSerializable ? "" : "not ");
+				AddWarning (parent, "Was {0}serializable", isSerializable ? "" : "not ");
 
 			if (charSet != oclass.charSet)
-				AddWarning (parent, "CharSet is wrong: {0} != {1}", charSet, oclass.charSet);
+				AddWarning (parent, "CharSet is different: {0} != {1}", charSet, oclass.charSet);
 
 			if (layout != oclass.layout)
-				AddWarning (parent, "Layout is wrong: {0} != {1}", layout, oclass.layout);
+				AddWarning (parent, "Layout is different: {0} != {1}", layout, oclass.layout);
 
 			if (interfaces != null || oclass.interfaces != null) {
 				if (interfaces == null)
@@ -849,7 +874,7 @@ namespace Mono.AssemblyCompare
 			for (int i = 0; i < count; i++) {
 				XMLClass xclass = nested [i];
 
-				node = document.CreateElement ("nestedclass", null);
+				node = document.CreateElement ("class", null);
 				newNodes.Add (node);
 				AddAttribute (node, "name", xclass.Name);
 				AddAttribute (node, "type", xclass.Type);
@@ -871,12 +896,13 @@ namespace Mono.AssemblyCompare
 				count = other.Length;
 				for (int i = 0; i < count; i++) {
 					XMLClass c = other [i];
-					if (c == null || c.Name.EndsWith ("TODOAttribute"))
+					if (c == null || IsTODOAttribute (c.Name))
 						continue;
 
-					node = document.CreateElement ("nestedclass", null);
+					node = document.CreateElement ("class", null);
 					newNodes.Add (node);
 					AddAttribute (node, "name", c.Name);
+					AddAttribute (node, "type", c.Type);
 					AddExtra (node);
 					counters.Extra++;
 					counters.ExtraTotal++;
@@ -920,6 +946,7 @@ namespace Mono.AssemblyCompare
 		bool isUnsafe;
 		bool isOptional;
 		string defaultValue;
+		XMLAttributes attributes;
 
 		public override void LoadData (XmlNode node)
 		{
@@ -940,6 +967,16 @@ namespace Mono.AssemblyCompare
 				isOptional = bool.Parse (node.Attributes["optional"].Value);
 			if (node.Attributes["defaultValue"] != null)
 				defaultValue = node.Attributes["defaultValue"].Value;
+
+			XmlNode child = node.FirstChild;
+			if (child == null)
+				return;
+
+			if (child.Name == "attributes") {
+				attributes = new XMLAttributes ();
+				attributes.LoadData (child);
+				child = child.NextSibling;
+			}
 		}
 
 		public override void CompareTo (XmlDocument doc, XmlNode parent, object other)
@@ -948,23 +985,42 @@ namespace Mono.AssemblyCompare
 
 			XMLParameter oparm = (XMLParameter) other;
 
+			if (name != oparm.name)
+				AddWarning (parent, "Parameter name is different: {0} != {1}", name, oparm.name);
+
 			if (type != oparm.type)
-				AddWarning (parent, "Parameter type is wrong: {0} != {1}", type, oparm.type);
-			
+				AddWarning (parent, "Parameter type is different: {0} != {1}", type, oparm.type);
+
 			if (attrib != oparm.attrib)
-				AddWarning (parent, "Parameter attributes wrong: {0} != {1}", attrib, oparm.attrib);
+				AddWarning (parent, "Parameter attributes different: {0} != {1}", attrib, oparm.attrib);
 
 			if (direction != oparm.direction)
-				AddWarning (parent, "Parameter direction wrong: {0} != {1}", direction, oparm.direction);
+				AddWarning (parent, "Parameter direction different: {0} != {1}", direction, oparm.direction);
 
 			if (isUnsafe != oparm.isUnsafe)
-				AddWarning (parent, "Parameter unsafe wrong: {0} != {1}", isUnsafe, oparm.isUnsafe);
+				AddWarning (parent, "Parameter unsafe different: {0} != {1}", isUnsafe, oparm.isUnsafe);
 
 			if (isOptional != oparm.isOptional)
-				AddWarning (parent, "Parameter optional wrong: {0} != {1}", isOptional, oparm.isOptional);
+				AddWarning (parent, "Parameter optional different: {0} != {1}", isOptional, oparm.isOptional);
 
 			if (defaultValue != oparm.defaultValue)
-				AddWarning (parent, "Parameter default value wrong: {0} != {1}", (defaultValue == null) ? "(no default value)" : defaultValue, (oparm.defaultValue == null) ? "(no default value)" : oparm.defaultValue);
+				AddWarning (parent, "Parameter default value different: {0} != {1}", (defaultValue == null) ? "(no default value)" : defaultValue, (oparm.defaultValue == null) ? "(no default value)" : oparm.defaultValue);
+
+			if (attributes != null || oparm.attributes != null) {
+				if (attributes == null)
+					attributes = new XMLAttributes ();
+
+				attributes.CompareTo (doc, parent, oparm.attributes);
+				counters.AddPartialToPartial (attributes.Counters);
+				if (oparm.attributes != null && oparm.attributes.IsTodo) {
+					counters.Todo++;
+					counters.TodoTotal++;
+					counters.ErrorTotal++;
+					AddAttribute (parent, "error", "todo");
+					if (oparm.attributes.Comment != null)
+						AddAttribute (parent, "comment", oparm.attributes.Comment);
+				}
+			}
 		}
 
 		public string Name {
@@ -1033,14 +1089,14 @@ namespace Mono.AssemblyCompare
 
 				if (de.Value == null) {
 					if (other_value != null)
-						AddWarning (parent, "Property '{0}' is 'null' and should be '{1}'", de.Key, other_value);
+						AddWarning (parent, "Property '{0}' is 'null' and was '{1}'", de.Key, other_value);
 					continue;
 				}
 
 				if (de.Value.Equals (other_value))
 					continue;
 
-				AddWarning (parent, "Property '{0}' is '{1}' and should be '{2}'", 
+				AddWarning (parent, "Property '{0}' is '{1}' and was '{2}'",
 					de.Key, de.Value, other_value == null ? "null" : other_value);
 			}
 		}
@@ -1067,17 +1123,17 @@ namespace Mono.AssemblyCompare
 
 		protected override bool CheckIfAdd (string value, XmlNode node)
 		{
-			if (value.EndsWith ("TODOAttribute")) {
+			if (IsTODOAttribute (value)) {
 				isTodo = true;
 
 				XmlNode pNode = node.SelectSingleNode ("properties");
-				if (pNode.ChildNodes [0].Attributes ["value"] != null) {
+				if (pNode != null && pNode.ChildNodes.Count > 0 && pNode.ChildNodes [0].Attributes ["value"] != null) {
 					comment = pNode.ChildNodes [0].Attributes ["value"].Value;
 				}
 				return false;
 			}
 
-			return true;
+			return !IsMeaninglessAttribute (value);
 		}
 
 		protected override void CompareToInner (string name, XmlNode node, XMLNameGroup other)
@@ -1095,7 +1151,7 @@ namespace Mono.AssemblyCompare
 		{
 			string key = null;
 
-			// if multiple attributes with the same name (type) exist, then we 
+			// if multiple attributes with the same name (type) exist, then we
 			// cannot be sure which attributes correspond, so we must use the
 			// name of the attribute (type) and the name/value of its properties
 			// as key
@@ -1114,7 +1170,7 @@ namespace Mono.AssemblyCompare
 					}
 				}
 
-				// sort properties by name, as order of properties in XML is 
+				// sort properties by name, as order of properties in XML is
 				// undefined
 				keyParts.Sort ();
 
@@ -1138,7 +1194,7 @@ namespace Mono.AssemblyCompare
 		{
 			XmlNode pNode = node.SelectSingleNode ("properties");
 
-			if (name.EndsWith ("TODOAttribute")) {
+			if (IsTODOAttribute (name)) {
 				isTodo = true;
 				if (pNode.ChildNodes [0].Attributes ["value"] != null) {
 					comment = pNode.ChildNodes [0].Attributes ["value"].Value;
@@ -1197,7 +1253,7 @@ namespace Mono.AssemblyCompare
 
 			XMLGenericGroup g = (XMLGenericGroup) other;
 			if (attributes != g.attributes)
-				AddWarning (parent, "Incorrect generic attributes: '{0}' != '{1}'", attributes, g.attributes);
+				AddWarning (parent, "Different generic attributes: '{0}' != '{1}'", attributes, g.attributes);
 		}
 	}
 
@@ -1233,7 +1289,7 @@ namespace Mono.AssemblyCompare
 			XmlAttribute xatt = node.Attributes ["attrib"];
 			if (xatt != null)
 				access [name] = xatt.Value;
-			
+
 			XmlNode orig = node;
 
 			node = node.FirstChild;
@@ -1295,7 +1351,7 @@ namespace Mono.AssemblyCompare
 				oaccName = ConvertToString (Int32.Parse (oacc));
 
 			if (accName != oaccName)
-				AddWarning (parent, "Incorrect attributes: '{0}' != '{1}'", accName, oaccName);
+				AddWarning (parent, "Different attributes: '{0}' != '{1}'", accName, oaccName);
 		}
 
 		protected virtual string ConvertToString (int att)
@@ -1303,7 +1359,7 @@ namespace Mono.AssemblyCompare
 			return null;
 		}
 	}
-	
+
 	class XMLFields : XMLMember
 	{
 		Hashtable fieldTypes;
@@ -1341,7 +1397,7 @@ namespace Mono.AssemblyCompare
 					oftype = fields.fieldTypes [name] as string;
 
 				if (ftype != oftype)
-					AddWarning (parent, "Field type is {0} and should be {1}", oftype, ftype);
+					AddWarning (parent, "Field type is {0} and was {1}", oftype, ftype);
 			}
 			if (fieldValues != null) {
 				string fvalue = fieldValues [name] as string;
@@ -1350,7 +1406,7 @@ namespace Mono.AssemblyCompare
 					ofvalue = fields.fieldValues [name] as string;
 
 				if (fvalue != ofvalue)
-					AddWarning (parent, "Field value is {0} and should be {1}", ofvalue, fvalue);
+					AddWarning (parent, "Field value is {0} and was {1}", ofvalue, fvalue);
 			}
 		}
 
@@ -1506,9 +1562,11 @@ namespace Mono.AssemblyCompare
 		public override string GetNodeKey (string name, XmlNode node)
 		{
 			XmlAttributeCollection atts = node.Attributes;
-			return String.Format ("{0}:{1}:{2}", atts ["name"].Value,
-								atts ["ptype"].Value,
-								atts ["params"].Value);
+			return String.Format ("{0}:{1}:{2}",
+					      (atts["name"]   != null ? atts["name"].Value   : ""),
+					      (atts["ptype"]  != null ? atts["ptype"].Value  : ""),
+					      (atts["params"] != null ? atts["params"].Value : "")
+					      );
 		}
 
 		public override string GroupName {
@@ -1523,6 +1581,7 @@ namespace Mono.AssemblyCompare
 	class XMLEvents : XMLMember
 	{
 		Hashtable eventTypes;
+		Hashtable nameToMethod = new Hashtable ();
 
 		protected override void LoadExtraData (string name, XmlNode node)
 		{
@@ -1532,6 +1591,19 @@ namespace Mono.AssemblyCompare
 					eventTypes = new Hashtable ();
 
 				eventTypes [name] = xatt.Value;
+			}
+
+			XmlNode child = node.FirstChild;
+			while (child != null) {
+				if (child != null && child.Name == "methods") {
+					XMLMethods m = new XMLMethods ();
+					XmlNode parent = child.ParentNode;
+					string key = GetNodeKey (name, parent);
+					m.LoadData (child);
+					nameToMethod [key] = m;
+					break;
+				}
+				child = child.NextSibling;
 			}
 
 			base.LoadExtraData (name, node);
@@ -1555,7 +1627,17 @@ namespace Mono.AssemblyCompare
 					oetype = evt.eventTypes [name] as string;
 
 				if (etype != oetype)
-					AddWarning (parent, "Event type is {0} and should be {1}", oetype, etype);
+					AddWarning (parent, "Event type is {0} and was {1}", oetype, etype);
+
+				XMLMethods m = nameToMethod [name] as XMLMethods;
+				XMLMethods om = evt.nameToMethod [name] as XMLMethods;
+				if (m != null || om != null) {
+					if (m == null)
+						m = new XMLMethods ();
+
+					m.CompareTo (document, parent, om);
+					counters.AddPartialToPartial (m.Counters);
+				}
 			} finally {
 				AddCountersAttributes (parent);
 				copy.AddPartialToPartial (counters);
@@ -1591,7 +1673,8 @@ namespace Mono.AssemblyCompare
 			None = 0,
 			Abstract = 1,
 			Virtual = 2,
-			Static = 4
+			Static = 4,
+			Final = 8,
 		}
 
 		protected override void LoadExtraData (string name, XmlNode node)
@@ -1611,6 +1694,8 @@ namespace Mono.AssemblyCompare
 				flags |= SignatureFlags.Static;
 			if (((XmlElement) node).GetAttribute ("virtual") == "true")
 				flags |= SignatureFlags.Virtual;
+			if (((XmlElement) node).GetAttribute ("final") == "true")
+				flags |= SignatureFlags.Final;
 			if (flags != SignatureFlags.None) {
 				if (signatureFlags == null)
 					signatureFlags = new Hashtable ();
@@ -1640,6 +1725,23 @@ namespace Mono.AssemblyCompare
 			base.LoadExtraData (name, node);
 		}
 
+		public override string GetNodeKey (string name, XmlNode node)
+		{
+			// for explicit/implicit operators we need to include the return
+			// type in the key to allow matching; as a side-effect, differences
+			// in return types will be reported as extra/missing methods
+			//
+			// for regular methods we do not need to take into account the
+			// return type for matching methods; differences in return types
+			// will be reported as a warning on the method
+			if (name.StartsWith ("op_")) {
+				XmlAttribute xatt = node.Attributes ["returntype"];
+				string returnType = xatt != null ? xatt.Value + " " : string.Empty;
+				return returnType + name;
+			}
+			return name;
+		}
+
 		protected override void CompareToInner (string name, XmlNode parent, XMLNameGroup other)
 		{
 			// create backup of actual counters
@@ -1662,11 +1764,11 @@ namespace Mono.AssemblyCompare
 
 				if (flags!= oflags) {
 					if (flags == SignatureFlags.None)
-						AddWarning (parent, String.Format ("should not be {0}", oflags));
+						AddWarning (parent, String.Format ("was not {0}", oflags));
 					else if (oflags == SignatureFlags.None)
-						AddWarning (parent, String.Format ("should be {0}", flags));
+						AddWarning (parent, String.Format ("was {0}", flags));
 					else
-						AddWarning (parent, String.Format ("{0} and should be {1}", oflags, flags));
+						AddWarning (parent, String.Format ("{0} and was {1}", oflags, flags));
 				}
 
 				if (returnTypes != null) {
@@ -1676,7 +1778,7 @@ namespace Mono.AssemblyCompare
 						ortype = methods.returnTypes[name] as string;
 
 					if (rtype != ortype)
-						AddWarning (parent, "Return type is {0} and should be {1}", ortype, rtype);
+						AddWarning (parent, "Return type is {0} and was {1}", ortype, rtype);
 				}
 
 				if (parameters != null) {
@@ -1712,7 +1814,7 @@ namespace Mono.AssemblyCompare
 			if ((ma & MethodAttributes.RequireSecObject) != 0)
 				ma = (MethodAttributes) (att - (int) MethodAttributes.RequireSecObject);
 
-			// we don't care if the implementation is forwarded through PInvoke 
+			// we don't care if the implementation is forwarded through PInvoke
 			if ((ma & MethodAttributes.PinvokeImpl) != 0)
 				ma = (MethodAttributes) (att - (int) MethodAttributes.PinvokeImpl);
 

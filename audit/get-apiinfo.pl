@@ -25,15 +25,18 @@ die "Usage: get-apiinfo.pl <root_dir> <outdir>" if (@ARGV != 2);
 $root = $ARGV[0];
 $outdir = $ARGV[1];
 
+$cecildir = `pkg-config --variable=assemblies_dir mono-cecil`;
+chomp ($cecildir);
+
 `mkdir -p $outdir`;
 `mkdir -p apitmp`;
 `cp $root/*/*.dll apitmp`;
-print "getting api info: ";
+print "Getting api info: ";
 foreach $assm (`ls apitmp/*.dll`) {
 	chomp ($assm);
 	$assm =~ /apitmp\/(.*)\.dll/;
 	print "*";
-	`mono mono-api-info.exe $assm > $outdir/$1.apiinfo`;
+	`MONO_PATH=$cecildir mono mono-api-info.exe $assm > $outdir/$1.apiinfo`;
 }
 `rm -rf apitmp`;
 print " Completed\n\n";

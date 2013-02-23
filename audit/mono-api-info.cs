@@ -4,61 +4,90 @@
 // Authors:
 //	Gonzalo Paniagua Javier (gonzalo@ximian.com)
 //
-// Copyright (C) 2003-2005 Novell, Inc (http://www.novell.com)
+// Copyright (C) 2003-2008 Novell, Inc (http://www.novell.com)
 //
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Xml;
 
-namespace Mono.AssemblyInfo
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using System.IO;
+
+namespace Mono.AssemblyCompare
 {
-	class Driver
+	public class Driver
 	{
-		static int Main (string [] args)
+		public static int Main (string [] args)
 		{
 			if (args.Length == 0)
 				return 1;
 
+			AbiMode = false;
+
 			AssemblyCollection acoll = new AssemblyCollection ();
-			
-			foreach (string fullName in args) {
-				acoll.Add (fullName);
+
+			foreach (string arg in args) {
+				if (arg == "--abi") {
+					AbiMode = true;
+				} else {
+					acoll.Add (arg);
+
+					TypeHelper.Resolver.AddSearchDirectory (Path.GetDirectoryName (arg));
+				}
 			}
 
 			XmlDocument doc = new XmlDocument ();
 			acoll.Document = doc;
 			acoll.DoOutput ();
 
-			XmlTextWriter writer = new XmlTextWriter (Console.Out);
-			writer.Formatting = Formatting.Indented;
-			XmlNode decl = doc.CreateXmlDeclaration ("1.0", null, null);
+			var writer = new WellFormedXmlWriter (new XmlTextWriter (Console.Out) { Formatting = Formatting.Indented });
+			XmlNode decl = doc.CreateXmlDeclaration ("1.0", "utf-8", null);
 			doc.InsertBefore (decl, doc.DocumentElement);
 			doc.WriteTo (writer);
 			return 0;
+		}
+
+		internal static bool AbiMode { get; private set; }
+	}
+
+	public class Utils {
+
+		public static string CleanupTypeName (TypeReference type)
+		{
+			return CleanupTypeName (type.FullName);
+		}
+
+		public static string CleanupTypeName (string t)
+		{
+			return t.Replace ('<', '[').Replace ('>', ']').Replace ('/', '+');
 		}
 	}
 
 	class AssemblyCollection
 	{
 		XmlDocument document;
-		ArrayList assemblies;
+		List<AssemblyDefinition> assemblies = new List<AssemblyDefinition> ();
 
 		public AssemblyCollection ()
 		{
-			assemblies = new ArrayList ();
 		}
 
 		public bool Add (string name)
 		{
-			Assembly ass = LoadAssembly (name);
-			if (ass == null)
+			AssemblyDefinition ass = LoadAssembly (name);
+			if (ass == null) {
+				Console.Error.WriteLine ("Cannot load assembly file " + name);
 				return false;
+			}
 
 			assemblies.Add (ass);
 			return true;
@@ -71,7 +100,7 @@ namespace Mono.AssemblyInfo
 
 			XmlNode nassemblies = document.CreateElement ("assemblies", null);
 			document.AppendChild (nassemblies);
-			foreach (Assembly a in assemblies) {
+			foreach (AssemblyDefinition a in assemblies) {
 				AssemblyData data = new AssemblyData (document, nassemblies, a);
 				data.DoOutput ();
 			}
@@ -80,24 +109,18 @@ namespace Mono.AssemblyInfo
 		public XmlDocument Document {
 			set { document = value; }
 		}
-		
-		static Assembly LoadAssembly (string aname)
+
+		AssemblyDefinition LoadAssembly (string assembly)
 		{
-			Assembly ass = null;
 			try {
-				string name = aname;
-				if (!name.EndsWith (".dll"))
-					name += ".dll";
-				ass = Assembly.LoadFrom (name);
-				return ass;
-			} catch { }
+				if (File.Exists (assembly))
+					return TypeHelper.Resolver.ResolveFile (assembly);
 
-			try {
-				ass = Assembly.LoadWithPartialName (aname);
-				return ass;
-			} catch { }
-
-			return null;
+				return TypeHelper.Resolver.Resolve (assembly);
+			} catch (Exception e) {
+				Console.WriteLine (e);
+				return null;
+			}
 		}
 	}
 
@@ -122,11 +145,51 @@ namespace Mono.AssemblyInfo
 		}
 	}
 
+	class TypeForwardedToData : BaseData
+	{
+		AssemblyDefinition ass;
+
+		public TypeForwardedToData (XmlDocument document, XmlNode parent, AssemblyDefinition ass)
+			: base (document, parent)
+		{
+			this.ass = ass;
+		}
+
+		public override void DoOutput ()
+		{
+			XmlNode natts = parent.SelectSingleNode("attributes");
+			if (natts == null) {
+				natts = document.CreateElement ("attributes", null);
+				parent.AppendChild (natts);
+			}
+
+			foreach (ExportedType type in ass.MainModule.ExportedTypes) {
+
+				if (((uint)type.Attributes & 0x200000u) == 0)
+					continue;
+
+				XmlNode node = document.CreateElement ("attribute");
+				AddAttribute (node, "name", typeof (TypeForwardedToAttribute).FullName);
+				XmlNode properties = node.AppendChild (document.CreateElement ("properties"));
+				XmlNode property = properties.AppendChild (document.CreateElement ("property"));
+				AddAttribute (property, "name", "Destination");
+				AddAttribute (property, "value", Utils.CleanupTypeName (type.FullName));
+				natts.AppendChild (node);
+			}
+		}
+
+		public static void OutputForwarders (XmlDocument document, XmlNode parent, AssemblyDefinition ass)
+		{
+			TypeForwardedToData tftd = new TypeForwardedToData (document, parent, ass);
+			tftd.DoOutput ();
+		}
+	}
+
 	class AssemblyData : BaseData
 	{
-		Assembly ass;
-		
-		public AssemblyData (XmlDocument document, XmlNode parent, Assembly ass)
+		AssemblyDefinition ass;
+
+		public AssemblyData (XmlDocument document, XmlNode parent, AssemblyDefinition ass)
 			: base (document, parent)
 		{
 			this.ass = ass;
@@ -138,46 +201,46 @@ namespace Mono.AssemblyInfo
 				throw new InvalidOperationException ("Document not set");
 
 			XmlNode nassembly = document.CreateElement ("assembly", null);
-			AssemblyName aname = ass.GetName ();
+			AssemblyNameDefinition aname = ass.Name;
 			AddAttribute (nassembly, "name", aname.Name);
 			AddAttribute (nassembly, "version", aname.Version.ToString ());
 			parent.AppendChild (nassembly);
-			AttributeData.OutputAttributes (document, nassembly, ass.GetCustomAttributes (false));
-			Type [] types = ass.GetExportedTypes ();
-			if (types == null || types.Length == 0)
+			TypeForwardedToData.OutputForwarders (document, nassembly, ass);
+			AttributeData.OutputAttributes (document, nassembly, ass.CustomAttributes);
+			var typesCollection = ass.MainModule.Types;
+			if (typesCollection == null || typesCollection.Count == 0)
 				return;
-
-			Array.Sort (types, TypeComparer.Default);
+			object [] typesArray = new object [typesCollection.Count];
+			for (int i = 0; i < typesCollection.Count; i++) {
+				typesArray [i] = typesCollection [i];
+			}
+			Array.Sort (typesArray, TypeReferenceComparer.Default);
 
 			XmlNode nss = document.CreateElement ("namespaces", null);
 			nassembly.AppendChild (nss);
 
-			string currentNS = "$%&$&";
+			string current_namespace = "$%&$&";
 			XmlNode ns = null;
 			XmlNode classes = null;
-			foreach (Type t in types) {
-				if (t.Namespace == null || t.Namespace == "")
+			foreach (TypeDefinition t in typesArray) {
+				if (string.IsNullOrEmpty (t.Namespace))
 					continue;
 
-				if (t.IsNotPublic)
-					continue;
-
-				if (t.IsNestedPublic || t.IsNestedAssembly || t.IsNestedFamANDAssem ||
-					t.IsNestedFamORAssem || t.IsNestedPrivate)
+				if (!Driver.AbiMode && ((t.Attributes & TypeAttributes.VisibilityMask) != TypeAttributes.Public))
 					continue;
 
 				if (t.DeclaringType != null)
 					continue; // enforce !nested
-				
-				if (t.Namespace != currentNS) {
-					currentNS = t.Namespace;
+
+				if (t.Namespace != current_namespace) {
+					current_namespace = t.Namespace;
 					ns = document.CreateElement ("namespace", null);
-					AddAttribute (ns, "name", currentNS);
+					AddAttribute (ns, "name", current_namespace);
 					nss.AppendChild (ns);
 					classes = document.CreateElement ("classes", null);
 					ns.AppendChild (classes);
 				}
-				
+
 				TypeData bd = new TypeData (document, classes, t);
 				bd.DoOutput ();
 			}
@@ -186,9 +249,9 @@ namespace Mono.AssemblyInfo
 
 	abstract class MemberData : BaseData
 	{
-		MemberInfo [] members;
+		MemberReference [] members;
 
-		public MemberData (XmlDocument document, XmlNode parent, MemberInfo [] members)
+		public MemberData (XmlDocument document, XmlNode parent, MemberReference [] members)
 			: base (document, parent)
 		{
 			this.members = members;
@@ -199,30 +262,32 @@ namespace Mono.AssemblyInfo
 			XmlNode mclass = document.CreateElement (ParentTag, null);
 			parent.AppendChild (mclass);
 
-			foreach (MemberInfo member in members) {
+			foreach (MemberReference member in members) {
 				XmlNode mnode = document.CreateElement (Tag, null);
 				mclass.AppendChild (mnode);
 				AddAttribute (mnode, "name", GetName (member));
 				if (!NoMemberAttributes)
 					AddAttribute (mnode, "attrib", GetMemberAttributes (member));
 
-				AttributeData.OutputAttributes (document, mnode,
-								member.GetCustomAttributes (false));
+				AttributeData.OutputAttributes (document, mnode, GetCustomAttributes (member));
 
 				AddExtraData (mnode, member);
 			}
 		}
 
-		protected virtual void AddExtraData (XmlNode p, MemberInfo member)
+
+		protected abstract IList<CustomAttribute> GetCustomAttributes (MemberReference member);
+
+		protected virtual void AddExtraData (XmlNode p, MemberReference memberDefenition)
 		{
 		}
 
-		protected virtual string GetName (MemberInfo member)
+		protected virtual string GetName (MemberReference memberDefenition)
 		{
 			return "NoNAME";
 		}
 
-		protected virtual string GetMemberAttributes (MemberInfo member)
+		protected virtual string GetMemberAttributes (MemberReference memberDefenition)
 		{
 			return null;
 		}
@@ -235,23 +300,59 @@ namespace Mono.AssemblyInfo
 		public virtual string ParentTag {
 			get { return "NoPARENTTAG"; }
 		}
-		
+
 		public virtual string Tag {
 			get { return "NoTAG"; }
+		}
+
+		public static void OutputGenericParameters (XmlDocument document, XmlNode nclass, IGenericParameterProvider provider)
+		{
+			if (provider.GenericParameters.Count == 0)
+				return;
+
+			var gparameters = provider.GenericParameters;
+
+			XmlElement ngeneric = document.CreateElement (string.Format ("generic-parameters"));
+			nclass.AppendChild (ngeneric);
+
+			foreach (GenericParameter gp in gparameters) {
+				XmlElement nparam = document.CreateElement (string.Format ("generic-parameter"));
+				nparam.SetAttribute ("name", gp.Name);
+				nparam.SetAttribute ("attributes", ((int) gp.Attributes).ToString ());
+
+				AttributeData.OutputAttributes (document, nparam, gp.CustomAttributes);
+
+				ngeneric.AppendChild (nparam);
+
+				var constraints = gp.Constraints;
+				if (constraints.Count == 0)
+					continue;
+
+				XmlElement nconstraint = document.CreateElement ("generic-parameter-constraints");
+
+				foreach (TypeReference constraint in constraints) {
+					XmlElement ncons = document.CreateElement ("generic-parameter-constraint");
+					ncons.SetAttribute ("name", Utils.CleanupTypeName (constraint));
+					nconstraint.AppendChild (ncons);
+				}
+
+				nparam.AppendChild (nconstraint);
+			}
 		}
 	}
 
 	class TypeData : MemberData
 	{
-		Type type;
-		const BindingFlags flags = BindingFlags.Public | BindingFlags.Static |
-						BindingFlags.Instance | BindingFlags.DeclaredOnly | 
-						BindingFlags.NonPublic;
-		
-		public TypeData (XmlDocument document, XmlNode parent, Type type)
+		TypeDefinition type;
+
+		public TypeData (XmlDocument document, XmlNode parent, TypeDefinition type)
 			: base (document, parent, null)
 		{
 			this.type = type;
+		}
+
+		protected override IList<CustomAttribute> GetCustomAttributes (MemberReference member) {
+			return ((TypeDefinition) member).CustomAttributes;
 		}
 
 		public override void DoOutput ()
@@ -265,7 +366,7 @@ namespace Mono.AssemblyInfo
 			AddAttribute (nclass, "type", classType);
 
 			if (type.BaseType != null)
-				AddAttribute (nclass, "base", type.BaseType.ToString ());
+				AddAttribute (nclass, "base", Utils.CleanupTypeName (type.BaseType));
 
 			if (type.IsSealed)
 				AddAttribute (nclass, "sealed", "true");
@@ -283,116 +384,136 @@ namespace Mono.AssemblyInfo
 			if (layout != null)
 				AddAttribute (nclass, "layout", layout);
 
+			if (type.PackingSize >= 0) {
+				AddAttribute (nclass, "pack", type.PackingSize.ToString ());
+			}
+
+			if (type.ClassSize >= 0) {
+				AddAttribute (nclass, "size", type.ClassSize.ToString ());
+			}
+
 			parent.AppendChild (nclass);
-			
-			AttributeData.OutputAttributes (document, nclass, type.GetCustomAttributes (false));
 
-			Type [] interfaces = type.GetInterfaces ();
-			if (interfaces != null && interfaces.Length > 0) {
-				XmlNode ifaces = document.CreateElement ("interfaces", null);
-				nclass.AppendChild (ifaces);
-				foreach (Type t in interfaces) {
-					if (!t.IsPublic) {
-						// we're only interested in public interfaces
-						continue;
-					}
-					XmlNode iface = document.CreateElement ("interface", null);
-					AddAttribute (iface, "name", t.ToString ());
-					ifaces.AppendChild (iface);
-				}
-			}
+			AttributeData.OutputAttributes (document, nclass, GetCustomAttributes(type));
 
-#if NET_2_0
-			// Generic constraints
-			Type [] gargs = type.GetGenericArguments ();
-			XmlElement ngeneric = (gargs.Length == 0) ? null :
-				document.CreateElement ("generic-type-constraints");
-			foreach (Type garg in gargs) {
-				Type [] csts = garg.GetGenericParameterConstraints ();
-				if (csts.Length == 0 || csts [0] == typeof (object))
+			XmlNode ifaces = null;
+
+			foreach (TypeReference iface in  TypeHelper.GetInterfaces (type)) {
+				if (!TypeHelper.IsPublic (iface))
+					// we're only interested in public interfaces
 					continue;
-				XmlElement el = document.CreateElement ("generic-type-constraint");
-				el.SetAttribute ("name", garg.ToString ());
-				el.SetAttribute ("generic-attribute",
-					garg.GenericParameterAttributes.ToString ());
-				ngeneric.AppendChild (el);
-				foreach (Type ct in csts) {
-					XmlElement cel = document.CreateElement ("type");
-					cel.AppendChild (document.CreateTextNode (ct.FullName));
-					el.AppendChild (cel);
+
+				if (ifaces == null) {
+					ifaces = document.CreateElement ("interfaces", null);
+					nclass.AppendChild (ifaces);
 				}
+
+				XmlNode iface_node = document.CreateElement ("interface", null);
+				AddAttribute (iface_node, "name", Utils.CleanupTypeName (iface));
+				ifaces.AppendChild (iface_node);
 			}
-			if (ngeneric != null && ngeneric.FirstChild != null)
-				nclass.AppendChild (ngeneric);
-#endif
+
+			MemberData.OutputGenericParameters (document, nclass, type);
 
 			ArrayList members = new ArrayList ();
 
-			FieldInfo[] fields = GetFields (type);
+			FieldDefinition [] fields = GetFields (type);
 			if (fields.Length > 0) {
-				Array.Sort (fields, MemberInfoComparer.Default);
+				Array.Sort (fields, MemberReferenceComparer.Default);
 				FieldData fd = new FieldData (document, nclass, fields);
-				// Special case for enum fields
-				if (classType == "enum") {
-					string etype = fields [0].GetType ().ToString ();
-					AddAttribute (nclass, "enumtype", etype);
-				}
 				members.Add (fd);
 			}
 
-			ConstructorInfo [] ctors = GetConstructors (type);
-			if (ctors.Length > 0) {
-				Array.Sort (ctors, MemberInfoComparer.Default);
-				members.Add (new ConstructorData (document, nclass, ctors));
+			if (type.IsEnum) {
+				var value_type = GetEnumValueField (type);
+				if (value_type == null)
+					throw new NotSupportedException ();
+
+				AddAttribute (nclass, "enumtype", Utils.CleanupTypeName (value_type.FieldType));
 			}
 
-			PropertyInfo[] properties = GetProperties (type);
-			if (properties.Length > 0) {
-				Array.Sort (properties, MemberInfoComparer.Default);
-				members.Add (new PropertyData (document, nclass, properties));
-			}
+			if (!Driver.AbiMode) {
 
-			EventInfo [] events = GetEvents (type);
-			if (events.Length > 0) {
-				Array.Sort (events, MemberInfoComparer.Default);
-				members.Add (new EventData (document, nclass, events));
-			}
+				MethodDefinition [] ctors = GetConstructors (type);
+				if (ctors.Length > 0) {
+					Array.Sort (ctors, MemberReferenceComparer.Default);
+					members.Add (new ConstructorData (document, nclass, ctors));
+				}
 
-			MethodInfo [] methods = GetMethods (type);
-			if (methods.Length > 0) {
-				Array.Sort (methods, MemberInfoComparer.Default);
-				members.Add (new MethodData (document, nclass, methods));
+				PropertyDefinition[] properties = GetProperties (type);
+				if (properties.Length > 0) {
+					Array.Sort (properties, MemberReferenceComparer.Default);
+					members.Add (new PropertyData (document, nclass, properties));
+				}
+
+				EventDefinition [] events = GetEvents (type);
+				if (events.Length > 0) {
+					Array.Sort (events, MemberReferenceComparer.Default);
+					members.Add (new EventData (document, nclass, events));
+				}
+
+				MethodDefinition [] methods = GetMethods (type);
+				if (methods.Length > 0) {
+					Array.Sort (methods, MemberReferenceComparer.Default);
+					members.Add (new MethodData (document, nclass, methods));
+				}
 			}
 
 			foreach (MemberData md in members)
 				md.DoOutput ();
 
-			Type [] nested = type.GetNestedTypes ();
-			if (nested != null && nested.Length > 0) {
+			var nested = type.NestedTypes;
+			//remove non public(familiy) and nested in second degree
+			for (int i = nested.Count - 1; i >= 0; i--) {
+				TypeDefinition t = nested [i];
+				if ((t.Attributes & TypeAttributes.VisibilityMask) == TypeAttributes.NestedPublic ||
+					(t.Attributes & TypeAttributes.VisibilityMask) == TypeAttributes.NestedFamily ||
+					(t.Attributes & TypeAttributes.VisibilityMask) == TypeAttributes.NestedFamORAssem) {
+					// public
+					if (t.DeclaringType == type)
+						continue; // not nested of nested
+				}
+
+				nested.RemoveAt (i);
+			}
+
+
+			if (nested.Count > 0) {
 				XmlNode classes = document.CreateElement ("classes", null);
 				nclass.AppendChild (classes);
-				foreach (Type t in nested) {
+				foreach (TypeDefinition t in nested) {
 					TypeData td = new TypeData (document, classes, t);
 					td.DoOutput ();
 				}
 			}
 		}
 
-		protected override string GetMemberAttributes (MemberInfo member)
+		static FieldReference GetEnumValueField (TypeDefinition type)
+		{
+			foreach (FieldDefinition field in type.Fields)
+				if (field.IsSpecialName && field.Name == "value__")
+					return field;
+
+			return null;
+		}
+
+		protected override string GetMemberAttributes (MemberReference member)
 		{
 			if (member != type)
 				throw new InvalidOperationException ("odd");
-				
+
 			return ((int) type.Attributes).ToString (CultureInfo.InvariantCulture);
 		}
 
-		public static bool MustDocumentMethod(MethodBase method)
-		{
+		public static bool MustDocumentMethod (MethodDefinition method) {
 			// All other methods
-			return (method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly);
+			MethodAttributes maskedAccess = method.Attributes & MethodAttributes.MemberAccessMask;
+			return maskedAccess == MethodAttributes.Public
+				|| maskedAccess == MethodAttributes.Family
+				|| maskedAccess == MethodAttributes.FamORAssem;
 		}
 
-		static string GetClassType (Type t)
+		static string GetClassType (TypeDefinition t)
 		{
 			if (t.IsEnum)
 				return "enum";
@@ -403,181 +524,208 @@ namespace Mono.AssemblyInfo
 			if (t.IsInterface)
 				return "interface";
 
-			if (typeof (Delegate).IsAssignableFrom (t))
+			if (TypeHelper.IsDelegate(t))
 				return "delegate";
 
 			return "class";
 		}
 
-		private static string GetCharSet (Type type)
+		static string GetCharSet (TypeDefinition type)
 		{
-			if (type.IsAnsiClass)
-				return CharSet.Ansi.ToString (CultureInfo.InvariantCulture);
+			TypeAttributes maskedStringFormat = type.Attributes & TypeAttributes.StringFormatMask;
+			if (maskedStringFormat == TypeAttributes.AnsiClass)
+				return CharSet.Ansi.ToString ();
 
-			if (type.IsAutoClass)
-				return CharSet.Auto.ToString (CultureInfo.InvariantCulture);
+			if (maskedStringFormat == TypeAttributes.AutoClass)
+				return CharSet.Auto.ToString ();
 
-			if (type.IsUnicodeClass)
-				return CharSet.Unicode.ToString (CultureInfo.InvariantCulture);
+			if (maskedStringFormat == TypeAttributes.UnicodeClass)
+				return CharSet.Unicode.ToString ();
 
-			return CharSet.None.ToString (CultureInfo.InvariantCulture);
+			return CharSet.None.ToString ();
 		}
 
-		private static string GetLayout (Type type)
+		static string GetLayout (TypeDefinition type)
 		{
-			if (type.IsAutoLayout)
-				return LayoutKind.Auto.ToString (CultureInfo.InvariantCulture);
+			TypeAttributes maskedLayout = type.Attributes & TypeAttributes.LayoutMask;
+			if (maskedLayout == TypeAttributes.AutoLayout)
+				return LayoutKind.Auto.ToString ();
 
-			if (type.IsExplicitLayout)
-				return LayoutKind.Explicit.ToString (CultureInfo.InvariantCulture);
+			if (maskedLayout == TypeAttributes.ExplicitLayout)
+				return LayoutKind.Explicit.ToString ();
 
-			if (type.IsLayoutSequential)
-				return LayoutKind.Sequential.ToString (CultureInfo.InvariantCulture);
+			if (maskedLayout == TypeAttributes.SequentialLayout)
+				return LayoutKind.Sequential.ToString ();
 
 			return null;
 		}
 
-		private FieldInfo[] GetFields (Type type)
-		{
+		FieldDefinition [] GetFields (TypeDefinition type) {
 			ArrayList list = new ArrayList ();
 
-			FieldInfo[] fields = type.GetFields (flags);
-			foreach (FieldInfo field in fields) {
+			var fields = type.Fields;
+			foreach (FieldDefinition field in fields) {
 				if (field.IsSpecialName)
 					continue;
 
-				// we're only interested in public or protected members
-				if (!field.IsPublic && !field.IsFamily && !field.IsFamilyOrAssembly)
+				if (Driver.AbiMode && field.IsStatic)
 					continue;
 
-				list.Add (field);
+				// we're only interested in public or protected members
+				FieldAttributes maskedVisibility = (field.Attributes & FieldAttributes.FieldAccessMask);
+				if (Driver.AbiMode && !field.IsNotSerialized) {
+					list.Add (field);
+				} else {
+					if (maskedVisibility == FieldAttributes.Public
+						|| maskedVisibility == FieldAttributes.Family
+						|| maskedVisibility == FieldAttributes.FamORAssem) {
+						list.Add (field);
+					}
+				}
 			}
 
-			return (FieldInfo[]) list.ToArray (typeof (FieldInfo));
+			return (FieldDefinition []) list.ToArray (typeof (FieldDefinition));
 		}
 
-		internal static PropertyInfo[] GetProperties (Type type)
-		{
+
+		internal static PropertyDefinition [] GetProperties (TypeDefinition type) {
 			ArrayList list = new ArrayList ();
 
-			PropertyInfo[] properties = type.GetProperties (flags);
-			foreach (PropertyInfo property in properties) {
-				MethodInfo getMethod = null;
-				MethodInfo setMethod = null;
-
-				if (property.CanRead) {
-					try { getMethod = property.GetGetMethod (true); }
-					catch (System.Security.SecurityException) { }
-				}
-				if (property.CanWrite) {
-					try { setMethod = property.GetSetMethod (true); }
-					catch (System.Security.SecurityException) { }
-				}
+			var properties = type.Properties;//type.GetProperties (flags);
+			foreach (PropertyDefinition property in properties) {
+				MethodDefinition getMethod = property.GetMethod;
+				MethodDefinition setMethod = property.SetMethod;
 
 				bool hasGetter = (getMethod != null) && MustDocumentMethod (getMethod);
 				bool hasSetter = (setMethod != null) && MustDocumentMethod (setMethod);
 
 				// if neither the getter or setter should be documented, then
 				// skip the property
-				if (!hasGetter && !hasSetter) {
-					continue;
+				if (hasGetter || hasSetter) {
+					list.Add (property);
 				}
-
-				list.Add (property);
 			}
 
-			return (PropertyInfo[]) list.ToArray (typeof (PropertyInfo));
+			return (PropertyDefinition []) list.ToArray (typeof (PropertyDefinition));
 		}
 
-		private MethodInfo[] GetMethods (Type type)
+		private MethodDefinition[] GetMethods (TypeDefinition type)
 		{
 			ArrayList list = new ArrayList ();
 
-			MethodInfo[] methods = type.GetMethods (flags);
-			foreach (MethodInfo method in methods) {
-				if (method.IsSpecialName)
+			var methods = type.Methods;//type.GetMethods (flags);
+			foreach (MethodDefinition method in methods) {
+				if (method.IsSpecialName && !method.Name.StartsWith ("op_"))
 					continue;
 
 				// we're only interested in public or protected members
 				if (!MustDocumentMethod(method))
 					continue;
 
+				if (IsFinalizer (method)) {
+					string name = method.DeclaringType.Name;
+					int arity = name.IndexOf ('`');
+					if (arity > 0)
+						name = name.Substring (0, arity);
+
+					method.Name = "~" + name;
+				}
+
 				list.Add (method);
 			}
 
-			return (MethodInfo[]) list.ToArray (typeof (MethodInfo));
+			return (MethodDefinition []) list.ToArray (typeof (MethodDefinition));
 		}
 
-		private ConstructorInfo[] GetConstructors (Type type)
+		static bool IsFinalizer (MethodDefinition method)
+		{
+			if (method.Name != "Finalize")
+				return false;
+
+			if (!method.IsVirtual)
+				return false;
+
+			if (method.Parameters.Count != 0)
+				return false;
+
+			return true;
+		}
+
+		private MethodDefinition [] GetConstructors (TypeDefinition type)
 		{
 			ArrayList list = new ArrayList ();
 
-			ConstructorInfo[] ctors = type.GetConstructors (flags);
-			foreach (ConstructorInfo constructor in ctors) {
+			var ctors = type.Methods.Where (m => m.IsConstructor);//type.GetConstructors (flags);
+			foreach (MethodDefinition constructor in ctors) {
 				// we're only interested in public or protected members
-				if (!constructor.IsPublic && !constructor.IsFamily && !constructor.IsFamilyOrAssembly)
+				if (!MustDocumentMethod(constructor))
 					continue;
 
 				list.Add (constructor);
 			}
 
-			return (ConstructorInfo[]) list.ToArray (typeof (ConstructorInfo));
+			return (MethodDefinition []) list.ToArray (typeof (MethodDefinition));
 		}
 
-		private EventInfo[] GetEvents (Type type)
+		private EventDefinition[] GetEvents (TypeDefinition type)
 		{
 			ArrayList list = new ArrayList ();
 
-			EventInfo[] events = type.GetEvents (flags);
-			foreach (EventInfo eventInfo in events) {
-				MethodInfo addMethod = eventInfo.GetAddMethod (true);
+			var events = type.Events;//type.GetEvents (flags);
+			foreach (EventDefinition eventDef in events) {
+				MethodDefinition addMethod = eventDef.AddMethod;//eventInfo.GetAddMethod (true);
 
 				if (addMethod == null || !MustDocumentMethod (addMethod))
 					continue;
 
-				list.Add (eventInfo);
+				list.Add (eventDef);
 			}
 
-			return (EventInfo[]) list.ToArray (typeof (EventInfo));
+			return (EventDefinition []) list.ToArray (typeof (EventDefinition));
 		}
 	}
 
 	class FieldData : MemberData
 	{
-		public FieldData (XmlDocument document, XmlNode parent, FieldInfo [] members)
+		public FieldData (XmlDocument document, XmlNode parent, FieldDefinition [] members)
 			: base (document, parent, members)
 		{
 		}
 
-		protected override string GetName (MemberInfo member)
+		protected override IList<CustomAttribute> GetCustomAttributes (MemberReference member) {
+			return ((FieldDefinition) member).CustomAttributes;
+		}
+
+		protected override string GetName (MemberReference memberDefenition)
 		{
-			FieldInfo field = (FieldInfo) member;
+			FieldDefinition field = (FieldDefinition) memberDefenition;
 			return field.Name;
 		}
 
-		protected override string GetMemberAttributes (MemberInfo member)
+		protected override string GetMemberAttributes (MemberReference memberDefenition)
 		{
-			FieldInfo field = (FieldInfo) member;
+			FieldDefinition field = (FieldDefinition) memberDefenition;
 			return ((int) field.Attributes).ToString (CultureInfo.InvariantCulture);
 		}
 
-		protected override void AddExtraData (XmlNode p, MemberInfo member)
+		protected override void AddExtraData (XmlNode p, MemberReference memberDefenition)
 		{
-			base.AddExtraData (p, member);
-			FieldInfo field = (FieldInfo) member;
-			AddAttribute (p, "fieldtype", field.FieldType.ToString ());
+			base.AddExtraData (p, memberDefenition);
+			FieldDefinition field = (FieldDefinition) memberDefenition;
+			AddAttribute (p, "fieldtype", Utils.CleanupTypeName (field.FieldType));
 
 			if (field.IsLiteral) {
-				object value = field.GetValue (null);
+				object value = field.Constant;//object value = field.GetValue (null);
 				string stringValue = null;
-				if (value is Enum) {
-					// FIXME: when Mono bug #60090 has been
-					// fixed, we should just be able to use
-					// Convert.ToString
-					stringValue = ((Enum) value).ToString ("D", CultureInfo.InvariantCulture);
-				} else {
+				//if (value is Enum) {
+				//    // FIXME: when Mono bug #60090 has been
+				//    // fixed, we should just be able to use
+				//    // Convert.ToString
+				//    stringValue = ((Enum) value).ToString ("D", CultureInfo.InvariantCulture);
+				//}
+				//else {
 					stringValue = Convert.ToString (value, CultureInfo.InvariantCulture);
-				}
+				//}
 
 				if (stringValue != null)
 					AddAttribute (p, "value", stringValue);
@@ -595,52 +743,58 @@ namespace Mono.AssemblyInfo
 
 	class PropertyData : MemberData
 	{
-		public PropertyData (XmlDocument document, XmlNode parent, PropertyInfo [] members)
+		public PropertyData (XmlDocument document, XmlNode parent, PropertyDefinition [] members)
 			: base (document, parent, members)
 		{
 		}
 
-		protected override string GetName (MemberInfo member)
+		protected override IList<CustomAttribute> GetCustomAttributes (MemberReference member) {
+			return ((PropertyDefinition) member).CustomAttributes;
+		}
+
+		protected override string GetName (MemberReference memberDefenition)
 		{
-			PropertyInfo prop = (PropertyInfo) member;
+			PropertyDefinition prop = (PropertyDefinition) memberDefenition;
 			return prop.Name;
 		}
 
-		protected override void AddExtraData (XmlNode p, MemberInfo member)
+		protected override void AddExtraData (XmlNode p, MemberReference memberDefenition)
 		{
-			base.AddExtraData (p, member);
-			PropertyInfo prop = (PropertyInfo) member;
-			Type t = prop.PropertyType;
-			AddAttribute (p, "ptype", prop.PropertyType.ToString ());
-			MethodInfo _get = prop.GetGetMethod (true);
-			MethodInfo _set = prop.GetSetMethod (true);
+			base.AddExtraData (p, memberDefenition);
+			PropertyDefinition prop = (PropertyDefinition) memberDefenition;
+			AddAttribute (p, "ptype", Utils.CleanupTypeName (prop.PropertyType));
+			MethodDefinition _get = prop.GetMethod;
+			MethodDefinition _set = prop.SetMethod;
 			bool haveGet = (_get != null && TypeData.MustDocumentMethod(_get));
 			bool haveSet = (_set != null && TypeData.MustDocumentMethod(_set));
-			MethodInfo [] methods;
+			MethodDefinition [] methods;
 
 			if (haveGet && haveSet) {
-				methods = new MethodInfo [] {_get, _set};
+				methods = new MethodDefinition [] { _get, _set };
 			} else if (haveGet) {
-				methods = new MethodInfo [] {_get};
+				methods = new MethodDefinition [] { _get };
 			} else if (haveSet) {
-				methods = new MethodInfo [] {_set};
+				methods = new MethodDefinition [] { _set };
 			} else {
 				//odd
 				return;
 			}
 
-			string parms = Parameters.GetSignature (methods [0].GetParameters ());
-			AddAttribute (p, "params", parms);
+			if (haveGet || _set.Parameters.Count > 1) {
+				string parms = Parameters.GetSignature (methods [0].Parameters);
+				if (!string.IsNullOrEmpty (parms))
+					AddAttribute (p, "params", parms);
+			}
 
 			MethodData data = new MethodData (document, p, methods);
 			//data.NoMemberAttributes = true;
 			data.DoOutput ();
 		}
 
-		protected override string GetMemberAttributes (MemberInfo member)
+		protected override string GetMemberAttributes (MemberReference memberDefenition)
 		{
-			PropertyInfo prop = (PropertyInfo) member;
-			return ((int) prop.Attributes & (0xFFFFFFFF ^ (int) PropertyAttributes.ReservedMask)).ToString (CultureInfo.InvariantCulture);
+			PropertyDefinition prop = (PropertyDefinition) memberDefenition;
+			return ((int) prop.Attributes).ToString (CultureInfo.InvariantCulture);
 		}
 
 		public override string ParentTag {
@@ -654,28 +808,32 @@ namespace Mono.AssemblyInfo
 
 	class EventData : MemberData
 	{
-		public EventData (XmlDocument document, XmlNode parent, EventInfo [] members)
+		public EventData (XmlDocument document, XmlNode parent, EventDefinition [] members)
 			: base (document, parent, members)
 		{
 		}
 
-		protected override string GetName (MemberInfo member)
+		protected override IList<CustomAttribute> GetCustomAttributes (MemberReference member) {
+			return ((EventDefinition) member).CustomAttributes;
+		}
+
+		protected override string GetName (MemberReference memberDefenition)
 		{
-			EventInfo evt = (EventInfo) member;
+			EventDefinition evt = (EventDefinition) memberDefenition;
 			return evt.Name;
 		}
 
-		protected override string GetMemberAttributes (MemberInfo member)
+		protected override string GetMemberAttributes (MemberReference memberDefenition)
 		{
-			EventInfo evt = (EventInfo) member;
+			EventDefinition evt = (EventDefinition) memberDefenition;
 			return ((int) evt.Attributes).ToString (CultureInfo.InvariantCulture);
 		}
 
-		protected override void AddExtraData (XmlNode p, MemberInfo member)
+		protected override void AddExtraData (XmlNode p, MemberReference memberDefenition)
 		{
-			base.AddExtraData (p, member);
-			EventInfo evt = (EventInfo) member;
-			AddAttribute (p, "eventtype", evt.EventHandlerType.ToString ());
+			base.AddExtraData (p, memberDefenition);
+			EventDefinition evt = (EventDefinition) memberDefenition;
+			AddAttribute (p, "eventtype", Utils.CleanupTypeName (evt.EventType));
 		}
 
 		public override string ParentTag {
@@ -691,71 +849,41 @@ namespace Mono.AssemblyInfo
 	{
 		bool noAtts;
 
-		public MethodData (XmlDocument document, XmlNode parent, MethodBase [] members)
+		public MethodData (XmlDocument document, XmlNode parent, MethodDefinition [] members)
 			: base (document, parent, members)
 		{
 		}
 
-		protected override string GetName (MemberInfo member)
+		protected override IList<CustomAttribute> GetCustomAttributes (MemberReference member) {
+			return ((MethodDefinition) member).CustomAttributes;
+		}
+
+		protected override string GetName (MemberReference memberDefenition)
 		{
-			MethodBase method = (MethodBase) member;
+			MethodDefinition method = (MethodDefinition) memberDefenition;
 			string name = method.Name;
-			string parms = Parameters.GetSignature (method.GetParameters ());
-#if NET_2_0
-			MethodInfo mi = method as MethodInfo;
-			Type [] genArgs = mi == null ? Type.EmptyTypes :
-				mi.GetGenericArguments ();
-			if (genArgs.Length > 0) {
-				string [] genArgNames = new string [genArgs.Length];
-				for (int i = 0; i < genArgs.Length; i++) {
-					genArgNames [i] = genArgs [i].Name;
-					string genArgCsts = String.Empty;
-					Type [] gcs = genArgs [i].GetGenericParameterConstraints ();
-					if (gcs.Length > 0) {
-						string [] gcNames = new string [gcs.Length];
-						for (int g = 0; g < gcs.Length; g++)
-							gcNames [g] = gcs [g].FullName;
-						genArgCsts = String.Concat (
-							"(",
-							string.Join (", ", gcNames),
-							") ",
-							genArgNames [i]);
-					}
-					else
-						genArgCsts = genArgNames [i];
-					if ((genArgs [i].GenericParameterAttributes & GenericParameterAttributes.ReferenceTypeConstraint) != 0)
-						genArgCsts = "class " + genArgCsts;
-					else if ((genArgs [i].GenericParameterAttributes & GenericParameterAttributes.NotNullableValueTypeConstraint) != 0)
-						genArgCsts = "struct " + genArgCsts;
-					genArgNames [i] = genArgCsts;
-				}
-				return String.Format ("{0}<{2}>({1})",
-					name,
-					parms,
-					string.Join (",", genArgNames));
-			}
-#endif
-			return String.Format ("{0}({1})", name, parms);
+			string parms = Parameters.GetSignature (method.Parameters);
+
+			return string.Format ("{0}({1})", name, parms);
 		}
 
-		protected override string GetMemberAttributes (MemberInfo member)
+		protected override string GetMemberAttributes (MemberReference memberDefenition)
 		{
-			MethodBase method = (MethodBase) member;
-			return ((int)( method.Attributes & ~MethodAttributes.ReservedMask)).ToString (CultureInfo.InvariantCulture);
+			MethodDefinition method = (MethodDefinition) memberDefenition;
+			return ((int)( method.Attributes)).ToString (CultureInfo.InvariantCulture);
 		}
 
-		protected override void AddExtraData (XmlNode p, MemberInfo member)
+		protected override void AddExtraData (XmlNode p, MemberReference memberDefenition)
 		{
-			base.AddExtraData (p, member);
+			base.AddExtraData (p, memberDefenition);
 
-			ParameterData parms = new ParameterData (document, p, 
-				((MethodBase) member).GetParameters ());
-			parms.DoOutput ();
-
-			if (!(member is MethodBase))
+			if (!(memberDefenition is MethodDefinition))
 				return;
 
-			MethodBase mbase = (MethodBase) member;
+			MethodDefinition mbase = (MethodDefinition) memberDefenition;
+
+			ParameterData parms = new ParameterData (document, p, mbase.Parameters);
+			parms.DoOutput ();
 
 			if (mbase.IsAbstract)
 				AddAttribute (p, "abstract", "true");
@@ -764,45 +892,20 @@ namespace Mono.AssemblyInfo
 			if (mbase.IsStatic)
 				AddAttribute (p, "static", "true");
 
-			if (!(member is MethodInfo))
-				return;
+			string rettype = Utils.CleanupTypeName (mbase.MethodReturnType.ReturnType);
+			if (rettype != "System.Void" || !mbase.IsConstructor)
+				AddAttribute (p, "returntype", (rettype));
 
-			MethodInfo method = (MethodInfo) member;
-			AddAttribute (p, "returntype", method.ReturnType.ToString ());
+			AttributeData.OutputAttributes (document, p, mbase.MethodReturnType.CustomAttributes);
 
-			AttributeData.OutputAttributes (document, p,
-				method.ReturnTypeCustomAttributes.GetCustomAttributes (false));
-#if NET_2_0
-			// Generic constraints
-			Type [] gargs = method.GetGenericArguments ();
-			XmlElement ngeneric = (gargs.Length == 0) ? null :
-				document.CreateElement ("generic-method-constraints");
-			foreach (Type garg in gargs) {
-				Type [] csts = garg.GetGenericParameterConstraints ();
-				if (csts.Length == 0 || csts [0] == typeof (object))
-					continue;
-				XmlElement el = document.CreateElement ("generic-method-constraint");
-				el.SetAttribute ("name", garg.ToString ());
-				el.SetAttribute ("generic-attribute",
-					garg.GenericParameterAttributes.ToString ());
-				ngeneric.AppendChild (el);
-				foreach (Type ct in csts) {
-					XmlElement cel = document.CreateElement ("type");
-					cel.AppendChild (document.CreateTextNode (ct.FullName));
-					el.AppendChild (cel);
-				}
-			}
-			if (ngeneric != null && ngeneric.FirstChild != null)
-				p.AppendChild (ngeneric);
-#endif
-
+			MemberData.OutputGenericParameters (document, p, mbase);
 		}
 
 		public override bool NoMemberAttributes {
 			get { return noAtts; }
 			set { noAtts = value; }
 		}
-		
+
 		public override string ParentTag {
 			get { return "methods"; }
 		}
@@ -814,7 +917,7 @@ namespace Mono.AssemblyInfo
 
 	class ConstructorData : MethodData
 	{
-		public ConstructorData (XmlDocument document, XmlNode parent, ConstructorInfo [] members)
+		public ConstructorData (XmlDocument document, XmlNode parent, MethodDefinition [] members)
 			: base (document, parent, members)
 		{
 		}
@@ -830,9 +933,9 @@ namespace Mono.AssemblyInfo
 
 	class ParameterData : BaseData
 	{
-		private ParameterInfo[] parameters;
+		private IList<ParameterDefinition> parameters;
 
-		public ParameterData (XmlDocument document, XmlNode parent, ParameterInfo[] parameters)
+		public ParameterData (XmlDocument document, XmlNode parent, IList<ParameterDefinition> parameters)
 			: base (document, parent)
 		{
 			this.parameters = parameters;
@@ -840,44 +943,43 @@ namespace Mono.AssemblyInfo
 
 		public override void DoOutput ()
 		{
-			XmlNode parametersNode = document.CreateElement ("parameters", null);
+			XmlNode parametersNode = document.CreateElement ("parameters");
 			parent.AppendChild (parametersNode);
 
-			foreach (ParameterInfo parameter in parameters) {
-				XmlNode paramNode = document.CreateElement ("parameter", null);
+			foreach (ParameterDefinition parameter in parameters) {
+				XmlNode paramNode = document.CreateElement ("parameter");
 				parametersNode.AppendChild (paramNode);
 				AddAttribute (paramNode, "name", parameter.Name);
-				AddAttribute (paramNode, "position", parameter.Position.ToString(CultureInfo.InvariantCulture));
+				AddAttribute (paramNode, "position", parameter.Method.Parameters.IndexOf(parameter).ToString(CultureInfo.InvariantCulture));
 				AddAttribute (paramNode, "attrib", ((int) parameter.Attributes).ToString());
 
 				string direction = "in";
 
-				if (parameter.ParameterType.IsByRef) {
+				if (parameter.ParameterType is ByReferenceType)
 					direction = parameter.IsOut ? "out" : "ref";
-				}
 
-				Type t = parameter.ParameterType;
-				AddAttribute (paramNode, "type", t.ToString ());
+				TypeReference t = parameter.ParameterType;
+				AddAttribute (paramNode, "type", Utils.CleanupTypeName (t));
 
 				if (parameter.IsOptional) {
 					AddAttribute (paramNode, "optional", "true");
-					if (parameter.DefaultValue != System.DBNull.Value)
-						AddAttribute (paramNode, "defaultValue", (parameter.DefaultValue == null) ? "NULL" : parameter.DefaultValue.ToString ());
+					if (parameter.HasConstant)
+						AddAttribute (paramNode, "defaultValue", parameter.Constant == null ? "NULL" : parameter.Constant.ToString ());
 				}
 
 				if (direction != "in")
 					AddAttribute (paramNode, "direction", direction);
 
-				AttributeData.OutputAttributes (document, paramNode, parameter.GetCustomAttributes (false));
+				AttributeData.OutputAttributes (document, paramNode, parameter.CustomAttributes);
 			}
 		}
 	}
 
 	class AttributeData : BaseData
 	{
-		object [] atts;
+		IList<CustomAttribute> atts;
 
-		AttributeData (XmlDocument doc, XmlNode parent, object[] attributes)
+		AttributeData (XmlDocument doc, XmlNode parent, IList<CustomAttribute> attributes)
 			: base (doc, parent)
 		{
 			atts = attributes;
@@ -888,7 +990,7 @@ namespace Mono.AssemblyInfo
 			if (document == null)
 				throw new InvalidOperationException ("Document not set");
 
-			if (atts == null || atts.Length == 0)
+			if (atts == null || atts.Count == 0)
 				return;
 
 			XmlNode natts = parent.SelectSingleNode("attributes");
@@ -897,108 +999,316 @@ namespace Mono.AssemblyInfo
 				parent.AppendChild (natts);
 			}
 
-			for (int i = 0; i < atts.Length; ++i) {
-				Type t = atts [i].GetType ();
-				if (!t.IsPublic && !t.Name.EndsWith ("TODOAttribute"))
-					continue;
+			for (int i = 0; i < atts.Count; ++i) {
+				CustomAttribute att = atts [i];
 
-				// we ignore attributes that inherit from SecurityAttribute on purpose as they:
-				// * aren't part of GetCustomAttributes in Fx 1.0/1.1;
-				// * are encoded differently and in a different metadata table; and
-				// * won't ever exactly match MS implementation (from a syntax pov)
-				if (t.IsSubclassOf (typeof (SecurityAttribute)))
+				string attName = Utils.CleanupTypeName (att.Constructor.DeclaringType);
+				if (SkipAttribute (att))
 					continue;
 
 				XmlNode node = document.CreateElement ("attribute");
-				AddAttribute (node, "name", t.ToString ());
+				AddAttribute (node, "name", attName);
 
 				XmlNode properties = null;
-				foreach (PropertyInfo pi in TypeData.GetProperties (t)) {
-					if (pi.Name == "TypeId")
+
+				Dictionary<string, object> attribute_mapping = CreateAttributeMapping (att);
+
+				foreach (string name in attribute_mapping.Keys) {
+					if (name == "TypeId")
 						continue;
 
 					if (properties == null) {
 						properties = node.AppendChild (document.CreateElement ("properties"));
 					}
 
-					try {
-						object o = pi.GetValue (atts [i], null);
+					object o = attribute_mapping [name];
 
-						XmlNode n = properties.AppendChild (document.CreateElement ("property"));
-						AddAttribute (n, "name", pi.Name);
+					XmlNode n = properties.AppendChild (document.CreateElement ("property"));
+					AddAttribute (n, "name", name);
 
-						if (o == null) {
-							AddAttribute (n, "null", "true");
-							continue;
-						}
-
-						string value = o.ToString ();
-						if (t == typeof (GuidAttribute))
-							value = value.ToUpper ();
-
-						AddAttribute (n, "value", value);
-					}
-					catch (TargetInvocationException) {
+					if (o == null) {
+						AddAttribute (n, "value", "null");
 						continue;
 					}
+					
+					string value = o.ToString ();
+					if (attName.EndsWith ("GuidAttribute"))
+						value = value.ToUpper ();
+					AddAttribute (n, "value", value);
 				}
 
 				natts.AppendChild (node);
 			}
 		}
 
-		public static void OutputAttributes (XmlDocument doc, XmlNode parent, object[] attributes)
+		static Dictionary<string, object> CreateAttributeMapping (CustomAttribute attribute)
+		{
+			var mapping = new Dictionary<string, object> ();
+
+			PopulateMapping (mapping, attribute);
+
+			var constructor = attribute.Constructor.Resolve ();
+			if (constructor == null || constructor.Parameters.Count == 0)
+				return mapping;
+
+			PopulateMapping (mapping, constructor, attribute);
+
+			return mapping;
+		}
+
+		static void PopulateMapping (Dictionary<string, object> mapping, CustomAttribute attribute)
+		{
+			foreach (var named_argument in attribute.Properties) {
+				var name = named_argument.Name;
+				var arg = named_argument.Argument;
+
+				if (arg.Value is CustomAttributeArgument)
+					arg = (CustomAttributeArgument) arg.Value;
+
+				mapping.Add (name, GetArgumentValue (arg.Type, arg.Value));
+			}
+		}
+
+		static Dictionary<FieldReference, int> CreateArgumentFieldMapping (MethodDefinition constructor)
+		{
+			Dictionary<FieldReference, int> field_mapping = new Dictionary<FieldReference, int> ();
+
+			int? argument = null;
+
+			foreach (Instruction instruction in constructor.Body.Instructions) {
+				switch (instruction.OpCode.Code) {
+				case Code.Ldarg_1:
+					argument = 1;
+					break;
+				case Code.Ldarg_2:
+					argument = 2;
+					break;
+				case Code.Ldarg_3:
+					argument = 3;
+					break;
+				case Code.Ldarg:
+				case Code.Ldarg_S:
+					argument = ((ParameterDefinition) instruction.Operand).Index + 1;
+					break;
+
+				case Code.Stfld:
+					FieldReference field = (FieldReference) instruction.Operand;
+					if (field.DeclaringType.FullName != constructor.DeclaringType.FullName)
+						continue;
+
+					if (!argument.HasValue)
+						break;
+
+					if (!field_mapping.ContainsKey (field))
+						field_mapping.Add (field, (int) argument - 1);
+
+					argument = null;
+					break;
+				}
+			}
+
+			return field_mapping;
+		}
+
+		static Dictionary<PropertyDefinition, FieldReference> CreatePropertyFieldMapping (TypeDefinition type)
+		{
+			Dictionary<PropertyDefinition, FieldReference> property_mapping = new Dictionary<PropertyDefinition, FieldReference> ();
+
+			foreach (PropertyDefinition property in type.Properties) {
+				if (property.GetMethod == null)
+					continue;
+				if (!property.GetMethod.HasBody)
+					continue;
+
+				foreach (Instruction instruction in property.GetMethod.Body.Instructions) {
+					if (instruction.OpCode.Code != Code.Ldfld)
+						continue;
+
+					FieldReference field = (FieldReference) instruction.Operand;
+					if (field.DeclaringType.FullName != type.FullName)
+						continue;
+
+					property_mapping.Add (property, field);
+					break;
+				}
+			}
+
+			return property_mapping;
+		}
+
+		static void PopulateMapping (Dictionary<string, object> mapping, MethodDefinition constructor, CustomAttribute attribute)
+		{
+			if (!constructor.HasBody)
+				return;
+
+			// Custom handling for attributes with arguments which cannot be easily extracted
+			var ca = attribute.ConstructorArguments;
+			switch (constructor.DeclaringType.FullName) {
+			case "System.Runtime.CompilerServices.DecimalConstantAttribute":
+				var dca = constructor.Parameters[2].ParameterType == constructor.Module.TypeSystem.Int32 ?
+					new DecimalConstantAttribute ((byte) ca[0].Value, (byte) ca[1].Value, (int) ca[2].Value, (int) ca[3].Value, (int) ca[4].Value) :
+					new DecimalConstantAttribute ((byte) ca[0].Value, (byte) ca[1].Value, (uint) ca[2].Value, (uint) ca[3].Value, (uint) ca[4].Value);
+
+				mapping.Add ("Value", dca.Value);
+				return;
+			case "System.ComponentModel.BindableAttribute":
+				if (ca.Count != 1)
+					break;
+
+				if (constructor.Parameters[0].ParameterType == constructor.Module.TypeSystem.Boolean) {
+					mapping.Add ("Bindable", ca[0].Value);
+				} else {
+					throw new NotImplementedException ();
+				}
+
+				return;
+			}
+
+			var field_mapping = CreateArgumentFieldMapping (constructor);
+			var property_mapping = CreatePropertyFieldMapping ((TypeDefinition) constructor.DeclaringType);
+
+			foreach (var pair in property_mapping) {
+				int argument;
+				if (!field_mapping.TryGetValue (pair.Value, out argument))
+					continue;
+
+				var ca_arg = ca [argument];
+				if (ca_arg.Value is CustomAttributeArgument)
+					ca_arg = (CustomAttributeArgument) ca_arg.Value;
+
+				mapping.Add (pair.Key.Name, GetArgumentValue (ca_arg.Type, ca_arg.Value));
+			}
+		}
+
+		static object GetArgumentValue (TypeReference reference, object value)
+		{
+			var type = reference.Resolve ();
+			if (type == null)
+				return value;
+
+			if (type.IsEnum) {
+				if (IsFlaggedEnum (type))
+					return GetFlaggedEnumValue (type, value);
+
+				return GetEnumValue (type, value);
+			}
+
+			return value;
+		}
+
+		static bool IsFlaggedEnum (TypeDefinition type)
+		{
+			if (!type.IsEnum)
+				return false;
+
+			if (type.CustomAttributes.Count == 0)
+				return false;
+
+			foreach (CustomAttribute attribute in type.CustomAttributes)
+				if (attribute.Constructor.DeclaringType.FullName == "System.FlagsAttribute")
+					return true;
+
+			return false;
+		}
+
+		static object GetFlaggedEnumValue (TypeDefinition type, object value)
+		{
+			long flags = Convert.ToInt64 (value);
+			var signature = new StringBuilder ();
+
+			for (int i = type.Fields.Count - 1; i >= 0; i--) {
+				FieldDefinition field = type.Fields [i];
+
+				if (!field.HasConstant)
+					continue;
+
+				long flag = Convert.ToInt64 (field.Constant);
+
+				if (flag == 0)
+					continue;
+
+				if ((flags & flag) == flag) {
+					if (signature.Length != 0)
+						signature.Append (", ");
+
+					signature.Append (field.Name);
+					flags -= flag;
+				}
+			}
+
+			return signature.ToString ();
+		}
+
+		static object GetEnumValue (TypeDefinition type, object value)
+		{
+			foreach (FieldDefinition field in type.Fields) {
+				if (!field.HasConstant)
+					continue;
+
+				if (Comparer.Default.Compare (field.Constant, value) == 0)
+					return field.Name;
+			}
+
+			return value;
+		}
+
+		static bool SkipAttribute (CustomAttribute attribute)
+		{
+			var type_name = Utils.CleanupTypeName (attribute.Constructor.DeclaringType);
+
+			return !TypeHelper.IsPublic (attribute)
+				|| type_name.EndsWith ("TODOAttribute");
+		}
+
+		public static void OutputAttributes (XmlDocument doc, XmlNode parent, IList<CustomAttribute> attributes)
 		{
 			AttributeData ad = new AttributeData (doc, parent, attributes);
 			ad.DoOutput ();
 		}
-
-		private static bool MustDocumentAttribute (Type attributeType)
-		{
-			// only document MonoTODOAttribute and public attributes
-			return attributeType.Name.EndsWith ("TODOAttribute") || attributeType.IsPublic;
-		}
 	}
 
-	class Parameters
-	{
-		private Parameters () {}
+	static class Parameters {
 
-		public static string GetSignature (ParameterInfo [] infos)
+		public static string GetSignature (IList<ParameterDefinition> infos)
 		{
-			if (infos == null || infos.Length == 0)
+			if (infos == null || infos.Count == 0)
 				return "";
 
-			StringBuilder sb = new StringBuilder ();
-			foreach (ParameterInfo info in infos) {
-				string modifier;
-				if (info.IsIn)
-					modifier = "in ";
-				else if (info.IsRetval)
-					modifier = "ref ";
-				else if (info.IsOut)
-					modifier = "out ";
-				else
-					modifier = "";
+			var signature = new StringBuilder ();
+			for (int i = 0; i < infos.Count; i++) {
 
-				string type_name = info.ParameterType.ToString ().Replace ('<', '[').Replace ('>', ']');
-				sb.AppendFormat ("{0}{1}, ", modifier, type_name);
+				if (i > 0)
+					signature.Append (", ");
+
+				ParameterDefinition info = infos [i];
+
+				string modifier;
+				if ((info.Attributes & ParameterAttributes.In) != 0)
+					modifier = "in";
+				else if ((info.Attributes & ParameterAttributes.Out) != 0)
+					modifier = "out";
+				else
+					modifier = string.Empty;
+
+				if (modifier.Length > 0)
+					signature.AppendFormat ("{0} ", modifier);
+
+				signature.Append (Utils.CleanupTypeName (info.ParameterType));
 			}
 
-			sb.Length -= 2; // remove ", "
-			return sb.ToString ();
+			return signature.ToString ();
 		}
 
 	}
-	
-	class TypeComparer : IComparer
+
+	class TypeReferenceComparer : IComparer
 	{
-		public static TypeComparer Default = new TypeComparer ();
+		public static TypeReferenceComparer Default = new TypeReferenceComparer ();
 
 		public int Compare (object a, object b)
 		{
-			Type ta = (Type) a;
-			Type tb = (Type) b;
+			TypeReference ta = (TypeReference) a;
+			TypeReference tb = (TypeReference) b;
 			int result = String.Compare (ta.Namespace, tb.Namespace);
 			if (result != 0)
 				return result;
@@ -1007,34 +1317,35 @@ namespace Mono.AssemblyInfo
 		}
 	}
 
-	class MemberInfoComparer : IComparer
+	class MemberReferenceComparer : IComparer
 	{
-		public static MemberInfoComparer Default = new MemberInfoComparer ();
+		public static MemberReferenceComparer Default = new MemberReferenceComparer ();
 
 		public int Compare (object a, object b)
 		{
-			MemberInfo ma = (MemberInfo) a;
-			MemberInfo mb = (MemberInfo) b;
+			MemberReference ma = (MemberReference) a;
+			MemberReference mb = (MemberReference) b;
 			return String.Compare (ma.Name, mb.Name);
 		}
 	}
 
-	class MethodBaseComparer : IComparer
+	class MethodDefinitionComparer : IComparer
 	{
-		public static MethodBaseComparer Default = new MethodBaseComparer ();
+		public static MethodDefinitionComparer Default = new MethodDefinitionComparer ();
 
 		public int Compare (object a, object b)
 		{
-			MethodBase ma = (MethodBase) a;
-			MethodBase mb = (MethodBase) b;
+			MethodDefinition ma = (MethodDefinition) a;
+			MethodDefinition mb = (MethodDefinition) b;
 			int res = String.Compare (ma.Name, mb.Name);
 			if (res != 0)
 				return res;
 
-			ParameterInfo [] pia = ma.GetParameters ();
-			ParameterInfo [] pib = mb.GetParameters ();
-			if (pia.Length != pib.Length)
-				return pia.Length - pib.Length;
+			IList<ParameterDefinition> pia = ma.Parameters ;
+			IList<ParameterDefinition> pib = mb.Parameters;
+			res = pia.Count - pib.Count;
+			if (res != 0)
+				return res;
 
 			string siga = Parameters.GetSignature (pia);
 			string sigb = Parameters.GetSignature (pib);
