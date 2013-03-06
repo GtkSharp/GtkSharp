@@ -12,10 +12,13 @@ CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb
 sources = \
 	Antialias.cs \
 	Cairo.cs \
+	CairoDebug.cs \
+	Color.cs \
 	Content.cs \
 	Context.cs \
 	Device.cs \
 	DirectFBSurface.cs \
+	Distance.cs \
 	Extend.cs \
 	FillRule.cs \
 	Filter.cs \
@@ -42,6 +45,8 @@ sources = \
 	Pattern.cs \
 	PatternType.cs \
 	PdfSurface.cs \
+	Point.cs \
+	PointD.cs \
 	PSSurface.cs \
 	RadialGradient.cs \
 	Rectangle.cs \
