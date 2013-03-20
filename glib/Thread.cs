@@ -28,18 +28,7 @@ namespace GLib
 	{
 		private Thread () {}
 		
-#if DISABLE_GTHREAD_CHECK
-		public static void Init ()
-		{
-			// GLib automatically inits threads in 2.31 and above
-			// http://developer.gnome.org/glib/unstable/glib-Deprecated-Thread-APIs.html#g-thread-init
-		}
-
-		public static bool Supported
-		{
-			get { return true; }
-		}
-#else
+#if ENABLE_GTHREAD_INIT
 		[DllImport ("libgthread-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_thread_init (IntPtr i);
 
@@ -56,6 +45,17 @@ namespace GLib
 			get {
 				return g_thread_get_initialized ();
 			}
+		}
+#else
+		public static void Init ()
+		{
+			// GLib automatically inits threads in 2.31 and above
+			// http://developer.gnome.org/glib/unstable/glib-Deprecated-Thread-APIs.html#g-thread-init
+		}
+
+		public static bool Supported
+		{
+			get { return true; }
 		}
 #endif
 
