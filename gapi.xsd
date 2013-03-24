@@ -28,7 +28,7 @@
                 <xs:element name="namespace" type="namespaceType" maxOccurs="unbounded"/>
                 <xs:element name="symbol" type="symbolType" maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
-            <xs:attribute type="xs:positiveInteger" name="parser_version"/>
+            <xs:attribute name="parser_version" type="xs:positiveInteger"/>
         </xs:complexType>
     </xs:element>
 
@@ -43,18 +43,18 @@
             <xs:element name="alias" type="aliasType"/>
             <xs:element name="class" type="classType"/>
         </xs:choice>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="library"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="library" type="xs:string"/>
     </xs:complexType>
 
     <xs:complexType name="symbolType">
-        <xs:attribute type="xs:string" name="type"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="default_value" use="optional"/>
-        <xs:attribute type="xs:string" name="marshal_type" use="optional"/>
-        <xs:attribute type="xs:string" name="call_fmt" use="optional"/>
-        <xs:attribute type="xs:string" name="from_fmt" use="optional"/>
+        <xs:attribute name="type" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="default_value" type="xs:string" use="optional"/>
+        <xs:attribute name="marshal_type" type="xs:string" use="optional"/>
+        <xs:attribute name="call_fmt" type="xs:string" use="optional"/>
+        <xs:attribute name="from_fmt" type="xs:string" use="optional"/>
     </xs:complexType>
 
     <!-- Definitions for Generatables -->
@@ -62,9 +62,9 @@
         <xs:sequence>
             <xs:element name="field" type="fieldType" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="type" type="xs:string"/>
     </xs:complexType>
 
     <xs:complexType name="boxedType">
@@ -73,11 +73,11 @@
             <xs:element name="constructor" type="constructorType"/>
             <xs:element name="field" type="fieldType"/>
         </xs:choice>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:boolean" name="opaque" use="optional"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
-        <xs:attribute type="xs:boolean" name="nohash" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="opaque" type="xs:boolean" use="optional"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+        <xs:attribute name="nohash" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="callbackType">
@@ -91,37 +91,37 @@
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="classType">
         <xs:sequence>
             <xs:element name="method" type="methodType" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
-        <xs:attribute type="xs:boolean" name="internal" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+        <xs:attribute name="internal" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="enumType">
         <xs:sequence>
             <xs:element name="member" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
-                    <xs:attribute type="xs:string" name="cname"/>
-                    <xs:attribute type="xs:string" name="name"/>
-                    <xs:attribute type="xs:string" name="value"/>
+                    <xs:attribute name="cname" type="xs:string"/>
+                    <xs:attribute name="name" type="xs:string"/>
+                    <xs:attribute name="value" type="xs:string"/>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:string" name="gtype" use="optional"/>
-        <xs:attribute type="xs:string" name="type" use="optional"/>
-        <xs:attribute type="xs:boolean" name="deprecated" use="optional"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="gtype" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="xs:string" use="optional"/>
+        <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="interfaceType">
@@ -133,10 +133,10 @@
             <xs:element name="virtual_method" type="virtual_methodType"/>
             <xs:element name="signal" type="signalType"/>
         </xs:choice>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:boolean" name="consume_only" use="optional"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="consume_only" type="xs:boolean" use="optional"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="objectType">
@@ -153,10 +153,10 @@
             <xs:element name="static-string" type="static-stringType"/>
             <xs:element name="custom-attribute" type="xs:string"/>
         </xs:choice>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
-        <xs:attribute type="xs:string" name="parent" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+        <xs:attribute name="parent" type="xs:string" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="structType">
@@ -166,11 +166,11 @@
             <xs:element name="field" type="fieldType"/>
             <xs:element name="callback" type="callbackType"/>
         </xs:choice>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:boolean" name="deprecated" use="optional"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
-        <xs:attribute type="xs:boolean" name="opaque" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+        <xs:attribute name="opaque" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
 
@@ -180,12 +180,12 @@
             <xs:element name="field" type="fieldType" maxOccurs="unbounded"/>
             <xs:element name="method" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
-                    <xs:attribute type="xs:string" name="vm" use="optional"/>
-                    <xs:attribute type="xs:string" name="signal_vm" use="optional"/>
+                    <xs:attribute name="vm" type="xs:string" use="optional"/>
+                    <xs:attribute name="signal_vm" type="xs:string" use="optional"/>
                 </xs:complexType>
             </xs:element>
         </xs:choice>
-        <xs:attribute type="xs:string" name="cname"/>
+        <xs:attribute name="cname" type="xs:string"/>
     </xs:complexType>
 
     <xs:complexType name="constructorType">
@@ -199,33 +199,33 @@
             </xs:element>
             <xs:element name="return-type" type="return-typeType"/>
         </xs:choice>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:boolean" name="deprecated" use="optional"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
-        <xs:attribute type="xs:boolean" name="preferred" use="optional"/>
-        <xs:attribute type="xs:boolean" name="shared" use="optional"/>
-        <xs:attribute type="xs:boolean" name="win32_utf8_variant" use="optional"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+        <xs:attribute name="preferred" type="xs:boolean" use="optional"/>
+        <xs:attribute name="shared" type="xs:boolean" use="optional"/>
+        <xs:attribute name="win32_utf8_variant" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
 	<xs:complexType name="fieldType">
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:string" name="type"/>
-        <xs:attribute type="xs:boolean" name="array" use="optional"/>
-        <xs:attribute type="xs:string" name="array_len" use="optional"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
-        <xs:attribute type="xs:string" name="access" use="optional"/>
-        <xs:attribute type="xs:boolean" name="writeable" use="optional"/>
-        <xs:attribute type="xs:positiveInteger" name="bits" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="type" type="xs:string"/>
+        <xs:attribute name="array" type="xs:boolean" use="optional"/>
+        <xs:attribute name="array_len" type="xs:string" use="optional"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+        <xs:attribute name="access" type="xs:string" use="optional"/>
+        <xs:attribute name="writeable" type="xs:boolean" use="optional"/>
+        <xs:attribute name="bits" type="xs:positiveInteger" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="implementsType">
         <xs:sequence>
             <xs:element name="interface" maxOccurs="unbounded">
                 <xs:complexType>
-                    <xs:attribute type="xs:string" name="cname"/>
-                    <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
+                    <xs:attribute name="cname" type="xs:string"/>
+                    <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
@@ -242,71 +242,71 @@
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:boolean" name="shared" use="optional"/>
-        <xs:attribute type="xs:boolean" name="new_flag" use="optional"/>
-        <xs:attribute type="xs:string" name="library" use="optional"/>
-        <xs:attribute type="xs:boolean" name="deprecated" use="optional"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
-        <xs:attribute type="xs:boolean" name="win32_utf8_variant" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="shared" type="xs:boolean" use="optional"/>
+        <xs:attribute name="new_flag" type="xs:boolean" use="optional"/>
+        <xs:attribute name="library" type="xs:string" use="optional"/>
+        <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+        <xs:attribute name="win32_utf8_variant" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="propertyType">
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:string" name="type"/>
-        <xs:attribute type="xs:boolean" name="construct" use="optional"/>
-        <xs:attribute type="xs:boolean" name="construct-only" use="optional"/>
-        <xs:attribute type="xs:boolean" name="new_flag" use="optional"/>
-        <xs:attribute type="xs:boolean" name="hidden" use="optional"/>
-        <xs:attribute type="xs:boolean" name="readable" use="optional"/>
-        <xs:attribute type="xs:boolean" name="writeable" use="optional"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="type" type="xs:string"/>
+        <xs:attribute name="construct" type="xs:boolean" use="optional"/>
+        <xs:attribute name="construct-only" type="xs:boolean" use="optional"/>
+        <xs:attribute name="new_flag" type="xs:boolean" use="optional"/>
+        <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+        <xs:attribute name="readable" type="xs:boolean" use="optional"/>
+        <xs:attribute name="writeable" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="signalType">
         <xs:complexContent>
             <xs:extension base="methodType">
-                <xs:attribute type="whenType" name="when" use="optional"/>
-                <xs:attribute type="xs:string" name="field_name" use="optional"/>
-                <xs:attribute type="xs:boolean" name="block_glue" use="optional"/>
-                <xs:attribute type="xs:boolean" name="manual" use="optional"/>
+                <xs:attribute name="when" type="whenType" use="optional"/>
+                <xs:attribute name="field_name" type="xs:string" use="optional"/>
+                <xs:attribute name="block_glue" type="xs:boolean" use="optional"/>
+                <xs:attribute name="manual" type="xs:boolean" use="optional"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="static-stringType">
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="cname"/>
-        <xs:attribute type="xs:string" name="value"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="cname" type="xs:string"/>
+        <xs:attribute name="value" type="xs:string"/>
     </xs:complexType>
 
     <xs:complexType name="virtual_methodType">
         <xs:complexContent>
             <xs:extension base="methodType">
-                <xs:attribute type="override_inType" name="override_in" use="optional"/>
-                <xs:attribute type="xs:boolean" name="padding" use="optional"/>
+                <xs:attribute name="override_in" type="override_inType" use="optional"/>
+                <xs:attribute name="padding" type="xs:boolean" use="optional"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
     <!-- Definitions for lower-level elements -->
     <xs:complexType name="parameterType">
-        <xs:attribute type="xs:string" name="type"/>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:boolean" name="array" use="optional"/>
-        <xs:attribute type="xs:boolean" name="null_term_array" use="optional"/>
-        <xs:attribute type="xs:boolean" name="ellipsis" use="optional"/>
-        <xs:attribute type="xs:boolean" name="owned" use="optional"/>
-        <xs:attribute type="xs:boolean" name="printf_format" use="optional"/>
-        <xs:attribute type="xs:boolean" name="printf_format_args" use="optional"/>
-        <xs:attribute type="scopeType" name="scope" use="optional"/>
+        <xs:attribute name="type" type="xs:string"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="array" type="xs:boolean" use="optional"/>
+        <xs:attribute name="null_term_array" type="xs:boolean" use="optional"/>
+        <xs:attribute name="ellipsis" type="xs:boolean" use="optional"/>
+        <xs:attribute name="owned" type="xs:boolean" use="optional"/>
+        <xs:attribute name="printf_format" type="xs:boolean" use="optional"/>
+        <xs:attribute name="printf_format_args" type="xs:boolean" use="optional"/>
+        <xs:attribute name="scope" type="scopeType" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="constructor-parameterType">
         <xs:complexContent>
             <xs:extension base="parameterType">
-                <xs:attribute type="xs:string" name="property_name" use="optional"/>
+                <xs:attribute name="property_name" type="xs:string" use="optional"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -314,18 +314,18 @@
     <xs:complexType name="method-parameterType">
         <xs:complexContent>
             <xs:extension base="parameterType">
-                <xs:attribute type="pass_asType" name="pass_as" use="optional"/>
+                <xs:attribute name="pass_as" type="pass_asType" use="optional"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="return-typeType">
-        <xs:attribute type="xs:string" name="type"/>
-        <xs:attribute type="xs:string" name="element_type" use="optional"/>
-        <xs:attribute type="xs:boolean" name="owned" use="optional"/>
-        <xs:attribute type="xs:boolean" name="elements_owned" use="optional"/>
-        <xs:attribute type="xs:boolean" name="null_term_array" use="optional"/>
-        <xs:attribute type="xs:string" name="array_length_param" use="optional"/>
+        <xs:attribute name="type" type="xs:string"/>
+        <xs:attribute name="element_type" type="xs:string" use="optional"/>
+        <xs:attribute name="owned" type="xs:boolean" use="optional"/>
+        <xs:attribute name="elements_owned" type="xs:boolean" use="optional"/>
+        <xs:attribute name="null_term_array" type="xs:boolean" use="optional"/>
+        <xs:attribute name="array_length_param" type="xs:string" use="optional"/>
     </xs:complexType>
 
     <!-- Definitions for allowed values -->
