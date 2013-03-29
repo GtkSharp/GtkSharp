@@ -1,0 +1,28 @@
+The audit/ folder contains various tools that are used to analyze API changes.
+
+This analysis is done by inspecting the assembly binaries, so you need to
+compile them first.
+
+The usual workflow is as follows:
+
+1. Generate the API info for the current version of the assemblies
+
+    ./get-apiinfo.pl .. data/curr
+
+This will find all *.dll files in Gtk#, produce one <assembly-name>.apiinfo
+file per DLL, and save them in the data/curr folder
+
+2. Analyze differences between a baseline and the current API info
+
+    ./get-apidiff.pl base data/curr data/diff
+
+This will generate one <assembly-name>.apidiff file for each *.apiinfo file in
+the base folder, and save it in the data/diff folder.
+
+3. Generate an HTML report for the API differences
+
+    mono gen-apidiff-html.exe data/diff html/diff.html
+
+This will use the data in data/diff to generate a single HTML file and save it
+as html/diff.html. You can then open this file in a browser to review the API
+changes.
