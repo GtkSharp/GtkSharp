@@ -18,6 +18,8 @@ AC_SUBST(PACKAGE_VERSION)
 
 WIN64DEFINES=
 
+AC_MSG_CHECKING([whether we're on Windows])
+
 case "$host" in
 	x86_64-*-mingw*|x86_64-*-cygwin*)
 		WIN64DEFINES="-define:WIN64LONGS"
