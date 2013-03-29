@@ -1,4 +1,4 @@
-MCS=mcs
+MCS=dmcs
 
 COMMON_SOURCES = \
 	AssemblyResolver.cs	\
