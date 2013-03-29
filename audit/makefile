@@ -7,7 +7,7 @@ COMMON_SOURCES = \
 
 APIINFO_SOURCES = mono-api-info.cs $(COMMON_SOURCES)
 
-all: extract-missing.exe mono-api-info.exe mono-api-diff.exe
+all: extract-missing.exe mono-api-info.exe mono-api-diff.exe gen-apidiff-html.exe
 
 check: all
 	rm -rf curr diff
@@ -23,6 +23,9 @@ mono-api-info.exe: $(APIINFO_SOURCES)
 
 extract-missing.exe: extract-missing.cs
 	$(MCS) extract-missing.cs
+
+gen-apidiff-html.exe: gen-apidiff-html.cs
+	$(MCS) -out:$@ $^
 
 clean:
 	rm -f *.exe
