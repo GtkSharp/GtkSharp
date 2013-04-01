@@ -13,11 +13,11 @@ POLICY_VERSIONS=
 
 sources =			\
 	AppInfoAdapter.cs	\
-	File.cs			\
 	FileAdapter.cs		\
 	FileEnumerator.cs	\
 	FileFactory.cs		\
-	GioStream.cs
+	GioStream.cs		\
+	IFile.cs
 
 add_dist = gio-sharp-3.0.pc.in
 
