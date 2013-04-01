@@ -38,7 +38,7 @@ namespace GtkDemo
 			Destroy ();
 		}
 
-		TreeModel CreateCompletionModel ()
+		ITreeModel CreateCompletionModel ()
 		{
 			ListStore store = new ListStore (typeof (string));
 

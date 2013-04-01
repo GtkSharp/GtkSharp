@@ -222,7 +222,7 @@ namespace GtkDemo
 		private void TreeChanged (object o, EventArgs args)
 		{
 			TreeIter iter;
-			TreeModel model;
+			ITreeModel model;
 
 			if (treeView.Selection.GetSelected (out model, out iter)) {
 				Type type = (Type) model.GetValue (iter, 1);

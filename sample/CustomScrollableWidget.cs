@@ -3,6 +3,7 @@ using Gtk;
 using System;
 
 class CustomScrollableWidgetTest {
+
 	public static int Main (string[] args)
 	{
 		Gtk.Application.Init ();
@@ -53,7 +54,7 @@ class DerivedScrollableWidget<T> : CustomScrollableWidget<T>
 	{ }
 }
 
-class CustomScrollableWidget<T> : CustomBase, ScrollableImplementor {
+class CustomScrollableWidget<T> : CustomBase, IScrollableImplementor {
 	private int num_rows = 20;
 	private string label;
 	private Pango.Layout layout;

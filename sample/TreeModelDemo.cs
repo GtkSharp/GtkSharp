@@ -57,7 +57,7 @@ namespace GtkSamples {
 
 	}
 
-	public class MyTreeModel : GLib.Object, TreeModelImplementor {
+	public class MyTreeModel : GLib.Object, ITreeModelImplementor {
 
 		Assembly[] assemblies;
 

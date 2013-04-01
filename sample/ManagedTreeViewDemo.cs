@@ -32,13 +32,13 @@ namespace GtkSamples {
 			}
 		}
 
-		private static void CellDataA (Gtk.TreeViewColumn tree_column, Gtk.CellRenderer cell, Gtk.TreeModel tree_model, Gtk.TreeIter iter)
+		private static void CellDataA (Gtk.TreeViewColumn tree_column, Gtk.CellRenderer cell, Gtk.ITreeModel tree_model, Gtk.TreeIter iter)
 		{
 			Pair val = (Pair) store.GetValue (iter, 0);
 			((CellRendererText) cell).Text = val.a;
 		}
 		
-		private static void CellDataB (Gtk.TreeViewColumn tree_column, Gtk.CellRenderer cell, Gtk.TreeModel tree_model, Gtk.TreeIter iter)
+		private static void CellDataB (Gtk.TreeViewColumn tree_column, Gtk.CellRenderer cell, Gtk.ITreeModel tree_model, Gtk.TreeIter iter)
 		{
 			Pair val = (Pair) store.GetValue (iter, 0);
 			((CellRendererText) cell).Text = val.b;

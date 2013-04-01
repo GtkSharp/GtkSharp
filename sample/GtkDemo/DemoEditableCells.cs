@@ -162,7 +162,7 @@ namespace GtkDemo
 		private void RemoveItem (object o, EventArgs args)
 		{
  			TreeIter iter;
- 			TreeModel model;
+			ITreeModel model;
 
  			if (treeView.Selection.GetSelected (out model, out iter)) {
  				int position = store.GetPath (iter).Indices[0];

@@ -118,7 +118,7 @@ namespace GtkDemo
 		{
 			TreeSelection selection = (TreeSelection)o;
 			TreeIter iter;
-			TreeModel model;
+			ITreeModel model;
 
 			if (selection.GetSelected (out model, out iter)) {
 				string id = (string) model.GetValue (iter, (int)Column.Id);
