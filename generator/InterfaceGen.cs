@@ -1,9 +1,12 @@
 // GtkSharp.Generation.InterfaceGen.cs - The Interface Generatable.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Authors:
+//   Mike Kestner <mkestner@speakeasy.net>
+//   Andres G. Aragoneses <knocte@gmail.com>
 //
 // Copyright (c) 2001-2003 Mike Kestner
 // Copyright (c) 2004, 2007 Novell, Inc.
+// Copyright (c) 2013 Andres G. Aragoneses
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -58,14 +61,40 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string AdapterName {
+			get {
+				return base.Name + "Adapter";
+			}
+		}
+
+		public string QualifiedAdapterName {
+			get {
+				return NS + "." + AdapterName;
+			}
+		}
+
+		public string ImplementorName {
+			get {
+				return Name + "Implementor";
+			}
+		}
+
+		public override string Name {
+			get {
+				return "I" + base.Name;
+			}
+		}
+
 		public override string CallByName (string var, bool owned)
 		{
-			return String.Format ("{0} == null ? IntPtr.Zero : (({0} is GLib.Object) ? ({0} as GLib.Object).{1} : ({0} as {2}Adapter).{1})", var, owned ? "OwnedHandle" : "Handle", QualifiedName);
+			return String.Format (
+				"{0} == null ? IntPtr.Zero : (({0} is GLib.Object) ? ({0} as GLib.Object).{1} : ({0} as {2}).{1})",
+				var, owned ? "OwnedHandle" : "Handle", QualifiedAdapterName);
 		}
 
 		public override string FromNative (string var, bool owned)
 		{
-			return QualifiedName + "Adapter.GetObject (" + var + ", " + (owned ? "true" : "false") + ")";
+			return QualifiedAdapterName + ".GetObject (" + var + ", " + (owned ? "true" : "false") + ")";
 		}
 
 		public override bool ValidateForSubclass ()
@@ -90,9 +119,9 @@ namespace GtkSharp.Generation {
 		{
 			sw.WriteLine ("\t\tstatic {0} iface;", class_struct_name);
 			sw.WriteLine ();
-			sw.WriteLine ("\t\tstatic " + Name + "Adapter ()");
+			sw.WriteLine ("\t\tstatic " + AdapterName + " ()");
 			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tGLib.GType.Register (_gtype, typeof({0}Adapter));", Name);
+			sw.WriteLine ("\t\t\tGLib.GType.Register (_gtype, typeof ({0}));", AdapterName);
 			foreach (InterfaceVM vm in interface_vms) {
 				if (vm.Validate (new LogWriter (QualifiedName)))
 					sw.WriteLine ("\t\t\tiface.{0} = new {0}NativeDelegate ({0}_cb);", vm.Name);
@@ -135,12 +164,12 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 
 			if (!IsConsumeOnly) {
-				sw.WriteLine ("\t\tpublic " + Name + "Adapter ()");
+				sw.WriteLine ("\t\tpublic " + AdapterName + " ()");
 				sw.WriteLine ("\t\t{");
 				sw.WriteLine ("\t\t\tInitHandler = new GLib.GInterfaceInitHandler (Initialize);");
 				sw.WriteLine ("\t\t}");
 				sw.WriteLine ();
-				sw.WriteLine ("\t\tpublic {0}Adapter ({0}Implementor implementor)", Name);
+				sw.WriteLine ("\t\tpublic {0} ({1} implementor)", AdapterName, ImplementorName);
 				sw.WriteLine ("\t\t{");
 				sw.WriteLine ("\t\t\tif (implementor == null)");
 				sw.WriteLine ("\t\t\t\tthrow new ArgumentNullException (\"implementor\");");
@@ -151,7 +180,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ();
 			}
 
-			sw.WriteLine ("\t\tpublic " + Name + "Adapter (IntPtr handle)");
+			sw.WriteLine ("\t\tpublic " + AdapterName + " (IntPtr handle)");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tif (!_gtype.IsInstance (handle))");
 			sw.WriteLine ("\t\t\t\tthrow new ArgumentException (\"The gobject doesn't implement the GInterface of this adapter\", \"handle\");");
@@ -205,11 +234,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tif (obj == null)");
 			sw.WriteLine ("\t\t\t\treturn null;");
 			if (!IsConsumeOnly) {
-				sw.WriteLine ("\t\t\telse if (obj is " + Name + "Implementor)");
-				sw.WriteLine ("\t\t\t\treturn new {0}Adapter (obj as {0}Implementor);", Name);
+				sw.WriteLine ("\t\t\telse if (obj is " + ImplementorName + ")");
+				sw.WriteLine ("\t\t\t\treturn new {0} (obj as {1});", AdapterName, ImplementorName);
 			}
 			sw.WriteLine ("\t\t\telse if (obj as " + Name + " == null)");
-			sw.WriteLine ("\t\t\t\treturn new {0}Adapter (obj.Handle);", Name);
+			sw.WriteLine ("\t\t\t\treturn new {0} (obj.Handle);", AdapterName);
 			sw.WriteLine ("\t\t\telse");
 			sw.WriteLine ("\t\t\t\treturn obj as {0};", Name);
 			sw.WriteLine ("\t\t}");
@@ -218,9 +247,9 @@ namespace GtkSharp.Generation {
 
 		void GenerateImplementorProp (StreamWriter sw)
 		{
-			sw.WriteLine ("\t\tpublic " + Name + "Implementor Implementor {");
+			sw.WriteLine ("\t\tpublic " + ImplementorName + " Implementor {");
 			sw.WriteLine ("\t\t\tget {");
-			sw.WriteLine ("\t\t\t\treturn implementor as {0}Implementor;", Name);
+			sw.WriteLine ("\t\t\t\treturn implementor as {0};", ImplementorName);
 			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
@@ -228,7 +257,7 @@ namespace GtkSharp.Generation {
 
 		void GenerateAdapter (GenerationInfo gen_info)
 		{
-			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name + "Adapter");
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (AdapterName);
 
 			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();
@@ -236,7 +265,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();
 			sw.WriteLine ("#region Autogenerated code");
-			sw.WriteLine ("\tpublic partial class " + Name + "Adapter : GLib.GInterfaceAdapter, " + QualifiedName + " {");
+			sw.WriteLine ("\tpublic partial class " + AdapterName + " : GLib.GInterfaceAdapter, " + QualifiedName + " {");
 			sw.WriteLine ();
 
 			if (!IsConsumeOnly) {
@@ -279,9 +308,9 @@ namespace GtkSharp.Generation {
 
 			StreamWriter sw = gen_info.Writer;
 			sw.WriteLine ();
-			sw.WriteLine ("\t[GLib.GInterface (typeof (" + Name + "Adapter))]");
+			sw.WriteLine ("\t[GLib.GInterface (typeof (" + AdapterName + "))]");
 			string access = IsInternal ? "internal" : "public";
-			sw.WriteLine ("\t" + access + " partial interface " + Name + "Implementor : GLib.IWrapper {");
+			sw.WriteLine ("\t" + access + " partial interface " + ImplementorName + " : GLib.IWrapper {");
 			sw.WriteLine ();
 			var vm_table = new Dictionary<string, InterfaceVM> ();
 			foreach (InterfaceVM vm in interface_vms) {

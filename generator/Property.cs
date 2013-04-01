@@ -144,8 +144,11 @@ namespace GtkSharp.Generation {
 				if (table.IsOpaque (CType) || table.IsBoxed (CType)) {
 					sw.WriteLine(indent + "\t" + CSType + " ret = (" + CSType + ") val;");
 				} else if (table.IsInterface (CType)) {
+					var igen = table.GetInterfaceGen (CType);
+
 					// Do we have to dispose the GLib.Object from the GLib.Value?
-					sw.WriteLine (indent + "\t{0} ret = {0}Adapter.GetObject ((GLib.Object) val);", CSType);
+					sw.WriteLine (indent + "\t{0} ret = {1}.GetObject ((GLib.Object) val);",
+					              igen.QualifiedName, igen.QualifiedAdapterName);
 				} else {
 					sw.Write(indent + "\t" + CSType + " ret = ");
 					sw.Write ("(" + CSType + ") ");

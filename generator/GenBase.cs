@@ -70,7 +70,7 @@ namespace GtkSharp.Generation {
 
 		public abstract string MarshalType { get; }
 
-		public string Name {
+		public virtual string Name {
 			get {
 				return elem.GetAttribute ("name");
 			}

@@ -311,7 +311,12 @@ namespace GtkSharp.Generation {
 		{
 			return this[c_type] as ClassBase;
 		}
-			
+
+		public InterfaceGen GetInterfaceGen (string c_type)
+		{
+			return this[c_type] as InterfaceGen;
+		}
+
 		public bool IsObject(string c_type)
 		{
 			if (this[c_type] is ObjectGen)

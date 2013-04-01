@@ -268,18 +268,22 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\tpublic " + parms[i].CSType + " " + parms[i].StudlyName + "{");
 				if (parms[i].PassAs != "out") {
 					sw.WriteLine ("\t\t\tget {");
-					if (SymbolTable.Table.IsInterface (parms [i].CType))
-						sw.WriteLine ("\t\t\t\treturn {0}Adapter.GetObject (Args [{1}] as GLib.Object);", parms [i].CSType, i);
-					else
+					if (SymbolTable.Table.IsInterface (parms [i].CType)) {
+						var igen = SymbolTable.Table.GetInterfaceGen (parms [i].CType);
+						sw.WriteLine ("\t\t\t\treturn {0}.GetObject (Args [{1}] as GLib.Object);", igen.QualifiedAdapterName, i);
+					} else {
 						sw.WriteLine ("\t\t\t\treturn ({0}) Args [{1}];", parms [i].CSType, i);
+					}
 					sw.WriteLine ("\t\t\t}");
 				}
 				if (parms[i].PassAs != "") {
 					sw.WriteLine ("\t\t\tset {");
-					if (SymbolTable.Table.IsInterface (parms [i].CType))
-						sw.WriteLine ("\t\t\t\tArgs [{0}] = value is {1}Adapter ? (value as {1}Adapter).Implementor : value;", i, parms [i].CSType);
-					else
-						sw.WriteLine ("\t\t\t\tArgs[" + i + "] = (" + parms[i].CSType + ")value;");
+					if (SymbolTable.Table.IsInterface (parms [i].CType)) {
+						var igen = SymbolTable.Table.GetInterfaceGen (parms [i].CType);
+						sw.WriteLine ("\t\t\t\tArgs [{0}] = value is {1} ? (value as {1}).Implementor : value;", i, igen.AdapterName);
+					} else {
+						sw.WriteLine ("\t\t\t\tArgs[" + i + "] = (" + parms [i].CSType + ")value;");
+					}
 					sw.WriteLine ("\t\t\t}");
 				}
 				sw.WriteLine ("\t\t}");
