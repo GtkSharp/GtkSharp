@@ -22,7 +22,7 @@ namespace Gtk {
 
 	using System;
 
-	public partial interface CellLayout {
+	public partial interface ICellLayout {
 
 		void SetAttributes (CellRenderer renderer, object[] attrs);
 

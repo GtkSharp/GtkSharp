@@ -31,12 +31,12 @@ namespace Gtk {
 		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_cell_renderer_start_editing (IntPtr handle, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, int flags);
 
-		public CellEditable StartEditing (Widget widget, Gdk.Event evnt, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
+		public ICellEditable StartEditing (Widget widget, Gdk.Event evnt, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
 		{
 			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (path);
 			IntPtr raw_ret = gtk_cell_renderer_start_editing (Handle, evnt.Handle, widget.Handle, native, ref background_area, ref cell_area, (int) flags);
 			GLib.Marshaller.Free (native);
-			Gtk.CellEditable ret = (Gtk.CellEditable) GLib.Object.GetObject(raw_ret);
+			var ret = (ICellEditable) GLib.Object.GetObject (raw_ret);
 			return ret;
 		}
 

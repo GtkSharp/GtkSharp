@@ -22,7 +22,7 @@ namespace Gtk {
 
 	using System;
 
-	public partial interface TreeModel {
+	public partial interface ITreeModel {
 
 		/// <summary>IterChildren Method</summary>
 		/// <remarks>To be completed</remarks>

@@ -24,7 +24,6 @@ sources = 				\
 	Button.cs			\
 	Calendar.cs			\
 	CellAreaBox.cs			\
-	CellLayout.cs			\
 	CellLayoutAdapter.cs		\
 	CellRenderer.cs		\
 	CellView.cs			\
@@ -44,6 +43,7 @@ sources = 				\
 	Global.cs			\
 	HBox.cs			\
 	HScale.cs			\
+	ICellLayout.cs			\
 	IconFactory.cs		\
 	IconSet.cs			\
 	IconTheme.cs			\
@@ -51,6 +51,7 @@ sources = 				\
 	Image.cs			\
 	ImageMenuItem.cs		\
 	Init.cs			\
+	ITreeModel.cs			\
 	ITreeNode.cs			\
 	Key.cs				\
 	Label.cs			\
@@ -98,7 +99,6 @@ sources = 				\
 	TreeEnumerator.cs		\
 	TreeIter.cs			\
 	TreeMenu.cs			\
-	TreeModel.cs			\
 	TreeModelAdapter.cs		\
 	TreeModelFilter.cs		\
 	TreeModelSort.cs		\

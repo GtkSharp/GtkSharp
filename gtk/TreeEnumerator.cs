@@ -1,4 +1,4 @@
-// TreeEnumerator.cs - .NET-style Enumerator for TreeModel classes
+// TreeEnumerator.cs - .NET-style Enumerator for ITreeModel classes
 //
 // Author: Eric Butler <eric@extremeboredom.net>
 //
@@ -27,11 +27,11 @@ namespace Gtk
 	internal class TreeEnumerator : IEnumerator
 	{
 		private Gtk.TreeIter iter;
-		private Gtk.TreeModel model;
+		private Gtk.ITreeModel model;
 		private bool reset = true;
 		private bool changed = false;
 		
-		public TreeEnumerator (TreeModel model)
+		public TreeEnumerator (ITreeModel model)
 		{
 			this.model = model;
 			

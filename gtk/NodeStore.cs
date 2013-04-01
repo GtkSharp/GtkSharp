@@ -81,7 +81,7 @@ namespace Gtk {
 			return implementor.GetEnumerator (); 
 		}
 
-		internal class NodeStoreImplementor : GLib.Object, TreeModelImplementor, IEnumerable {
+		internal class NodeStoreImplementor : GLib.Object, ITreeModelImplementor, IEnumerable {
 			TreeModelAdapter model_adapter;
  			GLib.GType[] ctypes; 
 			MemberInfo [] getters;
@@ -239,8 +239,8 @@ namespace Gtk {
 				return gch.Target as ITreeNode;
 			}
 
-			void TreeModelImplementor.RefNode (Gtk.TreeIter iter) { }
-			void TreeModelImplementor.UnrefNode (Gtk.TreeIter iter) { }
+			void ITreeModelImplementor.RefNode (Gtk.TreeIter iter) { }
+			void ITreeModelImplementor.UnrefNode (Gtk.TreeIter iter) { }
 #endregion
 
 			public bool GetIter (out TreeIter iter, TreePath path)
