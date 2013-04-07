@@ -117,10 +117,6 @@ namespace GtkSharp.Generation {
 				}
 				sw.WriteLine ("\t\t\tMarshal.StructureToPtr (native_iface, ifaceptr, false);");
 			}
-
-			foreach (Property prop in Properties.Values) {
-					sw.WriteLine ("\t\t\tGLib.Object.OverrideProperty (data, \"" + prop.CName + "\");");
-			}
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 		}

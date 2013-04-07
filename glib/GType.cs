@@ -37,10 +37,14 @@ namespace GLib {
 		IntPtr val;
 
 		struct GTypeInfo {
+
+			[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+			public delegate void ClassInitDelegate (IntPtr gobject_class_handle);
+
 			public ushort class_size;
 			public IntPtr base_init;
 			public IntPtr base_finalize;
-			public IntPtr class_init;
+			public ClassInitDelegate class_init;
 			public IntPtr class_finalize;
 			public IntPtr class_data;
 			public ushort instance_size;
@@ -356,19 +360,23 @@ namespace GLib {
 			return sb.ToString ();
 		}
 
-		internal static GType RegisterGObjectType (System.Type t)
+		internal static GType RegisterGObjectType (Object.ClassInitializer gobject_class_initializer)
 		{
-			GType parent_gtype = LookupGObjectType (t.BaseType);
-			string name = BuildEscapedName (t);
+			GType parent_gtype = LookupGObjectType (gobject_class_initializer.Type.BaseType);
+			string name = BuildEscapedName (gobject_class_initializer.Type);
+
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			GTypeQuery query;
 			g_type_query (parent_gtype.Val, out query);
 			GTypeInfo info = new GTypeInfo ();
 			info.class_size = (ushort) query.class_size;
 			info.instance_size = (ushort) query.instance_size;
+			info.class_init = gobject_class_initializer.ClassInit;
+
 			GType gtype = new GType (g_type_register_static (parent_gtype.Val, native_name, ref info, 0));
 			GLib.Marshaller.Free (native_name);
-			Register (gtype, t);
+			Register (gtype, gobject_class_initializer.Type);
+
 			return gtype;
 		}
 
