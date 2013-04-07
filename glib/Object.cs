@@ -139,38 +139,6 @@ namespace GLib {
 			return GetObject (o, false);
 		}
 
-		private static void ConnectDefaultHandlers (GType gtype, System.Type t)
-		{
-			foreach (MethodInfo minfo in t.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
-				MethodInfo baseinfo = minfo.GetBaseDefinition ();
-				if (baseinfo == minfo)
-					continue;
-
-				foreach (object attr in baseinfo.GetCustomAttributes (typeof (DefaultSignalHandlerAttribute), false)) {
-					DefaultSignalHandlerAttribute sigattr = attr as DefaultSignalHandlerAttribute;
-					MethodInfo connector = sigattr.Type.GetMethod (sigattr.ConnectionMethod, BindingFlags.Static | BindingFlags.NonPublic, null, new Type[] { typeof (GType) }, new ParameterModifier [0]);
-					object[] parms = new object [1];
-					parms [0] = gtype;
-					connector.Invoke (null, parms);
-					break;
-				}
-			}
-					
-		}
-
-		private static void InvokeTypeInitializers (GType gtype, System.Type t)
-		{
-			object[] parms = {gtype, t};
-
-			BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic;
-
-			foreach (TypeInitializerAttribute tia in t.GetCustomAttributes (typeof (TypeInitializerAttribute), true)) {
-				MethodInfo m = tia.Type.GetMethod (tia.MethodName, flags);
-				if (m != null)
-					m.Invoke (null, parms);
-			}
- 		}
-		
 		//  Key: The Type for the set of properties
 		//  Value->SubKey: The pointer to the ParamSpec of the property
 		//  Value->SubValue: The corresponding PropertyInfo object
@@ -218,17 +186,16 @@ namespace GLib {
 
 		internal class ClassInitializer {
 
-			internal uint Idx { get; set; }
 			internal Type Type { get; private set; }
 			internal bool HandlersOverriden { get; private set; }
 
+			uint idx = 1;
 			bool is_first_subclass;
 			private GType gtype;
 			private List<GInterfaceAdapter> adapters = new List<GInterfaceAdapter> ();
 
 			internal ClassInitializer (Type type)
 			{
-				Idx = 1;
 				Type = type;
 				gtype = GType.RegisterGObjectType (this);
 				is_first_subclass = gtype.GetBaseType () == gtype.GetThresholdType ();
@@ -239,10 +206,10 @@ namespace GLib {
 				AddGInterfaces ();
 				gtype.EnsureClass (); //calls class_init
 
-				AddProperties (gtype, Type, is_first_subclass, this);
-				ConnectDefaultHandlers (gtype, Type);
-				InvokeTypeInitializers (gtype, Type);
-				AddInterfaceProperties (gtype, Type);
+				AddProperties ();
+				ConnectDefaultHandlers ();
+				InvokeTypeInitializers ();
+				AddInterfaceProperties ();
 				return gtype;
 			}
 
@@ -295,11 +262,11 @@ namespace GLib {
 
 			void OverrideProperty (IntPtr declaring_class, string name)
 			{
-				Object.OverrideProperty (declaring_class, Idx++, name);
-				Idx++;
+				Object.OverrideProperty (declaring_class, idx++, name);
+				idx++;
 			}
 
-			internal void OverrideHandlers (bool ctor, bool properties)
+			private void OverrideHandlers (bool ctor, bool properties)
 			{
 				OverrideHandlers (gtype.GetClassPtr (), ctor, properties);
 			}
@@ -319,6 +286,102 @@ namespace GLib {
 				}
 				Marshal.StructureToPtr (gobject_class, gobject_class_handle, false);
 				HandlersOverriden = true;
+			}
+
+			void AddProperties ()
+			{
+				if (is_first_subclass) {
+					IntPtr declaring_class = gtype.GetClassPtr ();
+					ParamSpec pspec = new ParamSpec ("gtk-sharp-managed-instance", "", "", GType.Pointer, ParamFlags.Writable | ParamFlags.ConstructOnly);
+					g_object_class_install_property (declaring_class, idx, pspec.Handle);
+					idx++;
+				}
+
+				foreach (PropertyInfo pinfo in Type.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
+					foreach (object attr in pinfo.GetCustomAttributes (typeof (PropertyAttribute), false)) {
+						if (pinfo.GetIndexParameters ().Length > 0)
+							throw new InvalidOperationException(String.Format("GLib.RegisterPropertyAttribute cannot be applied to property {0} of type {1} because the property expects one or more indexed parameters",
+							                                                  pinfo.Name, Type.FullName));
+
+						OverrideHandlers (false, true);
+
+						PropertyAttribute property_attr = attr as PropertyAttribute;
+						try {
+							IntPtr param_spec = RegisterProperty (gtype, property_attr.Name, property_attr.Nickname, property_attr.Blurb, idx, (GType) pinfo.PropertyType, pinfo.CanRead, pinfo.CanWrite);
+							Type type = (Type)gtype;
+							Dictionary<IntPtr, PropertyInfo> gtype_properties;
+							if (!Properties.TryGetValue (type, out gtype_properties)) {
+								gtype_properties = new Dictionary<IntPtr, PropertyInfo> ();
+								Properties [type] = gtype_properties;
+							}
+							gtype_properties.Add (param_spec, pinfo);
+							idx++;
+						} catch (ArgumentException) {
+							throw new InvalidOperationException (String.Format ("GLib.PropertyAttribute cannot be applied to property {0} of type {1} because the return type of the property is not supported",
+							                                                    pinfo.Name, Type.FullName));
+						}
+					}
+				}
+			}
+
+			void AddInterfaceProperties ()
+			{
+				foreach (Type iface in Type.GetInterfaces ()) {
+					if (!iface.IsDefined (typeof (GInterfaceAttribute), true))
+						continue;
+
+					GInterfaceAttribute attr = iface.GetCustomAttributes (typeof (GInterfaceAttribute), false) [0] as GInterfaceAttribute;
+					GInterfaceAdapter adapter = Activator.CreateInstance (attr.AdapterType, null) as GInterfaceAdapter;
+
+					foreach (PropertyInfo p in iface.GetProperties ()) {
+						PropertyAttribute[] attrs = p.GetCustomAttributes (typeof (PropertyAttribute), true) as PropertyAttribute [];
+						if (attrs.Length == 0)
+							continue;
+						PropertyAttribute property_attr = attrs [0];
+						PropertyInfo declared_prop = Type.GetProperty (p.Name, BindingFlags.Public | BindingFlags.Instance);
+						if (declared_prop == null)
+							continue;
+						IntPtr param_spec = FindInterfaceProperty (adapter.GType, property_attr.Name);
+
+						Dictionary<IntPtr, PropertyInfo> props;
+						if (!Properties.TryGetValue (Type, out props)) {
+							props = new Dictionary<IntPtr, PropertyInfo> ();
+							Properties [Type] = props;
+						}
+						props [param_spec] = declared_prop;
+					}
+				}
+			}
+
+			void ConnectDefaultHandlers ()
+			{
+				foreach (MethodInfo minfo in Type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
+					MethodInfo baseinfo = minfo.GetBaseDefinition ();
+					if (baseinfo == minfo)
+						continue;
+
+					foreach (object attr in baseinfo.GetCustomAttributes (typeof (DefaultSignalHandlerAttribute), false)) {
+						DefaultSignalHandlerAttribute sigattr = attr as DefaultSignalHandlerAttribute;
+						MethodInfo connector = sigattr.Type.GetMethod (sigattr.ConnectionMethod, BindingFlags.Static | BindingFlags.NonPublic, null, new Type[] { typeof (GType) }, new ParameterModifier [0]);
+						object[] parms = new object [1];
+						parms [0] = gtype;
+						connector.Invoke (null, parms);
+						break;
+					}
+				}
+			}
+
+			void InvokeTypeInitializers ()
+			{
+				object[] parms = {gtype, Type};
+
+				BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic;
+
+				foreach (TypeInitializerAttribute tia in Type.GetCustomAttributes (typeof (TypeInitializerAttribute), true)) {
+					MethodInfo m = tia.Type.GetMethod (tia.MethodName, flags);
+					if (m != null)
+						m.Invoke (null, parms);
+				}
 			}
 		}
 
@@ -415,40 +478,6 @@ namespace GLib {
 			return pspec.Handle;
 		}
 
-		static void AddProperties (GType gtype, System.Type t, bool register_instance_prop, ClassInitializer gobject_class_initializer)
-		{
-			if (register_instance_prop) {
-				IntPtr declaring_class = gtype.GetClassPtr ();
-				ParamSpec pspec = new ParamSpec ("gtk-sharp-managed-instance", "", "", GType.Pointer, ParamFlags.Writable | ParamFlags.ConstructOnly);
-				g_object_class_install_property (declaring_class, gobject_class_initializer.Idx, pspec.Handle);
-				gobject_class_initializer.Idx++;
-			}
-
-			foreach (PropertyInfo pinfo in t.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
-				foreach (object attr in pinfo.GetCustomAttributes (typeof (PropertyAttribute), false)) {
-					if(pinfo.GetIndexParameters().Length > 0)
-						throw(new InvalidOperationException(String.Format("GLib.RegisterPropertyAttribute cannot be applied to property {0} of type {1} because the property expects one or more indexed parameters", pinfo.Name, t.FullName)));
-
-					gobject_class_initializer.OverrideHandlers (false, true);
-
-					PropertyAttribute property_attr = attr as PropertyAttribute;
-					try {
-						IntPtr param_spec = RegisterProperty (gtype, property_attr.Name, property_attr.Nickname, property_attr.Blurb, gobject_class_initializer.Idx, (GType) pinfo.PropertyType, pinfo.CanRead, pinfo.CanWrite);
-						Type type = (Type)gtype;
-						Dictionary<IntPtr, PropertyInfo> gtype_properties;
-						if (!Properties.TryGetValue (type, out gtype_properties)) {
-							gtype_properties = new Dictionary<IntPtr, PropertyInfo> ();
-							Properties [type] = gtype_properties;
-						}
-						gtype_properties.Add (param_spec, pinfo);
-						gobject_class_initializer.Idx++;
-					} catch (ArgumentException) {
-						throw new InvalidOperationException (String.Format ("GLib.PropertyAttribute cannot be applied to property {0} of type {1} because the return type of the property is not supported", pinfo.Name, t.FullName));
-					}
-				}
-			}
-		}
-		
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void GetPropertyDelegate (IntPtr GObject, uint property_id, ref GLib.Value value, IntPtr pspec);
 
@@ -517,35 +546,6 @@ namespace GLib {
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_type_add_interface_static (IntPtr gtype, IntPtr iface_type, ref GInterfaceInfo info);
-
-		static void AddInterfaceProperties (GType gtype, Type t)
-		{
-			foreach (Type iface in t.GetInterfaces ()) {
-				if (!iface.IsDefined (typeof (GInterfaceAttribute), true))
-					continue;
-
-				GInterfaceAttribute attr = iface.GetCustomAttributes (typeof (GInterfaceAttribute), false) [0] as GInterfaceAttribute;
-				GInterfaceAdapter adapter = Activator.CreateInstance (attr.AdapterType, null) as GInterfaceAdapter;
-
-				foreach (PropertyInfo p in iface.GetProperties ()) {
-					PropertyAttribute[] attrs = p.GetCustomAttributes (typeof (PropertyAttribute), true) as PropertyAttribute [];
-					if (attrs.Length == 0)
-						continue;
-					PropertyAttribute property_attr = attrs [0];
-					PropertyInfo declared_prop = t.GetProperty (p.Name, BindingFlags.Public | BindingFlags.Instance);
-					if (declared_prop == null)
-						continue;
-					IntPtr param_spec = FindInterfaceProperty (adapter.GType, property_attr.Name);
-					
-					Dictionary<IntPtr, PropertyInfo> props;
-					if (!Properties.TryGetValue (t, out props)) {
-						props = new Dictionary<IntPtr, PropertyInfo> ();
-						Properties [t] = props;
-					}
-					props [param_spec] = declared_prop;
-				}
-			}
-		}
 
 		protected internal static GType RegisterGType (System.Type t)
 		{
