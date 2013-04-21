@@ -54,22 +54,6 @@ namespace Gtk {
 			_NewWithAttributes (title, cell, attrs);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_tree_view_column_get_cell_renderers (IntPtr raw);
-
-		public CellRenderer[] CellRenderers {
-			get {
-				IntPtr raw_ret = gtk_tree_view_column_get_cell_renderers (Handle);
-				if (raw_ret == IntPtr.Zero)
-					return new CellRenderer [0];
-				GLib.List list = new GLib.List (raw_ret);
-				CellRenderer[] result = new CellRenderer [list.Count];
-				for (int i = 0; i < list.Count; i++)
-					result [i] = list [i] as CellRenderer;
-				return result;
-			}
-		}
-
 		public void SetCellDataFunc (CellRenderer cell_renderer, NodeCellDataFunc func)
 		{
 			if (func == null) {
