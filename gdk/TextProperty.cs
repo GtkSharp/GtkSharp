@@ -27,29 +27,6 @@ namespace Gdk {
 	public class TextProperty {
 
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_free_text_list(IntPtr ptr);
-
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern int gdk_text_property_to_utf8_list(IntPtr encoding, int format, byte[] text, int length, out IntPtr list);
-
-		public static string[] ToStringList (Gdk.Atom encoding, int format, byte[] text, int length) 
-		{
-			IntPtr list_ptr;
-			int count = gdk_text_property_to_utf8_list(encoding.Handle, format, text, length, out list_ptr);
-
-			if (count == 0)
-				return new string [0];
-
-			string[] result = new string [count];
-			for (int i = 0; i < count; i++) {
-				IntPtr ptr = Marshal.ReadIntPtr (list_ptr, i * IntPtr.Size);
-				result [i] = GLib.Marshaller.Utf8PtrToString (ptr);
-			}
-			gdk_free_text_list (list_ptr);
-			return result;
-		}
-
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern int gdk_text_property_to_utf8_list_for_display(IntPtr display, IntPtr encoding, int format, byte[] text, int length, out IntPtr list);
 
 		public static string[] ToStringListForDisplay (Gdk.Display display, Gdk.Atom encoding, int format, byte[] text, int length) 
@@ -65,7 +42,7 @@ namespace Gdk {
 				IntPtr ptr = Marshal.ReadIntPtr (list_ptr, i * IntPtr.Size);
 				result [i] = GLib.Marshaller.Utf8PtrToString (ptr);
 			}
-			gdk_free_text_list (list_ptr);
+			GLib.Marshaller.StrFreeV (list_ptr);
 			return result;
 		}
 	}
