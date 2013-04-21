@@ -59,9 +59,6 @@ namespace Gtk {
 		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_icon_theme_set_search_path_utf8(IntPtr raw, IntPtr[] path, int n_elements);
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_strfreev (IntPtr mem);
-
 		bool IsWindowsPlatform {
 			get {
 				switch (Environment.OSVersion.Platform) {
