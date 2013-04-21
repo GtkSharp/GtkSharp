@@ -27,21 +27,6 @@ namespace Gdk {
 	public partial class Global {
 
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_devices_list ();
-
-		public static Device[] DevicesList ()
-		{
-			IntPtr raw_ret = gdk_devices_list ();
-			if (raw_ret == IntPtr.Zero)
-				return new Device [0];
-			GLib.List list = new GLib.List(raw_ret);
-			Device[] result = new Device [list.Count];
-			for (int i = 0; i < list.Count; i++)
-				result [i] = list [i] as Device;
-			return result;
-		}
-
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_list_visuals ();
 
 		public static Visual[] ListVisuals ()
