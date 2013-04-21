@@ -48,28 +48,5 @@ namespace Gtk {
 			for (int i = 0; i < button_data.Length - 1; i += 2)
 				AddButton ((string) button_data [i], (int) button_data [i + 1]);
 		}
-		
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_file_chooser_dialog_new_with_backend(IntPtr title, IntPtr parent, int action, IntPtr backend, IntPtr nil);
-		
-		public FileChooserDialog (string backend, string title, Window parent, FileChooserAction action, params object[] button_data) : base (IntPtr.Zero)
-		{
-			if (GetType () != typeof (FileChooserDialog)) {
-				CreateNativeObject (new string[] { "file-system-backend" }, new GLib.Value[] { new GLib.Value (backend) } );
-				Title = title;
-				if (parent != null)
-					TransientFor = parent;
-				Action = action;
-			} else {
-				IntPtr ntitle = GLib.Marshaller.StringToPtrGStrdup (title);
-				IntPtr nbackend = GLib.Marshaller.StringToPtrGStrdup (backend);
-				Raw = gtk_file_chooser_dialog_new_with_backend (ntitle, parent == null ? IntPtr.Zero : parent.Handle, (int)action, nbackend, IntPtr.Zero);
-				GLib.Marshaller.Free (ntitle);
-				GLib.Marshaller.Free (nbackend);
-			}
-
-			for (int i = 0; i < button_data.Length - 1; i += 2)
-				AddButton ((string) button_data [i], (int) button_data [i + 1]);
-		}
 	}
 }
