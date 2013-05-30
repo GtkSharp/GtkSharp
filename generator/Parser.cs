@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 	using System.Xml.Schema;
 
 	public class Parser  {
-		const int curr_parser_version = 2;
+		const int curr_parser_version = 3;
 
 		private XmlDocument Load (string filename, string schema_file)
 		{

@@ -236,6 +236,30 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		int closure = -1;
+		public int Closure {
+			get {
+				if(closure == -1 && elem.HasAttribute ("closure"))
+					closure = int.Parse(elem.GetAttribute ("closure"));
+				return closure;
+			}
+			set {
+				closure = value;
+			}
+		}
+
+		int destroynotify = -1;
+		public int DestroyNotify {
+			get {
+				if (destroynotify == -1 && elem.HasAttribute ("destroy"))
+					destroynotify = int.Parse (elem.GetAttribute ("destroy"));
+				return destroynotify;
+			}
+			set {
+				destroynotify = value;
+			}
+		}
+
 		public virtual string[] Prepare {
 			get {
 				IGeneratable gen = Generatable;

@@ -80,6 +80,14 @@ namespace GtkSharp.Generation {
 				return true;
 
 			if (HasCB || HideData) {
+
+				foreach (Parameter param in param_list) {
+					if (param.Closure == idx)
+						return true;
+					else if (param.DestroyNotify == idx)
+						return true;
+				}
+
 				if (p.IsUserData && (idx == Count - 1))
                                         return true;
 				if (p.IsUserData && (idx == Count - 2) && this [Count - 1] is ErrorParameter)
