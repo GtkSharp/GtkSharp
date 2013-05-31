@@ -89,7 +89,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		bool IsPadding {
+		public bool IsPadding {
 			get {
 				return (CName.StartsWith ("dummy") || CName.StartsWith ("padding"));
 			}

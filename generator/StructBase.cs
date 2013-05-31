@@ -115,12 +115,16 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine ("\t\tpublic bool Equals ({0} other)", Name);
 			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tbool isEqual = true;");
+			sb.Append ("this.GetType ().FullName.GetHashCode ()");
 
 			foreach (StructField field in fields) {
+				if (field.IsPadding)
+					continue;
 				if (field.IsBitfield) {
 					if (need_field) {
-						sw.WriteLine ("\t\tif (!_bitfield{0}.Equals (other._bitfield{0})) return false;", bitfields);
-						if (sb.Length > 0)
+						sw.WriteLine ("\t\t\tisEqual &= bitfield{0}.Equals (other._bitfield{0});", bitfields);
+						//if (sb.Length > 0)
 							sb.Append (" ^ ");
 						sb.Append ("_bitfield");
 						sb.Append (bitfields++);
@@ -129,14 +133,14 @@ namespace GtkSharp.Generation {
 					}
 				} else {
 					need_field = true;
-					sw.WriteLine ("\t\t\tif (!{0}.Equals (other.{0})) return false;", field.EqualityName);
-					if (sb.Length > 0)
+					sw.WriteLine ("\t\t\tisEqual &= {0}.Equals (other.{0});", field.EqualityName);
+					//if (sb.Length > 0)
 						sb.Append (" ^ ");
 					sb.Append (field.EqualityName);
 					sb.Append (".GetHashCode ()");
 				}
 			}
-			sw.WriteLine ("\t\t\treturn true;");
+			sw.WriteLine ("\t\t\treturn isEqual;");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic override bool Equals (object other)");
