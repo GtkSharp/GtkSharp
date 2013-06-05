@@ -56,6 +56,8 @@ namespace GtkSharp.Generation {
 
 			if (!String.IsNullOrEmpty (retval.CountParameterName))
 				retval.CountParameter = parms.GetCountParameter (retval.CountParameterName);
+			if (retval.CountParameterIndex >= 0)
+				retval.CountParameter = parms[retval.CountParameterIndex];
 
 			return valid;
 		}
