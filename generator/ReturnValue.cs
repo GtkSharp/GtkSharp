@@ -133,7 +133,9 @@ namespace GtkSharp.Generation {
 			get {
 				if (IGen == null)
 					return String.Empty;
-				return IGen.MarshalType + (is_array || is_null_term ? "[]" : String.Empty);
+				if (is_array || is_null_term)
+					return "IntPtr";
+				return IGen.MarshalType;
 			}
 		}
 
