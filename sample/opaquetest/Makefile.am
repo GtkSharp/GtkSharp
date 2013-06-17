@@ -15,7 +15,7 @@ libopaque_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libopaque_la_LIBADD = $(GTK_LIBS)
 
-INCLUDES = $(GTK_CFLAGS)
+AM_CPPFLAGS = $(GTK_CFLAGS)
 
 generated/*.cs: opaque-api.xml
 	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/opaque-api.xml	\
