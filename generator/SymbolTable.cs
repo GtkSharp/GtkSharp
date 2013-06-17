@@ -69,6 +69,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("guint32", "uint", "0"));
 			AddType (new SimpleGen ("gint64", "long", "0"));
 			AddType (new SimpleGen ("guint64", "ulong", "0"));
+			AddType (new SimpleGen ("unsigned long long", "ulong", "0"));
 			AddType (new SimpleGen ("long long", "long", "0"));
 			AddType (new SimpleGen ("gfloat", "float", "0.0"));
 			AddType (new SimpleGen ("float", "float", "0.0"));
