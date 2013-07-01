@@ -261,8 +261,9 @@ namespace GtkSharp.Generation {
 		{
 			if (!Elem.HasAttribute("parent"))
 				return;
+			string defaultconstructoraccess = Elem.HasAttribute ("defaultconstructoraccess") ? Elem.GetAttribute ("defaultconstructoraccess") : "public";
 
-			gen_info.Writer.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
+			gen_info.Writer.WriteLine ("\t\t"+ defaultconstructoraccess + " " + Name + " (IntPtr raw) : base(raw) {}");
 			if (ctors.Count == 0 && !DisableVoidCtor) {
 				gen_info.Writer.WriteLine();
 				gen_info.Writer.WriteLine("\t\tprotected " + Name + "() : base(IntPtr.Zero)");
