@@ -126,7 +126,8 @@ namespace GtkSharp.Generation
 
 			sw.WriteLine ("\t\tprivate void Update ()", QualifiedName);
 			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tthis.managed_struct = ({0})Marshal.PtrToStructure (this.Handle, typeof({0}));", native_struct_name);
+			sw.WriteLine ("\t\t\tif (Handle != IntPtr.Zero)");
+			sw.WriteLine ("\t\t\t\tthis.managed_struct = ({0})Marshal.PtrToStructure (this.Handle, typeof ({0}));", native_struct_name);
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 		}
