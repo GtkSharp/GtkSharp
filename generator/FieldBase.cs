@@ -176,13 +176,8 @@ namespace GtkSharp.Generation {
 			} else if (Readable && offsetName != null) {
 				sw.WriteLine (indent + "\tget {");
 				sw.WriteLine (indent + "\t\tunsafe {");
-				if (is_struct) {
-					sw.WriteLine (indent + "\t\t\t" + CSType + "* raw_ptr = (" + CSType + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
-					sw.WriteLine (indent + "\t\t\treturn *raw_ptr;");
-				} else {
-					sw.WriteLine (indent + "\t\t\t" + table.GetMarshalType (CType) + "* raw_ptr = (" + table.GetMarshalType (CType) + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
-					sw.WriteLine (indent + "\t\t\treturn " + table.FromNative (ctype, "(*raw_ptr)") + ";");
-				}
+				sw.WriteLine (indent + "\t\t\t" + table.GetMarshalType (CType) + "* raw_ptr = (" + table.GetMarshalType (CType) + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
+				sw.WriteLine (indent + "\t\t\treturn " + table.FromNative (ctype, "(*raw_ptr)") + ";");
 				sw.WriteLine (indent + "\t\t}");
 				sw.WriteLine (indent + "\t}");
 			}
@@ -203,13 +198,8 @@ namespace GtkSharp.Generation {
 			} else if (Writable && offsetName != null) {
 				sw.WriteLine (indent + "\tset {");
 				sw.WriteLine (indent + "\t\tunsafe {");
-				if (is_struct) {
-					sw.WriteLine (indent + "\t\t\t" + CSType + "* raw_ptr = (" + CSType + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
-					sw.WriteLine (indent + "\t\t\t*raw_ptr = value;");
-				} else {
-					sw.WriteLine (indent + "\t\t\t" + table.GetMarshalType (CType) + "* raw_ptr = (" + table.GetMarshalType (CType) + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
-					sw.WriteLine (indent + "\t\t\t*raw_ptr = " + to_native + ";");
-				}
+				sw.WriteLine (indent + "\t\t\t" + table.GetMarshalType (CType) + "* raw_ptr = (" + table.GetMarshalType (CType) + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
+				sw.WriteLine (indent + "\t\t\t*raw_ptr = " + to_native + ";");
 				sw.WriteLine (indent + "\t\t}");
 				sw.WriteLine (indent + "\t}");
 			}
