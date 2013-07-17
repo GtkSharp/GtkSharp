@@ -188,6 +188,7 @@ namespace GLib {
 
 			internal Type Type { get; private set; }
 			internal bool HandlersOverriden { get; private set; }
+			internal GType.ClassInitDelegate ClassInitManagedDelegate { get; private set; }
 
 			uint idx = 1;
 			bool is_first_subclass;
@@ -196,6 +197,7 @@ namespace GLib {
 
 			internal ClassInitializer (Type type)
 			{
+				ClassInitManagedDelegate = this.ClassInit;
 				Type = type;
 				gtype = GType.RegisterGObjectType (this);
 				is_first_subclass = gtype.GetBaseType () == gtype.GetThresholdType ();
@@ -231,7 +233,7 @@ namespace GLib {
 				}
 			}
 
-			internal void ClassInit (IntPtr gobject_class_handle)
+			private void ClassInit (IntPtr gobject_class_handle)
 			{
 				bool override_ctor = is_first_subclass;
 
