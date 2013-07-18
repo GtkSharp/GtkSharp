@@ -70,6 +70,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string WrapperName {
+			get {
+				if (!valid)
+					return String.Empty;
+				return NS + "Sharp." + Name + "Wrapper";
+			}
+		}
+
 		public override string MarshalType {
 			get {
 				if (valid)
