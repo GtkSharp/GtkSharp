@@ -13,7 +13,7 @@ nodist_libatksharpglue_3_la_SOURCES = generated.c
 
 libatksharpglue_3_la_LIBADD = $(ATK_LIBS)
 
-INCLUDES = $(ATK_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
+AM_CPPFLAGS = $(ATK_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libatksharpglue.dll: $(libatksharpglue_3_la_OBJECTS) libatksharpglue.rc libatksharpglue.def
 	./build-dll libatksharpglue-3 $(VERSION)

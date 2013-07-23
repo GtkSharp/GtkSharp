@@ -15,7 +15,7 @@ libgtksharpglue_3_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libgtksharpglue_3_la_LIBADD = $(GTK_LIBS)
 
-INCLUDES = $(GTK_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
+AM_CPPFLAGS = $(GTK_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libgtksharpglue.dll: $(libgtksharpglue_3_la_OBJECTS) libgtksharpglue.rc libgtksharpglue.def
 	./build-dll libgtksharpglue-3 $(VERSION)

@@ -15,7 +15,7 @@ libvalobj_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libvalobj_la_LIBADD = $(GTK_LIBS)
 
-INCLUDES = $(GTK_CFLAGS)
+AM_CPPFLAGS = $(GTK_CFLAGS)
 
 Valobj.cs: valobj-api.xml
 	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/valobj-api.xml	\

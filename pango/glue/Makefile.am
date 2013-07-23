@@ -10,7 +10,7 @@ libpangosharpglue_3_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libpangosharpglue_3_la_LIBADD = $(PANGO_LIBS)
 
-INCLUDES = $(PANGO_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
+AM_CPPFLAGS = $(PANGO_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libpangosharpglue.dll: $(libpangosharpglue_3_la_OBJECTS) libpangosharpglue.rc libpangosharpglue.def
 	./build-dll libpangosharpglue-3 $(VERSION)

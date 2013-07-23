@@ -8,7 +8,7 @@ libgiosharpglue_3_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libgiosharpglue_3_la_LIBADD = $(GIO_LIBS)
 
-INCLUDES = $(GIO_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
+AM_CPPFLAGS = $(GIO_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libgiosharpglue.dll: $(libgiosharpglue_3_la_OBJECTS) libgiosharpglue.rc libgiosharpglue.def
 	./build-dll libgiosharpglue-3 $(VERSION)
