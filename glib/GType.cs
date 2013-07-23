@@ -1,9 +1,11 @@
 // GLib.Type.cs - GLib GType class implementation
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Authors: Mike Kestner <mkestner@speakeasy.net>
+//          Andres G. Aragoneses <knocte@gmail.com>
 //
 // Copyright (c) 2003 Mike Kestner
 // Copyright (c) 2003 Novell, Inc.
+// Copyright (c) 2013 Andres G. Aragoneses
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -36,11 +38,10 @@ namespace GLib {
 
 		IntPtr val;
 
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		internal delegate void ClassInitDelegate (IntPtr gobject_class_handle);
+
 		struct GTypeInfo {
-
-			[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-			public delegate void ClassInitDelegate (IntPtr gobject_class_handle);
-
 			public ushort class_size;
 			public IntPtr base_init;
 			public IntPtr base_finalize;
@@ -371,7 +372,7 @@ namespace GLib {
 			GTypeInfo info = new GTypeInfo ();
 			info.class_size = (ushort) query.class_size;
 			info.instance_size = (ushort) query.instance_size;
-			info.class_init = gobject_class_initializer.ClassInit;
+			info.class_init = gobject_class_initializer.ClassInitManagedDelegate;
 
 			GType gtype = new GType (g_type_register_static (parent_gtype.Val, native_name, ref info, 0));
 			GLib.Marshaller.Free (native_name);
