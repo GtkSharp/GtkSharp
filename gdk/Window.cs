@@ -41,7 +41,7 @@ namespace Gdk {
 		public Cairo.Pattern BackgroundPattern { 
 			get {
 				IntPtr raw_ret = gdk_window_get_background_pattern(Handle);
-				Cairo.Pattern ret = Cairo.Pattern.Lookup (raw_ret);
+				Cairo.Pattern ret = Cairo.Pattern.Lookup (raw_ret, true);
 				return ret;
 			}
 			set {

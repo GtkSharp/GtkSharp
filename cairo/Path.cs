@@ -15,10 +15,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -34,10 +34,10 @@ using Cairo;
 
 namespace Cairo {
 
-        public class Path : IDisposable 
-        {
-		internal IntPtr handle = IntPtr.Zero;
-		
+	public class Path : IDisposable 
+	{
+		IntPtr handle = IntPtr.Zero;
+
 		internal Path (IntPtr handle)
 		{
 			this.handle = handle;
@@ -50,7 +50,8 @@ namespace Cairo {
 			Dispose (false);
 		}
 
-		
+		public IntPtr Handle { get { return handle; } }
+
 		public void Dispose ()
 		{
 			Dispose (true);
@@ -61,8 +62,8 @@ namespace Cairo {
 		{
 			if (!disposing || CairoDebug.Enabled)
 				CairoDebug.OnDisposed<Path> (handle, disposing);
-			
-			if (!disposing|| handle == IntPtr.Zero)
+
+			if (!disposing || handle == IntPtr.Zero)
 				return;
 
 			NativeMethods.cairo_path_destroy (handle);
