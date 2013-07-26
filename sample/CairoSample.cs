@@ -33,16 +33,19 @@ class CairoSample : DrawingArea
 		int CHECK_SIZE = 32;
 		
 		cr.Save ();
-		Surface check = cr.Target.CreateSimilar (Content.Color, 2 * CHECK_SIZE, 2 * CHECK_SIZE);
+		Surface check;
+		using (var target = cr.GetTarget ()) {
+			check = target.CreateSimilar (Content.Color, 2 * CHECK_SIZE, 2 * CHECK_SIZE);
+		}
 		
 		// draw the check
 		using (Context cr2 = new Context (check)) {
 			cr2.Operator = Operator.Source;
-			cr2.Color = new Color (0.4, 0.4, 0.4);
+			cr2.SetSourceRGB (0.4, 0.4, 0.4);
 			cr2.Rectangle (0, 0, 2 * CHECK_SIZE, 2 * CHECK_SIZE);
 			cr2.Fill ();
 
-			cr2.Color = new Color (0.7, 0.7, 0.7);
+			cr2.SetSourceRGB (0.7, 0.7, 0.7);
 			cr2.Rectangle (x, y, CHECK_SIZE, CHECK_SIZE);
 			cr2.Fill ();
 
@@ -53,12 +56,12 @@ class CairoSample : DrawingArea
 		// Fill the whole surface with the check
 		SurfacePattern check_pattern = new SurfacePattern (check);
 		check_pattern.Extend = Extend.Repeat;
-		cr.Source = check_pattern;
+		cr.SetSource (check_pattern);
 		cr.Rectangle (0, 0, width, height);
 		cr.Fill ();
 
-		check_pattern.Destroy ();
-		check.Destroy ();
+		check_pattern.Dispose ();
+		check.Dispose ();
 		cr.Restore ();
 	}
 
@@ -66,16 +69,16 @@ class CairoSample : DrawingArea
 	{
 		double subradius = radius * (2 / 3.0 - 0.1);
 
-		cr.Color = new Color (1.0, 0.0, 0.0, alpha);
+		cr.SetSourceRGBA (1.0, 0.0, 0.0, alpha);
 		OvalPath (cr, xc + radius / 3.0 * Math.Cos (Math.PI * 0.5), yc - radius / 3.0 * Math.Sin (Math.PI * 0.5), subradius, subradius);
 		cr.Fill ();
 
-		cr.Color = new Color (0.0, 1.0, 0.0, alpha);
+		cr.SetSourceRGBA (0.0, 1.0, 0.0, alpha);
 		OvalPath (cr, xc + radius / 3.0 * Math.Cos (Math.PI * (0.5 + 2 / 0.3)), yc - radius / 3.0 * Math.Sin (Math.PI * (0.5 + 2 / 0.3)), subradius, subradius);
 		cr.Fill ();
 
-		cr.Color = new Color (0.0, 0.0, 1.0, alpha);
-    		OvalPath (cr, xc + radius / 3.0 * Math.Cos (Math.PI * (0.5 + 4 / 0.3)), yc - radius / 3.0 * Math.Sin (Math.PI * (0.5 + 4 / 0.3)), subradius, subradius);
+		cr.SetSourceRGBA (0.0, 0.0, 1.0, alpha);
+		OvalPath (cr, xc + radius / 3.0 * Math.Cos (Math.PI * (0.5 + 4 / 0.3)), yc - radius / 3.0 * Math.Sin (Math.PI * (0.5 + 4 / 0.3)), subradius, subradius);
 		cr.Fill ();
 	}
 
@@ -85,16 +88,19 @@ class CairoSample : DrawingArea
 		int xc = width / 2;
 		int yc = height / 2;
 
-		Surface overlay = cr.Target.CreateSimilar (Content.ColorAlpha, width, height);
-		Surface punch   = cr.Target.CreateSimilar (Content.Alpha, width, height);
-		Surface circles = cr.Target.CreateSimilar (Content.ColorAlpha, width, height);
+		Surface overlay, punch, circles;
+		using (var target = cr.GetTarget ()) {
+			overlay = target.CreateSimilar (Content.ColorAlpha, width, height);
+			punch   = target.CreateSimilar (Content.Alpha, width, height);
+			circles = target.CreateSimilar (Content.ColorAlpha, width, height);
+		}
 
 		FillChecks (cr, 0, 0, width, height);
 		cr.Save ();
 
 		// Draw a black circle on the overlay
 		using (Context cr_overlay = new Context (overlay)) {
-			cr_overlay.Color = new Color (0.0, 0.0, 0.0);
+			cr_overlay.SetSourceRGB (0.0, 0.0, 0.0);
 			OvalPath (cr_overlay, xc, yc, radius, radius);
 			cr_overlay.Fill ();
 
@@ -123,9 +129,9 @@ class CairoSample : DrawingArea
 		cr.SetSourceSurface (overlay, 0, 0);
 		cr.Paint ();
 
-		overlay.Destroy ();
-		punch.Destroy ();
-		circles.Destroy ();
+		overlay.Dispose ();
+		punch.Dispose ();
+		circles.Dispose ();
 	}
 
 	protected override bool OnDrawn (Cairo.Context ctx)

@@ -140,7 +140,7 @@ namespace GtkDemo
 			Widget widget = o as Widget;
 			
 			if (surface != null)
-				surface.Destroy ();
+				surface.Dispose ();
 
 			var allocation = widget.Allocation;
 
