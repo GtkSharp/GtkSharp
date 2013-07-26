@@ -70,7 +70,7 @@ build_sources = $(addprefix $(srcdir)/, $(sources)) $(builddir)/AssemblyInfo.cs
 
 $(ASSEMBLY): $(build_sources) $(SNK)
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
+	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then							\
