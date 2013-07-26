@@ -34,7 +34,7 @@ using Cairo;
 
 namespace Cairo {
 
-	public class Path : IDisposable 
+	public class Path : IDisposable
 	{
 		IntPtr handle = IntPtr.Zero;
 
@@ -57,7 +57,7 @@ namespace Cairo {
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
-		
+
 		protected virtual void Dispose (bool disposing)
 		{
 			if (!disposing || CairoDebug.Enabled)

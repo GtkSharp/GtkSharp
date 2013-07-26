@@ -36,12 +36,11 @@ using System.Runtime.InteropServices;
 
 namespace Cairo
 {
-	// sort these so it is easier to find what is missing
-	// http://www.cairographics.org/manual/ix01.html
+	// sort the functions like in the following page so it is easier to find what is missing
+	// http://cairographics.org/manual/index-all.html
 
 	internal static class NativeMethods
 	{
-
 		const string cairo = "libcairo-2.dll";
 		
 		[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]

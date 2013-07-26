@@ -46,7 +46,7 @@ namespace Cairo {
 		public Graphics (Surface surface) : base (surface) {}
 	}
 
-	public class Context : IDisposable 
+	public class Context : IDisposable
 	{
 		IntPtr handle = IntPtr.Zero;
 
@@ -304,7 +304,7 @@ namespace Cairo {
 		}
 
 		[Obsolete("Use GetScaledFont/SetScaledFont")]
-		public Cairo.ScaledFont ScaledFont {
+		public ScaledFont ScaledFont {
 			set {
 				SetScaledFont (value);
 			}
@@ -423,7 +423,7 @@ namespace Cairo {
 
 		public void RelCurveTo (double dx1, double dy1, double dx2, double dy2, double dx3, double dy3)
 		{
-			NativeMethods.cairo_rel_curve_to (handle, dx1, dy1, dx2, dy2, dx3, dy3); 
+			NativeMethods.cairo_rel_curve_to (handle, dx1, dy1, dx2, dy2, dx3, dy3);
 		}
 
 		public void Arc (double xc, double yc, double radius, double angle1, double angle2)
@@ -507,7 +507,7 @@ namespace Cairo {
 		public void StrokePreserve ()
 		{
 			NativeMethods.cairo_stroke_preserve (handle);
-		}		
+		}
 
 		public Rectangle StrokeExtents ()
 		{
@@ -544,12 +544,12 @@ namespace Cairo {
 		{
 			NativeMethods.cairo_clip_preserve (handle);
 		}
-		
+
 		public void ResetClip ()
 		{
 			NativeMethods.cairo_reset_clip (handle);
 		}
-		
+
 		public bool InStroke (double x, double y)
 		{
 			return NativeMethods.cairo_in_stroke (handle, x, y);
@@ -625,7 +625,7 @@ namespace Cairo {
 		}
 
 		[Obsolete("Use UserToDeviceDistance instead")]
-		public void TransformDistance (ref double dx, ref double dy) 
+		public void TransformDistance (ref double dx, ref double dy)
 		{
 			NativeMethods.cairo_user_to_device_distance (handle, ref dx, ref dy);
 		}
@@ -647,7 +647,7 @@ namespace Cairo {
 			NativeMethods.cairo_user_to_device (handle, ref x, ref y);
 		}
 
-		public void UserToDeviceDistance (ref double dx, ref double dy) 
+		public void UserToDeviceDistance (ref double dx, ref double dy)
 		{
 			NativeMethods.cairo_user_to_device_distance (handle, ref dx, ref dy);
 		}
@@ -662,7 +662,7 @@ namespace Cairo {
 			NativeMethods.cairo_device_to_user_distance (handle, ref dx, ref dy);
 		}
 
-		public Cairo.Matrix Matrix {
+		public Matrix Matrix {
 			set {
 				NativeMethods.cairo_set_matrix (handle, value);
 			}
@@ -808,7 +808,6 @@ namespace Cairo {
 			get {
 				return GetContextFontFace ();
 			}
-
 			set {
 				SetContextFontFace (value);
 			}
