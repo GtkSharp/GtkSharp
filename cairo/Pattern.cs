@@ -135,12 +135,10 @@ namespace Cairo {
 			}
 		}
 
-#pragma warning disable 612
 		public IntPtr Handle {
 			get { return pattern; }
 			private set { pattern = value; }
 		}
-#pragma warning restore 612
 
 		[Obsolete]
 		public IntPtr Pointer {
