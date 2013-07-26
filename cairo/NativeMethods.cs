@@ -821,7 +821,7 @@ namespace Cairo
 		internal static extern void cairo_show_page (IntPtr cr);
 		
 		[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
-		internal static extern void cairo_show_text (IntPtr cr, string utf8);
+		internal static extern void cairo_show_text (IntPtr cr, byte[] utf8);
 		
 		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
 		//internal static extern void cairo_show_text_glyphs (IntPtr cr, IntPtr utf8, int utf8_len, IntPtr glyphs, int num_glyphs, IntPtr clusters, int num_clusters, ClusterFlags cluster_flags);
@@ -944,10 +944,10 @@ namespace Cairo
 		//internal static extern void cairo_text_cluster_free (IntPtr clusters);
 		
 		[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
-		internal static extern void cairo_text_extents (IntPtr cr, string utf8, out TextExtents extents);
+		internal static extern void cairo_text_extents (IntPtr cr, byte[] utf8, out TextExtents extents);
 		
 		[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
-		internal static extern void cairo_text_path (IntPtr ct, string utf8);
+		internal static extern void cairo_text_path (IntPtr ct, byte[] utf8);
 		
 		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
 		//internal static extern IntPtr cairo_toy_font_face_create (IntPtr face, FontSlant slant, FontWeight weight);
