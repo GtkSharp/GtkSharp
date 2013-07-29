@@ -84,6 +84,11 @@ namespace GtkSharp.Generation {
 			if (!retval.Validate (log) || !base.Validate (log))
 				return false;
 
+			if (Name == String.Empty || CName == String.Empty) {
+				log.Warn ("Method has no name or cname.");
+				return false;
+			}
+
 			Parameters parms = Parameters;
 			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && HasGetterName);
 			is_set = ((parms.IsAccessor || (parms.VisibleCount == 1 && retval.IsVoid)) && HasSetterName);
