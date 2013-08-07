@@ -111,6 +111,10 @@ namespace GtkSharp.Generation {
 					continue;
 
 				switch (child.Name) {
+				case "include":
+					IGeneratable[] curr_gens = Parse (elem.GetAttribute ("xml"));
+					SymbolTable.Table.AddTypes (curr_gens);
+					break;
 				case "namespace":
 					gens.AddRange (ParseNamespace (elem));
 					break;
