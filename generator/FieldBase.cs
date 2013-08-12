@@ -32,6 +32,8 @@ namespace GtkSharp.Generation {
 		{
 			log.Member = Name;
 			if (!Ignored && !Hidden && CSType == "") {
+				if (Name == "Priv")
+					return false;
 				log.Warn ("field has unknown type: " + CType);
 				Statistics.ThrottledCount++;
 				return false;
