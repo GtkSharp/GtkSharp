@@ -149,14 +149,7 @@ namespace GtkSharp.Generation {
 
 				result [i] = p.PassAs != "" ? p.PassAs + " " : "";
 				if (p.IsOptional && p.PassAs == String.Empty) {
-					if (p.IsArray)
-						result [i++] += "null";
-					else if (p.Generatable is StructGen || p.Generatable is BoxedGen)
-						result [i++] += p.CSType + ".Zero";
-					else if (p.CSType == "System.IntPtr")
-						result [i++] += "System.IntPtr.Zero";
-					else
-						result [i++] += "null";
+					result [i++] += p.Generatable.DefaultValue;
 				}
 				else
 					result [i++] += p.Name;
