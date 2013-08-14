@@ -58,6 +58,10 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		bool IsNullTermArray {
+			get { return elem.GetAttributeAsBoolean ("null_term_array"); }
+		}
+
 		public new string CSType {
 			get {
 				string type = base.CSType;
@@ -143,9 +147,21 @@ namespace GtkSharp.Generation {
 			string wrapped_name = SymbolTable.Table.MangleName (CName);
 			IGeneratable gen = table [CType];
 
-			if (IsArray) {
+			if (IsArray && !IsNullTermArray) {
 				sw.WriteLine (indent + "[MarshalAs (UnmanagedType.ByValArray, SizeConst=" + ArrayLength + ")]");
 				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, StudlyName);
+			} else if (IsArray && IsNullTermArray) {
+				sw.WriteLine (indent + "private {0} {1};", "IntPtr", StudlyName+ "Ptr");
+				if ((Readable || Writable) && Access == "public") {
+					sw.WriteLine (indent + "public {0} {1} {{", CSType, StudlyName);
+					if (Readable)
+						sw.WriteLine (indent + "\tget {{ return GLib.Marshaller.StructArrayFromNullTerminatedIntPtr<{0}> ({1}); }}",
+						              base.CSType, StudlyName + "Ptr");
+					if (Writable)
+						sw.WriteLine (indent + "\tset {{ {0} = GLib.Marshaller.StructArrayToNullTerminatedStructArrayIntPtr<{1}> (value); }}",
+						              StudlyName + "Ptr", base.CSType);
+					sw.WriteLine (indent + "}");
+				}
 			} else if (IsBitfield) {
 				base.Generate (gen_info, indent);
 			} else if (gen is IAccessor) {

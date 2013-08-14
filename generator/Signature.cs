@@ -149,7 +149,10 @@ namespace GtkSharp.Generation {
 
 				result [i] = p.PassAs != "" ? p.PassAs + " " : "";
 				if (p.IsOptional && p.PassAs == String.Empty) {
-					result [i++] += p.Generatable.DefaultValue;
+					if (p.IsArray)
+						result [i++] += "null";
+					else
+						result [i++] += p.Generatable.DefaultValue;
 				}
 				else
 					result [i++] += p.Name;

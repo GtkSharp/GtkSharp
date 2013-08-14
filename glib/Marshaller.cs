@@ -463,6 +463,39 @@ namespace GLib {
 
 			return result;
 		}
+
+		public static T[] StructArrayFromNullTerminatedIntPtr<T> (IntPtr array)
+		{
+			var res = new List<T> ();
+			IntPtr current = array;
+			T currentStruct = default(T);
+
+			while (current != IntPtr.Zero) {
+				Marshal.PtrToStructure (current, currentStruct);
+				res.Add (currentStruct);
+				current = (IntPtr) ((long)current + Marshal.SizeOf (typeof (T)));
+			}
+
+			return res.ToArray ();
+		}
+
+		public static IntPtr StructArrayToNullTerminatedStructArrayIntPtr<T> (T[] InputArray)
+		{
+			int intPtrSize = Marshal.SizeOf (typeof (IntPtr));
+			IntPtr mem = Marshal.AllocHGlobal ((InputArray.Length + 1) * intPtrSize);
+
+			for (int i = 0; i < InputArray.Length; i++) {
+				IntPtr structPtr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (T)));
+				Marshal.StructureToPtr (InputArray[i], structPtr, false);
+				// jump to next pointer
+				Marshal.WriteIntPtr (mem, structPtr);
+				mem = (IntPtr) ((long)mem + intPtrSize);
+			}
+			// null terminate
+			Marshal.WriteIntPtr (mem, IntPtr.Zero);
+
+			return mem;
+		}
 	}
 }
 
