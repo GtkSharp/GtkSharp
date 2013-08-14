@@ -159,7 +159,7 @@ namespace Cairo {
 			}
 		}
 
-		[Obsolete ("Use SetSourceRGBA method")]
+		[Obsolete ("Use SetSourceColor method")]
 		public Color Color {
 			set {
 				NativeMethods.cairo_set_source_rgba (handle, value.R, value.G, value.B, value.A);
@@ -327,6 +327,11 @@ namespace Cairo {
 
 		public uint ReferenceCount {
 			get { return NativeMethods.cairo_get_reference_count (handle); }
+		}
+
+		public void SetSourceColor (Color color)
+		{
+			NativeMethods.cairo_set_source_rgba (handle, color.R, color.G, color.B, color.A);
 		}
 
 		public void SetSourceRGB (double r, double g, double b)
