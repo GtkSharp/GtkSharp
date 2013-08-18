@@ -3,7 +3,7 @@ AC_INIT(gtk-sharp, 2.99.1)
 
 AM_INIT_AUTOMAKE([1.10 no-dist-gzip dist-bzip2 tar-ustar foreign])
 AC_CANONICAL_HOST
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS(config.h)
 AM_MAINTAINER_MODE
 
 API_VERSION=3.0.0.0
@@ -50,7 +50,6 @@ AM_CONDITIONAL(PLATFORM_WIN32, test x$platform_win32 = xyes)
 
 AC_CHECK_TOOL(CC, gcc, gcc)
 AC_PROG_CC
-AM_PROG_CC_STDC
 AC_PROG_INSTALL
 
 dnl may require a specific autoconf version
