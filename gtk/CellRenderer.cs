@@ -34,7 +34,7 @@ namespace Gtk {
 		public ICellEditable StartEditing (Widget widget, Gdk.Event evnt, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
 		{
 			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (path);
-			IntPtr raw_ret = gtk_cell_renderer_start_editing (Handle, evnt.Handle, widget.Handle, native, ref background_area, ref cell_area, (int) flags);
+			IntPtr raw_ret = gtk_cell_renderer_start_editing (Handle, evnt != null ? evnt.Handle : IntPtr.Zero, widget.Handle, native, ref background_area, ref cell_area, (int) flags);
 			GLib.Marshaller.Free (native);
 			var ret = (ICellEditable) GLib.Object.GetObject (raw_ret);
 			return ret;
