@@ -168,7 +168,7 @@ namespace GLib {
 				else if (element_type.IsValueType)
 					ret = Marshal.PtrToStructure (data, element_type);
 				else if (element_type.IsInterface) {
-					Type adapter_type = element_type.Assembly.GetType (element_type.FullName + "Adapter");
+					Type adapter_type = element_type.Assembly.GetType (InterfaceToAdapterTypeName (element_type));
 					System.Reflection.MethodInfo method = adapter_type.GetMethod ("GetObject", new Type[] {typeof(IntPtr), typeof(bool)});
 					ret = method.Invoke (null, new object[] {data, false});
 				} else
@@ -178,6 +178,16 @@ namespace GLib {
 				ret = GLib.Object.GetObject (data, false);
 
 			return ret;
+		}
+
+		static string InterfaceToAdapterTypeName (Type type)
+		{
+			string fullname = type.Namespace;
+			if (!String.IsNullOrEmpty (fullname)) {
+				fullname += ".";
+			}
+			fullname += type.Name.Substring (1); // IActivatable -> Activatable
+			return fullname + "Adapter";
 		}
 
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
