@@ -213,8 +213,13 @@ namespace GtkSharp.Generation {
 			type = Trim (type);
 			IGeneratable cur_type = null;
 			while (types.TryGetValue (type, out cur_type) && cur_type is AliasGen) {
-				IGeneratable igen = types [type] as AliasGen;
-				types [type] = types [igen.Name];
+				IGeneratable igen = cur_type as AliasGen;
+
+				IGeneratable new_type;
+				if (!types.TryGetValue (igen.Name, out new_type))
+					new_type = null;
+
+				types [type] = new_type;
 				type = igen.Name;
 			}
 
