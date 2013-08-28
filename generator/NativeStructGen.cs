@@ -10,13 +10,9 @@ namespace GtkSharp.Generation
 	public class NativeStructGen : HandleBase
 	{
 		IList<StructField> fields = new List<StructField> ();
-		bool need_read_native = false;
-		string native_struct_name;
 
 		public NativeStructGen (XmlElement ns, XmlElement elem) : base (ns, elem)
 		{
-			native_struct_name = Name + "Impl";
-
 			foreach (XmlNode node in elem.ChildNodes) {
 
 				if (!(node is XmlElement)) continue;
@@ -82,18 +78,15 @@ namespace GtkSharp.Generation
 			if (IsDeprecated)
 				sw.WriteLine ("\t[Obsolete]");
 			string access = IsInternal ? "internal" : "public";
-			sw.WriteLine ("\t" + access + " partial class {0} : IEquatable<{0}> {{", Name);
+			sw.WriteLine ("\t" + access + " partial class {0} : IEquatable<{0}>{1} {{", Name, Parent == null ? ", GLib.IWrapper" : "");
 			sw.WriteLine ();
 
-			need_read_native = false;
 			GenNativeStruct (gen_info);
-			GenUpdate (gen_info);
+			GenNativeAccessor (gen_info);
 			GenFields (gen_info);
 			sw.WriteLine ();
 			GenCtors (gen_info);
 			GenMethods (gen_info, null, this);
-			if (need_read_native)
-				GenUpdate (gen_info);
 			GenEqualsAndHash (sw);
 
 			if (!need_close)
@@ -112,7 +105,7 @@ namespace GtkSharp.Generation
 			StreamWriter sw = gen_info.Writer;
 
 			sw.WriteLine ("\t\t[StructLayout(LayoutKind.Sequential)]");
-			sw.WriteLine ("\t\tprivate struct {0} {{", native_struct_name);
+			sw.WriteLine ("\t\tprivate struct NativeStruct {");
 			foreach (StructField field in fields) {
 				field.Generate (gen_info, "\t\t\t");
 			}
@@ -120,14 +113,12 @@ namespace GtkSharp.Generation
 			sw.WriteLine ();
 		}
 
-		private void GenUpdate (GenerationInfo gen_info)
+		private void GenNativeAccessor (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.Writer;
 
-			sw.WriteLine ("\t\tprivate void Update ()", QualifiedName);
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tif (Handle != IntPtr.Zero)");
-			sw.WriteLine ("\t\t\t\tthis.managed_struct = ({0})Marshal.PtrToStructure (this.Handle, typeof ({0}));", native_struct_name);
+			sw.WriteLine ("\t\tNativeStruct Native {{", QualifiedName);
+			sw.WriteLine ("\t\t\tget { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof (NativeStruct)); }");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 		}
@@ -136,11 +127,15 @@ namespace GtkSharp.Generation
 		{
 			StreamWriter sw = gen_info.Writer;
 
-			sw.WriteLine ("\t\tpublic {0} (IntPtr raw)", Name);
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tthis.Handle = raw;");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
+			if (Parent == null) {
+				sw.WriteLine ("\t\tpublic {0} (IntPtr raw)", Name);
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\tthis.Handle = raw;");
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+			}
+			else
+				sw.Write ("public {0} (IntPtr raw) : base (raw) {}", Name);
 
 			base.GenCtors (gen_info);
 		}
@@ -149,19 +144,20 @@ namespace GtkSharp.Generation
 		{
 			StreamWriter sw = gen_info.Writer;
 			sw.WriteLine ("\t\tprivate IntPtr Raw;");
+
 			sw.WriteLine ("\t\tpublic IntPtr Handle {");
 			sw.WriteLine ("\t\t\tget { return Raw; }");
-			sw.WriteLine ("\t\t\tset { Raw = value; Update ();}");
+			sw.WriteLine ("\t\t\tset { Raw = value; }");
 			sw.WriteLine ("\t\t}");
-			sw.WriteLine ("\t\tprivate {0} managed_struct;", native_struct_name);
 			sw.WriteLine ();
+
 			foreach (StructField field in fields) {
 				if (!field.Visible)
 					continue;
 				sw.WriteLine ("\t\tpublic {0} {1} {{", SymbolTable.Table.GetCSType (field.CType), field.StudlyName);
-				sw.WriteLine ("\t\t\tget {{ Update(); return {0}.{1}; }}", "managed_struct", field.StudlyName);
+				sw.WriteLine ("\t\t\tget {{ NativeStruct native = Native; return native.{0}; }}", field.StudlyName);
 				if (!(SymbolTable.Table [field.CType] is CallbackGen))
-					sw.WriteLine ("\t\t\tset {{ Update(); {0}.{1} = value;  Marshal.StructureToPtr({0}, this.Handle, false); }}" , "managed_struct", field.StudlyName);
+					sw.WriteLine ("\t\t\tset {{ NativeStruct native = Native; native.{0} = value;  Marshal.StructureToPtr (native, this.Handle, false); }}", field.StudlyName);
 				sw.WriteLine ("\t\t}");
 			}
 		}
@@ -226,7 +222,7 @@ namespace GtkSharp.Generation
 
 		public override void Prepare (StreamWriter sw, string indent)
 		{
-			sw.WriteLine (indent + "Update ();");
+			sw.WriteLine (indent + "NativeStruct native = Native;");
 		}
 	}
 }
