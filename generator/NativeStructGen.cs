@@ -219,11 +219,6 @@ namespace GtkSharp.Generation
 			sw.WriteLine ();
 
 		}
-
-		public override void Prepare (StreamWriter sw, string indent)
-		{
-			sw.WriteLine (indent + "NativeStruct native = Native;");
-		}
 	}
 }
 
