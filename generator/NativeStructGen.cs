@@ -132,10 +132,11 @@ namespace GtkSharp.Generation
 				sw.WriteLine ("\t\t{");
 				sw.WriteLine ("\t\t\tthis.Handle = raw;");
 				sw.WriteLine ("\t\t}");
-				sw.WriteLine ();
 			}
 			else
-				sw.Write ("public {0} (IntPtr raw) : base (raw) {{}}", Name);
+				sw.Write ("\t\tpublic {0} (IntPtr raw) : base (raw) {{}}", Name);
+
+			sw.WriteLine ();
 
 			base.GenCtors (gen_info);
 		}
