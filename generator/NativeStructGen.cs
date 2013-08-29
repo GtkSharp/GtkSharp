@@ -78,7 +78,7 @@ namespace GtkSharp.Generation
 			if (IsDeprecated)
 				sw.WriteLine ("\t[Obsolete]");
 			string access = IsInternal ? "internal" : "public";
-			sw.WriteLine ("\t" + access + " partial class {0} : IEquatable<{0}>{1} {{", Name, Parent == null ? ", GLib.IWrapper" : "");
+			sw.WriteLine ("\t" + access + " partial class {0} : {1} IEquatable<{0}> {{", Name, Parent == null ? "GLib.IWrapper," : (Parent.QualifiedName + ","));
 			sw.WriteLine ();
 
 			GenNativeStruct (gen_info);
@@ -135,7 +135,7 @@ namespace GtkSharp.Generation
 				sw.WriteLine ();
 			}
 			else
-				sw.Write ("public {0} (IntPtr raw) : base (raw) {}", Name);
+				sw.Write ("public {0} (IntPtr raw) : base (raw) {{}}", Name);
 
 			base.GenCtors (gen_info);
 		}
