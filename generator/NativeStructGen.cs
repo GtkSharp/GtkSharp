@@ -176,32 +176,18 @@ namespace GtkSharp.Generation
 			equals.Append ("true");
 
 			foreach (StructField field in fields) {
-				if (field.IsPadding || !field.Visible)
+				if (field.IsPadding || !field.Visible || field.IsBitfield)
 					continue;
-				if (field.IsBitfield) {
-					if (need_field) {
-						equals.Append (" && _bitfield");
-						equals.Append (bitfields);
-						equals.Append (".Equals (other._bitfield");
-						equals.Append (bitfields);
-						equals.Append (")");
-						hashcode.Append (" ^ ");
-						hashcode.Append ("_bitfield");
-						hashcode.Append (bitfields++);
-						hashcode.Append (".GetHashCode ()");
-						need_field = false;
-					}
-				} else {
-					need_field = true;
-					equals.Append (" && ");
-					equals.Append (field.EqualityName);
-					equals.Append (".Equals (other.");
-					equals.Append (field.EqualityName);
-					equals.Append (")");
-					hashcode.Append (" ^ ");
-					hashcode.Append (field.EqualityName);
-					hashcode.Append (".GetHashCode ()");
-				}
+
+				need_field = true;
+				equals.Append (" && ");
+				equals.Append (field.EqualityName);
+				equals.Append (".Equals (other.");
+				equals.Append (field.EqualityName);
+				equals.Append (")");
+				hashcode.Append (" ^ ");
+				hashcode.Append (field.EqualityName);
+				hashcode.Append (".GetHashCode ()");
 			}
 			sw.WriteLine ("\t\t\treturn {0};", equals.ToString ());
 			sw.WriteLine ("\t\t}");
