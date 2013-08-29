@@ -156,7 +156,7 @@ namespace GtkSharp.Generation
 				if (!field.Visible)
 					continue;
 				sw.WriteLine ("\t\tpublic {0} {1} {{", SymbolTable.Table.GetCSType (field.CType), field.StudlyName);
-				sw.WriteLine ("\t\t\tget {{ NativeStruct native = Native; return native.{0}; }}", field.StudlyName);
+				sw.WriteLine ("\t\t\tget {{ return Native.{0}; }}", field.StudlyName);
 				if (!(SymbolTable.Table [field.CType] is CallbackGen))
 					sw.WriteLine ("\t\t\tset {{ NativeStruct native = Native; native.{0} = value;  Marshal.StructureToPtr (native, this.Handle, false); }}", field.StudlyName);
 				sw.WriteLine ("\t\t}");
