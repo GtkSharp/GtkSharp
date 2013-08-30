@@ -184,6 +184,9 @@ class CustomScrollableWidget<T> : CustomBase, IScrollableImplementor {
 			if (hadjustment.Value + hadjustment.PageSize > hadjustment.Upper) {
 				hadjustment.Value = hadjustment.Upper - hadjustment.PageSize;
 			}
+			if (hadjustment.Upper > 0 && hadjustment.Upper < hadjustment.PageSize) {
+				hadjustment.Upper = hadjustment.PageSize;
+			}
 			hadjustment.Change ();
 		}
 		
@@ -192,6 +195,9 @@ class CustomScrollableWidget<T> : CustomBase, IScrollableImplementor {
 			vadjustment.StepIncrement = layoutHeight;
 			if (vadjustment.Value + vadjustment.PageSize > vadjustment.Upper) {
 				vadjustment.Value = vadjustment.Upper - vadjustment.PageSize;
+			}
+			if (vadjustment.Upper > 0 && vadjustment.Upper < vadjustment.PageSize) {
+				vadjustment.Upper = vadjustment.PageSize;
 			}
 			vadjustment.Change ();
 		}
