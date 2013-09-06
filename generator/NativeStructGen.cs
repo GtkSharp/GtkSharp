@@ -105,7 +105,7 @@ namespace GtkSharp.Generation
 			StreamWriter sw = gen_info.Writer;
 
 			sw.WriteLine ("\t\t[StructLayout(LayoutKind.Sequential)]");
-			sw.WriteLine ("\t\tprivate struct NativeStruct {");
+			sw.WriteLine ("\t\tprivate partial struct NativeStruct {");
 			foreach (StructField field in fields) {
 				field.Generate (gen_info, "\t\t\t");
 			}
