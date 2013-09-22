@@ -1,4 +1,127 @@
 ===============================================================================
+Gtk# 2.99.1 - 2013-09-23
+===============================================================================
+
+Gtk# 2.99.1 is the second release of C# bindings for GTK 3.x. This is a beta
+release, primarily intended for applications developers who want to start
+porting their application to GTK 3.x.
+
+This version of Gtk# provides bindings for the API exposed by these libraries:
+  * cairo 1.10.0
+  * glib 2.28.0
+  * pango 1.28.3
+  * atk 1.32.0
+  * gdk-pixbuf 2.22.1
+  * gtk+ 3.0.0
+
+There is no API stability guarantee for now, but we will try to keep breaking
+changes to a minimum.
+
+This version of Gtk# can be installed in parallel with Gtk# 2.x, and should not
+have any impact on applications using Gtk# 2.x.
+
+New features and enhancements
+-----------------------------
+
+  * Support for async/await in the GTK main thread
+
+          If you use the async/await keywords in your Gtk# app, things will now
+          work as expected with the GTK main thread. For example:
+    
+            static async void DoWork () // called in the GTK main thread
+            {
+                // Do some stuff with the UI...
+                label.Text = "Starting Work";
+            
+                // Run something asynchronously, UI is not frozen
+                int res = await DoLongOperation ();
+            
+                // Do some more UI stuff, it'll run on the GTK main thread
+                label.Text = "Work done";
+            }
+
+  * gui-thread-check profiler module
+      
+        This mono profiler module can be used to check if a GTK# application is
+        trying to invoke gtk or gdk methods from a thread which is not the main
+        GUI thread.
+
+        To use it, run your application with the command:
+
+          mono --profile=gui-thread-check yourapp.exe
+
+        If the profiler is properly installed, you'll see an output like this:
+
+          *** Running with gui-thread-check *** GUI THREAD INITIALIZED:
+          *** 2861676352
+
+        While the application is running, if the profiler detects a non-gui
+        thread invoking gtk methods, it will print a warning message together
+        with a stack trace. For example:
+
+          *** GTK CALL NOT IN GUI THREAD: Widget.gtk_widget_get_parent
+             Widget.get_Parent
+             SomeWidget.DoSomething
+             BackgroundWorker.OnDoWork
+             BackgroundWorker.ProcessWorker
+
+  * cairo: Rework the handling of native resources, to reduce memory leaks.
+    In general, the caller is responsible for disposing IDisposable objects
+    returned from any method.
+
+  * cairo: Add mechanism to debug missing Dispose calls, enabled by setting a
+    new MONO_CAIRO_DEBUG_DISPOSE environment variable.
+
+  * Provide and use an XML schema definition to validate GAPI XML files.
+
+  * Use generic collections in the generated code, in custom code and in the
+    generator itself.
+
+  * Improve handling of command-line parameters in the generator.
+
+  * glib: Install interfaces before they are initialized, to match the behavior
+    now required by glib 2.36 and above.
+
+Changes
+-------
+
+  * Generate all interfaces with the "I" prefix, to match .NET coding 
+    convention. For example, Scrollable is now IScrollable.
+  * gdk: Remove AddClientMessageFilter method from Gdk.Display and Gdk.Global
+  * cairo: Add SetSourceColor method to Cairo.Context.
+  * gio: Correct return types for methods returning GList*, in various classes
+  * gio: Rename Content class to ContentType and adjust method names
+  * gio: Move the module-related static functions into the IOModule class,
+    adjust their names and fix the return types
+  * gio: Move the scheduler-related static functions into IOSchedulerJob
+  * gio: Move ErrorQuark method to GioGlobal
+  * gio: Create IOError class, with FromErrno and FromWin32Error methods
+  * gio: Rename the Dbus class to DBus, to have consistent capitalization
+  * gio: Rename all GDbus* properties to GDBus*, with correct capitalization
+  * gio: Rename the DBus.AddressGet* methods to DBus.Get*
+  * gio: Move static methods from Simple to SimpleAsyncResult class
+  * gio: Hide GioGlobal.RegistryBackendGetType method
+  * gio: Mark the Seekable interface as consume-only
+  * gio: Correct GSettings.GetStrv and SetStrv values to be string[]
+  * gtk: Mark the whole Style class as obsolete
+  * gtk: Fix return types for several methods: GtkCellArea.GetFocusSiblings,
+    GtkMenu.GetForAttachWidget, GtkWindowGroup.ListWindows
+  * gtk: Make the Group property for Radio* widgets a properly typed array
+  * gtk: Fix return types for IterList* methods in WidgetPath
+  * gtk: Change the second parameter in AccelMap.LookupEntry to be an out param
+
+Bug fixes
+---------
+
+  * generator: Add validation check for return values that are arrays
+  * cairo: Fix rectangles returned by StrokeExtents and FillExtents methods
+  * cairo: Fix various text API calls to use the correct types
+  * glib: Fix crash when freeing lists with elements typed as interfaces
+  * gdk: Allow passing a null Gdk.Event
+  * gtk: Fix return type of IRecentChooser.GetUris to an array of strings
+
+
+===============================================================================
 Gtk# 2.99.0 - 2012-10-23
 ===============================================================================
 
