@@ -5,7 +5,7 @@
  *
  * This demo has two drawing areas. The checkerboard area shows
  * how you can just draw something; all you have to do is write
- * a signal handler for ExposeEvent, as shown here.
+ * a signal handler for the Drawn event, as shown here.
  *
  * The "scribble" area is a bit more advanced, and shows how to handle
  * events such as button presses and mouse motion. Click the mouse
