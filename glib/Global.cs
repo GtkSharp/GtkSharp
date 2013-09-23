@@ -23,7 +23,6 @@
 namespace GLib {
 
 	using System;
-	using System.Text;
 	using System.Runtime.InteropServices;
 
 	public class Global

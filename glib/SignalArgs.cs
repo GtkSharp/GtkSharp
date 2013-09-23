@@ -22,7 +22,6 @@
 
 namespace GLib {
 	using System;
-	using System.Collections;
 
 	public class SignalArgs : EventArgs {
 

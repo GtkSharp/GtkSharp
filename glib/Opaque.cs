@@ -27,9 +27,6 @@
 namespace GLib {
 
 	using System;
-	using System.Collections;
-	using System.ComponentModel;
-	using System.Runtime.InteropServices;
 
 	public class Opaque : IWrapper, IDisposable {
 

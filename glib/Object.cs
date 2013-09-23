@@ -26,10 +26,8 @@ namespace GLib {
 
 	using System;
 	using System.Collections.Generic;
-	using System.ComponentModel;
 	using System.Reflection;
 	using System.Runtime.InteropServices;
-	using System.Text;
 
 	public class Object : IWrapper, IDisposable {
 

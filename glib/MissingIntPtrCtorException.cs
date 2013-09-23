@@ -22,7 +22,6 @@
 namespace GLib {
 
 	using System;
-	using System.Runtime.InteropServices;
 	
 	public class MissingIntPtrCtorException : Exception
 	{

@@ -25,7 +25,6 @@
 namespace GLib {
 
 	using System;
-	using System.Collections;
 	using System.Runtime.InteropServices;
 
 	public delegate void LogFunc (string log_domain, LogLevelFlags log_level, string message);
