@@ -330,11 +330,15 @@ namespace Gtk {
 		[GLib.Signal("destroy")]
 		public event EventHandler Destroyed {
 			add {
-				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
+				Delegate delegate_handler;
+				DestroyHandlers.TryGetValue (Handle, out delegate_handler);
+				var handler = delegate_handler as EventHandler;
 				DestroyHandlers [Handle] = Delegate.Combine (handler, value);
 			}
 			remove {
-				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
+				Delegate delegate_handler;
+				DestroyHandlers.TryGetValue (Handle, out delegate_handler);
+				var handler = delegate_handler as EventHandler;
 				handler = (EventHandler) Delegate.Remove (handler, value);
 				if (handler != null)
 					DestroyHandlers [Handle] = handler;
