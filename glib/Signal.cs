@@ -23,7 +23,6 @@
 namespace GLib {
 
 	using System;
-	using System.Collections;
 	using System.Runtime.InteropServices;
 
 	[Flags]

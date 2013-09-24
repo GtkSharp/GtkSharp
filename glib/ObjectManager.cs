@@ -26,7 +26,7 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 	using System.Reflection;
 
-	public class ObjectManager {
+	public static class ObjectManager {
 
 		static BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance;
 

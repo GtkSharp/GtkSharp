@@ -129,10 +129,10 @@ namespace GLib {
 		{
 			Source.Remove (id);
 		}
-		
+
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_source_remove (uint id);
-                                                                                
+
 		public static bool Remove (TimeoutHandler hndlr)
 		{
 			bool result = false;
