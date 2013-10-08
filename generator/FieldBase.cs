@@ -42,12 +42,16 @@ namespace GtkSharp.Generation {
 
 		protected virtual bool Readable {
 			get {
+				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) <= 2)
+					return elem.GetAttribute ("readable") != "false";
 				return elem.HasAttribute ("readable") && elem.GetAttributeAsBoolean ("readable");
 			}
 		}
 
 		protected virtual bool Writable {
 			get {
+				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) <= 2)
+					return elem.GetAttribute ("writeable") != "false";
 				return elem.HasAttribute ("writeable") && elem.GetAttributeAsBoolean ("writeable");
 			}
 		}

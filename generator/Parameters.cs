@@ -53,7 +53,7 @@ namespace GtkSharp.Generation {
 		private bool throws = false;
 		public bool Throws {
 			get {
-				if (ParserVersion <= 2)
+				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) <= 2)
 					return true;
 				if (!throws && elem.HasAttribute ("throws"))
 					throws = elem.GetAttributeAsBoolean ("throws");
@@ -287,13 +287,6 @@ namespace GtkSharp.Generation {
 					result [i] = this [i].NativeSignature;
 
 				return String.Join (", ", result);
-			}
-		}
-
-		private int ParserVersion {
-			get {
-				XmlElement root = elem.OwnerDocument.DocumentElement;
-				return root.HasAttribute ("parser_version") ? int.Parse (root.GetAttribute ("parser_version")) : 1;
 			}
 		}
 	}

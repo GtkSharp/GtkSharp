@@ -187,6 +187,12 @@ namespace GtkSharp.Generation {
 			return result;
 		}
 
+		internal static int GetVersion (XmlElement document_element)
+		{
+			XmlElement root = document_element;
+			return root.HasAttribute ("parser_version") ? int.Parse (root.GetAttribute ("parser_version")) : 1;
+		}
+
 		private IGeneratable ParseSymbol (XmlElement symbol)
 		{
 			string type = symbol.GetAttribute ("type");
