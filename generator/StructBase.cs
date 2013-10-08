@@ -1,8 +1,11 @@
 // GtkSharp.Generation.StructBase.cs - The Structure/Boxed Base Class.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Authors:
+//   Mike Kestner <mkestner@speakeasy.net>
+//   Stephan Sundermann <stephansundermann@gmail.com>
 //
 // Copyright (c) 2001-2003 Mike Kestner
+// Copyright (c) 2013 Stephan Sundermann
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -111,36 +114,43 @@ namespace GtkSharp.Generation {
 		{
 			int bitfields = 0;
 			bool need_field = true;
-			StringBuilder sb = new StringBuilder ();
+			StringBuilder hashcode = new StringBuilder ();
+			StringBuilder equals = new StringBuilder ();
 
 			sw.WriteLine ("\t\tpublic bool Equals ({0} other)", Name);
 			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tbool isEqual = true;");
-			sb.Append ("this.GetType ().FullName.GetHashCode ()");
+			hashcode.Append ("this.GetType ().FullName.GetHashCode ()");
+			equals.Append ("true");
 
 			foreach (StructField field in fields) {
 				if (field.IsPadding)
 					continue;
 				if (field.IsBitfield) {
 					if (need_field) {
-						sw.WriteLine ("\t\t\tisEqual &= bitfield{0}.Equals (other._bitfield{0});", bitfields);
-						//if (sb.Length > 0)
-							sb.Append (" ^ ");
-						sb.Append ("_bitfield");
-						sb.Append (bitfields++);
-						sb.Append (".GetHashCode ()");
+						equals.Append (" && _bitfield");
+						equals.Append (bitfields);
+						equals.Append (".Equals (other._bitfield");
+						equals.Append (bitfields);
+						equals.Append (")");
+						hashcode.Append (" ^ ");
+						hashcode.Append ("_bitfield");
+						hashcode.Append (bitfields++);
+						hashcode.Append (".GetHashCode ()");
 						need_field = false;
 					}
 				} else {
 					need_field = true;
-					sw.WriteLine ("\t\t\tisEqual &= {0}.Equals (other.{0});", field.EqualityName);
-					//if (sb.Length > 0)
-						sb.Append (" ^ ");
-					sb.Append (field.EqualityName);
-					sb.Append (".GetHashCode ()");
+					equals.Append (" && ");
+					equals.Append (field.EqualityName);
+					equals.Append (".Equals (other.");
+					equals.Append (field.EqualityName);
+					equals.Append (")");
+					hashcode.Append (" ^ ");
+					hashcode.Append (field.EqualityName);
+					hashcode.Append (".GetHashCode ()");
 				}
 			}
-			sw.WriteLine ("\t\t\treturn isEqual;");
+			sw.WriteLine ("\t\t\treturn {0};", equals.ToString ());
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic override bool Equals (object other)");
@@ -152,7 +162,7 @@ namespace GtkSharp.Generation {
 				return;
 			sw.WriteLine ("\t\tpublic override int GetHashCode ()");
 			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\treturn {0};", sb.ToString ());
+			sw.WriteLine ("\t\t\treturn {0};", hashcode.ToString ());
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 
