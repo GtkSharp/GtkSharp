@@ -93,23 +93,23 @@ namespace GtkSharp.Generation {
 
 			if (HasCB || HideData) {
 
-				foreach (Parameter param in param_list) {
-					if (param.Closure == idx)
+				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) >= 3) {
+					foreach (Parameter param in param_list) {
+						if (param.Closure == idx)
+							return true;
+						if (param.DestroyNotify == idx)
+							return true;
+					}
+				} else {
+					if (p.IsUserData && (idx == Count - 1))
 						return true;
-					else if (param.DestroyNotify == idx)
+					if (p.IsUserData && (idx == Count - 2) && this [Count - 1] is ErrorParameter)
+						return true;
+					if (p.IsUserData && idx > 0 && this [idx - 1].Generatable is CallbackGen)
+						return true;
+					if (p.IsDestroyNotify && (idx == Count - 1) && this [idx - 1].IsUserData)
 						return true;
 				}
-
-				if (p.IsUserData && (idx == Count - 1))
-                                        return true;
-				if (p.IsUserData && (idx == Count - 2) && this [Count - 1] is ErrorParameter)
-                                        return true;
-				if (p.IsUserData && idx > 0 &&
-				    this [idx - 1].Generatable is CallbackGen)
-					return true;
-				if (p.IsDestroyNotify && (idx == Count - 1) &&
-				    this [idx - 1].IsUserData)
-					return true;
 			}
 
 			return false;
@@ -234,7 +234,8 @@ namespace GtkSharp.Generation {
 				param_list.Add (p);
 			}
 
-			if (has_cb && Count > 2 && this [Count - 3].Generatable is CallbackGen && this [Count - 2].IsUserData && this [Count - 1].IsDestroyNotify)
+			if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) < 3 &&
+			    has_cb && Count > 2 && this [Count - 3].Generatable is CallbackGen && this [Count - 2].IsUserData && this [Count - 1].IsDestroyNotify)
 				this [Count - 3].Scope = "notified";
 
 			valid = true;

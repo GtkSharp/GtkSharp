@@ -80,7 +80,7 @@ namespace GtkSharp.Generation {
 					return StudlyName;
 				else if (IsBitfield)
 					return Name;
-				else if (IsPointer && (gen is StructGen || gen is BoxedGen))
+				else if (IsPointer && (gen is StructGen || gen is BoxedGen || gen is UnionGen))
 					return Access != "private" ? wrapped_name : Name;
 				else if (IsPointer && CSType != "string")
 					return Name;
@@ -148,7 +148,7 @@ namespace GtkSharp.Generation {
 					acc.WriteAccessors (sw, indent + "\t", Name);
 					sw.WriteLine (indent + "}");
 				}
-			} else if (IsPointer && (gen is StructGen || gen is BoxedGen)) {
+			} else if (IsPointer && (gen is StructGen || gen is BoxedGen || gen is UnionGen)) {
 				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 				sw.WriteLine ();
 				if (Access != "private") {

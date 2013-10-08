@@ -171,6 +171,9 @@ namespace GtkSharp.Generation {
 				case "class":
 					result.Add (new ClassGen (ns, elem));
 					break;
+				case "union":
+					result.Add (new UnionGen (ns, elem));
+					break;
 				case "struct":
 					if (is_opaque) {
 						result.Add (new OpaqueGen (ns, elem));

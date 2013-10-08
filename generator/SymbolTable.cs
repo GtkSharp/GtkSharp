@@ -292,6 +292,13 @@ namespace GtkSharp.Generation {
 
 			return false;
 		}
+
+		public bool IsUnion (string c_type)
+		{
+			if (this[c_type] is UnionGen)
+				return true;
+			return false;
+		}
 	
 		public bool IsEnum(string c_type)
 		{
