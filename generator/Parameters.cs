@@ -49,6 +49,18 @@ namespace GtkSharp.Generation {
 			get { return param_list.Count; }
 		}
 
+		// gapi assumes GError** parameters to be error parameters in version 1 and 2
+		private bool throws = false;
+		public bool Throws {
+			get {
+				if (ParserVersion <= 2)
+					return true;
+				if (!throws && elem.HasAttribute ("throws"))
+					throws = elem.GetAttributeAsBoolean ("throws");
+				return throws;
+			}
+		}
+
 		public int VisibleCount {
 			get {
 				int visible = 0;
@@ -76,7 +88,7 @@ namespace GtkSharp.Generation {
 			if (p.IsCount)
 				return true;
 
-			if (p.CType == "GError**")
+			if (p.CType == "GError**" && Throws)
 				return true;
 
 			if (HasCB || HideData) {
@@ -212,7 +224,7 @@ namespace GtkSharp.Generation {
 							}
 						}
 					}
-				} else if (p.CType == "GError**")
+				} else if (p.CType == "GError**" && Throws)
 					p = new ErrorParameter (parm);
 				else if (gen is StructBase || gen is ByRefGen) {
 					p = new StructParameter (parm);
@@ -275,6 +287,13 @@ namespace GtkSharp.Generation {
 					result [i] = this [i].NativeSignature;
 
 				return String.Join (", ", result);
+			}
+		}
+
+		private int ParserVersion {
+			get {
+				XmlElement root = elem.OwnerDocument.DocumentElement;
+				return root.HasAttribute ("parser_version") ? int.Parse (root.GetAttribute ("parser_version")) : 1;
 			}
 		}
 	}
