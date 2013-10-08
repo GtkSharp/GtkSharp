@@ -42,13 +42,13 @@ namespace GtkSharp.Generation {
 
 		protected virtual bool Readable {
 			get {
-				return elem.GetAttribute ("readable") != "false";
+				return elem.HasAttribute ("readable") && elem.GetAttributeAsBoolean ("readable");
 			}
 		}
 
 		protected virtual bool Writable {
 			get {
-				return elem.GetAttribute ("writeable") != "false";
+				return elem.HasAttribute ("writeable") && elem.GetAttributeAsBoolean ("writeable");
 			}
 		}
 
