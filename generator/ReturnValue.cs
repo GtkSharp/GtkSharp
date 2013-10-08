@@ -160,7 +160,7 @@ namespace GtkSharp.Generation {
 				string args = ", typeof (" + ElementType + "), " + (owned ? "true" : "false") + ", " + (elements_owned ? "true" : "false");
 				var = "new " + IGen.QualifiedName + "(" + var + args + ")";
 			} else if (is_null_term)
-				return String.Format ("GLib.Marshaller.StringArrayToNullTermPointer ({0})", var);
+				return String.Format ("GLib.Marshaller.StringArrayToNullTermStrvPointer ({0})", var);
 			else if (is_array)
 				return String.Format ("GLib.Marshaller.ArrayToArrayPtr ({0})", var);
 

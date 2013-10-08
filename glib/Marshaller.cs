@@ -170,12 +170,17 @@ namespace GLib {
 				return ret.Replace ("%", "%%");
 		}
 
-		internal static IntPtr StringArrayToStrvPtr (string[] strs)
+		public static IntPtr StringArrayToStrvPtr (string[] strs)
 		{
 			IntPtr[] ptrs = StringArrayToNullTermPointer (strs);
 			IntPtr ret = g_malloc (new UIntPtr ((ulong) (ptrs.Length * IntPtr.Size)));
 			Marshal.Copy (ptrs, 0, ret, ptrs.Length);
 			return ret;
+		}
+
+		public static IntPtr StringArrayToNullTermStrvPointer (string[] strs)
+		{
+			return StringArrayToStrvPtr (strs);
 		}
 
 		public static IntPtr[] StringArrayToNullTermPointer (string[] strs)
