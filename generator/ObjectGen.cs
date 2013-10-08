@@ -195,9 +195,10 @@ namespace GtkSharp.Generation {
 				GenSignals (gen_info, null);
 			}
 
+			GenConstants (gen_info);
 			GenClassMembers (gen_info, cs_parent);
 			GenMethods (gen_info, null, null);
-			
+
 			if (interfaces.Count != 0) {
 				var all_methods = new Dictionary<string, Method> ();
 				foreach (Method m in Methods.Values) {

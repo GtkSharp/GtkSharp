@@ -34,6 +34,7 @@ namespace GtkSharp.Generation {
 		private IDictionary<string, Property> props = new Dictionary<string, Property> ();
 		private IDictionary<string, ObjectField> fields = new Dictionary<string, ObjectField> ();
 		private IDictionary<string, Method> methods = new Dictionary<string, Method> ();
+		private IDictionary<string, Constant> constants = new Dictionary<string, Constant>();
 		protected IList<string> interfaces = new List<string>();
 		protected IList<string> managed_interfaces = new List<string>();
 		protected IList<Ctor> ctors = new List<Ctor>();
@@ -108,6 +109,11 @@ namespace GtkSharp.Generation {
 					ctors.Add (new Ctor (member, this));
 					break;
 
+				case "constant":
+					name = member.GetAttribute ("name");
+					constants.Add (name, new Constant (member));
+					break;
+
 				default:
 					break;
 				}
@@ -156,6 +162,14 @@ namespace GtkSharp.Generation {
 				methods.Remove (method.Name);
 			invalids.Clear ();
 
+			foreach (Constant con in constants.Values) {
+				if (!con.Validate (log))
+					invalids.Add (con);
+			}
+			foreach (Constant con in invalids)
+				constants.Remove (con.Name);
+			invalids.Clear ();
+
 			foreach (Ctor ctor in ctors) {
 				if (!ctor.Validate (log))
 					invalids.Add (ctor);
@@ -199,6 +213,7 @@ namespace GtkSharp.Generation {
 			case "implements":
 			case "constructor":
 			case "disabledefaultconstructor":
+			case "constant":
 				return true;
 				
 			default:
@@ -219,6 +234,12 @@ namespace GtkSharp.Generation {
 		{
 			foreach (ObjectField field in fields.Values)
 				field.Generate (gen_info, "\t\t");
+		}
+
+		protected void GenConstants (GenerationInfo gen_info)
+		{
+			foreach (Constant con in constants.Values)
+				con.Generate (gen_info, "\t\t");
 		}
 
 		private void ParseImplements (XmlElement member)

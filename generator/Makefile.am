@@ -19,6 +19,7 @@ sources = 				\
 	CodeGenerator.cs		\
 	ConstFilenameGen.cs		\
 	ConstStringGen.cs		\
+	Constant.cs			\
 	Ctor.cs				\
 	DefaultSignalHandler.cs		\
 	EnumGen.cs			\
