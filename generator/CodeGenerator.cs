@@ -34,6 +34,7 @@ namespace GtkSharp.Generation {
 			bool show_help = false;
 			string dir = "";
 			string assembly_name = "";
+			string gapidir = "";
 			string glue_filename = "";
 			string glue_includes = "";
 			string gluelib_name = "";
@@ -54,6 +55,8 @@ namespace GtkSharp.Generation {
 					(string v) => { dir = v; } },
 				{ "assembly-name=", "Name of the assembly for which the code is generated.",
 					(string v) => { assembly_name = v; } },
+				{ "gapidir=", "GAPI xml data  folder.",
+					(string v) => { gapidir = v; } },
 				{ "glue-filename=", "Filename for the generated C glue code.",
 					(string v) => { glue_filename = v; } },
 				{ "glue-includes=", "Content of #include directive to add in the generated C glue code.",
@@ -101,12 +104,12 @@ namespace GtkSharp.Generation {
 
 			Parser p = new Parser ();
 			foreach (string include in includes) {
-				IGeneratable[] curr_gens = p.Parse (include, schema_name);
+				IGeneratable[] curr_gens = p.Parse (include, schema_name, gapidir);
 				table.AddTypes (curr_gens);
 			}
 
 			foreach (string filename in filenames) {
-				IGeneratable[] curr_gens = p.Parse (filename, schema_name);
+				IGeneratable[] curr_gens = p.Parse (filename, schema_name, gapidir);
 				table.AddTypes (curr_gens);
 				gens.AddRange (curr_gens);
 			}
