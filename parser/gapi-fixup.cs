@@ -1,8 +1,11 @@
 // gapi-fixup.cs - xml alteration engine.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Authors:
+//   Mike Kestner <mkestner@speakeasy.net>
+//   Stephan Sundermann <stephansundermann@gmail.com>
 //
 // Copyright (c) 2003 Mike Kestner
+// Copyright (c) 2013 Stephan Sundermann
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -91,6 +94,26 @@ namespace GtkSharp.Parsing {
 
 			XPathNavigator meta_nav = meta_doc.CreateNavigator ();
 			XPathNavigator api_nav = api_doc.CreateNavigator ();
+
+			XPathNodeIterator copy_iter = meta_nav.Select ("/metadata/copy-node");
+			while (copy_iter.MoveNext ()) {
+				string path = copy_iter.Current.GetAttribute ("path", String.Empty);
+				XPathExpression expr = api_nav.Compile (path);
+				string parent = copy_iter.Current.Value;
+				XPathNodeIterator parent_iter = api_nav.Select (parent);
+				bool matched = false;
+				while (parent_iter.MoveNext ()) {
+					XmlNode parent_node = ((IHasXmlNode)parent_iter.Current).GetNode ();
+					XPathNodeIterator path_iter = parent_iter.Current.Clone ().Select (expr);
+					while (path_iter.MoveNext ()) {
+						XmlNode node = ((IHasXmlNode)path_iter.Current).GetNode ();
+						parent_node.AppendChild (node.Clone ());
+					}
+					matched = true;
+				}
+				if (!matched)
+					Console.WriteLine ("Warning: <copy-node path=\"{0}\"/> matched no nodes", path);
+			}
 
 			XPathNodeIterator rmv_iter = meta_nav.Select ("/metadata/remove-node");
 			while (rmv_iter.MoveNext ()) {
