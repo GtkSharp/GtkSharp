@@ -207,6 +207,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public void GenerateOverloads (StreamWriter sw)
+		{
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t" + retval.CSType + " " + Name + "(" + (Signature != null ? Signature.WithoutOptional () : "") + ") {");
+			sw.WriteLine ("\t\t\t{0}{1} ({2});", !retval.IsVoid ? "return " : String.Empty, Name, Signature.CallWithoutOptionals ());
+			sw.WriteLine ("\t\t}");
+		}
+
 		public void Generate (GenerationInfo gen_info, ClassBase implementor)
 		{
 			Method comp = null;
@@ -266,6 +274,9 @@ namespace GtkSharp.Generation {
 			}
 			else
 				gen_info.Writer.WriteLine();
+
+			if (Parameters.HasOptional && !(is_get || is_set))
+				GenerateOverloads (gen_info.Writer);
 			
 			gen_info.Writer.WriteLine();
 

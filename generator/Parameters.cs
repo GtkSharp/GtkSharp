@@ -142,6 +142,11 @@ namespace GtkSharp.Generation {
 			set { is_static = value; }
 		}
 
+		bool has_optional;
+		internal bool HasOptional {
+			get { return has_optional;}
+		}
+
 		public Parameter GetCountParameter (string param_name)
 		{
 			foreach (Parameter p in this)
@@ -197,6 +202,9 @@ namespace GtkSharp.Generation {
 					Clear ();
 					return false;
 				}
+
+				if (p.IsOptional && p.PassAs == String.Empty)
+					has_optional = true;
 
 				IGeneratable gen = p.Generatable;
 

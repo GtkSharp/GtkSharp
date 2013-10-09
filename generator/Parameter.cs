@@ -90,6 +90,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		internal bool IsOptional {
+			get {
+				return elem.GetAttributeAsBoolean ("allow-none");
+			}
+		}
+
 		bool is_count;
 		bool is_count_set;
 		public bool IsCount {
