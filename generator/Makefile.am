@@ -43,6 +43,7 @@ sources = 				\
 	MethodBase.cs			\
 	MethodBody.cs			\
 	Method.cs			\
+	NativeStructGen.cs		\
 	ObjectField.cs			\
 	ObjectBase.cs			\
 	ObjectGen.cs			\

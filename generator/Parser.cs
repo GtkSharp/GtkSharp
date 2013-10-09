@@ -140,6 +140,7 @@ namespace GtkSharp.Generation {
 					continue;
 
 				bool is_opaque = elem.GetAttributeAsBoolean ("opaque");
+				bool is_native_struct = elem.GetAttributeAsBoolean ("native");
 
 				switch (def.Name) {
 				case "alias":
@@ -177,6 +178,8 @@ namespace GtkSharp.Generation {
 				case "struct":
 					if (is_opaque) {
 						result.Add (new OpaqueGen (ns, elem));
+					} else if (is_native_struct) {
+						result.Add (new NativeStructGen (ns, elem));
 					} else {
 						result.Add (new StructGen (ns, elem));
 					}

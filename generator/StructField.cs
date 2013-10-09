@@ -70,6 +70,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		bool visible = false;
+		internal bool Visible {
+			get {
+				return visible;
+			}
+		}
+
 		public string EqualityName {
 			get {
 				SymbolTable table = SymbolTable.Table;
@@ -127,6 +134,8 @@ namespace GtkSharp.Generation {
 			if (Hidden)
 				return;
 
+			visible = Access != "private";
+
 			StreamWriter sw = gen_info.Writer;
 			SymbolTable table = SymbolTable.Table;
 
@@ -158,6 +167,7 @@ namespace GtkSharp.Generation {
 				}
 			} else if (IsPointer && CSType != "string") {
 				// FIXME: probably some fields here which should be visible.
+				visible = false;
 				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 			} else {
 				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, Access == "public" ? StudlyName : Name);

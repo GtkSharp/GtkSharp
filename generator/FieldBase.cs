@@ -40,7 +40,7 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		protected virtual bool Readable {
+		internal virtual bool Readable {
 			get {
 				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) <= 2)
 					return elem.GetAttribute ("readable") != "false";
@@ -48,7 +48,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected virtual bool Writable {
+		internal virtual bool Writable {
 			get {
 				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) <= 2)
 					return elem.GetAttribute ("writeable") != "false";
@@ -58,7 +58,7 @@ namespace GtkSharp.Generation {
 
 		protected abstract string DefaultAccess { get; }
 
-		protected string Access {
+		internal string Access {
 			get {
 				return elem.HasAttribute ("access") ? elem.GetAttribute ("access") : DefaultAccess;
 			}
