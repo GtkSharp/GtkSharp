@@ -22,6 +22,7 @@ references =
 sources =		 			\
 	Argv.cs					\
 	ConnectBeforeAttribute.cs		\
+	Cond.cs					\
 	DefaultSignalHandlerAttribute.cs	\
 	DestroyNotify.cs			\
 	ExceptionManager.cs			\
@@ -48,6 +49,7 @@ sources =		 			\
 	Markup.cs				\
 	Marshaller.cs				\
 	MissingIntPtrCtorException.cs		\
+	Mutex.cs				\
 	NotifyHandler.cs			\
 	Object.cs				\
 	ObjectManager.cs			\
@@ -56,6 +58,7 @@ sources =		 			\
 	Priority.cs				\
 	PropertyAttribute.cs			\
 	PtrArray.cs				\
+	RecMutex.cs				\
 	Signal.cs				\
 	SignalArgs.cs				\
 	SignalAttribute.cs			\
