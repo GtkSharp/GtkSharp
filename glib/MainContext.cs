@@ -38,13 +38,13 @@ namespace GLib {
 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_main_context_ref (IntPtr raw);
 
-		internal MainContext (IntPtr raw)
+		public MainContext (IntPtr raw)
 		{
 			handle = raw;
 			g_main_context_ref (handle);
 		}
 
-		internal IntPtr Handle {
+		public IntPtr Handle {
 			get {
 				return handle;
 			}
