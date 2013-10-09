@@ -19,10 +19,15 @@ POLICY_CONFIGS = $(addsuffix .config, $(addprefix policy., $(POLICY_VERSIONS)))
 
 references = 
 
+# TODO: auto-generate at compile time the following classes:
+# Cond, Date, DateTime, Mutex, RecMutex, TimeVal, TimeZone
+
 sources =		 			\
 	Argv.cs					\
 	ConnectBeforeAttribute.cs		\
 	Cond.cs					\
+	Date.cs					\
+	DateTime.cs				\
 	DefaultSignalHandlerAttribute.cs	\
 	DestroyNotify.cs			\
 	ExceptionManager.cs			\
@@ -68,6 +73,8 @@ sources =		 			\
 	Spawn.cs				\
 	Thread.cs				\
 	Timeout.cs				\
+	TimeVal.cs				\
+	TimeZone.cs				\
 	ToggleRef.cs				\
 	TypeFundamentals.cs			\
 	TypeInitializerAttribute.cs		\

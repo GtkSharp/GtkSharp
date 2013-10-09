@@ -348,15 +348,15 @@ namespace GLib {
 			return unmarshal_32 (array, argc);
 		}
 
-		static DateTime local_epoch = new DateTime (1970, 1, 1, 0, 0, 0);
-		static int utc_offset = (int) (TimeZone.CurrentTimeZone.GetUtcOffset (DateTime.Now)).TotalSeconds;
+		static System.DateTime local_epoch = new System.DateTime (1970, 1, 1, 0, 0, 0);
+		static int utc_offset = (int) (System.TimeZone.CurrentTimeZone.GetUtcOffset (System.DateTime.Now)).TotalSeconds;
 
-		public static IntPtr DateTimeTotime_t (DateTime time)
+		public static IntPtr DateTimeTotime_t (System.DateTime time)
 		{
 			return new IntPtr (((long)time.Subtract (local_epoch).TotalSeconds) - utc_offset);
 		}
 
-		public static DateTime time_tToDateTime (IntPtr time_t)
+		public static System.DateTime time_tToDateTime (IntPtr time_t)
 		{
 			return local_epoch.AddSeconds (time_t.ToInt64 () + utc_offset);
 		}

@@ -130,6 +130,8 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GMutex", "GLib.Mutex"));
 			AddType (new ManualGen ("GRecMutex", "GLib.RecMutex"));
 			AddType (new ManualGen ("GCond", "GLib.Cond"));
+			AddType (new ManualGen ("GDateTime", "GLib.DateTime"));
+			AddType (new ManualGen ("GDate", "GLib.Date"));
 			AddType (new MarshalGen ("gunichar", "char", "uint", "GLib.Marshaller.CharToGUnichar ({0})", "GLib.Marshaller.GUnicharToChar ({0})"));
 			AddType (new MarshalGen ("time_t", "System.DateTime", "IntPtr", "GLib.Marshaller.DateTimeTotime_t ({0})", "GLib.Marshaller.time_tToDateTime ({0})"));
 			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
@@ -137,7 +139,6 @@ namespace GtkSharp.Generation {
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
 			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify", "null"));
 			AddType (new SimpleGen ("GThread", "GLib.Thread", "null"));
-
 
 			// FIXME: These ought to be handled properly.
 			AddType (new SimpleGen ("GC", "IntPtr", "IntPtr.Zero"));
