@@ -132,6 +132,8 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GCond", "GLib.Cond"));
 			AddType (new ManualGen ("GDateTime", "GLib.DateTime"));
 			AddType (new ManualGen ("GDate", "GLib.Date"));
+			AddType (new ManualGen ("GSource", "GLib.Source"));
+			AddType (new SimpleGen ("GPollFD", "GLib.PollFD", "GLib.PollFD.Zero"));
 			AddType (new MarshalGen ("gunichar", "char", "uint", "GLib.Marshaller.CharToGUnichar ({0})", "GLib.Marshaller.GUnicharToChar ({0})"));
 			AddType (new MarshalGen ("time_t", "System.DateTime", "IntPtr", "GLib.Marshaller.DateTimeTotime_t ({0})", "GLib.Marshaller.time_tToDateTime ({0})"));
 			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
