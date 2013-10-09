@@ -43,21 +43,15 @@ namespace GLib {
 		static extern void g_cond_wait(IntPtr raw, IntPtr mutex);
 
 		public void Wait(GLib.Mutex mutex) {
-			IntPtr native_mutex = GLib.Marshaller.StructureToPtrAlloc (mutex);
-			g_cond_wait(Handle, native_mutex);
-			mutex = GLib.Mutex.New (native_mutex);
-			Marshal.FreeHGlobal (native_mutex);
+			g_cond_wait(Handle, mutex == null ? IntPtr.Zero : mutex.Handle);
 		}
 
 		[DllImport("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_cond_wait_until(IntPtr raw, IntPtr mutex, long end_time);
 
 		public bool WaitUntil(GLib.Mutex mutex, long end_time) {
-			IntPtr native_mutex = GLib.Marshaller.StructureToPtrAlloc (mutex);
-			bool raw_ret = g_cond_wait_until(Handle, native_mutex, end_time);
+			bool raw_ret = g_cond_wait_until(Handle, mutex == null ? IntPtr.Zero : mutex.Handle, end_time);
 			bool ret = raw_ret;
-			mutex = GLib.Mutex.New (native_mutex);
-			Marshal.FreeHGlobal (native_mutex);
 			return ret;
 		}
 

@@ -21,6 +21,8 @@ references =
 
 # TODO: auto-generate at compile time the following classes:
 # Cond, Date, DateTime, Mutex, RecMutex, TimeVal, TimeZone
+# (to do that, we need to fill missing pieces in glib's
+#  gobject-introspection metadata upstream)
 
 sources =		 			\
 	Argv.cs					\
