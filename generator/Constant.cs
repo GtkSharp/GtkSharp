@@ -25,14 +25,12 @@ namespace GtkSharp.Generation
 {
 	public class Constant
 	{
-		private readonly XmlElement elem;
 		private readonly string name;
 		private readonly string value;
 		private readonly string ctype;
 
 		public Constant (XmlElement elem)
 		{
-			this.elem = elem;
 			this.name = elem.GetAttribute ("name");
 			this.value = elem.GetAttribute ("value");
 			this.ctype = elem.GetAttribute ("ctype");
