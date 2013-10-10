@@ -123,8 +123,6 @@ namespace GtkSharp.Generation {
 			StringBuilder hashcode = new StringBuilder ();
 			StringBuilder equals = new StringBuilder ();
 
-			sw.WriteLine ("\t\tpublic bool Equals ({0} other)", Name);
-			sw.WriteLine ("\t\t{");
 			hashcode.Append ("this.GetType ().FullName.GetHashCode ()");
 			equals.Append ("true");
 
@@ -156,15 +154,20 @@ namespace GtkSharp.Generation {
 					hashcode.Append (".GetHashCode ()");
 				}
 			}
-			sw.WriteLine ("\t\t\treturn {0};", equals.ToString ());
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
+
+			if (!Elem.GetAttributeAsBoolean ("noequals")) {
+				sw.WriteLine ("\t\tpublic bool Equals ({0} other)", Name);
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\treturn {0};", equals.ToString ());
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+			}
 			sw.WriteLine ("\t\tpublic override bool Equals (object other)");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\treturn other is {0} && Equals (({0}) other);", Name);
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
-			if (Elem.GetAttribute ("nohash") == "true")
+			if (Elem.GetAttributeAsBoolean ("nohash"))
 				return;
 			sw.WriteLine ("\t\tpublic override int GetHashCode ()");
 			sw.WriteLine ("\t\t{");
