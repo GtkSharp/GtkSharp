@@ -451,9 +451,9 @@ namespace GLib {
 
 		static IntPtr FindClassProperty (GType type, string name)
 		{
-			IntPtr g_iface = type.GetDefaultInterfacePtr ();
+			IntPtr g_class = type.GetClassPtr ();
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			return g_object_class_find_property (g_iface, native_name);
+			return g_object_class_find_property (g_class, native_name);
 		}
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
