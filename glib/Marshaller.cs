@@ -170,12 +170,17 @@ namespace GLib {
 				return ret.Replace ("%", "%%");
 		}
 
-		internal static IntPtr StringArrayToStrvPtr (string[] strs)
+		public static IntPtr StringArrayToStrvPtr (string[] strs)
 		{
 			IntPtr[] ptrs = StringArrayToNullTermPointer (strs);
 			IntPtr ret = g_malloc (new UIntPtr ((ulong) (ptrs.Length * IntPtr.Size)));
 			Marshal.Copy (ptrs, 0, ret, ptrs.Length);
 			return ret;
+		}
+
+		public static IntPtr StringArrayToNullTermStrvPointer (string[] strs)
+		{
+			return StringArrayToStrvPtr (strs);
 		}
 
 		public static IntPtr[] StringArrayToNullTermPointer (string[] strs)
@@ -343,15 +348,15 @@ namespace GLib {
 			return unmarshal_32 (array, argc);
 		}
 
-		static DateTime local_epoch = new DateTime (1970, 1, 1, 0, 0, 0);
-		static int utc_offset = (int) (TimeZone.CurrentTimeZone.GetUtcOffset (DateTime.Now)).TotalSeconds;
+		static System.DateTime local_epoch = new System.DateTime (1970, 1, 1, 0, 0, 0);
+		static int utc_offset = (int) (System.TimeZone.CurrentTimeZone.GetUtcOffset (System.DateTime.Now)).TotalSeconds;
 
-		public static IntPtr DateTimeTotime_t (DateTime time)
+		public static IntPtr DateTimeTotime_t (System.DateTime time)
 		{
 			return new IntPtr (((long)time.Subtract (local_epoch).TotalSeconds) - utc_offset);
 		}
 
-		public static DateTime time_tToDateTime (IntPtr time_t)
+		public static System.DateTime time_tToDateTime (IntPtr time_t)
 		{
 			return local_epoch.AddSeconds (time_t.ToInt64 () + utc_offset);
 		}
@@ -457,6 +462,39 @@ namespace GLib {
 				list.elements_owned = false;
 
 			return result;
+		}
+
+		public static T[] StructArrayFromNullTerminatedIntPtr<T> (IntPtr array)
+		{
+			var res = new List<T> ();
+			IntPtr current = array;
+			T currentStruct = default(T);
+
+			while (current != IntPtr.Zero) {
+				Marshal.PtrToStructure (current, currentStruct);
+				res.Add (currentStruct);
+				current = (IntPtr) ((long)current + Marshal.SizeOf (typeof (T)));
+			}
+
+			return res.ToArray ();
+		}
+
+		public static IntPtr StructArrayToNullTerminatedStructArrayIntPtr<T> (T[] InputArray)
+		{
+			int intPtrSize = Marshal.SizeOf (typeof (IntPtr));
+			IntPtr mem = Marshal.AllocHGlobal ((InputArray.Length + 1) * intPtrSize);
+
+			for (int i = 0; i < InputArray.Length; i++) {
+				IntPtr structPtr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (T)));
+				Marshal.StructureToPtr (InputArray[i], structPtr, false);
+				// jump to next pointer
+				Marshal.WriteIntPtr (mem, structPtr);
+				mem = (IntPtr) ((long)mem + intPtrSize);
+			}
+			// null terminate
+			Marshal.WriteIntPtr (mem, IntPtr.Zero);
+
+			return mem;
 		}
 	}
 }

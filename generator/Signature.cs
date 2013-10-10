@@ -118,6 +118,48 @@ namespace GtkSharp.Generation {
 				return String.Join (", ", result);
 			}
 		}
+
+		public string WithoutOptional ()
+		{
+			if (parms.Count == 0)
+				return String.Empty;
+
+			var result = new string [parms.Count];
+			int i = 0;
+
+			foreach (Parameter p in parms) {
+				if (p.IsOptional && p.PassAs == String.Empty)
+					continue;
+				result [i] = p.PassAs != String.Empty ? p.PassAs + " " : String.Empty;
+				result [i++] += p.CSType + " " + p.Name;
+			}
+
+			return String.Join (", ", result, 0, i);
+		}
+
+		public string CallWithoutOptionals ()
+		{
+			if (parms.Count == 0)
+				return String.Empty;
+
+			var result = new string [parms.Count];
+			int i = 0;
+
+			foreach (Parameter p in parms) {
+
+				result [i] = p.PassAs != "" ? p.PassAs + " " : "";
+				if (p.IsOptional && p.PassAs == String.Empty) {
+					if (p.IsArray)
+						result [i++] += "null";
+					else
+						result [i++] += p.Generatable.DefaultValue;
+				}
+				else
+					result [i++] += p.Name;
+			}
+
+			return String.Join (", ", result);
+		}
 	}
 }
 

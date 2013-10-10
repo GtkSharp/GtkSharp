@@ -421,10 +421,14 @@ namespace GLib {
 				return (GLib.Opaque) this;
 
 			MethodInfo mi = t.GetMethod ("New", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-			if (mi == null)
-				return Marshal.PtrToStructure (boxed_ptr, t);
-			else
+			if (mi != null)
 				return mi.Invoke (null, new object[] {boxed_ptr});
+
+			ConstructorInfo ci = t.GetConstructor (new Type[] { typeof(IntPtr) });
+			if (ci != null)
+				return ci.Invoke (new object[] { boxed_ptr });
+
+			return Marshal.PtrToStructure (boxed_ptr, t);
 		}
 
 		public object Val
@@ -548,8 +552,15 @@ namespace GLib {
 
 		internal void Update (object val)
 		{
-			if (GType.Is (type, GType.Boxed) && !(val is IWrapper))
-				Marshal.StructureToPtr (val, g_value_get_boxed (ref this), false);
+			Type t = GType.LookupType (type);
+			if (GType.Is (type, GType.Boxed) && !(val is IWrapper)) {
+				MethodInfo mi = val.GetType ().GetMethod ("Update", BindingFlags.NonPublic | BindingFlags.Instance);
+				IntPtr boxed_ptr = g_value_get_boxed (ref this);
+				if (mi == null)
+					Marshal.StructureToPtr (val, boxed_ptr, false);
+				else
+					mi.Invoke (val, null);
+			}
 		}
 
 		bool HoldsFlags {

@@ -32,7 +32,7 @@ namespace GtkSharp.Generation {
 				ctype = "const-" + CType;
 		}
 
-		protected override bool Writable {
+		internal override bool Writable {
 			get {
 				return elem.GetAttributeAsBoolean ("writeable");
 			}

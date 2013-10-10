@@ -32,6 +32,7 @@ namespace GtkSharp.Generation {
 		bool elements_owned;
 		bool owned;
 		string array_length_param = String.Empty;
+		int array_length_param_index = -1;
 		string ctype = String.Empty;
 		string default_value = String.Empty;
 		string element_ctype = String.Empty;
@@ -43,6 +44,8 @@ namespace GtkSharp.Generation {
 				is_null_term = elem.GetAttributeAsBoolean ("null_term_array");
 				is_array = elem.GetAttributeAsBoolean ("array") || elem.HasAttribute ("array_length_param");
 				array_length_param = elem.GetAttribute ("array_length_param");
+				if (elem.HasAttribute ("array_length_param_length"))
+					array_length_param_index = int.Parse (elem.GetAttribute ("array_length_param_index"));
 				elements_owned = elem.GetAttributeAsBoolean ("elements_owned");
 				owned = elem.GetAttributeAsBoolean ("owned");
 				ctype = elem.GetAttribute("type");
@@ -58,6 +61,10 @@ namespace GtkSharp.Generation {
 
 		public string CountParameterName {
 			get { return array_length_param; }
+		}
+
+		public int CountParameterIndex {
+			get { return array_length_param_index; }
 		}
 
 		public string CType {
@@ -126,7 +133,9 @@ namespace GtkSharp.Generation {
 			get {
 				if (IGen == null)
 					return String.Empty;
-				return IGen.MarshalType + (is_array || is_null_term ? "[]" : String.Empty);
+				if (is_array || is_null_term)
+					return "IntPtr";
+				return IGen.MarshalType;
 			}
 		}
 
@@ -160,7 +169,7 @@ namespace GtkSharp.Generation {
 				string args = ", typeof (" + ElementType + "), " + (owned ? "true" : "false") + ", " + (elements_owned ? "true" : "false");
 				var = "new " + IGen.QualifiedName + "(" + var + args + ")";
 			} else if (is_null_term)
-				return String.Format ("GLib.Marshaller.StringArrayToNullTermPointer ({0})", var);
+				return String.Format ("GLib.Marshaller.StringArrayToNullTermStrvPointer ({0})", var);
 			else if (is_array)
 				return String.Format ("GLib.Marshaller.ArrayToArrayPtr ({0})", var);
 

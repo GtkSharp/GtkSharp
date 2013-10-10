@@ -58,6 +58,10 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		bool IsNullTermArray {
+			get { return elem.GetAttributeAsBoolean ("null_term_array"); }
+		}
+
 		public new string CSType {
 			get {
 				string type = base.CSType;
@@ -67,6 +71,13 @@ namespace GtkSharp.Generation {
 					type = "IntPtr";
 
 				return type;
+			}
+		}
+
+		bool visible = false;
+		internal bool Visible {
+			get {
+				return visible;
 			}
 		}
 
@@ -80,7 +91,7 @@ namespace GtkSharp.Generation {
 					return StudlyName;
 				else if (IsBitfield)
 					return Name;
-				else if (IsPointer && (gen is StructGen || gen is BoxedGen))
+				else if (IsPointer && (gen is StructGen || gen is BoxedGen || gen is UnionGen))
 					return Access != "private" ? wrapped_name : Name;
 				else if (IsPointer && CSType != "string")
 					return Name;
@@ -89,7 +100,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		bool IsPadding {
+		public bool IsPadding {
 			get {
 				return (CName.StartsWith ("dummy") || CName.StartsWith ("padding"));
 			}
@@ -127,6 +138,8 @@ namespace GtkSharp.Generation {
 			if (Hidden)
 				return;
 
+			visible = Access != "private";
+
 			StreamWriter sw = gen_info.Writer;
 			SymbolTable table = SymbolTable.Table;
 
@@ -134,9 +147,21 @@ namespace GtkSharp.Generation {
 			string wrapped_name = SymbolTable.Table.MangleName (CName);
 			IGeneratable gen = table [CType];
 
-			if (IsArray) {
+			if (IsArray && !IsNullTermArray) {
 				sw.WriteLine (indent + "[MarshalAs (UnmanagedType.ByValArray, SizeConst=" + ArrayLength + ")]");
 				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, StudlyName);
+			} else if (IsArray && IsNullTermArray) {
+				sw.WriteLine (indent + "private {0} {1};", "IntPtr", StudlyName+ "Ptr");
+				if ((Readable || Writable) && Access == "public") {
+					sw.WriteLine (indent + "public {0} {1} {{", CSType, StudlyName);
+					if (Readable)
+						sw.WriteLine (indent + "\tget {{ return GLib.Marshaller.StructArrayFromNullTerminatedIntPtr<{0}> ({1}); }}",
+						              base.CSType, StudlyName + "Ptr");
+					if (Writable)
+						sw.WriteLine (indent + "\tset {{ {0} = GLib.Marshaller.StructArrayToNullTerminatedStructArrayIntPtr<{1}> (value); }}",
+						              StudlyName + "Ptr", base.CSType);
+					sw.WriteLine (indent + "}");
+				}
 			} else if (IsBitfield) {
 				base.Generate (gen_info, indent);
 			} else if (gen is IAccessor) {
@@ -148,7 +173,7 @@ namespace GtkSharp.Generation {
 					acc.WriteAccessors (sw, indent + "\t", Name);
 					sw.WriteLine (indent + "}");
 				}
-			} else if (IsPointer && (gen is StructGen || gen is BoxedGen)) {
+			} else if (IsPointer && (gen is StructGen || gen is BoxedGen || gen is UnionGen)) {
 				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 				sw.WriteLine ();
 				if (Access != "private") {
@@ -158,6 +183,7 @@ namespace GtkSharp.Generation {
 				}
 			} else if (IsPointer && CSType != "string") {
 				// FIXME: probably some fields here which should be visible.
+				visible = false;
 				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 			} else {
 				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, Access == "public" ? StudlyName : Name);

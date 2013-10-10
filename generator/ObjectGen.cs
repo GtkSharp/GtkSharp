@@ -195,9 +195,10 @@ namespace GtkSharp.Generation {
 				GenSignals (gen_info, null);
 			}
 
+			GenConstants (gen_info);
 			GenClassMembers (gen_info, cs_parent);
 			GenMethods (gen_info, null, null);
-			
+
 			if (interfaces.Count != 0) {
 				var all_methods = new Dictionary<string, Method> ();
 				foreach (Method m in Methods.Values) {
@@ -260,8 +261,9 @@ namespace GtkSharp.Generation {
 		{
 			if (!Elem.HasAttribute("parent"))
 				return;
+			string defaultconstructoraccess = Elem.HasAttribute ("defaultconstructoraccess") ? Elem.GetAttribute ("defaultconstructoraccess") : "public";
 
-			gen_info.Writer.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
+			gen_info.Writer.WriteLine ("\t\t"+ defaultconstructoraccess + " " + Name + " (IntPtr raw) : base(raw) {}");
 			if (ctors.Count == 0 && !DisableVoidCtor) {
 				gen_info.Writer.WriteLine();
 				gen_info.Writer.WriteLine("\t\tprotected " + Name + "() : base(IntPtr.Zero)");

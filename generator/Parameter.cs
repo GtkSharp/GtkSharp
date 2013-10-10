@@ -90,6 +90,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		internal bool IsOptional {
+			get {
+				return elem.GetAttributeAsBoolean ("allow-none");
+			}
+		}
+
 		bool is_count;
 		bool is_count_set;
 		public bool IsCount {
@@ -233,6 +239,30 @@ namespace GtkSharp.Generation {
 			}
 			set {
 				scope = value;
+			}
+		}
+
+		int closure = -1;
+		public int Closure {
+			get {
+				if(closure == -1 && elem.HasAttribute ("closure"))
+					closure = int.Parse(elem.GetAttribute ("closure"));
+				return closure;
+			}
+			set {
+				closure = value;
+			}
+		}
+
+		int destroynotify = -1;
+		public int DestroyNotify {
+			get {
+				if (destroynotify == -1 && elem.HasAttribute ("destroy"))
+					destroynotify = int.Parse (elem.GetAttribute ("destroy"));
+				return destroynotify;
+			}
+			set {
+				destroynotify = value;
 			}
 		}
 

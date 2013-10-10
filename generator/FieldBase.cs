@@ -32,6 +32,8 @@ namespace GtkSharp.Generation {
 		{
 			log.Member = Name;
 			if (!Ignored && !Hidden && CSType == "") {
+				if (Name == "Priv")
+					return false;
 				log.Warn ("field has unknown type: " + CType);
 				Statistics.ThrottledCount++;
 				return false;
@@ -40,21 +42,25 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		protected virtual bool Readable {
+		internal virtual bool Readable {
 			get {
-				return elem.GetAttribute ("readable") != "false";
+				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) <= 2)
+					return elem.GetAttribute ("readable") != "false";
+				return elem.HasAttribute ("readable") && elem.GetAttributeAsBoolean ("readable");
 			}
 		}
 
-		protected virtual bool Writable {
+		internal virtual bool Writable {
 			get {
-				return elem.GetAttribute ("writeable") != "false";
+				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) <= 2)
+					return elem.GetAttribute ("writeable") != "false";
+				return elem.HasAttribute ("writeable") && elem.GetAttributeAsBoolean ("writeable");
 			}
 		}
 
 		protected abstract string DefaultAccess { get; }
 
-		protected string Access {
+		internal string Access {
 			get {
 				return elem.HasAttribute ("access") ? elem.GetAttribute ("access") : DefaultAccess;
 			}
@@ -152,6 +158,7 @@ namespace GtkSharp.Generation {
 			GenerateImports (gen_info, indent);
 
 			SymbolTable table = SymbolTable.Table;
+			IGeneratable gen = table [CType];
 			StreamWriter sw = gen_info.Writer;
 			string modifiers = elem.GetAttributeAsBoolean ("new_flag") ? "new " : "";
 			bool is_struct = table.IsStruct (CType) || table.IsBoxed (CType);
@@ -172,10 +179,12 @@ namespace GtkSharp.Generation {
 			} else if (Readable && offsetName != null) {
 				sw.WriteLine (indent + "\tget {");
 				sw.WriteLine (indent + "\t\tunsafe {");
-				if (is_struct) {
-					sw.WriteLine (indent + "\t\t\t" + CSType + "* raw_ptr = (" + CSType + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
-					sw.WriteLine (indent + "\t\t\treturn *raw_ptr;");
-				} else {
+				if (gen is CallbackGen) {
+					sw.WriteLine (indent + "\t\t\tIntPtr* raw_ptr = (IntPtr*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
+					sw.WriteLine (indent + "\t\t\t {0} del = ({0})Marshal.GetDelegateForFunctionPointer(*raw_ptr, typeof({0}));", table.GetMarshalType (CType));
+					sw.WriteLine (indent + "\t\t\treturn " + table.FromNative (ctype, "(del)") + ";");
+				}
+				else {
 					sw.WriteLine (indent + "\t\t\t" + table.GetMarshalType (CType) + "* raw_ptr = (" + table.GetMarshalType (CType) + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
 					sw.WriteLine (indent + "\t\t\treturn " + table.FromNative (ctype, "(*raw_ptr)") + ";");
 				}
@@ -183,7 +192,6 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (indent + "\t}");
 			}
 
-			IGeneratable gen = table [CType];
 			string to_native = (gen is IManualMarshaler) ? (gen as IManualMarshaler).AllocNative ("value") : gen.CallByName ("value");
 
 			if (Setter != null) {
@@ -199,10 +207,12 @@ namespace GtkSharp.Generation {
 			} else if (Writable && offsetName != null) {
 				sw.WriteLine (indent + "\tset {");
 				sw.WriteLine (indent + "\t\tunsafe {");
-				if (is_struct) {
-					sw.WriteLine (indent + "\t\t\t" + CSType + "* raw_ptr = (" + CSType + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
-					sw.WriteLine (indent + "\t\t\t*raw_ptr = value;");
-				} else {
+				if (gen is CallbackGen) {
+					sw.WriteLine (indent + "\t\t\t{0} wrapper = new {0} (value);", ((CallbackGen)gen).WrapperName);
+					sw.WriteLine (indent + "\t\t\tIntPtr* raw_ptr = (IntPtr*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
+					sw.WriteLine (indent + "\t\t\t*raw_ptr = Marshal.GetFunctionPointerForDelegate (wrapper.NativeDelegate);");
+				}
+				else {
 					sw.WriteLine (indent + "\t\t\t" + table.GetMarshalType (CType) + "* raw_ptr = (" + table.GetMarshalType (CType) + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
 					sw.WriteLine (indent + "\t\t\t*raw_ptr = " + to_native + ";");
 				}

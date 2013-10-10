@@ -19,9 +19,19 @@ POLICY_CONFIGS = $(addsuffix .config, $(addprefix policy., $(POLICY_VERSIONS)))
 
 references = 
 
+# TODO: auto-generate at compile time the following classes:
+#  Cond, Date, DateTime, Mutex, PollFD, RecMutex, (half)Source,
+#  SourceCallbackFuncs, SourceDummyMarshal, SourceFunc,
+#  SourceFuncNative, SourceFuncs, TimeVal, TimeZone
+# (to do that, we need to fill missing pieces in glib's
+#  gobject-introspection metadata upstream)
+
 sources =		 			\
 	Argv.cs					\
 	ConnectBeforeAttribute.cs		\
+	Cond.cs					\
+	Date.cs					\
+	DateTime.cs				\
 	DefaultSignalHandlerAttribute.cs	\
 	DestroyNotify.cs			\
 	ExceptionManager.cs			\
@@ -48,23 +58,34 @@ sources =		 			\
 	Markup.cs				\
 	Marshaller.cs				\
 	MissingIntPtrCtorException.cs		\
+	Mutex.cs				\
 	NotifyHandler.cs			\
 	Object.cs				\
 	ObjectManager.cs			\
 	Opaque.cs				\
 	ParamSpec.cs				\
+	PollFD.cs				\
 	Priority.cs				\
 	PropertyAttribute.cs			\
 	PtrArray.cs				\
+	RecMutex.cs				\
 	Signal.cs				\
 	SignalArgs.cs				\
 	SignalAttribute.cs			\
 	SignalClosure.cs			\
 	SList.cs				\
 	Source.cs				\
+	SourceFunc.cs				\
+	SourceFuncs.cs				\
+	SourceDummyMarshal.cs			\
+	GLibSharp.SourceFuncNative.cs		\
+	GLibSharp.SourceDummyMarshalNative.cs	\
+	SourceCallbackFuncs.cs			\
 	Spawn.cs				\
 	Thread.cs				\
 	Timeout.cs				\
+	TimeVal.cs				\
+	TimeZone.cs				\
 	ToggleRef.cs				\
 	TypeFundamentals.cs			\
 	TypeInitializerAttribute.cs		\

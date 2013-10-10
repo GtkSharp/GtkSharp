@@ -79,7 +79,8 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine (" {");
 			sw.WriteLine ();
-            
+
+			GenConstants (gen_info);
 			GenFields (gen_info);
 			GenMethods (gen_info, null, null);
 			GenCtors (gen_info);

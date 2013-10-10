@@ -49,6 +49,18 @@ namespace GtkSharp.Generation {
 			get { return param_list.Count; }
 		}
 
+		// gapi assumes GError** parameters to be error parameters in version 1 and 2
+		private bool throws = false;
+		public bool Throws {
+			get {
+				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) <= 2)
+					return true;
+				if (!throws && elem.HasAttribute ("throws"))
+					throws = elem.GetAttributeAsBoolean ("throws");
+				return throws;
+			}
+		}
+
 		public int VisibleCount {
 			get {
 				int visible = 0;
@@ -76,20 +88,28 @@ namespace GtkSharp.Generation {
 			if (p.IsCount)
 				return true;
 
-			if (p.CType == "GError**")
+			if (p.CType == "GError**" && Throws)
 				return true;
 
 			if (HasCB || HideData) {
-				if (p.IsUserData && (idx == Count - 1))
-                                        return true;
-				if (p.IsUserData && (idx == Count - 2) && this [Count - 1] is ErrorParameter)
-                                        return true;
-				if (p.IsUserData && idx > 0 &&
-				    this [idx - 1].Generatable is CallbackGen)
-					return true;
-				if (p.IsDestroyNotify && (idx == Count - 1) &&
-				    this [idx - 1].IsUserData)
-					return true;
+
+				if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) >= 3) {
+					foreach (Parameter param in param_list) {
+						if (param.Closure == idx)
+							return true;
+						if (param.DestroyNotify == idx)
+							return true;
+					}
+				} else {
+					if (p.IsUserData && (idx == Count - 1))
+						return true;
+					if (p.IsUserData && (idx == Count - 2) && this [Count - 1] is ErrorParameter)
+						return true;
+					if (p.IsUserData && idx > 0 && this [idx - 1].Generatable is CallbackGen)
+						return true;
+					if (p.IsDestroyNotify && (idx == Count - 1) && this [idx - 1].IsUserData)
+						return true;
+				}
 			}
 
 			return false;
@@ -120,6 +140,11 @@ namespace GtkSharp.Generation {
 		public bool Static {
 			get { return is_static; }
 			set { is_static = value; }
+		}
+
+		bool has_optional;
+		internal bool HasOptional {
+			get { return has_optional;}
 		}
 
 		public Parameter GetCountParameter (string param_name)
@@ -178,6 +203,9 @@ namespace GtkSharp.Generation {
 					return false;
 				}
 
+				if (p.IsOptional && p.PassAs == String.Empty)
+					has_optional = true;
+
 				IGeneratable gen = p.Generatable;
 
 				if (p.IsArray) {
@@ -204,7 +232,7 @@ namespace GtkSharp.Generation {
 							}
 						}
 					}
-				} else if (p.CType == "GError**")
+				} else if (p.CType == "GError**" && Throws)
 					p = new ErrorParameter (parm);
 				else if (gen is StructBase || gen is ByRefGen) {
 					p = new StructParameter (parm);
@@ -214,7 +242,8 @@ namespace GtkSharp.Generation {
 				param_list.Add (p);
 			}
 
-			if (has_cb && Count > 2 && this [Count - 3].Generatable is CallbackGen && this [Count - 2].IsUserData && this [Count - 1].IsDestroyNotify)
+			if (Parser.GetVersion (elem.OwnerDocument.DocumentElement) < 3 &&
+			    has_cb && Count > 2 && this [Count - 3].Generatable is CallbackGen && this [Count - 2].IsUserData && this [Count - 1].IsDestroyNotify)
 				this [Count - 3].Scope = "notified";
 
 			valid = true;

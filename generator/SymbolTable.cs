@@ -69,6 +69,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("guint32", "uint", "0"));
 			AddType (new SimpleGen ("gint64", "long", "0"));
 			AddType (new SimpleGen ("guint64", "ulong", "0"));
+			AddType (new SimpleGen ("unsigned long long", "ulong", "0"));
 			AddType (new SimpleGen ("long long", "long", "0"));
 			AddType (new SimpleGen ("gfloat", "float", "0.0"));
 			AddType (new SimpleGen ("float", "float", "0.0"));
@@ -126,12 +127,21 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GVariant", "GLib.Variant"));
 			AddType (new ManualGen ("GVariantType", "GLib.VariantType"));
 			AddType (new ManualGen ("GValueArray", "GLib.ValueArray"));
+			AddType (new ManualGen ("GMutex", "GLib.Mutex"));
+			AddType (new ManualGen ("GRecMutex", "GLib.RecMutex"));
+			AddType (new ManualGen ("GCond", "GLib.Cond"));
+			AddType (new ManualGen ("GDateTime", "GLib.DateTime"));
+			AddType (new ManualGen ("GDate", "GLib.Date"));
+			AddType (new ManualGen ("GSource", "GLib.Source"));
+			AddType (new ManualGen ("GMainContext", "GLib.MainContext"));
+			AddType (new SimpleGen ("GPollFD", "GLib.PollFD", "GLib.PollFD.Zero"));
 			AddType (new MarshalGen ("gunichar", "char", "uint", "GLib.Marshaller.CharToGUnichar ({0})", "GLib.Marshaller.GUnicharToChar ({0})"));
 			AddType (new MarshalGen ("time_t", "System.DateTime", "IntPtr", "GLib.Marshaller.DateTimeTotime_t ({0})", "GLib.Marshaller.time_tToDateTime ({0})"));
 			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
 			AddType (new MarshalGen ("GType", "GLib.GType", "IntPtr", "{0}.Val", "new GLib.GType({0})", "GLib.GType.None"));
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
 			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify", "null"));
+			AddType (new SimpleGen ("GThread", "GLib.Thread", "null"));
 
 			// FIXME: These ought to be handled properly.
 			AddType (new SimpleGen ("GC", "IntPtr", "IntPtr.Zero"));
@@ -287,6 +297,13 @@ namespace GtkSharp.Generation {
 			if (this[c_type] is StructGen)
 				return true;
 
+			return false;
+		}
+
+		public bool IsUnion (string c_type)
+		{
+			if (this[c_type] is UnionGen)
+				return true;
 			return false;
 		}
 	

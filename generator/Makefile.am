@@ -19,6 +19,7 @@ sources = 				\
 	CodeGenerator.cs		\
 	ConstFilenameGen.cs		\
 	ConstStringGen.cs		\
+	Constant.cs			\
 	Ctor.cs				\
 	DefaultSignalHandler.cs		\
 	EnumGen.cs			\
@@ -42,6 +43,7 @@ sources = 				\
 	MethodBase.cs			\
 	MethodBody.cs			\
 	Method.cs			\
+	NativeStructGen.cs		\
 	ObjectField.cs			\
 	ObjectBase.cs			\
 	ObjectGen.cs			\
@@ -63,6 +65,7 @@ sources = 				\
 	StructField.cs			\
 	StructGen.cs			\
 	SymbolTable.cs			\
+	UnionGen.cs			\
 	VirtualMethod.cs		\
 	VMSignature.cs			\
 	XmlElementExtensions.cs

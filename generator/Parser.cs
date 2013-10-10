@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 	using System.Xml.Schema;
 
 	public class Parser  {
-		const int curr_parser_version = 2;
+		const int curr_parser_version = 3;
 
 		private XmlDocument Load (string filename, string schema_file)
 		{
@@ -78,6 +78,11 @@ namespace GtkSharp.Generation {
 
 		public IGeneratable[] Parse (string filename, string schema_file)
 		{
+			return Parse (filename, schema_file, String.Empty);
+		}
+
+		public IGeneratable[] Parse (string filename, string schema_file, string gapidir)
+		{
 			XmlDocument doc = Load (filename, schema_file);
 			if (doc == null)
 				return null;
@@ -111,6 +116,21 @@ namespace GtkSharp.Generation {
 					continue;
 
 				switch (child.Name) {
+				case "include":
+					string xmlpath;
+
+					if (File.Exists (Path.Combine (gapidir, elem.GetAttribute ("xml"))))
+						xmlpath = Path.Combine (gapidir, elem.GetAttribute ("xml"));
+					else if (File.Exists (elem.GetAttribute ("xml")))
+					   xmlpath = elem.GetAttribute ("xml");
+					else {
+						Console.WriteLine ("Parser: Could not find include " + elem.GetAttribute ("xml"));
+						break;
+					}
+
+					IGeneratable[] curr_gens = Parse (xmlpath);
+					SymbolTable.Table.AddTypes (curr_gens);
+					break;
 				case "namespace":
 					gens.AddRange (ParseNamespace (elem));
 					break;
@@ -140,6 +160,7 @@ namespace GtkSharp.Generation {
 					continue;
 
 				bool is_opaque = elem.GetAttributeAsBoolean ("opaque");
+				bool is_native_struct = elem.GetAttributeAsBoolean ("native");
 
 				switch (def.Name) {
 				case "alias":
@@ -171,9 +192,14 @@ namespace GtkSharp.Generation {
 				case "class":
 					result.Add (new ClassGen (ns, elem));
 					break;
+				case "union":
+					result.Add (new UnionGen (ns, elem));
+					break;
 				case "struct":
 					if (is_opaque) {
 						result.Add (new OpaqueGen (ns, elem));
+					} else if (is_native_struct) {
+						result.Add (new NativeStructGen (ns, elem));
 					} else {
 						result.Add (new StructGen (ns, elem));
 					}
@@ -185,6 +211,12 @@ namespace GtkSharp.Generation {
 			}
 
 			return result;
+		}
+
+		internal static int GetVersion (XmlElement document_element)
+		{
+			XmlElement root = document_element;
+			return root.HasAttribute ("parser_version") ? int.Parse (root.GetAttribute ("parser_version")) : 1;
 		}
 
 		private IGeneratable ParseSymbol (XmlElement symbol)
