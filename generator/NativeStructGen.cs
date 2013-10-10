@@ -184,8 +184,6 @@ namespace GtkSharp.Generation
 
 		protected void GenEqualsAndHash (StreamWriter sw)
 		{
-			int bitfields = 0;
-			bool need_field = true;
 			StringBuilder hashcode = new StringBuilder ();
 			StringBuilder equals = new StringBuilder ();
 
@@ -198,7 +196,6 @@ namespace GtkSharp.Generation
 				if (field.IsPadding || !field.Visible || field.IsBitfield)
 					continue;
 
-				need_field = true;
 				equals.Append (" && ");
 				equals.Append (field.EqualityName);
 				equals.Append (".Equals (other.");
