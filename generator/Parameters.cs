@@ -88,6 +88,9 @@ namespace GtkSharp.Generation {
 			if (p.IsCount)
 				return true;
 
+			if (p.IsHidden)
+				return true;
+
 			if (p.CType == "GError**" && Throws)
 				return true;
 
