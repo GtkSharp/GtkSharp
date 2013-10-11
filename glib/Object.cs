@@ -449,11 +449,11 @@ namespace GLib {
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_class_find_property (IntPtr klass, IntPtr name);
 
-		static IntPtr FindClassProperty (GType type, string name)
+		static IntPtr FindClassProperty (GLib.Object o, string name)
 		{
-			IntPtr g_class = type.GetClassPtr ();
+			IntPtr gobjectclass = Marshal.ReadIntPtr (o.Handle);
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			return g_object_class_find_property (g_class, native_name);
+			return g_object_class_find_property (gobjectclass, native_name);
 		}
 
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
