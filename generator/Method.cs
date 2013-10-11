@@ -133,6 +133,9 @@ namespace GtkSharp.Generation {
 			else if (Modifiers == "new " || (dup != null && ((dup.Signature != null && Signature != null && dup.Signature.ToString() == Signature.ToString()) || (dup.Signature == null && Signature == null))))
 				sw.Write("new ");
 
+			if (Name.StartsWith (container_type.Name))
+				Name = Name.Substring (container_type.Name.Length);
+
 			if (is_get || is_set) {
 				if (retval.IsVoid)
 					sw.Write (Parameters.AccessorReturnType);
