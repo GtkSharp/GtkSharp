@@ -90,7 +90,8 @@ namespace GtkSharp.Generation {
 				if (implementor != null)
 					type = implementor.QualifiedName;
 				else if (this.container_type is InterfaceGen)
-					type = this.container_type.Name + "Implementor"; // We are in an interface/adaptor, invoke the method in the implementor class
+					// We are in an interface/adaptor, invoke the method in the implementor class
+					type = (this.container_type as InterfaceGen).ImplementorName;
 				else
 					type = this.container_type.Name;
 
