@@ -50,7 +50,7 @@ namespace GLib {
 			}
 		}
 
-		public abstract GType GType { get; }
+		public abstract GType GInterfaceGType { get; }
 
 		public abstract IntPtr Handle { get; }
 

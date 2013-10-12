@@ -225,7 +225,7 @@ namespace GLib {
 					if (!iface.IsAssignableFrom (Type.BaseType)) {
 						GInterfaceInfo info = adapter.Info;
 						info.Data = gtype.Val;
-						g_type_add_interface_static (gtype.Val, adapter.GType.Val, ref info);
+						g_type_add_interface_static (gtype.Val, adapter.GInterfaceGType.Val, ref info);
 						adapters.Add (adapter);
 					}
 				}
@@ -341,7 +341,7 @@ namespace GLib {
 						PropertyInfo declared_prop = Type.GetProperty (p.Name, BindingFlags.Public | BindingFlags.Instance);
 						if (declared_prop == null)
 							continue;
-						IntPtr param_spec = FindInterfaceProperty (adapter.GType, property_attr.Name);
+						IntPtr param_spec = FindInterfaceProperty (adapter.GInterfaceGType, property_attr.Name);
 
 						Dictionary<IntPtr, PropertyInfo> props;
 						if (!Properties.TryGetValue (Type, out props)) {

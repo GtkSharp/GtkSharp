@@ -134,7 +134,7 @@ namespace GLib {
 			g_value_set_object (ref this, val == null ? IntPtr.Zero : val.Handle);
 		}
 
-		public Value (GLib.GInterfaceAdapter val) : this (val == null ? GType.Object : val.GType)
+		public Value (GLib.GInterfaceAdapter val) : this (val == null ? GType.Object : val.GInterfaceGType)
 		{
 			g_value_set_object (ref this, val == null ? IntPtr.Zero : val.Handle);
 		}

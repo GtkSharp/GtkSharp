@@ -197,11 +197,22 @@ namespace GtkSharp.Generation {
 			m.GenerateImport (sw);
 			sw.WriteLine ("\t\tprivate static GLib.GType _gtype = new GLib.GType ({0} ());", m.CName);
 			sw.WriteLine ();
-			sw.WriteLine ("\t\tpublic override GLib.GType GType {");
+
+			// by convention, all GTypes generated have a static GType property
+			sw.WriteLine ("\t\tpublic static GLib.GType GType {");
 			sw.WriteLine ("\t\t\tget {");
 			sw.WriteLine ("\t\t\t\treturn _gtype;");
 			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+
+			// we need same property but non-static, because it is being accessed via a GInterfaceAdapter instance
+			sw.WriteLine ("\t\tpublic override GLib.GType GInterfaceGType {");
+			sw.WriteLine ("\t\t\tget {");
+			sw.WriteLine ("\t\t\t\treturn _gtype;");
+			sw.WriteLine ("\t\t\t}");
+			sw.WriteLine ("\t\t}");
+
 			sw.WriteLine ();
 		}
 
