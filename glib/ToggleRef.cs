@@ -52,7 +52,7 @@ namespace GLib {
 				else if (reference is GLib.Object)
 					return reference as GLib.Object;
 
-				WeakReference weak = reference as WeakReference;
+				WeakReference weak = (WeakReference)reference;
 				return weak.Target as GLib.Object;
 			}
 		}
@@ -108,7 +108,7 @@ namespace GLib {
 		{
 			try {
 				GCHandle gch = (GCHandle) data;
-				ToggleRef tref = gch.Target as ToggleRef;
+				ToggleRef tref = (ToggleRef)gch.Target;
 				tref.Toggle (is_last_ref);
 			} catch (Exception e) {
 				ExceptionManager.RaiseUnhandledException (e, false);

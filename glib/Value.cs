@@ -534,7 +534,7 @@ namespace GLib {
 					if(value is GLib.Object)
 						g_value_set_object (ref this, (value as GLib.Object).Handle);
 					else
-						g_value_set_object (ref this, (value as GLib.GInterfaceAdapter).Handle);
+						g_value_set_object (ref this, ((GInterfaceAdapter)value).Handle);
 				else if (GType.Is (type, GType.Boxed)) {
 					if (value is IWrapper) {
 						g_value_set_boxed (ref this, ((IWrapper)value).Handle);
