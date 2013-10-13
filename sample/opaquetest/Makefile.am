@@ -25,7 +25,7 @@ generated/*.cs: opaque-api.xml
 
 api:
 	PATH=../../parser:$(PATH) $(RUNTIME) ../../parser/gapi-parser.exe opaque-sources.xml
-	$(RUNTIME) ../../parser/gapi-fixup.exe --metadata=Opaque.metadata --api=opaque-api.xml
+	$(RUNTIME) ../../generator/gapi-fixup.exe --metadata=Opaque.metadata --api=opaque-api.xml
 
 install:
 

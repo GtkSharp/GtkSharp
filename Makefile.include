@@ -23,12 +23,12 @@ EXTRA_DIST = $(RAW_API) $(SYMBOLS) $(ASSEMBLY).config.in $(METADATA) $(sources) 
 
 build_symbols = $(addprefix --symbols=$(srcdir)/, $(SYMBOLS))
 
-$(API): $(METADATA) $(RAW_API) $(SYMBOLS) $(top_builddir)/parser/gapi-fixup.exe
+$(API): $(METADATA) $(RAW_API) $(SYMBOLS) $(top_builddir)/generator/gapi-fixup.exe
 	cp $(srcdir)/$(RAW_API) $(API)
 	chmod u+w $(API)
 	@if test -n '$(METADATA)'; then		\
-		echo "$(RUNTIME) $(top_builddir)/parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols)";	\
-		$(RUNTIME) $(top_builddir)/parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols); \
+		echo "$(RUNTIME) $(top_builddir)/generator/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols)";	\
+		$(RUNTIME) $(top_builddir)/generator/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols); \
 	fi
 
 api_includes = $(addprefix -I:, $(INCLUDE_API))

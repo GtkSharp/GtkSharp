@@ -217,10 +217,10 @@ policy.config
 sources/Makefile
 parser/Makefile
 parser/gapi-3.0.pc
-parser/gapi3-fixup
 parser/gapi3-parser
 generator/Makefile
 generator/gapi3-codegen
+generator/gapi3-fixup
 glib/Makefile
 glib/glib-sharp-3.0.pc
 glib/glib-sharp.dll.config
