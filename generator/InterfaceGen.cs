@@ -160,7 +160,7 @@ namespace GtkSharp.Generation {
 		void GenerateCtors (StreamWriter sw)
 		{
 			// Native GObjects do not implement the *Implementor interfaces
-			sw.WriteLine ("\t\tGLib.Object implementor;", Name);
+			sw.WriteLine ("\t\tGLib.Object implementor;");
 			sw.WriteLine ();
 
 			if (!IsConsumeOnly) {
