@@ -87,7 +87,7 @@ namespace GtkSharp.Generation {
 
 		public string DefaultValue {
 			get {
-				if (default_value != null && default_value.Length > 0)
+				if (!String.IsNullOrEmpty (default_value))
 					return default_value;
 				if (IGen == null)
 					return String.Empty;
