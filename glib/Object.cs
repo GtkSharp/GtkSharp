@@ -206,7 +206,6 @@ namespace GLib {
 				AddGInterfaces ();
 				gtype.EnsureClass (); //calls class_init
 
-				AddProperties ();
 				ConnectDefaultHandlers ();
 				InvokeTypeInitializers ();
 				AddInterfaceProperties ();
@@ -242,6 +241,8 @@ namespace GLib {
 				foreach (GInterfaceAdapter adapter in adapters) {
 					InitializeProperties (adapter, gobject_class_handle);
 				}
+
+				AddProperties (gobject_class_handle);
 			}
 
 			private void InitializeProperties (GInterfaceAdapter adapter, IntPtr gobject_class_handle)
@@ -288,12 +289,11 @@ namespace GLib {
 				HandlersOverriden = true;
 			}
 
-			void AddProperties ()
+			void AddProperties (IntPtr gobject_class_handle)
 			{
 				if (is_first_subclass) {
-					IntPtr declaring_class = gtype.GetClassPtr ();
 					ParamSpec pspec = new ParamSpec ("gtk-sharp-managed-instance", "", "", GType.Pointer, ParamFlags.Writable | ParamFlags.ConstructOnly);
-					g_object_class_install_property (declaring_class, idx, pspec.Handle);
+					g_object_class_install_property (gobject_class_handle, idx, pspec.Handle);
 					idx++;
 				}
 
