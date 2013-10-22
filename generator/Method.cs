@@ -90,7 +90,7 @@ namespace GtkSharp.Generation {
 			}
 
 			Parameters parms = Parameters;
-			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && HasGetterName);
+			is_get = ((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) && HasGetterName;
 			is_set = ((parms.IsAccessor || (parms.VisibleCount == 1 && retval.IsVoid)) && HasSetterName);
 
 			call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms.Count > 0 ? ", " : "")) + Body.GetCallString (is_set) + ")";

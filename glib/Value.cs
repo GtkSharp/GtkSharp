@@ -552,7 +552,6 @@ namespace GLib {
 
 		internal void Update (object val)
 		{
-			Type t = GType.LookupType (type);
 			if (GType.Is (type, GType.Boxed) && !(val is IWrapper)) {
 				MethodInfo mi = val.GetType ().GetMethod ("Update", BindingFlags.NonPublic | BindingFlags.Instance);
 				IntPtr boxed_ptr = g_value_get_boxed (ref this);
