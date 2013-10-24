@@ -10,7 +10,7 @@ namespace GtkSamples {
 
 	using Gtk;
 
-	public class TreeViewDemo {
+	public class ManagedTreeViewDemo {
 		private static ListStore store = null;
 		
 		private class Pair {

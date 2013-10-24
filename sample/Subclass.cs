@@ -9,7 +9,7 @@ namespace GtkSamples {
 	using Gtk;
 	using System;
 
-	public class ButtonApp  {
+	public class ButtonAppSubclass  {
 
 		public static int Main (string[] args)
 		{
