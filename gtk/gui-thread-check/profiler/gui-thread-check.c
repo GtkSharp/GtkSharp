@@ -72,9 +72,11 @@ simple_method_enter (MonoProfiler *prof, MonoMethod *method)
 		}
 		if (current_thread_id != guithread &&
 			!(strcmp (klass_name, "Object")==0 && strcmp (method_name, "Dispose")==0) &&
+			!(strcmp (klass_name, "Widget")==0 && strcmp (method_name, "Dispose")==0) &&
 			!(strcmp (klass_name, "Application")==0 && strcmp (method_name, "Invoke")==0) &&
 			!(strcmp (method_name, "Finalize")==0) &&
 			!(strcmp (method_name, "get_NativeDestroyHandler")==0) &&
+			!(strcmp (method_name, "remove_InternalDestroyed")==0) &&
 			!(strcmp (method_name, "remove_Destroyed")==0)
 		) {
 			printf ("*** GTK CALL NOT IN GUI THREAD: %s.%s\n", klass_name, method_name);
