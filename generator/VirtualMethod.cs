@@ -98,14 +98,17 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t\t\t{0} __obj = GLib.Object.GetObject (inst, false) as {0};", type);
 			}
 
-			sw.Write (call.Setup ("\t\t\t\t"));
-			sw.Write ("\t\t\t\t");
+			string indent = "\t\t\t\t";
 			if (!retval.IsVoid)
-				sw.Write (retval.CSType + " __result = ");
+				sw.WriteLine (indent + retval.CSType + " __result;");
+			sw.Write (call.Setup (indent));
+			sw.Write (indent);
+			if (!retval.IsVoid)
+				sw.Write ("__result = ");
 			if (!this.IsStatic)
 				sw.Write ("__obj.");
 			sw.WriteLine (this.CallString + ";");
-			sw.Write (call.Finish ("\t\t\t\t"));
+			sw.Write (call.Finish (indent));
 			if (!retval.IsVoid)
 				sw.WriteLine ("\t\t\t\treturn " + retval.ToNative ("__result") + ";");
 
@@ -115,6 +118,11 @@ namespace GtkSharp.Generation {
 			if (fatal) {
 				sw.WriteLine ("\t\t\t\t// NOTREACHED: above call does not return.");
 				sw.WriteLine ("\t\t\t\tthrow e;");
+			}
+
+			if (call.HasDisposeParam) {
+				sw.WriteLine ("\t\t\t} finally {");
+				sw.Write (call.DisposeParams (indent));
 			}
 			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");

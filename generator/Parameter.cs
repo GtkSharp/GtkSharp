@@ -186,6 +186,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool IsOwnable {
+			get {
+				return this.Generatable is OwnableGen;
+			}
+		}
+
 		public bool Owned {
 			get {
 				return elem.GetAttribute ("owned") == "true";

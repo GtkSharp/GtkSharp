@@ -28,6 +28,7 @@ namespace GtkSharp.Generation {
 	public class ManagedCallString {
 		
 		IDictionary<Parameter, bool> parms = new Dictionary<Parameter, bool> ();
+		IList<Parameter> dispose_params = new List<Parameter> ();
 		string error_param = null;
 		string user_data_param = null;
 		string destroy_param = null;
@@ -57,6 +58,10 @@ namespace GtkSharp.Generation {
 					special = true;
 
 				this.parms.Add (p, special);
+
+				if (p.IsOwnable) {
+					dispose_params.Add (p);
+				}
 			}
 		}
 
@@ -70,10 +75,18 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool HasDisposeParam {
+			get { return dispose_params.Count > 0; }
+		}
+
 		public string Unconditional (string indent) {
 			string ret = "";
 			if (error_param != null)
 				ret = indent + error_param + " = IntPtr.Zero;\n";
+
+			foreach (Parameter p in dispose_params) {
+				ret += indent + p.CSType + " my" + p.Name + " = null;\n";
+			}
 			return ret;
 		}
 
@@ -103,6 +116,10 @@ namespace GtkSharp.Generation {
 				}
 			}
 
+			foreach (Parameter p in dispose_params) {
+				ret += indent + "my" + p.Name + " = " + p.FromNative (p.Name) + ";\n";
+			}
+
 			return ret;
 		}
 
@@ -119,7 +136,12 @@ namespace GtkSharp.Generation {
 				if (p.Generatable is CallbackGen) {
 					result [i] += p.Name + "_invoker.Handler";
 				} else {
-					result [i] += (parms [p]) ? "my" + p.Name : p.FromNative (p.Name);
+					if (parms [p] || dispose_params.Contains(p)) {
+						// Parameter was declared and marshalled earlier
+						result [i] +=  "my" + p.Name;
+					} else {
+						result [i] +=  p.FromNative (p.Name);
+					}
 				}
 				i++;
 			}
@@ -146,6 +168,22 @@ namespace GtkSharp.Generation {
 					ret += String.Format ("{0}{1} = {2};", indent, p.Name, (igen as IManualMarshaler).AllocNative ("my" + p.Name));
 				else
 					ret += indent + p.Name + " = " + igen.CallByName ("my" + p.Name) + ";\n";
+			}
+
+			return ret;
+		}
+
+		public string DisposeParams (string indent)
+		{
+			string ret = "";
+
+			foreach (Parameter p in dispose_params) {
+				string name = "my" + p.Name;
+				string disp_name = "disposable_" + p.Name;
+
+				ret += indent + "var " + disp_name + " = " + name + " as IDisposable;\n";
+				ret += indent + "if (" + disp_name + " != null)\n";
+				ret += indent + "\t" + disp_name + ".Dispose ();\n";
 			}
 
 			return ret;
