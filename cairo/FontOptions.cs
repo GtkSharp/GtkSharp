@@ -76,7 +76,7 @@ namespace Cairo
 			if (!disposing || CairoDebug.Enabled)
 				CairoDebug.OnDisposed<FontOptions> (handle, disposing);
 
-			if (!disposing|| handle == IntPtr.Zero)
+			if (handle == IntPtr.Zero)
 				return;
 
 			NativeMethods.cairo_font_options_destroy (handle);

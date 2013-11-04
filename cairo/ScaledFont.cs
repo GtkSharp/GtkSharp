@@ -116,7 +116,7 @@ namespace Cairo {
 			if (!disposing || CairoDebug.Enabled)
 				CairoDebug.OnDisposed<ScaledFont> (handle, disposing);
 
-			if (!disposing|| handle == IntPtr.Zero)
+			if (handle == IntPtr.Zero)
 				return;
 
 			NativeMethods.cairo_scaled_font_destroy (handle);

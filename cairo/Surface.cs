@@ -147,7 +147,7 @@ namespace Cairo {
 			if (!disposing || CairoDebug.Enabled)
 				CairoDebug.OnDisposed<Surface> (handle, disposing);
 
-			if (!disposing || handle == IntPtr.Zero)
+			if (handle == IntPtr.Zero)
 				return;
 
 			NativeMethods.cairo_surface_destroy (handle);

@@ -98,7 +98,7 @@ namespace Cairo
 			if (!disposing || CairoDebug.Enabled)
 				CairoDebug.OnDisposed<Region> (handle, disposing);
 
-			if (!disposing|| handle == IntPtr.Zero)
+			if (handle == IntPtr.Zero)
 				return;
 
 			NativeMethods.cairo_region_destroy (Handle);

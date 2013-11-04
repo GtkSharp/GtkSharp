@@ -103,7 +103,7 @@ namespace Cairo {
 			if (!disposing || CairoDebug.Enabled)
 				CairoDebug.OnDisposed<Pattern> (Handle, disposing);
 
-			if (!disposing|| Handle == IntPtr.Zero)
+			if (Handle == IntPtr.Zero)
 				return;
 
 			NativeMethods.cairo_pattern_destroy (Handle);

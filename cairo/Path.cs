@@ -66,7 +66,7 @@ namespace Cairo {
 			if (!disposing || CairoDebug.Enabled)
 				CairoDebug.OnDisposed<Path> (handle, disposing);
 
-			if (!disposing || handle == IntPtr.Zero)
+			if (handle == IntPtr.Zero)
 				return;
 
 			NativeMethods.cairo_path_destroy (handle);
