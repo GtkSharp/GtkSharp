@@ -48,6 +48,7 @@ namespace Cairo {
 
 		public void SetSize (int width, int height)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_xcb_surface_set_size (Handle, width, height);
 		}
 	}

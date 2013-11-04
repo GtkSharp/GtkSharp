@@ -43,8 +43,14 @@ namespace Cairo {
 		}
 
 		public Filter Filter {
-			set { NativeMethods.cairo_pattern_set_filter (Handle, value); }
-			get { return NativeMethods.cairo_pattern_get_filter (Handle); }
+			set {
+				CheckDisposed ();
+				NativeMethods.cairo_pattern_set_filter (Handle, value);
+			}
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_pattern_get_filter (Handle);
+			}
 		}
 	}
 }

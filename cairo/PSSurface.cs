@@ -43,21 +43,25 @@ namespace Cairo {
 
 		public void BeginPageSetup ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_ps_surface_dsc_begin_page_setup (Handle);
 		}
 
 		public void BeginSetup ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_ps_surface_dsc_begin_setup (Handle);
 		}
 
 		public void DscComment (string comment)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_ps_surface_dsc_comment (Handle, comment);
 		}
 
 		public void SetSize (double width, double height)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_ps_surface_set_size (Handle, width, height);
 		}
 	}

@@ -34,6 +34,9 @@ namespace Cairo {
 
 		internal ScaledFont (IntPtr handle, bool owner)
 		{
+			if (handle == IntPtr.Zero)
+				throw new ArgumentException ("handle should not be NULL", "handle");
+
 			this.handle = handle;
 			if (!owner)
 				NativeMethods.cairo_scaled_font_reference (handle);
@@ -59,6 +62,7 @@ namespace Cairo {
 
 		public FontExtents FontExtents {
 			get {
+				CheckDisposed ();
 				FontExtents extents;
 				NativeMethods.cairo_scaled_font_extents (handle, out extents);
 				return extents;
@@ -67,6 +71,7 @@ namespace Cairo {
 
 		public Matrix FontMatrix {
 			get {
+				CheckDisposed ();
 				Matrix m;
 				NativeMethods.cairo_scaled_font_get_font_matrix (handle, out m);
 				return m;
@@ -75,12 +80,14 @@ namespace Cairo {
 
 		public FontType FontType {
 			get {
+				CheckDisposed ();
 				return NativeMethods.cairo_scaled_font_get_type (handle);
 			}
 		}
 
 		public TextExtents GlyphExtents (Glyph[] glyphs)
 		{
+			CheckDisposed ();
 			IntPtr ptr = Context.FromGlyphToUnManagedMemory (glyphs);
 			TextExtents extents;
 
@@ -92,7 +99,10 @@ namespace Cairo {
 	
 		public Status Status
 		{
-			get { return NativeMethods.cairo_scaled_font_status (handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_scaled_font_status (handle);
+			}
 		}
 
 		public void Dispose ()
@@ -113,9 +123,16 @@ namespace Cairo {
 			handle = IntPtr.Zero;
 		}
 
+		void CheckDisposed ()
+		{
+			if (handle == IntPtr.Zero)
+				throw new ObjectDisposedException ("Object has already been disposed");
+		}
+
 		[Obsolete]
 		protected void Reference ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_scaled_font_reference (handle);
 		}
 	}

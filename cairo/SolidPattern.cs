@@ -62,6 +62,7 @@ namespace Cairo {
 
 		public Color Color {
 			get {
+				CheckDisposed ();
 				double red, green, blue, alpha;
 				NativeMethods.cairo_pattern_get_rgba  (Handle, out red, out green, out blue, out alpha);
 				return new Color (red, green, blue, alpha);

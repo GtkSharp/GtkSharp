@@ -43,6 +43,7 @@ namespace Cairo {
 
 		public void RestrictToVersion (SvgVersion version)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_svg_surface_restrict_to_version (Handle, version);
 		}
 	}

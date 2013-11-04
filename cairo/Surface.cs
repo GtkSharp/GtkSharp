@@ -51,12 +51,15 @@ namespace Cairo {
 		}
 
 		[Obsolete]
-		protected Surface (IntPtr ptr) : this (ptr, true)
+		protected Surface (IntPtr handle) : this (handle, true)
 		{
 		}
 
 		protected Surface (IntPtr handle, bool owner)
 		{
+			if (handle == IntPtr.Zero)
+				throw new ArgumentException ("handle should not be NULL", "handle");
+
 			this.handle = handle;
 			if (!owner)
 				NativeMethods.cairo_surface_reference (handle);
@@ -151,24 +154,34 @@ namespace Cairo {
 			handle = IntPtr.Zero;
 		}
 
+		protected void CheckDisposed ()
+		{
+			if (handle == IntPtr.Zero)
+				throw new ObjectDisposedException ("Object has already been disposed");
+		}
+
 		public Status Finish ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_surface_finish (handle);
 			return Status;
 		}
 
 		public void Flush ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_surface_flush (handle);
 		}
 
 		public void MarkDirty ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_surface_mark_dirty (Handle);
 		}
 
 		public void MarkDirty (Rectangle rectangle)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_surface_mark_dirty_rectangle (Handle, (int)rectangle.X, (int)rectangle.Y, (int)rectangle.Width, (int)rectangle.Height);
 		}
 
@@ -180,12 +193,14 @@ namespace Cairo {
 
 		public PointD DeviceOffset {
 			get {
+				CheckDisposed ();
 				double x, y;
 				NativeMethods.cairo_surface_get_device_offset (handle, out x, out y);
 				return new PointD (x, y);
 			}
 
 			set {
+				CheckDisposed ();
 				NativeMethods.cairo_surface_set_device_offset (handle, value.X, value.Y);
 			}
 		}
@@ -198,11 +213,13 @@ namespace Cairo {
 
 		public void SetFallbackResolution (double x, double y)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_surface_set_fallback_resolution (handle, x, y);
 		}
 
 		public void WriteToPng (string filename)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_surface_write_to_png (handle, filename);
 		}
 
@@ -214,19 +231,29 @@ namespace Cairo {
 		}
 
 		public Status Status {
-			get { return NativeMethods.cairo_surface_status (handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_surface_status (handle);
+			}
 		}
 
 		public Content Content {
-			get { return NativeMethods.cairo_surface_get_content (handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_surface_get_content (handle);
+			}
 		}
 
 		public SurfaceType SurfaceType {
-			get { return NativeMethods.cairo_surface_get_type (handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_surface_get_type (handle);
+			}
 		}
 
 		public uint ReferenceCount {
-			get { return NativeMethods.cairo_surface_get_reference_count (handle); }
+			get {
+				return NativeMethods.cairo_surface_get_reference_count (handle); }
 		}
 	}
 }

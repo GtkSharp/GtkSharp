@@ -43,6 +43,7 @@ namespace Cairo {
 
 		public void SetSize (double width, double height)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_pdf_surface_set_size (Handle, width, height);
 		}
 	}

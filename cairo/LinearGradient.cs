@@ -44,6 +44,7 @@ namespace Cairo {
 
 		public PointD[] LinearPoints {
 			get {
+				CheckDisposed ();
 				double x0, y0, x1, y1;
 				PointD[] points = new PointD [2];
 

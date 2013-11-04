@@ -70,11 +70,16 @@ namespace Cairo {
 		}
 
 		public int Width {
-			get { return NativeMethods.cairo_image_surface_get_width (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_image_surface_get_width (Handle); }
 		}
 
 		public int Height {
-			get { return NativeMethods.cairo_image_surface_get_height (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_image_surface_get_height (Handle);
+			}
 		}
 
 		public byte[] Data {
@@ -89,16 +94,23 @@ namespace Cairo {
 
 		public IntPtr DataPtr {
 			get {
+				CheckDisposed ();
 				return NativeMethods.cairo_image_surface_get_data (Handle);
 			}
 		}
 
 		public Format Format {
-			get { return NativeMethods.cairo_image_surface_get_format (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_image_surface_get_format (Handle);
+			}
 		}
 
 		public int Stride {
-			get { return NativeMethods.cairo_image_surface_get_stride (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_image_surface_get_stride (Handle);
+			}
 		}
 	}
 }

@@ -41,11 +41,15 @@ namespace Cairo
 
 		internal Device (IntPtr handle)
 		{
+			if (handle == IntPtr.Zero)
+				throw new ArgumentException ("handle should not be NULL", "handle");
+
 			this.handle = NativeMethods.cairo_device_reference (handle);
 		}
 
 		public Status Acquire ()
 		{
+			CheckDisposed ();
 			return NativeMethods.cairo_device_acquire (handle);
 		}
 
@@ -57,27 +61,42 @@ namespace Cairo
 			GC.SuppressFinalize (this);
 		}
 
+		void CheckDisposed ()
+		{
+			if (handle == IntPtr.Zero)
+				throw new ObjectDisposedException ("Object has already been disposed");
+		}
+
 		public void Finish ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_device_finish (handle);
 		}
 
 		public void Flush ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_device_flush (handle);
 		}
 
 		public void Release ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_device_release (handle);
 		}
 
 		public Status Status {
-			get { return NativeMethods.cairo_device_status (handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_device_status (handle);
+			}
 		}
 
 		public DeviceType Type {
-			get { return NativeMethods.cairo_device_get_type (handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_device_get_type (handle);
+			}
 		}
 
 	}

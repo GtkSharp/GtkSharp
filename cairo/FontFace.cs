@@ -68,6 +68,12 @@ namespace Cairo
 			handle = IntPtr.Zero;
 		}
 
+		void CheckDisposed ()
+		{
+			if (handle == IntPtr.Zero)
+				throw new ObjectDisposedException ("Object has already been disposed");
+		}
+
 		[Obsolete]
 		public FontFace (IntPtr handle) : this (handle, true)
 		{
@@ -75,6 +81,9 @@ namespace Cairo
 
 		public FontFace (IntPtr handle, bool owned)
 		{
+			if (handle == IntPtr.Zero)
+				throw new ArgumentException ("handle should not be NULL", "handle");
+
 			this.handle = handle;
 			if (!owned)
 				NativeMethods.cairo_font_face_reference (handle);
@@ -90,18 +99,23 @@ namespace Cairo
 
 		public Status Status {
 			get {
+				CheckDisposed ();
 				return NativeMethods.cairo_font_face_status (handle);
 			}
 		}
 		
 		public FontType FontType {
 			get {
+				CheckDisposed ();
 				return NativeMethods.cairo_font_face_get_type (handle);
 			}
 		}
 
 		public uint ReferenceCount {
-			get { return NativeMethods.cairo_font_face_get_reference_count (handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_font_face_get_reference_count (handle);
+			}
 		}
 	}
 }

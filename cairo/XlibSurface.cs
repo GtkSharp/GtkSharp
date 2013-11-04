@@ -55,40 +55,63 @@ namespace Cairo {
 
 		public void SetDrawable (IntPtr drawable, int width, int height)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_xlib_surface_set_drawable (Handle, drawable, width, height);
 		}
 
 		public void SetSize (int width, int height)
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_xlib_surface_set_size (Handle, width, height);
 		}
 
 		public int Depth {
-			get { return NativeMethods.cairo_xlib_surface_get_depth (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_xlib_surface_get_depth (Handle);
+			}
 		}
 		
 		public IntPtr Display {
-			get { return NativeMethods.cairo_xlib_surface_get_display (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_xlib_surface_get_display (Handle);
+			}
 		}
 
 		public IntPtr Drawable {
-			get { return NativeMethods.cairo_xlib_surface_get_drawable (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_xlib_surface_get_drawable (Handle);
+			}
 		}
 
 		public int Height {
-			get { return NativeMethods.cairo_xlib_surface_get_height (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_xlib_surface_get_height (Handle);
+			}
 		}
 
 		public IntPtr Screen {
-			get { return NativeMethods.cairo_xlib_surface_get_screen (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_xlib_surface_get_screen (Handle);
+			}
 		}
 
 		public IntPtr Visual {
-			get { return NativeMethods.cairo_xlib_surface_get_visual (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_xlib_surface_get_visual (Handle);
+			}
 		}
 
 		public int Width {
-			get { return NativeMethods.cairo_xlib_surface_get_width (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_xlib_surface_get_width (Handle);
+			}
 		}
 
 	}

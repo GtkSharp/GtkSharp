@@ -64,6 +64,9 @@ namespace Cairo {
 		
 		internal Pattern (IntPtr handle, bool owned)
 		{
+			if (handle == IntPtr.Zero)
+				throw new ArgumentException ("handle should not be NULL", "handle");
+
 			Handle = handle;
 			if (!owned)
 				NativeMethods.cairo_pattern_reference (handle);
@@ -85,6 +88,7 @@ namespace Cairo {
 		[Obsolete]
 		protected void Reference ()
 		{
+			CheckDisposed ();
 			NativeMethods.cairo_pattern_reference (pattern);
 		}
 
@@ -106,6 +110,12 @@ namespace Cairo {
 			Handle = IntPtr.Zero;
 		}
 
+		protected void CheckDisposed ()
+		{
+			if (Handle == IntPtr.Zero)
+				throw new ObjectDisposedException ("Object has already been disposed");
+		}
+
 		[Obsolete ("Use Dispose()")]
 		public void Destroy ()
 		{
@@ -114,21 +124,32 @@ namespace Cairo {
 
 		public Status Status
 		{
-			get { return NativeMethods.cairo_pattern_status (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_pattern_status (Handle);
+			}
 		}
 
 		public Extend Extend
 		{
-			get { return NativeMethods.cairo_pattern_get_extend (Handle); }
-			set { NativeMethods.cairo_pattern_set_extend (Handle, value); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_pattern_get_extend (Handle);
+			}
+			set {
+				CheckDisposed ();
+				NativeMethods.cairo_pattern_set_extend (Handle, value);
+			}
 		}
 
 		public Matrix Matrix {
 			set {
+				CheckDisposed ();
 				NativeMethods.cairo_pattern_set_matrix (Handle, value);
 			}
 
 			get {
+				CheckDisposed ();
 				Matrix m = new Matrix ();
 				NativeMethods.cairo_pattern_get_matrix (Handle, m);
 				return m;
@@ -148,7 +169,10 @@ namespace Cairo {
 		}
 
 		public PatternType PatternType {
-			get { return NativeMethods.cairo_pattern_get_type (Handle); }
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_pattern_get_type (Handle);
+			}
 		}
 	}
 }
