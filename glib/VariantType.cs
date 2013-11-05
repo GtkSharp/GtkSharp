@@ -47,7 +47,7 @@ namespace GLib {
 		public static VariantType ByteString = new VariantType ("ay");
 		public static VariantType ByteStringArray = new VariantType ("aay");
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_string_is_valid (IntPtr type_string);
 
 		public static bool StringIsValid (string type_string)
@@ -76,7 +76,7 @@ namespace GLib {
 			Dispose (true);
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_variant_type_free (IntPtr handle);
 
 		void Dispose (bool disposing)
@@ -90,7 +90,7 @@ namespace GLib {
 				GC.SuppressFinalize (this);
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_copy (IntPtr handle);
 
 		public VariantType (IntPtr handle)
@@ -98,7 +98,7 @@ namespace GLib {
 			this.handle = g_variant_type_copy (handle);
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_new (IntPtr type_name);
 
 		public VariantType (string type_string)
@@ -113,7 +113,7 @@ namespace GLib {
 			return new VariantType (Handle);
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_equals (IntPtr a, IntPtr b);
 
 		public override bool Equals (object o)
@@ -121,7 +121,7 @@ namespace GLib {
 			return (o is VariantType) && g_variant_type_equals (Handle, (o as VariantType).Handle);
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern int g_variant_type_hash (IntPtr a);
 
 		public override int GetHashCode ()
@@ -129,7 +129,7 @@ namespace GLib {
 			return g_variant_type_hash (Handle);
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_peek_string (IntPtr a);
 
 		public override string ToString ()
@@ -137,7 +137,7 @@ namespace GLib {
 			return Marshaller.Utf8PtrToString (g_variant_type_peek_string (Handle));
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_is_array (IntPtr type);
 
 		public bool IsArray {
@@ -145,56 +145,56 @@ namespace GLib {
 		}
 
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_is_basic (IntPtr type);
 
 		public bool IsBasic {
 			get { return g_variant_type_is_basic (Handle); }
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_is_container (IntPtr type);
 
 		public bool IsContainer {
 			get { return g_variant_type_is_container (Handle); }
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_is_definite (IntPtr type);
 
 		public bool IsDefinite {
 			get { return g_variant_type_is_definite (Handle); }
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_is_dict_entry (IntPtr type);
 
 		public bool IsDictionaryEntry {
 			get { return g_variant_type_is_dict_entry (Handle); }
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_is_maybe (IntPtr type);
 
 		public bool IsMaybe {
 			get { return g_variant_type_is_maybe (Handle); }
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_is_tuple (IntPtr type);
 
 		public bool IsTuple {
 			get { return g_variant_type_is_tuple (Handle); }
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_is_variant (IntPtr type);
 
 		public bool IsVariant {
 			get { return g_variant_type_is_variant (Handle); }
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_type_is_subtype_of (IntPtr type, IntPtr supertype);
 
 		public bool IsSubtypeOf (VariantType supertype)
@@ -202,7 +202,7 @@ namespace GLib {
 			return g_variant_type_is_subtype_of (Handle, supertype == null ? IntPtr.Zero : supertype.Handle);
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_element (IntPtr type);
 
 		public VariantType Element ()
@@ -210,7 +210,7 @@ namespace GLib {
 			return new VariantType (g_variant_type_element (Handle));
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_first (IntPtr type);
 
 		public VariantType First ()
@@ -218,7 +218,7 @@ namespace GLib {
 			return new VariantType (g_variant_type_first (Handle));
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_next (IntPtr type);
 
 		public VariantType Next ()
@@ -226,7 +226,7 @@ namespace GLib {
 			return new VariantType (g_variant_type_next (Handle));
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_n_items (IntPtr type);
 
 		public long NItems ()
@@ -234,7 +234,7 @@ namespace GLib {
 			return g_variant_type_n_items (Handle).ToInt64 ();
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_key (IntPtr type);
 
 		public VariantType Key ()
@@ -242,7 +242,7 @@ namespace GLib {
 			return new VariantType (g_variant_type_key (Handle));
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_value (IntPtr type);
 
 		public VariantType Value ()
@@ -250,7 +250,7 @@ namespace GLib {
 			return new VariantType (g_variant_type_value (Handle));
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_new_array (IntPtr element);
 
 		public static VariantType NewArray (VariantType element)
@@ -260,7 +260,7 @@ namespace GLib {
 			return result;
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_new_dict_entry (IntPtr key, IntPtr value);
 
 		public static VariantType NewDictionaryEntry (VariantType key, VariantType value)
@@ -270,7 +270,7 @@ namespace GLib {
 			return result;
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_new_maybe (IntPtr element);
 
 		public static VariantType NewMaybe (VariantType element)
@@ -280,7 +280,7 @@ namespace GLib {
 			return result;
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_type_new_tuple (IntPtr[] items, int n_items);
 
 		public static VariantType NewTuple (VariantType[] items)

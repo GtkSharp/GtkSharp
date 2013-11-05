@@ -24,7 +24,7 @@ namespace GLib {
 			return (GLib.PollFD) Marshal.PtrToStructure (raw, typeof (GLib.PollFD));
 		}
 
-		[DllImport("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_pollfd_get_type();
 
 		public static GLib.GType GType { 

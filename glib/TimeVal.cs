@@ -39,7 +39,7 @@ namespace GLib {
 			return (GLib.TimeVal) Marshal.PtrToStructure (raw, typeof (GLib.TimeVal));
 		}
 
-		[DllImport("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_time_val_add(IntPtr raw, IntPtr microseconds);
 
 		public void Add(long microseconds) {
@@ -50,7 +50,7 @@ namespace GLib {
 			System.Runtime.InteropServices.Marshal.FreeHGlobal (this_as_native);
 		}
 
-		[DllImport("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_time_val_to_iso8601(IntPtr raw);
 
 		public string ToIso8601() {
@@ -63,7 +63,7 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_time_val_from_iso8601(IntPtr iso_date, IntPtr time_);
 
 		public static bool FromIso8601(string iso_date, out GLib.TimeVal time_) {

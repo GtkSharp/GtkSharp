@@ -83,7 +83,7 @@ namespace GLib {
 			return result;
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_type_parent (IntPtr typ);
 	}
 }

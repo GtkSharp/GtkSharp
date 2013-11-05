@@ -29,7 +29,9 @@ namespace GLib
 		private Thread () {}
 		
 #if ENABLE_GTHREAD_INIT
-		[DllImport ("libgthread-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		const string GThreadNativeLib = "libgthread-2.0-0.dll";
+
+		[DllImport (GThreadNativeLib, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_thread_init (IntPtr i);
 
 		public static void Init ()
@@ -37,7 +39,7 @@ namespace GLib
 			g_thread_init (IntPtr.Zero);
 		}
 
-		[DllImport ("libgthread-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (GThreadNativeLib, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_thread_get_initialized ();
 
 		public static bool Supported

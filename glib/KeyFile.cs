@@ -43,8 +43,6 @@ namespace GLib {
 
 	public class KeyFile {
 
-		const string dll = "libglib-2.0-0.dll";
-
 		IntPtr handle;
 		bool owned;
 
@@ -540,124 +538,124 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_free (IntPtr raw);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_get_boolean (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_boolean_list (IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_comment (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern double g_key_file_get_double (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_double_list (IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_groups (IntPtr raw, IntPtr dummy);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern int g_key_file_get_integer (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_integer_list (IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_keys (IntPtr raw, IntPtr group_name, IntPtr dummy, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_locale_string (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_locale_string_list (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr dummy, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_start_group (IntPtr raw);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_string (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_string_list (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr dummy, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_get_value (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_has_group (IntPtr raw, IntPtr group_name);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_has_key (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_load_from_data (IntPtr raw, byte[] data, UIntPtr length, int flags, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_load_from_data_dirs (IntPtr raw, IntPtr file, out IntPtr full_path, int flags, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_load_from_dirs (IntPtr raw, IntPtr file, IntPtr search_dirs, out IntPtr full_path, int flags, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_load_from_file (IntPtr raw, IntPtr file, int flags, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_new ();
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_remove_comment (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_remove_group (IntPtr raw, IntPtr group_name, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_remove_key (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_boolean (IntPtr raw, IntPtr group_name, IntPtr key, bool value);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_boolean_list (IntPtr raw, IntPtr group_name, IntPtr key, bool[] list, UIntPtr n_list);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern bool g_key_file_set_comment (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr comment, out IntPtr error);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_double (IntPtr raw, IntPtr group_name, IntPtr key, double value);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_double_list (IntPtr raw, IntPtr group_name, IntPtr key, double[] list, UIntPtr n_list);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_integer (IntPtr raw, IntPtr group_name, IntPtr key, int value);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_integer_list (IntPtr raw, IntPtr group_name, IntPtr key, int[] list, UIntPtr n_list);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_list_separator (IntPtr raw, byte separator);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_locale_string (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr value);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_locale_string_list (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr list, UIntPtr length);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_string (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr value);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_string_list (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr list, UIntPtr n_list);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern void g_key_file_set_value (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr value);
 
-		[DllImport (dll)]
+		[DllImport (Global.GLibNativeDll)]
 		static extern IntPtr g_key_file_to_data (IntPtr raw, out UIntPtr length, IntPtr dummy);
 
 	}

@@ -31,6 +31,9 @@ namespace GLib {
 		//this is a static class
 		private Global () {}
 
+		internal const string GLibNativeDll = "libglib-2.0-0.dll";
+		internal const string GObjectNativeDll = "libgobject-2.0-0.dll";
+
 		internal static bool IsWindowsPlatform {
 			get {
 				switch (Environment.OSVersion.Platform) {
@@ -56,10 +59,10 @@ namespace GLib {
 			}
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_set_prgname (IntPtr name);
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_get_prgname ();
 
 		public static string ApplicationName {
@@ -73,13 +76,13 @@ namespace GLib {
 			}
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_set_application_name (IntPtr name);
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_get_application_name ();
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_format_size_for_display (long size);
 		
 		static public string FormatSizeForDisplay (long size)

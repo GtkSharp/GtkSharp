@@ -76,10 +76,10 @@ namespace GLib {
 
 		public static bool WarnOnFinalize { get; set; }
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_ref (IntPtr raw);
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_unref (IntPtr raw);
 		
 		public static Object TryGetObject (IntPtr o)
@@ -398,7 +398,7 @@ namespace GLib {
 			}
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_param_spec_get_name (IntPtr pspec);
 
 		static IntPtr ConstructorCallback (IntPtr gtypeval, uint n_construct_properties, IntPtr construct_properties)
@@ -430,7 +430,7 @@ namespace GLib {
 			return raw;
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_class_override_property (IntPtr klass, uint prop_id, IntPtr name);
 
 		public static void OverrideProperty (IntPtr oclass, uint property_id, string name)
@@ -446,7 +446,7 @@ namespace GLib {
 			idx++;
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_class_find_property (IntPtr klass, IntPtr name);
 
 		static IntPtr FindClassProperty (GLib.Object o, string name)
@@ -456,7 +456,7 @@ namespace GLib {
 			return g_object_class_find_property (gobjectclass, native_name);
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_interface_find_property (IntPtr klass, IntPtr name);
 
 		static IntPtr FindInterfaceProperty (GType type, string name)
@@ -466,7 +466,7 @@ namespace GLib {
 			return g_object_interface_find_property (g_iface, native_name);
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_class_install_property (IntPtr klass, uint prop_id, IntPtr param_spec);
 
 		static IntPtr RegisterProperty (GType type, string name, string nick, string blurb, uint property_id, GType property_type, bool can_read, bool can_write)
@@ -544,7 +544,7 @@ namespace GLib {
 			}
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_type_add_interface_static (IntPtr gtype, IntPtr iface_type, ref GInterfaceInfo info);
 
 		protected internal static GType RegisterGType (System.Type t)
@@ -582,7 +582,7 @@ namespace GLib {
 			CreateNativeObject (new string [0], new GLib.Value [0]);
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_new (IntPtr gtype, IntPtr dummy);
 
 		struct GParameter {
@@ -590,7 +590,7 @@ namespace GLib {
 			public GLib.Value val;
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_newv (IntPtr gtype, int n_params, GParameter[] parms);
 
 		protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals)
@@ -702,7 +702,7 @@ namespace GLib {
 			}
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_get_property (IntPtr obj, IntPtr name, ref GLib.Value val);
 
 		protected GLib.Value GetProperty (string name)
@@ -714,7 +714,7 @@ namespace GLib {
 			return val;
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_set_property (IntPtr obj, IntPtr name, ref GLib.Value val);
 
 		protected void SetProperty (string name, GLib.Value val)
@@ -724,7 +724,7 @@ namespace GLib {
 			GLib.Marshaller.Free (native_name);
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_notify (IntPtr obj, IntPtr property_name);
 
 		protected void Notify (string property_name)
@@ -785,10 +785,10 @@ namespace GLib {
 			Signal.OverrideDefaultHandler (gtype, name, cb);
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		protected static extern void g_signal_chain_from_overridden (IntPtr args, ref GLib.Value retval);
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_type_check_instance_is_a (IntPtr obj, IntPtr gtype);
 
 		internal static bool IsObject (IntPtr obj)

@@ -89,7 +89,7 @@ namespace GLib {
 		{
 		}
 		
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern uint g_idle_add (IdleHandlerInternal d, IntPtr data);
 
 		public static uint Add (IdleHandler hndlr)
@@ -102,7 +102,7 @@ namespace GLib {
 			return p.ID;
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern uint g_idle_add_full (int priority, IdleHandlerInternal d, IntPtr data, DestroyNotify notify);
 
 		public static uint Add (IdleHandler hndlr, Priority priority)
@@ -115,7 +115,7 @@ namespace GLib {
 			return p.ID;
 		}
 		
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_source_remove (uint id);
                                                                                 
 		public static void Remove (uint id)
