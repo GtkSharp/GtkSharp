@@ -414,6 +414,10 @@ namespace GLib {
 		object ToBoxed ()
 		{
 			IntPtr boxed_ptr = g_value_get_boxed (ref this);
+
+			if (boxed_ptr == IntPtr.Zero)
+				return null;
+
 			Type t = GType.LookupType (type);
 			if (t == null)
 				throw new Exception ("Unknown type " + new GType (type).ToString ());
