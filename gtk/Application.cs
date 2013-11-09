@@ -64,7 +64,9 @@ namespace Gtk {
 
 		static void SetPrgname ()
 		{
-			GLib.Global.ProgramName = System.IO.Path.GetFileNameWithoutExtension (Environment.GetCommandLineArgs () [0]);
+			var args = Environment.GetCommandLineArgs ();
+			if (args != null && args.Length > 0)
+				GLib.Global.ProgramName = System.IO.Path.GetFileNameWithoutExtension (args [0]);
 		}
 
 		public static void Init ()
