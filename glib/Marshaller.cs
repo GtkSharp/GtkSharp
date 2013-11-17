@@ -233,9 +233,9 @@ namespace GLib {
 			string[] members = new string[count];
 			for (int i = 0; i < count; ++i) {
 				IntPtr s = Marshal.ReadIntPtr (string_array, i * IntPtr.Size);
-				members[i] = GLib.Marshaller.PtrToStringGFree (s);
+				members[i] = PtrToStringGFree (s);
 			}
-			GLib.Marshaller.Free (string_array);
+			Free (string_array);
 			return members;
 		}
 
