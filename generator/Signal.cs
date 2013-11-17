@@ -25,6 +25,7 @@ namespace GtkSharp.Generation {
 
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
 
@@ -157,7 +158,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string GenArgsInitialization (StreamWriter sw)
+		private string GenArgsInitialization (StreamWriter sw, IList<Parameter> dispose_params)
 		{
 			if (parms.Count > 0)
 				sw.WriteLine("\t\t\t\targs.Args = new object[" + parms.Count + "];");
@@ -172,8 +173,12 @@ namespace GtkSharp.Generation {
 						sw.WriteLine("\t\t\t\telse {");
 						sw.WriteLine("\t\t\t\t\targs.Args[" + idx + "] = " + p.FromNative ("arg" + idx)  + ";");
 						sw.WriteLine("\t\t\t\t}");
-					} else
+					} else if (dispose_params.Contains (p)) {
+						sw.WriteLine("\t\t\t\t" + p.Name + " = " + p.FromNative ("arg" + idx)  + ";");
+						sw.WriteLine("\t\t\t\targs.Args[" + idx + "] = " + p.Name  + ";");
+					} else {
 						sw.WriteLine("\t\t\t\targs.Args[" + idx + "] = " + p.FromNative ("arg" + idx)  + ";");
+					}
 				}
 				if ((igen is StructBase || igen is ByRefGen) && p.PassAs != "")
 					finish += "\t\t\t\tif (arg" + idx + " != IntPtr.Zero) System.Runtime.InteropServices.Marshal.StructureToPtr (args.Args[" + idx + "], arg" + idx + ", false);\n";
@@ -185,7 +190,7 @@ namespace GtkSharp.Generation {
 			return finish;
 		}
 
-		public void GenArgsCleanup (StreamWriter sw, string finish)
+		private void GenArgsCleanup (StreamWriter sw, string finish)
 		{
 			if (retval.IsVoid && finish.Length == 0)
 				return;
@@ -213,6 +218,13 @@ namespace GtkSharp.Generation {
 			if (IsEventHandler)
 				return;
 
+			IList<Parameter> dispose_params = new List<Parameter> ();
+			foreach (Parameter p in parms) {
+				if (p.IsOwnable) {
+					dispose_params.Add (p);
+				}
+			}
+
 			string native_signature = "IntPtr inst";
 			if (parms.Count > 0)
 				native_signature += ", " + CallbackSig;
@@ -224,17 +236,30 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tstatic {0} {1} ({2})", retval.ToNativeType, CallbackName, native_signature);
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\t{0} args = new {0} ();", EventArgsQualifiedName);
+			foreach (Parameter p in dispose_params) {
+				sw.WriteLine("\t\t\t{0} {1} = null;", p.CSType, p.Name);
+			}
 			sw.WriteLine("\t\t\ttry {");
 			sw.WriteLine("\t\t\t\tGLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;");
 			sw.WriteLine("\t\t\t\tif (sig == null)");
 			sw.WriteLine("\t\t\t\t\tthrow new Exception(\"Unknown signal GC handle received \" + gch);");
 			sw.WriteLine();
-			string finish = GenArgsInitialization (sw);
+			string finish = GenArgsInitialization (sw, dispose_params);
 			sw.WriteLine("\t\t\t\t{0} handler = ({0}) sig.Handler;", EventHandlerQualifiedName);
 			sw.WriteLine("\t\t\t\thandler (GLib.Object.GetObject (inst), args);");
 			sw.WriteLine("\t\t\t} catch (Exception e) {");
 			sw.WriteLine("\t\t\t\tGLib.ExceptionManager.RaiseUnhandledException (e, false);");
-			sw.WriteLine("\t\t\t}");
+			if (dispose_params.Count > 0) {
+				sw.WriteLine ("\t\t\t} finally {");
+				foreach (Parameter p in dispose_params) {
+					string disp_name = "disposable_" + p.Name;
+
+					sw.WriteLine ("\t\t\t\tvar " + disp_name + " = " + p.Name + " as IDisposable;");
+					sw.WriteLine ("\t\t\t\tif (" + disp_name + " != null)");
+					sw.WriteLine ("\t\t\t\t\t" + disp_name + ".Dispose ();");
+				}
+			}
+			sw.WriteLine ("\t\t\t}");
 			GenArgsCleanup (sw, finish);
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
