@@ -25,9 +25,6 @@ namespace Pango {
 
 	public partial class Coverage {
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr raw);
-
 		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_coverage_to_bytes (IntPtr raw, out IntPtr bytes, out int n_bytes);
 
@@ -38,7 +35,7 @@ namespace Pango {
 			pango_coverage_to_bytes (Handle, out array_ptr, out count);
 			bytes = new byte [count];
 			Marshal.Copy (array_ptr, bytes, 0, count);
-			g_free (array_ptr);
+			GLib.Marshaller.Free (array_ptr);
 		}
 	}
 }

@@ -190,9 +190,6 @@ namespace GLib {
 			return fullname + "Adapter";
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr item);
-
 		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_unref (IntPtr item);
 
@@ -205,7 +202,7 @@ namespace GLib {
 					} else if (typeof (GLib.IWrapper).IsAssignableFrom (element_type)) {
 						g_object_unref (NthData (i));
 					} else {
-						g_free (NthData (i));
+						Marshaller.Free (NthData (i));
 					}
 				}
 			}

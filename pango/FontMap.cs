@@ -25,9 +25,6 @@ namespace Pango {
 
 	public partial class FontMap {
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr raw);
-
 		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_font_map_list_families(IntPtr raw, out IntPtr families, out int n_families);
 
@@ -44,7 +41,7 @@ namespace Pango {
 					result [i] = GLib.Object.GetObject (fam_ptr) as FontFamily;
 				}
 
-				g_free (array_ptr);
+				GLib.Marshaller.Free (array_ptr);
 				return result;
 			}
 		}

@@ -83,9 +83,6 @@ namespace GLib {
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_unref (IntPtr item);
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr item);
-
 		void Dispose (bool disposing)
 		{
 			if (Handle == IntPtr.Zero)
@@ -99,7 +96,7 @@ namespace GLib {
 					else if (typeof (GLib.Opaque).IsAssignableFrom (element_type))
 						GLib.Opaque.GetOpaque (NthData (i), element_type, true).Dispose ();
 					else 
-						g_free (NthData (i));
+						Marshaller.Free (NthData (i));
 			}
 
 			if (managed)

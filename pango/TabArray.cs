@@ -25,9 +25,6 @@ namespace Pango {
 
 	public partial class TabArray {
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr raw);
-
 		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_tab_array_get_tabs (IntPtr raw, out IntPtr alignments, out IntPtr locations);
 
@@ -45,8 +42,8 @@ namespace Pango {
 			Marshal.Copy (align_ptr, tmp, 0, sz);
 			for (int i = 0; i < sz; i++)
 				alignments [i] = (TabAlign) tmp [i];
-			g_free (align_ptr);
-			g_free (loc_ptr);
+			GLib.Marshaller.Free (align_ptr);
+			GLib.Marshaller.Free (loc_ptr);
 		}
 	}
 }

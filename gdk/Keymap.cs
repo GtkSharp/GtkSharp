@@ -26,9 +26,6 @@ namespace Gdk {
 
 	public partial class Keymap {
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-                static extern void g_free(IntPtr ptr);
-
 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gdk_keymap_get_entries_for_keycode(IntPtr raw, uint hardware_keycode, out IntPtr keys, out IntPtr keyvals, out int n_entries);
 
@@ -46,8 +43,8 @@ namespace Gdk {
 					keyvals [i] = (uint) tmp [i];
 					keys [i] = KeymapKey.New (ptr);
 				}
-				g_free (key_ptr);
-				g_free (keyval_ptr);
+				GLib.Marshaller.Free (key_ptr);
+				GLib.Marshaller.Free (keyval_ptr);
 			} else {
 				keys = new KeymapKey [0];
 				keyvals = new uint [0];
@@ -67,7 +64,7 @@ namespace Gdk {
 					IntPtr ptr = new IntPtr ((long) key_ptr + i * Marshal.SizeOf (typeof (KeymapKey)));
 					result [i] = KeymapKey.New (ptr);
 				}
-				g_free (key_ptr);
+				GLib.Marshaller.Free (key_ptr);
 				return result;
 			} else
 				return new KeymapKey [0];

@@ -24,9 +24,6 @@ namespace Gtk {
 		unsafe static extern void gtk_icon_set_get_sizes (
 			IntPtr raw, out int *pointer_to_enum, out int n_sizes);
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		unsafe static extern void g_free (int *mem);
-
 		/// <summary> Sizes Property </summary>
 		/// <remarks> To be completed </remarks>
 		public Gtk.IconSize [] Sizes {
@@ -42,7 +39,7 @@ namespace Gtk {
 					for (int i = 0; i < length; i++)
 						retval [i] = (Gtk.IconSize) pointer_to_enum [i];
 
-					g_free (pointer_to_enum);
+					GLib.Marshaller.Free ((IntPtr)pointer_to_enum);
 				}
 
 				return retval;

@@ -46,7 +46,7 @@ namespace Pango {
 
 			}
 			Marshal.Copy (array_ptr, ranges, 0, count);
-			g_free (array_ptr);
+			GLib.Marshaller.Free (array_ptr);
 #endif
 		}
 	}

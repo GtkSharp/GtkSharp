@@ -235,9 +235,6 @@ namespace Gdk {
 			return ret;
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr raw);
-
 		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern unsafe bool gdk_pixbuf_save_to_bufferv (IntPtr raw, out IntPtr buffer, out IntPtr buffer_size, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
 
@@ -282,7 +279,7 @@ namespace Gdk {
 				throw new GLib.GException (error);
 			byte[] result = new byte [(int)buffer_size];
 			Marshal.Copy (buffer, result, 0, (int) buffer_size);
-			g_free (buffer);
+			GLib.Marshaller.Free (buffer);
 			return result;
 		}
 

@@ -61,9 +61,6 @@ namespace Gtk {
 			Set(type, format, data, data.Length);
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr ptr);
-
 		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_selection_data_get_targets(IntPtr raw, out IntPtr targets, out int n_atoms);
 
@@ -77,7 +74,7 @@ namespace Gtk {
 						IntPtr atom = Marshal.ReadIntPtr (target_ptr, count * IntPtr.Size);
 						result [i] = new Gdk.Atom (atom);
 					}
-					g_free (target_ptr);
+					GLib.Marshaller.Free (target_ptr);
 					return result;
 				} else
 					return new Gdk.Atom [0];

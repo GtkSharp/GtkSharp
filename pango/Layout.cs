@@ -55,9 +55,6 @@ namespace Pango {
 			accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
 		}
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr raw);
-
 		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_layout_get_log_attrs (IntPtr raw, out IntPtr attrs, out int n_attrs);
 
@@ -74,7 +71,7 @@ namespace Pango {
 					result [i] = LogAttr.New (fam_ptr);
 				}
 
-				g_free (array_ptr);
+				GLib.Marshaller.Free (array_ptr);
 				return result;
 			}
 		}
