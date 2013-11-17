@@ -531,9 +531,10 @@ namespace GLib {
 		public byte[] ToData ()
 		{
 			UIntPtr native_length;
-			IntPtr raw_ret = g_key_file_to_data(Handle, out native_length, IntPtr.Zero);
-			byte[] ret = new byte [(int) native_length];
-			Marshal.Copy (raw_ret, ret, 0, (int) native_length);
+			IntPtr raw_ret = g_key_file_to_data (Handle, out native_length, IntPtr.Zero);
+			int length = (int)native_length;
+			byte[] ret = new byte [length];
+			Marshal.Copy (raw_ret, ret, 0, length);
 			Marshaller.Free (raw_ret);
 			return ret;
 		}
