@@ -30,18 +30,10 @@ namespace GLib {
 		IntPtr handle;
 		bool add_progname = false;
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_malloc(IntPtr size);
-
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr mem);
-
 		~Argv ()
 		{
-			foreach (IntPtr arg in arg_ptrs)
-				g_free (arg);
-
-			g_free (handle);
+			Marshaller.Free (arg_ptrs);
+			Marshaller.Free (handle);
 		}
 				
 		public Argv (string[] args) : this (args, false) {}
@@ -61,7 +53,7 @@ namespace GLib {
 			for (int i = 0; i < args.Length; i++)
 				arg_ptrs [i] = Marshaller.StringToPtrGStrdup (args[i]);
 				
-			handle = g_malloc (new IntPtr (IntPtr.Size * args.Length));
+			handle = Marshaller.Malloc ((ulong)(IntPtr.Size * args.Length));
 
 			for (int i = 0; i < args.Length; i++)
 				Marshal.WriteIntPtr (handle, i * IntPtr.Size, arg_ptrs [i]);
