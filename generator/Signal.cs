@@ -113,43 +113,43 @@ namespace GtkSharp.Generation {
 			get { return Name + "SignalDelegate"; }
 		}
 
-                private string EventArgsName {
-                        get {
-                                if (IsEventHandler)
-                                        return "EventArgs";
-                                else
-                                        return Name + "Args";
-                        }
-                }
-                                                                                                                        
-                private string EventArgsQualifiedName {
-                        get {
-                                if (IsEventHandler)
-                                        return "System.EventArgs";
-                                else
-                                        return container_type.NS + "." + Name + "Args";
-                        }
-                }
-                                                                                                                        
-                private string EventHandlerName {
-                        get {
-                                if (IsEventHandler)
-                                        return "EventHandler";
-                                else if (SymbolTable.Table [container_type.NS + Name + "Handler"] != null)
-                                        return Name + "EventHandler";
+		private string EventArgsName {
+			get {
+				if (IsEventHandler)
+					return "EventArgs";
 				else
-                                        return Name + "Handler";
-                        }
-                }
-                                                                                                                        
-                private string EventHandlerQualifiedName {
-                        get {
-                                if (IsEventHandler)
-                                        return "System.EventHandler";
-                                else
-                                        return container_type.NS + "." + EventHandlerName;
-                        }
-                }
+					return Name + "Args";
+			}
+		}
+
+		private string EventArgsQualifiedName {
+			get {
+				if (IsEventHandler)
+					return "System.EventArgs";
+				else
+					return container_type.NS + "." + Name + "Args";
+			}
+		}
+
+		private string EventHandlerName {
+			get {
+				if (IsEventHandler)
+					return "EventHandler";
+				else if (SymbolTable.Table [container_type.NS + Name + "Handler"] != null)
+					return Name + "EventHandler";
+		else
+					return Name + "Handler";
+			}
+		}
+
+		private string EventHandlerQualifiedName {
+			get {
+				if (IsEventHandler)
+					return "System.EventHandler";
+				else
+					return container_type.NS + "." + EventHandlerName;
+			}
+		}
 
 		private bool IsEventHandler {
 			get {
