@@ -1,4 +1,4 @@
-// GtkSharp.Generation.LPUGen.cs - unsugned long/pointer generatable.
+// GtkSharp.Generation.LPUGen.cs - unsigned long/pointer generatable.
 //
 // Author: Mike Kestner <mkestner@novell.com>
 //
