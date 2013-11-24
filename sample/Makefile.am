@@ -8,7 +8,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = gtk-hello-world.exe async-sample.exe button.exe calendar.exe subclass.exe menu.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe native-instantiation.exe polarfixed.exe cairo-sample.exe scribble.exe testdnd.exe custom-cellrenderer.exe custom-widget.exe custom-scrollable.exe #scribble-xinput.exe $(DOTNET_TARGETS)
+TARGETS = gtk-hello-world.exe async-sample.exe button.exe calendar.exe subclass.exe menu.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe native-instantiation.exe polarfixed.exe cairo-sample.exe scribble.exe testdnd.exe custom-cellrenderer.exe custom-widget.exe custom-scrollable.exe cairo-png.exe #scribble-xinput.exe $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -103,6 +103,9 @@ registerprop.exe: $(srcdir)/PropertyRegistration.cs $(assemblies)
 gexceptiontest.exe: $(srcdir)/GExceptionTest.cs $(assemblies)
 	$(CSC) $(CSFLAGS) -out:gexceptiontest.exe $(references) $(srcdir)/GExceptionTest.cs
 
+cairo-png.exe: $(srcdir)/CairoPng.cs $(top_builddir)/cairo/cairo-sharp.dll
+	$(CSC) $(CSFLAGS) -out:cairo-png.exe -r:$(top_builddir)/cairo/cairo-sharp.dll $(srcdir)/CairoPng.cs
+
 EXTRA_DIST = 				\
 	HelloWorld.cs			\
 	Assistant.cs			\
@@ -120,6 +123,7 @@ EXTRA_DIST = 				\
 	NativeInstantiationTest.cs	\
 	NodeViewDemo.cs			\
 	GExceptionTest.cs		\
+	CairoPng				\
 	CairoSample.cs			\
 	TestDnd.cs			\
 	CustomCellRenderer.cs		\
