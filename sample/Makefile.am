@@ -123,7 +123,7 @@ EXTRA_DIST = 				\
 	NativeInstantiationTest.cs	\
 	NodeViewDemo.cs			\
 	GExceptionTest.cs		\
-	CairoPng				\
+	CairoPng.cs				\
 	CairoSample.cs			\
 	TestDnd.cs			\
 	CustomCellRenderer.cs		\
