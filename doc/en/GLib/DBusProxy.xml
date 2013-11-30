@@ -1,6 +1,6 @@
 <Type Name="DBusProxy" FullName="GLib.DBusProxy">
-  <TypeSignature Language="C#" Value="public class DBusProxy : GLib.Object, GLib.AsyncInitable, GLib.Initable" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DBusProxy extends GLib.Object implements class GLib.AsyncInitable, class GLib.Initable, class GLib.IWrapper" />
+  <TypeSignature Language="C#" Value="public class DBusProxy : GLib.Object, GLib.IAsyncInitable, GLib.IInitable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DBusProxy extends GLib.Object implements class GLib.IAsyncInitable, class GLib.IInitable, class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>gio-sharp</AssemblyName>
   </AssemblyInfo>
@@ -9,10 +9,10 @@
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>GLib.AsyncInitable</InterfaceName>
+      <InterfaceName>GLib.IAsyncInitable</InterfaceName>
     </Interface>
     <Interface>
-      <InterfaceName>GLib.Initable</InterfaceName>
+      <InterfaceName>GLib.IInitable</InterfaceName>
     </Interface>
   </Interfaces>
   <Docs>
@@ -22,11 +22,11 @@
   </Docs>
   <Members>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public DBusProxy (GLib.AsyncResult res);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class GLib.AsyncResult res) cil managed" />
+      <MemberSignature Language="C#" Value="public DBusProxy (GLib.IAsyncResult res);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class GLib.IAsyncResult res) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
-        <Parameter Name="res" Type="GLib.AsyncResult" />
+        <Parameter Name="res" Type="GLib.IAsyncResult" />
       </Parameters>
       <Docs>
         <param name="res">To be added.</param>
@@ -199,14 +199,14 @@
       </Docs>
     </Member>
     <Member MemberName="CallFinish">
-      <MemberSignature Language="C#" Value="public GLib.Variant CallFinish (GLib.AsyncResult res);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class GLib.Variant CallFinish(class GLib.AsyncResult res) cil managed" />
+      <MemberSignature Language="C#" Value="public GLib.Variant CallFinish (GLib.IAsyncResult res);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class GLib.Variant CallFinish(class GLib.IAsyncResult res) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>GLib.Variant</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="res" Type="GLib.AsyncResult" />
+        <Parameter Name="res" Type="GLib.IAsyncResult" />
       </Parameters>
       <Docs>
         <param name="res">To be added.</param>
@@ -284,6 +284,25 @@
         <since version="Gtk# 3.0" />
       </Docs>
     </Member>
+    <Member MemberName="GConnection">
+      <MemberSignature Language="C#" Value="public GLib.DBusConnection GConnection { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GLib.DBusConnection GConnection" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("g-connection")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLib.DBusConnection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GDefaultTimeout">
       <MemberSignature Language="C#" Value="public int GDefaultTimeout { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance int32 GDefaultTimeout" />
@@ -317,6 +336,44 @@
         <param name="property_name">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GFlags">
+      <MemberSignature Language="C#" Value="public GLib.DBusProxyFlags GFlags { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.DBusProxyFlags GFlags" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("g-flags")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLib.DBusProxyFlags</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GInterfaceInfo">
+      <MemberSignature Language="C#" Value="public GLib.DBusInterfaceInfo GInterfaceInfo { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GLib.DBusInterfaceInfo GInterfaceInfo" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property("g-interface-info")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLib.DBusInterfaceInfo</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 3.0" />
       </Docs>
@@ -487,14 +544,14 @@
       </Docs>
     </Member>
     <Member MemberName="InitFinish">
-      <MemberSignature Language="C#" Value="public bool InitFinish (GLib.AsyncResult res);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool InitFinish(class GLib.AsyncResult res) cil managed" />
+      <MemberSignature Language="C#" Value="public bool InitFinish (GLib.IAsyncResult res);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool InitFinish(class GLib.IAsyncResult res) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="res" Type="GLib.AsyncResult" />
+        <Parameter Name="res" Type="GLib.IAsyncResult" />
       </Parameters>
       <Docs>
         <param name="res">To be added.</param>
@@ -561,14 +618,14 @@
       </Docs>
     </Member>
     <Member MemberName="NewForBusFinish">
-      <MemberSignature Language="C#" Value="public static GLib.DBusProxy NewForBusFinish (GLib.AsyncResult res);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.DBusProxy NewForBusFinish(class GLib.AsyncResult res) cil managed" />
+      <MemberSignature Language="C#" Value="public static GLib.DBusProxy NewForBusFinish (GLib.IAsyncResult res);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.DBusProxy NewForBusFinish(class GLib.IAsyncResult res) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>GLib.DBusProxy</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="res" Type="GLib.AsyncResult" />
+        <Parameter Name="res" Type="GLib.IAsyncResult" />
       </Parameters>
       <Docs>
         <param name="res">To be added.</param>

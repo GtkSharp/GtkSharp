@@ -1,6 +1,6 @@
 <Type Name="PollableOutputStreamAdapter" FullName="GLib.PollableOutputStreamAdapter">
-  <TypeSignature Language="C#" Value="public class PollableOutputStreamAdapter : GLib.GInterfaceAdapter, GLib.IWrapper, GLib.PollableOutputStream" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi PollableOutputStreamAdapter extends GLib.GInterfaceAdapter implements class GLib.IWrapper, class GLib.PollableOutputStream" />
+  <TypeSignature Language="C#" Value="public class PollableOutputStreamAdapter : GLib.GInterfaceAdapter, GLib.IPollableOutputStream, GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi PollableOutputStreamAdapter extends GLib.GInterfaceAdapter implements class GLib.IPollableOutputStream, class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>gio-sharp</AssemblyName>
   </AssemblyInfo>
@@ -9,10 +9,10 @@
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
+      <InterfaceName>GLib.IPollableOutputStream</InterfaceName>
     </Interface>
     <Interface>
-      <InterfaceName>GLib.PollableOutputStream</InterfaceName>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
   </Interfaces>
   <Docs>
@@ -33,11 +33,11 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public PollableOutputStreamAdapter (GLib.PollableOutputStreamImplementor implementor);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class GLib.PollableOutputStreamImplementor implementor) cil managed" />
+      <MemberSignature Language="C#" Value="public PollableOutputStreamAdapter (GLib.IPollableOutputStreamImplementor implementor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class GLib.IPollableOutputStreamImplementor implementor) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
-        <Parameter Name="implementor" Type="GLib.PollableOutputStreamImplementor" />
+        <Parameter Name="implementor" Type="GLib.IPollableOutputStreamImplementor" />
       </Parameters>
       <Docs>
         <param name="implementor">To be added.</param>
@@ -75,12 +75,30 @@
         <since version="Gtk# 3.0" />
       </Docs>
     </Member>
-    <Member MemberName="GetObject">
-      <MemberSignature Language="C#" Value="public static GLib.PollableOutputStream GetObject (GLib.Object obj);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.PollableOutputStream GetObject(class GLib.Object obj) cil managed" />
+    <Member MemberName="CreateSource">
+      <MemberSignature Language="C#" Value="public GLib.Source CreateSource (GLib.Cancellable cancellable);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class GLib.Source CreateSource(class GLib.Cancellable cancellable) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.PollableOutputStream</ReturnType>
+        <ReturnType>GLib.Source</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cancellable" Type="GLib.Cancellable" />
+      </Parameters>
+      <Docs>
+        <param name="cancellable">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public static GLib.IPollableOutputStream GetObject (GLib.Object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.IPollableOutputStream GetObject(class GLib.Object obj) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IPollableOutputStream</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="obj" Type="GLib.Object" />
@@ -94,11 +112,11 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
-      <MemberSignature Language="C#" Value="public static GLib.PollableOutputStream GetObject (IntPtr handle, bool owned);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.PollableOutputStream GetObject(native int handle, bool owned) cil managed" />
+      <MemberSignature Language="C#" Value="public static GLib.IPollableOutputStream GetObject (IntPtr handle, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.IPollableOutputStream GetObject(native int handle, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.PollableOutputStream</ReturnType>
+        <ReturnType>GLib.IPollableOutputStream</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="handle" Type="System.IntPtr" />
@@ -113,9 +131,23 @@
         <since version="Gtk# 3.0" />
       </Docs>
     </Member>
+    <Member MemberName="GInterfaceGType">
+      <MemberSignature Language="C#" Value="public override GLib.GType GInterfaceGType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GInterfaceGType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public override GLib.GType GType { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GType" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -142,11 +174,11 @@
       </Docs>
     </Member>
     <Member MemberName="Implementor">
-      <MemberSignature Language="C#" Value="public GLib.PollableOutputStreamImplementor Implementor { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class GLib.PollableOutputStreamImplementor Implementor" />
+      <MemberSignature Language="C#" Value="public GLib.IPollableOutputStreamImplementor Implementor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GLib.IPollableOutputStreamImplementor Implementor" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.PollableOutputStreamImplementor</ReturnType>
+        <ReturnType>GLib.IPollableOutputStreamImplementor</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>

@@ -16,52 +16,6 @@
     <remarks>Utility class for internal wrapper use</remarks>
   </Docs>
   <Members>
-    <Member MemberName="ArgvToArrayPtr">
-      <MemberSignature Language="C#" Value="public static IntPtr ArgvToArrayPtr (string[] args);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int ArgvToArrayPtr(string[] args) cil managed" />
-      <MemberType>Method</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("Use GLib.Argv instead to avoid leaks.")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.IntPtr</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="args" Type="System.String[]" />
-      </Parameters>
-      <Docs>
-        <param name="args">a <see cref="T:System.String" /></param>
-        <summary>Obsolete.</summary>
-        <returns>a <see cref="T:System.IntPtr" /></returns>
-        <remarks>Replaced by <see cref="T:GLib.Argv" /></remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ArrayPtrToArgv">
-      <MemberSignature Language="C#" Value="public static string[] ArrayPtrToArgv (IntPtr array, int argc);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string[] ArrayPtrToArgv(native int array, int32 argc) cil managed" />
-      <MemberType>Method</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("Use GLib.Argv instead to avoid leaks.")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.String[]</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="array" Type="System.IntPtr" />
-        <Parameter Name="argc" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="array">a <see cref="T:System.IntPtr" /></param>
-        <param name="argc">a <see cref="T:System.Int32" /></param>
-        <summary>Obsolete.</summary>
-        <returns>a <see cref="T:System.String[]" /></returns>
-        <remarks>Replaced by <see cref="T:GLib.Argv" /></remarks>
-      </Docs>
-    </Member>
     <Member MemberName="ArrayPtrToArray">
       <MemberSignature Language="C#" Value="public static Array ArrayPtrToArray (IntPtr array_ptr, Type element_type, int length, bool owned);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Array ArrayPtrToArray(native int array_ptr, class System.Type element_type, int32 length, bool owned) cil managed" />
@@ -434,6 +388,42 @@
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="StringArrayToNullTermStrvPointer">
+      <MemberSignature Language="C#" Value="public static IntPtr StringArrayToNullTermStrvPointer (string[] strs);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int StringArrayToNullTermStrvPointer(string[] strs) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="strs" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="strs">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="StringArrayToStrvPtr">
+      <MemberSignature Language="C#" Value="public static IntPtr StringArrayToStrvPtr (string[] strs);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int StringArrayToStrvPtr(string[] strs) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="strs" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="strs">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="StringFormat">
       <MemberSignature Language="C#" Value="public static string StringFormat (string format, object[] args);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig string StringFormat(string format, object[] args) cil managed" />
@@ -493,6 +483,50 @@
         <summary>Marshal a string to a native Utf8 string using GLib memory allocation.</summary>
         <returns>a <see cref="T:System.IntPtr" /></returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="StructArrayFromNullTerminatedIntPtr&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static T[] StructArrayFromNullTerminatedIntPtr&lt;T&gt; (IntPtr array);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig !!T[] StructArrayFromNullTerminatedIntPtr&lt;T&gt;(native int array) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>T[]</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T" />
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="array" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="array">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
+    <Member MemberName="StructArrayToNullTerminatedStructArrayIntPtr&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static IntPtr StructArrayToNullTerminatedStructArrayIntPtr&lt;T&gt; (T[] InputArray);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int StructArrayToNullTerminatedStructArrayIntPtr&lt;T&gt;(!!T[] InputArray) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T" />
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="InputArray" Type="T[]" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="InputArray">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
       </Docs>
     </Member>
     <Member MemberName="StructureToPtrAlloc">

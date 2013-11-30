@@ -1,6 +1,6 @@
 <Type Name="ProxyAdapter" FullName="GLib.ProxyAdapter">
-  <TypeSignature Language="C#" Value="public class ProxyAdapter : GLib.GInterfaceAdapter, GLib.IWrapper, GLib.Proxy" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi ProxyAdapter extends GLib.GInterfaceAdapter implements class GLib.IWrapper, class GLib.Proxy" />
+  <TypeSignature Language="C#" Value="public class ProxyAdapter : GLib.GInterfaceAdapter, GLib.IProxy, GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi ProxyAdapter extends GLib.GInterfaceAdapter implements class GLib.IProxy, class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>gio-sharp</AssemblyName>
   </AssemblyInfo>
@@ -9,10 +9,10 @@
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
+      <InterfaceName>GLib.IProxy</InterfaceName>
     </Interface>
     <Interface>
-      <InterfaceName>GLib.Proxy</InterfaceName>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
   </Interfaces>
   <Docs>
@@ -33,11 +33,11 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ProxyAdapter (GLib.ProxyImplementor implementor);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class GLib.ProxyImplementor implementor) cil managed" />
+      <MemberSignature Language="C#" Value="public ProxyAdapter (GLib.IProxyImplementor implementor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class GLib.IProxyImplementor implementor) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
-        <Parameter Name="implementor" Type="GLib.ProxyImplementor" />
+        <Parameter Name="implementor" Type="GLib.IProxyImplementor" />
       </Parameters>
       <Docs>
         <param name="implementor">To be added.</param>
@@ -106,14 +106,14 @@
       </Docs>
     </Member>
     <Member MemberName="ConnectFinish">
-      <MemberSignature Language="C#" Value="public GLib.IOStream ConnectFinish (GLib.AsyncResult result);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class GLib.IOStream ConnectFinish(class GLib.AsyncResult result) cil managed" />
+      <MemberSignature Language="C#" Value="public GLib.IOStream ConnectFinish (GLib.IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class GLib.IOStream ConnectFinish(class GLib.IAsyncResult result) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>GLib.IOStream</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="result" Type="GLib.AsyncResult" />
+        <Parameter Name="result" Type="GLib.IAsyncResult" />
       </Parameters>
       <Docs>
         <param name="result">To be added.</param>
@@ -124,11 +124,11 @@
       </Docs>
     </Member>
     <Member MemberName="GetDefaultForProtocol">
-      <MemberSignature Language="C#" Value="public static GLib.Proxy GetDefaultForProtocol (string protocol);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.Proxy GetDefaultForProtocol(string protocol) cil managed" />
+      <MemberSignature Language="C#" Value="public static GLib.IProxy GetDefaultForProtocol (string protocol);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.IProxy GetDefaultForProtocol(string protocol) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.Proxy</ReturnType>
+        <ReturnType>GLib.IProxy</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="protocol" Type="System.String" />
@@ -142,11 +142,11 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
-      <MemberSignature Language="C#" Value="public static GLib.Proxy GetObject (GLib.Object obj);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.Proxy GetObject(class GLib.Object obj) cil managed" />
+      <MemberSignature Language="C#" Value="public static GLib.IProxy GetObject (GLib.Object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.IProxy GetObject(class GLib.Object obj) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.Proxy</ReturnType>
+        <ReturnType>GLib.IProxy</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="obj" Type="GLib.Object" />
@@ -160,11 +160,11 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
-      <MemberSignature Language="C#" Value="public static GLib.Proxy GetObject (IntPtr handle, bool owned);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.Proxy GetObject(native int handle, bool owned) cil managed" />
+      <MemberSignature Language="C#" Value="public static GLib.IProxy GetObject (IntPtr handle, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.IProxy GetObject(native int handle, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.Proxy</ReturnType>
+        <ReturnType>GLib.IProxy</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="handle" Type="System.IntPtr" />
@@ -179,9 +179,23 @@
         <since version="Gtk# 3.0" />
       </Docs>
     </Member>
+    <Member MemberName="GInterfaceGType">
+      <MemberSignature Language="C#" Value="public override GLib.GType GInterfaceGType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GInterfaceGType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public override GLib.GType GType { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GType" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -208,11 +222,11 @@
       </Docs>
     </Member>
     <Member MemberName="Implementor">
-      <MemberSignature Language="C#" Value="public GLib.ProxyImplementor Implementor { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class GLib.ProxyImplementor Implementor" />
+      <MemberSignature Language="C#" Value="public GLib.IProxyImplementor Implementor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GLib.IProxyImplementor Implementor" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.ProxyImplementor</ReturnType>
+        <ReturnType>GLib.IProxyImplementor</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>

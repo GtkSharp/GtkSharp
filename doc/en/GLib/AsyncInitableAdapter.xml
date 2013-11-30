@@ -1,6 +1,6 @@
 <Type Name="AsyncInitableAdapter" FullName="GLib.AsyncInitableAdapter">
-  <TypeSignature Language="C#" Value="public class AsyncInitableAdapter : GLib.GInterfaceAdapter, GLib.AsyncInitable, GLib.IWrapper" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi AsyncInitableAdapter extends GLib.GInterfaceAdapter implements class GLib.AsyncInitable, class GLib.IWrapper" />
+  <TypeSignature Language="C#" Value="public class AsyncInitableAdapter : GLib.GInterfaceAdapter, GLib.IAsyncInitable, GLib.IWrapper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi AsyncInitableAdapter extends GLib.GInterfaceAdapter implements class GLib.IAsyncInitable, class GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>gio-sharp</AssemblyName>
   </AssemblyInfo>
@@ -9,7 +9,7 @@
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>GLib.AsyncInitable</InterfaceName>
+      <InterfaceName>GLib.IAsyncInitable</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>GLib.IWrapper</InterfaceName>
@@ -33,11 +33,11 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public AsyncInitableAdapter (GLib.AsyncInitableImplementor implementor);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class GLib.AsyncInitableImplementor implementor) cil managed" />
+      <MemberSignature Language="C#" Value="public AsyncInitableAdapter (GLib.IAsyncInitableImplementor implementor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class GLib.IAsyncInitableImplementor implementor) cil managed" />
       <MemberType>Constructor</MemberType>
       <Parameters>
-        <Parameter Name="implementor" Type="GLib.AsyncInitableImplementor" />
+        <Parameter Name="implementor" Type="GLib.IAsyncInitableImplementor" />
       </Parameters>
       <Docs>
         <param name="implementor">To be added.</param>
@@ -61,11 +61,11 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
-      <MemberSignature Language="C#" Value="public static GLib.AsyncInitable GetObject (GLib.Object obj);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.AsyncInitable GetObject(class GLib.Object obj) cil managed" />
+      <MemberSignature Language="C#" Value="public static GLib.IAsyncInitable GetObject (GLib.Object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.IAsyncInitable GetObject(class GLib.Object obj) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.AsyncInitable</ReturnType>
+        <ReturnType>GLib.IAsyncInitable</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="obj" Type="GLib.Object" />
@@ -79,11 +79,11 @@
       </Docs>
     </Member>
     <Member MemberName="GetObject">
-      <MemberSignature Language="C#" Value="public static GLib.AsyncInitable GetObject (IntPtr handle, bool owned);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.AsyncInitable GetObject(native int handle, bool owned) cil managed" />
+      <MemberSignature Language="C#" Value="public static GLib.IAsyncInitable GetObject (IntPtr handle, bool owned);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLib.IAsyncInitable GetObject(native int handle, bool owned) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.AsyncInitable</ReturnType>
+        <ReturnType>GLib.IAsyncInitable</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="handle" Type="System.IntPtr" />
@@ -98,9 +98,23 @@
         <since version="Gtk# 3.0" />
       </Docs>
     </Member>
+    <Member MemberName="GInterfaceGType">
+      <MemberSignature Language="C#" Value="public override GLib.GType GInterfaceGType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GInterfaceGType" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gtk# 3.0" />
+      </Docs>
+    </Member>
     <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public override GLib.GType GType { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype GLib.GType GType" />
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property valuetype GLib.GType GType" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -127,11 +141,11 @@
       </Docs>
     </Member>
     <Member MemberName="Implementor">
-      <MemberSignature Language="C#" Value="public GLib.AsyncInitableImplementor Implementor { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class GLib.AsyncInitableImplementor Implementor" />
+      <MemberSignature Language="C#" Value="public GLib.IAsyncInitableImplementor Implementor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GLib.IAsyncInitableImplementor Implementor" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.AsyncInitableImplementor</ReturnType>
+        <ReturnType>GLib.IAsyncInitableImplementor</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
@@ -162,14 +176,14 @@
       </Docs>
     </Member>
     <Member MemberName="InitFinish">
-      <MemberSignature Language="C#" Value="public bool InitFinish (GLib.AsyncResult res);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool InitFinish(class GLib.AsyncResult res) cil managed" />
+      <MemberSignature Language="C#" Value="public bool InitFinish (GLib.IAsyncResult res);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool InitFinish(class GLib.IAsyncResult res) cil managed" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="res" Type="GLib.AsyncResult" />
+        <Parameter Name="res" Type="GLib.IAsyncResult" />
       </Parameters>
       <Docs>
         <param name="res">To be added.</param>
