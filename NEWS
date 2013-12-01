@@ -1,4 +1,62 @@
 ===============================================================================
+Gtk# 2.99.2 - 2013-12-03
+===============================================================================
+
+Gtk# 2.99.2 is the third beta release of C# bindings for GTK 3.x.
+
+This version of Gtk# provides bindings for the API exposed by these libraries:
+  * cairo 1.10.0
+  * glib 2.28.0
+  * pango 1.28.3
+  * atk 1.32.0
+  * gdk-pixbuf 2.22.1
+  * gtk+ 3.0.0
+
+There is no API stability guarantee for now, but we will try to keep breaking
+changes to a minimum.
+
+This version of Gtk# can be installed in parallel with Gtk# 2.x, and should not
+have any impact on applications using Gtk# 2.x.
+
+New features and enhancements
+-----------------------------
+
+  * Lots of improvements to the code generator, to support GAPI XML converted
+    from GObject Introspection XML (GIR).
+  * generator: Remove redundant class name from method name
+  * generator: Implement attribute to hide method parameters
+  * cairo: Throw ObjectDisposedException when trying to use an object that has
+    been disposed
+  * glib: Add Mutex, RecMutex and Cond types
+  * glib: Add GPollFD and GSource types
+  * glib: Add GDate and GDateTime classes
+  * glib: Map MainContext type and expose members
+
+Changes
+-------
+
+  * Move the fixup tool from the parser to the generator folder
+  * generator: Provide a GType static property for adapters and rename existing
+    GType property to GInterfaceGType
+  * gio: Rename ApplicationFlags.FlagsNone to ApplicationFlags.None
+  * gio: Delete unused DBusInterfaceVTable class
+  * gio: Fix up returns type for several GSettings.List* methods
+  * glib: Install properties before class_init finishes
+  * glib: Remove obsolete Argv-related methods in Marshaller
+
+Bug fixes
+---------
+
+  * generator: Dispose ownable method parameters in VM callback (bxc#237)
+  * generator: Dispose ownable parameters in signal callbacks (bxc#237)
+  * atk: Add metadata fixup to avoid crash due to ABI change
+  * cairo: Fix leaks when managed objects are finalized
+  * glib: Fix copy-paste error in Object.FindClassProperty()
+  * gtk: Fix TreeView.GetTooltipContext method signature (bxc#14678)
+  * gtk: Fix Application to be more robust when embedding mono
+  * gui-thread-check: Add two more methods to the whitelist
+
+===============================================================================
 Gtk# 2.99.1 - 2013-09-23
 ===============================================================================
 
