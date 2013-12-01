@@ -90,6 +90,10 @@ namespace GtkSamples {
 		
 		protected override bool OnConfigureEvent (EventConfigure ev)
 		{
+			if (surface != null) {
+				surface.Dispose ();
+			}
+
 			surface = ev.Window.CreateSimilarSurface (Cairo.Content.Color, AllocatedWidth, AllocatedHeight);
 			ClearSurface ();
 			return true;
