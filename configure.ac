@@ -1,5 +1,5 @@
 
-AC_INIT(gtk-sharp, 2.99.2)
+AC_INIT(gtk-sharp, 2.99.3)
 
 AM_INIT_AUTOMAKE([1.10 no-dist-gzip dist-bzip2 tar-ustar foreign])
 AC_CANONICAL_HOST
