@@ -218,7 +218,10 @@ namespace GtkSharp.Generation {
 		public void GenerateOverloads (StreamWriter sw)
 		{
 			sw.WriteLine ();
-			sw.WriteLine ("\t\tpublic " + retval.CSType + " " + Name + "(" + (Signature != null ? Signature.WithoutOptional () : "") + ") {");
+			sw.Write ("\t\tpublic ");
+			if (IsStatic)
+				sw.Write ("static ");
+			sw.WriteLine (retval.CSType + " " + Name + "(" + (Signature != null ? Signature.WithoutOptional () : "") + ") {");
 			sw.WriteLine ("\t\t\t{0}{1} ({2});", !retval.IsVoid ? "return " : String.Empty, Name, Signature.CallWithoutOptionals ());
 			sw.WriteLine ("\t\t}");
 		}
