@@ -11,13 +11,13 @@ assemblies = 					\
 	$(top_builddir)/pango/pango-sharp.dll	\
 	$(top_builddir)/atk/atk-sharp.dll
 
-references=$(addprefix /r:, $(assemblies))
+references=$(addprefix -r:, $(assemblies))
 
 noinst_SCRIPTS = $(TARGETS)
 CLEANFILES = $(TARGETS) $(DEBUGS)
 
 .cs.exe: $(assemblies)
-	$(CSC) /out:$@ $(references) $<
+	$(CSC) $(CSFLAGS) /out:$@ $(references) $<
 
 EXTRA_DIST = 				\
 	MountOperation.cs
