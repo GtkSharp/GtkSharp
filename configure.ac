@@ -113,7 +113,7 @@ GACUTIL_FLAGS='/package $(PACKAGE_VERSION) /gacdir $(DESTDIR)$(prefix)/lib'
 GENERATED_SOURCES=generated/*.cs
 AC_PATH_PROG(RUNTIME, mono, no)
 
-#libmono and glib required for gui-thread-check profiler module
+# libmono and glib required for gui-thread-check profiler module
 PKG_CHECK_MODULES(PROFILER, mono-2 glib-2.0)
 AM_CONDITIONAL(ENABLE_THREADCHECK, true)
 
@@ -136,25 +136,23 @@ if test "x$SDCHECK" = "xSystem.Drawing"; then
 else
 	enable_dotnet=no
 fi
+dnl End of has_mono = true
 else
+dnl Check for .NET Framework
 AC_PATH_PROG(CSC, csc.exe, no)
 GACUTIL_FLAGS=
 GENERATED_SOURCES=generated\\\\*.cs
 AM_CONDITIONAL(ENABLE_THREADCHECK, false)
 enable_dotnet=yes
 
-if test x$CSC = "xno"; then
-	AC_MSG_ERROR([You need to install either mono (>=$MONO_REQUIRED_VERSION) or .Net])
-else
 RUNTIME=
 LIB_PREFIX=
 LIB_SUFFIX=.dylib
 fi
-fi
 
 CS="C#"
 if test "x$CSC" = "xno" ; then
-	AC_MSG_ERROR([No $CS compiler found])
+	AC_MSG_ERROR([No $CS compiler found. You need to install either mono (>=$MONO_REQUIRED_VERSION) or .Net])
 fi
 
 AC_SUBST(RUNTIME)
