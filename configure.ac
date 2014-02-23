@@ -98,9 +98,6 @@ AC_SUBST(OFF_T_FLAGS)
 MONO_REQUIRED_VERSION=2.8
 PKG_CHECK_MODULES(MONO_DEPENDENCY, mono >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
 
-#libmono and glib required for gui-thread-check profiler module
-PKG_CHECK_MODULES(PROFILER, mono-2 glib-2.0)
-
 AC_PATH_PROG(GACUTIL, gacutil, no)
 if test "x$GACUTIL" = "xno" ; then
 	AC_MSG_ERROR([No gacutil tool found. You need to install either the mono or .Net SDK.])
@@ -115,6 +112,10 @@ if test "x$has_mono" = "xtrue"; then
 GACUTIL_FLAGS='/package $(PACKAGE_VERSION) /gacdir $(DESTDIR)$(prefix)/lib'
 GENERATED_SOURCES=generated/*.cs
 AC_PATH_PROG(RUNTIME, mono, no)
+
+#libmono and glib required for gui-thread-check profiler module
+PKG_CHECK_MODULES(PROFILER, mono-2 glib-2.0)
+AM_CONDITIONAL(ENABLE_THREADCHECK, true)
 
 # If mono is found, it's in the path.  Require it to be in the path at runtime as well
 if test "x$RUNTIME" != "no" ; then
@@ -139,6 +140,7 @@ else
 AC_PATH_PROG(CSC, csc.exe, no)
 GACUTIL_FLAGS=
 GENERATED_SOURCES=generated\\\\*.cs
+AM_CONDITIONAL(ENABLE_THREADCHECK, false)
 enable_dotnet=yes
 
 if test x$CSC = "xno"; then
