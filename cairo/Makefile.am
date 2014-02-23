@@ -75,13 +75,13 @@ $(ASSEMBLY): $(build_sources) $(SNK)
 install-data-local:
 	@if test -n '$(TARGET)'; then							\
 	  echo "$(GACUTIL) -i $(ASSEMBLY) -f $(GACUTIL_FLAGS)";				\
-	  $(GACUTIL) -i $(ASSEMBLY) -f $(GACUTIL_FLAGS) || exit 1;			\
+	  "$(GACUTIL)" -i $(ASSEMBLY) -f $(GACUTIL_FLAGS) || exit 1;			\
 	fi
 
 uninstall-local:
 	@if test -n '$(TARGET)'; then							\
 	  echo "$(GACUTIL) -u $(ASSEMBLY_NAME_VERSION) $(GACUTIL_FLAGS)";			\
-	  $(GACUTIL) -u $(ASSEMBLY_NAME_VERSION) $(GACUTIL_FLAGS) || exit 1;			\
+	  "$(GACUTIL)" -u $(ASSEMBLY_NAME_VERSION) $(GACUTIL_FLAGS) || exit 1;			\
 	fi
 
 EXTRA_DIST = $(sources) cairo-api.xml mono.snk
