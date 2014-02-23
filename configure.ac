@@ -111,6 +111,7 @@ fi
 if test "x$has_mono" = "xtrue"; then
 GACUTIL_FLAGS='/package $(PACKAGE_VERSION) /gacdir $(DESTDIR)$(prefix)/lib'
 GENERATED_SOURCES=generated/*.cs
+ASSEMBLYINFO=/AssemblyInfo.cs
 AC_PATH_PROG(RUNTIME, mono, no)
 
 # libmono and glib required for gui-thread-check profiler module
@@ -143,6 +144,7 @@ AC_PATH_PROG(CSC, csc.exe, no)
 CSFLAGS="-nologo -platform:x86"
 GACUTIL_FLAGS=
 GENERATED_SOURCES=generated\\\\*.cs
+ASSEMBLYINFO=\\\\AssemblyInfo.cs
 AM_CONDITIONAL(ENABLE_THREADCHECK, false)
 enable_dotnet=yes
 
@@ -163,6 +165,7 @@ AC_SUBST(GACUTIL_FLAGS)
 AC_SUBST(LIB_PREFIX)
 AC_SUBST(LIB_SUFFIX)
 AC_SUBST(GENERATED_SOURCES)
+AC_SUBST(ASSEMBLYINFO)
 
 GTK_REQUIRED_VERSION=3.0.0
 GLIB_REQUIRED_VERSION=2.28.0

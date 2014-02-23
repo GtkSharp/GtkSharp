@@ -94,7 +94,7 @@ sources =		 			\
 	Variant.cs				\
 	VariantType.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources)) $(top_builddir)/AssemblyInfo.cs
+build_sources = $(addprefix $(srcdir)/, $(sources))
 dist_sources = $(sources)
 
 EXTRA_DIST =				\
@@ -105,7 +105,7 @@ EXTRA_DIST =				\
 
 $(ASSEMBLY): $(build_sources) $(SNK)
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -unsafe -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
+	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -unsafe -out:$(ASSEMBLY) -target:library $(references) $(build_sources) $(top_builddir)$(ASSEMBLYINFO)
 
 policy.%.config: $(top_builddir)/policy.config
 	sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$*/" $(top_builddir)/policy.config > $@
