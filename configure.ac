@@ -27,7 +27,7 @@ case "$host" in
 		AC_MSG_RESULT([yes, 64-bit])
 		AC_DEFINE(PLATFORM_WIN32,1,[Platform is Win32])
 		if test "x$cross_compiling" = "xno"; then
-			CC="gcc -mno-cygwin -g"
+			CC="gcc -g"
 			HOST_CC="gcc"
 		fi
 		;;
@@ -36,7 +36,7 @@ case "$host" in
 		AC_MSG_RESULT([yes, 32-bit])
 		AC_DEFINE(PLATFORM_WIN32,1,[Platform is Win32])
 		if test "x$cross_compiling" = "xno"; then
-			CC="gcc -mno-cygwin -g"
+			CC="gcc -g"
 			HOST_CC="gcc"
 		fi
 		;;
