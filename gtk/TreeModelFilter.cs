@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class TreeModelFilter {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_model_iter_children (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
 		public bool IterChildren (out Gtk.TreeIter iter) {
 			bool raw_ret = gtk_tree_model_iter_children (Handle, out iter, IntPtr.Zero);
@@ -39,7 +39,7 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_model_iter_nth_child (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
 		public bool IterNthChild (out Gtk.TreeIter iter, int n) {
 			bool raw_ret = gtk_tree_model_iter_nth_child (Handle, out iter, IntPtr.Zero, n);
@@ -83,7 +83,7 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_model_filter_set_modify_func(IntPtr raw, int n_columns, IntPtr[] types, GtkSharp.TreeModelFilterModifyFuncNative func, IntPtr data, GLib.DestroyNotify destroy);
 
 		public void SetModifyFunc (int n_columns, GLib.GType[] types, TreeModelFilterModifyFunc func) 
@@ -96,7 +96,7 @@ namespace Gtk {
 			gtk_tree_model_filter_set_modify_func (Handle, n_columns, native_types, func_wrapper.NativeDelegate, (IntPtr) gch, GLib.DestroyHelper.NotifyHandler);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_model_filter_convert_child_iter_to_iter (IntPtr raw, out Gtk.TreeIter filter_iter, ref Gtk.TreeIter child_iter);
 
 		public TreeIter ConvertChildIterToIter (Gtk.TreeIter child_iter)

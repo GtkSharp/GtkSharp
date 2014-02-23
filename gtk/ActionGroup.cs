@@ -80,7 +80,7 @@ namespace Gtk {
 				actions[0].Changed += changed;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_action_group_list_actions (IntPtr raw);
 
 		public Gtk.Action[] ListActions() {

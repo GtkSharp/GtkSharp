@@ -43,7 +43,7 @@ namespace Gtk {
 			GLib.Marshaller.Free (label_as_native);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_menu_item_new_with_mnemonic(IntPtr group, IntPtr label);
 
 		public RadioMenuItem (RadioMenuItem[] group, string label) : base (IntPtr.Zero)
@@ -71,10 +71,10 @@ namespace Gtk {
 			GLib.Marshaller.Free (native_label);
 		}
 
-		[DllImport("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_menu_item_get_group(IntPtr raw);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_radio_menu_item_set_group(IntPtr raw, IntPtr list);
 
 		[GLib.Property ("group")]

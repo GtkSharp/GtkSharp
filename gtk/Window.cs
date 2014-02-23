@@ -31,10 +31,10 @@ namespace Gtk {
 			this.Title = title;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_window_get_default_icon_list();
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_window_set_default_icon_list(IntPtr list);
 
 		public static Gdk.Pixbuf[] DefaultIconList {
@@ -56,10 +56,10 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_window_get_icon_list(IntPtr raw);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_window_set_icon_list(IntPtr raw, IntPtr list);
 
 		public Gdk.Pixbuf[] IconList {

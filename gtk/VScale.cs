@@ -25,7 +25,7 @@ namespace Gtk {
 	
 	public partial class VScale {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_vscale_new_with_range (double min, double max, double step);
 
 		public VScale (double min, double max, double step) : base (IntPtr.Zero)

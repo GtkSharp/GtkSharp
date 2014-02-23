@@ -23,7 +23,7 @@ namespace Gtk {
 
 	public partial class ColorSelection {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_color_selection_palette_to_string(Gdk.Color[] colors, int n_colors);
 
 		/// <summary> PaletteToString Method </summary>
@@ -34,7 +34,7 @@ namespace Gtk {
 			return ret;
 		}
 		
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_color_selection_palette_from_string(IntPtr str, out IntPtr colors, out int n_colors);
 
 		public static Gdk.Color[] PaletteFromString(string str) {
@@ -59,10 +59,10 @@ namespace Gtk {
 			return colors;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_color_selection_set_previous_color(IntPtr raw, ref Gdk.Color color);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_color_selection_get_previous_color(IntPtr raw, out Gdk.Color color);
 
 		// Create Gtk# property to replace two Gtk+ functions

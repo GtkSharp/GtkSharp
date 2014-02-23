@@ -231,7 +231,7 @@ namespace Gtk {
 				this.handler_type = handler_type;		
 			}
 		
-			[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+			[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 			static extern void gtk_builder_connect_signals_full(IntPtr raw, GtkSharp.BuilderConnectFuncNative func, IntPtr user_data);
 		
 			public void ConnectSignals() {

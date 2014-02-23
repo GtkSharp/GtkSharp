@@ -28,7 +28,7 @@ namespace Gtk {
 		public Action (string name, string label) : this (name, label, null, null)
 		{}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_action_get_proxies (IntPtr raw);
 
 		public Gtk.Widget[] Proxies {

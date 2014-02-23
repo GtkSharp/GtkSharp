@@ -165,10 +165,10 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_binding_set_by_class (IntPtr class_ptr);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_binding_entry_add_signall (IntPtr binding_set, uint keyval, Gdk.ModifierType modifiers, IntPtr signal_name, IntPtr binding_args);
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -237,10 +237,10 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_widget_class_find_style_property (IntPtr class_ptr, IntPtr property_name);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_widget_style_get_property (IntPtr inst, IntPtr property_name, ref GLib.Value value);
 
 		internal GLib.Value StyleGetPropertyValue (string property_name)
@@ -259,7 +259,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_widget_list_mnemonic_labels (IntPtr raw);
 
 		public Widget[] ListMnemonicLabels ()
@@ -397,7 +397,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void gtk_widget_destroy (IntPtr raw);
 
 		public virtual void Destroy ()

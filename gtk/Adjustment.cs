@@ -23,7 +23,7 @@ namespace Gtk {
 
 	public partial class Adjustment {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_adjustment_new(double value, double lower, double upper, double step_increment, double page_increment, double page_size);
 
 		public Adjustment (double value, double lower, double upper, double step_increment, double page_increment, double page_size) : base (IntPtr.Zero)

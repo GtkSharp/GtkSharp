@@ -26,7 +26,7 @@ namespace Gtk {
 
 	public partial class Plug {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_plug_new(UIntPtr socket_id);
 
 		public Plug (ulong socket_id) : base (IntPtr.Zero)
@@ -39,7 +39,7 @@ namespace Gtk {
 			Raw = gtk_plug_new (new UIntPtr (socket_id));
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_plug_new_for_display(IntPtr display, UIntPtr socket_id);
 
 		public Plug (Gdk.Display display, ulong socket_id) : base (IntPtr.Zero)

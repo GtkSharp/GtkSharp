@@ -23,7 +23,7 @@ namespace Gtk {
 
 	public partial class TargetList {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_target_list_new(Gtk.TargetEntry[] targets, uint n_targets);
 
 		public TargetList() : base(gtk_target_list_new(null, 0)) {}

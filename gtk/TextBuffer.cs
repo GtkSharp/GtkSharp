@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class TextBuffer {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_text_buffer_set_text (IntPtr raw, IntPtr text, int len);
 
 		public void Clear ()
@@ -46,7 +46,7 @@ namespace Gtk {
 			gtk_text_buffer_paste_clipboard(Handle, clipboard.Handle, IntPtr.Zero, true);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_text_buffer_insert (IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len);
 
 		[Obsolete ("Replaced by 'ref TextIter iter' overload")]
@@ -109,7 +109,7 @@ namespace Gtk {
 			Text = text;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_text_buffer_insert_interactive(IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len, bool default_editable);
 
 		public bool InsertInteractive(ref Gtk.TextIter iter, string text, bool default_editable)
@@ -120,7 +120,7 @@ namespace Gtk {
 			return result;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_text_buffer_insert_interactive_at_cursor(IntPtr raw, IntPtr text, int len, bool default_editable);
 
 		public bool InsertInteractiveAtCursor(string text, bool default_editable)
@@ -131,7 +131,7 @@ namespace Gtk {
 			return result;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_text_buffer_insert_at_cursor(IntPtr raw, IntPtr text, int len);
 
 		public void InsertAtCursor(string text)
@@ -141,7 +141,7 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_text_buffer_serialize (IntPtr raw, IntPtr content_buffer, IntPtr format, ref Gtk.TextIter start, ref Gtk.TextIter end, out UIntPtr length);
 
 		public byte[] Serialize(Gtk.TextBuffer content_buffer, Gdk.Atom format, Gtk.TextIter start, Gtk.TextIter end)
@@ -156,10 +156,10 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_text_buffer_get_serialize_formats(IntPtr raw, out int n_formats);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_text_buffer_get_deserialize_formats(IntPtr raw, out int n_formats);
 
 		public Gdk.Atom[] DeserializeFormats {

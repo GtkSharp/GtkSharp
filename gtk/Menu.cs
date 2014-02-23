@@ -35,7 +35,7 @@ namespace Gtk {
 			Popup (null, null, null, 3, Global.CurrentEventTime);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_menu_set_screen (IntPtr raw, IntPtr screen);
 
 		public new Gdk.Screen Screen {
@@ -47,7 +47,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_menu_set_active (IntPtr raw, uint index_);
 
 		public void SetActive (uint index_)

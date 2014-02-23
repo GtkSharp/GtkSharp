@@ -21,7 +21,7 @@ namespace Gtk {
 	public partial class TreePath {
 
 		// Patch submitted by malte on bug #49518
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_tree_path_get_indices(IntPtr raw);
 
 		public int [] Indices { 

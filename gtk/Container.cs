@@ -60,10 +60,10 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_container_get_focus_chain (IntPtr raw, out IntPtr list_ptr);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_container_set_focus_chain (IntPtr raw, IntPtr list_ptr);
 
 		public Widget[] FocusChain {

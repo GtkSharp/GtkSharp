@@ -26,7 +26,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Dialog {
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_dialog_new_with_buttons (IntPtr title, IntPtr i, int flags, IntPtr dummy);
 		public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags, params object[] button_data) : base(IntPtr.Zero)
 		{

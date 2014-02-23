@@ -37,7 +37,7 @@ namespace Gtk {
 			return AddUiFromString (new System.IO.StreamReader (s).ReadToEnd ());
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern uint gtk_ui_manager_new_merge_id (IntPtr raw);
 
 		public uint NewMergeId ()
@@ -45,7 +45,7 @@ namespace Gtk {
 			return gtk_ui_manager_new_merge_id (Handle);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_ui_manager_get_toplevels (IntPtr raw, int types);
 
 		public Widget[] GetToplevels (Gtk.UIManagerItemType types) {
@@ -58,7 +58,7 @@ namespace Gtk {
 			return result;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_ui_manager_get_action_groups (IntPtr raw);
 
 		public ActionGroup[] ActionGroups { 

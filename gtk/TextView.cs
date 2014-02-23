@@ -26,7 +26,7 @@ namespace Gtk {
 
 	public partial class TextView {
 				
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_text_view_new_with_buffer (IntPtr buffer);
 
 		public TextView (TextBuffer buffer) : base (IntPtr.Zero)

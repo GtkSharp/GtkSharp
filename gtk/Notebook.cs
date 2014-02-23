@@ -32,7 +32,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern int gtk_notebook_page_num (IntPtr handle, IntPtr child);
 
 		public int PageNum (Widget child)

@@ -27,10 +27,10 @@ namespace Gtk {
 
 	public partial class TreeStore {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_append (IntPtr raw, out TreeIter iter, ref TreeIter parent);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_append (IntPtr raw, out TreeIter iter, IntPtr parent);
 
 		public TreeIter AppendNode () 
@@ -47,10 +47,10 @@ namespace Gtk {
 			return iter;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert (IntPtr raw, out TreeIter iter, ref TreeIter parent, int position);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert (IntPtr raw, out TreeIter iter, IntPtr parent, int position);
 
 		public TreeIter InsertNode (TreeIter parent, int position) 
@@ -67,10 +67,10 @@ namespace Gtk {
 			return iter;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_prepend (IntPtr raw, out TreeIter iter, ref TreeIter parent);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_prepend (IntPtr raw, out TreeIter iter, IntPtr parent);
 
 		public TreeIter PrependNode (TreeIter parent) 
@@ -87,10 +87,10 @@ namespace Gtk {
 			return iter;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert_before (IntPtr raw, out TreeIter iter, ref TreeIter parent, ref TreeIter sibling);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert_before (IntPtr raw, out TreeIter iter, IntPtr parent, ref TreeIter sibling);
 
 		public TreeIter InsertNodeBefore (TreeIter sibling) 
@@ -107,10 +107,10 @@ namespace Gtk {
 			return iter;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert_after (IntPtr raw, out TreeIter iter, ref TreeIter parent, ref TreeIter sibling);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert_after (IntPtr raw, out TreeIter iter, IntPtr parent, ref TreeIter sibling);
 
 		public TreeIter InsertNodeAfter (TreeIter sibling) 
@@ -127,7 +127,7 @@ namespace Gtk {
 			return iter;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_model_iter_children (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
 		public bool IterChildren (out Gtk.TreeIter iter) {
 			bool raw_ret = gtk_tree_model_iter_children (Handle, out iter, IntPtr.Zero);
@@ -141,7 +141,7 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_model_iter_nth_child (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
 		public bool IterNthChild (out Gtk.TreeIter iter, int n) {
 			bool raw_ret = gtk_tree_model_iter_nth_child (Handle, out iter, IntPtr.Zero, n);
@@ -227,10 +227,10 @@ namespace Gtk {
 			return AppendValues ((Array) values);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert_with_valuesv(IntPtr raw, out TreeIter iter, IntPtr parent, int position, int[] columns, GLib.Value[] values, int n_values);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_insert_with_valuesv(IntPtr raw, out TreeIter iter, ref TreeIter parent, int position, int[] columns, GLib.Value[] values, int n_values);
 
 		public TreeIter InsertWithValues (int position, params object[] values)
@@ -269,7 +269,7 @@ namespace Gtk {
 			return iter;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_tree_store_set_valuesv(IntPtr raw, ref TreeIter iter, int[] columns, GLib.Value[] values, int n_values);
 
 		public void SetValues (TreeIter iter, params object[] values)

@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class Bin {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_bin_get_child(IntPtr raw);
 
 		public new Gtk.Widget Child { 

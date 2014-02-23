@@ -28,7 +28,7 @@ namespace Gtk {
 
 	public partial class CellRenderer {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_cell_renderer_start_editing (IntPtr handle, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, int flags);
 
 		public ICellEditable StartEditing (Widget widget, Gdk.Event evnt, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
@@ -40,7 +40,7 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_cell_renderer_render (IntPtr handle, IntPtr drawable, IntPtr widget, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, ref Gdk.Rectangle expose_area, int flags);
 		
 		public void Render (Cairo.Context context, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, CellRendererState flags)

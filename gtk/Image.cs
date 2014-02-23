@@ -27,7 +27,7 @@ namespace Gtk {
 
 	public partial class Image {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_image_new_from_icon_set(IntPtr icon_set, int size);
 
 		public Image (Gtk.IconSet icon_set, Gtk.IconSize size) : base (IntPtr.Zero)
@@ -45,7 +45,7 @@ namespace Gtk {
 			Raw = gtk_image_new_from_icon_set(icon_set.Handle, (int) size);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_image_new_from_stock(IntPtr stock_id, int size);
 
 		public Image (string stock_id, Gtk.IconSize size) : base (IntPtr.Zero)

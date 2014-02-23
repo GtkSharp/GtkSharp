@@ -20,7 +20,7 @@ namespace Gtk {
 
 	public partial class IconSet {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		unsafe static extern void gtk_icon_set_get_sizes (
 			IntPtr raw, out int *pointer_to_enum, out int n_sizes);
 

@@ -20,7 +20,7 @@ namespace Gtk {
 
 	public partial class IconFactory {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		extern static void gtk_icon_size_lookup (IconSize size, out int width, out int height);
 
 		/// <summary> Query icon dimensions </summary>

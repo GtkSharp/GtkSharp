@@ -23,7 +23,7 @@ namespace Gtk {
 
 	public partial class Drag {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_drag_set_icon_default(IntPtr context);
 
 		public static void SetIconDefault(Gdk.DragContext context)

@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class TreeSelection {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_tree_selection_get_selected_rows (IntPtr raw, IntPtr model);
 
 		public TreePath[] GetSelectedRows ()
@@ -38,7 +38,7 @@ namespace Gtk {
 			return (TreePath[]) GLib.Marshaller.ListToArray (list, typeof (Gtk.TreePath));
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", EntryPoint="gtk_tree_selection_get_selected", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, EntryPoint="gtk_tree_selection_get_selected", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_selection_get_selected_without_model (IntPtr raw, IntPtr model, out Gtk.TreeIter iter);
 		
 		public bool GetSelected (out Gtk.TreeIter iter)

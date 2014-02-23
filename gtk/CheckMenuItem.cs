@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class CheckMenuItem {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_check_menu_item_new_with_mnemonic (IntPtr label);
 
 		public CheckMenuItem (string label) : base (IntPtr.Zero)

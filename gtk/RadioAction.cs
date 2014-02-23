@@ -25,10 +25,10 @@ namespace Gtk
 
 	public partial class RadioAction
 	{
-		[DllImport("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_action_get_group(IntPtr raw);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_radio_action_set_group(IntPtr raw, IntPtr list);
 
 		[GLib.Property ("group")]

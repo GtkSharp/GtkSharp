@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class Stock {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_stock_list_ids ();
 
 		public static string[] ListIds ()
@@ -49,7 +49,7 @@ namespace Gtk {
 			public IntPtr TranslationDomain;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_stock_lookup (IntPtr stock_id, out ConstStockItem item);
 
 		public static Gtk.StockItem Lookup (string stock_id) {

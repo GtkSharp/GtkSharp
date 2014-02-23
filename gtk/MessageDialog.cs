@@ -20,10 +20,10 @@ namespace Gtk {
 
 	public partial class MessageDialog {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_message_dialog_new (IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, IntPtr msg, IntPtr args);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_message_dialog_new_with_markup (IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, IntPtr msg, IntPtr args);
 
 		public MessageDialog (Gtk.Window parent_window, DialogFlags flags, MessageType type, ButtonsType bt, bool use_markup, string format, params object[] args)

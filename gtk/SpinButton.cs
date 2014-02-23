@@ -26,7 +26,7 @@ namespace Gtk {
 
 	public partial class SpinButton {
 				
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_spin_button_new_with_range (double min, double max, double step);
 
 		public SpinButton (double min, double max, double step) : base (IntPtr.Zero)

@@ -46,7 +46,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_view_get_path_at_pos (IntPtr raw,
 								  int x,
 								  int y,
@@ -55,7 +55,7 @@ namespace Gtk {
 								  out int cell_x,
 								  out int cell_y);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", EntryPoint="gtk_tree_view_get_path_at_pos", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, EntryPoint="gtk_tree_view_get_path_at_pos", CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_view_get_path_at_pos_intptr (IntPtr raw,
 								  int x,
 								  int y,

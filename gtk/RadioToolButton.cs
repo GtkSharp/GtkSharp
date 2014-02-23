@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class RadioToolButton {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_tool_button_new (IntPtr group);
 
 		public RadioToolButton (RadioToolButton[] group) : base (IntPtr.Zero)
@@ -46,7 +46,7 @@ namespace Gtk {
 			Raw = gtk_radio_tool_button_new(native_group);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_tool_button_new_from_stock (IntPtr group, IntPtr stock_id);
 
 		public RadioToolButton (RadioToolButton[] group, string stock_id) : base (IntPtr.Zero)
@@ -72,10 +72,10 @@ namespace Gtk {
 			GLib.Marshaller.Free (stock_id_as_native);
 		}
 
-		[DllImport("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_tool_button_get_group(IntPtr raw);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_radio_tool_button_set_group(IntPtr raw, IntPtr list);
 
 		[GLib.Property ("group")]

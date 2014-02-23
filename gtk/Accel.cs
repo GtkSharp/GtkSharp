@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class Accel {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_accel_map_save(IntPtr file_name);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.Save instead")]
@@ -35,7 +35,7 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_accel_map_add_filter(IntPtr filter_pattern);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.AddFilter instead")]
@@ -45,7 +45,7 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_accel_map_foreach_unfiltered(IntPtr data, GtkSharp.AccelMapForeachNative foreach_func);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.ForeachUnfiltered instead")]
@@ -54,7 +54,7 @@ namespace Gtk {
 			gtk_accel_map_foreach_unfiltered(data, foreach_func_wrapper.NativeDelegate);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_accel_map_save_fd(int fd);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.SaveFd instead")]
@@ -62,7 +62,7 @@ namespace Gtk {
 			gtk_accel_map_save_fd(fd);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_accel_map_add_entry(IntPtr accel_path, uint accel_key, int accel_mods);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.AddEntry instead")]
@@ -72,7 +72,7 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_accel_map_load_fd(int fd);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.LoadFd instead")]
@@ -80,7 +80,7 @@ namespace Gtk {
 			gtk_accel_map_load_fd(fd);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_accel_map_lookup_entry(IntPtr accel_path, ref Gtk.AccelKey key);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.LookupEntry instead")]
@@ -91,7 +91,7 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_accel_map_change_entry(IntPtr accel_path, uint accel_key, int accel_mods, bool replace);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.ChangeEntry instead")]
@@ -102,7 +102,7 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_accel_map_load (IntPtr file_name);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.Load instead")]
@@ -112,7 +112,7 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_accel_map_foreach(IntPtr data, GtkSharp.AccelMapForeachNative foreach_func);
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.Foreach instead")]
@@ -121,7 +121,7 @@ namespace Gtk {
 			gtk_accel_map_foreach(data, foreach_func_wrapper.NativeDelegate);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_accel_groups_from_object (IntPtr obj);
 
 		public static AccelGroup[] GroupsFromObject (GLib.Object obj)

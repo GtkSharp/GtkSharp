@@ -28,7 +28,7 @@ namespace Gtk {
 
 	public partial class IconTheme {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_icon_theme_list_icons (IntPtr raw, IntPtr context);
 
 		public string[] ListIcons (string context)
@@ -47,16 +47,16 @@ namespace Gtk {
 			return result;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_icon_theme_get_search_path(IntPtr raw, out IntPtr path, out int n_elements);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_icon_theme_set_search_path(IntPtr raw, IntPtr[] path, int n_elements);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_icon_theme_get_search_path_utf8(IntPtr raw, out IntPtr path, out int n_elements);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_icon_theme_set_search_path_utf8(IntPtr raw, IntPtr[] path, int n_elements);
 
 		bool IsWindowsPlatform {
@@ -107,7 +107,7 @@ namespace Gtk {
 			SearchPath = path;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_icon_theme_get_icon_sizes (IntPtr raw, IntPtr icon_name);
 
 		public int[] GetIconSizes (string icon_name) 

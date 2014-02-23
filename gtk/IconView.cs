@@ -36,7 +36,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_icon_view_scroll_to_path(IntPtr raw, IntPtr path, bool use_align, float row_align, float col_align);
 
 		public void ScrollToPath (Gtk.TreePath path) 

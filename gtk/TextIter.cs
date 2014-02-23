@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial struct TextIter {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern uint gtk_text_iter_get_char(ref Gtk.TextIter raw);
 
 		public string Char { 
@@ -34,7 +34,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_text_iter_get_marks (ref TextIter iter);
 
 		public TextMark[] Marks {
@@ -50,7 +50,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_text_iter_get_tags (ref TextIter iter);
 
 		public TextTag[] Tags {
@@ -66,7 +66,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_text_iter_get_toggled_tags (ref TextIter iter, bool toggled_on);
 
 		public TextTag[] GetToggledTags (bool toggled_on)

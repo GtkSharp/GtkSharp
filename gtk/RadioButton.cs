@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class RadioButton {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_button_new_with_mnemonic (IntPtr group, IntPtr label);
 
 		// creates a new group for this RadioButton
@@ -36,10 +36,10 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_radio_button_get_group(IntPtr raw);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_radio_button_set_group(IntPtr raw, IntPtr list);
 
 		[GLib.Property ("group")]

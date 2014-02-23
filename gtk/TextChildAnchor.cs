@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class TextChildAnchor {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_text_child_anchor_get_widgets (IntPtr raw);
 
 		public Widget[] Widgets {

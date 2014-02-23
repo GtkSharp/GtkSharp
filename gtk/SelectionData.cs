@@ -25,10 +25,10 @@ namespace Gtk {
 
 	public partial class SelectionData {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr gtk_selection_data_get_text (IntPtr selection_data);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void gtk_selection_data_set_text (IntPtr selection_data, IntPtr str, int len);
 
 		public string Text {
@@ -45,7 +45,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr gtk_selection_data_get_data (IntPtr selection_data);
 
 		public byte[] Data {
@@ -61,7 +61,7 @@ namespace Gtk {
 			Set(type, format, data, data.Length);
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_selection_data_get_targets(IntPtr raw, out IntPtr targets, out int n_atoms);
 
 		public Gdk.Atom [] Targets {

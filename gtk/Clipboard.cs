@@ -25,10 +25,10 @@ namespace Gtk {
 
 	public partial class Clipboard {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_clipboard_set_with_data(IntPtr raw, TargetEntry[] targets, int n_targets, GtkSharp.ClipboardGetFuncNative get_func, GtkSharp.ClipboardClearFuncNative clear_func, IntPtr data);
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_clipboard_set_with_owner(IntPtr raw, TargetEntry[] targets, int n_targets, GtkSharp.ClipboardGetFuncNative get_func, GtkSharp.ClipboardClearFuncNative clear_func, IntPtr owner);
 
 		void ClearProxy (Clipboard clipboard)
@@ -73,7 +73,7 @@ namespace Gtk {
 			Text = text;
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_clipboard_wait_for_rich_text (IntPtr raw, IntPtr buffer, out IntPtr format, out UIntPtr length);
 
 		public byte[] WaitForRichText(Gtk.TextBuffer buffer, out Gdk.Atom format) 
@@ -115,7 +115,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_clipboard_request_rich_text(IntPtr raw, IntPtr buffer, RichTextReceivedFuncNative cb, IntPtr user_data);
 
 		public void RequestRichText (Gtk.TextBuffer buffer, RichTextReceivedFunc cb) 

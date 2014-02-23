@@ -38,7 +38,7 @@ namespace Gtk {
 
 		static MenuPositionFuncNative StatusIconPositionMenuFunc = null;
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_menu_popup (IntPtr menu,  IntPtr parent_menu_shell, IntPtr parent_menu_item, MenuPositionFuncNative func, IntPtr data, uint button, uint activate_time);
 
 		public void PresentMenu (Menu menu, uint button, uint activate_time) 
@@ -84,7 +84,7 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_status_icon_get_geometry(IntPtr raw, out IntPtr screen, IntPtr area, out int orientation);
 
 		public bool GetGeometry(out Gdk.Screen screen, out Gdk.Rectangle area, out Gtk.Orientation orientation)

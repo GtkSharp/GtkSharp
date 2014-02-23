@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class Target {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_target_table_new_from_list(IntPtr list, out int n_targets);
 
 		public static Gtk.TargetEntry[] TableNewFromList(Gtk.TargetList list) {

@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public partial class Button {
 
-		[DllImport ("libgtk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gtk_button_new_from_stock(IntPtr stock_id);
 
 		public Button (string stock_id) : base (IntPtr.Zero)
