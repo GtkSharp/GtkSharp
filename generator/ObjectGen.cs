@@ -139,7 +139,7 @@ namespace GtkSharp.Generation {
 			string asm_name = gen_info.AssemblyName.Length == 0 ? NS.ToLower () + "-sharp" : gen_info.AssemblyName;
 			DirectoryInfo di = GetDirectoryInfo (gen_info.Dir, asm_name);
 
-			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name, NS);
 
 			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();
@@ -398,7 +398,7 @@ namespace GtkSharp.Generation {
 
 		private static void GenerateMapper (DirectoryInfo dir_info, GenerationInfo gen_info)
 		{
-			StreamWriter sw = gen_info.OpenStream ("ObjectManager");
+			StreamWriter sw = gen_info.OpenStream ("ObjectManager", "GtkSharp");
 
 			sw.WriteLine ("namespace GtkSharp." + Studlify (dir_info.assembly_name) + " {");
 			sw.WriteLine ();

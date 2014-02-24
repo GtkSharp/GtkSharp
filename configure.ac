@@ -110,7 +110,7 @@ fi
 
 if test "x$has_mono" = "xtrue"; then
 GACUTIL_FLAGS='/package $(PACKAGE_VERSION) /gacdir $(DESTDIR)$(prefix)/lib'
-GENERATED_SOURCES=generated/*.cs
+GENERATED_SOURCES=generated/*/*.cs
 ASSEMBLYINFO=/AssemblyInfo.cs
 AC_PATH_PROG(RUNTIME, mono, no)
 
@@ -143,7 +143,7 @@ dnl Check for .NET Framework
 AC_PATH_PROG(CSC, csc.exe, no)
 CSFLAGS="-nologo -platform:x86"
 GACUTIL_FLAGS=
-GENERATED_SOURCES=generated\\\\*.cs
+GENERATED_SOURCES="-recurse:generated\\\\*.cs"
 ASSEMBLYINFO=\\\\AssemblyInfo.cs
 AM_CONDITIONAL(ENABLE_THREADCHECK, false)
 enable_dotnet=yes

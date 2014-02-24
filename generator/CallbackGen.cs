@@ -199,7 +199,7 @@ namespace GtkSharp.Generation {
 			body = new MethodBody (parms);
 
 			StreamWriter save_sw = gen_info.Writer;
-			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (qualname);
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (qualname, NS);
 
 			sw.WriteLine ("namespace " + NS + "Sharp {");
 			sw.WriteLine ();
@@ -294,7 +294,7 @@ namespace GtkSharp.Generation {
 
 			sig = new Signature (parms);
 
-			StreamWriter sw = gen_info.OpenStream (Name);
+			StreamWriter sw = gen_info.OpenStream (Name, NS);
 
 			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();

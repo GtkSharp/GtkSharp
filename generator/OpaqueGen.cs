@@ -45,7 +45,7 @@ namespace GtkSharp.Generation {
 		{
 			gen_info.CurrentType = QualifiedName;
 
-			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name, NS);
 
 			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();

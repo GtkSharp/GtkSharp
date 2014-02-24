@@ -146,12 +146,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public StreamWriter OpenStream (string name)
+		public StreamWriter OpenStream (string name, string namespce)
 		{
-			char sep = Path.DirectorySeparatorChar;
-			if (!Directory.Exists(dir))
-				Directory.CreateDirectory(dir);
-			string filename = dir + sep + name + ".cs";
+			string gen_dir = Path.Combine (dir, namespce);
+			Directory.CreateDirectory (gen_dir);
+
+			string filename = Path.Combine (gen_dir, name + ".cs");
 			
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);

@@ -214,7 +214,7 @@ namespace GtkSharp.Generation {
 		{
 			bool need_close = false;
 			if (gen_info.Writer == null) {
-				gen_info.Writer = gen_info.OpenStream (Name);
+				gen_info.Writer = gen_info.OpenStream (Name, NS);
 				need_close = true;
 			}
 

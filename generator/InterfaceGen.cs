@@ -268,7 +268,7 @@ namespace GtkSharp.Generation {
 
 		void GenerateAdapter (GenerationInfo gen_info)
 		{
-			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (AdapterName);
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (AdapterName, NS);
 
 			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();
@@ -361,7 +361,7 @@ namespace GtkSharp.Generation {
 		public override void Generate (GenerationInfo gen_info)
 		{
 			GenerateAdapter (gen_info);
-			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name, NS);
 
 			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();

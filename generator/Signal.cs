@@ -279,7 +279,7 @@ namespace GtkSharp.Generation {
 
 			string ns = container_type.NS;
 
-			StreamWriter sw = gen_info.OpenStream (EventHandlerName);
+			StreamWriter sw = gen_info.OpenStream (EventHandlerName, container_type.NS);
 			
 			sw.WriteLine ("namespace " + ns + " {");
 			sw.WriteLine ();

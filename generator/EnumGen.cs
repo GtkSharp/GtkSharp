@@ -85,7 +85,7 @@ namespace GtkSharp.Generation {
 		
 		public override void Generate (GenerationInfo gen_info)
 		{
-			StreamWriter sw = gen_info.OpenStream (Name);
+			StreamWriter sw = gen_info.OpenStream (Name, NS);
 
 			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();
