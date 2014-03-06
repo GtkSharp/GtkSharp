@@ -72,6 +72,13 @@ namespace Gtk {
 			val.Dispose ();
 		}
 
+		public void SetValue (Gtk.TreeIter iter, int column, long value)
+		{
+			GLib.Value val = new GLib.Value (value);
+			SetValue (iter, column, val);
+			val.Dispose ();
+		}
+
 		public void SetValue (Gtk.TreeIter iter, int column, string value) 
 		{
 			GLib.Value val = new GLib.Value (value);
