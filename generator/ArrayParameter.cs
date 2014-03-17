@@ -33,6 +33,8 @@ namespace GtkSharp.Generation {
 		public ArrayParameter (XmlElement elem) : base (elem)
 		{
 			null_terminated = elem.GetAttributeAsBoolean ("null_term_array");
+			if (elem.HasAttribute ("array_len"))
+				FixedArrayLength = Int32.Parse (elem.GetAttribute ("array_len"));
 		}
 
 		public override string MarshalType {
@@ -50,12 +52,19 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public int? FixedArrayLength { get; private set; }
+
 		public override string[] Prepare {
 			get {
-				if (CSType == MarshalType)
+				if (CSType == MarshalType && !FixedArrayLength.HasValue)
 					return new string [0];
 
 				var result = new List<string> ();
+
+				if (FixedArrayLength.HasValue) {
+					result.Add (String.Format ("{0} = new {1}[{2}];", Name, MarshalType.TrimEnd ('[', ']'), FixedArrayLength));
+					return result.ToArray ();
+				}
 				result.Add (String.Format ("int cnt_{0} = {0} == null ? 0 : {0}.Length;", CallName));
 				result.Add (String.Format ("{0}[] native_{1} = new {0} [cnt_{1}" + (NullTerminated ? " + 1" : "") + "];", MarshalType.TrimEnd('[', ']'), CallName));
 				result.Add (String.Format ("for (int i = 0; i < cnt_{0}; i++)", CallName));
@@ -75,6 +84,8 @@ namespace GtkSharp.Generation {
 			get {
 				if (CSType != MarshalType)
 					return "native_" + CallName;
+				else if (FixedArrayLength.HasValue)
+					return base.CallString;
 				else
 					return CallName;
 			}
