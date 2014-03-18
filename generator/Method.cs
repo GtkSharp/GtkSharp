@@ -243,7 +243,7 @@ namespace GtkSharp.Generation {
 						return;
 					else {
 						is_set = false;
-						call = "(Handle, " + Body.GetCallString (false) + ")";
+						call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms.Count > 0 ? ", " : "")) + Body.GetCallString (false) + ")";
 						comp = null;
 					}
 				}
