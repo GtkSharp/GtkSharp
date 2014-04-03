@@ -242,6 +242,7 @@ atk/Makefile
 atk/atk-sharp.dll.config
 atk/glue/Makefile
 gdk/Makefile
+gdk/gdk-sharp-3.0.pc
 gdk/gdk-sharp.dll.config
 gtk/Makefile
 gtk/gtk-sharp-3.0.pc

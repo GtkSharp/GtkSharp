@@ -1,4 +1,7 @@
 pkg = gdk
+pkgconfigdir=$(libdir)/pkgconfig
+pkgconfig_DATA=gdk-sharp-3.0.pc
+
 SYMBOLS = gdk-symbols.xml
 INCLUDE_API = $(top_srcdir)/glib/glib-api.xml $(top_srcdir)/cairo/cairo-api.xml $(top_builddir)/gio/gio-api.xml $(top_builddir)/pango/pango-api.xml
 METADATA = Gdk.metadata
