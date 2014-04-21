@@ -10,7 +10,7 @@ else
 VALOBJ=Gtksharp/Valobj.cs
 endif
 
-valtest.exe: Valtest.cs Valobj.cs $(assemblies)
+valtest.exe: Valtest.cs $(VALOBJ) $(assemblies)
 	$(CSC) $(CSFLAGS) -out:valtest.exe $(references) $(srcdir)/Valtest.cs $(VALOBJ)
 
 libvalobj_la_SOURCES =	\
@@ -23,7 +23,7 @@ libvalobj_la_LIBADD = $(GTK_LIBS)
 
 AM_CPPFLAGS = $(GTK_CFLAGS)
 
-Valobj.cs: valobj-api.xml
+$(VALOBJ): valobj-api.xml
 	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/valobj-api.xml	\
 	--include=../../gtk/gtk-api.xml --include=../../gdk/gdk-api.xml					\
 	--outdir=. --assembly-name=valobj-sharp											\
@@ -37,7 +37,7 @@ install:
 CLEANFILES =		\
 	valtest.exe	\
 	valtest.exe.mdb	\
-	Valobj.cs
+	$(VALOBJ)
 
 EXTRA_DIST =		\
 	Valtest.cs	\
