@@ -4,14 +4,8 @@ lib_LTLIBRARIES = libvalobj.la
 assemblies=../../glib/glib-sharp.dll ../../gio/gio-sharp.dll ../../cairo/cairo-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
 references=$(addprefix -r:, $(assemblies))
 
-if PLATFORM_WIN32
-VALOBJ=Gtksharp\\Valobj.cs
-else
-VALOBJ=Gtksharp/Valobj.cs
-endif
-
-valtest.exe: Valtest.cs $(VALOBJ) $(assemblies)
-	$(CSC) $(CSFLAGS) -out:valtest.exe $(references) $(srcdir)/Valtest.cs $(VALOBJ)
+valtest.exe: Valtest.cs $(GENERATED_SOURCES_FILES) $(assemblies)
+	$(CSC) $(CSFLAGS) -out:valtest.exe $(references) $(srcdir)/Valtest.cs $(GENERATED_SOURCES_OPTION)
 
 libvalobj_la_SOURCES =	\
 	valobj.c	\
@@ -23,10 +17,10 @@ libvalobj_la_LIBADD = $(GTK_LIBS)
 
 AM_CPPFLAGS = $(GTK_CFLAGS)
 
-$(VALOBJ): valobj-api.xml
+$(GENERATED_SOURCES_FILES): valobj-api.xml
 	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/valobj-api.xml	\
 	--include=../../gtk/gtk-api.xml --include=../../gdk/gdk-api.xml					\
-	--outdir=. --assembly-name=valobj-sharp											\
+	--outdir=generated --assembly-name=valobj-sharp											\
 	--schema=$(top_srcdir)/gapi.xsd
 
 api:
@@ -37,7 +31,7 @@ install:
 CLEANFILES =		\
 	valtest.exe	\
 	valtest.exe.mdb	\
-	$(VALOBJ)
+	$(GENERATED_SOURCES_FILES)
 
 EXTRA_DIST =		\
 	Valtest.cs	\

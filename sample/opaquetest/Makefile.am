@@ -4,8 +4,8 @@ lib_LTLIBRARIES = libopaque.la
 assemblies=../../glib/glib-sharp.dll ../../gio/gio-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
 references=$(addprefix -r:, $(assemblies))
 
-opaquetest.exe: OpaqueTest.cs $(GENERATED_SOURCES) $(assemblies)
-	$(CSC) $(CSFLAGS) -out:opaquetest.exe $(references) $(srcdir)/OpaqueTest.cs $(GENERATED_SOURCES)
+opaquetest.exe: OpaqueTest.cs $(GENERATED_SOURCES_FILES) $(assemblies)
+	$(CSC) $(CSFLAGS) -out:opaquetest.exe $(references) $(srcdir)/OpaqueTest.cs $(GENERATED_SOURCES_OPTION)
 
 libopaque_la_SOURCES =	\
 	opaques.c	\
@@ -17,7 +17,7 @@ libopaque_la_LIBADD = $(GTK_LIBS)
 
 AM_CPPFLAGS = $(GTK_CFLAGS)
 
-$(GENERATED_SOURCES): opaque-api.xml
+$(GENERATED_SOURCES_FILES): opaque-api.xml
 	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/opaque-api.xml	\
 	--include=../../gtk/gtk-api.xml --include=../../gdk/gdk-api.xml 				\
 	--outdir=generated --assembly-name=opaque-sharp									\
@@ -32,7 +32,7 @@ install:
 CLEANFILES =			\
 	opaquetest.exe		\
 	opaquetest.exe.mdb	\
-	$(GENERATED_SOURCES)
+	$(GENERATED_SOURCES_FILES)
 
 EXTRA_DIST =		\
 	OpaqueTest.cs	\

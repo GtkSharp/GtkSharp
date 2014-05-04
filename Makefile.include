@@ -54,7 +54,7 @@ build_references = $(addprefix -r:, $(references)) $(MONO_CAIRO_LIBS)
 
 $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -nowarn:0169,0612,0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(GENERATED_SOURCES) $(build_sources) $(top_builddir)$(ASSEMBLYINFO)
+	$(CSC) $(CSFLAGS) -keyfile:$(SNK) -nowarn:0169,0612,0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(GENERATED_SOURCES_OPTION) $(build_sources) $(top_builddir)$(ASSEMBLYINFO)
 
 install-data-local:
 	@if test -n '$(pkg)'; then							\
