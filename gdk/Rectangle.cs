@@ -219,7 +219,7 @@ namespace Gdk {
 			return Offset (rect, dr.X, dr.Y);
 		}
 
-		[DllImport("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_rectangle_get_type();
 
 		public static GLib.GType GType { 
@@ -230,7 +230,7 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_rectangle_union (ref Rectangle src1, ref Rectangle src2, out Rectangle dest);
 
 		public Gdk.Rectangle Union (Gdk.Rectangle src)
@@ -240,7 +240,7 @@ namespace Gdk {
 			return dest;
 		}
 
-		[DllImport("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gdk_rectangle_intersect (ref Rectangle src1, ref Rectangle src2, out Rectangle dest);
 
 		public bool Intersect (Gdk.Rectangle src, out Gdk.Rectangle dest)

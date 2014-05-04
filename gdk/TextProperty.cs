@@ -26,7 +26,7 @@ namespace Gdk {
 
 	public class TextProperty {
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern int gdk_text_property_to_utf8_list_for_display(IntPtr display, IntPtr encoding, int format, byte[] text, int length, out IntPtr list);
 
 		public static string[] ToStringListForDisplay (Gdk.Display display, Gdk.Atom encoding, int format, byte[] text, int length) 

@@ -35,7 +35,7 @@ namespace Gdk {
 			Pixel = 0;
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern uint gdk_color_hash(ref Gdk.Color raw);
 
 		public override int GetHashCode() {

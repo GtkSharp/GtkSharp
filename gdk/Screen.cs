@@ -25,7 +25,7 @@ namespace Gdk {
 
 	public partial class Screen {
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_screen_get_toplevel_windows (IntPtr raw);
 
 		public Window[] ToplevelWindows
@@ -42,7 +42,7 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_screen_list_visuals (IntPtr raw);
 
 		public Visual[] ListVisuals ()
@@ -57,10 +57,10 @@ namespace Gdk {
 			return result;
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_screen_get_font_options(IntPtr raw);
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_screen_set_font_options(IntPtr raw, IntPtr options);
 
 		[GLib.Property ("font-options")]

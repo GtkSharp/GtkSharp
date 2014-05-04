@@ -30,22 +30,24 @@ using System.Runtime.InteropServices;
 
 namespace Gtk.DotNet {
 	public class Graphics {
+
+		private const string GdkNativeDll = "libgdk-3-0.dll";
 		
 		private Graphics () {}
 
- 		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern IntPtr gdk_win32_drawable_get_handle(IntPtr raw);
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern IntPtr gdk_win32_hdc_get(IntPtr drawable, IntPtr gc, int usage);
 		
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void gdk_win32_hdc_release(IntPtr drawable,IntPtr gc,int usage);
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern IntPtr gdk_x11_drawable_get_xdisplay (IntPtr raw);
 		
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern IntPtr gdk_x11_drawable_get_xid (IntPtr raw);
 		
 		public static System.Drawing.Graphics FromDrawable (Gdk.Window drawable)

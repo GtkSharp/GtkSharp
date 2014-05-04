@@ -32,10 +32,10 @@ namespace Gdk {
 
 		public Window (Gdk.Window parent, Gdk.WindowAttr attributes, Gdk.WindowAttributesType attributes_mask) : this (parent, attributes, (int)attributes_mask) {}
 
-		[DllImport("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_window_get_background_pattern(IntPtr raw);
 
-		[DllImport("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_window_set_background_pattern(IntPtr raw, IntPtr pattern);
 
 		public Cairo.Pattern BackgroundPattern { 
@@ -49,7 +49,7 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_window_get_children(IntPtr raw);
 
 		public Window[] Children {
@@ -65,7 +65,7 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_window_set_icon_list(IntPtr raw, IntPtr pixbufs);
 
 		public Pixbuf[] IconList {
@@ -80,7 +80,7 @@ namespace Gdk {
 		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_ref (IntPtr raw);
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_window_destroy(IntPtr raw);
 
 		public void Destroy () 
@@ -97,10 +97,10 @@ namespace Gdk {
 			gdk_window_move_resize (Handle, rect.X, rect.Y, rect.Width, rect.Height);
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_window_get_user_data (IntPtr raw, out IntPtr data);
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_window_set_user_data(IntPtr raw, IntPtr user_data);
 		public IntPtr UserData {
 			get {
@@ -113,10 +113,10 @@ namespace Gdk {
 			}
 		} 
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_window_add_filter (IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_window_remove_filter (IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
 
 		static IDictionary<FilterFunc, GdkSharp.FilterFuncWrapper> filter_all_hash;

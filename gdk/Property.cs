@@ -26,7 +26,7 @@ namespace Gdk {
 
 	public partial class Property {
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_property_change(IntPtr window, IntPtr property, IntPtr type, int format, int mode, out byte data, int nelements);
 
 		[Obsolete ("Replaced by corrected overload with data parameter")]
@@ -36,7 +36,7 @@ namespace Gdk {
 			return data;
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gdk_property_get(IntPtr window, IntPtr property, IntPtr type, UIntPtr offset, UIntPtr length, bool pdelete, out IntPtr actual_property_type, out int actual_format, out int actual_length, out IntPtr data);
 
 		public static bool Get(Gdk.Window window, Gdk.Atom property, Gdk.Atom type, ulong offset, ulong length, int pdelete, out Gdk.Atom actual_property_type, out int actual_format, out int actual_length, out byte[] data) {

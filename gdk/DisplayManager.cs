@@ -25,7 +25,7 @@ namespace Gdk {
 
 	public partial class DisplayManager {
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_display_manager_list_displays (IntPtr raw);
 
 		public Display[] ListDisplays ()

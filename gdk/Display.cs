@@ -26,7 +26,7 @@ namespace Gdk {
 
 	public partial class Display {
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_display_get_pointer(IntPtr raw, IntPtr screen, out int x, out int y, out int mask);
 
 		[Obsolete]
@@ -36,7 +36,7 @@ namespace Gdk {
 			mask = (Gdk.ModifierType) mask_as_int;
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_display_get_pointer(IntPtr raw, out IntPtr screen, out int x, out int y, out int mask);
 
 		public void GetPointer(out Gdk.Screen screen, out int x, out int y, out Gdk.ModifierType mask) {
@@ -66,7 +66,7 @@ namespace Gdk {
 			GetPointer (out screen, out x, out y, out mod);
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_display_list_devices (IntPtr raw);
 
 		public Device[] ListDevices ()

@@ -39,7 +39,7 @@ namespace Gdk {
 			get { return raw; }
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_event_get_type ();
 
 		public static GLib.GType GType {

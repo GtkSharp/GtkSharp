@@ -26,7 +26,7 @@ namespace Gdk {
 
 	public partial class Keymap {
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gdk_keymap_get_entries_for_keycode(IntPtr raw, uint hardware_keycode, out IntPtr keys, out IntPtr keyvals, out int n_entries);
 
 		public void GetEntriesForKeycode(uint hardware_keycode, out Gdk.KeymapKey[] keys, out uint[] keyvals) 
@@ -51,7 +51,7 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gdk_keymap_get_entries_for_keyval(IntPtr raw, uint keyval, out IntPtr keys, out int n_keys);
 
 		public KeymapKey[] GetEntriesForKeyval (uint keyval) 

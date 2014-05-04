@@ -25,10 +25,10 @@ namespace Gdk {
 
 	public partial class Device {
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
                 static extern void gdk_device_free_history(IntPtr events, int n_events);
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
                 static extern bool gdk_device_get_history(IntPtr device, IntPtr window, uint start, uint stop, out IntPtr events, out int n_events);
 
 		public TimeCoord[] GetHistory (Gdk.Window window, uint start, uint stop)

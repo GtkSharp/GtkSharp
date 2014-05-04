@@ -26,7 +26,9 @@ namespace Gdk {
 
 	public partial class Global {
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		internal const string GdkNativeDll = "libgdk-3-0.dll";
+
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_list_visuals ();
 
 		public static Visual[] ListVisuals ()
@@ -105,7 +107,7 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gdk_init_check(ref int argc, ref IntPtr argv);
 
 		public static bool InitCheck (ref string[] argv)
@@ -119,7 +121,7 @@ namespace Gdk {
 			return result;
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_parse_args(ref int argc, ref IntPtr argv);
 
 		public static void ParseArgs (ref string[] argv)
@@ -132,7 +134,7 @@ namespace Gdk {
 			argv = a.GetArgs (argc);
 		}
 
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_query_depths (out IntPtr depths, out int n_depths);
 
 		public static int[] QueryDepths ()
@@ -144,7 +146,7 @@ namespace Gdk {
 			Marshal.Copy (ptr, result, 0, count);
 			return result;
 		}
-		[DllImport ("libgdk-win32-3.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gdk_query_visual_types (out IntPtr types, out int n_types);
 
 		public static VisualType[] QueryVisualTypes ()
