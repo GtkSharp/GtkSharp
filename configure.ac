@@ -87,6 +87,14 @@ AC_ARG_ENABLE(debug, [  --enable-debug          Build debugger (.mdb) files for 
 )
 fi
 
+enable_msi="no"
+if test "x$platform_win32" = "xyes"; then
+	AC_PATH_PROG(WIX, candle, no)
+	if test "x$WIX" != "xno" ; then
+		enable_msi="yes"
+	fi
+fi
+
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 if test "x$PKG_CONFIG" = "xno"; then
 	AC_MSG_ERROR([You need to install pkg-config])
@@ -216,6 +224,7 @@ AC_SUBST(MDOC)
 
 AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
+AM_CONDITIONAL(ENABLE_MSI, test "x$enable_msi" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -258,6 +267,9 @@ gtkdotnet/Makefile
 gtkdotnet/gtk-dotnet.dll.config
 gtkdotnet/gtk-dotnet-3.0.pc
 doc/Makefile
+msi/gtk-sharp-3.0.wxs
+msi/Makefile
+msi/unmanaged/Makefile
 sample/GtkDemo/Makefile
 sample/Makefile
 sample/pixmaps/Makefile

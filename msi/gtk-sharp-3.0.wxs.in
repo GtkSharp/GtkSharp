@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Should not be changed -->
+<?define ProductName = "Gtk# for .Net @VERSION@" ?>
+<?define Manufacturer = "Gtk# Project" ?>
+<?define UpgradeCode = "568E6AAA-B1AD-469D-91D3-EA9721AC3D26" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="@VERSION@" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
+    <Package InstallerVersion="200" Compressed="yes" Description="$(var.ProductName)" Comments="Provides Gtk# and dependencies." />
+    <Media Id="1" Cabinet="WixProject1.cab" EmbedCab="yes" />
+
+    <PropertyRef Id="NETFRAMEWORK40FULL" />
+    <Condition Message="This setup requires the .NET Framework 4.0.">
+      <![CDATA[Installed or NETFRAMEWORK40FULL]]>
+    </Condition>
+    
+    <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+    <Upgrade Id="$(var.UpgradeCode)">
+      <UpgradeVersion OnlyDetect="no" Maximum="@VERSION@" Property="PREVIOUSVERSIONSINSTALLED" IncludeMaximum="no" />
+    </Upgrade>
+
+    <InstallExecuteSequence>
+      <RemoveExistingProducts Before="InstallInitialize" />
+    </InstallExecuteSequence>
+    
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="GtkSharp" Name="GtkSharp">
+          <Directory Id="INSTALLLOCATION" Name="3.0">
+            <Merge Id="unmanaged" Language="1033" SourceFile="unmanaged\unmanaged.msm" DiskId="1" />
+            <Directory Id="bin" Name="bin">
+              <Component Id="atksharp_glue" Guid="2473B8B1-349C-4DB0-8EBC-9978FD2BCE6E">
+                <File Id="atksharpglue_3.dll" KeyPath="yes" Source="binaries\atksharpglue-3.dll" />
+              </Component>
+              <Component Id="giosharp_glue" Guid="ED5481E9-1F3B-4DE4-A83A-7F7DF7199498">
+                <File Id="giosharpglue_3.dll" KeyPath="yes" Source="binaries\giosharpglue-3.dll" />
+              </Component>
+              <Component Id="gtksharp_glue" Guid="81F0C925-CA07-41A4-85A8-0FD26262CF76">
+                <File Id="gtksharpglue_3.dll" KeyPath="yes" Source="binaries\gtksharpglue-3.dll" />
+              </Component>
+              <Component Id="pangosharp_glue" Guid="C8A5F8DB-446E-4FC2-90B5-1F3FCA5BEF19">
+                <File Id="pangosharpglue_3.dll" KeyPath="yes" Source="binaries\pangosharpglue-3.dll" />
+              </Component>
+            </Directory>
+            <Directory Id="lib" Name="lib">
+              <Directory Id="GAC">
+                <!-- not an explicit directory, Assembly=".net" GACs the assemblies -->
+                <Directory Id="gac_atk" Name="atk">
+                  <Component Id="atksharp_dll" Guid="AC749D80-C1E5-4AE2-A388-CF75BFCE5D05">
+                    <File Id="atk_sharp.dll" Assembly=".net" KeyPath="yes" Source="binaries\atk\atk-sharp.dll" />
+                  </Component>
+                </Directory>
+                <Directory Id="gac_cairo" Name="cairo">
+                  <Component Id="cairosharp_dll" Guid="1AF27166-DD33-4C60-BCD8-1CB2A1863359">
+                    <File Id="cairo_sharp.dll" Assembly=".net" KeyPath="yes" Source="binaries\cairo\cairo-sharp.dll" />
+                  </Component>
+                </Directory>
+                <Directory Id="gac_gdk" Name="gdk">
+                  <Component Id="gdksharp_dll" Guid="5DF924D7-C3A0-4027-994A-AF0F48A7E832">
+                    <File Id="gdk_sharp.dll" Assembly=".net" KeyPath="yes" Source="binaries\gdk\gdk-sharp.dll" />
+                  </Component>
+                </Directory>
+                <Directory Id="gac_gio" Name="gio">
+                  <Component Id="giosharp_dll" Guid="D2FDF4FD-B4A4-42EB-B6E3-41251F6443EA">
+                    <File Id="gio_sharp.dll" Assembly=".net" KeyPath="yes" Source="binaries\gio\gio-sharp.dll" />
+                  </Component>
+                </Directory>
+                <Directory Id="gac_glib" Name="glib">
+                  <Component Id="glibsharp_dll" Guid="A3C57C52-9ACC-4E33-8D50-2B4486979359">
+                    <File Id="glib_sharp.dll" Assembly=".net" KeyPath="yes" Source="binaries\glib\glib-sharp.dll" />
+                  </Component>
+                </Directory>
+                <Directory Id="gac_gtk" Name="gtk">
+                  <Component Id="gtksharp_dll" Guid="50DD0511-2DBD-45C3-BC0D-D5594401A9B8">
+                    <File Id="gtk_sharp.dll" Assembly=".net" KeyPath="yes" Source="binaries\gtk\gtk-sharp.dll" />
+                  </Component>
+                </Directory>
+                <Directory Id="gac_gtkdotnet" Name="gtkdotnet">
+                  <Component Id="gtkdotnet_dll" Guid="85E3BDC0-05E3-4854-97EF-9BF2706F3137">
+                    <File Id="gtk_dotnet.dll" Assembly=".net" KeyPath="yes" Source="binaries\gtkdotnet\gtk-dotnet.dll" />
+                  </Component>
+                </Directory>
+                <Directory Id="gac_pango" Name="pango">
+                  <Component Id="pangosharp_dll" Guid="F54A5972-0619-4BC5-8AC4-73FB2CA3598B">
+                    <File Id="pango_sharp.dll" Assembly=".net" KeyPath="yes" Source="binaries\pango\pango-sharp.dll" />
+                  </Component>
+                </Directory>
+              </Directory>
+              <Directory Id="gtksharp20" Name="gtk-sharp-3.0">
+                <!-- Installs GACd assemblies to an addressable location - see http://blogs.msdn.com/astebner/archive/2007/06/21/3450539.aspx -->
+                <Component Id="gtksharpinstassembly" Guid="BC078476-3336-4871-B9E1-3598BD724407">
+                  <RegistryKey Root='HKLM' Key='SOFTWARE\GtkSharp\Version'>
+                    <RegistryValue Type="string" Value="[ProductVersion]" />
+                  </RegistryKey>
+                  <RegistryKey Root='HKLM' Key='SOFTWARE\Microsoft\.NetFramework\v4.0.30319\AssemblyFoldersEx\GtkSharp'>
+                    <RegistryValue Type="string" Value="[INSTALLLOCATION]lib\gtk-sharp-3.0" />
+                  </RegistryKey>
+                  <RegistryKey Root='HKLM' Key='SOFTWARE\GtkSharp\InstallFolder'>
+                    <RegistryValue Type="string" Value="[INSTALLLOCATION]" />
+                  </RegistryKey>
+                  <File Id="atksharpdll_inst" Source="binaries/atk/atk-sharp.dll" />
+                  <File Id="atksharppdb" Source="binaries/atk/atk-sharp.pdb" Vital="no" />
+                  <File Id="cairosharpdll_inst" Source="binaries/cairo/cairo-sharp.dll" />
+                  <File Id="cairosharppdb" Source="binaries/cairo/cairo-sharp.pdb" Vital="no" />
+                  <File Id="gdksharpdll_inst" Source="binaries/gdk/gdk-sharp.dll" />
+                  <File Id="gdksharppdb" Source="binaries/gdk/gdk-sharp.pdb" Vital="no" />
+                  <File Id="giosharpdll_inst" Source="binaries/gio/gio-sharp.dll" />
+                  <File Id="giosharppdb" Source="binaries/gio/gio-sharp.pdb" Vital="no" />
+                  <File Id="glibsharpdll_inst" Source="binaries/glib/glib-sharp.dll" />
+                  <File Id="glibsharppdb" Source="binaries/glib/glib-sharp.pdb" Vital="no" />
+                  <File Id="gtksharpdll_inst" Source="binaries/gtk/gtk-sharp.dll" />
+                  <File Id="gtksharppdb" Source="binaries/gtk/gtk-sharp.pdb" Vital="no" />
+                  <File Id="gtkdotnetdll_inst" Source="binaries/gtkdotnet/gtk-dotnet.dll" />
+                  <File Id="gtkdotnetpdb" Source="binaries/gtkdotnet/gtk-dotnet.pdb" Vital="no" />
+                  <File Id="pangosharpdll_inst" Source="binaries/pango/pango-sharp.dll" />
+                  <File Id="pangosharppdb" Source="binaries/pango/pango-sharp.pdb" Vital="no" />
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+    <Feature Id="Default" Title="Default" Level="1">
+      <MergeRef Id="unmanaged" />
+      <ComponentRef Id="giosharp_glue" />
+      <ComponentRef Id="pangosharp_glue" />
+      <ComponentRef Id="atksharp_glue" />
+      <ComponentRef Id="gtksharp_glue" />
+      <ComponentRef Id="cairosharp_dll" />
+      <ComponentRef Id="glibsharp_dll" />
+      <ComponentRef Id="giosharp_dll" />
+      <ComponentRef Id="pangosharp_dll" />
+      <ComponentRef Id="atksharp_dll" />
+      <ComponentRef Id="gdksharp_dll" />
+      <ComponentRef Id="gtksharp_dll" />
+      <ComponentRef Id="gtkdotnet_dll" />
+      <ComponentRef Id="gtksharpinstassembly" />
+    </Feature>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
+    <UI Id="WixUI_InstallDir">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="InstallDir" />
+
+      <DialogRef Id="BrowseDlg" />
+      <DialogRef Id="DiskCostDlg" />
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="BrowseDlg" Control="OK" Event="DoAction" Value="WixUIValidatePath" Order="3">1</Publish>
+      <Publish Dialog="BrowseDlg" Control="OK" Event="SpawnDialog" Value="InvalidDirDlg" Order="4"><![CDATA[WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg">1</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">Installed AND PATCH</Publish>
+
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+      <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg" Order="1">NOT Installed</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed AND NOT PATCH</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">Installed AND PATCH</Publish>
+
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+
+      <Property Id="ARPNOMODIFY" Value="1" />
+    </UI>
+
+    <UIRef Id="WixUI_Common" />
+  </Product>
+</Wix>

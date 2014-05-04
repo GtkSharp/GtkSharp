@@ -1,0 +1,1423 @@
+<?xml version="1.0" ?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id="unmanaged" Language="1033" Version="2.16.6">
+    <Package Id="5F570B6E-C521-42F7-A0A4-29F95BE3B8A8" InstallerVersion="200" Manufacturer="Gtk+ Project"/>
+
+    <Binary Id="redirector.exe" SourceFile="redirector.exe" />
+    <CustomAction Id="setup_pangomodules" BinaryKey="redirector.exe" Execute="deferred" Impersonate="no" ExeCommand="&quot;[MergeRedirectFolder]bin\pango-querymodules.exe&quot; &quot;[MergeRedirectFolder]etc\pango\pango.modules"/>
+    <CustomAction Id="setup_pixbuf_loaders" BinaryKey="redirector.exe" Execute="deferred" Impersonate="no" ExeCommand="&quot;[MergeRedirectFolder]bin\gdk-pixbuf-query-loaders.exe&quot; &quot;[MergeRedirectFolder]lib\gdk-pixbuf-2.0\2.10.0\loaders.cache"/>
+    <CustomAction Id="setup_immodules" BinaryKey="redirector.exe" Execute="deferred" Impersonate="no" ExeCommand="&quot;[MergeRedirectFolder]bin\gtk-query-immodules-3.0.exe&quot; &quot;[MergeRedirectFolder]lib\gtk-3.0\3.0.0\immodules.cache"/>
+
+    <InstallExecuteSequence>
+      <Custom Action="setup_pangomodules" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="setup_pixbuf_loaders" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="setup_immodules" Before="InstallFinalize">NOT Installed</Custom>
+    </InstallExecuteSequence>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="MergeRedirectFolder">
+        <Component Id="environment1" Guid="A2E06913-2D07-43EA-A8D2-F2800E6131E9">
+          <Environment Id="pathenv" Action="set" Name="PATH" Part="last" Permanent="yes" System="yes" Value="[MergeRedirectFolder]bin" />
+          <Environment Id="basepath" Action="set" Name="GTK_BASEPATH" Permanent="no" System="yes" Value="[MergeRedirectFolder]" />
+          <CreateFolder />
+        </Component>
+        <Directory Id="etc" Name="etc">
+          <Directory Id="fonts" Name="fonts">
+            <Component Id="fonts.conf" Guid="386B10AE-D517-47A8-AA25-9AC4131A3306">
+              <File Id="fonts.conf" KeyPath="yes" Source="source\etc\fonts\fonts.conf" />
+            </Component>
+            <Directory Id="conf.d" Name="conf.d">
+              <Component Id="etcfontsconf.d" KeyPath="yes" Guid="AAB9CF15-4C4E-4EAB-BB0C-C1FD722AD6FD">
+                <File Id="_20_unhint_small_vera.conf" Source="source\etc\fonts\conf.d\20-unhint-small-vera.conf" />
+                <File Id="_30_metric_aliases.conf" Source="source\etc\fonts\conf.d\30-metric-aliases.conf" />
+                <File Id="_30_urw_aliases.conf" Source="source\etc\fonts\conf.d\30-urw-aliases.conf" />
+                <File Id="_40_nonlatin.conf" Source="source\etc\fonts\conf.d\40-nonlatin.conf" />
+                <File Id="_45_latin.conf" Source="source\etc\fonts\conf.d\45-latin.conf" />
+                <File Id="_49_sansserif.conf" Source="source\etc\fonts\conf.d\49-sansserif.conf" />
+                <File Id="_50_user.conf" Source="source\etc\fonts\conf.d\50-user.conf" />
+                <File Id="_51_local.conf" Source="source\etc\fonts\conf.d\51-local.conf" />
+                <File Id="_60_latin.conf" Source="source\etc\fonts\conf.d\60-latin.conf" />
+                <File Id="_65_fonts_persian.conf" Source="source\etc\fonts\conf.d\65-fonts-persian.conf" />
+                <File Id="_65_nonlatin.conf" Source="source\etc\fonts\conf.d\65-nonlatin.conf" />
+                <File Id="_69_unifont.conf" Source="source\etc\fonts\conf.d\69-unifont.conf" />
+                <File Id="_80_delicious.conf" Source="source\etc\fonts\conf.d\80-delicious.conf" />
+                <File Id="_90_synthetic.conf" Source="source\etc\fonts\conf.d\90-synthetic.conf" />
+                <File Id="README" Source="source\etc\fonts\conf.d\README" />
+              </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="gtk3.0" Name="gtk-3.0">
+            <Component Id="etcgtk3.0" KeyPath="yes" Guid="53C2E6BE-0BA2-453F-A8B6-4F8BBE98552A">
+              <File Id="im_multipress.conf" Source="source\etc\gtk-3.0\im-multipress.conf" />
+              <File Id="settings.ini" Source="source\etc\gtk-3.0\settings.ini" />
+            </Component>
+          </Directory>
+          <Directory Id="pango" Name="pango">
+            <Component Id="pango.modules" Guid="876CA76D-D138-4643-84BB-9A68A5031E47">
+              <File Id="pango.modules" KeyPath="yes" Source="source\etc\pango\pango.modules" />
+            </Component>
+          </Directory>
+        </Directory>
+        <Directory Id="share" Name="share">
+          <Directory Id="shareglib_2.0" Name="glib-2.0">
+            <Directory Id="shareglib_2.0schemas" Name="schemas">
+              <Component Id="etcshareglib_2.0schemas" KeyPath="yes" Guid="E87F80D5-68D9-4E14-AAE5-D102199E88F4">
+                <File Id="gschema.dtd" Source="source\share\glib-2.0\schemas\gschema.dtd" />
+                <File Id="gschemas.compiled" Source="source\share\glib-2.0\schemas\gschemas.compiled" />
+                <File Id="org.gtk.Demo.gschema.xml" Source="source\share\glib-2.0\schemas\org.gtk.Demo.gschema.xml" />
+                <File Id="ColorChooser.gschema.xml" Source="source\share\glib-2.0\schemas\org.gtk.Settings.ColorChooser.gschema.xml" />
+                <File Id="FileChooser.gschema.xml" Source="source\share\glib-2.0\schemas\org.gtk.Settings.FileChooser.gschema.xml" />
+              </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="icons" Name="icons">
+            <Directory Id="hicolor" Name="hicolor">
+              <Component Id="index.theme" Guid="C5B5AECA-FBD4-4BB4-94CB-C5CFA1614D53">
+                <File Id="index.theme" KeyPath="yes" Source="source\share\icons\hicolor\index.theme" />
+              </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="locale" Name="locale">
+            <Directory Id="af" Name="af">
+              <Directory Id="af_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="af_locale" KeyPath="yes" Guid="3F658EBB-EDB7-4084-9B67-6535D19132A9">
+                  <File Id="af_atk10.mo" Source="source\share\locale\af\LC_MESSAGES\atk10.mo" />
+                  <File Id="af_gdk_pixbuf.mo" Source="source\share\locale\af\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="af_glib20.mo" Source="source\share\locale\af\LC_MESSAGES\glib20.mo" />
+                  <File Id="af_gtk30_properties.mo" Source="source\share\locale\af\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="af_gtk30.mo" Source="source\share\locale\af\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="am" Name="am">
+              <Directory Id="am_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="am_locale" KeyPath="yes" Guid="343194C0-884D-489A-8856-9651B1C0A9A2">
+                  <File Id="am_atk10.mo" Source="source\share\locale\am\LC_MESSAGES\atk10.mo" />
+                  <File Id="am_glib20.mo" Source="source\share\locale\am\LC_MESSAGES\glib20.mo" />
+                  <File Id="am_gtk30_properties.mo" Source="source\share\locale\am\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="am_gtk30.mo" Source="source\share\locale\am\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ang" Name="ang">
+              <Directory Id="ang_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ang_locale" KeyPath="yes" Guid="48FE79B7-C0C1-48E7-9C0C-03C642080F8C">
+                  <File Id="ang_gdk_pixbuf.mo" Source="source\share\locale\ang\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ang_gtk30_properties.mo" Source="source\share\locale\ang\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ang_gtk30.mo" Source="source\share\locale\ang\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ar" Name="ar">
+              <Directory Id="ar_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ar_locale" KeyPath="yes" Guid="582BC4E2-688A-4245-8C1D-99749AAA3444">
+                  <File Id="ar_atk10.mo" Source="source\share\locale\ar\LC_MESSAGES\atk10.mo" />
+                  <File Id="ar_gdk_pixbuf.mo" Source="source\share\locale\ar\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ar_glib20.mo" Source="source\share\locale\ar\LC_MESSAGES\glib20.mo" />
+                  <File Id="ar_gtk30_properties.mo" Source="source\share\locale\ar\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ar_gtk30.mo" Source="source\share\locale\ar\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="as" Name="as">
+              <Directory Id="as_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="as_locale" KeyPath="yes" Guid="9DB5814B-6EA5-4D94-B9ED-91E9CD4813D0">
+                  <File Id="as_atk10.mo" Source="source\share\locale\as\LC_MESSAGES\atk10.mo" />
+                  <File Id="as_gdk_pixbuf.mo" Source="source\share\locale\as\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="as_glib20.mo" Source="source\share\locale\as\LC_MESSAGES\glib20.mo" />
+                  <File Id="as_gtk30_properties.mo" Source="source\share\locale\as\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="as_gtk30.mo" Source="source\share\locale\as\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ast" Name="ast">
+              <Directory Id="ast_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ast_locale" KeyPath="yes" Guid="EAE40B5E-4BFC-47FB-B8FB-15893FB1BEF4">
+                  <File Id="ast_atk10.mo" Source="source\share\locale\ast\LC_MESSAGES\atk10.mo" />
+                  <File Id="ast_gdk_pixbuf.mo" Source="source\share\locale\ast\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ast_glib20.mo" Source="source\share\locale\ast\LC_MESSAGES\glib20.mo" />
+                  <File Id="ast_gtk30_properties.mo" Source="source\share\locale\ast\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ast_gtk30.mo" Source="source\share\locale\ast\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="az" Name="az">
+              <Directory Id="az_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="az_locale" KeyPath="yes" Guid="CED4298A-5B8C-4C4D-AA73-69807D3821B1">
+                  <File Id="az_atk10.mo" Source="source\share\locale\az\LC_MESSAGES\atk10.mo" />
+                  <File Id="az_gdk_pixbuf.mo" Source="source\share\locale\az\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="az_glib20.mo" Source="source\share\locale\az\LC_MESSAGES\glib20.mo" />
+                  <File Id="az_gtk30_properties.mo" Source="source\share\locale\az\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="az_gtk30.mo" Source="source\share\locale\az\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="az_IR" Name="az_IR">
+              <Directory Id="az_IR_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="az_IR_locale" KeyPath="yes" Guid="2BB59D29-E840-4210-9A7D-B84131DE1867">
+                  <File Id="az_IR_gtk30_properties.mo" Source="source\share\locale\az_IR\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="az_IR_gtk30.mo" Source="source\share\locale\az_IR\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="be" Name="be">
+              <Directory Id="be_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="be_locale" KeyPath="yes" Guid="8F162F29-0A47-4A73-911E-611CA70F4881">
+                  <File Id="be_atk10.mo" Source="source\share\locale\be\LC_MESSAGES\atk10.mo" />
+                  <File Id="be_gdk_pixbuf.mo" Source="source\share\locale\be\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="be_glib20.mo" Source="source\share\locale\be\LC_MESSAGES\glib20.mo" />
+                  <File Id="be_gtk30_properties.mo" Source="source\share\locale\be\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="be_gtk30.mo" Source="source\share\locale\be\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="be_latin" Name="be@latin">
+              <Directory Id="be_latin_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="be_latin_locale" KeyPath="yes" Guid="3D4FF65A-54BF-4868-9108-35D29DC6187F">
+                  <File Id="be_latin_atk10.mo" Source="source\share\locale\be@latin\LC_MESSAGES\atk10.mo" />
+                  <File Id="be_latin_gdk_pixbuf.mo" Source="source\share\locale\be@latin\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="be_latin_glib20.mo" Source="source\share\locale\be@latin\LC_MESSAGES\glib20.mo" />
+                  <File Id="be_latin_gtk30_properties.mo" Source="source\share\locale\be@latin\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="be_latin_gtk30.mo" Source="source\share\locale\be@latin\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="bg" Name="bg">
+              <Directory Id="bg_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="bg_locale" KeyPath="yes" Guid="BFC560C5-AA40-4578-8804-3BC4FBE8AD6D">
+                  <File Id="bg_atk10.mo" Source="source\share\locale\bg\LC_MESSAGES\atk10.mo" />
+                  <File Id="bg_gdk_pixbuf.mo" Source="source\share\locale\bg\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="bg_glib20.mo" Source="source\share\locale\bg\LC_MESSAGES\glib20.mo" />
+                  <File Id="bg_gtk30_properties.mo" Source="source\share\locale\bg\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="bg_gtk30.mo" Source="source\share\locale\bg\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="bn" Name="bn">
+              <Directory Id="bn_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="bn_locale" KeyPath="yes" Guid="56CFB094-12AA-4160-823D-F4D89E8CA354">
+                  <File Id="bn_atk10.mo" Source="source\share\locale\bn\LC_MESSAGES\atk10.mo" />
+                  <File Id="bn_gdk_pixbuf.mo" Source="source\share\locale\bn\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="bn_glib20.mo" Source="source\share\locale\bn\LC_MESSAGES\glib20.mo" />
+                  <File Id="bn_gtk30_properties.mo" Source="source\share\locale\bn\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="bn_gtk30.mo" Source="source\share\locale\bn\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="bn_IN" Name="bn_IN">
+              <Directory Id="bn_IN_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="bn_IN_locale" KeyPath="yes" Guid="2FCB53AA-B184-4E1C-A7D0-B139084E2662">
+                  <File Id="bn_IN_atk10.mo" Source="source\share\locale\bn_IN\LC_MESSAGES\atk10.mo" />
+                  <File Id="bn_IN_gdk_pixbuf.mo" Source="source\share\locale\bn_IN\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="bn_IN_glib20.mo" Source="source\share\locale\bn_IN\LC_MESSAGES\glib20.mo" />
+                  <File Id="bn_IN_gtk30_properties.mo" Source="source\share\locale\bn_IN\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="bn_IN_gtk30.mo" Source="source\share\locale\bn_IN\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="br" Name="br">
+              <Directory Id="br_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="br_locale" KeyPath="yes" Guid="D9566927-6378-483F-9251-59BDF4889F6A">
+                  <File Id="br_gdk_pixbuf.mo" Source="source\share\locale\br\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="br_gtk30_properties.mo" Source="source\share\locale\br\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="br_gtk30.mo" Source="source\share\locale\br\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="bs" Name="bs">
+              <Directory Id="bs_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="bs_locale" KeyPath="yes" Guid="D74EA9FA-B4F5-4CDC-B6D2-A22959FC0FDE">
+                  <File Id="bs_atk10.mo" Source="source\share\locale\bs\LC_MESSAGES\atk10.mo" />
+                  <File Id="bs_gdk_pixbuf.mo" Source="source\share\locale\bs\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="bs_glib20.mo" Source="source\share\locale\bs\LC_MESSAGES\glib20.mo" />
+                  <File Id="bs_gtk30_properties.mo" Source="source\share\locale\bs\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="bs_gtk30.mo" Source="source\share\locale\bs\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ca" Name="ca">
+              <Directory Id="ca_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ca_locale" KeyPath="yes" Guid="1E772F91-BC11-4D83-B812-4CF64F94B8D9">
+                  <File Id="ca_atk10.mo" Source="source\share\locale\ca\LC_MESSAGES\atk10.mo" />
+                  <File Id="ca_gdk_pixbuf.mo" Source="source\share\locale\ca\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ca_glib20.mo" Source="source\share\locale\ca\LC_MESSAGES\glib20.mo" />
+                  <File Id="ca_gtk30_properties.mo" Source="source\share\locale\ca\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ca_gtk30.mo" Source="source\share\locale\ca\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ca_valencia" Name="ca@valencia">
+              <Directory Id="ca_valencia_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ca_valencia_locale" KeyPath="yes" Guid="271C978B-7EA2-411B-BC50-D475A05329B0">
+                  <File Id="ca_valencia_atk10.mo" Source="source\share\locale\ca@valencia\LC_MESSAGES\atk10.mo" />
+                  <File Id="ca_valencia_gdk_pixbuf.mo" Source="source\share\locale\ca@valencia\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ca_valencia_glib20.mo" Source="source\share\locale\ca@valencia\LC_MESSAGES\glib20.mo" />
+                  <File Id="ca_valencia_gtk30_properties.mo" Source="source\share\locale\ca@valencia\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ca_valencia_gtk30.mo" Source="source\share\locale\ca@valencia\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="crh" Name="crh">
+              <Directory Id="crh_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="crh_locale" KeyPath="yes" Guid="7C2EFDE1-A85E-4E47-B571-38C22B4F539A">
+                  <File Id="crh_gdk_pixbuf.mo" Source="source\share\locale\crh\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="crh_gtk30_properties.mo" Source="source\share\locale\crh\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="crh_gtk30.mo" Source="source\share\locale\crh\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="cs" Name="cs">
+              <Directory Id="cs_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="cs_locale" KeyPath="yes" Guid="17AB20EA-4B76-4001-AEC6-6F0AD18B1E27">
+                  <File Id="cs_atk10.mo" Source="source\share\locale\cs\LC_MESSAGES\atk10.mo" />
+                  <File Id="cs_gdk_pixbuf.mo" Source="source\share\locale\cs\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="cs_glib20.mo" Source="source\share\locale\cs\LC_MESSAGES\glib20.mo" />
+                  <File Id="cs_gtk30_properties.mo" Source="source\share\locale\cs\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="cs_gtk30.mo" Source="source\share\locale\cs\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="csb" Name="csb">
+              <Directory Id="csb_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="csb_locale" KeyPath="yes" Guid="8D0C4D5F-9682-4553-90C4-C7D0E9E8784B">
+                  <File Id="csb_gdk_pixbuf.mo" Source="source\share\locale\csb\LC_MESSAGES\gdk-pixbuf.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="cy" Name="cy">
+              <Directory Id="cy_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="cy_locale" KeyPath="yes" Guid="A7F02CE4-75BD-4587-A02E-D2766529BB76">
+                  <File Id="cy_atk10.mo" Source="source\share\locale\cy\LC_MESSAGES\atk10.mo" />
+                  <File Id="cy_gdk_pixbuf.mo" Source="source\share\locale\cy\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="cy_glib20.mo" Source="source\share\locale\cy\LC_MESSAGES\glib20.mo" />
+                  <File Id="cy_gtk30_properties.mo" Source="source\share\locale\cy\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="cy_gtk30.mo" Source="source\share\locale\cy\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="da" Name="da">
+              <Directory Id="da_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="da_locale" KeyPath="yes" Guid="C386E625-7E4D-40C1-A46B-D61DE20F91B4">
+                  <File Id="da_atk10.mo" Source="source\share\locale\da\LC_MESSAGES\atk10.mo" />
+                  <File Id="da_gdk_pixbuf.mo" Source="source\share\locale\da\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="da_glib20.mo" Source="source\share\locale\da\LC_MESSAGES\glib20.mo" />
+                  <File Id="da_gtk30_properties.mo" Source="source\share\locale\da\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="da_gtk30.mo" Source="source\share\locale\da\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="de" Name="de">
+              <Directory Id="de_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="de_locale" KeyPath="yes" Guid="F2D822CD-7AAE-42DD-ACBA-8D5E13235D6D">
+                  <File Id="de_atk10.mo" Source="source\share\locale\de\LC_MESSAGES\atk10.mo" />
+                  <File Id="de_gdk_pixbuf.mo" Source="source\share\locale\de\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="de_glib20.mo" Source="source\share\locale\de\LC_MESSAGES\glib20.mo" />
+                  <File Id="de_gtk30_properties.mo" Source="source\share\locale\de\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="de_gtk30.mo" Source="source\share\locale\de\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="dz" Name="dz">
+              <Directory Id="dz_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="dz_locale" KeyPath="yes" Guid="96029135-9558-46BC-BA4A-7E29F84CFB05">
+                  <File Id="dz_atk10.mo" Source="source\share\locale\dz\LC_MESSAGES\atk10.mo" />
+                  <File Id="dz_gdk_pixbuf.mo" Source="source\share\locale\dz\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="dz_glib20.mo" Source="source\share\locale\dz\LC_MESSAGES\glib20.mo" />
+                  <File Id="dz_gtk30_properties.mo" Source="source\share\locale\dz\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="dz_gtk30.mo" Source="source\share\locale\dz\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="el" Name="el">
+              <Directory Id="el_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="el_locale" KeyPath="yes" Guid="65623B87-7D8E-4E0B-B853-EC8BFB89ECEA">
+                  <File Id="el_atk10.mo" Source="source\share\locale\el\LC_MESSAGES\atk10.mo" />
+                  <File Id="el_gdk_pixbuf.mo" Source="source\share\locale\el\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="el_glib20.mo" Source="source\share\locale\el\LC_MESSAGES\glib20.mo" />
+                  <File Id="el_gtk30_properties.mo" Source="source\share\locale\el\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="el_gtk30.mo" Source="source\share\locale\el\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="en" Name="en">
+              <Directory Id="en_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="en_locale" KeyPath="yes" Guid="73F8F881-4856-412E-90CC-FB50DCD48E5D">
+                  <File Id="en_gtk30_properties.mo" Source="source\share\locale\en\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="en_gtk30.mo" Source="source\share\locale\en\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="en_shaw" Name="en@shaw">
+              <Directory Id="en_shaw_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="en_shaw_locale" KeyPath="yes" Guid="3ED503D6-8616-46FE-B187-313898456505">
+                  <File Id="en_shaw_atk10.mo" Source="source\share\locale\en@shaw\LC_MESSAGES\atk10.mo" />
+                  <File Id="en_shaw_gdk_pixbuf.mo" Source="source\share\locale\en@shaw\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="en_shaw_glib20.mo" Source="source\share\locale\en@shaw\LC_MESSAGES\glib20.mo" />
+                  <File Id="en_shaw_gtk30_properties.mo" Source="source\share\locale\en@shaw\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="en_shaw_gtk30.mo" Source="source\share\locale\en@shaw\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="en_CA" Name="en_CA">
+              <Directory Id="en_CA_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="en_CA_locale" KeyPath="yes" Guid="0ECF0807-2E92-403B-894D-4358D49DBB93">
+                  <File Id="en_CA_atk10.mo" Source="source\share\locale\en_CA\LC_MESSAGES\atk10.mo" />
+                  <File Id="en_CA_gdk_pixbuf.mo" Source="source\share\locale\en_CA\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="en_CA_glib20.mo" Source="source\share\locale\en_CA\LC_MESSAGES\glib20.mo" />
+                  <File Id="en_CA_gtk30_properties.mo" Source="source\share\locale\en_CA\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="en_CA_gtk30.mo" Source="source\share\locale\en_CA\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="en_GB" Name="en_GB">
+              <Directory Id="en_GB_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="en_GB_locale" KeyPath="yes" Guid="5B5F5FD4-57EE-4DA1-AB84-2CA75657AF98">
+                  <File Id="en_GB_atk10.mo" Source="source\share\locale\en_GB\LC_MESSAGES\atk10.mo" />
+                  <File Id="en_GB_gdk_pixbuf.mo" Source="source\share\locale\en_GB\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="en_GB_glib20.mo" Source="source\share\locale\en_GB\LC_MESSAGES\glib20.mo" />
+                  <File Id="en_GB_gtk30_properties.mo" Source="source\share\locale\en_GB\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="en_GB_gtk30.mo" Source="source\share\locale\en_GB\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="eo" Name="eo">
+              <Directory Id="eo_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="eo_locale" KeyPath="yes" Guid="71907327-A5DE-4FA3-973C-A3294DF7E6FE">
+                  <File Id="eo_atk10.mo" Source="source\share\locale\eo\LC_MESSAGES\atk10.mo" />
+                  <File Id="eo_gdk_pixbuf.mo" Source="source\share\locale\eo\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="eo_glib20.mo" Source="source\share\locale\eo\LC_MESSAGES\glib20.mo" />
+                  <File Id="eo_gtk30_properties.mo" Source="source\share\locale\eo\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="eo_gtk30.mo" Source="source\share\locale\eo\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="es" Name="es">
+              <Directory Id="es_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="es_locale" KeyPath="yes" Guid="75CCA630-D446-40B0-98D3-2F6DA16490CF">
+                  <File Id="es_atk10.mo" Source="source\share\locale\es\LC_MESSAGES\atk10.mo" />
+                  <File Id="es_gdk_pixbuf.mo" Source="source\share\locale\es\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="es_glib20.mo" Source="source\share\locale\es\LC_MESSAGES\glib20.mo" />
+                  <File Id="es_gtk30_properties.mo" Source="source\share\locale\es\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="es_gtk30.mo" Source="source\share\locale\es\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="et" Name="et">
+              <Directory Id="et_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="et_locale" KeyPath="yes" Guid="DF611A25-C98A-46F5-BDF2-DD7A50C030E0">
+                  <File Id="et_atk10.mo" Source="source\share\locale\et\LC_MESSAGES\atk10.mo" />
+                  <File Id="et_gdk_pixbuf.mo" Source="source\share\locale\et\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="et_glib20.mo" Source="source\share\locale\et\LC_MESSAGES\glib20.mo" />
+                  <File Id="et_gtk30_properties.mo" Source="source\share\locale\et\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="et_gtk30.mo" Source="source\share\locale\et\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="eu" Name="eu">
+              <Directory Id="eu_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="eu_locale" KeyPath="yes" Guid="BE0CDE53-3D90-4E60-9F3B-71E8E6DAEF5D">
+                  <File Id="eu_atk10.mo" Source="source\share\locale\eu\LC_MESSAGES\atk10.mo" />
+                  <File Id="eu_gdk_pixbuf.mo" Source="source\share\locale\eu\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="eu_glib20.mo" Source="source\share\locale\eu\LC_MESSAGES\glib20.mo" />
+                  <File Id="eu_gtk30_properties.mo" Source="source\share\locale\eu\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="eu_gtk30.mo" Source="source\share\locale\eu\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="fa" Name="fa">
+              <Directory Id="fa_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="fa_locale" KeyPath="yes" Guid="200E46F7-6B69-4417-B688-F0CA075B65C0">
+                  <File Id="fa_atk10.mo" Source="source\share\locale\fa\LC_MESSAGES\atk10.mo" />
+                  <File Id="fa_gdk_pixbuf.mo" Source="source\share\locale\fa\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="fa_glib20.mo" Source="source\share\locale\fa\LC_MESSAGES\glib20.mo" />
+                  <File Id="fa_gtk30_properties.mo" Source="source\share\locale\fa\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="fa_gtk30.mo" Source="source\share\locale\fa\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="fi" Name="fi">
+              <Directory Id="fi_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="fi_locale" KeyPath="yes" Guid="A5F0B3AD-DA46-47FB-9155-D6B5CA172F9C">
+                  <File Id="fi_atk10.mo" Source="source\share\locale\fi\LC_MESSAGES\atk10.mo" />
+                  <File Id="fi_gdk_pixbuf.mo" Source="source\share\locale\fi\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="fi_glib20.mo" Source="source\share\locale\fi\LC_MESSAGES\glib20.mo" />
+                  <File Id="fi_gtk30_properties.mo" Source="source\share\locale\fi\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="fi_gtk30.mo" Source="source\share\locale\fi\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="fr" Name="fr">
+              <Directory Id="fr_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="fr_locale" KeyPath="yes" Guid="C31469ED-B1AE-4FA9-BB0F-148F5F3D68C5">
+                  <File Id="fr_atk10.mo" Source="source\share\locale\fr\LC_MESSAGES\atk10.mo" />
+                  <File Id="fr_gdk_pixbuf.mo" Source="source\share\locale\fr\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="fr_glib20.mo" Source="source\share\locale\fr\LC_MESSAGES\glib20.mo" />
+                  <File Id="fr_gtk30_properties.mo" Source="source\share\locale\fr\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="fr_gtk30.mo" Source="source\share\locale\fr\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ga" Name="ga">
+              <Directory Id="ga_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ga_locale" KeyPath="yes" Guid="BA82E311-FCC1-4F03-AA4F-314F78D8E32E">
+                  <File Id="ga_atk10.mo" Source="source\share\locale\ga\LC_MESSAGES\atk10.mo" />
+                  <File Id="ga_gdk_pixbuf.mo" Source="source\share\locale\ga\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ga_glib20.mo" Source="source\share\locale\ga\LC_MESSAGES\glib20.mo" />
+                  <File Id="ga_gtk30_properties.mo" Source="source\share\locale\ga\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ga_gtk30.mo" Source="source\share\locale\ga\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="gl" Name="gl">
+              <Directory Id="gl_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="gl_locale" KeyPath="yes" Guid="242B05C3-180F-4EB7-AB74-7F44816E63F0">
+                  <File Id="gl_atk10.mo" Source="source\share\locale\gl\LC_MESSAGES\atk10.mo" />
+                  <File Id="gl_gdk_pixbuf.mo" Source="source\share\locale\gl\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="gl_glib20.mo" Source="source\share\locale\gl\LC_MESSAGES\glib20.mo" />
+                  <File Id="gl_gtk30_properties.mo" Source="source\share\locale\gl\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="gl_gtk30.mo" Source="source\share\locale\gl\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="gu" Name="gu">
+              <Directory Id="gu_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="gu_locale" KeyPath="yes" Guid="7188C298-D10B-4A3D-9435-3CAF6180DDC4">
+                  <File Id="gu_atk10.mo" Source="source\share\locale\gu\LC_MESSAGES\atk10.mo" />
+                  <File Id="gu_gdk_pixbuf.mo" Source="source\share\locale\gu\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="gu_glib20.mo" Source="source\share\locale\gu\LC_MESSAGES\glib20.mo" />
+                  <File Id="gu_gtk30_properties.mo" Source="source\share\locale\gu\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="gu_gtk30.mo" Source="source\share\locale\gu\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="he" Name="he">
+              <Directory Id="he_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="he_locale" KeyPath="yes" Guid="4CB34115-BC04-480B-A752-03932FAF19B2">
+                  <File Id="he_atk10.mo" Source="source\share\locale\he\LC_MESSAGES\atk10.mo" />
+                  <File Id="he_gdk_pixbuf.mo" Source="source\share\locale\he\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="he_glib20.mo" Source="source\share\locale\he\LC_MESSAGES\glib20.mo" />
+                  <File Id="he_gtk30_properties.mo" Source="source\share\locale\he\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="he_gtk30.mo" Source="source\share\locale\he\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="hi" Name="hi">
+              <Directory Id="hi_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="hi_locale" KeyPath="yes" Guid="8F10D7BD-E0B6-4332-A982-B25F41D42C63">
+                  <File Id="hi_atk10.mo" Source="source\share\locale\hi\LC_MESSAGES\atk10.mo" />
+                  <File Id="hi_gdk_pixbuf.mo" Source="source\share\locale\hi\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="hi_glib20.mo" Source="source\share\locale\hi\LC_MESSAGES\glib20.mo" />
+                  <File Id="hi_gtk30_properties.mo" Source="source\share\locale\hi\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="hi_gtk30.mo" Source="source\share\locale\hi\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="hr" Name="hr">
+              <Directory Id="hr_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="hr_locale" KeyPath="yes" Guid="81FADA02-D851-40A9-AB09-CA1C8DFAB85C">
+                  <File Id="hr_atk10.mo" Source="source\share\locale\hr\LC_MESSAGES\atk10.mo" />
+                  <File Id="hr_gdk_pixbuf.mo" Source="source\share\locale\hr\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="hr_glib20.mo" Source="source\share\locale\hr\LC_MESSAGES\glib20.mo" />
+                  <File Id="hr_gtk30_properties.mo" Source="source\share\locale\hr\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="hr_gtk30.mo" Source="source\share\locale\hr\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="hu" Name="hu">
+              <Directory Id="hu_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="hu_locale" KeyPath="yes" Guid="24D555C8-4800-4BAF-9D61-4E9982906E33">
+                  <File Id="hu_atk10.mo" Source="source\share\locale\hu\LC_MESSAGES\atk10.mo" />
+                  <File Id="hu_gdk_pixbuf.mo" Source="source\share\locale\hu\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="hu_glib20.mo" Source="source\share\locale\hu\LC_MESSAGES\glib20.mo" />
+                  <File Id="hu_gtk30_properties.mo" Source="source\share\locale\hu\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="hu_gtk30.mo" Source="source\share\locale\hu\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="hy" Name="hy">
+              <Directory Id="hy_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="hy_locale" KeyPath="yes" Guid="0027B328-7F7C-419F-8275-674828F10079">
+                  <File Id="hy_atk10.mo" Source="source\share\locale\hy\LC_MESSAGES\atk10.mo" />
+                  <File Id="hy_gdk_pixbuf.mo" Source="source\share\locale\hy\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="hy_glib20.mo" Source="source\share\locale\hy\LC_MESSAGES\glib20.mo" />
+                  <File Id="hy_gtk30_properties.mo" Source="source\share\locale\hy\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="hy_gtk30.mo" Source="source\share\locale\hy\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ia" Name="ia">
+              <Directory Id="ia_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ia_locale" KeyPath="yes" Guid="9D5F45B3-0AAC-4DA2-BC00-3777602E0663">
+                  <File Id="ia_gdk_pixbuf.mo" Source="source\share\locale\ia\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ia_gtk30_properties.mo" Source="source\share\locale\ia\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ia_gtk30.mo" Source="source\share\locale\ia\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="id" Name="id">
+              <Directory Id="id_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="id_locale" KeyPath="yes" Guid="A6FE5168-8DD0-47AE-8322-A8FBEB40E449">
+                  <File Id="id_atk10.mo" Source="source\share\locale\id\LC_MESSAGES\atk10.mo" />
+                  <File Id="id_gdk_pixbuf.mo" Source="source\share\locale\id\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="id_glib20.mo" Source="source\share\locale\id\LC_MESSAGES\glib20.mo" />
+                  <File Id="id_gtk30_properties.mo" Source="source\share\locale\id\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="id_gtk30.mo" Source="source\share\locale\id\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="io" Name="io">
+              <Directory Id="io_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="io_locale" KeyPath="yes" Guid="9CC798BD-D645-424C-AE01-730659B3F76B">
+                  <File Id="io_gdk_pixbuf.mo" Source="source\share\locale\io\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="io_gtk30_properties.mo" Source="source\share\locale\io\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="io_gtk30.mo" Source="source\share\locale\io\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="is" Name="is">
+              <Directory Id="is_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="is_locale" KeyPath="yes" Guid="1CFB6429-07F8-45D7-9B0D-E261DE80C10D">
+                  <File Id="is_atk10.mo" Source="source\share\locale\is\LC_MESSAGES\atk10.mo" />
+                  <File Id="is_gdk_pixbuf.mo" Source="source\share\locale\is\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="is_glib20.mo" Source="source\share\locale\is\LC_MESSAGES\glib20.mo" />
+                  <File Id="is_gtk30_properties.mo" Source="source\share\locale\is\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="is_gtk30.mo" Source="source\share\locale\is\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="it" Name="it">
+              <Directory Id="it_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="it_locale" KeyPath="yes" Guid="51D4B186-34E4-4523-8909-C55BEB80011E">
+                  <File Id="it_atk10.mo" Source="source\share\locale\it\LC_MESSAGES\atk10.mo" />
+                  <File Id="it_gdk_pixbuf.mo" Source="source\share\locale\it\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="it_glib20.mo" Source="source\share\locale\it\LC_MESSAGES\glib20.mo" />
+                  <File Id="it_gtk30_properties.mo" Source="source\share\locale\it\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="it_gtk30.mo" Source="source\share\locale\it\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ja" Name="ja">
+              <Directory Id="ja_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ja_locale" KeyPath="yes" Guid="DB68770B-406D-4E01-BDC5-B926C64835AA">
+                  <File Id="ja_atk10.mo" Source="source\share\locale\ja\LC_MESSAGES\atk10.mo" />
+                  <File Id="ja_gdk_pixbuf.mo" Source="source\share\locale\ja\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ja_glib20.mo" Source="source\share\locale\ja\LC_MESSAGES\glib20.mo" />
+                  <File Id="ja_gtk30_properties.mo" Source="source\share\locale\ja\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ja_gtk30.mo" Source="source\share\locale\ja\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ka" Name="ka">
+              <Directory Id="ka_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ka_locale" KeyPath="yes" Guid="CF565954-F347-426B-89B0-1DD647714F34">
+                  <File Id="ka_atk10.mo" Source="source\share\locale\ka\LC_MESSAGES\atk10.mo" />
+                  <File Id="ka_gdk_pixbuf.mo" Source="source\share\locale\ka\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ka_glib20.mo" Source="source\share\locale\ka\LC_MESSAGES\glib20.mo" />
+                  <File Id="ka_gtk30_properties.mo" Source="source\share\locale\ka\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ka_gtk30.mo" Source="source\share\locale\ka\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="kg" Name="kg">
+              <Directory Id="kg_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="kg_locale" KeyPath="yes" Guid="D65651AB-1809-460C-B45D-33B1FD222100">
+                  <File Id="kg_gtk30_properties.mo" Source="source\share\locale\kg\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="kg_gtk30.mo" Source="source\share\locale\kg\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="kk" Name="kk">
+              <Directory Id="kk_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="kk_locale" KeyPath="yes" Guid="97F98107-8EBE-4B3F-9198-25E0A3CA0792">
+                  <File Id="kk_atk10.mo" Source="source\share\locale\kk\LC_MESSAGES\atk10.mo" />
+                  <File Id="kk_glib20.mo" Source="source\share\locale\kk\LC_MESSAGES\glib20.mo" />
+                  <File Id="kk_gtk30_properties.mo" Source="source\share\locale\kk\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="kk_gtk30.mo" Source="source\share\locale\kk\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="km" Name="km">
+              <Directory Id="km_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="km_locale" KeyPath="yes" Guid="B8B9D294-922E-4CA9-AF1F-3269BF0FBA2B">
+                  <File Id="km_atk10.mo" Source="source\share\locale\km\LC_MESSAGES\atk10.mo" />
+                  <File Id="km_gdk_pixbuf.mo" Source="source\share\locale\km\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="km_gtk30_properties.mo" Source="source\share\locale\km\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="km_gtk30.mo" Source="source\share\locale\km\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="kn" Name="kn">
+              <Directory Id="kn_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="kn_locale" KeyPath="yes" Guid="259A306D-1220-44EA-BDC3-E5611D37324B">
+                  <File Id="kn_atk10.mo" Source="source\share\locale\kn\LC_MESSAGES\atk10.mo" />
+                  <File Id="kn_gdk_pixbuf.mo" Source="source\share\locale\kn\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="kn_glib20.mo" Source="source\share\locale\kn\LC_MESSAGES\glib20.mo" />
+                  <File Id="kn_gtk30_properties.mo" Source="source\share\locale\kn\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="kn_gtk30.mo" Source="source\share\locale\kn\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ko" Name="ko">
+              <Directory Id="ko_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ko_locale" KeyPath="yes" Guid="C8D9FEB9-A576-40B8-A756-F07D1EF03597">
+                  <File Id="ko_atk10.mo" Source="source\share\locale\ko\LC_MESSAGES\atk10.mo" />
+                  <File Id="ko_gdk_pixbuf.mo" Source="source\share\locale\ko\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ko_glib20.mo" Source="source\share\locale\ko\LC_MESSAGES\glib20.mo" />
+                  <File Id="ko_gtk30_properties.mo" Source="source\share\locale\ko\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ko_gtk30.mo" Source="source\share\locale\ko\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ku" Name="ku">
+              <Directory Id="ku_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ku_locale" KeyPath="yes" Guid="FBDEC3F2-706B-4FF0-A745-0AE56A653D75">
+                  <File Id="ku_atk10.mo" Source="source\share\locale\ku\LC_MESSAGES\atk10.mo" />
+                  <File Id="ku_gdk_pixbuf.mo" Source="source\share\locale\ku\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ku_glib20.mo" Source="source\share\locale\ku\LC_MESSAGES\glib20.mo" />
+                  <File Id="ku_gtk30_properties.mo" Source="source\share\locale\ku\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ku_gtk30.mo" Source="source\share\locale\ku\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ky" Name="ky">
+              <Directory Id="ky_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ky_locale" KeyPath="yes" Guid="DE162151-E7E8-4505-BBE0-B683AF315AB1">
+                  <File Id="ky_gtk30_properties.mo" Source="source\share\locale\ky\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ky_gtk30.mo" Source="source\share\locale\ky\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="lg" Name="lg">
+              <Directory Id="lg_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="lg_locale" KeyPath="yes" Guid="58095D59-3EE7-4937-A607-789590A0F00B">
+                  <File Id="lg_gtk30_properties.mo" Source="source\share\locale\lg\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="lg_gtk30.mo" Source="source\share\locale\lg\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="li" Name="li">
+              <Directory Id="li_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="li_locale" KeyPath="yes" Guid="BB84AB10-2B18-4268-A89B-431D351A44F6">
+                  <File Id="li_atk10.mo" Source="source\share\locale\li\LC_MESSAGES\atk10.mo" />
+                  <File Id="li_gdk_pixbuf.mo" Source="source\share\locale\li\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="li_gtk30_properties.mo" Source="source\share\locale\li\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="li_gtk30.mo" Source="source\share\locale\li\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="lt" Name="lt">
+              <Directory Id="lt_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="lt_locale" KeyPath="yes" Guid="3EA0E937-BD45-458D-BBE4-0FFBC1B9176C">
+                  <File Id="lt_atk10.mo" Source="source\share\locale\lt\LC_MESSAGES\atk10.mo" />
+                  <File Id="lt_gdk_pixbuf.mo" Source="source\share\locale\lt\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="lt_glib20.mo" Source="source\share\locale\lt\LC_MESSAGES\glib20.mo" />
+                  <File Id="lt_gtk30_properties.mo" Source="source\share\locale\lt\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="lt_gtk30.mo" Source="source\share\locale\lt\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="lv" Name="lv">
+              <Directory Id="lv_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="lv_locale" KeyPath="yes" Guid="3C961F8A-8E7E-4BEC-B268-FC599397CA75">
+                  <File Id="lv_atk10.mo" Source="source\share\locale\lv\LC_MESSAGES\atk10.mo" />
+                  <File Id="lv_gdk_pixbuf.mo" Source="source\share\locale\lv\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="lv_glib20.mo" Source="source\share\locale\lv\LC_MESSAGES\glib20.mo" />
+                  <File Id="lv_gtk30_properties.mo" Source="source\share\locale\lv\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="lv_gtk30.mo" Source="source\share\locale\lv\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="mai" Name="mai">
+              <Directory Id="mai_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="mai_locale" KeyPath="yes" Guid="639F45F7-36FD-473F-8FC2-1A43957F651F">
+                  <File Id="mai_atk10.mo" Source="source\share\locale\mai\LC_MESSAGES\atk10.mo" />
+                  <File Id="mai_gdk_pixbuf.mo" Source="source\share\locale\mai\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="mai_glib20.mo" Source="source\share\locale\mai\LC_MESSAGES\glib20.mo" />
+                  <File Id="mai_gtk30_properties.mo" Source="source\share\locale\mai\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="mai_gtk30.mo" Source="source\share\locale\mai\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="mg" Name="mg">
+              <Directory Id="mg_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="mg_locale" KeyPath="yes" Guid="D69FE274-EC67-42AA-8A96-348F2A7BDDB7">
+                  <File Id="mg_glib20.mo" Source="source\share\locale\mg\LC_MESSAGES\glib20.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="mi" Name="mi">
+              <Directory Id="mi_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="mi_locale" KeyPath="yes" Guid="04007F47-8F8C-44B6-BDAC-4B2F20880E76">
+                  <File Id="mi_gdk_pixbuf.mo" Source="source\share\locale\mi\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="mi_gtk30_properties.mo" Source="source\share\locale\mi\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="mi_gtk30.mo" Source="source\share\locale\mi\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="mk" Name="mk">
+              <Directory Id="mk_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="mk_locale" KeyPath="yes" Guid="086A623A-318D-4EFC-9E01-E077C0D4E20A">
+                  <File Id="mk_atk10.mo" Source="source\share\locale\mk\LC_MESSAGES\atk10.mo" />
+                  <File Id="mk_gdk_pixbuf.mo" Source="source\share\locale\mk\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="mk_glib20.mo" Source="source\share\locale\mk\LC_MESSAGES\glib20.mo" />
+                  <File Id="mk_gtk30_properties.mo" Source="source\share\locale\mk\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="mk_gtk30.mo" Source="source\share\locale\mk\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ml" Name="ml">
+              <Directory Id="ml_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ml_locale" KeyPath="yes" Guid="0A2E8A3E-FD74-4918-99E5-7C401EAA8894">
+                  <File Id="ml_atk10.mo" Source="source\share\locale\ml\LC_MESSAGES\atk10.mo" />
+                  <File Id="ml_gdk_pixbuf.mo" Source="source\share\locale\ml\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ml_glib20.mo" Source="source\share\locale\ml\LC_MESSAGES\glib20.mo" />
+                  <File Id="ml_gtk30_properties.mo" Source="source\share\locale\ml\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ml_gtk30.mo" Source="source\share\locale\ml\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="mn" Name="mn">
+              <Directory Id="mn_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="mn_locale" KeyPath="yes" Guid="79BF3CD4-AE38-4716-ADB1-5AFB845C0E7F">
+                  <File Id="mn_atk10.mo" Source="source\share\locale\mn\LC_MESSAGES\atk10.mo" />
+                  <File Id="mn_gdk_pixbuf.mo" Source="source\share\locale\mn\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="mn_glib20.mo" Source="source\share\locale\mn\LC_MESSAGES\glib20.mo" />
+                  <File Id="mn_gtk30_properties.mo" Source="source\share\locale\mn\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="mn_gtk30.mo" Source="source\share\locale\mn\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="mr" Name="mr">
+              <Directory Id="mr_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="mr_locale" KeyPath="yes" Guid="4654EEF7-74C2-4C17-8EA0-7951BB05712E">
+                  <File Id="mr_atk10.mo" Source="source\share\locale\mr\LC_MESSAGES\atk10.mo" />
+                  <File Id="mr_gdk_pixbuf.mo" Source="source\share\locale\mr\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="mr_glib20.mo" Source="source\share\locale\mr\LC_MESSAGES\glib20.mo" />
+                  <File Id="mr_gtk30_properties.mo" Source="source\share\locale\mr\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="mr_gtk30.mo" Source="source\share\locale\mr\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ms" Name="ms">
+              <Directory Id="ms_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ms_locale" KeyPath="yes" Guid="C0E0336C-AAC4-4530-8750-AEE6AB29A9AA">
+                  <File Id="ms_atk10.mo" Source="source\share\locale\ms\LC_MESSAGES\atk10.mo" />
+                  <File Id="ms_gdk_pixbuf.mo" Source="source\share\locale\ms\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ms_glib20.mo" Source="source\share\locale\ms\LC_MESSAGES\glib20.mo" />
+                  <File Id="ms_gtk30_properties.mo" Source="source\share\locale\ms\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ms_gtk30.mo" Source="source\share\locale\ms\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="my" Name="my">
+              <Directory Id="my_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="my_locale" KeyPath="yes" Guid="A23AFA32-6870-452F-91B4-11826F630AC8">
+                  <File Id="my_gdk_pixbuf.mo" Source="source\share\locale\my\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="my_gtk30_properties.mo" Source="source\share\locale\my\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="my_gtk30.mo" Source="source\share\locale\my\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="nb" Name="nb">
+              <Directory Id="nb_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="nb_locale" KeyPath="yes" Guid="7A9EF88A-1921-4867-97F0-D3E070DFE308">
+                  <File Id="nb_atk10.mo" Source="source\share\locale\nb\LC_MESSAGES\atk10.mo" />
+                  <File Id="nb_gdk_pixbuf.mo" Source="source\share\locale\nb\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="nb_glib20.mo" Source="source\share\locale\nb\LC_MESSAGES\glib20.mo" />
+                  <File Id="nb_gtk30_properties.mo" Source="source\share\locale\nb\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="nb_gtk30.mo" Source="source\share\locale\nb\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="nds" Name="nds">
+              <Directory Id="nds_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="nds_locale" KeyPath="yes" Guid="A718751D-57A9-42BB-903A-E92C957097A1">
+                  <File Id="nds_gdk_pixbuf.mo" Source="source\share\locale\nds\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="nds_glib20.mo" Source="source\share\locale\nds\LC_MESSAGES\glib20.mo" />
+                  <File Id="nds_gtk30_properties.mo" Source="source\share\locale\nds\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="nds_gtk30.mo" Source="source\share\locale\nds\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ne" Name="ne">
+              <Directory Id="ne_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ne_locale" KeyPath="yes" Guid="D87FEE50-9FC0-42CC-BB1C-8BEF7774567F">
+                  <File Id="ne_atk10.mo" Source="source\share\locale\ne\LC_MESSAGES\atk10.mo" />
+                  <File Id="ne_gdk_pixbuf.mo" Source="source\share\locale\ne\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ne_glib20.mo" Source="source\share\locale\ne\LC_MESSAGES\glib20.mo" />
+                  <File Id="ne_gtk30_properties.mo" Source="source\share\locale\ne\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ne_gtk30.mo" Source="source\share\locale\ne\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="nl" Name="nl">
+              <Directory Id="nl_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="nl_locale" KeyPath="yes" Guid="B10369F1-F999-4D72-B379-983E6D404B7F">
+                  <File Id="nl_atk10.mo" Source="source\share\locale\nl\LC_MESSAGES\atk10.mo" />
+                  <File Id="nl_gdk_pixbuf.mo" Source="source\share\locale\nl\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="nl_glib20.mo" Source="source\share\locale\nl\LC_MESSAGES\glib20.mo" />
+                  <File Id="nl_gtk30_properties.mo" Source="source\share\locale\nl\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="nl_gtk30.mo" Source="source\share\locale\nl\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="nn" Name="nn">
+              <Directory Id="nn_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="nn_locale" KeyPath="yes" Guid="107C5EBF-14BC-49DF-86DE-AFB6518A4135">
+                  <File Id="nn_atk10.mo" Source="source\share\locale\nn\LC_MESSAGES\atk10.mo" />
+                  <File Id="nn_gdk_pixbuf.mo" Source="source\share\locale\nn\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="nn_glib20.mo" Source="source\share\locale\nn\LC_MESSAGES\glib20.mo" />
+                  <File Id="nn_gtk30_properties.mo" Source="source\share\locale\nn\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="nn_gtk30.mo" Source="source\share\locale\nn\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="nso" Name="nso">
+              <Directory Id="nso_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="nso_locale" KeyPath="yes" Guid="4D6B5D4E-7E01-4766-8764-6C73214CB9E5">
+                  <File Id="nso_gdk_pixbuf.mo" Source="source\share\locale\nso\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="nso_gtk30_properties.mo" Source="source\share\locale\nso\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="nso_gtk30.mo" Source="source\share\locale\nso\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="oc" Name="oc">
+              <Directory Id="oc_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="oc_locale" KeyPath="yes" Guid="D1AF48DF-BE19-477F-9EAC-42621C8CAB26">
+                  <File Id="oc_atk10.mo" Source="source\share\locale\oc\LC_MESSAGES\atk10.mo" />
+                  <File Id="oc_gdk_pixbuf.mo" Source="source\share\locale\oc\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="oc_glib20.mo" Source="source\share\locale\oc\LC_MESSAGES\glib20.mo" />
+                  <File Id="oc_gtk30_properties.mo" Source="source\share\locale\oc\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="oc_gtk30.mo" Source="source\share\locale\oc\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="or" Name="or">
+              <Directory Id="or_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="or_locale" KeyPath="yes" Guid="E00C0649-365A-4792-86FD-A9259ED9776B">
+                  <File Id="or_atk10.mo" Source="source\share\locale\or\LC_MESSAGES\atk10.mo" />
+                  <File Id="or_gdk_pixbuf.mo" Source="source\share\locale\or\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="or_glib20.mo" Source="source\share\locale\or\LC_MESSAGES\glib20.mo" />
+                  <File Id="or_gtk30_properties.mo" Source="source\share\locale\or\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="or_gtk30.mo" Source="source\share\locale\or\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="pa" Name="pa">
+              <Directory Id="pa_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="pa_locale" KeyPath="yes" Guid="F16FDD38-3A94-47B5-A985-E8E69916D207">
+                  <File Id="pa_atk10.mo" Source="source\share\locale\pa\LC_MESSAGES\atk10.mo" />
+                  <File Id="pa_gdk_pixbuf.mo" Source="source\share\locale\pa\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="pa_glib20.mo" Source="source\share\locale\pa\LC_MESSAGES\glib20.mo" />
+                  <File Id="pa_gtk30_properties.mo" Source="source\share\locale\pa\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="pa_gtk30.mo" Source="source\share\locale\pa\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="pl" Name="pl">
+              <Directory Id="pl_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="pl_locale" KeyPath="yes" Guid="21BC1AD1-45FB-4E60-AF13-10EA75276A45">
+                  <File Id="pl_atk10.mo" Source="source\share\locale\pl\LC_MESSAGES\atk10.mo" />
+                  <File Id="pl_gdk_pixbuf.mo" Source="source\share\locale\pl\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="pl_glib20.mo" Source="source\share\locale\pl\LC_MESSAGES\glib20.mo" />
+                  <File Id="pl_gtk30_properties.mo" Source="source\share\locale\pl\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="pl_gtk30.mo" Source="source\share\locale\pl\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ps" Name="ps">
+              <Directory Id="ps_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ps_locale" KeyPath="yes" Guid="9E24B7E8-4044-48E0-9FE7-A254278260FA">
+                  <File Id="ps_atk10.mo" Source="source\share\locale\ps\LC_MESSAGES\atk10.mo" />
+                  <File Id="ps_gdk_pixbuf.mo" Source="source\share\locale\ps\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ps_glib20.mo" Source="source\share\locale\ps\LC_MESSAGES\glib20.mo" />
+                  <File Id="ps_gtk30_properties.mo" Source="source\share\locale\ps\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ps_gtk30.mo" Source="source\share\locale\ps\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="pt" Name="pt">
+              <Directory Id="pt_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="pt_locale" KeyPath="yes" Guid="E3D769CC-A354-4EB7-A4B0-89DF2C62845D">
+                  <File Id="pt_atk10.mo" Source="source\share\locale\pt\LC_MESSAGES\atk10.mo" />
+                  <File Id="pt_gdk_pixbuf.mo" Source="source\share\locale\pt\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="pt_glib20.mo" Source="source\share\locale\pt\LC_MESSAGES\glib20.mo" />
+                  <File Id="pt_gtk30_properties.mo" Source="source\share\locale\pt\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="pt_gtk30.mo" Source="source\share\locale\pt\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="pt_BR" Name="pt_BR">
+              <Directory Id="pt_BR_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="pt_BR_locale" KeyPath="yes" Guid="9930F925-BCBE-4BD9-9CA5-D5353C3FE28E">
+                  <File Id="pt_BR_atk10.mo" Source="source\share\locale\pt_BR\LC_MESSAGES\atk10.mo" />
+                  <File Id="pt_BR_gdk_pixbuf.mo" Source="source\share\locale\pt_BR\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="pt_BR_glib20.mo" Source="source\share\locale\pt_BR\LC_MESSAGES\glib20.mo" />
+                  <File Id="pt_BR_gtk30_properties.mo" Source="source\share\locale\pt_BR\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="pt_BR_gtk30.mo" Source="source\share\locale\pt_BR\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ro" Name="ro">
+              <Directory Id="ro_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ro_locale" KeyPath="yes" Guid="77144CA0-30F5-40AB-9489-D83463E7EED6">
+                  <File Id="ro_atk10.mo" Source="source\share\locale\ro\LC_MESSAGES\atk10.mo" />
+                  <File Id="ro_gdk_pixbuf.mo" Source="source\share\locale\ro\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ro_glib20.mo" Source="source\share\locale\ro\LC_MESSAGES\glib20.mo" />
+                  <File Id="ro_gtk30_properties.mo" Source="source\share\locale\ro\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ro_gtk30.mo" Source="source\share\locale\ro\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ru" Name="ru">
+              <Directory Id="ru_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ru_locale" KeyPath="yes" Guid="4479CC66-DDE8-4D7F-A7DC-8067CCB7BB10">
+                  <File Id="ru_atk10.mo" Source="source\share\locale\ru\LC_MESSAGES\atk10.mo" />
+                  <File Id="ru_gdk_pixbuf.mo" Source="source\share\locale\ru\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ru_glib20.mo" Source="source\share\locale\ru\LC_MESSAGES\glib20.mo" />
+                  <File Id="ru_gtk30_properties.mo" Source="source\share\locale\ru\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ru_gtk30.mo" Source="source\share\locale\ru\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="rw" Name="rw">
+              <Directory Id="rw_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="rw_locale" KeyPath="yes" Guid="FF2EDEA6-1870-43F2-A694-D32C1AAB1AE2">
+                  <File Id="rw_atk10.mo" Source="source\share\locale\rw\LC_MESSAGES\atk10.mo" />
+                  <File Id="rw_glib20.mo" Source="source\share\locale\rw\LC_MESSAGES\glib20.mo" />
+                  <File Id="rw_gtk30_properties.mo" Source="source\share\locale\rw\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="rw_gtk30.mo" Source="source\share\locale\rw\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="si" Name="si">
+              <Directory Id="si_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="si_locale" KeyPath="yes" Guid="034EA920-594C-4595-BD14-05BDD0B0A6CA">
+                  <File Id="si_atk10.mo" Source="source\share\locale\si\LC_MESSAGES\atk10.mo" />
+                  <File Id="si_gdk_pixbuf.mo" Source="source\share\locale\si\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="si_glib20.mo" Source="source\share\locale\si\LC_MESSAGES\glib20.mo" />
+                  <File Id="si_gtk30_properties.mo" Source="source\share\locale\si\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="si_gtk30.mo" Source="source\share\locale\si\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="sk" Name="sk">
+              <Directory Id="sk_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="sk_locale" KeyPath="yes" Guid="68E4567B-976B-43DC-959C-72C68DB44296">
+                  <File Id="sk_atk10.mo" Source="source\share\locale\sk\LC_MESSAGES\atk10.mo" />
+                  <File Id="sk_gdk_pixbuf.mo" Source="source\share\locale\sk\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="sk_glib20.mo" Source="source\share\locale\sk\LC_MESSAGES\glib20.mo" />
+                  <File Id="sk_gtk30_properties.mo" Source="source\share\locale\sk\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="sk_gtk30.mo" Source="source\share\locale\sk\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="sl" Name="sl">
+              <Directory Id="sl_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="sl_locale" KeyPath="yes" Guid="EF308D28-A3A3-4896-A629-5028474BD9D4">
+                  <File Id="sl_atk10.mo" Source="source\share\locale\sl\LC_MESSAGES\atk10.mo" />
+                  <File Id="sl_gdk_pixbuf.mo" Source="source\share\locale\sl\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="sl_glib20.mo" Source="source\share\locale\sl\LC_MESSAGES\glib20.mo" />
+                  <File Id="sl_gtk30_properties.mo" Source="source\share\locale\sl\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="sl_gtk30.mo" Source="source\share\locale\sl\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="sq" Name="sq">
+              <Directory Id="sq_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="sq_locale" KeyPath="yes" Guid="BEACA5C1-F58F-46A2-91A4-DD4ABC4A6EC5">
+                  <File Id="sq_atk10.mo" Source="source\share\locale\sq\LC_MESSAGES\atk10.mo" />
+                  <File Id="sq_gdk_pixbuf.mo" Source="source\share\locale\sq\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="sq_glib20.mo" Source="source\share\locale\sq\LC_MESSAGES\glib20.mo" />
+                  <File Id="sq_gtk30_properties.mo" Source="source\share\locale\sq\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="sq_gtk30.mo" Source="source\share\locale\sq\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="sr" Name="sr">
+              <Directory Id="sr_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="sr_locale" KeyPath="yes" Guid="B07B213F-18B6-4F33-BBAA-F0504BD6D29E">
+                  <File Id="sr_atk10.mo" Source="source\share\locale\sr\LC_MESSAGES\atk10.mo" />
+                  <File Id="sr_gdk_pixbuf.mo" Source="source\share\locale\sr\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="sr_glib20.mo" Source="source\share\locale\sr\LC_MESSAGES\glib20.mo" />
+                  <File Id="sr_gtk30_properties.mo" Source="source\share\locale\sr\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="sr_gtk30.mo" Source="source\share\locale\sr\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="sr_ije" Name="sr@ije">
+              <Directory Id="sr_ije_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="sr_ije_locale" KeyPath="yes" Guid="7B151022-B084-40FD-A64A-8000F2EF04FC">
+                  <File Id="sr_ije_atk10.mo" Source="source\share\locale\sr@ije\LC_MESSAGES\atk10.mo" />
+                  <File Id="sr_ije_gdk_pixbuf.mo" Source="source\share\locale\sr@ije\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="sr_ije_glib20.mo" Source="source\share\locale\sr@ije\LC_MESSAGES\glib20.mo" />
+                  <File Id="sr_ije_gtk30_properties.mo" Source="source\share\locale\sr@ije\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="sr_ije_gtk30.mo" Source="source\share\locale\sr@ije\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="sr_latin" Name="sr@latin">
+              <Directory Id="sr_latin_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="sr_latin_locale" KeyPath="yes" Guid="F9D3BF75-BBAE-45BC-8C0C-E13A840D8DD9">
+                  <File Id="sr_latin_atk10.mo" Source="source\share\locale\sr@latin\LC_MESSAGES\atk10.mo" />
+                  <File Id="sr_latin_gdk_pixbuf.mo" Source="source\share\locale\sr@latin\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="sr_latin_glib20.mo" Source="source\share\locale\sr@latin\LC_MESSAGES\glib20.mo" />
+                  <File Id="sr_latin_gtk30_properties.mo" Source="source\share\locale\sr@latin\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="sr_latin_gtk30.mo" Source="source\share\locale\sr@latin\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="sv" Name="sv">
+              <Directory Id="sv_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="sv_locale" KeyPath="yes" Guid="ED96C8E9-236F-49F7-BA7B-2D780BE82F8F">
+                  <File Id="sv_atk10.mo" Source="source\share\locale\sv\LC_MESSAGES\atk10.mo" />
+                  <File Id="sv_gdk_pixbuf.mo" Source="source\share\locale\sv\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="sv_glib20.mo" Source="source\share\locale\sv\LC_MESSAGES\glib20.mo" />
+                  <File Id="sv_gtk30_properties.mo" Source="source\share\locale\sv\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="sv_gtk30.mo" Source="source\share\locale\sv\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ta" Name="ta">
+              <Directory Id="ta_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ta_locale" KeyPath="yes" Guid="FB6C7168-A081-48C5-81BE-DD51CD519CC9">
+                  <File Id="ta_atk10.mo" Source="source\share\locale\ta\LC_MESSAGES\atk10.mo" />
+                  <File Id="ta_gdk_pixbuf.mo" Source="source\share\locale\ta\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ta_glib20.mo" Source="source\share\locale\ta\LC_MESSAGES\glib20.mo" />
+                  <File Id="ta_gtk30_properties.mo" Source="source\share\locale\ta\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ta_gtk30.mo" Source="source\share\locale\ta\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="te" Name="te">
+              <Directory Id="te_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="te_locale" KeyPath="yes" Guid="03C931D5-82EA-4FAB-A058-9F39041AB754">
+                  <File Id="te_atk10.mo" Source="source\share\locale\te\LC_MESSAGES\atk10.mo" />
+                  <File Id="te_gdk_pixbuf.mo" Source="source\share\locale\te\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="te_glib20.mo" Source="source\share\locale\te\LC_MESSAGES\glib20.mo" />
+                  <File Id="te_gtk30_properties.mo" Source="source\share\locale\te\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="te_gtk30.mo" Source="source\share\locale\te\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="th" Name="th">
+              <Directory Id="th_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="th_locale" KeyPath="yes" Guid="10A78033-BC84-49E9-9CDD-C5116E9BBE83">
+                  <File Id="th_atk10.mo" Source="source\share\locale\th\LC_MESSAGES\atk10.mo" />
+                  <File Id="th_gdk_pixbuf.mo" Source="source\share\locale\th\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="th_glib20.mo" Source="source\share\locale\th\LC_MESSAGES\glib20.mo" />
+                  <File Id="th_gtk30_properties.mo" Source="source\share\locale\th\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="th_gtk30.mo" Source="source\share\locale\th\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="tk" Name="tk">
+              <Directory Id="tk_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="tk_locale" KeyPath="yes" Guid="C66347AF-3EA7-451F-B1B3-8EAB534E3690">
+                  <File Id="tk_atk10.mo" Source="source\share\locale\tk\LC_MESSAGES\atk10.mo" />
+                  <File Id="tk_gdk_pixbuf.mo" Source="source\share\locale\tk\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="tk_gtk30_properties.mo" Source="source\share\locale\tk\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="tk_gtk30.mo" Source="source\share\locale\tk\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="tl" Name="tl">
+              <Directory Id="tl_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="tl_locale" KeyPath="yes" Guid="72A083D2-B2CD-4CE6-BEAA-9D4431897C09">
+                  <File Id="tl_glib20.mo" Source="source\share\locale\tl\LC_MESSAGES\glib20.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="tr" Name="tr">
+              <Directory Id="tr_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="tr_locale" KeyPath="yes" Guid="AC2CB3A8-3BA1-4AAA-B273-70A1BAB20BFB">
+                  <File Id="tr_atk10.mo" Source="source\share\locale\tr\LC_MESSAGES\atk10.mo" />
+                  <File Id="tr_gdk_pixbuf.mo" Source="source\share\locale\tr\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="tr_glib20.mo" Source="source\share\locale\tr\LC_MESSAGES\glib20.mo" />
+                  <File Id="tr_gtk30_properties.mo" Source="source\share\locale\tr\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="tr_gtk30.mo" Source="source\share\locale\tr\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="tt" Name="tt">
+              <Directory Id="tt_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="tt_locale" KeyPath="yes" Guid="CF0B8D82-4DBF-456C-BBBB-42F1CA405B84">
+                  <File Id="tt_atk10.mo" Source="source\share\locale\tt\LC_MESSAGES\atk10.mo" />
+                  <File Id="tt_gdk_pixbuf.mo" Source="source\share\locale\tt\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="tt_glib20.mo" Source="source\share\locale\tt\LC_MESSAGES\glib20.mo" />
+                  <File Id="tt_gtk30_properties.mo" Source="source\share\locale\tt\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="tt_gtk30.mo" Source="source\share\locale\tt\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ug" Name="ug">
+              <Directory Id="ug_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ug_locale" KeyPath="yes" Guid="E44582E9-5BD2-438C-93C8-154B3DD288E3">
+                  <File Id="ug_atk10.mo" Source="source\share\locale\ug\LC_MESSAGES\atk10.mo" />
+                  <File Id="ug_gdk_pixbuf.mo" Source="source\share\locale\ug\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="ug_glib20.mo" Source="source\share\locale\ug\LC_MESSAGES\glib20.mo" />
+                  <File Id="ug_gtk30_properties.mo" Source="source\share\locale\ug\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ug_gtk30.mo" Source="source\share\locale\ug\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="uk" Name="uk">
+              <Directory Id="uk_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="uk_locale" KeyPath="yes" Guid="B179954C-F56A-4CCC-A006-7C6D0EF2FA94">
+                  <File Id="uk_atk10.mo" Source="source\share\locale\uk\LC_MESSAGES\atk10.mo" />
+                  <File Id="uk_gdk_pixbuf.mo" Source="source\share\locale\uk\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="uk_glib20.mo" Source="source\share\locale\uk\LC_MESSAGES\glib20.mo" />
+                  <File Id="uk_gtk30_properties.mo" Source="source\share\locale\uk\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="uk_gtk30.mo" Source="source\share\locale\uk\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="ur" Name="ur">
+              <Directory Id="ur_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="ur_locale" KeyPath="yes" Guid="412A9D27-51ED-4259-813E-9F12045F5FFA">
+                  <File Id="ur_gtk30_properties.mo" Source="source\share\locale\ur\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="ur_gtk30.mo" Source="source\share\locale\ur\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="uz" Name="uz">
+              <Directory Id="uz_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="uz_locale" KeyPath="yes" Guid="BD0D6BF6-1E13-4761-8DFE-A9755A54AAF1">
+                  <File Id="uz_gdk_pixbuf.mo" Source="source\share\locale\uz\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="uz_gtk30_properties.mo" Source="source\share\locale\uz\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="uz_gtk30.mo" Source="source\share\locale\uz\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="uz_cyrillic" Name="uz@cyrillic">
+              <Directory Id="uz_cyrillic_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="uz_cyrillic_locale" KeyPath="yes" Guid="E255FC43-D5E1-422E-AA6C-FBC934C399E0">
+                  <File Id="uz_cyrillic_gdk_pixbuf.mo" Source="source\share\locale\uz@cyrillic\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="uz_cyrillic_gtk30_properties.mo" Source="source\share\locale\uz@cyrillic\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="uz_cyrillic_gtk30.mo" Source="source\share\locale\uz@cyrillic\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="vi" Name="vi">
+              <Directory Id="vi_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="vi_locale" KeyPath="yes" Guid="4CDD3610-5227-4019-A4F5-045A47661A47">
+                  <File Id="vi_atk10.mo" Source="source\share\locale\vi\LC_MESSAGES\atk10.mo" />
+                  <File Id="vi_gdk_pixbuf.mo" Source="source\share\locale\vi\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="vi_glib20.mo" Source="source\share\locale\vi\LC_MESSAGES\glib20.mo" />
+                  <File Id="vi_gtk30_properties.mo" Source="source\share\locale\vi\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="vi_gtk30.mo" Source="source\share\locale\vi\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="wa" Name="wa">
+              <Directory Id="wa_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="wa_locale" KeyPath="yes" Guid="99E745C8-1B50-4CFB-8497-CE96A7D2B5C5">
+                  <File Id="wa_atk10.mo" Source="source\share\locale\wa\LC_MESSAGES\atk10.mo" />
+                  <File Id="wa_gdk_pixbuf.mo" Source="source\share\locale\wa\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="wa_glib20.mo" Source="source\share\locale\wa\LC_MESSAGES\glib20.mo" />
+                  <File Id="wa_gtk30_properties.mo" Source="source\share\locale\wa\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="wa_gtk30.mo" Source="source\share\locale\wa\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="xh" Name="xh">
+              <Directory Id="xh_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="xh_locale" KeyPath="yes" Guid="E2500F17-6781-492B-B2C1-F26D2F35F8F2">
+                  <File Id="xh_atk10.mo" Source="source\share\locale\xh\LC_MESSAGES\atk10.mo" />
+                  <File Id="xh_gdk_pixbuf.mo" Source="source\share\locale\xh\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="xh_glib20.mo" Source="source\share\locale\xh\LC_MESSAGES\glib20.mo" />
+                  <File Id="xh_gtk30_properties.mo" Source="source\share\locale\xh\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="xh_gtk30.mo" Source="source\share\locale\xh\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="yi" Name="yi">
+              <Directory Id="yi_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="yi_locale" KeyPath="yes" Guid="EE358D68-A0CC-44E5-B503-143EBE8A8DFC">
+                  <File Id="yi_atk10.mo" Source="source\share\locale\yi\LC_MESSAGES\atk10.mo" />
+                  <File Id="yi_gdk_pixbuf.mo" Source="source\share\locale\yi\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="yi_glib20.mo" Source="source\share\locale\yi\LC_MESSAGES\glib20.mo" />
+                  <File Id="yi_gtk30_properties.mo" Source="source\share\locale\yi\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="yi_gtk30.mo" Source="source\share\locale\yi\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="zh_CN" Name="zh_CN">
+              <Directory Id="zh_CN_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="zh_CN_locale" KeyPath="yes" Guid="183D6E54-6CD8-4322-ACA4-B81D08295411">
+                  <File Id="zh_CN_atk10.mo" Source="source\share\locale\zh_CN\LC_MESSAGES\atk10.mo" />
+                  <File Id="zh_CN_gdk_pixbuf.mo" Source="source\share\locale\zh_CN\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="zh_CN_glib20.mo" Source="source\share\locale\zh_CN\LC_MESSAGES\glib20.mo" />
+                  <File Id="zh_CN_gtk30_properties.mo" Source="source\share\locale\zh_CN\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="zh_CN_gtk30.mo" Source="source\share\locale\zh_CN\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="zh_HK" Name="zh_HK">
+              <Directory Id="zh_HK_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="zh_HK_locale" KeyPath="yes" Guid="B8F23FC5-DC73-437B-9CE8-2960B7AE7C27">
+                  <File Id="zh_HK_atk10.mo" Source="source\share\locale\zh_HK\LC_MESSAGES\atk10.mo" />
+                  <File Id="zh_HK_gdk_pixbuf.mo" Source="source\share\locale\zh_HK\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="zh_HK_glib20.mo" Source="source\share\locale\zh_HK\LC_MESSAGES\glib20.mo" />
+                  <File Id="zh_HK_gtk30_properties.mo" Source="source\share\locale\zh_HK\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="zh_HK_gtk30.mo" Source="source\share\locale\zh_HK\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="zh_TW" Name="zh_TW">
+              <Directory Id="zh_TW_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="zh_TW_locale" KeyPath="yes" Guid="EE09C27F-B7FD-4324-80DE-747FE3B155DB">
+                  <File Id="zh_TW_atk10.mo" Source="source\share\locale\zh_TW\LC_MESSAGES\atk10.mo" />
+                  <File Id="zh_TW_gdk_pixbuf.mo" Source="source\share\locale\zh_TW\LC_MESSAGES\gdk-pixbuf.mo" />
+                  <File Id="zh_TW_glib20.mo" Source="source\share\locale\zh_TW\LC_MESSAGES\glib20.mo" />
+                  <File Id="zh_TW_gtk30_properties.mo" Source="source\share\locale\zh_TW\LC_MESSAGES\gtk30-properties.mo" />
+                  <File Id="zh_TW_gtk30.mo" Source="source\share\locale\zh_TW\LC_MESSAGES\gtk30.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+            <Directory Id="zu" Name="zu">
+              <Directory Id="zu_LC_MESSAGES" Name="LC_MESSAGES">
+                <Component Id="zu_locale" KeyPath="yes" Guid="C2F8F770-199F-4C4D-95E7-871D1EF8F554">
+                  <File Id="zu_atk10.mo" Source="source\share\locale\zu\LC_MESSAGES\atk10.mo" />
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+          <Directory Id="themes" Name="themes">
+            <Directory Id="Default" Name="Default">
+              <Directory Id="defaultgtk_3.0" Name="gtk-3.0">
+                <Component Id="gtk_keys.css" Guid="53B05348-32EE-41BD-AE4E-888463B69133">
+                  <File Id="gtk_keys.css" KeyPath="yes" Source="source\share\themes\Default\gtk-3.0\gtk-keys.css" />
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+        <Directory Id="lib" Name="lib">
+          <Directory Id="libgdk_pixbuf_2.0" Name="gdk-pixbuf-2.0">
+            <Directory Id="libgdk_pixbuf_2.0_2.10.0" Name="2.10.0">
+              <Directory Id="loaders" Name="loaders">
+                <Component Id="libpixbufloader_svg.dll" Guid="4AD70329-6B67-46D0-A031-C12D0ABA19C4">
+                  <File Id="libpixbufloader_svg.dll" KeyPath="yes" Source="source\lib\gdk-pixbuf-2.0\2.10.0\loaders\libpixbufloader-svg.dll" />
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+        <Directory Id="bin" Name="bin">
+          <Component Id="gdk_pixbuf_query_loaders.exe" Guid="07D156AD-D982-416F-B027-E5DBF4785650">
+            <File Id="gdk_pixbuf_query_loaders.exe" KeyPath="yes" Source="source\bin\gdk-pixbuf-query-loaders.exe" />
+          </Component>
+          <Component Id="gspawn_win32_helper_console.exe" Guid="CCF3C09E-580D-4943-BF3C-8EE46B4D7380">
+            <File Id="gspawn_win32_helper_console.exe" KeyPath="yes" Source="source\bin\gspawn-win32-helper-console.exe" />
+          </Component>
+          <Component Id="gspawn_win32_helper.exe" Guid="3F62D3BC-ED0E-4A36-B7DE-91DBC831BE56">
+            <File Id="gspawn_win32_helper.exe" KeyPath="yes" Source="source\bin\gspawn-win32-helper.exe" />
+          </Component>
+          <Component Id="gtk_query_immodules_3.0.exe" Guid="41C2AC80-6FF8-46CE-BB73-47DFFBD183E0">
+            <File Id="gtk_query_immodules_3.0.exe" KeyPath="yes" Source="source\bin\gtk-query-immodules-3.0.exe" />
+          </Component>
+          <Component Id="pango_querymodules.exe" Guid="4B61222C-3E66-45FE-B04F-B9599D0E553B">
+            <File Id="pango_querymodules.exe" KeyPath="yes" Source="source\bin\pango-querymodules.exe" />
+          </Component>
+          <Component Id="libatk_1.0_0.dll" Guid="332B4C83-A2B8-4DCF-8C2A-B5AA5BA33A3E">
+            <File Id="libatk_1.0_0.dll" KeyPath="yes" Source="source\bin\libatk-1.0-0.dll" />
+          </Component>
+          <Component Id="libcairo_2.dll" Guid="8582D4B6-F508-4217-8215-942CE1C85A3A">
+            <File Id="libcairo_2.dll" KeyPath="yes" Source="source\bin\libcairo-2.dll" />
+          </Component>
+          <Component Id="libcairo_gobject_2.dll" Guid="7A7C333A-0D38-4FC4-9925-304E6E1B78FF">
+            <File Id="libcairo_gobject_2.dll" KeyPath="yes" Source="source\bin\libcairo-gobject-2.dll" />
+          </Component>
+          <Component Id="libcroco_0.6_3.dll" Guid="329A2A3E-6EC6-4EC0-8B2D-147FAB72CC8F">
+            <File Id="libcroco_0.6_3.dll" KeyPath="yes" Source="source\bin\libcroco-0.6-3.dll" />
+          </Component>
+          <Component Id="libffi_6.dll" Guid="9CE71EF7-D65C-44F8-A149-B40AA9F1E081">
+            <File Id="libffi_6.dll" KeyPath="yes" Source="source\bin\libffi-6.dll" />
+          </Component>
+          <Component Id="libfontconfig_1.dll" Guid="6DCAEA0E-9C5C-4161-A576-BD8AA1AC1C85">
+            <File Id="libfontconfig_1.dll" KeyPath="yes" Source="source\bin\libfontconfig-1.dll" />
+          </Component>
+          <Component Id="libfreetype_6.dll" Guid="51BDEAB4-FC2E-4E06-8C59-E8A3D10A62EC">
+            <File Id="libfreetype_6.dll" KeyPath="yes" Source="source\bin\libfreetype-6.dll" />
+          </Component>
+          <Component Id="libgailutil_3_0.dll" Guid="0A720DB5-663F-4C0C-9D16-5C7DDD78F39B">
+            <File Id="libgailutil_3_0.dll" KeyPath="yes" Source="source\bin\libgailutil-3-0.dll" />
+          </Component>
+          <Component Id="libgdk_3_0.dll" Guid="953D6912-C737-46B8-A830-A209ECC21C09">
+            <File Id="libgdk_3_0.dll" KeyPath="yes" Source="source\bin\libgdk-3-0.dll" />
+          </Component>
+          <Component Id="libgdk_pixbuf_2.0_0.dll" Guid="D5856F1E-016B-4409-932B-CA95FFB1C599">
+            <File Id="libgdk_pixbuf_2.0_0.dll" KeyPath="yes" Source="source\bin\libgdk_pixbuf-2.0-0.dll" />
+          </Component>
+          <Component Id="libgio_2.0_0.dll" Guid="20B1958F-CF3C-4AA4-80BA-D7EDE750B5C2">
+            <File Id="libgio_2.0_0.dll" KeyPath="yes" Source="source\bin\libgio-2.0-0.dll" />
+          </Component>
+          <Component Id="libglib_2.0_0.dll" Guid="C378F748-0337-4B9E-8355-F8BB85DB56DA">
+            <File Id="libglib_2.0_0.dll" KeyPath="yes" Source="source\bin\libglib-2.0-0.dll" />
+          </Component>
+          <Component Id="libgmodule_2.0_0.dll" Guid="A5110B4B-3C0F-4293-A7AD-0F36CEE6C62E">
+            <File Id="libgmodule_2.0_0.dll" KeyPath="yes" Source="source\bin\libgmodule-2.0-0.dll" />
+          </Component>
+          <Component Id="libgobject_2.0_0.dll" Guid="BDCAFC4C-F092-4244-BD06-2B95DB9229F9">
+            <File Id="libgobject_2.0_0.dll" KeyPath="yes" Source="source\bin\libgobject-2.0-0.dll" />
+          </Component>
+          <Component Id="libgthread_2.0_0.dll" Guid="55431703-86FC-47E8-B754-0960E50B712E">
+            <File Id="libgthread_2.0_0.dll" KeyPath="yes" Source="source\bin\libgthread-2.0-0.dll" />
+          </Component>
+          <Component Id="libgtk_3_0.dll" Guid="14B44C8B-4EF6-43F3-8848-F8499E3885E8">
+            <File Id="libgtk_3_0.dll" KeyPath="yes" Source="source\bin\libgtk-3-0.dll" />
+          </Component>
+          <Component Id="libiconv_2.dll" Guid="9EEE0AB2-33CF-4B07-ABE9-DB00E258DE56">
+            <File Id="libiconv_2.dll" KeyPath="yes" Source="source\bin\libiconv-2.dll" />
+          </Component>
+          <Component Id="libintl_8.dll" Guid="52305B5C-96FD-4F8E-B062-C394BAB55471">
+            <File Id="libintl_8.dll" KeyPath="yes" Source="source\bin\libintl-8.dll" />
+          </Component>
+          <Component Id="libjasper_1.dll" Guid="DD7F9DD0-9634-4646-AC59-F8AC5AE29D5F">
+            <File Id="libjasper_1.dll" KeyPath="yes" Source="source\bin\libjasper-1.dll" />
+          </Component>
+          <Component Id="libjpeg_9.dll" Guid="FB11F3DA-A40B-4490-9DC7-1DAEC7ECD355">
+            <File Id="libjpeg_9.dll" KeyPath="yes" Source="source\bin\libjpeg-9.dll" />
+          </Component>
+          <Component Id="liblzma_5.dll" Guid="DC730C6D-047D-4F2C-8409-EEE054FFCFC8">
+            <File Id="liblzma_5.dll" KeyPath="yes" Source="source\bin\liblzma-5.dll" />
+          </Component>
+          <Component Id="libpango_1.0_0.dll" Guid="DE063D03-EB76-489A-B025-C639BA15E03F">
+            <File Id="libpango_1.0_0.dll" KeyPath="yes" Source="source\bin\libpango-1.0-0.dll" />
+          </Component>
+          <Component Id="libpangocairo_1.0_0.dll" Guid="00BC8BDB-0E79-421D-A7CE-B94E05A8A74C">
+            <File Id="libpangocairo_1.0_0.dll" KeyPath="yes" Source="source\bin\libpangocairo-1.0-0.dll" />
+          </Component>
+          <Component Id="libpangoft2_1.0_0.dll" Guid="AB5AB926-AAD5-47C9-95FD-3C2BA39B92BF">
+            <File Id="libpangoft2_1.0_0.dll" KeyPath="yes" Source="source\bin\libpangoft2-1.0-0.dll" />
+          </Component>
+          <Component Id="libpangowin32_1.0_0.dll" Guid="BA6DEB78-D870-4B0D-AE28-04C785315EEA">
+            <File Id="libpangowin32_1.0_0.dll" KeyPath="yes" Source="source\bin\libpangowin32-1.0-0.dll" />
+          </Component>
+          <Component Id="libpixman_1_0.dll" Guid="BDE453F0-6378-4DEF-A16A-B809C93CA8A6">
+            <File Id="libpixman_1_0.dll" KeyPath="yes" Source="source\bin\libpixman-1-0.dll" />
+          </Component>
+          <Component Id="libpng15_15.dll" Guid="E8B04F78-48A0-4D2B-B915-0165D96CC4D3">
+            <File Id="libpng15_15.dll" KeyPath="yes" Source="source\bin\libpng15-15.dll" />
+          </Component>
+          <Component Id="librsvg_2_2.dll" Guid="345212D2-B10E-4580-86AF-9C473B0EC740">
+            <File Id="librsvg_2_2.dll" KeyPath="yes" Source="source\bin\librsvg-2-2.dll" />
+          </Component>
+          <Component Id="libtiff_5.dll" Guid="277887D2-CC73-4D90-9ACA-32390827B489">
+            <File Id="libtiff_5.dll" KeyPath="yes" Source="source\bin\libtiff-5.dll" />
+          </Component>
+          <Component Id="libxml2_2.dll" Guid="F3F23733-A952-4AE3-ABC1-C40E0856D47C">
+            <File Id="libxml2_2.dll" KeyPath="yes" Source="source\bin\libxml2-2.dll" />
+          </Component>
+          <Component Id="pthreadGC2.dll" Guid="2DB4F256-4F4F-4144-B88E-73B4D18C7572">
+            <File Id="pthreadGC2.dll" KeyPath="yes" Source="source\bin\pthreadGC2.dll" />
+          </Component>
+          <Component Id="zlib1.dll" Guid="D7D27C2E-4F71-49C3-A956-D52ADEE6B603">
+            <File Id="zlib1.dll" KeyPath="yes" Source="source\bin\zlib1.dll" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Module>
+</Wix>
