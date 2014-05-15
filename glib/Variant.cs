@@ -115,6 +115,16 @@ namespace GLib {
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_variant_new_strv (IntPtr[] strv, IntPtr length);
+
+		public Variant (string[] strv)
+		{
+			IntPtr[] native = Marshaller.StringArrayToNullTermPointer (strv);
+			handle = g_variant_ref_sink (g_variant_new_strv (native, new IntPtr ((long) strv.Length)));
+			Marshaller.Free (native);
+		}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_get_boolean (IntPtr handle);
 
 		public static explicit operator bool (Variant val)
