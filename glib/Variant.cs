@@ -194,5 +194,14 @@ namespace GLib {
 			IntPtr str = g_variant_get_string (val.Handle);
 			return str == IntPtr.Zero ? null : GLib.Marshaller.Utf8PtrToString (str);
 		}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_variant_print (IntPtr variant, bool type_annotate);
+
+		public string Print (bool type_annotate)
+		{
+			IntPtr str = g_variant_print(handle, type_annotate);
+			return Marshaller.PtrToStringGFree (str);
+		}
 	}
 }
