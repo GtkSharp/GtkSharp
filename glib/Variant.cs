@@ -16,6 +16,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace GLib {
 
@@ -168,6 +169,19 @@ namespace GLib {
 		public static Variant NewDictEntry (Variant k, Variant v)
 		{
 			return new Variant (g_variant_new_dict_entry (k.Handle, v.Handle));
+		}
+
+		public Variant (IDictionary<string, Variant> dict)
+		{
+			VariantType type = VariantType.NewDictionaryEntry (
+				VariantType.String,
+				VariantType.Variant);
+
+			var pairs = new List<Variant> ();
+			foreach (var kvp in dict)
+				pairs.Add (NewDictEntry (new Variant (kvp.Key), NewVariant (kvp.Value)));
+
+			handle = g_variant_ref_sink (NewArray (type, pairs.ToArray ()).Handle);
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
