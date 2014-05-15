@@ -147,6 +147,22 @@ namespace GLib {
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_variant_new_array (IntPtr child_type, IntPtr[] children, UIntPtr n_children);
+
+		public static Variant NewArray (VariantType type, Variant[] children)
+		{
+			if (children == null)
+				return new Variant (g_variant_new_array (type.Handle, null, new UIntPtr (0ul)));
+
+			IntPtr[] native = new IntPtr[children.Length];
+			for (int i = 0; i < children.Length; i++)
+				native[i] = children[i].Handle;
+
+			return new Variant (g_variant_new_array (type == null ? (IntPtr) null : type.Handle,
+			                                         native, new UIntPtr ((ulong) children.Length)));
+		}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_get_boolean (IntPtr handle);
 
 		public static explicit operator bool (Variant val)
