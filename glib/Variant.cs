@@ -60,6 +60,13 @@ namespace GLib {
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_variant_new_variant (IntPtr val);
+
+		public static Variant NewVariant (Variant val) {
+			return new Variant (g_variant_new_variant (val.Handle));
+		}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_new_boolean (bool val);
 
 		public Variant (bool val) : this (g_variant_new_boolean (val)) {}
