@@ -163,6 +163,14 @@ namespace GLib {
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_variant_new_dict_entry (IntPtr k, IntPtr v);
+
+		public static Variant NewDictEntry (Variant k, Variant v)
+		{
+			return new Variant (g_variant_new_dict_entry (k.Handle, v.Handle));
+		}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_variant_get_boolean (IntPtr handle);
 
 		public static explicit operator bool (Variant val)
