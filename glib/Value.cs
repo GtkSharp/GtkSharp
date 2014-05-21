@@ -121,6 +121,11 @@ namespace GLib {
 			g_value_set_pointer (ref this, val); 
 		}
 
+		public Value (Variant variant) : this (GType.Variant)
+		{
+			g_value_set_variant (ref this, variant == null ? IntPtr.Zero : variant.Handle);
+		}
+
 		public Value (Opaque val, string type_name)
 		{
 			type = IntPtr.Zero;
@@ -173,7 +178,6 @@ namespace GLib {
 				GLib.Marshaller.Free (Marshal.ReadIntPtr (native_array, i * IntPtr.Size));
 			Marshal.FreeHGlobal (native_array);
 		}
-
 
 		public void Dispose () 
 		{
@@ -269,6 +273,11 @@ namespace GLib {
 		public static explicit operator GLib.Opaque (Value val)
 		{
 			return GLib.Opaque.GetOpaque (g_value_get_boxed (ref val), (Type) new GType (val.type), false);
+		}
+
+		public static explicit operator GLib.Variant (Value Val)
+		{
+			return new Variant (g_value_get_variant (ref Val));
 		}
 
 		public static explicit operator GLib.VariantType (Value val)
@@ -467,6 +476,8 @@ namespace GLib {
 					return (string) this;
 				else if (type == GType.Pointer.Val)
 					return (IntPtr) this;
+				else if (type == GType.Variant.Val)
+					return (GLib.Variant) this;
 				else if (type == GType.Param.Val)
 					return g_value_get_param (ref this);
 				else if (type == ValueArray.GType.Val)
@@ -511,6 +522,8 @@ namespace GLib {
 					g_value_set_float (ref this, (float) value);
 				else if (type == GType.Double.Val)
 					g_value_set_double (ref this, (double) value);
+				else if (type == GType.Variant.Val)
+					g_value_set_variant (ref this, ((GLib.Variant) value).Handle);
 				else if (type == GType.String.Val) {
 					IntPtr native = GLib.Marshaller.StringToPtrGStrdup ((string)value);
 					g_value_set_string (ref this, native);
@@ -657,8 +670,12 @@ namespace GLib {
 
 		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_value_set_enum (ref Value val, int data);
+
 		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_value_set_flags (ref Value val, uint data);
+
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern void g_value_set_variant (ref Value val, IntPtr data);
 		
 		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_value_get_boolean (ref Value val);
@@ -716,10 +733,14 @@ namespace GLib {
 
 		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern int g_value_get_enum (ref Value val);
+
 		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern uint g_value_get_flags (ref Value val);
 
 		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_strv_get_type ();
+
+		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_value_get_variant (ref Value val);
 	}
 }

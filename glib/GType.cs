@@ -92,6 +92,8 @@ namespace GLib {
 		public static readonly GType Boxed = new GType ((IntPtr) TypeFundamentals.TypeBoxed);
 		public static readonly GType Param = new GType ((IntPtr) TypeFundamentals.TypeParam);
 		public static readonly GType Object = new GType ((IntPtr) TypeFundamentals.TypeObject);
+		public static readonly GType Variant = new GType ((IntPtr) TypeFundamentals.TypeVariant);
+
 
 		static IDictionary<IntPtr, Type> types = new Dictionary<IntPtr, Type> ();
 		static IDictionary<Type, GType> gtypes = new Dictionary<Type, GType> ();
@@ -126,6 +128,7 @@ namespace GLib {
 			Register (GType.Pointer, typeof (IntPtr));
 			Register (GType.Object, typeof (GLib.Object));
 			Register (GType.Pointer, typeof (IntPtr));
+			Register (GType.Variant, typeof (GLib.Variant));
 
 			// One-way mapping
 			gtypes[typeof (char)] = GType.UInt;

@@ -43,5 +43,6 @@ namespace GLib {
 		TypeBoxed	= 18 << 2,
 		TypeParam	= 19 << 2,
 		TypeObject	= 20 << 2,
+		TypeVariant	= 21 << 2
 	}
 }
