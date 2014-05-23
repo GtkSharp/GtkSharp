@@ -301,9 +301,10 @@ echo "---"
 
 if test "x$has_mono" = "xtrue"; then
 	mono_prefix=`pkg-config --variable=prefix mono`
-	if test "x$mono_prefix" != "x$prefix"; then
-		AC_MSG_WARN(Prefix to use ($prefix) is not the same as Mono's ($mono_prefix).
-			Consider using ./configure --prefix=$mono_prefix
+	mono_prefix_canonical=`readlink -m $mono_prefix`
+	if test "x$mono_prefix_canonical" != "x$prefix"; then
+		AC_MSG_WARN(Prefix to use ($prefix) is not the same as Mono's ($mono_prefix_canonical).
+			Consider using ./configure --prefix=$mono_prefix_canonical
 			See the README for more information.
 		)
 	fi
