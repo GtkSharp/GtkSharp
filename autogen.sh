@@ -72,7 +72,7 @@ LIBTOOLIZE=${LIBTOOLIZE:-libtoolize}
 if grep "^AM_PROG_LIBTOOL" configure.ac >/dev/null; then
   if test -z "$NO_LIBTOOLIZE" ; then 
     echo "Running $LIBTOOLIZE..."
-    $LIBTOOLIZE --force --copy
+    $LIBTOOLIZE --force --copy --quiet
   fi
 fi
 
