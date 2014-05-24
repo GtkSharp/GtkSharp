@@ -156,7 +156,7 @@ namespace GtkDemo
 				pixbufLoader.AreaUpdated += new AreaUpdatedHandler (ProgressiveUpdatedCallback);
 			}
 
-			if (imageStream.PeekChar () != -1) {
+			if (imageStream.BaseStream.Position != imageStream.BaseStream.Length) {
 				byte[] bytes = imageStream.ReadBytes (256);
 				pixbufLoader.Write (bytes);
 				return true; // leave the timeout active
