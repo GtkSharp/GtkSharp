@@ -175,7 +175,14 @@ namespace GtkDemo
 
 		void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args)
 		{
-			progressiveImage.QueueDraw ();
+			/* We know the pixbuf inside the GtkImage has changed, but the image
+			 * itself doesn't know this; so give it a hint by setting the pixbuf
+			 * again. Queuing a redraw used to be sufficient, but in recent GTK+,
+			 * GtkImage uses GtkIconHelper which caches the pixbuf state and will
+			 * just redraw from the cache.
+			 */
+			Pixbuf pixbuf = progressiveImage.Pixbuf;
+			progressiveImage.Pixbuf = pixbuf;
 		}
 	}
 }
