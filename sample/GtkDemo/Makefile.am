@@ -36,6 +36,7 @@ sources = \
 	DemoPixbuf.cs			\
 	DemoRotatedText.cs		\
 	DemoSizeGroup.cs		\
+	DemoSpinner.cs			\
 	DemoStockBrowser.cs		\
 	DemoTextView.cs			\
 	DemoTreeStore.cs		\
