@@ -13,7 +13,7 @@ DEBUGS = $(addsuffix .mdb, $(TARGETS))
 CLEANFILES = $(TARGETS) $(DEBUGS)
 noinst_SCRIPTS = $(TARGETS)
 
-EXTRA_DIST = $(sources) $(image_names)
+EXTRA_DIST = $(sources) $(image_names) $(css_names)
 
 sources = \
 	DemoApplicationWindow.cs	\
@@ -21,6 +21,7 @@ sources = \
 	DemoButtonBox.cs		\
 	DemoClipboard.cs		\
 	DemoColorSelection.cs	\
+	DemoCssBasics.cs		\
 	DemoDialog.cs			\
 	DemoDrawingArea.cs		\
 	DemoEditableCells.cs	\
@@ -73,9 +74,18 @@ image_names = \
 	images/gtk-logo-rgb.gif \
 	images/floppybuddy.gif
 
+css = \
+	css/css_basics.css,css_basics.css \
+	css/reset.css,reset.css
+
+css_names = \
+	css/css_basics.css \
+	css/reset.css
+
 build_sources = $(addprefix $(srcdir)/, $(sources))
 build_images = $(addprefix $(srcdir)/, $(images))
-resources = $(addprefix -resource:, $(build_sources), $(build_images))
+build_css = $(addprefix $(srcdir)/, $(css))
+resources = $(addprefix -resource:, $(build_sources), $(build_images), $(build_css))
 
 GtkDemo.exe: $(build_sources) $(assemblies)
 	$(CSC) $(CSFLAGS) -out:GtkDemo.exe $(build_sources) $(references) $(resources)
