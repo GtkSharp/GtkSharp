@@ -314,6 +314,13 @@ namespace Cairo {
 			}
 		}
 
+		public bool HasCurrentPoint {
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_has_current_point (handle);
+			}
+		}
+
 		[Obsolete ("Use GetTarget/SetTarget")]
 		public Cairo.Surface Target {
 			set {
@@ -536,12 +543,6 @@ namespace Cairo {
 		{
 			CheckDisposed ();
 			NativeMethods.cairo_append_path (handle, path.Handle);
-		}
-
-		public void PathExtents (out double x1, out double y1, out double x2, out double y2)
-		{
-			CheckDisposed ();
-			NativeMethods.cairo_path_extents (handle, out x1, out y1, out x2, out y2);
 		}
 
 #endregion
@@ -1023,18 +1024,6 @@ namespace Cairo {
 			Marshal.FreeHGlobal (ptr);
 
 			return extents;
-		}
-
-		public static int FormatStrideForWidth (Format format, int width)
-		{
-			return NativeMethods.cairo_format_stride_for_width (format, width);
-		}
-
-		public bool HasCurrentPoint {
-			get {
-				CheckDisposed ();
-				return NativeMethods.cairo_has_current_point (handle);
-			}
 		}
 	}
 }
