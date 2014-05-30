@@ -13,7 +13,7 @@ DEBUGS = $(addsuffix .mdb, $(TARGETS))
 CLEANFILES = $(TARGETS) $(DEBUGS)
 noinst_SCRIPTS = $(TARGETS)
 
-EXTRA_DIST = $(sources) $(image_names) $(css_names)
+EXTRA_DIST = $(sources) $(resource_files)
 
 sources = \
 	DemoApplicationWindow.cs	\
@@ -40,11 +40,14 @@ sources = \
 	DemoSpinner.cs			\
 	DemoStockBrowser.cs		\
 	DemoTextView.cs			\
+	DemoThemingStyleClasses.cs	\
 	DemoTreeStore.cs		\
 	DemoUIManager.cs		\
 	DemoPrinting.cs
 
-images = \
+resource_ids = \
+	css/css_basics.css,css_basics.css \
+	css/reset.css,reset.css \
 	images/gnome-foot.png,gnome-foot.png \
 	images/MonoIcon.png,MonoIcon.png \
 	images/gnome-calendar.png,gnome-calendar.png \
@@ -57,9 +60,12 @@ images = \
 	images/apple-red.png,apple-red.png \
 	images/background.jpg,background.jpg \
 	images/gtk-logo-rgb.gif,gtk-logo-rgb.gif \
-	images/floppybuddy.gif,floppybuddy.gif
+	images/floppybuddy.gif,floppybuddy.gif \
+	theming.ui,theming.ui
 
-image_names = \
+resource_files = \
+	css/css_basics.css \
+	css/reset.css \
 	images/gnome-foot.png \
 	images/MonoIcon.png \
 	images/gnome-calendar.png \
@@ -72,20 +78,12 @@ image_names = \
 	images/apple-red.png \
 	images/background.jpg \
 	images/gtk-logo-rgb.gif \
-	images/floppybuddy.gif
-
-css = \
-	css/css_basics.css,css_basics.css \
-	css/reset.css,reset.css
-
-css_names = \
-	css/css_basics.css \
-	css/reset.css
+	images/floppybuddy.gif \
+	theming.ui
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
-build_images = $(addprefix $(srcdir)/, $(images))
-build_css = $(addprefix $(srcdir)/, $(css))
-resources = $(addprefix -resource:, $(build_sources), $(build_images), $(build_css))
+build_resources = $(addprefix $(srcdir)/, $(resource_ids))
+resources = $(addprefix -resource:, $(build_sources), $(build_resources))
 
 GtkDemo.exe: $(build_sources) $(assemblies)
 	$(CSC) $(CSFLAGS) -out:GtkDemo.exe $(build_sources) $(references) $(resources)
