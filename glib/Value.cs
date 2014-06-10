@@ -424,7 +424,7 @@ namespace GLib {
 			else if (t.IsSubclassOf (typeof (GLib.Opaque)))
 				return (GLib.Opaque) this;
 
-			MethodInfo mi = t.GetMethod ("New", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+			MethodInfo mi = t.GetMethod ("New", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, null, new Type[] { typeof(IntPtr) }, null);
 			if (mi != null)
 				return mi.Invoke (null, new object[] {boxed_ptr});
 
