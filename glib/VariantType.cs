@@ -114,11 +114,11 @@ namespace GLib {
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_variant_type_equals (IntPtr a, IntPtr b);
+		static extern bool g_variant_type_equal (IntPtr a, IntPtr b);
 
 		public override bool Equals (object o)
 		{
-			return (o is VariantType) && g_variant_type_equals (Handle, (o as VariantType).Handle);
+			return (o is VariantType) && g_variant_type_equal (Handle, (o as VariantType).Handle);
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
