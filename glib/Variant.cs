@@ -273,5 +273,45 @@ namespace GLib {
 			IntPtr str = g_variant_print(handle, type_annotate);
 			return Marshaller.PtrToStringGFree (str);
 		}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_variant_n_children (IntPtr handle);
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_variant_get_child_value (IntPtr handle, IntPtr index);
+
+		public Variant[] ToArray ()
+		{
+			var n_children = (long) g_variant_n_children (Handle);
+			var ret = new Variant[n_children];
+
+			for (long i = 0; i < n_children; i++) {
+				var h = g_variant_get_child_value (Handle, new IntPtr (i));
+				ret[i] = new Variant (h);
+				g_variant_unref (h);
+			}
+
+			return ret;
+		}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_variant_get_variant (IntPtr handle);
+
+		public Dictionary<string, Variant> ToAsv ()
+		{
+			var ret = new Dictionary<string, Variant> ();
+
+			foreach (var dictEntry in ToArray ()) {
+				var pair = dictEntry.ToArray ();
+				var key = (string) pair[0];
+				var h = g_variant_get_variant (pair[1].Handle);
+				var value = new Variant (h);
+				g_variant_unref (h);
+
+				ret.Add (key, value);
+			}
+
+			return ret;
+		}
 	}
 }

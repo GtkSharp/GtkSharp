@@ -29,6 +29,10 @@ namespace sample
 			dict.Add ("unit", Variant.NewTuple (null));
 			variant = new Variant (dict);
 			Console.WriteLine (variant.Print (true));
+
+			var asv = variant.ToAsv ();
+			Console.WriteLine ("strv: " + asv["strv"].Print(true));
+			Console.WriteLine ("unit: " + asv["unit"].Print(true));
 		}
 
 		public static void Main (string[] args)
