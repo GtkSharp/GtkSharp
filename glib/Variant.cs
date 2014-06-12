@@ -61,6 +61,18 @@ namespace GLib {
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_variant_get_type (IntPtr val);
+
+		VariantType type;
+		public VariantType Type {
+			get {
+				if (type == null)
+					type = new VariantType (g_variant_get_type (Handle));
+				return type;
+			}
+		}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_new_variant (IntPtr val);
 
 		public static Variant NewVariant (Variant val) {

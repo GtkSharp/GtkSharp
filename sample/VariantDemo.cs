@@ -33,6 +33,8 @@ namespace sample
 			var asv = variant.ToAsv ();
 			Console.WriteLine ("strv: " + asv["strv"].Print(true));
 			Console.WriteLine ("unit: " + asv["unit"].Print(true));
+
+			Console.WriteLine ("type: " + variant.Type.ToString ());
 		}
 
 		public static void Main (string[] args)
