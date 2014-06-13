@@ -282,7 +282,7 @@ namespace GLib {
 
 		public string Print (bool type_annotate)
 		{
-			IntPtr str = g_variant_print(handle, type_annotate);
+			IntPtr str = g_variant_print (handle, type_annotate);
 			return Marshaller.PtrToStringGFree (str);
 		}
 
