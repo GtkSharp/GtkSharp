@@ -18,7 +18,7 @@ namespace sample
 			variant = Variant.NewTuple (null);
 			Console.WriteLine (variant.Print (true));
 
-			variant = Variant.NewArray (null, new Variant[] {new Variant ("String 4"), new Variant ("String 5")});
+			variant = Variant.NewArray (new Variant[] {new Variant ("String 4"), new Variant ("String 5")});
 			Console.WriteLine (variant.Print (true));
 
 			variant = Variant.NewArray (VariantType.String, null);

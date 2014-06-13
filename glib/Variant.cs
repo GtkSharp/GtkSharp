@@ -162,10 +162,24 @@ namespace GLib {
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_variant_new_array (IntPtr child_type, IntPtr[] children, UIntPtr n_children);
 
+		public static Variant NewArray (Variant[] children)
+		{
+			if (children == null) {
+				throw new ArgumentNullException ("children", "To create an empty array use NewArray (VariantType.<Type>, null)");
+			}
+
+			return NewArray (null, children);
+		}
+
 		public static Variant NewArray (VariantType type, Variant[] children)
 		{
-			if (children == null)
-				return new Variant (g_variant_new_array (type.Handle, null, new UIntPtr (0ul)));
+			if (children == null) {
+				if (type == null) {
+					throw new ArgumentException ("The type and children parameters cannot be both null");
+				} else {
+					return new Variant (g_variant_new_array (type.Handle, null, new UIntPtr (0ul)));
+				}
+			}
 
 			IntPtr[] native = new IntPtr[children.Length];
 			for (int i = 0; i < children.Length; i++)
