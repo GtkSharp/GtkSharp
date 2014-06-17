@@ -27,6 +27,7 @@ namespace sample
 			var dict = new Dictionary<string, Variant> ();
 			dict.Add ("strv", new Variant (strv));
 			dict.Add ("unit", Variant.NewTuple (null));
+			dict.Add ("str", new Variant ("String 6"));
 			variant = new Variant (dict);
 			Console.WriteLine (variant.Print (true));
 
@@ -35,6 +36,11 @@ namespace sample
 			Console.WriteLine ("unit: " + asv["unit"].Print(true));
 
 			Console.WriteLine ("type: " + variant.Type.ToString ());
+
+			Variant tmp;
+			asv.TryGetValue ("str", out tmp);
+			var str = (string) tmp;
+			Console.WriteLine ("out str " + str);
 		}
 
 		public static void Main (string[] args)

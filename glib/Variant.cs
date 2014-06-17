@@ -283,12 +283,12 @@ namespace GLib {
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_variant_get_string (IntPtr handle);
+		static extern IntPtr g_variant_get_string (IntPtr handle, IntPtr length);
 
 		public static explicit operator string (Variant val)
 		{
-			IntPtr str = g_variant_get_string (val.Handle);
-			return str == IntPtr.Zero ? null : GLib.Marshaller.Utf8PtrToString (str);
+			IntPtr str = g_variant_get_string (val.Handle, IntPtr.Zero);
+			return GLib.Marshaller.Utf8PtrToString (str);
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
