@@ -437,7 +437,11 @@ namespace GLib {
 			if (mi != null)
 				return mi.Invoke (null, new object[] {boxed_ptr});
 
-			ConstructorInfo ci = t.GetConstructor (new Type[] { typeof(IntPtr) });
+			ConstructorInfo ci = t.GetConstructor (new Type[] { typeof(IntPtr), typeof (bool) });
+			if (ci != null)
+				return ci.Invoke (new object[] { boxed_ptr, false });
+
+			ci = t.GetConstructor (new Type[] { typeof(IntPtr) });
 			if (ci != null)
 				return ci.Invoke (new object[] { boxed_ptr });
 
