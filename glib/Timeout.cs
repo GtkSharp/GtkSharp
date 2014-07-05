@@ -91,8 +91,7 @@ namespace GLib {
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 
 			p.ID = g_timeout_add (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
-			lock (Source.source_handlers)
-				Source.source_handlers [p.ID] = p;
+			Source.AddSourceHandler (p.ID, p);
 
 			return p.ID;
 		}
@@ -105,8 +104,7 @@ namespace GLib {
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 
 			p.ID = g_timeout_add_full ((int)priority, interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero, null);
-			lock (Source.source_handlers)
-				Source.source_handlers [p.ID] = p;
+			Source.AddSourceHandler (p.ID, p);
 
 			return p.ID;
 		}
@@ -119,8 +117,7 @@ namespace GLib {
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 
 			p.ID = g_timeout_add_seconds (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
-			lock (Source.source_handlers)
-				Source.source_handlers [p.ID] = p;
+			Source.AddSourceHandler (p.ID, p);
 
 			return p.ID;
 		}
@@ -130,29 +127,9 @@ namespace GLib {
 			Source.Remove (id);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_source_remove (uint id);
-
 		public static bool Remove (TimeoutHandler hndlr)
 		{
-			bool result = false;
-			List<uint> keys = new List<uint> ();
-
-			lock (Source.source_handlers) {
-				foreach (uint code in Source.source_handlers.Keys) {
-					TimeoutProxy p = Source.source_handlers [code] as TimeoutProxy;
-				
-					if (p != null && p.real_handler == hndlr) {
-						keys.Add (code);
-						result = g_source_remove (code);
-					}
-				}
-
-				foreach (object key in keys)
-					Source.source_handlers.Remove (key);
-			}
-
-			return result;
+			return Source.RemoveSourceHandler (hndlr);
 		}
 	}
 }

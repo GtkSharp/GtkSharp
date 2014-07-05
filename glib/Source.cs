@@ -23,6 +23,7 @@ namespace GLib {
 
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	using System.Runtime.InteropServices;
 
 	public delegate bool GSourceFunc ();
@@ -37,8 +38,7 @@ namespace GLib {
 
 		internal void Remove ()
 		{
-			lock (Source.source_handlers)
-				Source.source_handlers.Remove (ID);
+			Source.RemoveSourceHandler (ID);
 			real_handler = null;
 			proxy_handler = null;
 		}
@@ -46,7 +46,7 @@ namespace GLib {
 
 	public partial class Source : GLib.Opaque {
 
-		internal static Hashtable source_handlers = new Hashtable ();
+		private static IDictionary<uint, SourceProxy> source_handlers = new Dictionary<uint, SourceProxy> ();
 
 		private Source () {}
 
@@ -84,6 +84,43 @@ namespace GLib {
 				return;
 			FinalizerInfo info = new FinalizerInfo (Handle);
 			GLib.Timeout.Add (50, new GLib.TimeoutHandler (info.Handler));
+		}
+
+		internal static void AddSourceHandler (uint id, SourceProxy proxy)
+		{
+			lock (Source.source_handlers) {
+				source_handlers [id] = proxy;
+			}
+		}
+
+		internal static void RemoveSourceHandler (uint id)
+		{
+			lock (Source.source_handlers) {
+				source_handlers.Remove (id);
+			}
+		}
+
+		internal static bool RemoveSourceHandler (Delegate hndlr)
+		{
+			bool result = false;
+			List<uint> keys = new List<uint> ();
+
+			lock (source_handlers) {
+				foreach (uint code in source_handlers.Keys) {
+					var p = Source.source_handlers [code];
+
+					if (p != null && p.real_handler == hndlr) {
+						keys.Add (code);
+						result = g_source_remove (code);
+					}
+				}
+
+				foreach (var key in keys) {
+					Source.RemoveSourceHandler (key);
+				}
+			}
+
+			return result;
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
