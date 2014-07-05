@@ -46,10 +46,46 @@ namespace GLib {
 
 	public partial class Source : GLib.Opaque {
 
+		internal static Hashtable source_handlers = new Hashtable ();
+
 		private Source () {}
 
-		internal static Hashtable source_handlers = new Hashtable ();
-		
+		public Source(IntPtr raw) : base(raw) {}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_source_new(IntPtr source_funcs, uint struct_size);
+
+		public Source (GLib.SourceFuncs source_funcs, uint struct_size)
+		{
+			IntPtr native_source_funcs = GLib.Marshaller.StructureToPtrAlloc (source_funcs);
+			Raw = g_source_new(native_source_funcs, struct_size);
+			source_funcs = GLib.SourceFuncs.New (native_source_funcs);
+			Marshal.FreeHGlobal (native_source_funcs);
+		}
+
+		class FinalizerInfo {
+			IntPtr handle;
+
+			public FinalizerInfo (IntPtr handle)
+			{
+				this.handle = handle;
+			}
+
+			public bool Handler ()
+			{
+				g_source_destroy (handle);
+				return false;
+			}
+		}
+
+		~Source ()
+		{
+			if (!Owned)
+				return;
+			FinalizerInfo info = new FinalizerInfo (Handle);
+			GLib.Timeout.Add (50, new GLib.TimeoutHandler (info.Handler));
+		}
+
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_source_remove (uint tag);
 
@@ -58,6 +94,17 @@ namespace GLib {
 			lock (Source.source_handlers)
 				source_handlers.Remove (tag);
 			return g_source_remove (tag);
+		}
+
+		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr g_source_get_type();
+
+		public static GLib.GType GType {
+			get {
+				IntPtr raw_ret = g_source_get_type();
+				GLib.GType ret = new GLib.GType(raw_ret);
+				return ret;
+			}
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
@@ -104,17 +151,6 @@ namespace GLib {
 				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
 				g_source_set_name(Handle, native_value);
 				GLib.Marshaller.Free (native_value);
-			}
-		}
-
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_source_get_type();
-
-		public static GLib.GType GType {
-			get {
-				IntPtr raw_ret = g_source_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
 			}
 		}
 
@@ -288,19 +324,6 @@ namespace GLib {
 			}
 		}
 
-		/*
-		 * commented out because there is already a custom implementation for Remove
-		 *
-		[DllImport (Global.GLibNativeLib, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_source_remove(uint tag);
-
-		public static bool Remove(uint tag) {
-			bool raw_ret = g_source_remove(tag);
-			bool ret = raw_ret;
-			return ret;
-		}
-		*/
-
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool g_source_remove_by_funcs_user_data(IntPtr funcs, IntPtr user_data);
 
@@ -329,19 +352,6 @@ namespace GLib {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			g_source_set_name_by_id(tag, native_name);
 			GLib.Marshaller.Free (native_name);
-		}
-
-		public Source(IntPtr raw) : base(raw) {}
-
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_source_new(IntPtr source_funcs, uint struct_size);
-
-		public Source (GLib.SourceFuncs source_funcs, uint struct_size)
-		{
-			IntPtr native_source_funcs = GLib.Marshaller.StructureToPtrAlloc (source_funcs);
-			Raw = g_source_new(native_source_funcs, struct_size);
-			source_funcs = GLib.SourceFuncs.New (native_source_funcs);
-			Marshal.FreeHGlobal (native_source_funcs);
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
@@ -373,29 +383,5 @@ namespace GLib {
 		{
 			g_source_destroy (raw);
 		}
-
-		class FinalizerInfo {
-			IntPtr handle;
-
-			public FinalizerInfo (IntPtr handle)
-			{
-				this.handle = handle;
-			}
-
-			public bool Handler ()
-			{
-				g_source_destroy (handle);
-				return false;
-			}
-		}
-
-		~Source ()
-		{
-			if (!Owned)
-				return;
-			FinalizerInfo info = new FinalizerInfo (Handle);
-			GLib.Timeout.Add (50, new GLib.TimeoutHandler (info.Handler));
-		}
 	}
-
 }
