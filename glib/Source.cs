@@ -152,9 +152,15 @@ namespace GLib {
 
 		public static bool Remove (uint tag)
 		{
-			lock (Source.source_handlers)
-				source_handlers.Remove (tag);
-			return g_source_remove (tag);
+			// g_source_remove always returns true, so we follow that
+			bool ret = true;
+
+			lock (Source.source_handlers) {
+				if (source_handlers.Remove (tag)) {
+					ret = g_source_remove (tag);
+				}
+			}
+			return ret;
 		}
 
 		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
