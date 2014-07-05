@@ -31,10 +31,34 @@ namespace GLib {
 	//
 	// Base class for IdleProxy and TimeoutProxy
 	//
-	internal class SourceProxy {
+	internal class SourceProxy : IDisposable {
 		internal Delegate real_handler;
 		internal Delegate proxy_handler;
 		internal uint ID;
+
+		~SourceProxy ()
+		{
+			Dispose (false);
+		}
+
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		protected virtual void Dispose (bool disposing)
+		{
+			// Both branches remove our delegate from the
+			// managed list of handlers, but only
+			// Source.Remove will remove it from the
+			// unmanaged list also.
+
+			if (disposing)
+				Remove ();
+			else
+				Source.Remove (ID);
+		}
 
 		internal void Remove ()
 		{
