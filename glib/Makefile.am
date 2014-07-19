@@ -28,6 +28,7 @@ references =
 
 sources =		 			\
 	Argv.cs					\
+	Bytes.cs				\
 	ConnectBeforeAttribute.cs		\
 	Cond.cs					\
 	Date.cs					\

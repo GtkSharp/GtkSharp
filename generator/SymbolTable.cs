@@ -142,6 +142,7 @@ namespace GtkSharp.Generation {
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
 			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify", "null"));
 			AddType (new SimpleGen ("GThread", "GLib.Thread", "null"));
+			AddType (new ManualGen ("GBytes", "GLib.Bytes"));
 
 			// FIXME: These ought to be handled properly.
 			AddType (new SimpleGen ("GC", "IntPtr", "IntPtr.Zero"));
