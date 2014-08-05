@@ -290,6 +290,8 @@ namespace GtkSharp.Generation {
 					return new string [] { gen.MarshalType + " native_" + CallName + ";" };
 				} else if (PassAs == "ref" && CSType != MarshalType) {
 					return new string [] { gen.MarshalType + " native_" + CallName + " = (" + gen.MarshalType + ") " + CallName + ";" };
+				} else if (gen is OpaqueGen && Owned) {
+					return new string [] { CallName + ".Owned = false;" };
 				}
 
 				return new string [0];
