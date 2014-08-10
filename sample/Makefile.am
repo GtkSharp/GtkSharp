@@ -135,5 +135,6 @@ EXTRA_DIST = 				\
 	CustomScrollableWidget.cs	\
 	Actions.cs			\
 	PropertyRegistration.cs		\
-	PolarFixed.cs
+	PolarFixed.cs			\
+	VariantDemo.cs
 
