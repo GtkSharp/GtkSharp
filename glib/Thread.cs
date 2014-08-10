@@ -27,28 +27,8 @@ namespace GLib
 	public class Thread
 	{
 		private Thread () {}
-		
-#if ENABLE_GTHREAD_INIT
-		const string GThreadNativeLib = "libgthread-2.0-0.dll";
 
-		[DllImport (GThreadNativeLib, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_thread_init (IntPtr i);
-
-		public static void Init ()
-		{
-			g_thread_init (IntPtr.Zero);
-		}
-
-		[DllImport (GThreadNativeLib, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_thread_get_initialized ();
-
-		public static bool Supported
-		{
-			get {
-				return g_thread_get_initialized ();
-			}
-		}
-#else
+		[Obsolete ("This is no longer needed, GLib automatically initializes threads")]
 		public static void Init ()
 		{
 			// GLib automatically inits threads in 2.31 and above
@@ -59,7 +39,6 @@ namespace GLib
 		{
 			get { return true; }
 		}
-#endif
 
 	}
 }

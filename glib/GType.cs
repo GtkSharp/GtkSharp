@@ -110,9 +110,6 @@ namespace GLib {
 
 		static GType ()
 		{
-			if (!GLib.Thread.Supported)
-				GLib.Thread.Init ();
-
 			g_type_init ();
 
 			Register (GType.Char, typeof (sbyte));
