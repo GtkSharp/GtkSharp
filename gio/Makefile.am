@@ -12,10 +12,12 @@ glue_includes = gio/gio.h
 POLICY_VERSIONS=
 
 sources =			\
+	Application.cs		\
 	AppInfoAdapter.cs	\
 	FileAdapter.cs		\
 	FileEnumerator.cs	\
 	FileFactory.cs		\
+	GioGlobal.cs		\
 	GioStream.cs		\
 	IFile.cs
 
