@@ -183,7 +183,7 @@ namespace GtkSharp.Generation {
 				* as they may contain class fields which don't appear in the old (version 1) API files. There are also cases in which the order of the
 				* <signal> and <virtual_method> elements do not match the struct layout.
 				*/
-				return (is_interface || this.ParserVersion >= 2) && class_fields_valid;
+				return (is_interface || this.ParserVersion >= 2) && (class_fields_valid || class_struct_name == "GtkWidgetClass");
 			}
 		}
 
