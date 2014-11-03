@@ -186,6 +186,16 @@
       <member cname="PANGO_SCRIPT_CARIAN" name="Carian" />
       <member cname="PANGO_SCRIPT_LYCIAN" name="Lycian" />
       <member cname="PANGO_SCRIPT_LYDIAN" name="Lydian" />
+      <member cname="PANGO_SCRIPT_BATAK" name="Batak" />
+      <member cname="PANGO_SCRIPT_BRAHMI" name="Brahmi" />
+      <member cname="PANGO_SCRIPT_MANDAIC" name="Mandaic" />
+      <member cname="PANGO_SCRIPT_CHAKMA" name="Chakma" />
+      <member cname="PANGO_SCRIPT_MEROITIC_CURSIVE" name="MeroiticCursive" />
+      <member cname="PANGO_SCRIPT_MEROITIC_HIEROGLYPHS" name="MeroiticHieroglyphs" />
+      <member cname="PANGO_SCRIPT_MIAO" name="Miao" />
+      <member cname="PANGO_SCRIPT_SHARADA" name="Sharada" />
+      <member cname="PANGO_SCRIPT_SORA_SOMPENG" name="SoraSompeng" />
+      <member cname="PANGO_SCRIPT_TAKRI" name="Takri" />
     </enum>
     <enum name="Stretch" cname="PangoStretch" gtype="pango_stretch_get_type" type="enum">
       <member cname="PANGO_STRETCH_ULTRA_CONDENSED" name="UltraCondensed" />
@@ -238,14 +248,14 @@
     <callback name="AttrDataCopyFunc" cname="PangoAttrDataCopyFunc">
       <return-type type="gpointer" />
       <parameters>
-        <parameter type="gconstpointer" name="data" />
+        <parameter type="gconstpointer" name="user_data" />
       </parameters>
     </callback>
     <callback name="AttrFilterFunc" cname="PangoAttrFilterFunc">
       <return-type type="gboolean" />
       <parameters>
         <parameter type="PangoAttribute*" name="attribute" />
-        <parameter type="gpointer" name="data" />
+        <parameter type="gpointer" name="user_data" />
       </parameters>
     </callback>
     <callback name="CairoShapeRendererFunc" cname="PangoCairoShapeRendererFunc">
@@ -269,21 +279,18 @@
       <parameters>
         <parameter type="PangoFontset*" name="fontset" />
         <parameter type="PangoFont*" name="font" />
-        <parameter type="gpointer" name="data" />
+        <parameter type="gpointer" name="user_data" />
       </parameters>
     </callback>
-    <object name="CairoFont" cname="PangoCairoFont">
+    <interface name="CairoFont" cname="PangoCairoFont" consume_only="1">
       <method name="GetScaledFont" cname="pango_cairo_font_get_scaled_font">
         <return-type type="cairo_scaled_font_t*" />
       </method>
       <method name="GetType" cname="pango_cairo_font_get_type" shared="true">
         <return-type type="GType" />
       </method>
-    </object>
-    <object name="CairoFontMap" cname="PangoCairoFontMap">
-      <method name="CreateContext" cname="pango_cairo_font_map_create_context" deprecated="1">
-        <return-type type="PangoContext*" />
-      </method>
+    </interface>
+    <interface name="CairoFontMap" cname="PangoCairoFontMap" consume_only="1">
       <method name="GetDefault" cname="pango_cairo_font_map_get_default" shared="true">
         <return-type type="PangoFontMap*" />
       </method>
@@ -311,11 +318,38 @@
           <parameter type="double" name="dpi" />
         </parameters>
       </method>
+    </interface>
+    <object name="CairoCoreTextFont" cname="PangoCairoCoreTextFont" parent="PangoCoreTextFont">
+      <class_struct cname="PangoCairoCoreTextFontClass">
+        <field name="ParentClass" cname="parent_class" type="PangoCoreTextFontClass" />
+      </class_struct>
+      <implements>
+        <interface cname="PangoCairoFont" />
+      </implements>
+      <method name="GetType" cname="pango_cairo_core_text_font_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="CairoCoreTextFontMap" cname="PangoCairoCoreTextFontMap" parent="PangoCoreTextFontMap">
+      <class_struct cname="PangoCairoCoreTextFontMapClass">
+        <field name="ParentClass" cname="parent_class" type="PangoCoreTextFontMapClass" />
+      </class_struct>
+      <field name="Serial" cname="serial" type="guint" />
+      <field name="Dpi" cname="dpi" type="gdouble" />
+      <implements>
+        <interface cname="PangoCairoFontMap" />
+      </implements>
+      <method name="GetType" cname="pango_cairo_core_text_font_map_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
     </object>
     <object name="Context" cname="PangoContext" parent="GObject">
       <class_struct cname="PangoContextClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
       </class_struct>
+      <method name="Changed" cname="pango_context_changed">
+        <return-type type="void" />
+      </method>
       <method name="GetBaseDir" cname="pango_context_get_base_dir">
         <return-type type="PangoDirection" />
       </method>
@@ -346,6 +380,9 @@
           <parameter type="const-PangoFontDescription*" name="desc" />
           <parameter type="PangoLanguage*" name="language" />
         </parameters>
+      </method>
+      <method name="GetSerial" cname="pango_context_get_serial">
+        <return-type type="guint" />
       </method>
       <method name="GetType" cname="pango_context_get_type" shared="true">
         <return-type type="GType" />
@@ -412,6 +449,30 @@
         <parameters>
           <parameter type="const-PangoMatrix*" name="matrix" />
         </parameters>
+      </method>
+    </object>
+    <object name="CoreTextFont" cname="PangoCoreTextFont" parent="PangoFont">
+      <class_struct cname="PangoCoreTextFontClass">
+        <field name="ParentClass" cname="parent_class" type="PangoFontClass" />
+        <method vm="_pango_reserved1" />
+        <method vm="_pango_reserved2" />
+        <method vm="_pango_reserved3" />
+        <method vm="_pango_reserved4" />
+      </class_struct>
+      <virtual_method name="PangoReserved1" cname="_pango_reserved1" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="PangoReserved2" cname="_pango_reserved2" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="PangoReserved3" cname="_pango_reserved3" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <virtual_method name="PangoReserved4" cname="_pango_reserved4" shared="true" padding="true">
+        <return-type type="void" />
+      </virtual_method>
+      <method name="GetType" cname="pango_core_text_font_get_type" shared="true">
+        <return-type type="GType" />
       </method>
     </object>
     <object name="Font" cname="PangoFont" parent="GObject">
@@ -523,8 +584,14 @@
       </method>
     </object>
     <object name="FontMap" cname="PangoFontMap" parent="GObject">
+      <method name="Changed" cname="pango_font_map_changed">
+        <return-type type="void" />
+      </method>
       <method name="CreateContext" cname="pango_font_map_create_context">
         <return-type type="PangoContext*" />
+      </method>
+      <method name="GetSerial" cname="pango_font_map_get_serial">
+        <return-type type="guint" />
       </method>
       <method name="GetType" cname="pango_font_map_get_type" shared="true">
         <return-type type="GType" />
@@ -556,12 +623,6 @@
       <class_struct cname="PangoFT2FontMapClass">
         <field name="ParentClass" cname="parent_class" type="PangoFcFontMapClass" />
       </class_struct>
-      <method name="CreateContext" cname="pango_ft2_font_map_create_context" deprecated="1">
-        <return-type type="PangoContext*" />
-      </method>
-      <method name="ForDisplay" cname="pango_ft2_font_map_for_display" deprecated="1" shared="true">
-        <return-type type="PangoFontMap*" />
-      </method>
       <method name="GetType" cname="pango_ft2_font_map_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -606,6 +667,9 @@
       </method>
       <method name="GetBaseline" cname="pango_layout_get_baseline">
         <return-type type="int" />
+      </method>
+      <method name="GetCharacterCount" cname="pango_layout_get_character_count">
+        <return-type type="gint" />
       </method>
       <method name="GetContext" cname="pango_layout_get_context">
         <return-type type="PangoContext*" />
@@ -671,6 +735,12 @@
           <parameter type="gint*" name="n_attrs" />
         </parameters>
       </method>
+      <method name="GetLogAttrsReadonly" cname="pango_layout_get_log_attrs_readonly">
+        <return-type type="const-PangoLogAttr*" />
+        <parameters>
+          <parameter type="gint*" name="n_attrs" />
+        </parameters>
+      </method>
       <method name="GetPixelExtents" cname="pango_layout_get_pixel_extents">
         <return-type type="void" />
         <parameters>
@@ -684,6 +754,9 @@
           <parameter type="int*" name="width" />
           <parameter type="int*" name="height" />
         </parameters>
+      </method>
+      <method name="GetSerial" cname="pango_layout_get_serial">
+        <return-type type="guint" />
       </method>
       <method name="GetSingleParagraphMode" cname="pango_layout_get_single_paragraph_mode">
         <return-type type="gboolean" />
@@ -1105,7 +1178,6 @@
     <struct name="EllipsizeState" cname="EllipsizeState" opaque="true" />
     <struct name="Extents" cname="Extents" opaque="true" />
     <struct name="FontHashKey" cname="FontHashKey" opaque="true" />
-    <struct name="GlyphInfo" cname="GlyphInfo" opaque="true" />
     <struct name="ItemProperties" cname="ItemProperties" opaque="true" />
     <struct name="ItemizeState" cname="ItemizeState" opaque="true" />
     <struct name="LineIter" cname="LineIter" opaque="true" />
@@ -1326,7 +1398,6 @@
       </method>
     </struct>
     <struct name="BlockInfo" cname="PangoBlockInfo" opaque="true" />
-    <struct name="CairoATSUIFontMapClass" cname="PangoCairoATSUIFontMapClass" opaque="true" />
     <struct name="CairoContextInfo" cname="PangoCairoContextInfo" opaque="true" />
     <struct name="CairoFcFont" cname="PangoCairoFcFont" opaque="true" />
     <struct name="CairoFcFontClass" cname="PangoCairoFcFontClass" opaque="true" />
@@ -1358,6 +1429,16 @@
         <return-type type="gchar*" />
       </method>
     </boxed>
+    <struct name="CoreTextFace" cname="PangoCoreTextFace" opaque="true" />
+    <struct name="CoreTextFaceClass" cname="PangoCoreTextFaceClass" opaque="true" />
+    <struct name="CoreTextFamily" cname="PangoCoreTextFamily" opaque="true" />
+    <struct name="CoreTextFamilyClass" cname="PangoCoreTextFamilyClass" opaque="true" />
+    <struct name="CoreTextFontKey" cname="PangoCoreTextFontKey" opaque="true" />
+    <struct name="CoreTextFontMap" cname="PangoCoreTextFontMap" opaque="true" />
+    <struct name="CoreTextFontMapClass" cname="PangoCoreTextFontMapClass" opaque="true" />
+    <struct name="CoreTextFontset" cname="PangoCoreTextFontset" opaque="true" />
+    <struct name="CoreTextFontsetClass" cname="PangoCoreTextFontsetClass" opaque="true" />
+    <struct name="CoreTextFontsetKey" cname="PangoCoreTextFontsetKey" opaque="true" />
     <struct name="Coverage" cname="PangoCoverage" opaque="true">
       <method name="Copy" cname="pango_coverage_copy">
         <return-type type="PangoCoverage*" owned="true" />
@@ -1407,29 +1488,7 @@
     <struct name="EnginePair" cname="PangoEnginePair" opaque="true" />
     <struct name="EngineShape" cname="PangoEngineShape" opaque="true" />
     <struct name="FT2Family" cname="PangoFT2Family" opaque="true" />
-    <struct name="FT2Font" cname="PangoFT2Font" opaque="true">
-      <method name="GetCoverage" cname="pango_ft2_font_get_coverage" deprecated="1" shared="true">
-        <return-type type="PangoCoverage*" />
-        <parameters>
-          <parameter type="PangoFont*" name="font" />
-          <parameter type="PangoLanguage*" name="language" />
-        </parameters>
-      </method>
-      <method name="GetFace" cname="pango_ft2_font_get_face" deprecated="1" shared="true">
-        <return-type type="FT_Face" />
-        <parameters>
-          <parameter type="PangoFont*" name="font" />
-        </parameters>
-      </method>
-      <method name="GetKerning" cname="pango_ft2_font_get_kerning" deprecated="1" shared="true">
-        <return-type type="int" />
-        <parameters>
-          <parameter type="PangoFont*" name="font" />
-          <parameter type="PangoGlyph" name="left" />
-          <parameter type="PangoGlyph" name="right" />
-        </parameters>
-      </method>
-    </struct>
+    <struct name="FT2Font" cname="PangoFT2Font" opaque="true" />
     <struct name="FT2FontClass" cname="PangoFT2FontClass" opaque="true" />
     <struct name="FT2GlyphInfo" cname="PangoFT2GlyphInfo" opaque="true" />
     <struct name="FT2Renderer" cname="PangoFT2Renderer" opaque="true" />
@@ -2083,7 +2142,6 @@
     <struct name="Module" cname="PangoModule" opaque="true" />
     <struct name="ModuleClass" cname="PangoModuleClass" opaque="true" />
     <struct name="OTInfoClass" cname="PangoOTInfoClass" opaque="true" />
-    <struct name="OTRule" cname="PangoOTRule" opaque="true" />
     <struct name="OTRulesetClass" cname="PangoOTRulesetClass" opaque="true" />
     <struct name="Rectangle" cname="PangoRectangle">
       <field name="X" cname="x" type="int" />
@@ -2098,8 +2156,8 @@
       <method name="GetRange" cname="pango_script_iter_get_range">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-char**" pass_as="out" name="start" />
-          <parameter type="const-char**" pass_as="out" name="end" />
+          <parameter type="const-char**" name="start" />
+          <parameter type="const-char**" name="end" />
           <parameter type="PangoScript*" name="script" />
         </parameters>
       </method>
@@ -2413,13 +2471,6 @@
           <parameter type="int" name="attrs_len" />
         </parameters>
       </method>
-      <method name="GetMirrorChar" cname="pango_get_mirror_char" deprecated="1" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="gunichar" name="ch" />
-          <parameter type="gunichar*" name="mirrored_ch" />
-        </parameters>
-      </method>
       <method name="GravityGetForMatrix" cname="pango_gravity_get_for_matrix" shared="true">
         <return-type type="PangoGravity" />
         <parameters>
@@ -2572,6 +2623,17 @@
         <return-type type="PangoLanguage*" />
         <parameters>
           <parameter type="PangoScript" name="script" />
+        </parameters>
+      </method>
+      <method name="ShapeFull" cname="pango_shape_full" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="item_text" />
+          <parameter type="gint" name="item_length" />
+          <parameter type="const-gchar*" name="paragraph_text" />
+          <parameter type="gint" name="paragraph_length" />
+          <parameter type="const-PangoAnalysis*" name="analysis" />
+          <parameter type="PangoGlyphString*" name="glyphs" />
         </parameters>
       </method>
       <method name="SkipSpace" cname="pango_skip_space" shared="true">
@@ -2738,6 +2800,24 @@
         <parameters>
           <parameter type="cairo_t*" name="cr" />
           <parameter type="PangoLayout*" name="layout" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Markup" cname="PangoMarkup_">
+      <method name="ParserFinish" cname="pango_markup_parser_finish" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GMarkupParseContext*" name="context" />
+          <parameter type="PangoAttrList**" name="attr_list" />
+          <parameter type="char**" name="text" />
+          <parameter type="gunichar*" name="accel_char" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="ParserNew" cname="pango_markup_parser_new" shared="true">
+        <return-type type="GMarkupParseContext*" />
+        <parameters>
+          <parameter type="gunichar" name="accel_marker" />
         </parameters>
       </method>
     </class>

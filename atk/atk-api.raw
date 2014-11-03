@@ -138,6 +138,35 @@
       <member cname="ATK_ROLE_FORM" name="Form" />
       <member cname="ATK_ROLE_LINK" name="Link" />
       <member cname="ATK_ROLE_INPUT_METHOD_WINDOW" name="InputMethodWindow" />
+      <member cname="ATK_ROLE_TABLE_ROW" name="TableRow" />
+      <member cname="ATK_ROLE_TREE_ITEM" name="TreeItem" />
+      <member cname="ATK_ROLE_DOCUMENT_SPREADSHEET" name="DocumentSpreadsheet" />
+      <member cname="ATK_ROLE_DOCUMENT_PRESENTATION" name="DocumentPresentation" />
+      <member cname="ATK_ROLE_DOCUMENT_TEXT" name="DocumentText" />
+      <member cname="ATK_ROLE_DOCUMENT_WEB" name="DocumentWeb" />
+      <member cname="ATK_ROLE_DOCUMENT_EMAIL" name="DocumentEmail" />
+      <member cname="ATK_ROLE_COMMENT" name="Comment" />
+      <member cname="ATK_ROLE_LIST_BOX" name="ListBox" />
+      <member cname="ATK_ROLE_GROUPING" name="Grouping" />
+      <member cname="ATK_ROLE_IMAGE_MAP" name="ImageMap" />
+      <member cname="ATK_ROLE_NOTIFICATION" name="Notification" />
+      <member cname="ATK_ROLE_INFO_BAR" name="InfoBar" />
+      <member cname="ATK_ROLE_LEVEL_BAR" name="LevelBar" />
+      <member cname="ATK_ROLE_TITLE_BAR" name="TitleBar" />
+      <member cname="ATK_ROLE_BLOCK_QUOTE" name="BlockQuote" />
+      <member cname="ATK_ROLE_AUDIO" name="Audio" />
+      <member cname="ATK_ROLE_VIDEO" name="Video" />
+      <member cname="ATK_ROLE_DEFINITION" name="Definition" />
+      <member cname="ATK_ROLE_ARTICLE" name="Article" />
+      <member cname="ATK_ROLE_LANDMARK" name="Landmark" />
+      <member cname="ATK_ROLE_LOG" name="Log" />
+      <member cname="ATK_ROLE_MARQUEE" name="Marquee" />
+      <member cname="ATK_ROLE_MATH" name="Math" />
+      <member cname="ATK_ROLE_RATING" name="Rating" />
+      <member cname="ATK_ROLE_TIMER" name="Timer" />
+      <member cname="ATK_ROLE_DESCRIPTION_LIST" name="DescriptionList" />
+      <member cname="ATK_ROLE_DESCRIPTION_TERM" name="DescriptionTerm" />
+      <member cname="ATK_ROLE_DESCRIPTION_VALUE" name="DescriptionValue" />
       <member cname="ATK_ROLE_LAST_DEFINED" name="LastDefined" />
     </enum>
     <enum name="StateType" cname="AtkStateType" gtype="atk_state_type_get_type" type="enum">
@@ -180,6 +209,8 @@
       <member cname="ATK_STATE_DEFAULT" name="Default" />
       <member cname="ATK_STATE_ANIMATED" name="Animated" />
       <member cname="ATK_STATE_VISITED" name="Visited" />
+      <member cname="ATK_STATE_CHECKABLE" name="Checkable" />
+      <member cname="ATK_STATE_HAS_POPUP" name="HasPopup" />
       <member cname="ATK_STATE_LAST_DEFINED" name="LastDefined" />
     </enum>
     <enum name="TextAttribute" cname="AtkTextAttribute" gtype="atk_text_attribute_get_type" type="enum">
@@ -228,6 +259,31 @@
       <member cname="ATK_TEXT_CLIP_MAX" name="Max" />
       <member cname="ATK_TEXT_CLIP_BOTH" name="Both" />
     </enum>
+    <enum name="TextGranularity" cname="AtkTextGranularity" gtype="atk_text_granularity_get_type" type="enum">
+      <member cname="ATK_TEXT_GRANULARITY_CHAR" name="Char" />
+      <member cname="ATK_TEXT_GRANULARITY_WORD" name="Word" />
+      <member cname="ATK_TEXT_GRANULARITY_SENTENCE" name="Sentence" />
+      <member cname="ATK_TEXT_GRANULARITY_LINE" name="Line" />
+      <member cname="ATK_TEXT_GRANULARITY_PARAGRAPH" name="Paragraph" />
+    </enum>
+    <enum name="ValueType" cname="AtkValueType" gtype="atk_value_type_get_type" type="enum">
+      <member cname="ATK_VALUE_VERY_WEAK" name="VeryWeak" />
+      <member cname="ATK_VALUE_WEAK" name="Weak" />
+      <member cname="ATK_VALUE_ACCEPTABLE" name="Acceptable" />
+      <member cname="ATK_VALUE_STRONG" name="Strong" />
+      <member cname="ATK_VALUE_VERY_STRONG" name="VeryStrong" />
+      <member cname="ATK_VALUE_VERY_LOW" name="VeryLow" />
+      <member cname="ATK_VALUE_LOW" name="Low" />
+      <member cname="ATK_VALUE_MEDIUM" name="Medium" />
+      <member cname="ATK_VALUE_HIGH" name="High" />
+      <member cname="ATK_VALUE_VERY_HIGH" name="VeryHigh" />
+      <member cname="ATK_VALUE_VERY_BAD" name="VeryBad" />
+      <member cname="ATK_VALUE_BAD" name="Bad" />
+      <member cname="ATK_VALUE_GOOD" name="Good" />
+      <member cname="ATK_VALUE_VERY_GOOD" name="VeryGood" />
+      <member cname="ATK_VALUE_BEST" name="Best" />
+      <member cname="ATK_VALUE_LAST_DEFINED" name="LastDefined" />
+    </enum>
     <callback name="EventListener" cname="AtkEventListener">
       <return-type type="void" />
       <parameters>
@@ -240,28 +296,28 @@
     <callback name="FocusHandler" cname="AtkFocusHandler">
       <return-type type="void" />
       <parameters>
-        <parameter type="AtkObject*" name="arg1" />
-        <parameter type="gboolean" name="arg2" />
+        <parameter type="AtkObject*" name="object" />
+        <parameter type="gboolean" name="focus_in" />
       </parameters>
     </callback>
     <callback name="Function" cname="AtkFunction">
       <return-type type="gboolean" />
       <parameters>
-        <parameter type="gpointer" name="data" />
+        <parameter type="gpointer" name="user_data" />
       </parameters>
     </callback>
     <callback name="KeySnoopFunc" cname="AtkKeySnoopFunc">
       <return-type type="gint" />
       <parameters>
         <parameter type="AtkKeyEventStruct*" name="event" />
-        <parameter type="gpointer" name="func_data" />
+        <parameter type="gpointer" name="user_data" />
       </parameters>
     </callback>
     <callback name="PropertyChangeHandler" cname="AtkPropertyChangeHandler">
       <return-type type="void" />
       <parameters>
-        <parameter type="AtkObject*" name="arg1" />
-        <parameter type="AtkPropertyValues*" name="arg2" />
+        <parameter type="AtkObject*" name="obj" />
+        <parameter type="AtkPropertyValues*" name="vals" />
       </parameters>
     </callback>
     <interface name="Action" cname="AtkAction">
@@ -274,7 +330,6 @@
         <method vm="get_keybinding" />
         <method vm="set_description" />
         <method vm="get_localized_name" />
-        <field name="Pad2" cname="pad2" type="AtkFunction" />
       </class_struct>
       <virtual_method name="DoAction" cname="do_action">
         <return-type type="gboolean" />
@@ -287,19 +342,19 @@
         <parameters />
       </virtual_method>
       <virtual_method name="GetDescription" cname="get_description">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters>
           <parameter type="gint" name="i" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetName" cname="get_name">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters>
           <parameter type="gint" name="i" />
         </parameters>
       </virtual_method>
       <virtual_method name="GetKeybinding" cname="get_keybinding">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters>
           <parameter type="gint" name="i" />
         </parameters>
@@ -312,7 +367,7 @@
         </parameters>
       </virtual_method>
       <virtual_method name="GetLocalizedName" cname="get_localized_name">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters>
           <parameter type="gint" name="i" />
         </parameters>
@@ -480,7 +535,7 @@
         <return-type type="gdouble" />
         <parameters />
       </virtual_method>
-      <method name="AddFocusHandler" cname="atk_component_add_focus_handler">
+      <method name="AddFocusHandler" cname="atk_component_add_focus_handler" deprecated="1">
         <return-type type="guint" />
         <parameters>
           <parameter type="AtkFocusHandler" name="handler" />
@@ -513,21 +568,6 @@
       <method name="GetMdiZorder" cname="atk_component_get_mdi_zorder">
         <return-type type="gint" />
       </method>
-      <method name="GetPosition" cname="atk_component_get_position">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint*" name="x" />
-          <parameter type="gint*" name="y" />
-          <parameter type="AtkCoordType" name="coord_type" />
-        </parameters>
-      </method>
-      <method name="GetSize" cname="atk_component_get_size">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint*" name="width" />
-          <parameter type="gint*" name="height" />
-        </parameters>
-      </method>
       <method name="GetType" cname="atk_component_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -542,7 +582,7 @@
           <parameter type="AtkCoordType" name="coord_type" />
         </parameters>
       </method>
-      <method name="RemoveFocusHandler" cname="atk_component_remove_focus_handler">
+      <method name="RemoveFocusHandler" cname="atk_component_remove_focus_handler" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="guint" name="handler_id" />
@@ -583,10 +623,8 @@
         <method vm="get_document_attributes" />
         <method vm="get_document_attribute_value" />
         <method vm="set_document_attribute" />
-        <field name="Pad1" cname="pad1" type="AtkFunction" />
-        <field name="Pad2" cname="pad2" type="AtkFunction" />
-        <field name="Pad3" cname="pad3" type="AtkFunction" />
-        <field name="Pad4" cname="pad4" type="AtkFunction" />
+        <method vm="get_current_page_number" />
+        <method vm="get_page_count" />
       </class_struct>
       <signal name="LoadComplete" cname="load_complete" when="LAST">
         <return-type type="void" />
@@ -600,8 +638,14 @@
         <return-type type="void" />
         <parameters />
       </signal>
+      <signal name="PageChanged" cname="page_changed" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="gint32" />
+        </parameters>
+      </signal>
       <virtual_method name="GetDocumentType" cname="get_document_type">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters />
       </virtual_method>
       <virtual_method name="GetDocument" cname="get_document">
@@ -609,7 +653,7 @@
         <parameters />
       </virtual_method>
       <virtual_method name="GetDocumentLocale" cname="get_document_locale">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters />
       </virtual_method>
       <virtual_method name="GetDocumentAttributes" cname="get_document_attributes">
@@ -617,7 +661,7 @@
         <parameters />
       </virtual_method>
       <virtual_method name="GetDocumentAttributeValue" cname="get_document_attribute_value">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters>
           <parameter type="const-gchar*" name="attribute_name" />
         </parameters>
@@ -629,6 +673,14 @@
           <parameter type="const-gchar*" name="attribute_value" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetCurrentPageNumber" cname="get_current_page_number">
+        <return-type type="gint" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetPageCount" cname="get_page_count">
+        <return-type type="gint" />
+        <parameters />
+      </virtual_method>
       <method name="GetAttributeValue" cname="atk_document_get_attribute_value">
         <return-type type="const-gchar*" />
         <parameters>
@@ -638,14 +690,20 @@
       <method name="GetAttributes" cname="atk_document_get_attributes">
         <return-type type="AtkAttributeSet*" />
       </method>
-      <method name="GetDocument" cname="atk_document_get_document">
+      <method name="GetCurrentPageNumber" cname="atk_document_get_current_page_number">
+        <return-type type="gint" />
+      </method>
+      <method name="GetDocument" cname="atk_document_get_document" deprecated="1">
         <return-type type="gpointer" />
       </method>
-      <method name="GetDocumentType" cname="atk_document_get_document_type">
+      <method name="GetDocumentType" cname="atk_document_get_document_type" deprecated="1">
         <return-type type="const-gchar*" />
       </method>
-      <method name="GetLocale" cname="atk_document_get_locale">
+      <method name="GetLocale" cname="atk_document_get_locale" deprecated="1">
         <return-type type="const-gchar*" />
+      </method>
+      <method name="GetPageCount" cname="atk_document_get_page_count">
+        <return-type type="gint" />
       </method>
       <method name="GetType" cname="atk_document_get_type" shared="true">
         <return-type type="GType" />
@@ -668,8 +726,6 @@
         <method vm="cut_text" />
         <method vm="delete_text" />
         <method vm="paste_text" />
-        <field name="Pad1" cname="pad1" type="AtkFunction" />
-        <field name="Pad2" cname="pad2" type="AtkFunction" />
       </class_struct>
       <virtual_method name="SetRunAttributes" cname="set_run_attributes">
         <return-type type="gboolean" />
@@ -777,7 +833,6 @@
       <class_struct cname="AtkHyperlinkImplIface">
         <field name="Parent" cname="parent" type="GTypeInterface" />
         <method vm="get_hyperlink" />
-        <field name="Pad1" cname="pad1" type="AtkFunction" />
       </class_struct>
       <virtual_method name="GetHyperlink" cname="get_hyperlink">
         <return-type type="AtkHyperlink*" />
@@ -797,9 +852,6 @@
         <method vm="get_n_links" />
         <method vm="get_link_index" />
         <method signal_vm="link_selected" />
-        <field name="Pad1" cname="pad1" type="AtkFunction" />
-        <field name="Pad2" cname="pad2" type="AtkFunction" />
-        <field name="Pad3" cname="pad3" type="AtkFunction" />
       </class_struct>
       <signal name="LinkSelected" cname="link_selected" when="LAST" field_name="link_selected">
         <return-type type="void" />
@@ -850,7 +902,6 @@
         <method vm="get_image_size" />
         <method vm="set_image_description" />
         <method vm="get_image_locale" />
-        <field name="Pad1" cname="pad1" type="AtkFunction" />
       </class_struct>
       <virtual_method name="GetImagePosition" cname="get_image_position">
         <return-type type="void" />
@@ -861,7 +912,7 @@
         </parameters>
       </virtual_method>
       <virtual_method name="GetImageDescription" cname="get_image_description">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters />
       </virtual_method>
       <virtual_method name="GetImageSize" cname="get_image_size">
@@ -878,7 +929,7 @@
         </parameters>
       </virtual_method>
       <virtual_method name="GetImageLocale" cname="get_image_locale">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters />
       </virtual_method>
       <method name="GetImageDescription" cname="atk_image_get_image_description">
@@ -939,8 +990,6 @@
         <method vm="remove_selection" />
         <method vm="select_all_selection" />
         <method signal_vm="selection_changed" />
-        <field name="Pad1" cname="pad1" type="AtkFunction" />
-        <field name="Pad2" cname="pad2" type="AtkFunction" />
       </class_struct>
       <signal name="SelectionChanged" cname="selection_changed" when="LAST" field_name="selection_changed">
         <return-type type="void" />
@@ -1035,7 +1084,7 @@
         <parameters />
       </virtual_method>
       <virtual_method name="GetMimeType" cname="get_mime_type">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters>
           <parameter type="gint" name="i" />
         </parameters>
@@ -1047,7 +1096,7 @@
         </parameters>
       </virtual_method>
       <virtual_method name="GetUri" cname="get_uri">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters>
           <parameter type="const-gchar*" name="mime_type" />
         </parameters>
@@ -1071,7 +1120,7 @@
         <return-type type="GType" />
       </method>
       <method name="GetUri" cname="atk_streamable_content_get_uri">
-        <return-type type="gchar*" />
+        <return-type type="const-gchar*" />
         <parameters>
           <parameter type="const-gchar*" name="mime_type" />
         </parameters>
@@ -1116,10 +1165,6 @@
         <method signal_vm="row_reordered" />
         <method signal_vm="column_reordered" />
         <method signal_vm="model_changed" />
-        <field name="Pad1" cname="pad1" type="AtkFunction" />
-        <field name="Pad2" cname="pad2" type="AtkFunction" />
-        <field name="Pad3" cname="pad3" type="AtkFunction" />
-        <field name="Pad4" cname="pad4" type="AtkFunction" />
       </class_struct>
       <signal name="RowInserted" cname="row_inserted" when="LAST" field_name="row_inserted">
         <return-type type="void" />
@@ -1214,7 +1259,7 @@
         <parameters />
       </virtual_method>
       <virtual_method name="GetColumnDescription" cname="get_column_description">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters>
           <parameter type="gint" name="column" />
         </parameters>
@@ -1226,7 +1271,7 @@
         </parameters>
       </virtual_method>
       <virtual_method name="GetRowDescription" cname="get_row_description">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters>
           <parameter type="gint" name="row" />
         </parameters>
@@ -1351,7 +1396,7 @@
       <method name="GetCaption" cname="atk_table_get_caption">
         <return-type type="AtkObject*" />
       </method>
-      <method name="GetColumnAtIndex" cname="atk_table_get_column_at_index">
+      <method name="GetColumnAtIndex" cname="atk_table_get_column_at_index" deprecated="1">
         <return-type type="gint" />
         <parameters>
           <parameter type="gint" name="index_" />
@@ -1376,20 +1421,13 @@
           <parameter type="gint" name="column" />
         </parameters>
       </method>
-      <method name="GetIndexAt" cname="atk_table_get_index_at">
-        <return-type type="gint" />
-        <parameters>
-          <parameter type="gint" name="row" />
-          <parameter type="gint" name="column" />
-        </parameters>
-      </method>
       <method name="GetNColumns" cname="atk_table_get_n_columns">
         <return-type type="gint" />
       </method>
       <method name="GetNRows" cname="atk_table_get_n_rows">
         <return-type type="gint" />
       </method>
-      <method name="GetRowAtIndex" cname="atk_table_get_row_at_index">
+      <method name="GetRowAtIndex" cname="atk_table_get_row_at_index" deprecated="1">
         <return-type type="gint" />
         <parameters>
           <parameter type="gint" name="index_" />
@@ -1511,6 +1549,88 @@
         </parameters>
       </method>
     </interface>
+    <interface name="TableCell" cname="AtkTableCell">
+      <class_struct cname="AtkTableCellIface">
+        <field name="Parent" cname="parent" type="GTypeInterface" />
+        <method vm="get_column_span" />
+        <method vm="get_column_header_cells" />
+        <method vm="get_position" />
+        <method vm="get_row_span" />
+        <method vm="get_row_header_cells" />
+        <method vm="get_row_column_span" />
+        <method vm="get_table" />
+      </class_struct>
+      <virtual_method name="GetColumnSpan" cname="get_column_span">
+        <return-type type="gint" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetColumnHeaderCells" cname="get_column_header_cells">
+        <return-type type="GPtrArray*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetPosition" cname="get_position">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gint*" name="row" />
+          <parameter type="gint*" name="column" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetRowSpan" cname="get_row_span">
+        <return-type type="gint" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetRowHeaderCells" cname="get_row_header_cells">
+        <return-type type="GPtrArray*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetRowColumnSpan" cname="get_row_column_span">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gint*" name="row" />
+          <parameter type="gint*" name="column" />
+          <parameter type="gint*" name="row_span" />
+          <parameter type="gint*" name="column_span" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetTable" cname="get_table">
+        <return-type type="AtkObject*" />
+        <parameters />
+      </virtual_method>
+      <method name="GetColumnHeaderCells" cname="atk_table_cell_get_column_header_cells">
+        <return-type type="GPtrArray*" />
+      </method>
+      <method name="GetColumnSpan" cname="atk_table_cell_get_column_span">
+        <return-type type="gint" />
+      </method>
+      <method name="GetPosition" cname="atk_table_cell_get_position">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gint*" name="row" />
+          <parameter type="gint*" name="column" />
+        </parameters>
+      </method>
+      <method name="GetRowColumnSpan" cname="atk_table_cell_get_row_column_span">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gint*" name="row" />
+          <parameter type="gint*" name="column" />
+          <parameter type="gint*" name="row_span" />
+          <parameter type="gint*" name="column_span" />
+        </parameters>
+      </method>
+      <method name="GetRowHeaderCells" cname="atk_table_cell_get_row_header_cells">
+        <return-type type="GPtrArray*" />
+      </method>
+      <method name="GetRowSpan" cname="atk_table_cell_get_row_span">
+        <return-type type="gint" />
+      </method>
+      <method name="GetTable" cname="atk_table_cell_get_table">
+        <return-type type="AtkObject*" />
+      </method>
+      <method name="GetType" cname="atk_table_cell_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </interface>
     <interface name="Text" cname="AtkText">
       <class_struct cname="AtkTextIface">
         <field name="Parent" cname="parent" type="GTypeInterface" />
@@ -1537,13 +1657,29 @@
         <method signal_vm="text_attributes_changed" />
         <method vm="get_range_extents" />
         <method vm="get_bounded_ranges" />
-        <field name="Pad4" cname="pad4" type="AtkFunction" />
+        <method vm="get_string_at_offset" />
       </class_struct>
       <signal name="TextChanged" cname="text_changed" when="LAST" field_name="text_changed">
         <return-type type="void" />
         <parameters>
           <parameter type="gint" name="position" />
           <parameter type="gint" name="length" />
+        </parameters>
+      </signal>
+      <signal name="TextInsert" cname="text_insert" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="gint32" />
+          <parameter name="p1" type="gint32" />
+          <parameter name="p2" type="gchar*" />
+        </parameters>
+      </signal>
+      <signal name="TextRemove" cname="text_remove" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="gint32" />
+          <parameter name="p1" type="gint32" />
+          <parameter name="p2" type="gchar*" />
         </parameters>
       </signal>
       <signal name="TextCaretMoved" cname="text_caret_moved" when="LAST" field_name="text_caret_moved">
@@ -1696,6 +1832,15 @@
           <parameter type="AtkTextClipType" name="y_clip_type" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetStringAtOffset" cname="get_string_at_offset">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="gint" name="offset" />
+          <parameter type="AtkTextGranularity" name="granularity" />
+          <parameter type="gint*" name="start_offset" />
+          <parameter type="gint*" name="end_offset" />
+        </parameters>
+      </virtual_method>
       <method name="AddSelection" cname="atk_text_add_selection">
         <return-type type="gboolean" />
         <parameters>
@@ -1805,38 +1950,20 @@
           <parameter type="gint*" name="end_offset" />
         </parameters>
       </method>
+      <method name="GetStringAtOffset" cname="atk_text_get_string_at_offset">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="gint" name="offset" />
+          <parameter type="AtkTextGranularity" name="granularity" />
+          <parameter type="gint*" name="start_offset" />
+          <parameter type="gint*" name="end_offset" />
+        </parameters>
+      </method>
       <method name="GetText" cname="atk_text_get_text">
         <return-type type="gchar*" />
         <parameters>
           <parameter type="gint" name="start_offset" />
           <parameter type="gint" name="end_offset" />
-        </parameters>
-      </method>
-      <method name="GetTextAfterOffset" cname="atk_text_get_text_after_offset">
-        <return-type type="gchar*" />
-        <parameters>
-          <parameter type="gint" name="offset" />
-          <parameter type="AtkTextBoundary" name="boundary_type" />
-          <parameter type="gint*" name="start_offset" />
-          <parameter type="gint*" name="end_offset" />
-        </parameters>
-      </method>
-      <method name="GetTextAtOffset" cname="atk_text_get_text_at_offset">
-        <return-type type="gchar*" />
-        <parameters>
-          <parameter type="gint" name="offset" />
-          <parameter type="AtkTextBoundary" name="boundary_type" />
-          <parameter type="gint*" name="start_offset" />
-          <parameter type="gint*" name="end_offset" />
-        </parameters>
-      </method>
-      <method name="GetTextBeforeOffset" cname="atk_text_get_text_before_offset">
-        <return-type type="gchar*" />
-        <parameters>
-          <parameter type="gint" name="offset" />
-          <parameter type="AtkTextBoundary" name="boundary_type" />
-          <parameter type="gint*" name="start_offset" />
-          <parameter type="gint*" name="end_offset" />
         </parameters>
       </method>
       <method name="GetType" cname="atk_text_get_type" shared="true">
@@ -1871,8 +1998,19 @@
         <method vm="get_minimum_value" />
         <method vm="set_current_value" />
         <method vm="get_minimum_increment" />
-        <field name="Pad1" cname="pad1" type="AtkFunction" />
+        <method vm="get_value_and_text" />
+        <method vm="get_range" />
+        <method vm="get_increment" />
+        <method vm="get_sub_ranges" />
+        <method vm="set_value" />
       </class_struct>
+      <signal name="ValueChanged" cname="value_changed" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="gdouble" />
+          <parameter name="p1" type="gchar*" />
+        </parameters>
+      </signal>
       <virtual_method name="GetCurrentValue" cname="get_current_value">
         <return-type type="void" />
         <parameters>
@@ -1903,38 +2041,75 @@
           <parameter type="GValue*" name="value" />
         </parameters>
       </virtual_method>
-      <method name="GetCurrentValue" cname="atk_value_get_current_value">
+      <virtual_method name="GetValueAndText" cname="get_value_and_text">
         <return-type type="void" />
         <parameters>
-          <parameter type="GValue*" name="value" />
+          <parameter type="gdouble*" name="value" />
+          <parameter type="gchar**" name="text" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="GetRange" cname="get_range">
+        <return-type type="AtkRange*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetIncrement" cname="get_increment">
+        <return-type type="gdouble" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetSubRanges" cname="get_sub_ranges">
+        <return-type type="GSList*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="SetValue" cname="set_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gdouble" name="new_value" />
+        </parameters>
+      </virtual_method>
+      <method name="GetIncrement" cname="atk_value_get_increment">
+        <return-type type="gdouble" />
       </method>
-      <method name="GetMaximumValue" cname="atk_value_get_maximum_value">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GValue*" name="value" />
-        </parameters>
+      <method name="GetRange" cname="atk_value_get_range">
+        <return-type type="AtkRange*" />
       </method>
-      <method name="GetMinimumIncrement" cname="atk_value_get_minimum_increment">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GValue*" name="value" />
-        </parameters>
-      </method>
-      <method name="GetMinimumValue" cname="atk_value_get_minimum_value">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GValue*" name="value" />
-        </parameters>
+      <method name="GetSubRanges" cname="atk_value_get_sub_ranges">
+        <return-type type="GSList*" />
       </method>
       <method name="GetType" cname="atk_value_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <method name="SetCurrentValue" cname="atk_value_set_current_value">
-        <return-type type="gboolean" />
+      <method name="GetValueAndText" cname="atk_value_get_value_and_text">
+        <return-type type="void" />
         <parameters>
-          <parameter type="const-GValue*" name="value" />
+          <parameter type="gdouble*" name="value" />
+          <parameter type="gchar**" name="text" />
         </parameters>
+      </method>
+      <method name="SetValue" cname="atk_value_set_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gdouble" name="new_value" />
+        </parameters>
+      </method>
+      <method name="TypeGetLocalizedName" cname="atk_value_type_get_localized_name" shared="true">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="AtkValueType" name="value_type" />
+        </parameters>
+      </method>
+      <method name="TypeGetName" cname="atk_value_type_get_name" shared="true">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="AtkValueType" name="value_type" />
+        </parameters>
+      </method>
+    </interface>
+    <interface name="Window" cname="AtkWindow">
+      <class_struct cname="AtkWindowIface">
+        <field name="Parent" cname="parent" type="GTypeInterface" />
+      </class_struct>
+      <method name="GetType" cname="atk_window_get_type" shared="true">
+        <return-type type="GType" />
       </method>
     </interface>
     <object name="GObjectAccessible" cname="AtkGObjectAccessible" parent="AtkObject">
@@ -2066,16 +2241,16 @@
         <return-type type="void" />
         <parameters />
       </virtual_method>
-      <method name="GetInstance" cname="atk_misc_get_instance" shared="true">
+      <method name="GetInstance" cname="atk_misc_get_instance" deprecated="1" shared="true">
         <return-type type="const-AtkMisc*" />
       </method>
       <method name="GetType" cname="atk_misc_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <method name="ThreadsEnter" cname="atk_misc_threads_enter">
+      <method name="ThreadsEnter" cname="atk_misc_threads_enter" deprecated="1">
         <return-type type="void" />
       </method>
-      <method name="ThreadsLeave" cname="atk_misc_threads_leave">
+      <method name="ThreadsLeave" cname="atk_misc_threads_leave" deprecated="1">
         <return-type type="void" />
       </method>
     </object>
@@ -2090,10 +2265,12 @@
         <interface cname="AtkImage" />
         <interface cname="AtkSelection" />
         <interface cname="AtkTable" />
+        <interface cname="AtkTableCell" />
         <interface cname="AtkText" />
         <interface cname="AtkHypertext" />
         <interface cname="AtkValue" />
         <interface cname="AtkDocument" />
+        <interface cname="AtkWindow" />
       </implements>
       <method name="GetType" cname="atk_no_op_object_get_type" shared="true">
         <return-type type="GType" />
@@ -2141,8 +2318,8 @@
         <method signal_vm="visible_data_changed" />
         <method signal_vm="active_descendant_changed" />
         <method vm="get_attributes" />
+        <method vm="get_object_locale" />
         <field name="Pad1" cname="pad1" type="AtkFunction" />
-        <field name="Pad2" cname="pad2" type="AtkFunction" />
       </class_struct>
       <field name="Description" cname="description" type="gchar*" />
       <field name="Name" cname="name" type="gchar*" />
@@ -2202,11 +2379,11 @@
         </parameters>
       </signal>
       <virtual_method name="GetName" cname="get_name">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters />
       </virtual_method>
       <virtual_method name="GetDescription" cname="get_description">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
         <parameters />
       </virtual_method>
       <virtual_method name="GetParent" cname="get_parent">
@@ -2293,6 +2470,10 @@
         <return-type type="AtkAttributeSet*" />
         <parameters />
       </virtual_method>
+      <virtual_method name="GetObjectLocale" cname="get_object_locale">
+        <return-type type="gchar*" />
+        <parameters />
+      </virtual_method>
       <method name="AddRelationship" cname="atk_object_add_relationship">
         <return-type type="gboolean" />
         <parameters>
@@ -2300,7 +2481,7 @@
           <parameter type="AtkObject*" name="target" />
         </parameters>
       </method>
-      <method name="ConnectPropertyChangeHandler" cname="atk_object_connect_property_change_handler">
+      <method name="ConnectPropertyChangeHandler" cname="atk_object_connect_property_change_handler" deprecated="1">
         <return-type type="guint" />
         <parameters>
           <parameter type="AtkPropertyChangeHandler*" name="handler" />
@@ -2315,16 +2496,13 @@
       <method name="GetIndexInParent" cname="atk_object_get_index_in_parent">
         <return-type type="gint" />
       </method>
-      <method name="GetLayer" cname="atk_object_get_layer" deprecated="1">
-        <return-type type="AtkLayer" />
-      </method>
-      <method name="GetMdiZorder" cname="atk_object_get_mdi_zorder" deprecated="1">
-        <return-type type="gint" />
-      </method>
       <method name="GetNAccessibleChildren" cname="atk_object_get_n_accessible_children">
         <return-type type="gint" />
       </method>
       <method name="GetName" cname="atk_object_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetObjectLocale" cname="atk_object_get_object_locale">
         <return-type type="const-gchar*" />
       </method>
       <method name="GetParent" cname="atk_object_get_parent">
@@ -2349,6 +2527,9 @@
           <parameter type="gboolean" name="value" />
         </parameters>
       </method>
+      <method name="PeekParent" cname="atk_object_peek_parent">
+        <return-type type="AtkObject*" />
+      </method>
       <method name="RefAccessibleChild" cname="atk_object_ref_accessible_child">
         <return-type type="AtkObject*" />
         <parameters>
@@ -2361,7 +2542,7 @@
       <method name="RefStateSet" cname="atk_object_ref_state_set">
         <return-type type="AtkStateSet*" />
       </method>
-      <method name="RemovePropertyChangeHandler" cname="atk_object_remove_property_change_handler">
+      <method name="RemovePropertyChangeHandler" cname="atk_object_remove_property_change_handler" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="guint" name="handler_id" />
@@ -2567,6 +2748,13 @@
           <parameter type="AtkRelationType" name="relationship" />
         </parameters>
       </method>
+      <method name="ContainsTarget" cname="atk_relation_set_contains_target">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="AtkRelationType" name="relationship" />
+          <parameter type="AtkObject*" name="target" />
+        </parameters>
+      </method>
       <method name="GetNRelations" cname="atk_relation_set_get_n_relations">
         <return-type type="gint" />
       </method>
@@ -2728,10 +2916,10 @@
         <return-type type="AtkObject*" />
       </virtual_method>
       <virtual_method name="GetToolkitName" cname="get_toolkit_name" shared="true">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
       </virtual_method>
       <virtual_method name="GetToolkitVersion" cname="get_toolkit_version" shared="true">
-        <return-type type="const-gchar*" />
+        <return-type type="gchar*" />
       </virtual_method>
       <method name="GetType" cname="atk_util_get_type" shared="true">
         <return-type type="GType" />
@@ -2762,6 +2950,33 @@
       <field name="OldValue" cname="old_value" type="GValue" />
       <field name="NewValue" cname="new_value" type="GValue" />
     </struct>
+    <boxed name="Range" cname="AtkRange" opaque="true">
+      <method name="Copy" cname="atk_range_copy">
+        <return-type type="AtkRange*" owned="true" />
+      </method>
+      <method name="Free" cname="atk_range_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetDescription" cname="atk_range_get_description">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetLowerLimit" cname="atk_range_get_lower_limit">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetType" cname="atk_range_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetUpperLimit" cname="atk_range_get_upper_limit">
+        <return-type type="gdouble" />
+      </method>
+      <constructor cname="atk_range_new">
+        <parameters>
+          <parameter type="gdouble" name="lower_limit" />
+          <parameter type="gdouble" name="upper_limit" />
+          <parameter type="const-gchar*" name="description" />
+        </parameters>
+      </constructor>
+    </boxed>
     <struct name="RealStateSet" cname="AtkRealStateSet" opaque="true" />
     <boxed name="Rectangle" cname="AtkRectangle">
       <field name="X" cname="x" type="gint" />
@@ -2773,21 +2988,25 @@
       </method>
     </boxed>
     <alias name="State" cname="AtkState" type="guint64" />
-    <struct name="TextRange" cname="AtkTextRange">
+    <boxed name="TextRange" cname="AtkTextRange">
       <field name="Bounds" cname="bounds" type="AtkTextRectangle" />
       <field name="StartOffset" cname="start_offset" type="gint" />
       <field name="EndOffset" cname="end_offset" type="gint" />
       <field name="Content" cname="content" type="gchar*" />
-    </struct>
+      <method name="GetType" cname="atk_text_range_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
     <struct name="TextRectangle" cname="AtkTextRectangle">
       <field name="X" cname="x" type="gint" />
       <field name="Y" cname="y" type="gint" />
       <field name="Width" cname="width" type="gint" />
       <field name="Height" cname="height" type="gint" />
     </struct>
+    <struct name="UtilListenerInfo" cname="AtkUtilListenerInfo" opaque="true" />
     <struct name="FocusTracker" cname="FocusTracker" opaque="true" />
     <class name="Global" cname="AtkGlobal">
-      <method name="AddFocusTracker" cname="atk_add_focus_tracker" shared="true">
+      <method name="AddFocusTracker" cname="atk_add_focus_tracker" deprecated="1" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="AtkEventListener" name="focus_tracker" />
@@ -2807,11 +3026,26 @@
           <parameter type="gpointer" name="data" />
         </parameters>
       </method>
+      <method name="GetBinaryAge" cname="atk_get_binary_age" shared="true">
+        <return-type type="guint" />
+      </method>
       <method name="GetDefaultRegistry" cname="atk_get_default_registry" shared="true">
         <return-type type="AtkRegistry*" />
       </method>
       <method name="GetFocusObject" cname="atk_get_focus_object" shared="true">
         <return-type type="AtkObject*" />
+      </method>
+      <method name="GetInterfaceAge" cname="atk_get_interface_age" shared="true">
+        <return-type type="guint" />
+      </method>
+      <method name="GetMajorVersion" cname="atk_get_major_version" shared="true">
+        <return-type type="guint" />
+      </method>
+      <method name="GetMicroVersion" cname="atk_get_micro_version" shared="true">
+        <return-type type="guint" />
+      </method>
+      <method name="GetMinorVersion" cname="atk_get_minor_version" shared="true">
+        <return-type type="guint" />
       </method>
       <method name="GetRoot" cname="atk_get_root" shared="true">
         <return-type type="AtkObject*" />
@@ -2825,7 +3059,7 @@
       <method name="GetVersion" cname="atk_get_version" shared="true">
         <return-type type="const-gchar*" />
       </method>
-      <method name="RemoveFocusTracker" cname="atk_remove_focus_tracker" shared="true">
+      <method name="RemoveFocusTracker" cname="atk_remove_focus_tracker" deprecated="1" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="guint" name="tracker_id" />
@@ -2861,7 +3095,7 @@
           <parameter type="AtkRole" name="role" />
         </parameters>
       </method>
-      <method name="RoleRegister" cname="atk_role_register" shared="true">
+      <method name="RoleRegister" cname="atk_role_register" deprecated="1" shared="true">
         <return-type type="AtkRole" />
         <parameters>
           <parameter type="const-gchar*" name="name" />
@@ -2869,13 +3103,13 @@
       </method>
     </class>
     <class name="Focus" cname="AtkFocus_">
-      <method name="TrackerInit" cname="atk_focus_tracker_init" shared="true">
+      <method name="TrackerInit" cname="atk_focus_tracker_init" deprecated="1" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="AtkEventListenerInit" name="init" />
         </parameters>
       </method>
-      <method name="TrackerNotify" cname="atk_focus_tracker_notify" shared="true">
+      <method name="TrackerNotify" cname="atk_focus_tracker_notify" deprecated="1" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="AtkObject*" name="object" />
