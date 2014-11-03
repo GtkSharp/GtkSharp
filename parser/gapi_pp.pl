@@ -26,7 +26,7 @@
 
 $private_regex = '^#if.*(ENABLE_BACKEND|ENABLE_ENGINE)';
 $eatit_regex = '^#if(.*(__cplusplus|DEBUG|DISABLE_COMPAT|ENABLE_BROKEN)|\s+0\s*$)';
-$ignoreit_regex = '^\s+\*|#ident|#error|#\s*include|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN|G_GNUC_INTERNAL';
+$ignoreit_regex = '^\s+\*|#ident|#error|#\s*include|#\s*import|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN|G_GNUC_INTERNAL';
 
 foreach $arg (@ARGV) {
 	if (-d $arg && -e $arg) {
@@ -74,6 +74,8 @@ foreach $fname (@hdrs) {
 			print $def;
 		} elsif ($line =~ /#\s*define\s+\w+\s*\(\s*\w+_get_type\s*\(\)\)/) {
 			print $line;
+		} elsif ($line =~ /#\s*define\s+(\w+\s*)\(\(.*\)(".*")\)/) {
+			print "#define $1 $2\n";
 		} elsif ($line =~ /#\s*define\s+\w+\s*\D+/) {
 			$def = $line;
 			while ($line =~ /\\\n/) {$def .= ($line = <INFILE>);}
@@ -178,7 +180,21 @@ foreach $fname (@hdrs) {
 		} else {
 			if ($braces or $line =~ /;|\/\*/) {
 				if ($deprecated == -1) {
-					print $line;
+                                       if ($line =~ /^\w*_AVAILABLE_IN_\w*/) {
+                                               $line =~ s/^\w*_AVAILABLE_IN_\w*//g;
+                                               $line =~ s/^\s+//;
+                                               print $line;
+                                       } elsif ($line =~ /^\w*_DEPRECATED_IN_[\w()]*/) {
+                                               $line =~ s/^\w*_DEPRECATED_IN_[\w()]*//g;
+                                               $line =~ s/^\s+//;
+                                               print "deprecated$line";
+                                       } elsif ($line =~ /^\w*_DEPRECATED/) {
+                                               $line =~ s/^\w*_DEPRECATED//g;
+                                               $line =~ s/^\s+//;
+                                               print "deprecated$line";
+                                       } else {
+                                               print $line;
+                                       }
 				} else {
 					print "deprecated$line";
 				}
