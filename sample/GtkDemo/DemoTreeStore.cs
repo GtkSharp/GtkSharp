@@ -46,13 +46,13 @@ namespace GtkDemo
 			sw.Add (treeView);
 
 			// expand all rows after the treeview widget has been realized
-			treeView.Realized += new EventHandler (ExpandRows);
+			treeView.Realized += new System.EventHandler (ExpandRows);
 
 			SetDefaultSize (650, 400);
 			ShowAll ();
 		}
 
-		private void ExpandRows (object obj, EventArgs args)
+		private void ExpandRows (object obj, System.EventArgs args)
 		{
 			TreeView treeView = obj as TreeView;
 

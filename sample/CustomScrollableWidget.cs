@@ -203,13 +203,13 @@ class CustomScrollableWidget<T> : CustomBase, IScrollableImplementor {
 		}
 	}
 	
-	private void OnHadjustmentChanged (object o, EventArgs args)
+	private void OnHadjustmentChanged (object o, System.EventArgs args)
 	{
 		UpdateAdjustments ();
 		QueueDraw ();
 	}
 	
-	private void OnVadjustmentChanged (object o, EventArgs args)
+	private void OnVadjustmentChanged (object o, System.EventArgs args)
 	{
 		UpdateAdjustments ();
 		QueueDraw ();

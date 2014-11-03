@@ -21,7 +21,6 @@ sources = \
 	DemoButtonBox.cs		\
 	DemoClipboard.cs		\
 	DemoColorSelection.cs	\
-	DemoCssBasics.cs		\
 	DemoDialog.cs			\
 	DemoDrawingArea.cs		\
 	DemoEditableCells.cs	\
