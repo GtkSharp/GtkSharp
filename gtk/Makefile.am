@@ -1,4 +1,8 @@
-SUBDIRS = . glue gui-thread-check
+SUBDIRS = . glue
+
+if !PLATFORM_WIN32
+SUBDIRS .= gui-thread-check
+endif
 
 pkg = gtk
 pkgconfigdir=$(libdir)/pkgconfig
