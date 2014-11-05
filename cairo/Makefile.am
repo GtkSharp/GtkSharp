@@ -6,6 +6,8 @@ SNK = $(srcdir)/mono.snk
 TARGET=$(ASSEMBLY)
 
 noinst_DATA = $(TARGET)
+gapidir = $(datadir)/gapi-3.0
+gapi_DATA = cairo-api.xml
 
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb
 
