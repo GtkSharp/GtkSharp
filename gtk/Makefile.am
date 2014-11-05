@@ -1,7 +1,7 @@
-SUBDIRS = . glue
-
 if !PLATFORM_WIN32
-SUBDIRS .= gui-thread-check
+SUBDIRS = . glue gui-thread-check
+else
+SUBDIRS = . glue
 endif
 
 pkg = gtk
