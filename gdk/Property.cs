@@ -64,7 +64,7 @@ namespace Gdk {
 					int block_size;
 					if (format == 32) { // data returned in blocks the size of a C long
 #if WIN64LONGS
-						block_size = int.Size;
+						block_size = sizeof(int);
 #else
 						block_size = IntPtr.Size;
 #endif
