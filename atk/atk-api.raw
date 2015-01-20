@@ -568,6 +568,21 @@
       <method name="GetMdiZorder" cname="atk_component_get_mdi_zorder">
         <return-type type="gint" />
       </method>
+      <method name="GetPosition" cname="atk_component_get_position" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint*" name="x" />
+          <parameter type="gint*" name="y" />
+          <parameter type="AtkCoordType" name="coord_type" />
+        </parameters>
+      </method>
+      <method name="GetSize" cname="atk_component_get_size" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint*" name="width" />
+          <parameter type="gint*" name="height" />
+        </parameters>
+      </method>
       <method name="GetType" cname="atk_component_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -1421,6 +1436,13 @@
           <parameter type="gint" name="column" />
         </parameters>
       </method>
+      <method name="GetIndexAt" cname="atk_table_get_index_at" deprecated="1">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="gint" name="row" />
+          <parameter type="gint" name="column" />
+        </parameters>
+      </method>
       <method name="GetNColumns" cname="atk_table_get_n_columns">
         <return-type type="gint" />
       </method>
@@ -1966,6 +1988,33 @@
           <parameter type="gint" name="end_offset" />
         </parameters>
       </method>
+      <method name="GetTextAfterOffset" cname="atk_text_get_text_after_offset" deprecated="1">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="gint" name="offset" />
+          <parameter type="AtkTextBoundary" name="boundary_type" />
+          <parameter type="gint*" name="start_offset" />
+          <parameter type="gint*" name="end_offset" />
+        </parameters>
+      </method>
+      <method name="GetTextAtOffset" cname="atk_text_get_text_at_offset" deprecated="1">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="gint" name="offset" />
+          <parameter type="AtkTextBoundary" name="boundary_type" />
+          <parameter type="gint*" name="start_offset" />
+          <parameter type="gint*" name="end_offset" />
+        </parameters>
+      </method>
+      <method name="GetTextBeforeOffset" cname="atk_text_get_text_before_offset" deprecated="1">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="gint" name="offset" />
+          <parameter type="AtkTextBoundary" name="boundary_type" />
+          <parameter type="gint*" name="start_offset" />
+          <parameter type="gint*" name="end_offset" />
+        </parameters>
+      </method>
       <method name="GetType" cname="atk_text_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -2066,8 +2115,32 @@
           <parameter type="const-gdouble" name="new_value" />
         </parameters>
       </virtual_method>
+      <method name="GetCurrentValue" cname="atk_value_get_current_value" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GValue*" name="value" />
+        </parameters>
+      </method>
       <method name="GetIncrement" cname="atk_value_get_increment">
         <return-type type="gdouble" />
+      </method>
+      <method name="GetMaximumValue" cname="atk_value_get_maximum_value" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GValue*" name="value" />
+        </parameters>
+      </method>
+      <method name="GetMinimumIncrement" cname="atk_value_get_minimum_increment" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GValue*" name="value" />
+        </parameters>
+      </method>
+      <method name="GetMinimumValue" cname="atk_value_get_minimum_value" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GValue*" name="value" />
+        </parameters>
       </method>
       <method name="GetRange" cname="atk_value_get_range">
         <return-type type="AtkRange*" />
@@ -2083,6 +2156,12 @@
         <parameters>
           <parameter type="gdouble*" name="value" />
           <parameter type="gchar**" name="text" />
+        </parameters>
+      </method>
+      <method name="SetCurrentValue" cname="atk_value_set_current_value" deprecated="1">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-GValue*" name="value" />
         </parameters>
       </method>
       <method name="SetValue" cname="atk_value_set_value">
@@ -2244,7 +2323,7 @@
       <method name="GetInstance" cname="atk_misc_get_instance" deprecated="1" shared="true">
         <return-type type="const-AtkMisc*" />
       </method>
-      <method name="GetType" cname="atk_misc_get_type" shared="true">
+      <method name="GetType" cname="atk_misc_get_type" deprecated="1" shared="true">
         <return-type type="GType" />
       </method>
       <method name="ThreadsEnter" cname="atk_misc_threads_enter" deprecated="1">

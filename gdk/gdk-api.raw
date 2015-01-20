@@ -135,6 +135,7 @@
       <member cname="GDK_DRAG_PROTO_WIN32_DROPFILES" name="Win32Dropfiles" />
       <member cname="GDK_DRAG_PROTO_OLE2" name="Ole2" />
       <member cname="GDK_DRAG_PROTO_LOCAL" name="Local" />
+      <member cname="GDK_DRAG_PROTO_WAYLAND" name="Wayland" />
     </enum>
     <enum name="EventMask" cname="GdkEventMask" gtype="gdk_event_mask_get_type" type="flags">
       <member cname="GDK_EXPOSURE_MASK" name="ExposureMask" value="1 &lt;&lt; 1" />
@@ -427,6 +428,7 @@
       <member cname="GDK_WINDOW_TEMP" name="Temp" />
       <member cname="GDK_WINDOW_FOREIGN" name="Foreign" />
       <member cname="GDK_WINDOW_OFFSCREEN" name="Offscreen" />
+      <member cname="GDK_WINDOW_SUBSURFACE" name="Subsurface" />
     </enum>
     <enum name="WindowTypeHint" cname="GdkWindowTypeHint" gtype="gdk_window_type_hint_get_type" type="enum">
       <member cname="GDK_WINDOW_TYPE_HINT_NORMAL" name="Normal" />
@@ -2502,7 +2504,7 @@
       <method name="EnsureNative" cname="gdk_window_ensure_native">
         <return-type type="gboolean" />
       </method>
-      <method name="Flush" cname="gdk_window_flush">
+      <method name="Flush" cname="gdk_window_flush" deprecated="1">
         <return-type type="void" />
       </method>
       <method name="Focus" cname="gdk_window_focus">
@@ -3138,6 +3140,12 @@
       <method name="ShowUnraised" cname="gdk_window_show_unraised">
         <return-type type="void" />
       </method>
+      <method name="ShowWindowMenu" cname="gdk_window_show_window_menu">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkEvent*" name="event" />
+        </parameters>
+      </method>
       <method name="Stick" cname="gdk_window_stick">
         <return-type type="void" />
       </method>
@@ -3170,32 +3178,32 @@
       <field name="Red" cname="red" type="guint16" />
       <field name="Green" cname="green" type="guint16" />
       <field name="Blue" cname="blue" type="guint16" />
-      <method name="Copy" cname="gdk_color_copy">
+      <method name="Copy" cname="gdk_color_copy" deprecated="1">
         <return-type type="GdkColor*" owned="true" />
       </method>
-      <method name="Equal" cname="gdk_color_equal">
+      <method name="Equal" cname="gdk_color_equal" deprecated="1">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-GdkColor*" name="colorb" />
         </parameters>
       </method>
-      <method name="Free" cname="gdk_color_free">
+      <method name="Free" cname="gdk_color_free" deprecated="1">
         <return-type type="void" />
       </method>
-      <method name="GetType" cname="gdk_color_get_type" shared="true">
+      <method name="GetType" cname="gdk_color_get_type" deprecated="1" shared="true">
         <return-type type="GType" />
       </method>
-      <method name="Hash" cname="gdk_color_hash">
+      <method name="Hash" cname="gdk_color_hash" deprecated="1">
         <return-type type="guint" />
       </method>
-      <method name="Parse" cname="gdk_color_parse" shared="true">
+      <method name="Parse" cname="gdk_color_parse" deprecated="1" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="spec" />
           <parameter type="GdkColor*" name="color" />
         </parameters>
       </method>
-      <method name="ToString" cname="gdk_color_to_string">
+      <method name="ToString" cname="gdk_color_to_string" deprecated="1">
         <return-type type="gchar*" />
       </method>
     </boxed>
@@ -3353,7 +3361,11 @@
       <field name="Time" cname="time" type="guint32" />
       <field name="Requestor" cname="requestor" type="GdkWindow*" />
     </struct>
-    <struct name="EventSequence" cname="GdkEventSequence" opaque="true" />
+    <boxed name="EventSequence" cname="GdkEventSequence" opaque="true">
+      <method name="GetType" cname="gdk_event_sequence_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
     <struct name="EventSetting" cname="GdkEventSetting">
       <field name="Type" cname="type" type="GdkEventType" />
       <field name="Window" cname="window" type="GdkWindow*" />

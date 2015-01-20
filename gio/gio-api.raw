@@ -61,6 +61,7 @@
       <member cname="G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED" name="FreebsdCmsgcred" />
       <member cname="G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED" name="OpenbsdSockpeercred" />
       <member cname="G_CREDENTIALS_TYPE_SOLARIS_UCRED" name="SolarisUcred" />
+      <member cname="G_CREDENTIALS_TYPE_NETBSD_UNPCBID" name="NetbsdUnpcbid" />
     </enum>
     <enum name="DBusCallFlags" cname="GDBusCallFlags" type="flags">
       <member cname="G_DBUS_CALL_FLAGS_NONE" name="None" />
@@ -120,6 +121,10 @@
       <member cname="G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN" name="SelinuxSecurityContextUnknown" />
       <member cname="G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN" name="AdtAuditDataUnknown" />
       <member cname="G_DBUS_ERROR_OBJECT_PATH_IN_USE" name="ObjectPathInUse" />
+      <member cname="G_DBUS_ERROR_UNKNOWN_OBJECT" name="UnknownObject" />
+      <member cname="G_DBUS_ERROR_UNKNOWN_INTERFACE" name="UnknownInterface" />
+      <member cname="G_DBUS_ERROR_UNKNOWN_PROPERTY" name="UnknownProperty" />
+      <member cname="G_DBUS_ERROR_PROPERTY_READ_ONLY" name="PropertyReadOnly" />
     </enum>
     <enum name="DBusInterfaceSkeletonFlags" cname="GDBusInterfaceSkeletonFlags" type="flags">
       <member cname="G_DBUS_INTERFACE_SKELETON_FLAGS_NONE" name="None" />
@@ -360,6 +365,12 @@
     <enum name="MountUnmountFlags" cname="GMountUnmountFlags" gtype="g_mount_unmount_flags_get_type" type="flags">
       <member cname="G_MOUNT_UNMOUNT_NONE" name="None" />
       <member cname="G_MOUNT_UNMOUNT_FORCE" name="Force" value="1 &lt;&lt; 0" />
+    </enum>
+    <enum name="NotificationPriority" cname="GNotificationPriority" gtype="g_notification_priority_get_type" type="enum">
+      <member cname="G_NOTIFICATION_PRIORITY_NORMAL" name="Normal" />
+      <member cname="G_NOTIFICATION_PRIORITY_LOW" name="Low" />
+      <member cname="G_NOTIFICATION_PRIORITY_HIGH" name="High" />
+      <member cname="G_NOTIFICATION_PRIORITY_URGENT" name="Urgent" />
     </enum>
     <enum name="OutputStreamSpliceFlags" cname="GOutputStreamSpliceFlags" gtype="g_output_stream_splice_flags_get_type" type="flags">
       <member cname="G_OUTPUT_STREAM_SPLICE_NONE" name="None" />
@@ -4770,6 +4781,7 @@
       <field name="Priv" cname="priv" type="GApplicationPrivate*" />
       <property name="ApplicationId" cname="application-id" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="Flags" cname="flags" type="GApplicationFlags" readable="true" writeable="true" />
+      <property name="ResourceBasePath" cname="resource-base-path" type="gchar*" readable="true" writeable="true" />
       <property name="IsRegistered" cname="is-registered" type="gboolean" readable="true" />
       <property name="IsRemote" cname="is-remote" type="gboolean" readable="true" />
       <property name="InactivityTimeout" cname="inactivity-timeout" type="guint" readable="true" writeable="true" />
@@ -4861,6 +4873,17 @@
       <method name="Activate" cname="g_application_activate">
         <return-type type="void" />
       </method>
+      <method name="AddMainOption" cname="g_application_add_main_option">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="long_name" />
+          <parameter type="char" name="short_name" />
+          <parameter type="GOptionFlags" name="flags" />
+          <parameter type="GOptionArg" name="arg" />
+          <parameter type="const-char*" name="description" />
+          <parameter type="const-char*" name="arg_description" />
+        </parameters>
+      </method>
       <method name="AddMainOptionEntries" cname="g_application_add_main_option_entries">
         <return-type type="void" />
         <parameters>
@@ -4896,6 +4919,9 @@
       </method>
       <method name="GetIsRemote" cname="g_application_get_is_remote">
         <return-type type="gboolean" />
+      </method>
+      <method name="GetResourceBasePath" cname="g_application_get_resource_base_path">
+        <return-type type="const-gchar*" />
       </method>
       <method name="GetType" cname="g_application_get_type" shared="true">
         <return-type type="GType" />
@@ -4978,6 +5004,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="guint" name="inactivity_timeout" />
+        </parameters>
+      </method>
+      <method name="SetResourceBasePath" cname="g_application_set_resource_base_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="resource_path" />
         </parameters>
       </method>
       <method name="UnmarkBusy" cname="g_application_unmark_busy">
@@ -8608,13 +8640,19 @@
           <parameter type="GIcon*" name="icon" />
         </parameters>
       </method>
+      <method name="SetPriority" cname="g_notification_set_priority">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GNotificationPriority" name="priority" />
+        </parameters>
+      </method>
       <method name="SetTitle" cname="g_notification_set_title">
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="title" />
         </parameters>
       </method>
-      <method name="SetUrgent" cname="g_notification_set_urgent">
+      <method name="SetUrgent" cname="g_notification_set_urgent" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="urgent" />
