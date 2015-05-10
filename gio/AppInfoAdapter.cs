@@ -23,7 +23,7 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 	
 	public partial class AppInfoAdapter {
-		[DllImport ("libgio-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (GioGlobal.GioNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_app_info_get_all();
 
 		public static GLib.IAppInfo[] GetAll () {
