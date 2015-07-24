@@ -1,8 +1,10 @@
-// AppInfoAdapter.cs - customizations to GLib.AppInfoAdapter
 //
-// Authors: Stephane Delcroix  <stephane@delcroix.org>
+// Global.cs
 //
-// Copyright (c) 2008 Novell, Inc.
+// Author(s):
+//	Antonius Riha <antoniusriha@gmail.com>
+//
+// Copyright (c) 2014 Antonius Riha
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General
@@ -18,18 +20,10 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-namespace GLib {
-	using System;
-	using System.Runtime.InteropServices;
-	
-	public partial class AppInfoAdapter {
-		[DllImport (GioGlobal.GioNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_app_info_get_all();
-
-		public static GLib.IAppInfo[] GetAll () {
-			IntPtr raw_ret = g_app_info_get_all();
-			GLib.IAppInfo[] ret = (GLib.IAppInfo[]) GLib.Marshaller.ListPtrToArray (raw_ret, typeof (GLib.List), true, false, typeof (GLib.IAppInfo));
-			return ret;
-		}
+namespace GLib
+{
+	public partial class GioGlobal
+	{
+		internal const string GioNativeDll = "libgio-2.0-0.dll";
 	}
 }

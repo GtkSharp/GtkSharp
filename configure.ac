@@ -107,7 +107,7 @@ AC_CHECK_SIZEOF(off_t)
 OFF_T_FLAGS="-define:OFF_T_$ac_cv_sizeof_off_t"
 AC_SUBST(OFF_T_FLAGS)
 
-MONO_REQUIRED_VERSION=2.8
+MONO_REQUIRED_VERSION=3.2.8
 PKG_CHECK_MODULES(MONO_DEPENDENCY, mono >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
 
 AC_PATH_PROG(GACUTIL, gacutil, no)
@@ -136,7 +136,7 @@ if test "x$RUNTIME" != "no" ; then
 	RUNTIME="mono$RUNTIME_DEBUG_FLAGS"
 fi
 
-AC_PATH_PROG(CSC, gmcs, no)
+AC_PATH_PROG(CSC, mcs, no)
 if test `uname -s` = "Darwin"; then
 	LIB_PREFIX=
 	LIB_SUFFIX=.dylib

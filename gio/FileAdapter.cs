@@ -37,7 +37,7 @@ namespace GLib {
 			return Delete (null);
 		}
 		
-		[DllImport ("libgio-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (GioGlobal.GioNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_file_get_uri(IntPtr raw);
 		
 		public System.Uri Uri {
