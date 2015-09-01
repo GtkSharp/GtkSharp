@@ -619,7 +619,7 @@ namespace GLib {
 		protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
 			GType gtype = LookupGType ();
-			bool is_managed_subclass = gtype.ToString ().StartsWith ("__gtksharp");
+			bool is_managed_subclass = GType.IsManaged (gtype);
 			GParameter[] parms = new GParameter [is_managed_subclass ? names.Length + 1 : names.Length];
 			for (int i = 0; i < names.Length; i++) {
 				parms [i].name = GLib.Marshaller.StringToPtrGStrdup (names [i]);
