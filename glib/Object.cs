@@ -36,6 +36,7 @@ namespace GLib {
 		bool disposed = false;
 		static uint idx = 1;
 		static Dictionary<IntPtr, ToggleRef> Objects = new Dictionary<IntPtr, ToggleRef>();
+		static Dictionary<IntPtr, Dictionary<IntPtr, GLib.Value>> PropertiesToSet = new Dictionary<IntPtr, Dictionary<IntPtr, GLib.Value>>();
 
 		~Object ()
 		{
@@ -89,7 +90,9 @@ namespace GLib {
 
 			ToggleRef toggle_ref;
 			lock (Objects) {
-				toggle_ref = (ToggleRef) Objects[o];
+				if (!Objects.TryGetValue (o, out toggle_ref)) {
+					return null;
+				}
 			}
 
 			if (toggle_ref != null) {
@@ -406,7 +409,9 @@ namespace GLib {
 			GType gtype = new GLib.GType (gtypeval);
 			GObjectClass threshold_class = (GObjectClass) Marshal.PtrToStructure (gtype.GetThresholdType ().GetClassPtr (), typeof (GObjectClass));
 			IntPtr raw = threshold_class.constructor_cb (gtypeval, n_construct_properties, construct_properties);
-			bool construct_needed = true;
+			Dictionary<IntPtr, GLib.Value> deferred;
+
+			GLib.Object obj = null;
 			for (int i = 0; i < n_construct_properties; i++) {
 				IntPtr p = new IntPtr (construct_properties.ToInt64 () + i * 2 * IntPtr.Size);
 
@@ -417,16 +422,21 @@ namespace GLib {
 				Value val = (Value) Marshal.PtrToStructure (Marshal.ReadIntPtr (p, IntPtr.Size), typeof (Value));
 				if ((IntPtr) val.Val != IntPtr.Zero) {
 					GCHandle gch = (GCHandle) (IntPtr) val.Val;
-					Object o = (GLib.Object) gch.Target;
-					o.Raw = raw;
-					construct_needed = false;
+					obj = (GLib.Object) gch.Target;
+					obj.Raw = raw;
 					break;
 				}
 			}
 
-			if (construct_needed)
-				GetObject (raw, false);
+			if (obj == null)
+				obj = GetObject (raw, false);
 
+			if(PropertiesToSet.TryGetValue(raw, out deferred)) {
+				foreach(var item in deferred) {
+					SetDeferredProperty(obj, item.Value, item.Key);
+				}
+				PropertiesToSet.Remove(raw);
+			}
 			return raw;
 		}
 
@@ -511,17 +521,30 @@ namespace GLib {
 
 		static void SetPropertyCallback(IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
 		{
-			// FIXME: Here is a big quick hack to avoid race condition when trying to set up adjustment with contructor
-			// Because Raw is set too late
-			if (param_spec != IntPtr.Zero) {
-				ParamSpec foo =	new ParamSpec(param_spec);
-				if (foo.Name == "gtk-sharp-managed-instance") {
-					GCHandle gch = (GCHandle) (IntPtr) value.Val;
-					Object o = (GLib.Object) gch.Target;
-					o.Raw = handle;
-				}
+			// There are multiple issues in this place.
+			// We cannot construct an object here as it can be in construction
+			// from ConstructorCallback thus managed object already created.
+			//
+			// We cannot use the "gtk-sharp-managed-instance" property as when
+			// constructed by Gtk.Builder it is set to null.
+			//
+			// We defer setting the properties to later time when
+			// we have unmanaged and managed objects paired.
+			GLib.Object obj = TryGetObject(handle);
+			if(obj != null) {
+				SetDeferredProperty(obj, value, param_spec);
+				return;
 			}
-			GLib.Object obj = GLib.Object.GetObject (handle, false);
+			Dictionary<IntPtr, GLib.Value> deferred;
+			if(!PropertiesToSet.TryGetValue(handle, out deferred)) {
+				deferred = new Dictionary<IntPtr, GLib.Value>();
+				PropertiesToSet.Add(handle, deferred);
+			}
+			deferred[param_spec] = value;
+		}
+
+		static void SetDeferredProperty(GLib.Object obj, GLib.Value value, IntPtr param_spec)
+		{
 			var type = (Type)obj.LookupGType ();
 
 			Dictionary<IntPtr, PropertyInfo> props;
