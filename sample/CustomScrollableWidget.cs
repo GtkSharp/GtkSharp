@@ -217,6 +217,6 @@ class CustomScrollableWidget<T> : CustomBase, IScrollable {
 
 	public bool GetBorder(Gtk.Border border)
 	{
-		return true;
+		return false;
 	}
 }
