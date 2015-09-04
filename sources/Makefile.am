@@ -3,14 +3,14 @@ EXTRA_DIST =					\
 	sources.xml				\
 	gtk_tree_model_signal_fix.patch
 
-TARGET_GTK_VERSION=3.14.6
-TARGET_GTK_API=3.14
+TARGET_GTK_VERSION=3.16.6
+TARGET_GTK_API=3.16
 
 GTK_DOWNLOADS = \
-	http://ftp.gnome.org/pub/GNOME/sources/glib/2.42/glib-2.42.1.tar.xz			\
+	http://ftp.gnome.org/pub/GNOME/sources/glib/2.44/glib-2.44.1.tar.xz			\
 	http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.8.tar.xz			\
-	http://ftp.gnome.org/pub/GNOME/sources/atk/2.14/atk-2.14.0.tar.xz			\
-	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.28/gdk-pixbuf-2.28.0.tar.xz	\
+	http://ftp.gnome.org/pub/GNOME/sources/atk/2.16/atk-2.16.0.tar.xz			\
+	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.8.tar.xz	\
 	http://ftp.gnome.org/pub/GNOME/sources/gtk+/$(TARGET_GTK_API)/gtk+-$(TARGET_GTK_VERSION).tar.xz
 
 api: 

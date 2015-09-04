@@ -343,6 +343,8 @@
       <member cname="G_IO_ERROR_PROXY_NEED_AUTH" name="ProxyNeedAuth" />
       <member cname="G_IO_ERROR_PROXY_NOT_ALLOWED" name="ProxyNotAllowed" />
       <member cname="G_IO_ERROR_BROKEN_PIPE" name="BrokenPipe" />
+      <member cname="G_IO_ERROR_CONNECTION_CLOSED" name="ConnectionClosed" value="BrokenPipe" />
+      <member cname="G_IO_ERROR_NOT_CONNECTED" name="NotConnected" />
     </enum>
     <enum name="IOModuleScopeFlags" cname="GIOModuleScopeFlags" type="enum">
       <member cname="G_IO_MODULE_SCOPE_NONE" name="None" />
@@ -365,6 +367,12 @@
     <enum name="MountUnmountFlags" cname="GMountUnmountFlags" gtype="g_mount_unmount_flags_get_type" type="flags">
       <member cname="G_MOUNT_UNMOUNT_NONE" name="None" />
       <member cname="G_MOUNT_UNMOUNT_FORCE" name="Force" value="1 &lt;&lt; 0" />
+    </enum>
+    <enum name="NetworkConnectivity" cname="GNetworkConnectivity" gtype="g_network_connectivity_get_type" type="enum">
+      <member cname="G_NETWORK_CONNECTIVITY_LOCAL" name="Local" value="1" />
+      <member cname="G_NETWORK_CONNECTIVITY_LIMITED" name="Limited" value="2" />
+      <member cname="G_NETWORK_CONNECTIVITY_PORTAL" name="Portal" value="3" />
+      <member cname="G_NETWORK_CONNECTIVITY_FULL" name="Full" value="4" />
     </enum>
     <enum name="NotificationPriority" cname="GNotificationPriority" gtype="g_notification_priority_get_type" type="enum">
       <member cname="G_NOTIFICATION_PRIORITY_NORMAL" name="Normal" />
@@ -3644,15 +3652,7 @@
         </parameters>
       </method>
     </interface>
-    <interface name="FileDescriptorBased" cname="GFileDescriptorBased">
-      <class_struct cname="GFileDescriptorBasedIface">
-        <field name="GIface" cname="g_iface" type="GTypeInterface" />
-        <method vm="get_fd" />
-      </class_struct>
-      <virtual_method name="GetFd" cname="get_fd">
-        <return-type type="int" />
-        <parameters />
-      </virtual_method>
+    <interface name="FileDescriptorBased" cname="GFileDescriptorBased" consume_only="1">
       <method name="GetFd" cname="g_file_descriptor_based_get_fd">
         <return-type type="int" />
       </method>
@@ -3733,18 +3733,7 @@
         <return-type type="gchar*" />
       </method>
     </interface>
-    <interface name="Initable" cname="GInitable">
-      <class_struct cname="GInitableIface">
-        <field name="GIface" cname="g_iface" type="GTypeInterface" />
-        <method vm="init" />
-      </class_struct>
-      <virtual_method name="Init" cname="init">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GCancellable*" name="cancellable" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </virtual_method>
+    <interface name="Initable" cname="GInitable" consume_only="1">
       <method name="GetType" cname="g_initable_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -4786,6 +4775,7 @@
       <property name="IsRemote" cname="is-remote" type="gboolean" readable="true" />
       <property name="InactivityTimeout" cname="inactivity-timeout" type="guint" readable="true" writeable="true" />
       <property name="ActionGroup" cname="action-group" type="GActionGroup" writeable="true" />
+      <property name="IsBusy" cname="is-busy" type="gboolean" readable="true" />
       <signal name="Startup" cname="startup" when="FIRST" field_name="startup">
         <return-type type="void" />
         <parameters />
@@ -4896,6 +4886,13 @@
           <parameter type="GOptionGroup*" name="group" />
         </parameters>
       </method>
+      <method name="BindBusyProperty" cname="g_application_bind_busy_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gpointer" name="object" />
+          <parameter type="const-gchar*" name="property" />
+        </parameters>
+      </method>
       <method name="GetApplicationId" cname="g_application_get_application_id">
         <return-type type="const-gchar*" />
       </method>
@@ -4913,6 +4910,9 @@
       </method>
       <method name="GetInactivityTimeout" cname="g_application_get_inactivity_timeout">
         <return-type type="guint" />
+      </method>
+      <method name="GetIsBusy" cname="g_application_get_is_busy">
+        <return-type type="gboolean" />
       </method>
       <method name="GetIsRegistered" cname="g_application_get_is_registered">
         <return-type type="gboolean" />
@@ -5010,6 +5010,13 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="resource_path" />
+        </parameters>
+      </method>
+      <method name="UnbindBusyProperty" cname="g_application_unbind_busy_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gpointer" name="object" />
+          <parameter type="const-gchar*" name="property" />
         </parameters>
       </method>
       <method name="UnmarkBusy" cname="g_application_unmark_busy">
@@ -6241,6 +6248,15 @@
       <method name="IsClosed" cname="g_file_enumerator_is_closed">
         <return-type type="gboolean" />
       </method>
+      <method name="Iterate" cname="g_file_enumerator_iterate">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GFileInfo**" name="out_info" />
+          <parameter type="GFile**" name="out_child" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
       <method name="NextFile" cname="g_file_enumerator_next_file">
         <return-type type="GFileInfo*" />
         <parameters>
@@ -7148,6 +7164,22 @@
         </parameters>
       </method>
     </object>
+    <object name="HttpsProxy" cname="GHttpsProxy" parent="GHttpProxy">
+      <class_struct cname="GHttpsProxyClass">
+        <field name="ParentClass" cname="parent_class" type="GHttpProxyClass" />
+      </class_struct>
+      <implements>
+        <interface cname="GProxy" />
+      </implements>
+    </object>
+    <object name="HttpProxy" cname="GHttpProxy" parent="GObject">
+      <class_struct cname="GHttpProxyClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <implements>
+        <interface cname="GProxy" />
+      </implements>
+    </object>
     <object name="InetAddress" cname="GInetAddress" parent="GObject">
       <class_struct cname="GInetAddressClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
@@ -7497,6 +7529,25 @@
           <parameter type="gsize" name="count" />
           <parameter type="gsize*" name="bytes_read" />
           <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="ReadAllAsync" cname="g_input_stream_read_all_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="void*" name="buffer" />
+          <parameter type="gsize" name="count" />
+          <parameter type="int" name="io_priority" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="ReadAllFinish" cname="g_input_stream_read_all_finish">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="result" />
+          <parameter type="gsize*" name="bytes_read" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -8505,6 +8556,11 @@
           <parameter type="guint16" name="port" />
         </parameters>
       </constructor>
+      <constructor cname="g_network_address_new_loopback">
+        <parameters>
+          <parameter type="guint16" name="port" />
+        </parameters>
+      </constructor>
       <method name="Parse" cname="g_network_address_parse" shared="true">
         <return-type type="GSocketConnectable*" />
         <parameters>
@@ -8528,6 +8584,16 @@
         <field name="Padding" cname="padding" type="gpointer" array_len="8" />
       </class_struct>
       <field name="Priv" cname="priv" type="GNetworkMonitorNetlinkPrivate*" />
+      <implements>
+        <interface cname="GNetworkMonitor" />
+        <interface cname="GInitable" />
+      </implements>
+    </object>
+    <object name="NetworkMonitorNM" cname="GNetworkMonitorNM" parent="GNetworkMonitorNetlink">
+      <class_struct cname="GNetworkMonitorNMClass">
+        <field name="ParentClass" cname="parent_class" type="GNetworkMonitorNetlinkClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GNetworkMonitorNMPrivate*" />
       <implements>
         <interface cname="GNetworkMonitor" />
         <interface cname="GInitable" />
@@ -8985,6 +9051,25 @@
           <parameter type="gsize" name="count" />
           <parameter type="gsize*" name="bytes_written" />
           <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="WriteAllAsync" cname="g_output_stream_write_all_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-void*" name="buffer" />
+          <parameter type="gsize" name="count" />
+          <parameter type="int" name="io_priority" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="WriteAllFinish" cname="g_output_stream_write_all_finish">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="result" />
+          <parameter type="gsize*" name="bytes_written" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -10027,6 +10112,22 @@
           <parameter type="GError*" name="error" />
         </parameters>
       </method>
+    </object>
+    <object name="SimpleIOStream" cname="GSimpleIOStream" parent="GIOStream">
+      <class_struct cname="GSimpleIOStreamClass">
+        <field name="Parent" cname="parent" type="GIOStreamClass" />
+      </class_struct>
+      <property name="InputStream" cname="input-stream" type="GInputStream" readable="true" writeable="true" construct-only="true" />
+      <property name="OutputStream" cname="output-stream" type="GOutputStream" readable="true" writeable="true" construct-only="true" />
+      <method name="GetType" cname="g_simple_io_stream_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="g_simple_io_stream_new">
+        <parameters>
+          <parameter type="GInputStream*" name="input_stream" />
+          <parameter type="GOutputStream*" name="output_stream" />
+        </parameters>
+      </constructor>
     </object>
     <object name="SimplePermission" cname="GSimplePermission" parent="GPermission">
       <method name="GetType" cname="g_simple_permission_get_type" shared="true">
@@ -11124,6 +11225,7 @@
       <class_struct cname="GTaskClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
       </class_struct>
+      <property name="Completed" cname="completed" type="gboolean" readable="true" />
       <implements>
         <interface cname="GAsyncResult" />
       </implements>
@@ -11138,6 +11240,9 @@
         <return-type type="GCancellable*" />
       </method>
       <method name="GetCheckCancellable" cname="g_task_get_check_cancellable">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetCompleted" cname="g_task_get_completed">
         <return-type type="gboolean" />
       </method>
       <method name="GetContext" cname="g_task_get_context">
@@ -12134,9 +12239,6 @@
       </method>
     </object>
     <object name="UnixConnection" cname="GUnixConnection" parent="GSocketConnection">
-      <class_struct cname="GUnixConnectionClass">
-        <field name="ParentClass" cname="parent_class" type="GSocketConnectionClass" />
-      </class_struct>
       <field name="Priv" cname="priv" type="GUnixConnectionPrivate*" />
       <method name="GetType" cname="g_unix_connection_get_type" shared="true">
         <return-type type="GType" />
@@ -12202,19 +12304,8 @@
       </method>
     </object>
     <object name="UnixCredentialsMessage" cname="GUnixCredentialsMessage" parent="GSocketControlMessage">
-      <class_struct cname="GUnixCredentialsMessageClass">
-        <field name="ParentClass" cname="parent_class" type="GSocketControlMessageClass" />
-        <method vm="_g_reserved1" />
-        <method vm="_g_reserved2" />
-      </class_struct>
       <field name="Priv" cname="priv" type="GUnixCredentialsMessagePrivate*" />
       <property name="Credentials" cname="credentials" type="GCredentials" readable="true" writeable="true" construct-only="true" />
-      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
-        <return-type type="void" />
-      </virtual_method>
-      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
-        <return-type type="void" />
-      </virtual_method>
       <method name="GetCredentials" cname="g_unix_credentials_message_get_credentials">
         <return-type type="GCredentials*" />
       </method>
@@ -12297,19 +12388,8 @@
       </method>
     </object>
     <object name="UnixFDMessage" cname="GUnixFDMessage" parent="GSocketControlMessage">
-      <class_struct cname="GUnixFDMessageClass">
-        <field name="ParentClass" cname="parent_class" type="GSocketControlMessageClass" />
-        <method vm="_g_reserved1" />
-        <method vm="_g_reserved2" />
-      </class_struct>
       <field name="Priv" cname="priv" type="GUnixFDMessagePrivate*" />
       <property name="FdList" cname="fd-list" type="GUnixFdList" readable="true" writeable="true" construct-only="true" />
-      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
-        <return-type type="void" />
-      </virtual_method>
-      <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
-        <return-type type="void" />
-      </virtual_method>
       <method name="AppendFd" cname="g_unix_fd_message_append_fd">
         <return-type type="gboolean" />
         <parameters>
@@ -12336,11 +12416,10 @@
         </parameters>
       </method>
     </object>
-    <object name="UnixSocketAddress" cname="GUnixSocketAddress" parent="GSocketAddress">
+    <object name="UnixSocketAddress" cname="GUnixSocketAddress">
       <class_struct cname="GUnixSocketAddressClass">
         <field name="ParentClass" cname="parent_class" type="GSocketAddressClass" />
       </class_struct>
-      <field name="Priv" cname="priv" type="GUnixSocketAddressPrivate*" />
       <property name="Path" cname="path" type="gchar*" readable="true" writeable="true" construct-only="true" />
       <property name="PathAsArray" cname="path-as-array" type="GByteArray" readable="true" writeable="true" construct-only="true" />
       <property name="Abstract" cname="abstract" type="gboolean" readable="true" writeable="true" construct-only="true" />
@@ -12781,6 +12860,36 @@
       </callback>
       <field name="Padding" cname="padding" array_len="3" type="gsize" access="private" />
     </struct>
+    <struct name="ContextSpecificGroup" cname="GContextSpecificGroup">
+      <field name="Table" cname="table" type="GHashTable*" />
+      <field name="Lock" cname="lock" type="GMutex" />
+      <field name="Cond" cname="cond" type="GCond" />
+      <field name="RequestedState" cname="requested_state" type="gboolean" />
+      <field name="RequestedFunc" cname="requested_func" type="GCallback" />
+      <field name="EffectiveState" cname="effective_state" type="gboolean" />
+      <method name="Emit" cname="g_context_specific_group_emit">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="signal_id" />
+        </parameters>
+      </method>
+      <method name="Get" cname="g_context_specific_group_get">
+        <return-type type="gpointer" />
+        <parameters>
+          <parameter type="GType" name="type" />
+          <parameter type="goffset" name="context_offset" />
+          <parameter type="GCallback" name="start_func" />
+        </parameters>
+      </method>
+      <method name="Remove" cname="g_context_specific_group_remove">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GMainContext*" name="context" />
+          <parameter type="gpointer" name="instance" />
+          <parameter type="GCallback" name="stop_func" />
+        </parameters>
+      </method>
+    </struct>
     <struct name="DBusActionGroup" cname="GDBusActionGroup" opaque="true" />
     <struct name="DBusAnnotationInfo" cname="GDBusAnnotationInfo" opaque="true" />
     <struct name="DBusArgInfo" cname="GDBusArgInfo" opaque="true" />
@@ -13005,6 +13114,15 @@
     </struct>
     <struct name="IOSchedulerJob" cname="GIOSchedulerJob" opaque="true" />
     <struct name="IOStreamAdapter" cname="GIOStreamAdapter" opaque="true" />
+    <struct name="InitableIface" cname="GInitableIface">
+      <field name="GIface" cname="g_iface" type="GTypeInterface" />
+      <callback cname="init">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GInitable*" name="initable,GCancellable*" />
+        </parameters>
+      </callback>
+    </struct>
     <struct name="InputVector" cname="GInputVector">
       <field name="Buffer" cname="buffer" type="gpointer" />
       <field name="Size" cname="size" type="gsize" />
@@ -13018,6 +13136,14 @@
     <struct name="MenuExporterWatch" cname="GMenuExporterWatch" opaque="true" />
     <struct name="NetworkMonitor" cname="GNetworkMonitor" opaque="true" />
     <struct name="NextstepSettingsBackend" cname="GNextstepSettingsBackend" opaque="true" />
+    <struct name="OutputMessage" cname="GOutputMessage">
+      <field name="Address" cname="address" type="GSocketAddress*" />
+      <field name="Vectors" cname="vectors" type="GOutputVector*" />
+      <field name="NumVectors" cname="num_vectors" type="guint" />
+      <field name="BytesSent" cname="bytes_sent" type="guint" />
+      <field name="ControlMessages" cname="control_messages" type="GSocketControlMessage**" />
+      <field name="NumControlMessages" cname="num_control_messages" type="guint" />
+    </struct>
     <struct name="OutputVector" cname="GOutputVector">
       <field name="Buffer" cname="buffer" type="gconstpointer" />
       <field name="Size" cname="size" type="gsize" />
@@ -13134,11 +13260,11 @@
       </constructor>
     </boxed>
     <struct name="StaticResource" cname="GStaticResource">
-      <field name="Data" cname="data" type="const-guint8*" />
-      <field name="DataLen" cname="data_len" type="gsize" />
-      <field name="Resource" cname="resource" type="GResource*" />
-      <field name="Next" cname="next" type="GStaticResource*" />
-      <field name="Padding" cname="padding" type="gpointer" />
+      <field name="Data" cname="data" type="const-guint8*" access="private" />
+      <field name="DataLen" cname="data_len" type="gsize" access="private" />
+      <field name="Resource" cname="resource" type="GResource*" access="private" />
+      <field name="Next" cname="next" type="GStaticResource*" access="private" />
+      <field name="Padding" cname="padding" type="gpointer" access="private" />
       <method name="Fini" cname="g_static_resource_fini">
         <return-type type="void" />
       </method>
@@ -13152,6 +13278,7 @@
     <struct name="TestDBus" cname="GTestDBus" opaque="true" />
     <struct name="TestDBusClass" cname="GTestDBusClass" opaque="true" />
     <struct name="TlsFileDatabase" cname="GTlsFileDatabase" opaque="true" />
+    <struct name="Win32WinsockFuncs" cname="GWin32WinsockFuncs" opaque="true" />
     <struct name="MessageToWriteData" cname="MessageToWriteData" opaque="true" />
     <struct name="SchemaState" cname="SchemaState" opaque="true" />
     <class name="Content" cname="GContent_">
@@ -13280,6 +13407,90 @@
       </method>
       <method name="SchedulerCancelAllJobs" cname="g_io_scheduler_cancel_all_jobs" deprecated="1" shared="true">
         <return-type type="void" />
+      </method>
+    </class>
+    <class name="List" cname="GList_">
+      <method name="ModelGetItem" cname="g_list_model_get_item" shared="true">
+        <return-type type="gpointer" />
+        <parameters>
+          <parameter type="GListModel*" name="list" />
+          <parameter type="guint" name="position" />
+        </parameters>
+      </method>
+      <method name="ModelGetItemType" cname="g_list_model_get_item_type" shared="true">
+        <return-type type="GType" />
+        <parameters>
+          <parameter type="GListModel*" name="list" />
+        </parameters>
+      </method>
+      <method name="ModelGetNItems" cname="g_list_model_get_n_items" shared="true">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="GListModel*" name="list" />
+        </parameters>
+      </method>
+      <method name="ModelGetObject" cname="g_list_model_get_object" shared="true">
+        <return-type type="GObject*" />
+        <parameters>
+          <parameter type="GListModel*" name="list" />
+          <parameter type="guint" name="position" />
+        </parameters>
+      </method>
+      <method name="ModelItemsChanged" cname="g_list_model_items_changed" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GListModel*" name="list" />
+          <parameter type="guint" name="position" />
+          <parameter type="guint" name="removed" />
+          <parameter type="guint" name="added" />
+        </parameters>
+      </method>
+      <method name="StoreAppend" cname="g_list_store_append" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GListStore*" name="store" />
+          <parameter type="gpointer" name="item" />
+        </parameters>
+      </method>
+      <method name="StoreInsert" cname="g_list_store_insert" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GListStore*" name="store" />
+          <parameter type="guint" name="position" />
+          <parameter type="gpointer" name="item" />
+        </parameters>
+      </method>
+      <method name="StoreInsertSorted" cname="g_list_store_insert_sorted" shared="true">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="GListStore*" name="store" />
+          <parameter type="gpointer" name="item" />
+          <parameter type="GCompareDataFunc" name="compare_func" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="StoreRemove" cname="g_list_store_remove" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GListStore*" name="store" />
+          <parameter type="guint" name="position" />
+        </parameters>
+      </method>
+      <method name="StoreRemoveAll" cname="g_list_store_remove_all" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GListStore*" name="store" />
+        </parameters>
+      </method>
+      <method name="StoreSplice" cname="g_list_store_splice" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GListStore*" name="store" />
+          <parameter type="guint" name="position" />
+          <parameter type="guint" name="n_removals" />
+          <parameter type="gpointer*" name="additions" />
+          <parameter type="guint" name="n_additions" />
+        </parameters>
       </method>
     </class>
     <class name="Pollable" cname="GPollable_">
