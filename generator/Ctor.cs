@@ -122,7 +122,7 @@ namespace GtkSharp.Generation {
 							}
 						}
 
-						if (names.Count == Parameters.Count) {
+						//if (names.Count == Parameters.Count) {
 							sw.WriteLine ("\t\t\t\tvar vals = new List<GLib.Value> ();");
 							sw.WriteLine ("\t\t\t\tvar names = new List<string> ();");
 							for (int i = 0; i < names.Count; i++) {
@@ -141,8 +141,8 @@ namespace GtkSharp.Generation {
 
 							sw.WriteLine ("\t\t\t\tCreateNativeObject (names.ToArray (), vals.ToArray ());");
 							sw.WriteLine ("\t\t\t\treturn;");
-						} else
-							sw.WriteLine ("\t\t\t\tthrow new InvalidOperationException (\"Can't override this constructor.\");");
+						//} else
+						//	sw.WriteLine ("\t\t\t\tthrow new InvalidOperationException (\"Can't override this constructor.\");");
 					}
 					
 					sw.WriteLine ("\t\t\t}");
