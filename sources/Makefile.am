@@ -26,4 +26,5 @@ get-source-code:
 	echo "typedef struct _GtkClipboardClass GtkClipboardClass;" >> gtk+-$(TARGET_GTK_VERSION)/gtk/gtkclipboard.h
 	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtkselectionprivate.h < gtkselectionprivate-space.patch 
 	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtktextattributes.h < gtktextattributes-gi-scanner.patch 
+	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtktextview.h < gtk_text_view_public.patch 
 
