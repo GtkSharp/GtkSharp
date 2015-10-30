@@ -90,6 +90,7 @@ sources =		 			\
 	ToggleRef.cs				\
 	TypeFundamentals.cs			\
 	TypeInitializerAttribute.cs		\
+	TypeNameAttribute.cs		\
 	ValueArray.cs				\
 	Value.cs				\
 	Variant.cs				\

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{CF2BE08F-9354-4CB6-8D49-05DFE1BBCF1F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Gtk.DotNet</RootNamespace>
+    <AssemblyName>gtk-dotnet</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Graphics.cs" />
+    <Compile Include="StyleContextExtensions.cs" />
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\glib\glib.csproj">
+      <Project>{3BF1D531-8840-4F15-8066-A9788D8C398B}</Project>
+      <Name>glib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\gio\gio.csproj">
+      <Project>{1C3BB17B-336D-432A-8952-4E979BC90867}</Project>
+      <Name>gio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cairo\cairo.csproj">
+      <Project>{364577DB-9728-4951-AC2C-EDF7A6FCC09D}</Project>
+      <Name>cairo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\pango\pango.csproj">
+      <Project>{FF422D8C-562F-4EA6-8590-9D1A5CD40AD4}</Project>
+      <Name>pango</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\gdk\gdk.csproj">
+      <Project>{58346CC6-DE93-45B4-8093-3508BD5DAA12}</Project>
+      <Name>gdk</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\gtk\gtk.csproj">
+      <Project>{94045F11-4266-40B4-910F-298985AF69D5}</Project>
+      <Name>gtk</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

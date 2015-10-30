@@ -95,17 +95,30 @@ namespace GLib {
 		public static readonly GType Variant = new GType ((IntPtr) TypeFundamentals.TypeVariant);
 
 
+		static HashSet<GType> managedTypes = new HashSet<GType> ();
 		static IDictionary<IntPtr, Type> types = new Dictionary<IntPtr, Type> ();
 		static IDictionary<Type, GType> gtypes = new Dictionary<Type, GType> ();
 
 		public static void Register (GType native_type, System.Type type)
+		{
+			Register (native_type, type, false);
+		}
+
+		public static void Register (GType native_type, System.Type type, bool managed)
 		{
 			lock (types) {
 				if (native_type != GType.Pointer && native_type != GType.Boxed && native_type != ManagedValue.GType)
 					types[native_type.Val] = type;
 				if (type != null)
 					gtypes[type] = native_type;
+				if (managed)
+					managedTypes.Add(native_type);
 			}
+		}
+
+		public static bool IsManaged (GType gtype)
+		{
+			return managedTypes.Contains(gtype);
 		}
 
 		static GType ()
@@ -318,7 +331,7 @@ namespace GLib {
 		public GType GetThresholdType ()
 		{
 			GType curr_type = this;
-			while (curr_type.ToString ().StartsWith ("__gtksharp_"))
+			while (IsManaged (curr_type))
 				curr_type = curr_type.GetBaseType ();
 			return curr_type;
 		}
@@ -364,7 +377,9 @@ namespace GLib {
 		internal static GType RegisterGObjectType (Object.ClassInitializer gobject_class_initializer)
 		{
 			GType parent_gtype = LookupGObjectType (gobject_class_initializer.Type.BaseType);
-			string name = BuildEscapedName (gobject_class_initializer.Type);
+
+			TypeNameAttribute nattr = (TypeNameAttribute)Attribute.GetCustomAttribute (gobject_class_initializer.Type, typeof (TypeNameAttribute), false);
+			string name = nattr != null ? nattr.Name : BuildEscapedName (gobject_class_initializer.Type);
 
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			GTypeQuery query;
@@ -376,7 +391,7 @@ namespace GLib {
 
 			GType gtype = new GType (g_type_register_static (parent_gtype.Val, native_name, ref info, 0));
 			GLib.Marshaller.Free (native_name);
-			Register (gtype, gobject_class_initializer.Type);
+			Register (gtype, gobject_class_initializer.Type, true);
 
 			return gtype;
 		}
