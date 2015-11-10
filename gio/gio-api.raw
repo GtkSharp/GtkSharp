@@ -66,6 +66,7 @@
     <enum name="DBusCallFlags" cname="GDBusCallFlags" type="flags">
       <member cname="G_DBUS_CALL_FLAGS_NONE" name="None" />
       <member cname="G_DBUS_CALL_FLAGS_NO_AUTO_START" name="NoAutoStart" value="1 &lt;&lt; 0" />
+      <member cname="G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION" name="AllowInteractiveAuthorization" value="1 &lt;&lt; 1" />
     </enum>
     <enum name="DBusCapabilityFlags" cname="GDBusCapabilityFlags" type="flags">
       <member cname="G_DBUS_CAPABILITY_FLAGS_NONE" name="None" />
@@ -138,6 +139,7 @@
       <member cname="G_DBUS_MESSAGE_FLAGS_NONE" name="None" />
       <member cname="G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED" name="NoReplyExpected" value="1 &lt;&lt; 0" />
       <member cname="G_DBUS_MESSAGE_FLAGS_NO_AUTO_START" name="NoAutoStart" value="1 &lt;&lt; 1" />
+      <member cname="G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION" name="AllowInteractiveAuthorization" value="1 &lt;&lt; 2" />
     </enum>
     <enum name="DBusMessageHeaderField" cname="GDBusMessageHeaderField" type="enum">
       <member cname="G_DBUS_MESSAGE_HEADER_FIELD_INVALID" name="Invalid" />
@@ -272,12 +274,16 @@
       <member cname="G_FILE_MONITOR_EVENT_PRE_UNMOUNT" name="PreUnmount" />
       <member cname="G_FILE_MONITOR_EVENT_UNMOUNTED" name="Unmounted" />
       <member cname="G_FILE_MONITOR_EVENT_MOVED" name="Moved" />
+      <member cname="G_FILE_MONITOR_EVENT_RENAMED" name="Renamed" />
+      <member cname="G_FILE_MONITOR_EVENT_MOVED_IN" name="MovedIn" />
+      <member cname="G_FILE_MONITOR_EVENT_MOVED_OUT" name="MovedOut" />
     </enum>
     <enum name="FileMonitorFlags" cname="GFileMonitorFlags" gtype="g_file_monitor_flags_get_type" type="flags">
       <member cname="G_FILE_MONITOR_NONE" name="None" />
       <member cname="G_FILE_MONITOR_WATCH_MOUNTS" name="WatchMounts" value="1 &lt;&lt; 0" />
       <member cname="G_FILE_MONITOR_SEND_MOVED" name="SendMoved" value="1 &lt;&lt; 1" />
       <member cname="G_FILE_MONITOR_WATCH_HARD_LINKS" name="WatchHardLinks" value="1 &lt;&lt; 2" />
+      <member cname="G_FILE_MONITOR_WATCH_MOVES" name="WatchMoves" value="1 &lt;&lt; 3" />
     </enum>
     <enum name="FileQueryInfoFlags" cname="GFileQueryInfoFlags" gtype="g_file_query_info_flags_get_type" type="flags">
       <member cname="G_FILE_QUERY_INFO_NONE" name="None" />
@@ -438,6 +444,12 @@
       <member cname="G_SOCKET_FAMILY_IPV4" name="Ipv4" value="GLIB_SYSDEF_AF_INET" />
       <member cname="G_SOCKET_FAMILY_IPV6" name="Ipv6" value="GLIB_SYSDEF_AF_INET6" />
     </enum>
+    <enum name="SocketListenerEvent" cname="GSocketListenerEvent" gtype="g_socket_listener_event_get_type" type="enum">
+      <member cname="G_SOCKET_LISTENER_BINDING" name="Binding" />
+      <member cname="G_SOCKET_LISTENER_BOUND" name="Bound" />
+      <member cname="G_SOCKET_LISTENER_LISTENING" name="Listening" />
+      <member cname="G_SOCKET_LISTENER_LISTENED" name="Listened" />
+    </enum>
     <enum name="SocketMsgFlags" cname="GSocketMsgFlags" gtype="g_socket_msg_flags_get_type" type="enum">
       <member cname="G_SOCKET_MSG_NONE" name="None" />
       <member cname="G_SOCKET_MSG_OOB" name="Oob" value="GLIB_SYSDEF_MSG_OOB" />
@@ -527,6 +539,25 @@
       <member cname="G_UNIX_SOCKET_ADDRESS_PATH" name="Path" />
       <member cname="G_UNIX_SOCKET_ADDRESS_ABSTRACT" name="Abstract" />
       <member cname="G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED" name="AbstractPadded" />
+    </enum>
+    <enum name="Win32RegistryKeyWatcherFlags" cname="GWin32RegistryKeyWatcherFlags" type="flags">
+      <member cname="G_WIN32_REGISTRY_WATCH_NAME" name="Name" value="1 &lt;&lt; 0" />
+      <member cname="G_WIN32_REGISTRY_WATCH_ATTRIBUTES" name="Attributes" value="1 &lt;&lt; 1" />
+      <member cname="G_WIN32_REGISTRY_WATCH_VALUES" name="Values" value="1 &lt;&lt; 2" />
+      <member cname="G_WIN32_REGISTRY_WATCH_SECURITY" name="Security" value="1 &lt;&lt; 3" />
+    </enum>
+    <enum name="Win32RegistryValueType" cname="GWin32RegistryValueType" type="enum">
+      <member cname="G_WIN32_REGISTRY_VALUE_NONE" name="None" />
+      <member cname="G_WIN32_REGISTRY_VALUE_BINARY" name="Binary" value="1" />
+      <member cname="G_WIN32_REGISTRY_VALUE_UINT32LE" name="Uint32le" value="2" />
+      <member cname="G_WIN32_REGISTRY_VALUE_UINT32BE" name="Uint32be" value="3" />
+      <member cname="G_WIN32_REGISTRY_VALUE_UINT32" name="Uint32" value="2" />
+      <member cname="G_WIN32_REGISTRY_VALUE_EXPAND_STR" name="ExpandStr" value="4" />
+      <member cname="G_WIN32_REGISTRY_VALUE_LINK" name="Link" value="5" />
+      <member cname="G_WIN32_REGISTRY_VALUE_MULTI_STR" name="MultiStr" value="6" />
+      <member cname="G_WIN32_REGISTRY_VALUE_UINT64LE" name="Uint64le" value="7" />
+      <member cname="G_WIN32_REGISTRY_VALUE_UINT64" name="Uint64" value="7" />
+      <member cname="G_WIN32_REGISTRY_VALUE_STR" name="Str" value="8" />
     </enum>
     <enum name="ZlibCompressorFormat" cname="GZlibCompressorFormat" gtype="g_zlib_compressor_format_get_type" type="enum">
       <member cname="G_ZLIB_COMPRESSOR_FORMAT_ZLIB" name="Zlib" />
@@ -652,6 +683,13 @@
         <parameter type="gpointer" name="source_object" />
         <parameter type="gpointer" name="task_data" />
         <parameter type="GCancellable*" name="cancellable" />
+      </parameters>
+    </callback>
+    <callback name="Win32RegistryKeyWatchCallbackFunc" cname="GWin32RegistryKeyWatchCallbackFunc">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="GWin32RegistryKey*" name="key" />
+        <parameter type="gpointer" name="user_data" />
       </parameters>
     </callback>
     <interface name="Action" cname="GAction">
@@ -4447,11 +4485,24 @@
     <interface name="TlsClientConnection" cname="GTlsClientConnection">
       <class_struct cname="GTlsClientConnectionInterface">
         <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="copy_session_state" />
       </class_struct>
       <property name="ValidationFlags" cname="validation-flags" type="GTlsCertificateFlags" readable="true" writeable="true" construct="true" />
       <property name="ServerIdentity" cname="server-identity" type="GSocketConnectable" readable="true" writeable="true" construct="true" />
       <property name="UseSsl3" cname="use-ssl3" type="gboolean" readable="true" writeable="true" construct="true" />
       <property name="AcceptedCas" cname="accepted-cas" type="gpointer" readable="true" />
+      <virtual_method name="CopySessionState" cname="copy_session_state">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GTlsClientConnection*" name="source" />
+        </parameters>
+      </virtual_method>
+      <method name="CopySessionState" cname="g_tls_client_connection_copy_session_state">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GTlsClientConnection*" name="source" />
+        </parameters>
+      </method>
       <method name="GetAcceptedCas" cname="g_tls_client_connection_get_accepted_cas">
         <return-type type="GList*" />
       </method>
@@ -6905,7 +6956,6 @@
       </signal>
       <property name="RateLimit" cname="rate-limit" type="gint" readable="true" writeable="true" />
       <property name="Cancelled" cname="cancelled" type="gboolean" readable="true" />
-      <property name="Context" cname="context" type="GMainContext" writeable="true" construct-only="true" />
       <virtual_method name="Cancel" cname="cancel">
         <return-type type="gboolean" />
         <parameters />
@@ -7776,37 +7826,6 @@
         </parameters>
       </method>
     </object>
-    <object name="LocalDirectoryMonitor" cname="GLocalDirectoryMonitor" parent="GFileMonitor">
-      <class_struct cname="GLocalDirectoryMonitorClass">
-        <field name="ParentClass" cname="parent_class" type="GFileMonitorClass" />
-        <field name="MountNotify" cname="mount_notify" type="gboolean" />
-        <method vm="is_supported" />
-        <method vm="start" />
-      </class_struct>
-      <field name="Dirname" cname="dirname" type="gchar*" />
-      <field name="Flags" cname="flags" type="GFileMonitorFlags" />
-      <field name="WasMounted" cname="was_mounted" type="gboolean" />
-      <field name="MountMonitor" cname="mount_monitor" type="GUnixMountMonitor*" />
-      <property name="Dirname" cname="dirname" type="gchar*" writeable="true" construct-only="true" />
-      <property name="Flags" cname="flags" type="GFileMonitorFlags" writeable="true" construct-only="true" />
-      <virtual_method name="IsSupported" cname="is_supported" shared="true">
-        <return-type type="gboolean" />
-      </virtual_method>
-      <virtual_method name="Start" cname="start">
-        <return-type type="void" />
-        <parameters />
-      </virtual_method>
-      <constructor cname="g_local_directory_monitor_new_in_worker">
-        <parameters>
-          <parameter type="const-char*" name="pathname" />
-          <parameter type="GFileMonitorFlags" name="flags" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </constructor>
-      <method name="Start" cname="g_local_directory_monitor_start">
-        <return-type type="void" />
-      </method>
-    </object>
     <object name="LocalFileEnumerator" cname="GLocalFileEnumerator" parent="GFileEnumerator">
       <class_struct cname="GLocalFileEnumeratorClass">
         <field name="ParentClass" cname="parent_class" type="GFileEnumeratorClass" />
@@ -8510,6 +8529,21 @@
           <parameter type="const-char*" name="username" />
         </parameters>
       </method>
+    </object>
+    <object name="NativeSocketAddress" cname="GNativeSocketAddress" parent="GSocketAddress">
+      <class_struct cname="GNativeSocketAddressClass">
+        <field name="ParentClass" cname="parent_class" type="GSocketAddressClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GNativeSocketAddressPrivate*" />
+      <method name="GetType" cname="g_native_socket_address_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="g_native_socket_address_new">
+        <parameters>
+          <parameter type="gpointer" name="native" />
+          <parameter type="gsize" name="len" />
+        </parameters>
+      </constructor>
     </object>
     <object name="NativeVolumeMonitor" cname="GNativeVolumeMonitor" parent="GVolumeMonitor">
       <class_struct cname="GNativeVolumeMonitorClass">
@@ -9249,6 +9283,7 @@
       <property name="State" cname="state" type="variant" readable="true" />
       <property name="Object" cname="object" type="GObject" writeable="true" construct-only="true" />
       <property name="PropertyName" cname="property-name" type="gchar*" writeable="true" construct-only="true" />
+      <property name="InvertBoolean" cname="invert-boolean" type="gboolean" readable="true" writeable="true" construct-only="true" />
       <implements>
         <interface cname="GAction" />
       </implements>
@@ -9813,7 +9848,7 @@
       <method name="ListChildren" cname="g_settings_list_children">
         <return-type type="gchar**" />
       </method>
-      <method name="ListKeys" cname="g_settings_list_keys">
+      <method name="ListKeys" cname="g_settings_list_keys" deprecated="1">
         <return-type type="gchar**" />
       </method>
       <method name="ListRelocatableSchemas" cname="g_settings_list_relocatable_schemas" deprecated="1" shared="true">
@@ -9973,28 +10008,28 @@
       <implements>
         <interface cname="GAsyncResult" />
       </implements>
-      <method name="Complete" cname="g_simple_async_result_complete">
+      <method name="Complete" cname="g_simple_async_result_complete" deprecated="1">
         <return-type type="void" />
       </method>
-      <method name="CompleteInIdle" cname="g_simple_async_result_complete_in_idle">
+      <method name="CompleteInIdle" cname="g_simple_async_result_complete_in_idle" deprecated="1">
         <return-type type="void" />
       </method>
-      <method name="GetOpResGboolean" cname="g_simple_async_result_get_op_res_gboolean">
+      <method name="GetOpResGboolean" cname="g_simple_async_result_get_op_res_gboolean" deprecated="1">
         <return-type type="gboolean" />
       </method>
-      <method name="GetOpResGpointer" cname="g_simple_async_result_get_op_res_gpointer">
+      <method name="GetOpResGpointer" cname="g_simple_async_result_get_op_res_gpointer" deprecated="1">
         <return-type type="gpointer" />
       </method>
-      <method name="GetOpResGssize" cname="g_simple_async_result_get_op_res_gssize">
+      <method name="GetOpResGssize" cname="g_simple_async_result_get_op_res_gssize" deprecated="1">
         <return-type type="gssize" />
       </method>
-      <method name="GetSourceTag" cname="g_simple_async_result_get_source_tag">
+      <method name="GetSourceTag" cname="g_simple_async_result_get_source_tag" deprecated="1">
         <return-type type="gpointer" />
       </method>
       <method name="GetType" cname="g_simple_async_result_get_type" shared="true">
         <return-type type="GType" />
       </method>
-      <method name="IsValid" cname="g_simple_async_result_is_valid" shared="true">
+      <method name="IsValid" cname="g_simple_async_result_is_valid" deprecated="1" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GAsyncResult*" name="result" />
@@ -10002,7 +10037,7 @@
           <parameter type="gpointer" name="source_tag" />
         </parameters>
       </method>
-      <constructor cname="g_simple_async_result_new">
+      <constructor cname="g_simple_async_result_new" deprecated="1">
         <parameters>
           <parameter type="GObject*" name="source_object" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -10010,7 +10045,7 @@
           <parameter type="gpointer" name="source_tag" />
         </parameters>
       </constructor>
-      <constructor cname="g_simple_async_result_new_error">
+      <constructor cname="g_simple_async_result_new_error" deprecated="1">
         <parameters>
           <parameter type="GObject*" name="source_object" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -10021,7 +10056,7 @@
           <parameter ellipsis="true" printf_format_args="true" />
         </parameters>
       </constructor>
-      <constructor cname="g_simple_async_result_new_from_error">
+      <constructor cname="g_simple_async_result_new_from_error" deprecated="1">
         <parameters>
           <parameter type="GObject*" name="source_object" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -10029,7 +10064,7 @@
           <parameter type="const-GError*" name="error" />
         </parameters>
       </constructor>
-      <constructor cname="g_simple_async_result_new_take_error">
+      <constructor cname="g_simple_async_result_new_take_error" deprecated="1">
         <parameters>
           <parameter type="GObject*" name="source_object" />
           <parameter type="GAsyncReadyCallback" name="callback" />
@@ -10037,13 +10072,13 @@
           <parameter type="GError*" name="error" />
         </parameters>
       </constructor>
-      <method name="PropagateError" cname="g_simple_async_result_propagate_error">
+      <method name="PropagateError" cname="g_simple_async_result_propagate_error" deprecated="1">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GError**" name="dest" />
         </parameters>
       </method>
-      <method name="RunInThread" cname="g_simple_async_result_run_in_thread">
+      <method name="RunInThread" cname="g_simple_async_result_run_in_thread" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GSimpleAsyncThreadFunc" name="func" />
@@ -10057,7 +10092,7 @@
           <parameter type="GCancellable*" name="check_cancellable" />
         </parameters>
       </method>
-      <method name="SetError" cname="g_simple_async_result_set_error">
+      <method name="SetError" cname="g_simple_async_result_set_error" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GQuark" name="domain" />
@@ -10066,7 +10101,7 @@
           <parameter ellipsis="true" printf_format_args="true" />
         </parameters>
       </method>
-      <method name="SetErrorVa" cname="g_simple_async_result_set_error_va">
+      <method name="SetErrorVa" cname="g_simple_async_result_set_error_va" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GQuark" name="domain" />
@@ -10075,38 +10110,38 @@
           <parameter type="va_list" name="args" />
         </parameters>
       </method>
-      <method name="SetFromError" cname="g_simple_async_result_set_from_error">
+      <method name="SetFromError" cname="g_simple_async_result_set_from_error" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="const-GError*" name="error" />
         </parameters>
       </method>
-      <method name="SetHandleCancellation" cname="g_simple_async_result_set_handle_cancellation">
+      <method name="SetHandleCancellation" cname="g_simple_async_result_set_handle_cancellation" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="handle_cancellation" />
         </parameters>
       </method>
-      <method name="SetOpResGboolean" cname="g_simple_async_result_set_op_res_gboolean">
+      <method name="SetOpResGboolean" cname="g_simple_async_result_set_op_res_gboolean" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="op_res" />
         </parameters>
       </method>
-      <method name="SetOpResGpointer" cname="g_simple_async_result_set_op_res_gpointer">
+      <method name="SetOpResGpointer" cname="g_simple_async_result_set_op_res_gpointer" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gpointer" name="op_res" />
           <parameter type="GDestroyNotify" name="destroy_op_res" />
         </parameters>
       </method>
-      <method name="SetOpResGssize" cname="g_simple_async_result_set_op_res_gssize">
+      <method name="SetOpResGssize" cname="g_simple_async_result_set_op_res_gssize" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gssize" name="op_res" />
         </parameters>
       </method>
-      <method name="TakeError" cname="g_simple_async_result_take_error">
+      <method name="TakeError" cname="g_simple_async_result_take_error" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GError*" name="error" />
@@ -10732,7 +10767,7 @@
       <class_struct cname="GSocketListenerClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
         <method vm="changed" />
-        <method vm="_g_reserved1" />
+        <method signal_vm="event" />
         <method vm="_g_reserved2" />
         <method vm="_g_reserved3" />
         <method vm="_g_reserved4" />
@@ -10741,12 +10776,16 @@
       </class_struct>
       <field name="Priv" cname="priv" type="GSocketListenerPrivate*" />
       <property name="ListenBacklog" cname="listen-backlog" type="gint" readable="true" writeable="true" construct="true" />
+      <signal name="Event" cname="event" when="LAST" field_name="event">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSocketListenerEvent*" name="event" />
+          <parameter type="GSocket*" name="socket" />
+        </parameters>
+      </signal>
       <virtual_method name="Changed" cname="changed">
         <return-type type="void" />
         <parameters />
-      </virtual_method>
-      <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
-        <return-type type="void" />
       </virtual_method>
       <virtual_method name="GReserved2" cname="_g_reserved2" shared="true" padding="true">
         <return-type type="void" />
@@ -10888,6 +10927,7 @@
           <parameter type="GObject*" name="source_object" />
         </parameters>
       </signal>
+      <property name="Active" cname="active" type="gboolean" readable="true" writeable="true" construct="true" />
       <virtual_method name="GReserved1" cname="_g_reserved1" shared="true" padding="true">
         <return-type type="void" />
       </virtual_method>
@@ -12789,6 +12829,90 @@
         <return-type type="GList*" />
       </method>
     </object>
+    <object name="Win32RegistryKey" cname="GWin32RegistryKey" parent="GObject">
+      <class_struct cname="GWin32RegistryKeyClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GWin32RegistryKeyPrivate*" />
+      <property name="Path" cname="path" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="PathUtf16" cname="path-utf16" type="gpointer" readable="true" writeable="true" construct-only="true" />
+      <implements>
+        <interface cname="GInitable" />
+      </implements>
+      <method name="EraseChangeIndicator" cname="g_win32_registry_key_erase_change_indicator">
+        <return-type type="void" />
+      </method>
+      <method name="GetChild" cname="g_win32_registry_key_get_child">
+        <return-type type="GWin32RegistryKey*" />
+        <parameters>
+          <parameter type="const-gchar*" name="subkey" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetChildW" cname="g_win32_registry_key_get_child_w">
+        <return-type type="GWin32RegistryKey*" />
+        <parameters>
+          <parameter type="const-gunichar2*" name="subkey" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetPath" cname="g_win32_registry_key_get_path">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetPathW" cname="g_win32_registry_key_get_path_w">
+        <return-type type="const-gunichar2*" />
+      </method>
+      <method name="GetType" cname="g_win32_registry_key_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetValue" cname="g_win32_registry_key_get_value">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gboolean" name="auto_expand" />
+          <parameter type="const-gchar*" name="value_name" />
+          <parameter type="GWin32RegistryValueType*" name="value_type" />
+          <parameter type="gpointer*" name="value_data" />
+          <parameter type="gsize*" name="value_data_size" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetValueW" cname="g_win32_registry_key_get_value_w">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gboolean" name="auto_expand" />
+          <parameter type="const-gunichar2*" name="value_name" />
+          <parameter type="GWin32RegistryValueType*" name="value_type" />
+          <parameter type="gpointer*" name="value_data" />
+          <parameter type="gsize*" name="value_data_size" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="HasChanged" cname="g_win32_registry_key_has_changed">
+        <return-type type="gboolean" />
+      </method>
+      <constructor cname="g_win32_registry_key_new">
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <constructor cname="g_win32_registry_key_new_w">
+        <parameters>
+          <parameter type="const-gunichar2*" name="path" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
+      <method name="Watch" cname="g_win32_registry_key_watch">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gboolean" name="watch_children" />
+          <parameter type="GWin32RegistryKeyWatcherFlags" name="watch_flags" />
+          <parameter type="GWin32RegistryKeyWatchCallbackFunc" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+    </object>
     <object name="ZlibCompressor" cname="GZlibCompressor" parent="GObject">
       <class_struct cname="GZlibCompressorClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
@@ -12841,7 +12965,6 @@
     </object>
     <struct name="ExportedObject" cname="ExportedObject" opaque="true" />
     <struct name="ExportedSubtree" cname="ExportedSubtree" opaque="true" />
-    <struct name="FileChange" cname="FileChange" opaque="true" />
     <struct name="ActionEntry" cname="GActionEntry">
       <field name="Name" cname="name" type="const-gchar*" />
       <callback cname="activate">
@@ -12860,6 +12983,7 @@
       </callback>
       <field name="Padding" cname="padding" array_len="3" type="gsize" access="private" />
     </struct>
+    <struct name="CocoaNotificationBackend" cname="GCocoaNotificationBackend" opaque="true" />
     <struct name="ContextSpecificGroup" cname="GContextSpecificGroup">
       <field name="Table" cname="table" type="GHashTable*" />
       <field name="Lock" cname="lock" type="GMutex" />
@@ -13278,6 +13402,171 @@
     <struct name="TestDBus" cname="GTestDBus" opaque="true" />
     <struct name="TestDBusClass" cname="GTestDBusClass" opaque="true" />
     <struct name="TlsFileDatabase" cname="GTlsFileDatabase" opaque="true" />
+    <struct name="Win32AppInfoApplication" cname="GWin32AppInfoApplication" opaque="true" />
+    <struct name="Win32AppInfoApplicationClass" cname="GWin32AppInfoApplicationClass" opaque="true" />
+    <struct name="Win32AppInfoFileExtension" cname="GWin32AppInfoFileExtension" opaque="true" />
+    <struct name="Win32AppInfoFileExtensionClass" cname="GWin32AppInfoFileExtensionClass" opaque="true" />
+    <struct name="Win32AppInfoHandler" cname="GWin32AppInfoHandler" opaque="true" />
+    <struct name="Win32AppInfoHandlerClass" cname="GWin32AppInfoHandlerClass" opaque="true" />
+    <struct name="Win32AppInfoURLSchema" cname="GWin32AppInfoURLSchema" opaque="true" />
+    <struct name="Win32AppInfoURLSchemaClass" cname="GWin32AppInfoURLSchemaClass" opaque="true" />
+    <boxed name="Win32RegistrySubkeyIter" cname="GWin32RegistrySubkeyIter">
+      <field name="Key" cname="key" type="GWin32RegistryKey*" access="private" />
+      <field name="Counter" cname="counter" type="gint" access="private" />
+      <field name="SubkeyCount" cname="subkey_count" type="gint" access="private" />
+      <field name="SubkeyName" cname="subkey_name" type="gunichar2*" access="private" />
+      <field name="SubkeyNameSize" cname="subkey_name_size" type="gsize" access="private" />
+      <field name="SubkeyNameLen" cname="subkey_name_len" type="gsize" access="private" />
+      <field name="SubkeyNameU8" cname="subkey_name_u8" type="gchar*" access="private" />
+      <method name="Assign" cname="g_win32_registry_subkey_iter_assign">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GWin32RegistrySubkeyIter*" name="other" />
+        </parameters>
+      </method>
+      <method name="Clear" cname="g_win32_registry_subkey_iter_clear">
+        <return-type type="void" />
+      </method>
+      <method name="Copy" cname="g_win32_registry_subkey_iter_copy">
+        <return-type type="GWin32RegistrySubkeyIter*" owned="true" />
+      </method>
+      <method name="Free" cname="g_win32_registry_subkey_iter_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetName" cname="g_win32_registry_subkey_iter_get_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gchar**" name="subkey_name" />
+          <parameter type="gsize*" name="subkey_name_len" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetNameW" cname="g_win32_registry_subkey_iter_get_name_w">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gunichar2**" name="subkey_name" />
+          <parameter type="gsize*" name="subkey_name_len" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="g_win32_registry_subkey_iter_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Init" cname="g_win32_registry_subkey_iter_init">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GWin32RegistryKey*" name="key" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="NSubkeys" cname="g_win32_registry_subkey_iter_n_subkeys">
+        <return-type type="gsize" />
+      </method>
+      <method name="Next" cname="g_win32_registry_subkey_iter_next">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gboolean" name="skip_errors" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+    </boxed>
+    <boxed name="Win32RegistryValueIter" cname="GWin32RegistryValueIter">
+      <field name="Key" cname="key" type="GWin32RegistryKey*" access="private" />
+      <field name="Counter" cname="counter" type="gint" access="private" />
+      <field name="ValueCount" cname="value_count" type="gint" access="private" />
+      <field name="ValueName" cname="value_name" type="gunichar2*" access="private" />
+      <field name="ValueNameSize" cname="value_name_size" type="gsize" access="private" />
+      <field name="ValueNameLen" cname="value_name_len" type="gsize" access="private" />
+      <field name="ValueType" cname="value_type" type="GWin32RegistryValueType" access="private" />
+      <field name="ValueData" cname="value_data" type="guint8*" access="private" />
+      <field name="ValueDataSize" cname="value_data_size" type="gsize" access="private" />
+      <field name="ValueActualDataSize" cname="value_actual_data_size" type="gsize" access="private" />
+      <field name="ValueExpandedType" cname="value_expanded_type" type="GWin32RegistryValueType" access="private" />
+      <field name="ValueDataExpanded" cname="value_data_expanded" type="gunichar2*" access="private" />
+      <field name="ValueDataExpandedCharsize" cname="value_data_expanded_charsize" type="gsize" access="private" />
+      <field name="ValueNameU8" cname="value_name_u8" type="gchar*" access="private" />
+      <field name="ValueNameU8Len" cname="value_name_u8_len" type="gsize" access="private" />
+      <field name="ValueDataU8" cname="value_data_u8" type="gchar*" access="private" />
+      <field name="ValueDataU8Size" cname="value_data_u8_size" type="gsize" access="private" />
+      <field name="ValueDataExpandedU8" cname="value_data_expanded_u8" type="gchar*" access="private" />
+      <field name="ValueDataExpandedU8Size" cname="value_data_expanded_u8_size" type="gsize" access="private" />
+      <method name="Assign" cname="g_win32_registry_value_iter_assign">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GWin32RegistryValueIter*" name="other" />
+        </parameters>
+      </method>
+      <method name="Clear" cname="g_win32_registry_value_iter_clear">
+        <return-type type="void" />
+      </method>
+      <method name="Copy" cname="g_win32_registry_value_iter_copy">
+        <return-type type="GWin32RegistryValueIter*" owned="true" />
+      </method>
+      <method name="Free" cname="g_win32_registry_value_iter_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetData" cname="g_win32_registry_value_iter_get_data">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gboolean" name="auto_expand" />
+          <parameter type="gpointer*" name="value_data" />
+          <parameter type="gsize*" name="value_data_size" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetDataW" cname="g_win32_registry_value_iter_get_data_w">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gboolean" name="auto_expand" />
+          <parameter type="gpointer*" name="value_data" />
+          <parameter type="gsize*" name="value_data_size" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetName" cname="g_win32_registry_value_iter_get_name">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gchar**" name="value_name" />
+          <parameter type="gsize*" name="value_name_len" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetNameW" cname="g_win32_registry_value_iter_get_name_w">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gunichar2**" name="value_name" />
+          <parameter type="gsize*" name="value_name_len" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="g_win32_registry_value_iter_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetValueType" cname="g_win32_registry_value_iter_get_value_type">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GWin32RegistryValueType*" name="value_type" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="Init" cname="g_win32_registry_value_iter_init">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GWin32RegistryKey*" name="key" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="NValues" cname="g_win32_registry_value_iter_n_values">
+        <return-type type="gsize" />
+      </method>
+      <method name="Next" cname="g_win32_registry_value_iter_next">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gboolean" name="skip_errors" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+    </boxed>
     <struct name="Win32WinsockFuncs" cname="GWin32WinsockFuncs" opaque="true" />
     <struct name="MessageToWriteData" cname="MessageToWriteData" opaque="true" />
     <struct name="SchemaState" cname="SchemaState" opaque="true" />
@@ -13482,6 +13771,14 @@
           <parameter type="GListStore*" name="store" />
         </parameters>
       </method>
+      <method name="StoreSort" cname="g_list_store_sort" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GListStore*" name="store" />
+          <parameter type="GCompareDataFunc" name="compare_func" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
       <method name="StoreSplice" cname="g_list_store_splice" shared="true">
         <return-type type="void" />
         <parameters>
@@ -13600,7 +13897,7 @@
       </method>
     </class>
     <class name="Simple" cname="GSimple_">
-      <method name="AsyncReportErrorInIdle" cname="g_simple_async_report_error_in_idle" shared="true">
+      <method name="AsyncReportErrorInIdle" cname="g_simple_async_report_error_in_idle" deprecated="1" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="GObject*" name="object" />
@@ -13612,7 +13909,7 @@
           <parameter ellipsis="true" printf_format_args="true" />
         </parameters>
       </method>
-      <method name="AsyncReportGerrorInIdle" cname="g_simple_async_report_gerror_in_idle" shared="true">
+      <method name="AsyncReportGerrorInIdle" cname="g_simple_async_report_gerror_in_idle" deprecated="1" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="GObject*" name="object" />
@@ -13621,7 +13918,7 @@
           <parameter type="const-GError*" name="error" />
         </parameters>
       </method>
-      <method name="AsyncReportTakeGerrorInIdle" cname="g_simple_async_report_take_gerror_in_idle" shared="true">
+      <method name="AsyncReportTakeGerrorInIdle" cname="g_simple_async_report_take_gerror_in_idle" deprecated="1" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="GObject*" name="object" />

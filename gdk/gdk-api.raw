@@ -161,6 +161,7 @@
       <member cname="GDK_SCROLL_MASK" name="ScrollMask" value="1 &lt;&lt; 21" />
       <member cname="GDK_TOUCH_MASK" name="TouchMask" value="1 &lt;&lt; 22" />
       <member cname="GDK_SMOOTH_SCROLL_MASK" name="SmoothScrollMask" value="1 &lt;&lt; 23" />
+      <member cname="GDK_TOUCHPAD_GESTURE_MASK" name="TouchpadGestureMask" value="1 &lt;&lt; 24" />
       <member cname="GDK_ALL_EVENTS_MASK" name="AllEventsMask" value="0xFFFFFE" />
     </enum>
     <enum name="EventType" cname="GdkEventType" gtype="gdk_event_type_get_type" type="enum">
@@ -207,6 +208,8 @@
       <member cname="GDK_TOUCH_UPDATE" name="TouchUpdate" value="38" />
       <member cname="GDK_TOUCH_END" name="TouchEnd" value="39" />
       <member cname="GDK_TOUCH_CANCEL" name="TouchCancel" value="40" />
+      <member cname="GDK_TOUCHPAD_SWIPE" name="TouchpadSwipe" value="41" />
+      <member cname="GDK_TOUCHPAD_PINCH" name="TouchpadPinch" value="42" />
       <member cname="GDK_EVENT_LAST" name="EventLast" />
     </enum>
     <enum name="FilterReturn" cname="GdkFilterReturn" gtype="gdk_filter_return_get_type" type="enum">
@@ -279,6 +282,7 @@
       <member cname="GDK_MODIFIER_INTENT_MODIFY_SELECTION" name="ModifySelection" />
       <member cname="GDK_MODIFIER_INTENT_NO_TEXT_INPUT" name="NoTextInput" />
       <member cname="GDK_MODIFIER_INTENT_SHIFT_GROUP" name="ShiftGroup" />
+      <member cname="GDK_MODIFIER_INTENT_DEFAULT_MOD_MASK" name="DefaultModMask" />
     </enum>
     <enum name="ModifierType" cname="GdkModifierType" gtype="gdk_modifier_type_get_type" type="flags">
       <member cname="GDK_SHIFT_MASK" name="ShiftMask" value="1 &lt;&lt; 0" />
@@ -354,6 +358,12 @@
       <member cname="GDK_ERROR_PARAM" name="ErrorParam" value="-2" />
       <member cname="GDK_ERROR_FILE" name="ErrorFile" value="-3" />
       <member cname="GDK_ERROR_MEM" name="ErrorMem" value="-4" />
+    </enum>
+    <enum name="TouchpadGesturePhase" cname="GdkTouchpadGesturePhase" gtype="gdk_touchpad_gesture_phase_get_type" type="enum">
+      <member cname="GDK_TOUCHPAD_GESTURE_PHASE_BEGIN" name="Begin" />
+      <member cname="GDK_TOUCHPAD_GESTURE_PHASE_UPDATE" name="Update" />
+      <member cname="GDK_TOUCHPAD_GESTURE_PHASE_END" name="End" />
+      <member cname="GDK_TOUCHPAD_GESTURE_PHASE_CANCEL" name="Cancel" />
     </enum>
     <enum name="VisibilityState" cname="GdkVisibilityState" gtype="gdk_visibility_state_get_type" type="enum">
       <member cname="GDK_VISIBILITY_UNOBSCURED" name="Unobscured" />
@@ -1701,6 +1711,8 @@
         <method vm="end_frame" />
         <method vm="texture_from_surface" />
       </class_struct>
+      <property name="Display" cname="display" type="GdkDisplay" readable="true" writeable="true" construct-only="true" />
+      <property name="Window" cname="window" type="GdkWindow" readable="true" writeable="true" construct-only="true" />
       <property name="SharedContext" cname="shared-context" type="GdkGlContext" readable="true" writeable="true" construct-only="true" />
       <virtual_method name="Realize" cname="realize">
         <return-type type="gboolean" />
@@ -1796,6 +1808,7 @@
         <method vm="have_bidi_layouts" />
         <method vm="get_caps_lock_state" />
         <method vm="get_num_lock_state" />
+        <method vm="get_scroll_lock_state" />
         <method vm="get_entries_for_keyval" />
         <method vm="get_entries_for_keycode" />
         <method vm="lookup_key" />
@@ -1833,6 +1846,10 @@
         <parameters />
       </virtual_method>
       <virtual_method name="GetNumLockState" cname="get_num_lock_state">
+        <return-type type="gboolean" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetScrollLockState" cname="get_scroll_lock_state">
         <return-type type="gboolean" />
         <parameters />
       </virtual_method>
@@ -1943,6 +1960,9 @@
       <method name="GetNumLockState" cname="gdk_keymap_get_num_lock_state">
         <return-type type="gboolean" />
       </method>
+      <method name="GetScrollLockState" cname="gdk_keymap_get_scroll_lock_state">
+        <return-type type="gboolean" />
+      </method>
       <method name="GetType" cname="gdk_keymap_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -2009,24 +2029,10 @@
         <method vm="query_depths" />
         <method vm="query_visual_types" />
         <method vm="get_monitor_scale_factor" />
-        <method signal_vm="size_changed" />
-        <method signal_vm="composited_changed" />
-        <method signal_vm="monitors_changed" />
+        <method vm="size_changed" />
+        <method vm="composited_changed" />
+        <method vm="monitors_changed" />
       </class_struct>
-      <property name="FontOptions" cname="font-options" type="gpointer" readable="true" writeable="true" />
-      <property name="Resolution" cname="resolution" type="gdouble" readable="true" writeable="true" />
-      <signal name="SizeChanged" cname="size-changed" when="LAST" field_name="size_changed">
-        <return-type type="void" />
-        <parameters />
-      </signal>
-      <signal name="CompositedChanged" cname="composited-changed" when="LAST" field_name="composited_changed">
-        <return-type type="void" />
-        <parameters />
-      </signal>
-      <signal name="MonitorsChanged" cname="monitors-changed" when="LAST" field_name="monitors_changed">
-        <return-type type="void" />
-        <parameters />
-      </signal>
       <virtual_method name="GetDisplay" cname="get_display">
         <return-type type="GdkDisplay*" />
         <parameters />
@@ -2186,6 +2192,18 @@
         <parameters>
           <parameter type="gint" name="monitor_num" />
         </parameters>
+      </virtual_method>
+      <virtual_method name="SizeChanged" cname="size_changed">
+        <return-type type="void" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="CompositedChanged" cname="composited_changed">
+        <return-type type="void" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="MonitorsChanged" cname="monitors_changed">
+        <return-type type="void" />
+        <parameters />
       </virtual_method>
       <method name="GetActiveWindow" cname="gdk_screen_get_active_window">
         <return-type type="GdkWindow*" />
@@ -2644,6 +2662,12 @@
       <method name="Fullscreen" cname="gdk_window_fullscreen">
         <return-type type="void" />
       </method>
+      <method name="FullscreenOnMonitor" cname="gdk_window_fullscreen_on_monitor">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="monitor" />
+        </parameters>
+      </method>
       <method name="GeometryChanged" cname="gdk_window_geometry_changed">
         <return-type type="void" />
       </method>
@@ -2770,6 +2794,9 @@
       </method>
       <method name="GetParent" cname="gdk_window_get_parent">
         <return-type type="GdkWindow*" />
+      </method>
+      <method name="GetPassThrough" cname="gdk_window_get_pass_through">
+        <return-type type="gboolean" />
       </method>
       <method name="GetPointer" cname="gdk_window_get_pointer" deprecated="1">
         <return-type type="GdkWindow*" />
@@ -3172,6 +3199,12 @@
           <parameter type="gboolean" name="override_redirect" />
         </parameters>
       </method>
+      <method name="SetPassThrough" cname="gdk_window_set_pass_through">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="pass_through" />
+        </parameters>
+      </method>
       <method name="SetRole" cname="gdk_window_set_role">
         <return-type type="void" />
         <parameters>
@@ -3516,6 +3549,38 @@
       <field name="XRoot" cname="x_root" type="gdouble" />
       <field name="YRoot" cname="y_root" type="gdouble" />
     </struct>
+    <struct name="EventTouchpadPinch" cname="GdkEventTouchpadPinch">
+      <field name="Type" cname="type" type="GdkEventType" />
+      <field name="Window" cname="window" type="GdkWindow*" />
+      <field name="SendEvent" cname="send_event" type="gint8" />
+      <field name="Phase" cname="phase" type="gint8" />
+      <field name="NFingers" cname="n_fingers" type="gint8" />
+      <field name="Time" cname="time" type="guint32" />
+      <field name="X" cname="x" type="gdouble" />
+      <field name="Y" cname="y" type="gdouble" />
+      <field name="Dx" cname="dx" type="gdouble" />
+      <field name="Dy" cname="dy" type="gdouble" />
+      <field name="AngleDelta" cname="angle_delta" type="gdouble" />
+      <field name="Scale" cname="scale" type="gdouble" />
+      <field name="XRoot" cname="x_root" type="gdouble" />
+      <field name="YRoot" cname="y_root" type="gdouble" />
+      <field name="State" cname="state" type="guint" />
+    </struct>
+    <struct name="EventTouchpadSwipe" cname="GdkEventTouchpadSwipe">
+      <field name="Type" cname="type" type="GdkEventType" />
+      <field name="Window" cname="window" type="GdkWindow*" />
+      <field name="SendEvent" cname="send_event" type="gint8" />
+      <field name="Phase" cname="phase" type="gint8" />
+      <field name="NFingers" cname="n_fingers" type="gint8" />
+      <field name="Time" cname="time" type="guint32" />
+      <field name="X" cname="x" type="gdouble" />
+      <field name="Y" cname="y" type="gdouble" />
+      <field name="Dx" cname="dx" type="gdouble" />
+      <field name="Dy" cname="dy" type="gdouble" />
+      <field name="XRoot" cname="x_root" type="gdouble" />
+      <field name="YRoot" cname="y_root" type="gdouble" />
+      <field name="State" cname="state" type="guint" />
+    </struct>
     <struct name="EventVisibility" cname="GdkEventVisibility">
       <field name="Type" cname="type" type="GdkEventType" />
       <field name="Window" cname="window" type="GdkWindow*" />
@@ -3605,7 +3670,7 @@
       <field name="Y" cname="y" type="gint" />
     </struct>
     <struct name="Predicate" cname="GdkPredicate" opaque="true" />
-    <boxed name="RGBA" cname="GdkRGBA">
+    <struct name="RGBA" cname="GdkRGBA">
       <field name="Red" cname="red" type="gdouble" />
       <field name="Green" cname="green" type="gdouble" />
       <field name="Blue" cname="blue" type="gdouble" />
@@ -3641,7 +3706,7 @@
       <method name="ToString" cname="gdk_rgba_to_string">
         <return-type type="gchar*" />
       </method>
-    </boxed>
+    </struct>
     <alias name="Rectangle" cname="GdkRectangle" type="cairo_rectangle_int_t" />
     <struct name="ThreadsDispatch" cname="GdkThreadsDispatch" opaque="true" />
     <struct name="TimeCoord" cname="GdkTimeCoord">
@@ -4596,7 +4661,7 @@
       <member cname="GDK_PIXBUF_ROTATE_UPSIDEDOWN" name="Upsidedown" value="180" />
       <member cname="GDK_PIXBUF_ROTATE_CLOCKWISE" name="Clockwise" value="270" />
     </enum>
-    <enum name="PixdataDumpType" cname="GdkPixdataDumpType" type="flags">
+    <enum name="PixdataDumpType" cname="GdkPixdataDumpType" deprecated="1" type="flags">
       <member cname="GDK_PIXDATA_DUMP_PIXDATA_STREAM" name="PixdataStream" />
       <member cname="GDK_PIXDATA_DUMP_PIXDATA_STRUCT" name="PixdataStruct" value="1" />
       <member cname="GDK_PIXDATA_DUMP_MACROS" name="Macros" value="2" />
@@ -4606,7 +4671,7 @@
       <member cname="GDK_PIXDATA_DUMP_CONST" name="Const" value="1 &lt;&lt; 10" />
       <member cname="GDK_PIXDATA_DUMP_RLE_DECODER" name="RleDecoder" value="1 &lt;&lt; 16" />
     </enum>
-    <enum name="PixdataType" cname="GdkPixdataType" type="flags">
+    <enum name="PixdataType" cname="GdkPixdataType" deprecated="1" type="flags">
       <member cname="GDK_PIXDATA_COLOR_TYPE_RGB" name="ColorTypeRgb" value="0x01" />
       <member cname="GDK_PIXDATA_COLOR_TYPE_RGBA" name="ColorTypeRgba" value="0x02" />
       <member cname="GDK_PIXDATA_COLOR_TYPE_MASK" name="ColorTypeMask" value="0xff" />
@@ -4644,6 +4709,7 @@
       <property name="Height" cname="height" type="gint" />
       <property name="Rowstride" cname="rowstride" type="gint" />
       <property name="Pixels" cname="pixels" type="gpointer" />
+      <property name="PixelBytes" cname="pixel-bytes" type="GBytes" />
       <implements>
         <interface cname="GIcon" />
         <interface cname="GLoadableIcon" />
@@ -4739,14 +4805,6 @@
           <parameter type="gboolean" name="horizontal" />
         </parameters>
       </method>
-      <method name="FromPixdata" cname="gdk_pixbuf_from_pixdata" shared="true">
-        <return-type type="GdkPixbuf*" />
-        <parameters>
-          <parameter type="const-GdkPixdata*" name="pixdata" />
-          <parameter type="gboolean" name="copy_pixels" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
       <method name="GetBitsPerSample" cname="gdk_pixbuf_get_bits_per_sample">
         <return-type type="int" />
       </method>
@@ -4762,6 +4820,24 @@
           <parameter type="const-gchar*" name="filename" />
           <parameter type="gint*" name="width" />
           <parameter type="gint*" name="height" />
+        </parameters>
+      </method>
+      <method name="GetFileInfoAsync" cname="gdk_pixbuf_get_file_info_async" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="filename" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="GetFileInfoFinish" cname="gdk_pixbuf_get_file_info_finish" shared="true">
+        <return-type type="GdkPixbufFormat*" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="async_result" />
+          <parameter type="gint*" name="width" />
+          <parameter type="gint*" name="height" />
+          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="GetFormats" cname="gdk_pixbuf_get_formats" shared="true">
@@ -4782,6 +4858,9 @@
           <parameter type="const-gchar*" name="key" />
         </parameters>
       </method>
+      <method name="GetOptions" cname="gdk_pixbuf_get_options">
+        <return-type type="GHashTable*" />
+      </method>
       <method name="GetPixels" cname="gdk_pixbuf_get_pixels">
         <return-type type="guchar*" />
       </method>
@@ -4800,12 +4879,6 @@
       <method name="GetWidth" cname="gdk_pixbuf_get_width">
         <return-type type="int" />
       </method>
-      <method name="Gettext" cname="gdk_pixbuf_gettext" shared="true">
-        <return-type type="const-gchar*" />
-        <parameters>
-          <parameter type="const-gchar*" name="msgid)" />
-        </parameters>
-      </method>
       <constructor cname="gdk_pixbuf_new">
         <parameters>
           <parameter type="GdkColorspace" name="colorspace" />
@@ -4813,6 +4886,17 @@
           <parameter type="int" name="bits_per_sample" />
           <parameter type="int" name="width" />
           <parameter type="int" name="height" />
+        </parameters>
+      </constructor>
+      <constructor cname="gdk_pixbuf_new_from_bytes">
+        <parameters>
+          <parameter type="GBytes*" name="data" />
+          <parameter type="GdkColorspace" name="colorspace" />
+          <parameter type="gboolean" name="has_alpha" />
+          <parameter type="int" name="bits_per_sample" />
+          <parameter type="int" name="width" />
+          <parameter type="int" name="height" />
+          <parameter type="int" name="rowstride" />
         </parameters>
       </constructor>
       <constructor cname="gdk_pixbuf_new_from_data">
@@ -4848,14 +4932,6 @@
           <parameter type="const-char*" name="filename" />
           <parameter type="int" name="width" />
           <parameter type="int" name="height" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </constructor>
-      <constructor cname="gdk_pixbuf_new_from_inline">
-        <parameters>
-          <parameter type="gint" name="data_length" />
-          <parameter type="const-guint8*" name="data" />
-          <parameter type="gboolean" name="copy_pixels" />
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
@@ -4930,6 +5006,12 @@
           <parameter type="int" name="height" />
         </parameters>
       </constructor>
+      <method name="ReadPixelBytes" cname="gdk_pixbuf_read_pixel_bytes">
+        <return-type type="GBytes*" />
+      </method>
+      <method name="ReadPixels" cname="gdk_pixbuf_read_pixels">
+        <return-type type="const-guint8*" />
+      </method>
       <method name="RotateSimple" cname="gdk_pixbuf_rotate_simple">
         <return-type type="GdkPixbuf*" />
         <parameters>
@@ -5385,7 +5467,7 @@
       </method>
     </struct>
     <struct name="PixbufSimpleAnimIterClass" cname="GdkPixbufSimpleAnimIterClass" opaque="true" />
-    <struct name="Pixdata" cname="GdkPixdata">
+    <struct name="Pixdata" cname="GdkPixdata" deprecated="1">
       <field name="Magic" cname="magic" type="guint32" />
       <field name="Length" cname="length" type="gint32" />
       <field name="PixdataType" cname="pixdata_type" type="guint32" />
@@ -5393,34 +5475,6 @@
       <field name="Width" cname="width" type="guint32" />
       <field name="Height" cname="height" type="guint32" />
       <field name="PixelData" cname="pixel_data" type="guint8*" />
-      <method name="Deserialize" cname="gdk_pixdata_deserialize">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="guint" name="stream_length" />
-          <parameter type="const-guint8*" name="stream" />
-          <parameter type="GError**" name="error" />
-        </parameters>
-      </method>
-      <method name="FromPixbuf" cname="gdk_pixdata_from_pixbuf">
-        <return-type type="gpointer" />
-        <parameters>
-          <parameter type="const-GdkPixbuf*" name="pixbuf" />
-          <parameter type="gboolean" name="use_rle" />
-        </parameters>
-      </method>
-      <method name="Serialize" cname="gdk_pixdata_serialize">
-        <return-type type="guint8*" />
-        <parameters>
-          <parameter type="guint*" name="stream_length_p" />
-        </parameters>
-      </method>
-      <method name="ToCsource" cname="gdk_pixdata_to_csource">
-        <return-type type="GString*" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="GdkPixdataDumpType" name="dump_type" />
-        </parameters>
-      </method>
     </struct>
     <struct name="Gif89" cname="Gif89" opaque="true" />
     <struct name="GifContext" cname="GifContext" opaque="true" />

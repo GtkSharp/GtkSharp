@@ -43,6 +43,7 @@ sources = 			\
 	Point.cs		\
 	Property.cs		\
 	Rectangle.cs		\
+	RGBA.cs			\
 	Screen.cs		\
 	Selection.cs		\
 	Size.cs			\

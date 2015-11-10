@@ -40,11 +40,13 @@ namespace Gtk {
 			this.AddAccelerator (accel_signal, accel_group, (uint) accel_key.Key, accel_key.AccelMods, accel_key.AccelFlags);
 		}
 
+		/*
 		public int FocusLineWidth {
 			get {
 				return (int) StyleGetProperty ("focus-line-width");
 			}
 		}
+		*/
 
 		struct GClosure {
 			long fields;
@@ -274,10 +276,12 @@ namespace Gtk {
 			return result;
 		}
 
+		/*
 		public void ModifyBase (Gtk.StateType state)
 		{
 			gtk_widget_modify_base (Handle, (int) state, IntPtr.Zero);
 		}
+		*/
 
 		public void ModifyBg (Gtk.StateType state)
 		{
@@ -289,10 +293,12 @@ namespace Gtk {
 			gtk_widget_modify_fg (Handle, (int) state, IntPtr.Zero);
 		}
 
+		/*
 		public void ModifyText (Gtk.StateType state)
 		{
 			gtk_widget_modify_text (Handle, (int) state, IntPtr.Zero);
 		}
+		*/
 
 		public void Path (out string path, out string path_reversed)
 		{

@@ -88,7 +88,7 @@ namespace GtkSharp.Generation {
 				IGeneratable gen = table [CType];
 
 				if (IsArray || gen is IAccessor)
-					return StudlyName;
+					return Access == "public" ? StudlyName : Name;
 				else if (IsBitfield)
 					return Name;
 				else if (IsPointer && (gen is StructGen || gen is BoxedGen || gen is UnionGen))

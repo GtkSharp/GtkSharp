@@ -165,12 +165,15 @@ namespace Gdk {
 
 		public Pixbuf(byte [] data, Gdk.Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride) : this (data, colorspace, has_alpha, bits_per_sample, width, height, rowstride, null) {}
 
+		/* gdk_pixbuf_new_from_inline has been deprecated since version 2.32 and should not be used in newly-written code. Use GResource instead */
+		/*
 		public unsafe Pixbuf(byte[] data, bool copy_pixels) : base (IntPtr.Zero)
 		{
 			IntPtr error = IntPtr.Zero;
-			Raw = gdk_pixbuf_new_from_inline(data.Length, data, copy_pixels, out error);
+			Raw = gdk_pixbuf_new_from_inline(data.Length, (IntPtr) data, copy_pixels, out error);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 		}
+		*/
 
 		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
 		static extern unsafe IntPtr gdk_pixbuf_new_from_inline(int len, IntPtr data, bool copy_pixels, out IntPtr error);

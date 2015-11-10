@@ -43,7 +43,7 @@ namespace Cairo
 			Dispose (false);
 		}
 
-		internal FontOptions (IntPtr handle)
+		public FontOptions (IntPtr handle)
 		{
 			if (handle == IntPtr.Zero)
 				throw new ArgumentException ("handle should not be NULL", "handle");

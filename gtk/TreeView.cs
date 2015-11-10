@@ -28,6 +28,7 @@ namespace Gtk {
 
 	public partial class TreeView {
 
+		/*
 		public Gdk.Color OddRowColor {
 			get {
 				GLib.Value value = StyleGetPropertyValue ("odd-row-color");
@@ -45,6 +46,7 @@ namespace Gtk {
 				return ret;
 			}
 		}
+		*/
 
 		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool gtk_tree_view_get_path_at_pos (IntPtr raw,

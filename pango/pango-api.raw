@@ -36,6 +36,9 @@
       <member cname="PANGO_ATTR_ABSOLUTE_SIZE" name="AbsoluteSize" />
       <member cname="PANGO_ATTR_GRAVITY" name="Gravity" />
       <member cname="PANGO_ATTR_GRAVITY_HINT" name="GravityHint" />
+      <member cname="PANGO_ATTR_FONT_FEATURES" name="FontFeatures" />
+      <member cname="PANGO_ATTR_FOREGROUND_ALPHA" name="ForegroundAlpha" />
+      <member cname="PANGO_ATTR_BACKGROUND_ALPHA" name="BackgroundAlpha" />
     </enum>
     <enum name="BidiType" cname="PangoBidiType" gtype="pango_bidi_type_get_type" type="enum">
       <member cname="PANGO_BIDI_TYPE_L" name="L" />
@@ -1137,6 +1140,12 @@
           <parameter type="double" name="x22" />
         </parameters>
       </method>
+      <method name="GetAlpha" cname="pango_renderer_get_alpha">
+        <return-type type="guint16" />
+        <parameters>
+          <parameter type="PangoRenderPart" name="part" />
+        </parameters>
+      </method>
       <method name="GetColor" cname="pango_renderer_get_color">
         <return-type type="PangoColor*" />
         <parameters>
@@ -1159,6 +1168,13 @@
         <return-type type="void" />
         <parameters>
           <parameter type="PangoRenderPart" name="part" />
+        </parameters>
+      </method>
+      <method name="SetAlpha" cname="pango_renderer_set_alpha">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoRenderPart" name="part" />
+          <parameter type="guint16" name="alpha" />
         </parameters>
       </method>
       <method name="SetColor" cname="pango_renderer_set_color">
@@ -1231,6 +1247,15 @@
       <constructor cname="pango_attr_font_desc_new">
         <parameters>
           <parameter type="const-PangoFontDescription*" name="desc" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="AttrFontFeatures" cname="PangoAttrFontFeatures" opaque="true">
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
+      <field name="Features" cname="features" type="gchar*" access="public" writeable="true" />
+      <constructor cname="pango_attr_font_features_new">
+        <parameters>
+          <parameter type="const-gchar*" name="features" />
         </parameters>
       </constructor>
     </struct>
@@ -1486,7 +1511,6 @@
       </method>
     </struct>
     <struct name="EngineLang" cname="PangoEngineLang" opaque="true" />
-    <struct name="EnginePair" cname="PangoEnginePair" opaque="true" />
     <struct name="EngineShape" cname="PangoEngineShape" opaque="true" />
     <struct name="FT2Family" cname="PangoFT2Family" opaque="true" />
     <struct name="FT2Font" cname="PangoFT2Font" opaque="true" />
@@ -2067,7 +2091,6 @@
       <field name="IsExpandableSpace" cname="is_expandable_space" bits="1" type="guint" />
       <field name="IsWordBoundary" cname="is_word_boundary" bits="1" type="guint" />
     </struct>
-    <struct name="MapInfo" cname="PangoMapInfo" opaque="true" />
     <boxed name="Matrix" cname="PangoMatrix">
       <field name="Xx" cname="xx" type="double" />
       <field name="Xy" cname="xy" type="double" />
@@ -2089,6 +2112,13 @@
       </method>
       <method name="GetFontScaleFactor" cname="pango_matrix_get_font_scale_factor">
         <return-type type="double" />
+      </method>
+      <method name="GetFontScaleFactors" cname="pango_matrix_get_font_scale_factors">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="double*" name="xscale" />
+          <parameter type="double*" name="yscale" />
+        </parameters>
       </method>
       <method name="GetType" cname="pango_matrix_get_type" shared="true">
         <return-type type="GType" />
@@ -2140,8 +2170,6 @@
         </parameters>
       </method>
     </boxed>
-    <struct name="Module" cname="PangoModule" opaque="true" />
-    <struct name="ModuleClass" cname="PangoModuleClass" opaque="true" />
     <struct name="OTInfoClass" cname="PangoOTInfoClass" opaque="true" />
     <struct name="OTRulesetClass" cname="PangoOTRulesetClass" opaque="true" />
     <struct name="Rectangle" cname="PangoRectangle">
@@ -2172,7 +2200,6 @@
         <return-type type="gboolean" />
       </method>
     </struct>
-    <struct name="Submap" cname="PangoSubmap" opaque="true" />
     <struct name="Tab" cname="PangoTab" opaque="true" />
     <boxed name="TabArray" cname="PangoTabArray" opaque="true">
       <method name="Copy" cname="pango_tab_array_copy">
@@ -2308,6 +2335,12 @@
     <struct name="Point" cname="Point" opaque="true" />
     <struct name="RunInfo" cname="RunInfo" opaque="true" />
     <class name="Attr" cname="PangoAttr_">
+      <method name="BackgroundAlphaNew" cname="pango_attr_background_alpha_new" shared="true">
+        <return-type type="PangoAttribute*" />
+        <parameters>
+          <parameter type="guint16" name="alpha" />
+        </parameters>
+      </method>
       <method name="BackgroundNew" cname="pango_attr_background_new" shared="true">
         <return-type type="PangoAttribute*" />
         <parameters>
@@ -2326,6 +2359,12 @@
         <return-type type="PangoAttribute*" />
         <parameters>
           <parameter type="const-char*" name="family" />
+        </parameters>
+      </method>
+      <method name="ForegroundAlphaNew" cname="pango_attr_foreground_alpha_new" shared="true">
+        <return-type type="PangoAttribute*" />
+        <parameters>
+          <parameter type="guint16" name="alpha" />
         </parameters>
       </method>
       <method name="ForegroundNew" cname="pango_attr_foreground_new" shared="true">
@@ -2519,7 +2558,7 @@
           <parameter type="PangoAttrIterator*" name="cached_iter" />
         </parameters>
       </method>
-      <method name="ParseEnum" cname="pango_parse_enum" shared="true">
+      <method name="ParseEnum" cname="pango_parse_enum" deprecated="1" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GType" name="type" />
@@ -2580,7 +2619,7 @@
           <parameter type="int*" name="position" />
         </parameters>
       </method>
-      <method name="ReadLine" cname="pango_read_line" shared="true">
+      <method name="ReadLine" cname="pango_read_line" deprecated="1" shared="true">
         <return-type type="gint" />
         <parameters>
           <parameter type="FILE*" name="stream" />
@@ -2593,21 +2632,21 @@
           <parameter type="GList*" name="logical_items" />
         </parameters>
       </method>
-      <method name="ScanInt" cname="pango_scan_int" shared="true">
+      <method name="ScanInt" cname="pango_scan_int" deprecated="1" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-char**" name="pos" />
           <parameter type="int*" name="out" />
         </parameters>
       </method>
-      <method name="ScanString" cname="pango_scan_string" shared="true">
+      <method name="ScanString" cname="pango_scan_string" deprecated="1" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-char**" name="pos" />
           <parameter type="GString*" name="out" />
         </parameters>
       </method>
-      <method name="ScanWord" cname="pango_scan_word" shared="true">
+      <method name="ScanWord" cname="pango_scan_word" deprecated="1" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-char**" name="pos" />
@@ -2637,19 +2676,19 @@
           <parameter type="PangoGlyphString*" name="glyphs" />
         </parameters>
       </method>
-      <method name="SkipSpace" cname="pango_skip_space" shared="true">
+      <method name="SkipSpace" cname="pango_skip_space" deprecated="1" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-char**" name="pos" />
         </parameters>
       </method>
-      <method name="SplitFileList" cname="pango_split_file_list" shared="true">
+      <method name="SplitFileList" cname="pango_split_file_list" deprecated="1" shared="true">
         <return-type type="char**" />
         <parameters>
           <parameter type="const-char*" name="str" />
         </parameters>
       </method>
-      <method name="TrimString" cname="pango_trim_string" shared="true">
+      <method name="TrimString" cname="pango_trim_string" deprecated="1" shared="true">
         <return-type type="char*" />
         <parameters>
           <parameter type="const-char*" name="str" />

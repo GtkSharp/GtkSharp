@@ -1,6 +1,6 @@
---- gtk+-3.12.0/gtk/gtktextattributes.h	2014-03-24 18:28:56.000000000 +0100
-+++ gtk+-3.12.0.new/gtk/gtktextattributes.h	2014-06-10 13:49:44.619905956 +0200
-@@ -112,26 +112,12 @@
+--- gtk+-3.18.2.orig/gtk/gtktextattributes.h	2015-11-09 13:28:27.852084380 +0100
++++ gtk+-3.18.2/gtk/gtktextattributes.h	2015-11-09 13:29:14.424084380 +0100
+@@ -112,26 +112,7 @@
    guint inside_selection : 1;
    guint is_text : 1;
  
@@ -18,12 +18,36 @@
 -  };
 -#else
    GdkRGBA *rgba[2];
- #if (defined(__SIZEOF_INT__) && defined(__SIZEOF_POINTER__)) && (__SIZEOF_INT__ == __SIZEOF_POINTER__)
-   /* unusable, just for ABI compat */
-   /*< private >*/
-   guint padding[2];
- #endif
+-#if (defined(__SIZEOF_INT__) && defined(__SIZEOF_POINTER__)) && (__SIZEOF_INT__ == __SIZEOF_POINTER__)
+-  /* unusable, just for ABI compat */
+-  /*< private >*/
+-  guint padding[2];
+-#endif
 -#endif
  };
  
  /**
+@@ -207,23 +188,7 @@
+   /*< public >*/
+   gint letter_spacing;
+ 
+-#ifdef __GI_SCANNER__
+-  /* The scanner should only see the transparent union, so that its
+-   * content does not vary across architectures.
+-   */
+-  union {
+-    gchar *font_features;
+-    /*< private >*/
+-    guint padding[2];
+-  };
+-#else
+   gchar *font_features;
+-#if (defined(__SIZEOF_INT__) && defined(__SIZEOF_POINTER__)) && (__SIZEOF_INT__ == __SIZEOF_POINTER__)
+-  /* unusable, just for ABI compat */
+-  /*< private >*/
+-  guint padding[1];
+-#endif
+-#endif
+ };
+ 
+ GDK_AVAILABLE_IN_ALL

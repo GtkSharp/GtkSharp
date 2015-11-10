@@ -1183,11 +1183,11 @@ sub parseInitFunc
 				}
 			}
 			if ($pspec_use) {
-				addPropElem2 ($prop.$pspec, $obj_el, 0);
+				# addPropElem2 ($prop.$pspec, $obj_el, 0);
 			} else {
 				addPropElem ($prop, $obj_el, 0);
+				$propcnt++;
 			}
-			$propcnt++;
 		} elsif ($line =~ /gtk_container_class_install_child_property/) {
 			my $prop = $line;
 			do {
@@ -1208,9 +1208,12 @@ sub parseInitFunc
 			do {
 				$pspec .= $init_lines[++$linenum];
 			} until ($init_lines[$linenum] =~ /\)\s*;/);
+	                addPropElem2 ($pspec, $obj_el, 0);
+        	        $propcnt++;
 		}
 		$linenum++;
 	}
+
 	return @signal_vms;
 }
 
