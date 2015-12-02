@@ -3,7 +3,7 @@ EXTRA_DIST =					\
 	sources.xml				\
 	gtk_tree_model_signal_fix.patch
 
-TARGET_GTK_VERSION=3.18.2
+TARGET_GTK_VERSION=3.18.5
 TARGET_GTK_API=3.18
 
 GTK_DOWNLOADS = \
@@ -27,5 +27,5 @@ get-source-code:
 	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtkselectionprivate.h < gtkselectionprivate-space.patch 
 	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtktextattributes.h < gtktextattributes-gi-scanner.patch 
 	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtktextview.h < gtk_text_view_public.patch 
-	patch -p0 glib/2.46/gio/gwin32registrykey.h < gwin32registrykey-little-endian.patch
+	patch -p0 glib-2.46.1/gio/gwin32registrykey.h < gwin32registrykey-little-endian.patch
 
