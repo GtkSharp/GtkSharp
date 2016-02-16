@@ -49,7 +49,12 @@ namespace GLib {
 
 					bool cont = timeout_handler ();
 					if (!cont)
-						Remove ();
+					{
+						lock (this)
+						{
+							Remove ();
+						}
+					}
 					return cont;
 				} catch (Exception e) {
 					ExceptionManager.RaiseUnhandledException (e, false);
@@ -65,9 +70,11 @@ namespace GLib {
 		public static uint Add (uint interval, TimeoutHandler hndlr)
 		{
 			TimeoutProxy p = new TimeoutProxy (hndlr);
-
-			p.ID = g_timeout_add (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
-			Source.AddSourceHandler (p.ID, p);
+			lock (p)
+			{
+				p.ID = g_timeout_add (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
+				Source.AddSourceHandler (p.ID, p);
+			}
 
 			return p.ID;
 		}
@@ -78,9 +85,11 @@ namespace GLib {
 		public static uint Add (uint interval, TimeoutHandler hndlr, Priority priority)
 		{
 			TimeoutProxy p = new TimeoutProxy (hndlr);
-
-			p.ID = g_timeout_add_full ((int)priority, interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero, null);
-			Source.AddSourceHandler (p.ID, p);
+			lock (p)
+			{
+				p.ID = g_timeout_add_full ((int)priority, interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero, null);
+				Source.AddSourceHandler (p.ID, p);
+			}
 
 			return p.ID;
 		}
@@ -91,9 +100,11 @@ namespace GLib {
 		public static uint AddSeconds (uint interval, TimeoutHandler hndlr)
 		{
 			TimeoutProxy p = new TimeoutProxy (hndlr);
-
-			p.ID = g_timeout_add_seconds (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
-			Source.AddSourceHandler (p.ID, p);
+			lock (p)
+			{
+				p.ID = g_timeout_add_seconds (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
+				Source.AddSourceHandler (p.ID, p);
+			}
 
 			return p.ID;
 		}

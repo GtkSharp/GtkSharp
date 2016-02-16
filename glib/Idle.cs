@@ -51,7 +51,12 @@ namespace GLib {
 
 					bool cont = idle_handler ();
 					if (!cont)
-						Remove ();
+					{
+						lock (this)
+						{
+							Remove ();
+						}
+					}
 					return cont;
 				} catch (Exception e) {
 					ExceptionManager.RaiseUnhandledException (e, false);
@@ -70,8 +75,11 @@ namespace GLib {
 		public static uint Add (IdleHandler hndlr)
 		{
 			IdleProxy p = new IdleProxy (hndlr);
-			p.ID = g_idle_add ((IdleHandlerInternal) p.proxy_handler, IntPtr.Zero);
-			Source.AddSourceHandler (p.ID, p);
+			lock (p)
+			{
+				p.ID = g_idle_add ((IdleHandlerInternal) p.proxy_handler, IntPtr.Zero);
+				Source.AddSourceHandler (p.ID, p);
+			}
 
 			return p.ID;
 		}
@@ -82,8 +90,11 @@ namespace GLib {
 		public static uint Add (IdleHandler hndlr, Priority priority)
 		{
 			IdleProxy p = new IdleProxy (hndlr);
-			p.ID = g_idle_add_full ((int)priority, (IdleHandlerInternal)p.proxy_handler, IntPtr.Zero, null);
-			Source.AddSourceHandler (p.ID, p);
+			lock (p)
+			{
+				p.ID = g_idle_add_full ((int)priority, (IdleHandlerInternal)p.proxy_handler, IntPtr.Zero, null);
+				Source.AddSourceHandler (p.ID, p);
+			}
 
 			return p.ID;
 		}
