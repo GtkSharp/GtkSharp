@@ -30,22 +30,9 @@ namespace Gtk {
 		static extern IntPtr gtk_dialog_new_with_buttons (IntPtr title, IntPtr i, int flags, IntPtr dummy);
 		public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags, params object[] button_data) : base(IntPtr.Zero)
 		{
-			if (GetType() != typeof (Dialog)) {
-				GLib.Value[] vals = new GLib.Value [1];
-				string[] names = new string [1];
-				names [0] = "title";
-				vals [0] = new GLib.Value (title);
-				CreateNativeObject (names, vals);
-				TransientFor = parent;
-				if ((flags & DialogFlags.Modal) > 0)
-					Modal = true;
-				if ((flags & DialogFlags.DestroyWithParent) > 0)
-					DestroyWithParent = true;
-			} else {
-				IntPtr native = GLib.Marshaller.StringToPtrGStrdup (title);
-				Raw = gtk_dialog_new_with_buttons (native, parent == null ? IntPtr.Zero : parent.Handle, (int) flags, IntPtr.Zero);
-				GLib.Marshaller.Free (native);
-			}
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (title);
+			Raw = gtk_dialog_new_with_buttons (native, parent == null ? IntPtr.Zero : parent.Handle, (int) flags, IntPtr.Zero);
+			GLib.Marshaller.Free (native);
 
 			for (int i = 0; i < button_data.Length - 1; i += 2)
 				AddButton ((string) button_data [i], (int) button_data [i + 1]);
