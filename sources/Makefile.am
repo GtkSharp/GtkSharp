@@ -3,14 +3,14 @@ EXTRA_DIST =					\
 	sources.xml				\
 	gtk_tree_model_signal_fix.patch
 
-TARGET_GTK_VERSION=3.18.5
-TARGET_GTK_API=3.18
+TARGET_GTK_VERSION=3.20.4
+TARGET_GTK_API=3.20
 
 GTK_DOWNLOADS = \
-	http://ftp.gnome.org/pub/GNOME/sources/glib/2.46/glib-2.46.1.tar.xz			\
-	http://ftp.gnome.org/pub/GNOME/sources/pango/1.38/pango-1.38.1.tar.xz			\
-	http://ftp.gnome.org/pub/GNOME/sources/atk/2.18/atk-2.18.0.tar.xz			\
-	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.32/gdk-pixbuf-2.32.1.tar.xz	\
+	http://ftp.gnome.org/pub/GNOME/sources/glib/2.48/glib-2.48.0.tar.xz			\
+	http://ftp.gnome.org/pub/GNOME/sources/pango/1.40/pango-1.40.1.tar.xz			\
+	http://ftp.gnome.org/pub/GNOME/sources/atk/2.20/atk-2.20.0.tar.xz			\
+	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.34/gdk-pixbuf-2.34.0.tar.xz	\
 	http://ftp.gnome.org/pub/GNOME/sources/gtk+/$(TARGET_GTK_API)/gtk+-$(TARGET_GTK_VERSION).tar.xz
 
 api: 
@@ -27,5 +27,5 @@ get-source-code:
 	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtkselectionprivate.h < gtkselectionprivate-space.patch 
 	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtktextattributes.h < gtktextattributes-gi-scanner.patch 
 	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtktextview.h < gtk_text_view_public.patch 
-	patch -p0 glib-2.46.1/gio/gwin32registrykey.h < gwin32registrykey-little-endian.patch
+	patch -p0 glib-2.48.0/gio/gwin32registrykey.h < gwin32registrykey-little-endian.patch
 

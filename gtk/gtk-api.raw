@@ -175,6 +175,8 @@
       <member cname="GTK_DEBUG_INTERACTIVE" name="Interactive" value="1 &lt;&lt; 17" />
       <member cname="GTK_DEBUG_TOUCHSCREEN" name="Touchscreen" value="1 &lt;&lt; 18" />
       <member cname="GTK_DEBUG_ACTIONS" name="Actions" value="1 &lt;&lt; 19" />
+      <member cname="GTK_DEBUG_RESIZE" name="Resize" value="1 &lt;&lt; 20" />
+      <member cname="GTK_DEBUG_LAYOUT" name="Layout" value="1 &lt;&lt; 21" />
     </enum>
     <enum name="DeleteType" cname="GtkDeleteType" gtype="gtk_delete_type_get_type" type="enum">
       <member cname="GTK_DELETE_CHARS" name="Chars" />
@@ -470,6 +472,10 @@
       <member cname="GTK_POLICY_NEVER" name="Never" />
       <member cname="GTK_POLICY_EXTERNAL" name="External" />
     </enum>
+    <enum name="PopoverConstraint" cname="GtkPopoverConstraint" gtype="gtk_popover_constraint_get_type" type="enum">
+      <member cname="GTK_POPOVER_CONSTRAINT_NONE" name="None" />
+      <member cname="GTK_POPOVER_CONSTRAINT_WINDOW" name="Window" />
+    </enum>
     <enum name="PositionType" cname="GtkPositionType" gtype="gtk_position_type_get_type" type="enum">
       <member cname="GTK_POS_LEFT" name="Left" />
       <member cname="GTK_POS_RIGHT" name="Right" />
@@ -716,6 +722,16 @@
       <member cname="GTK_SHADOW_ETCHED_IN" name="EtchedIn" />
       <member cname="GTK_SHADOW_ETCHED_OUT" name="EtchedOut" />
     </enum>
+    <enum name="ShortcutType" cname="GtkShortcutType" gtype="gtk_shortcut_type_get_type" type="enum">
+      <member cname="GTK_SHORTCUT_ACCELERATOR" name="Accelerator" />
+      <member cname="GTK_SHORTCUT_GESTURE_PINCH" name="GesturePinch" />
+      <member cname="GTK_SHORTCUT_GESTURE_STRETCH" name="GestureStretch" />
+      <member cname="GTK_SHORTCUT_GESTURE_ROTATE_CLOCKWISE" name="GestureRotateClockwise" />
+      <member cname="GTK_SHORTCUT_GESTURE_ROTATE_COUNTERCLOCKWISE" name="GestureRotateCounterclockwise" />
+      <member cname="GTK_SHORTCUT_GESTURE_TWO_FINGER_SWIPE_LEFT" name="GestureTwoFingerSwipeLeft" />
+      <member cname="GTK_SHORTCUT_GESTURE_TWO_FINGER_SWIPE_RIGHT" name="GestureTwoFingerSwipeRight" />
+      <member cname="GTK_SHORTCUT_GESTURE" name="Gesture" />
+    </enum>
     <enum name="SizeGroupMode" cname="GtkSizeGroupMode" gtype="gtk_size_group_mode_get_type" type="enum">
       <member cname="GTK_SIZE_GROUP_NONE" name="None" />
       <member cname="GTK_SIZE_GROUP_HORIZONTAL" name="Horizontal" />
@@ -780,6 +796,7 @@
       <member cname="GTK_STATE_FLAG_LINK" name="Link" value="1 &lt;&lt; 9" />
       <member cname="GTK_STATE_FLAG_VISITED" name="Visited" value="1 &lt;&lt; 10" />
       <member cname="GTK_STATE_FLAG_CHECKED" name="Checked" value="1 &lt;&lt; 11" />
+      <member cname="GTK_STATE_FLAG_DROP_ACTIVE" name="DropActive" value="1 &lt;&lt; 12" />
     </enum>
     <enum name="StateType" cname="GtkStateType" gtype="gtk_state_type_get_type" type="enum">
       <member cname="GTK_STATE_NORMAL" name="Normal" />
@@ -789,6 +806,11 @@
       <member cname="GTK_STATE_INSENSITIVE" name="Insensitive" />
       <member cname="GTK_STATE_INCONSISTENT" name="Inconsistent" />
       <member cname="GTK_STATE_FOCUSED" name="Focused" />
+    </enum>
+    <enum name="StyleContextPrintFlags" cname="GtkStyleContextPrintFlags" gtype="gtk_style_context_print_flags_get_type" type="flags">
+      <member cname="GTK_STYLE_CONTEXT_PRINT_NONE" name="None" />
+      <member cname="GTK_STYLE_CONTEXT_PRINT_RECURSE" name="Recurse" value="1 &lt;&lt; 0" />
+      <member cname="GTK_STYLE_CONTEXT_PRINT_SHOW_STYLE" name="ShowStyle" value="1 &lt;&lt; 1" />
     </enum>
     <enum name="TargetFlags" cname="GtkTargetFlags" gtype="gtk_target_flags_get_type" type="flags">
       <member cname="GTK_TARGET_SAME_APP" name="SameApp" value="1 &lt;&lt; 0" />
@@ -818,6 +840,8 @@
     <enum name="TextViewLayer" cname="GtkTextViewLayer" gtype="gtk_text_view_layer_get_type" type="enum">
       <member cname="GTK_TEXT_VIEW_LAYER_BELOW" name="Below" />
       <member cname="GTK_TEXT_VIEW_LAYER_ABOVE" name="Above" />
+      <member cname="GTK_TEXT_VIEW_LAYER_BELOW_TEXT" name="BelowText" />
+      <member cname="GTK_TEXT_VIEW_LAYER_ABOVE_TEXT" name="AboveText" />
     </enum>
     <enum name="TextWindowType" cname="GtkTextWindowType" gtype="gtk_text_window_type_get_type" type="enum">
       <member cname="GTK_TEXT_WINDOW_PRIVATE" name="Private" />
@@ -2565,6 +2589,32 @@
       </method>
       <method name="ListShortcutFolders" cname="gtk_file_chooser_list_shortcut_folders">
         <return-type type="GSList*" />
+      </method>
+      <method name="NativeGetAcceptLabel" cname="gtk_file_chooser_native_get_accept_label" shared="true">
+        <return-type type="const-char*" />
+        <parameters>
+          <parameter type="GtkFileChooserNative*" name="self" />
+        </parameters>
+      </method>
+      <method name="NativeGetCancelLabel" cname="gtk_file_chooser_native_get_cancel_label" shared="true">
+        <return-type type="const-char*" />
+        <parameters>
+          <parameter type="GtkFileChooserNative*" name="self" />
+        </parameters>
+      </method>
+      <method name="NativeSetAcceptLabel" cname="gtk_file_chooser_native_set_accept_label" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkFileChooserNative*" name="self" />
+          <parameter type="const-char*" name="accept_label" />
+        </parameters>
+      </method>
+      <method name="NativeSetCancelLabel" cname="gtk_file_chooser_native_set_cancel_label" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkFileChooserNative*" name="self" />
+          <parameter type="const-char*" name="cancel_label" />
+        </parameters>
       </method>
       <method name="RemoveFilter" cname="gtk_file_chooser_remove_filter">
         <return-type type="void" />
@@ -5406,6 +5456,9 @@
         <interface cname="GActionGroup" />
         <interface cname="GActionMap" />
       </implements>
+      <method name="GetHelpOverlay" cname="gtk_application_window_get_help_overlay">
+        <return-type type="GtkShortcutsWindow*" />
+      </method>
       <method name="GetId" cname="gtk_application_window_get_id">
         <return-type type="guint" />
       </method>
@@ -5420,6 +5473,12 @@
           <parameter type="GtkApplication*" name="application" />
         </parameters>
       </constructor>
+      <method name="SetHelpOverlay" cname="gtk_application_window_set_help_overlay">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkShortcutsWindow*" name="help_overlay" />
+        </parameters>
+      </method>
       <method name="SetShowMenubar" cname="gtk_application_window_set_show_menubar">
         <return-type type="void" />
         <parameters>
@@ -6231,6 +6290,16 @@
           <parameter type="GObject*" name="object" />
         </parameters>
       </method>
+      <method name="ExtendWithTemplate" cname="gtk_builder_extend_with_template">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="GtkWidget*" name="widget" />
+          <parameter type="GType" name="template_type" />
+          <parameter type="const-gchar*" name="buffer" />
+          <parameter type="gsize" name="length" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
       <method name="GetApplication" cname="gtk_builder_get_application">
         <return-type type="GtkApplication*" />
       </method>
@@ -6327,7 +6396,6 @@
       <property name="Label" cname="label" type="gchar*" readable="true" writeable="true" construct="true" />
       <property name="UseUnderline" cname="use-underline" type="gboolean" readable="true" writeable="true" construct="true" />
       <property name="UseStock" cname="use-stock" type="gboolean" readable="true" writeable="true" construct="true" />
-      <property name="FocusOnClick" cname="focus-on-click" type="gboolean" readable="true" writeable="true" />
       <property name="Relief" cname="relief" type="GtkReliefStyle" readable="true" writeable="true" />
       <property name="Xalign" cname="xalign" type="gfloat" readable="true" writeable="true" />
       <property name="Yalign" cname="yalign" type="gfloat" readable="true" writeable="true" />
@@ -6400,7 +6468,7 @@
       <method name="GetEventWindow" cname="gtk_button_get_event_window">
         <return-type type="GdkWindow*" />
       </method>
-      <method name="GetFocusOnClick" cname="gtk_button_get_focus_on_click">
+      <method name="GetFocusOnClick" cname="gtk_button_get_focus_on_click" deprecated="1">
         <return-type type="gboolean" />
       </method>
       <method name="GetImage" cname="gtk_button_get_image">
@@ -6468,7 +6536,7 @@
           <parameter type="gboolean" name="always_show" />
         </parameters>
       </method>
-      <method name="SetFocusOnClick" cname="gtk_button_set_focus_on_click">
+      <method name="SetFocusOnClick" cname="gtk_button_set_focus_on_click" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="focus_on_click" />
@@ -8610,6 +8678,7 @@
         <return-type type="void" />
         <parameters />
       </signal>
+      <property name="ShowEditor" cname="show-editor" type="gboolean" readable="true" writeable="true" />
       <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
         <return-type type="void" />
       </virtual_method>
@@ -8997,7 +9066,6 @@
       <property name="Active" cname="active" type="gint" readable="true" writeable="true" />
       <property name="AddTearoffs" cname="add-tearoffs" type="gboolean" readable="true" writeable="true" />
       <property name="HasFrame" cname="has-frame" type="gboolean" readable="true" writeable="true" />
-      <property name="FocusOnClick" cname="focus-on-click" type="gboolean" readable="true" writeable="true" />
       <property name="TearoffTitle" cname="tearoff-title" type="gchar*" readable="true" writeable="true" />
       <property name="PopupShown" cname="popup-shown" type="gboolean" readable="true" />
       <property name="ButtonSensitivity" cname="button-sensitivity" type="GtkSensitivityType" readable="true" writeable="true" />
@@ -9049,7 +9117,7 @@
       <method name="GetEntryTextColumn" cname="gtk_combo_box_get_entry_text_column">
         <return-type type="gint" />
       </method>
-      <method name="GetFocusOnClick" cname="gtk_combo_box_get_focus_on_click">
+      <method name="GetFocusOnClick" cname="gtk_combo_box_get_focus_on_click" deprecated="1">
         <return-type type="gboolean" />
       </method>
       <method name="GetHasEntry" cname="gtk_combo_box_get_has_entry">
@@ -9158,7 +9226,7 @@
           <parameter type="gint" name="text_column" />
         </parameters>
       </method>
-      <method name="SetFocusOnClick" cname="gtk_combo_box_set_focus_on_click">
+      <method name="SetFocusOnClick" cname="gtk_combo_box_set_focus_on_click" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="focus_on_click" />
@@ -9930,8 +9998,6 @@
       <property name="MaxLength" cname="max-length" type="gint" readable="true" writeable="true" />
       <property name="Visibility" cname="visibility" type="gboolean" readable="true" writeable="true" />
       <property name="HasFrame" cname="has-frame" type="gboolean" readable="true" writeable="true" />
-      <property name="InnerBorder" cname="inner-border" type="GtkBorder" readable="true" writeable="true" />
-      <property name="InvisibleChar" cname="invisible-char" type="gunichar" readable="true" writeable="true" />
       <property name="ActivatesDefault" cname="activates-default" type="gboolean" readable="true" writeable="true" />
       <property name="WidthChars" cname="width-chars" type="gint" readable="true" writeable="true" />
       <property name="MaxWidthChars" cname="max-width-chars" type="gint" readable="true" writeable="true" />
@@ -9974,6 +10040,7 @@
       <property name="Tabs" cname="tabs" type="PangoTabArray" readable="true" writeable="true" />
       <property name="IconPrelight" cname="icon-prelight" type="gboolean" readable="true" />
       <property name="ProgressBorder" cname="progress-border" type="GtkBorder" readable="true" />
+      <property name="InvisibleChar" cname="invisible-char" type="gunichar" readable="true" />
       <signal name="PopulatePopup" cname="populate-popup" when="LAST" field_name="populate_popup">
         <return-type type="void" />
         <parameters>
@@ -10045,6 +10112,7 @@
           <parameter name="p0" type="gchar*" />
         </parameters>
       </signal>
+      <property name="InnerBorder" cname="inner-border" type="GtkBorder" readable="true" />
       <virtual_method name="GetTextAreaSize" cname="get_text_area_size">
         <return-type type="void" />
         <parameters>
@@ -11052,7 +11120,6 @@
         <parameters />
       </signal>
       <property name="Dialog" cname="dialog" type="GtkFileChooser" writeable="true" construct-only="true" />
-      <property name="FocusOnClick" cname="focus-on-click" type="gboolean" readable="true" writeable="true" />
       <property name="Title" cname="title" type="gchar*" readable="true" writeable="true" />
       <property name="WidthChars" cname="width-chars" type="gint" readable="true" writeable="true" />
       <virtual_method name="_GtkReserved1" cname="__gtk_reserved1" shared="true" padding="true">
@@ -11070,7 +11137,7 @@
       <implements>
         <interface cname="GtkFileChooser" />
       </implements>
-      <method name="GetFocusOnClick" cname="gtk_file_chooser_button_get_focus_on_click">
+      <method name="GetFocusOnClick" cname="gtk_file_chooser_button_get_focus_on_click" deprecated="1">
         <return-type type="gboolean" />
       </method>
       <method name="GetTitle" cname="gtk_file_chooser_button_get_title">
@@ -11093,7 +11160,7 @@
           <parameter type="GtkWidget*" name="dialog" />
         </parameters>
       </constructor>
-      <method name="SetFocusOnClick" cname="gtk_file_chooser_button_set_focus_on_click">
+      <method name="SetFocusOnClick" cname="gtk_file_chooser_button_set_focus_on_click" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="focus_on_click" />
@@ -14360,6 +14427,12 @@
         <field name="ParentClass" cname="parent_class" type="GtkIMContextClass" />
       </class_struct>
       <field name="Priv" cname="priv" type="GtkIMContextSimplePrivate*" />
+      <method name="AddComposeFile" cname="gtk_im_context_simple_add_compose_file">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="compose_file" />
+        </parameters>
+      </method>
       <method name="AddTable" cname="gtk_im_context_simple_add_table">
         <return-type type="void" />
         <parameters>
@@ -17589,6 +17662,9 @@
         <method signal_vm="drag_perform_drop" />
         <method signal_vm="show_enter_location" />
         <method signal_vm="show_other_locations" />
+        <method signal_vm="show_other_locations_with_flags" />
+        <method signal_vm="mount" />
+        <method signal_vm="unmount" />
       </class_struct>
       <signal name="OpenLocation" cname="open-location" when="FIRST" field_name="open_location">
         <return-type type="void" />
@@ -17645,6 +17721,24 @@
       <signal name="ShowOtherLocations" cname="show-other-locations" when="FIRST" field_name="show_other_locations">
         <return-type type="void" />
         <parameters />
+      </signal>
+      <signal name="ShowOtherLocationsWithFlags" cname="show-other-locations-with-flags" when="FIRST" field_name="show_other_locations_with_flags">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPlacesOpenFlags" name="open_flags" />
+        </parameters>
+      </signal>
+      <signal name="Mount" cname="mount" when="FIRST" field_name="mount">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GMountOperation*" name="mount_operation" />
+        </parameters>
+      </signal>
+      <signal name="Unmount" cname="unmount" when="FIRST" field_name="unmount">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GMountOperation*" name="unmount_operation" />
+        </parameters>
       </signal>
       <property name="Location" cname="location" type="GFile" readable="true" writeable="true" />
       <property name="OpenFlags" cname="open-flags" type="GtkPlacesOpenFlags" readable="true" writeable="true" />
@@ -17844,9 +17938,10 @@
       <field name="Priv" cname="priv" type="GtkPopoverPrivate*" />
       <property name="RelativeTo" cname="relative-to" type="GtkWidget" readable="true" writeable="true" />
       <property name="PointingTo" cname="pointing-to" type="GdkRectangle" readable="true" writeable="true" />
-      <property name="Position" cname="position" type="GtkPositionType" readable="true" writeable="true" construct="true" />
+      <property name="Position" cname="position" type="GtkPositionType" readable="true" writeable="true" />
       <property name="Modal" cname="modal" type="gboolean" readable="true" writeable="true" />
       <property name="TransitionsEnabled" cname="transitions-enabled" type="gboolean" readable="true" writeable="true" />
+      <property name="ConstrainTo" cname="constrain-to" type="GtkPopoverConstraint" readable="true" writeable="true" />
       <signal name="Closed" cname="closed" when="LAST" field_name="closed">
         <return-type type="void" />
         <parameters />
@@ -17857,6 +17952,9 @@
           <parameter type="GMenuModel*" name="model" />
           <parameter type="const-gchar*" name="action_namespace" />
         </parameters>
+      </method>
+      <method name="GetConstrainTo" cname="gtk_popover_get_constrain_to">
+        <return-type type="GtkPopoverConstraint" />
       </method>
       <method name="GetDefaultWidget" cname="gtk_popover_get_default_widget">
         <return-type type="GtkWidget*" />
@@ -17893,6 +17991,12 @@
           <parameter type="GMenuModel*" name="model" />
         </parameters>
       </constructor>
+      <method name="SetConstrainTo" cname="gtk_popover_set_constrain_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPopoverConstraint" name="constraint" />
+        </parameters>
+      </method>
       <method name="SetDefaultWidget" cname="gtk_popover_set_default_widget">
         <return-type type="void" />
         <parameters>
@@ -19584,7 +19688,7 @@
       <method name="GetLowerStepperSensitivity" cname="gtk_range_get_lower_stepper_sensitivity">
         <return-type type="GtkSensitivityType" />
       </method>
-      <method name="GetMinSliderSize" cname="gtk_range_get_min_slider_size">
+      <method name="GetMinSliderSize" cname="gtk_range_get_min_slider_size" deprecated="1">
         <return-type type="gint" />
       </method>
       <method name="GetRangeRect" cname="gtk_range_get_range_rect">
@@ -19658,7 +19762,7 @@
           <parameter type="GtkSensitivityType" name="sensitivity" />
         </parameters>
       </method>
-      <method name="SetMinSliderSize" cname="gtk_range_set_min_slider_size">
+      <method name="SetMinSliderSize" cname="gtk_range_set_min_slider_size" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gint" name="min_size" />
@@ -20876,6 +20980,7 @@
       <property name="GtkEnablePrimaryPaste" cname="gtk-enable-primary-paste" type="gboolean" />
       <property name="GtkRecentFilesEnabled" cname="gtk-recent-files-enabled" type="gboolean" />
       <property name="GtkLongPressTime" cname="gtk-long-press-time" type="guint" />
+      <property name="GtkKeynavUseCaret" cname="gtk-keynav-use-caret" type="gboolean" />
       <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
         <return-type type="void" />
       </virtual_method>
@@ -20917,6 +21022,12 @@
           <parameter type="GtkRcPropertyParser" name="parser" />
         </parameters>
       </method>
+      <method name="ResetProperty" cname="gtk_settings_reset_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
       <method name="SetDoubleProperty" cname="gtk_settings_set_double_property" deprecated="1">
         <return-type type="void" />
         <parameters>
@@ -20947,6 +21058,76 @@
           <parameter type="const-gchar*" name="v_string" />
           <parameter type="const-gchar*" name="origin" />
         </parameters>
+      </method>
+    </object>
+    <object name="ShortcutsGroup" cname="GtkShortcutsGroup" parent="GtkBox">
+      <class_struct cname="GtkShortcutsGroupClass">
+        <field name="ParentClass" cname="parent_class" type="GtkBoxClass" />
+      </class_struct>
+      <property name="Title" cname="title" type="gchar*" readable="true" writeable="true" />
+      <property name="View" cname="view" type="gchar*" readable="true" writeable="true" />
+      <property name="AccelSizeGroup" cname="accel-size-group" type="GtkSizeGroup" writeable="true" />
+      <property name="TitleSizeGroup" cname="title-size-group" type="GtkSizeGroup" writeable="true" />
+      <property name="Height" cname="height" type="guint" readable="true" />
+      <method name="GetType" cname="gtk_shortcuts_group_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ShortcutsSection" cname="GtkShortcutsSection" parent="GtkBox">
+      <class_struct cname="GtkShortcutsSectionClass">
+        <field name="ParentClass" cname="parent_class" type="GtkBoxClass" />
+        <method signal_vm="change_current_page" />
+      </class_struct>
+      <property name="SectionName" cname="section-name" type="gchar*" readable="true" writeable="true" />
+      <property name="ViewName" cname="view-name" type="gchar*" readable="true" writeable="true" />
+      <property name="Title" cname="title" type="gchar*" readable="true" writeable="true" />
+      <property name="MaxHeight" cname="max-height" type="guint" readable="true" writeable="true" />
+      <signal name="ChangeCurrentPage" cname="change-current-page" when="LAST" field_name="change_current_page">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gint" name="offset" />
+        </parameters>
+      </signal>
+      <method name="GetType" cname="gtk_shortcuts_section_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ShortcutsShortcut" cname="GtkShortcutsShortcut" parent="GtkBox">
+      <class_struct cname="GtkShortcutsShortcutClass">
+        <field name="ParentClass" cname="parent_class" type="GtkBoxClass" />
+      </class_struct>
+      <property name="Accelerator" cname="accelerator" type="gchar*" readable="true" writeable="true" />
+      <property name="Icon" cname="icon" type="GIcon" readable="true" writeable="true" />
+      <property name="IconSet" cname="icon-set" type="gboolean" readable="true" writeable="true" />
+      <property name="Title" cname="title" type="gchar*" readable="true" writeable="true" />
+      <property name="Subtitle" cname="subtitle" type="gchar*" readable="true" writeable="true" />
+      <property name="SubtitleSet" cname="subtitle-set" type="gboolean" readable="true" writeable="true" />
+      <property name="AccelSizeGroup" cname="accel-size-group" type="GtkSizeGroup" writeable="true" />
+      <property name="TitleSizeGroup" cname="title-size-group" type="GtkSizeGroup" writeable="true" />
+      <property name="Direction" cname="direction" type="GtkTextDirection" readable="true" writeable="true" />
+      <property name="ShortcutType" cname="shortcut-type" type="GtkShortcutType" readable="true" writeable="true" />
+      <method name="GetType" cname="gtk_shortcuts_shortcut_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ShortcutsWindow" cname="GtkShortcutsWindow" parent="GtkWindow">
+      <class_struct cname="GtkShortcutsWindowClass">
+        <field name="ParentClass" cname="parent_class" type="GtkWindowClass" />
+        <method signal_vm="close" />
+        <method signal_vm="search" />
+      </class_struct>
+      <property name="SectionName" cname="section-name" type="gchar*" readable="true" writeable="true" />
+      <property name="ViewName" cname="view-name" type="gchar*" readable="true" writeable="true" />
+      <signal name="Close" cname="close" when="LAST" field_name="close">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="Search" cname="search" when="LAST" field_name="search">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <method name="GetType" cname="gtk_shortcuts_window_get_type" shared="true">
+        <return-type type="GType" />
       </method>
     </object>
     <object name="SizeGroup" cname="GtkSizeGroup" parent="GObject">
@@ -21296,12 +21477,12 @@
         <field name="ParentClass" cname="parent_class" type="GtkContainerClass" />
       </class_struct>
       <property name="Homogeneous" cname="homogeneous" type="gboolean" readable="true" writeable="true" />
-      <property name="Hhomogeneous" cname="hhomogeneous" type="gboolean" readable="true" writeable="true" construct="true" />
-      <property name="Vhomogeneous" cname="vhomogeneous" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="Hhomogeneous" cname="hhomogeneous" type="gboolean" readable="true" writeable="true" />
+      <property name="Vhomogeneous" cname="vhomogeneous" type="gboolean" readable="true" writeable="true" />
       <property name="VisibleChild" cname="visible-child" type="GtkWidget" readable="true" writeable="true" />
       <property name="VisibleChildName" cname="visible-child-name" type="gchar*" readable="true" writeable="true" />
-      <property name="TransitionDuration" cname="transition-duration" type="guint" readable="true" writeable="true" construct="true" />
-      <property name="TransitionType" cname="transition-type" type="GtkStackTransitionType" readable="true" writeable="true" construct="true" />
+      <property name="TransitionDuration" cname="transition-duration" type="guint" readable="true" writeable="true" />
+      <property name="TransitionType" cname="transition-type" type="GtkStackTransitionType" readable="true" writeable="true" />
       <property name="TransitionRunning" cname="transition-running" type="gboolean" readable="true" />
       <property name="InterpolateSize" cname="interpolate-size" type="gboolean" readable="true" writeable="true" />
       <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" />
@@ -21460,6 +21641,7 @@
         <method vm="_gtk_reserved3" />
         <method vm="_gtk_reserved4" />
       </class_struct>
+      <property name="IconSize" cname="icon-size" type="gint" readable="true" writeable="true" />
       <property name="Stack" cname="stack" type="GtkStack" readable="true" writeable="true" construct="true" />
       <virtual_method name="GtkReserved1" cname="_gtk_reserved1" shared="true" padding="true">
         <return-type type="void" />
@@ -22610,6 +22792,12 @@
           <parameter type="gdouble*" name="progress" />
         </parameters>
       </method>
+      <method name="ToString" cname="gtk_style_context_to_string">
+        <return-type type="char*" />
+        <parameters>
+          <parameter type="GtkStyleContextPrintFlags" name="flags" />
+        </parameters>
+      </method>
     </object>
     <object name="StyleProperties" cname="GtkStyleProperties" parent="GObject">
       <class_struct cname="GtkStylePropertiesClass">
@@ -23737,6 +23925,12 @@
       <virtual_method name="GtkReserved4" cname="_gtk_reserved4" shared="true" padding="true">
         <return-type type="void" />
       </virtual_method>
+      <method name="Changed" cname="gtk_text_tag_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="size_changed" />
+        </parameters>
+      </method>
       <method name="Event" cname="gtk_text_tag_event">
         <return-type type="gboolean" />
         <parameters>
@@ -24094,7 +24288,7 @@
         <return-type type="GtkInputPurpose" />
       </method>
       <method name="GetIterAtLocation" cname="gtk_text_view_get_iter_at_location">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="GtkTextIter*" name="iter" />
           <parameter type="gint" name="x" />
@@ -24102,7 +24296,7 @@
         </parameters>
       </method>
       <method name="GetIterAtPosition" cname="gtk_text_view_get_iter_at_position">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="GtkTextIter*" name="iter" />
           <parameter type="gint*" name="trailing" />
@@ -24225,6 +24419,9 @@
       </constructor>
       <method name="PlaceCursorOnscreen" cname="gtk_text_view_place_cursor_onscreen">
         <return-type type="gboolean" />
+      </method>
+      <method name="ResetCursorBlink" cname="gtk_text_view_reset_cursor_blink">
+        <return-type type="void" />
       </method>
       <method name="ResetImContext" cname="gtk_text_view_reset_im_context">
         <return-type type="void" />
@@ -27794,6 +27991,7 @@
       <property name="CanFocus" cname="can-focus" type="gboolean" readable="true" writeable="true" />
       <property name="HasFocus" cname="has-focus" type="gboolean" readable="true" writeable="true" />
       <property name="IsFocus" cname="is-focus" type="gboolean" readable="true" writeable="true" />
+      <property name="FocusOnClick" cname="focus-on-click" type="gboolean" readable="true" writeable="true" />
       <property name="CanDefault" cname="can-default" type="gboolean" readable="true" writeable="true" />
       <property name="HasDefault" cname="has-default" type="gboolean" readable="true" writeable="true" />
       <property name="ReceivesDefault" cname="receives-default" type="gboolean" readable="true" writeable="true" />
@@ -28446,6 +28644,12 @@
           <parameter type="const-gchar*" name="property_name" />
         </parameters>
       </method>
+      <method name="ClassGetCssName" cname="gtk_widget_class_get_css_name" shared="true">
+        <return-type type="const-char*" />
+        <parameters>
+          <parameter type="GtkWidgetClass*" name="widget_class" />
+        </parameters>
+      </method>
       <method name="ClassInstallStyleProperty" cname="gtk_widget_class_install_style_property" shared="true">
         <return-type type="void" />
         <parameters>
@@ -28497,6 +28701,13 @@
           <parameter type="GtkBuilderConnectFunc" name="connect_func" />
           <parameter type="gpointer" name="connect_data" />
           <parameter type="GDestroyNotify" name="connect_data_destroy" />
+        </parameters>
+      </method>
+      <method name="ClassSetCssName" cname="gtk_widget_class_set_css_name" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkWidgetClass*" name="widget_class" />
+          <parameter type="const-char*" name="name" />
         </parameters>
       </method>
       <method name="ClassSetTemplate" cname="gtk_widget_class_set_template" shared="true">
@@ -28579,6 +28790,13 @@
       <method name="GetAllocatedHeight" cname="gtk_widget_get_allocated_height">
         <return-type type="int" />
       </method>
+      <method name="GetAllocatedSize" cname="gtk_widget_get_allocated_size">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkAllocation*" name="allocation" />
+          <parameter type="int*" name="baseline" />
+        </parameters>
+      </method>
       <method name="GetAllocatedWidth" cname="gtk_widget_get_allocated_width">
         <return-type type="int" />
       </method>
@@ -28656,6 +28874,9 @@
       </method>
       <method name="GetEvents" cname="gtk_widget_get_events">
         <return-type type="gint" />
+      </method>
+      <method name="GetFocusOnClick" cname="gtk_widget_get_focus_on_click">
+        <return-type type="gboolean" />
       </method>
       <method name="GetFontMap" cname="gtk_widget_get_font_map">
         <return-type type="PangoFontMap*" />
@@ -29060,6 +29281,9 @@
       <method name="PushCompositeChild" cname="gtk_widget_push_composite_child" deprecated="1" shared="true">
         <return-type type="void" />
       </method>
+      <method name="QueueAllocate" cname="gtk_widget_queue_allocate">
+        <return-type type="void" />
+      </method>
       <method name="QueueComputeExpand" cname="gtk_widget_queue_compute_expand">
         <return-type type="void" />
       </method>
@@ -29246,6 +29470,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gint" name="events" />
+        </parameters>
+      </method>
+      <method name="SetFocusOnClick" cname="gtk_widget_set_focus_on_click">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="focus_on_click" />
         </parameters>
       </method>
       <method name="SetFontMap" cname="gtk_widget_set_font_map">
@@ -29910,7 +30140,7 @@
           <parameter type="GtkWindowType" name="type" />
         </parameters>
       </constructor>
-      <method name="ParseGeometry" cname="gtk_window_parse_geometry">
+      <method name="ParseGeometry" cname="gtk_window_parse_geometry" deprecated="1">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="geometry" />
@@ -29957,7 +30187,7 @@
       <method name="ResizeGripIsVisible" cname="gtk_window_resize_grip_is_visible" deprecated="1">
         <return-type type="gboolean" />
       </method>
-      <method name="ResizeToGeometry" cname="gtk_window_resize_to_geometry">
+      <method name="ResizeToGeometry" cname="gtk_window_resize_to_geometry" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gint" name="width" />
@@ -30000,7 +30230,7 @@
           <parameter type="GtkWidget*" name="default_widget" />
         </parameters>
       </method>
-      <method name="SetDefaultGeometry" cname="gtk_window_set_default_geometry">
+      <method name="SetDefaultGeometry" cname="gtk_window_set_default_geometry" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="gint" name="width" />
@@ -30311,7 +30541,6 @@
       </method>
     </object>
     <struct name="CacheEntry" cname="CacheEntry" opaque="true" />
-    <struct name="CachedIcon" cname="CachedIcon" opaque="true" />
     <struct name="Child" cname="Child" opaque="true" />
     <struct name="ClipboardRequest" cname="ClipboardRequest" opaque="true" />
     <struct name="ColorStop" cname="ColorStop" opaque="true" />
@@ -30476,6 +30705,11 @@
     <struct name="BorderImage" cname="GtkBorderImage" opaque="true" />
     <struct name="BorderImageSliceSize" cname="GtkBorderImageSliceSize" opaque="true" />
     <struct name="BoxChild" cname="GtkBoxChild" opaque="true" />
+    <struct name="BoxGadget" cname="GtkBoxGadget" opaque="true" />
+    <struct name="BoxGadgetChild" cname="GtkBoxGadgetChild" opaque="true" />
+    <struct name="BoxGadgetClass" cname="GtkBoxGadgetClass" opaque="true" />
+    <struct name="BuiltinIcon" cname="GtkBuiltinIcon" opaque="true" />
+    <struct name="BuiltinIconClass" cname="GtkBuiltinIconClass" opaque="true" />
     <struct name="CellAreaBoxContext" cname="GtkCellAreaBoxContext" opaque="true" />
     <struct name="CellAreaBoxContextClass" cname="GtkCellAreaBoxContextClass" opaque="true" />
     <struct name="CellEditableEventBox" cname="GtkCellEditableEventBox" opaque="true" />
@@ -30487,20 +30721,24 @@
     <struct name="ColorScaleClass" cname="GtkColorScaleClass" opaque="true" />
     <struct name="ColorSwatch" cname="GtkColorSwatch" opaque="true" />
     <struct name="ColorSwatchClass" cname="GtkColorSwatchClass" opaque="true" />
-    <struct name="ComposeTable" cname="GtkComposeTable" opaque="true" />
-    <struct name="ComposeTableCompact" cname="GtkComposeTableCompact" opaque="true" />
     <struct name="CssAnimatedStyle" cname="GtkCssAnimatedStyle" opaque="true" />
     <struct name="CssAnimatedStyleClass" cname="GtkCssAnimatedStyleClass" opaque="true" />
     <struct name="CssAnimation" cname="GtkCssAnimation" opaque="true" />
     <struct name="CssAnimationClass" cname="GtkCssAnimationClass" opaque="true" />
+    <struct name="CssCustomGadget" cname="GtkCssCustomGadget" opaque="true" />
+    <struct name="CssCustomGadgetClass" cname="GtkCssCustomGadgetClass" opaque="true" />
     <struct name="CssCustomProperty" cname="GtkCssCustomProperty" opaque="true" />
     <struct name="CssCustomPropertyClass" cname="GtkCssCustomPropertyClass" opaque="true" />
+    <struct name="CssGadget" cname="GtkCssGadget" opaque="true" />
+    <struct name="CssGadgetClass" cname="GtkCssGadgetClass" opaque="true" />
     <struct name="CssImage" cname="GtkCssImage" opaque="true" />
     <struct name="CssImageBuiltin" cname="GtkCssImageBuiltin" opaque="true" />
     <struct name="CssImageBuiltinClass" cname="GtkCssImageBuiltinClass" opaque="true" />
     <struct name="CssImageClass" cname="GtkCssImageClass" opaque="true" />
     <struct name="CssImageCrossFade" cname="GtkCssImageCrossFade" opaque="true" />
     <struct name="CssImageCrossFadeClass" cname="GtkCssImageCrossFadeClass" opaque="true" />
+    <struct name="CssImageFallback" cname="GtkCssImageFallback" opaque="true" />
+    <struct name="CssImageFallbackClass" cname="GtkCssImageFallbackClass" opaque="true" />
     <struct name="CssImageGradient" cname="GtkCssImageGradient" opaque="true" />
     <struct name="CssImageGradientClass" cname="GtkCssImageGradientClass" opaque="true" />
     <struct name="CssImageIconTheme" cname="GtkCssImageIconTheme" opaque="true" />
@@ -30508,6 +30746,11 @@
     <struct name="CssImageLinear" cname="GtkCssImageLinear" opaque="true" />
     <struct name="CssImageLinearClass" cname="GtkCssImageLinearClass" opaque="true" />
     <struct name="CssImageLinearColorStop" cname="GtkCssImageLinearColorStop" opaque="true" />
+    <struct name="CssImageRadial" cname="GtkCssImageRadial" opaque="true" />
+    <struct name="CssImageRadialClass" cname="GtkCssImageRadialClass" opaque="true" />
+    <struct name="CssImageRadialColorStop" cname="GtkCssImageRadialColorStop" opaque="true" />
+    <struct name="CssImageRecolor" cname="GtkCssImageRecolor" opaque="true" />
+    <struct name="CssImageRecolorClass" cname="GtkCssImageRecolorClass" opaque="true" />
     <struct name="CssImageScaled" cname="GtkCssImageScaled" opaque="true" />
     <struct name="CssImageScaledClass" cname="GtkCssImageScaledClass" opaque="true" />
     <struct name="CssImageSurface" cname="GtkCssImageSurface" opaque="true" />
@@ -30525,6 +30768,8 @@
     <struct name="CssNode" cname="GtkCssNode" opaque="true" />
     <struct name="CssNodeClass" cname="GtkCssNodeClass" opaque="true" />
     <struct name="CssNodeDeclaration" cname="GtkCssNodeDeclaration" opaque="true" />
+    <struct name="CssNodeStyleCache" cname="GtkCssNodeStyleCache" opaque="true" />
+    <struct name="CssNumberValueClass" cname="GtkCssNumberValueClass" opaque="true" />
     <struct name="CssParser" cname="GtkCssParser" opaque="true" />
     <struct name="CssPathNode" cname="GtkCssPathNode" opaque="true" />
     <struct name="CssPathNodeClass" cname="GtkCssPathNodeClass" opaque="true" />
@@ -30570,6 +30815,7 @@
     <struct name="CssStaticStyle" cname="GtkCssStaticStyle" opaque="true" />
     <struct name="CssStaticStyleClass" cname="GtkCssStaticStyleClass" opaque="true" />
     <struct name="CssStyle" cname="GtkCssStyle" opaque="true" />
+    <struct name="CssStyleChange" cname="GtkCssStyleChange" opaque="true" />
     <struct name="CssStyleClass" cname="GtkCssStyleClass" opaque="true" />
     <struct name="CssStyleProperty" cname="GtkCssStyleProperty" opaque="true" />
     <struct name="CssStylePropertyClass" cname="GtkCssStylePropertyClass" opaque="true" />
@@ -30583,7 +30829,6 @@
     <struct name="CssWidgetNodeClass" cname="GtkCssWidgetNodeClass" opaque="true" />
     <boxed name="DelayedFontDescription" cname="GtkDelayedFontDescription" opaque="true" />
     <struct name="DeviceGrabInfo" cname="GtkDeviceGrabInfo" opaque="true" />
-    <struct name="DragAnim" cname="GtkDragAnim" opaque="true" />
     <struct name="DragDestInfo" cname="GtkDragDestInfo" opaque="true" />
     <struct name="DragDestSite" cname="GtkDragDestSite" opaque="true" />
     <struct name="DragFindData" cname="GtkDragFindData" opaque="true" />
@@ -30674,6 +30919,53 @@
     </struct>
     <struct name="IMModule" cname="GtkIMModule" opaque="true" />
     <struct name="IMModuleClass" cname="GtkIMModuleClass" opaque="true" />
+    <struct name="Icon" cname="GtkIcon" opaque="true">
+      <method name="SizeFromName" cname="gtk_icon_size_from_name" deprecated="1" shared="true">
+        <return-type type="GtkIconSize" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="SizeGetName" cname="gtk_icon_size_get_name" deprecated="1" shared="true">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="GtkIconSize" name="size" />
+        </parameters>
+      </method>
+      <method name="SizeLookup" cname="gtk_icon_size_lookup" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkIconSize" name="size" />
+          <parameter type="gint*" name="width" />
+          <parameter type="gint*" name="height" />
+        </parameters>
+      </method>
+      <method name="SizeLookupForSettings" cname="gtk_icon_size_lookup_for_settings" deprecated="1" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSettings*" name="settings" />
+          <parameter type="GtkIconSize" name="size" />
+          <parameter type="gint*" name="width" />
+          <parameter type="gint*" name="height" />
+        </parameters>
+      </method>
+      <method name="SizeRegister" cname="gtk_icon_size_register" deprecated="1" shared="true">
+        <return-type type="GtkIconSize" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gint" name="width" />
+          <parameter type="gint" name="height" />
+        </parameters>
+      </method>
+      <method name="SizeRegisterAlias" cname="gtk_icon_size_register_alias" deprecated="1" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="alias" />
+          <parameter type="GtkIconSize" name="target" />
+        </parameters>
+      </method>
+    </struct>
+    <struct name="IconClass" cname="GtkIconClass" opaque="true" />
     <struct name="IconHelper" cname="GtkIconHelper" opaque="true" />
     <struct name="IconHelperClass" cname="GtkIconHelperClass" opaque="true" />
     <boxed name="IconSet" cname="GtkIconSet" opaque="true">
@@ -30839,12 +31131,14 @@
         </parameters>
       </method>
     </struct>
-    <struct name="ImageAnimationData" cname="GtkImageAnimationData" opaque="true" />
-    <struct name="ImageGIconData" cname="GtkImageGIconData" opaque="true" />
-    <struct name="ImageIconNameData" cname="GtkImageIconNameData" opaque="true" />
-    <struct name="ImageIconSetData" cname="GtkImageIconSetData" opaque="true" />
-    <struct name="ImagePixbufData" cname="GtkImagePixbufData" opaque="true" />
-    <struct name="ImageStockData" cname="GtkImageStockData" opaque="true" />
+    <struct name="ImageDefinitionAnimation" cname="GtkImageDefinitionAnimation" opaque="true" />
+    <struct name="ImageDefinitionEmpty" cname="GtkImageDefinitionEmpty" opaque="true" />
+    <struct name="ImageDefinitionGIcon" cname="GtkImageDefinitionGIcon" opaque="true" />
+    <struct name="ImageDefinitionIconName" cname="GtkImageDefinitionIconName" opaque="true" />
+    <struct name="ImageDefinitionIconSet" cname="GtkImageDefinitionIconSet" opaque="true" />
+    <struct name="ImageDefinitionPixbuf" cname="GtkImageDefinitionPixbuf" opaque="true" />
+    <struct name="ImageDefinitionStock" cname="GtkImageDefinitionStock" opaque="true" />
+    <struct name="ImageDefinitionSurface" cname="GtkImageDefinitionSurface" opaque="true" />
     <struct name="IncrConversion" cname="GtkIncrConversion" opaque="true" />
     <struct name="IncrInfo" cname="GtkIncrInfo" opaque="true" />
     <struct name="KeyHash" cname="GtkKeyHash" opaque="true" />
@@ -31404,6 +31698,8 @@
       <field name="Origin" cname="origin" type="gchar*" />
       <field name="Value" cname="value" type="GValue" />
     </struct>
+    <struct name="ShortcutLabel" cname="GtkShortcutLabel" opaque="true" />
+    <struct name="ShortcutLabelClass" cname="GtkShortcutLabelClass" opaque="true" />
     <struct name="SidebarRow" cname="GtkSidebarRow" opaque="true" />
     <struct name="SidebarRowClass" cname="GtkSidebarRowClass" opaque="true" />
     <struct name="StackChildInfo" cname="GtkStackChildInfo" opaque="true" />
@@ -31788,7 +32084,7 @@
           <parameter type="gint" name="count" />
         </parameters>
       </method>
-      <method name="BeginsTag" cname="gtk_text_iter_begins_tag">
+      <method name="BeginsTag" cname="gtk_text_iter_begins_tag" deprecated="1">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GtkTextTag*" name="tag" />
@@ -32101,6 +32397,12 @@
       <method name="StartsSentence" cname="gtk_text_iter_starts_sentence">
         <return-type type="gboolean" />
       </method>
+      <method name="StartsTag" cname="gtk_text_iter_starts_tag">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextTag*" name="tag" />
+        </parameters>
+      </method>
       <method name="StartsWord" cname="gtk_text_iter_starts_word">
         <return-type type="gboolean" />
       </method>
@@ -32361,13 +32663,6 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
-      <method name="IterAddQclass" cname="gtk_widget_path_iter_add_qclass">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gint" name="pos" />
-          <parameter type="GQuark" name="qname" />
-        </parameters>
-      </method>
       <method name="IterAddRegion" cname="gtk_widget_path_iter_add_region" deprecated="1">
         <return-type type="void" />
         <parameters>
@@ -32390,6 +32685,12 @@
       </method>
       <method name="IterGetName" cname="gtk_widget_path_iter_get_name">
         <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="gint" name="pos" />
+        </parameters>
+      </method>
+      <method name="IterGetObjectName" cname="gtk_widget_path_iter_get_object_name">
+        <return-type type="const-char*" />
         <parameters>
           <parameter type="gint" name="pos" />
         </parameters>
@@ -32495,6 +32796,13 @@
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
+      <method name="IterSetObjectName" cname="gtk_widget_path_iter_set_object_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="pos" />
+          <parameter type="const-char*" name="name" />
+        </parameters>
+      </method>
       <method name="IterSetObjectType" cname="gtk_widget_path_iter_set_object_type">
         <return-type type="void" />
         <parameters>
@@ -32529,6 +32837,8 @@
         <return-type type="void" />
       </method>
     </boxed>
+    <struct name="Win32Theme" cname="GtkWin32Theme" opaque="true" />
+    <struct name="Win32ThemePart" cname="GtkWin32ThemePart" opaque="true" />
     <struct name="WindowGeometryInfo" cname="GtkWindowGeometryInfo" opaque="true" />
     <struct name="WindowKeyEntry" cname="GtkWindowKeyEntry" opaque="true" />
     <struct name="WindowPopover" cname="GtkWindowPopover" opaque="true" />
@@ -33188,52 +33498,6 @@
         </parameters>
       </method>
     </class>
-    <class name="Icon" cname="GtkIcon_">
-      <method name="SizeFromName" cname="gtk_icon_size_from_name" deprecated="1" shared="true">
-        <return-type type="GtkIconSize" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-        </parameters>
-      </method>
-      <method name="SizeGetName" cname="gtk_icon_size_get_name" deprecated="1" shared="true">
-        <return-type type="const-gchar*" />
-        <parameters>
-          <parameter type="GtkIconSize" name="size" />
-        </parameters>
-      </method>
-      <method name="SizeLookup" cname="gtk_icon_size_lookup" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GtkIconSize" name="size" />
-          <parameter type="gint*" name="width" />
-          <parameter type="gint*" name="height" />
-        </parameters>
-      </method>
-      <method name="SizeLookupForSettings" cname="gtk_icon_size_lookup_for_settings" deprecated="1" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GtkSettings*" name="settings" />
-          <parameter type="GtkIconSize" name="size" />
-          <parameter type="gint*" name="width" />
-          <parameter type="gint*" name="height" />
-        </parameters>
-      </method>
-      <method name="SizeRegister" cname="gtk_icon_size_register" deprecated="1" shared="true">
-        <return-type type="GtkIconSize" />
-        <parameters>
-          <parameter type="const-gchar*" name="name" />
-          <parameter type="gint" name="width" />
-          <parameter type="gint" name="height" />
-        </parameters>
-      </method>
-      <method name="SizeRegisterAlias" cname="gtk_icon_size_register_alias" deprecated="1" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="alias" />
-          <parameter type="GtkIconSize" name="target" />
-        </parameters>
-      </method>
-    </class>
     <class name="Init" cname="GtkInit_">
       <method name="AbiCheck" cname="gtk_init_abi_check" shared="true">
         <return-type type="void" />
@@ -33310,6 +33574,77 @@
       </method>
       <method name="Quit" cname="gtk_main_quit" shared="true">
         <return-type type="void" />
+      </method>
+    </class>
+    <class name="Native" cname="GtkNative_">
+      <method name="DialogDestroy" cname="gtk_native_dialog_destroy" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+        </parameters>
+      </method>
+      <method name="DialogGetModal" cname="gtk_native_dialog_get_modal" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+        </parameters>
+      </method>
+      <method name="DialogGetTitle" cname="gtk_native_dialog_get_title" shared="true">
+        <return-type type="const-char*" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+        </parameters>
+      </method>
+      <method name="DialogGetTransientFor" cname="gtk_native_dialog_get_transient_for" shared="true">
+        <return-type type="GtkWindow*" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+        </parameters>
+      </method>
+      <method name="DialogGetVisible" cname="gtk_native_dialog_get_visible" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+        </parameters>
+      </method>
+      <method name="DialogHide" cname="gtk_native_dialog_hide" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+        </parameters>
+      </method>
+      <method name="DialogRun" cname="gtk_native_dialog_run" shared="true">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+        </parameters>
+      </method>
+      <method name="DialogSetModal" cname="gtk_native_dialog_set_modal" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+          <parameter type="gboolean" name="modal" />
+        </parameters>
+      </method>
+      <method name="DialogSetTitle" cname="gtk_native_dialog_set_title" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+          <parameter type="const-char*" name="title" />
+        </parameters>
+      </method>
+      <method name="DialogSetTransientFor" cname="gtk_native_dialog_set_transient_for" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+          <parameter type="GtkWindow*" name="parent" />
+        </parameters>
+      </method>
+      <method name="DialogShow" cname="gtk_native_dialog_show" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkNativeDialog*" name="self" />
+        </parameters>
       </method>
     </class>
     <class name="Print" cname="GtkPrint_">
@@ -33493,6 +33828,17 @@
           <parameter type="gdouble" name="y" />
           <parameter type="gdouble" name="width" />
           <parameter type="gdouble" name="height" />
+        </parameters>
+      </method>
+      <method name="BackgroundGetClip" cname="gtk_render_background_get_clip" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkStyleContext*" name="context" />
+          <parameter type="gdouble" name="x" />
+          <parameter type="gdouble" name="y" />
+          <parameter type="gdouble" name="width" />
+          <parameter type="gdouble" name="height" />
+          <parameter type="GdkRectangle*" name="out_clip" />
         </parameters>
       </method>
       <method name="Check" cname="gtk_render_check" shared="true">

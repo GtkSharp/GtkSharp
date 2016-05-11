@@ -21,6 +21,7 @@
       <member cname="G_APPLICATION_HANDLES_COMMAND_LINE" name="HandlesCommandLine" value="1 &lt;&lt; 3" />
       <member cname="G_APPLICATION_SEND_ENVIRONMENT" name="SendEnvironment" value="1 &lt;&lt; 4" />
       <member cname="G_APPLICATION_NON_UNIQUE" name="NonUnique" value="1 &lt;&lt; 5" />
+      <member cname="G_APPLICATION_CAN_OVERRIDE_APP_ID" name="CanOverrideAppId" value="1 &lt;&lt; 6" />
     </enum>
     <enum name="AskPasswordFlags" cname="GAskPasswordFlags" gtype="g_ask_password_flags_get_type" type="flags">
       <member cname="G_ASK_PASSWORD_NEED_PASSWORD" name="NeedPassword" value="1 &lt;&lt; 0" />
@@ -351,6 +352,7 @@
       <member cname="G_IO_ERROR_BROKEN_PIPE" name="BrokenPipe" />
       <member cname="G_IO_ERROR_CONNECTION_CLOSED" name="ConnectionClosed" value="BrokenPipe" />
       <member cname="G_IO_ERROR_NOT_CONNECTED" name="NotConnected" />
+      <member cname="G_IO_ERROR_MESSAGE_TOO_LARGE" name="MessageTooLarge" />
     </enum>
     <enum name="IOModuleScopeFlags" cname="GIOModuleScopeFlags" type="enum">
       <member cname="G_IO_MODULE_SCOPE_NONE" name="None" />
@@ -585,6 +587,14 @@
         <parameter type="GDBusObjectManagerClient*" name="manager" />
         <parameter type="const-gchar*" name="object_path" />
         <parameter type="const-gchar*" name="interface_name" />
+        <parameter type="gpointer" name="user_data" />
+      </parameters>
+    </callback>
+    <callback name="DatagramBasedSourceFunc" cname="GDatagramBasedSourceFunc">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="GDatagramBased*" name="datagram_based" />
+        <parameter type="GIOCondition" name="condition" />
         <parameter type="gpointer" name="user_data" />
       </parameters>
     </callback>
@@ -1532,6 +1542,107 @@
       </method>
       <method name="Reset" cname="g_converter_reset">
         <return-type type="void" />
+      </method>
+    </interface>
+    <interface name="DatagramBased" cname="GDatagramBased">
+      <class_struct cname="GDatagramBasedInterface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="receive_messages" />
+        <method vm="send_messages" />
+        <method vm="create_source" />
+        <method vm="condition_check" />
+        <method vm="condition_wait" />
+      </class_struct>
+      <virtual_method name="ReceiveMessages" cname="receive_messages">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GInputMessage*" name="messages" />
+          <parameter type="guint" name="num_messages" />
+          <parameter type="gint" name="flags" />
+          <parameter type="gint64" name="timeout" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SendMessages" cname="send_messages">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GOutputMessage*" name="messages" />
+          <parameter type="guint" name="num_messages" />
+          <parameter type="gint" name="flags" />
+          <parameter type="gint64" name="timeout" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="CreateSource" cname="create_source">
+        <return-type type="GSource*" />
+        <parameters>
+          <parameter type="GIOCondition" name="condition" />
+          <parameter type="GCancellable*" name="cancellable" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ConditionCheck" cname="condition_check">
+        <return-type type="GIOCondition" />
+        <parameters>
+          <parameter type="GIOCondition" name="condition" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ConditionWait" cname="condition_wait">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GIOCondition" name="condition" />
+          <parameter type="gint64" name="timeout" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </virtual_method>
+      <method name="ConditionCheck" cname="g_datagram_based_condition_check">
+        <return-type type="GIOCondition" />
+        <parameters>
+          <parameter type="GIOCondition" name="condition" />
+        </parameters>
+      </method>
+      <method name="ConditionWait" cname="g_datagram_based_condition_wait">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GIOCondition" name="condition" />
+          <parameter type="gint64" name="timeout" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="CreateSource" cname="g_datagram_based_create_source">
+        <return-type type="GSource*" />
+        <parameters>
+          <parameter type="GIOCondition" name="condition" />
+          <parameter type="GCancellable*" name="cancellable" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="g_datagram_based_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="ReceiveMessages" cname="g_datagram_based_receive_messages">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GInputMessage*" name="messages" />
+          <parameter type="guint" name="num_messages" />
+          <parameter type="gint" name="flags" />
+          <parameter type="gint64" name="timeout" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SendMessages" cname="g_datagram_based_send_messages">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GOutputMessage*" name="messages" />
+          <parameter type="guint" name="num_messages" />
+          <parameter type="gint" name="flags" />
+          <parameter type="gint64" name="timeout" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GError**" name="error" />
+        </parameters>
       </method>
     </interface>
     <interface name="Drive" cname="GDrive">
@@ -4408,6 +4519,7 @@
         <field name="GIface" cname="g_iface" type="GTypeInterface" />
         <method vm="enumerate" />
         <method vm="proxy_enumerate" />
+        <method vm="to_string" />
       </class_struct>
       <virtual_method name="Enumerate" cname="enumerate">
         <return-type type="GSocketAddressEnumerator*" />
@@ -4415,6 +4527,10 @@
       </virtual_method>
       <virtual_method name="ProxyEnumerate" cname="proxy_enumerate">
         <return-type type="GSocketAddressEnumerator*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="ToString" cname="to_string">
+        <return-type type="gchar*" />
         <parameters />
       </virtual_method>
       <method name="Enumerate" cname="g_socket_connectable_enumerate">
@@ -4426,6 +4542,9 @@
       <method name="ProxyEnumerate" cname="g_socket_connectable_proxy_enumerate">
         <return-type type="GSocketAddressEnumerator*" />
       </method>
+      <method name="ToString" cname="g_socket_connectable_to_string">
+        <return-type type="gchar*" />
+      </method>
     </interface>
     <interface name="TlsBackend" cname="GTlsBackend">
       <class_struct cname="GTlsBackendInterface">
@@ -4436,6 +4555,9 @@
         <method vm="get_server_connection_type" />
         <method vm="get_file_database_type" />
         <method vm="get_default_database" />
+        <method vm="supports_dtls" />
+        <method vm="get_dtls_client_connection_type" />
+        <method vm="get_dtls_server_connection_type" />
       </class_struct>
       <virtual_method name="SupportsTls" cname="supports_tls">
         <return-type type="gboolean" />
@@ -4457,6 +4579,16 @@
         <return-type type="GTlsDatabase*" />
         <parameters />
       </virtual_method>
+      <virtual_method name="SupportsDtls" cname="supports_dtls">
+        <return-type type="gboolean" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetDtlsClientConnectionType" cname="get_dtls_client_connection_type" shared="true">
+        <return-type type="GType" />
+      </virtual_method>
+      <virtual_method name="GetDtlsServerConnectionType" cname="get_dtls_server_connection_type" shared="true">
+        <return-type type="GType" />
+      </virtual_method>
       <method name="GetCertificateType" cname="g_tls_backend_get_certificate_type">
         <return-type type="GType" />
       </method>
@@ -4469,6 +4601,12 @@
       <method name="GetDefaultDatabase" cname="g_tls_backend_get_default_database">
         <return-type type="GTlsDatabase*" />
       </method>
+      <method name="GetDtlsClientConnectionType" cname="g_tls_backend_get_dtls_client_connection_type">
+        <return-type type="GType" />
+      </method>
+      <method name="GetDtlsServerConnectionType" cname="g_tls_backend_get_dtls_server_connection_type">
+        <return-type type="GType" />
+      </method>
       <method name="GetFileDatabaseType" cname="g_tls_backend_get_file_database_type">
         <return-type type="GType" />
       </method>
@@ -4477,6 +4615,9 @@
       </method>
       <method name="GetType" cname="g_tls_backend_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="SupportsDtls" cname="g_tls_backend_supports_dtls">
+        <return-type type="gboolean" />
       </method>
       <method name="SupportsTls" cname="g_tls_backend_supports_tls">
         <return-type type="gboolean" />
@@ -7391,6 +7532,9 @@
       <property name="Port" cname="port" type="guint" readable="true" writeable="true" construct-only="true" />
       <property name="Flowinfo" cname="flowinfo" type="guint" readable="true" writeable="true" construct-only="true" />
       <property name="ScopeId" cname="scope-id" type="guint" readable="true" writeable="true" construct-only="true" />
+      <implements>
+        <interface cname="GSocketConnectable" />
+      </implements>
       <method name="GetAddress" cname="g_inet_socket_address_get_address">
         <return-type type="GInetAddress*" />
       </method>
@@ -12464,6 +12608,9 @@
       <property name="PathAsArray" cname="path-as-array" type="GByteArray" readable="true" writeable="true" construct-only="true" />
       <property name="Abstract" cname="abstract" type="gboolean" readable="true" writeable="true" construct-only="true" />
       <property name="AddressType" cname="address-type" type="GUnixSocketAddressType" readable="true" writeable="true" construct-only="true" />
+      <implements>
+        <interface cname="GSocketConnectable" />
+      </implements>
       <method name="AbstractNamesSupported" cname="g_unix_socket_address_abstract_names_supported" shared="true">
         <return-type type="gboolean" />
       </method>
@@ -13075,6 +13222,11 @@
     <struct name="DBusServerClass" cname="GDBusServerClass" opaque="true" />
     <struct name="DBusSignalInfo" cname="GDBusSignalInfo" opaque="true" />
     <struct name="DBusSubtreeVTable" cname="GDBusSubtreeVTable" opaque="true" />
+    <struct name="DtlsClientConnection" cname="GDtlsClientConnection" opaque="true" />
+    <struct name="DtlsConnection" cname="GDtlsConnection" opaque="true" />
+    <struct name="DtlsServerConnection" cname="GDtlsServerConnection" opaque="true" />
+    <struct name="DummyDtlsConnection" cname="GDummyDtlsConnection" opaque="true" />
+    <struct name="DummyDtlsConnectionClass" cname="GDummyDtlsConnectionClass" opaque="true" />
     <struct name="DummyTlsCertificate" cname="GDummyTlsCertificate" opaque="true" />
     <struct name="DummyTlsCertificateClass" cname="GDummyTlsCertificateClass" opaque="true" />
     <struct name="DummyTlsConnection" cname="GDummyTlsConnection" opaque="true" />
@@ -13246,6 +13398,15 @@
           <parameter type="GInitable*" name="initable,GCancellable*" />
         </parameters>
       </callback>
+    </struct>
+    <struct name="InputMessage" cname="GInputMessage">
+      <field name="Address" cname="address" type="GSocketAddress**" />
+      <field name="Vectors" cname="vectors" type="GInputVector*" />
+      <field name="NumVectors" cname="num_vectors" type="guint" />
+      <field name="BytesReceived" cname="bytes_received" type="gsize" />
+      <field name="Flags" cname="flags" type="gint" />
+      <field name="ControlMessages" cname="control_messages" type="GSocketControlMessage***" />
+      <field name="NumControlMessages" cname="num_control_messages" type="guint*" />
     </struct>
     <struct name="InputVector" cname="GInputVector">
       <field name="Buffer" cname="buffer" type="gpointer" />

@@ -111,7 +111,8 @@ namespace GtkDemo
 		void SetCursorIfAppropriate (TextView view, int x, int y)
 		{
 			bool hovering = false;
-			TextIter iter = view.GetIterAtLocation (x, y);
+			TextIter iter;
+			view.GetIterAtLocation (out iter, x, y);
 
 			foreach (TextTag tag in iter.Tags) {
 				hovering = true;
@@ -166,7 +167,7 @@ namespace GtkDemo
 				return;
 
 			view.WindowToBufferCoords (TextWindowType.Widget, (int) evt.X, (int) evt.Y, out x, out y);
-			iter = view.GetIterAtLocation (x, y);
+			view.GetIterAtLocation (out iter, x, y);
 
 			FollowIfLink (view, iter);
 		}
