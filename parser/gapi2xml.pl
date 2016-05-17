@@ -987,7 +987,6 @@ sub addPropElem
 	} else {
 		$name =~ s/\s*\"//g;
 	}
-
 	$mode = $params[$#params];
 
 	if ($type =~ /boolean|float|double|^u?int|pointer|unichar/) {
