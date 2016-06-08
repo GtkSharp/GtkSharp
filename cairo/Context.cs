@@ -259,7 +259,7 @@ namespace Cairo {
 			NativeMethods.cairo_set_dash (handle, dashes, dashes.Length, offset);
 		}
 
-		[Obsolete("Use GetSource/GetSource")]
+		[Obsolete("Use GetSource/SetSource")]
 		public Pattern Pattern {
 			set {
 				SetSource (value);
@@ -270,7 +270,7 @@ namespace Cairo {
 		}
 
 		//This is obsolete because it wasn't obvious it needed to be disposed
-		[Obsolete("Use GetSource/GetSource")]
+		[Obsolete("Use GetSource/SetSource")]
 		public Pattern Source {
 			set {
 				SetSource (value);

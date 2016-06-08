@@ -78,23 +78,23 @@ namespace GtkSharp.Generation {
 				Console.Write ("gapi-codegen: ");
 				Console.WriteLine (e.Message);
 				Console.WriteLine ("Try `gapi-codegen --help' for more information.");
-				return 0;
+				return 64;
 			}
 
 			if (show_help) {
 				ShowHelp (options);
-				return 1;
+				return 0;
 			}
 
 			if (filenames.Count == 0) {
 				Console.WriteLine ("You need to specify a file to process using the --generate option.");
 				Console.WriteLine ("Try `gapi-codegen --help' for more information.");
-				return 0;
+				return 64;
 			}
 
 			if (extra.Exists (v => { return v.StartsWith ("--customdir"); })) {
 				Console.WriteLine ("Using .custom files is not supported anymore, use partial classes instead.");
-				return 0;
+				return 64;
 			}
 
 			if (!String.IsNullOrEmpty (schema_name) && !File.Exists (schema_name)) {

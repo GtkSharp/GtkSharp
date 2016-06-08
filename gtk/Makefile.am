@@ -88,6 +88,7 @@ sources = 				\
 	StockManager.cs			\
 	Style.cs			\
 	StyleContext.cs			\
+	StyleProviderPriority.cs	\
 	Target.cs			\
 	TargetEntry.cs		\
 	TargetList.cs			\
