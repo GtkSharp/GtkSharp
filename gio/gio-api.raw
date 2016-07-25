@@ -10145,6 +10145,77 @@
         </parameters>
       </method>
     </object>
+    <object name="SimpleAction" cname="GSimpleAction" parent="GObject">
+      <signal name="Activate" cname="activate" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="gvariant" />
+        </parameters>
+      </signal>
+      <signal name="ChangeState" cname="change-state" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="gvariant" />
+        </parameters>
+      </signal>
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="ParameterType" cname="parameter-type" type="GVariantType" readable="true" writeable="true" construct-only="true" />
+      <property name="Enabled" cname="enabled" type="gboolean" readable="true" writeable="true" />
+      <property name="StateType" cname="state-type" type="GVariantType" readable="true" />
+      <property name="State" cname="state" type="variant" readable="true" writeable="true" construct="true" />
+      <implements>
+        <interface cname="GAction" />
+      </implements>
+      <method name="GetType" cname="g_simple_action_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="g_simple_action_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-GVariantType*" name="parameter_type" />
+        </parameters>
+      </constructor>
+      <constructor cname="g_simple_action_new_stateful">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-GVariantType*" name="parameter_type" />
+          <parameter type="GVariant*" name="state" />
+        </parameters>
+      </constructor>
+      <method name="SetEnabled" cname="g_simple_action_set_enabled">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="enabled" />
+        </parameters>
+      </method>
+      <method name="SetState" cname="g_simple_action_set_state">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GVariant*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetStateHint" cname="g_simple_action_set_state_hint">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GVariant*" name="state_hint" />
+        </parameters>
+      </method>
+    </object>
+    <object name="SimpleActionGroup" cname="GSimpleActionGroup" parent="GObject">
+      <class_struct cname="GSimpleActionGroupClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="12" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GSimpleActionGroupPrivate*" />
+      <implements>
+        <interface cname="GActionGroup" />
+        <interface cname="GActionMap" />
+      </implements>
+      <method name="GetType" cname="g_simple_action_group_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="g_simple_action_group_new" />
+    </object>
     <object name="SimpleAsyncResult" cname="GSimpleAsyncResult" parent="GObject">
       <class_struct cname="GSimpleAsyncResultClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
@@ -13504,8 +13575,6 @@
     <struct name="SettingsBackend" cname="GSettingsBackend" opaque="true" />
     <struct name="SettingsBackendClosure" cname="GSettingsBackendClosure" opaque="true" />
     <struct name="SettingsBackendWatch" cname="GSettingsBackendWatch" opaque="true" />
-    <struct name="SimpleAction" cname="GSimpleAction" opaque="true" />
-    <struct name="SimpleActionGroup" cname="GSimpleActionGroup" opaque="true" />
     <struct name="Socket" cname="GSocket" opaque="true" />
     <boxed name="SrvTarget" cname="GSrvTarget" opaque="true">
       <method name="Copy" cname="g_srv_target_copy">
