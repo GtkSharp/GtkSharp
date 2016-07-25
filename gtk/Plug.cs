@@ -33,7 +33,7 @@ namespace Gtk {
 		{
 			if (GetType () != typeof (Plug)) {
 				CreateNativeObject (new string [0], new GLib.Value [0]);
-				Construct (socket_id);
+				Construct (Convert.ToUInt32(socket_id));
 				return;
 			}
 			Raw = gtk_plug_new (new UIntPtr (socket_id));
@@ -46,7 +46,7 @@ namespace Gtk {
 		{
 			if (GetType () != typeof (Plug)) {
 				CreateNativeObject (new string [0], new GLib.Value [0]);
-				ConstructForDisplay (display, socket_id);
+				ConstructForDisplay (display, Convert.ToUInt32(socket_id));
 				return;
 			}
 			Raw = gtk_plug_new_for_display (display.Handle, new UIntPtr (socket_id));
