@@ -43,6 +43,7 @@ sources = 				\
 	Entry.cs			\
 	EntryCompletion.cs		\
 	FileChooserDialog.cs		\
+	FileChooserNative.cs		\
 	Frame.cs			\
 	Global.cs			\
 	HBox.cs			\
@@ -63,6 +64,7 @@ sources = 				\
 	Menu.cs			\
 	MenuItem.cs			\
 	MessageDialog.cs		\
+	NativeDialog.cs			\
 	NodeCellDataFunc.cs		\
 	NodeSelection.cs		\
 	NodeStore.cs			\
