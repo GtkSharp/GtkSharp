@@ -36,7 +36,7 @@ class Glue_Win32(ProfileBase):
         # Trigger build of gtksharp with specific bash for Mingw32
         builder = GtkSharp()
         builder.MSYSTEM = self.MSYSTEM
-        builder.build_net45()
+        builder.build()
 
         net45_build_dir = join(self.Build_NugetDir, 'build', 'net45')
         os.makedirs(net45_build_dir, exist_ok=True)

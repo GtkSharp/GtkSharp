@@ -4,8 +4,6 @@ from pybuild.ProfileBase import ProfileBase
 from os.path import abspath, join
 from pybuild.Helper import Helper
 
-# TODO Add .Net Core generation
-
 class GtkSharp(ProfileBase):
 
     def __init__(self):
@@ -19,7 +17,7 @@ class GtkSharp(ProfileBase):
     def Build_ScriptDir(self):
         return abspath(join(self._BuildDir, 'scripts'))
 
-    def build_net45(self):
+    def build(self):
         """Build the gtksharp binaries for .Net 4.5"""
         os.makedirs(self.Build_ScriptDir, exist_ok=True)
         buildfile = join(self.Build_ScriptDir, 'net45_build.sh')
@@ -56,7 +54,7 @@ class GtkSharp(ProfileBase):
             cmd = Helper.run_cmd(cmds, self.SrcDir)
 
 
-    def copy_net45(self):
+    def copy(self):
         """Copy the .Net 4.5 dll's to the build dir"""
 
         net45_build_dir = join(self.Build_NugetDir, 'build', 'net45')
