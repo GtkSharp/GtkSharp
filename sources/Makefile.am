@@ -3,14 +3,14 @@ EXTRA_DIST =					\
 	sources.xml				\
 	gtk_tree_model_signal_fix.patch
 
-TARGET_GTK_VERSION=3.20.6
-TARGET_GTK_API=3.20
+TARGET_GTK_VERSION=3.22.1
+TARGET_GTK_API=3.22
 
 GTK_DOWNLOADS = \
-	http://ftp.gnome.org/pub/GNOME/sources/glib/2.48/glib-2.48.0.tar.xz			\
-	http://ftp.gnome.org/pub/GNOME/sources/pango/1.40/pango-1.40.1.tar.xz			\
-	http://ftp.gnome.org/pub/GNOME/sources/atk/2.20/atk-2.20.0.tar.xz			\
-	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.34/gdk-pixbuf-2.34.0.tar.xz	\
+	http://ftp.gnome.org/pub/GNOME/sources/glib/2.50/glib-2.50.0.tar.xz 			\
+	http://ftp.gnome.org/pub/GNOME/sources/pango/1.40/pango-1.40.3.tar.xz			\
+	http://ftp.gnome.org/pub/GNOME/sources/atk/2.22/atk-2.22.0.tar.xz			\
+	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.36/gdk-pixbuf-2.36.0.tar.xz	\
 	http://ftp.gnome.org/pub/GNOME/sources/gtk+/$(TARGET_GTK_API)/gtk+-$(TARGET_GTK_VERSION).tar.xz
 
 api: 
@@ -21,9 +21,8 @@ get-source-code:
 		wget $$i --output-document=- | tar -xJ ;   \
 	done;
 	ln -f -s gtkfilechooserprivate.h gtk+-$(TARGET_GTK_VERSION)/gtk/gtkfilechooserpriv.h
-	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtktreemodel.c < gtk_tree_model_signal_fix.patch
+	patch -p1 -d gtk+-$(TARGET_GTK_VERSION) < patches/gtk_tree_model_signal_fix.patch
 	echo "typedef struct _GtkClipboard GtkClipboard;" >> gtk+-$(TARGET_GTK_VERSION)/gtk/gtkclipboard.h
 	echo "typedef struct _GtkClipboardClass GtkClipboardClass;" >> gtk+-$(TARGET_GTK_VERSION)/gtk/gtkclipboard.h
-	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtktextattributes.h < gtktextattributes-gi-scanner.patch 
-	patch -p0 glib-2.48.0/gio/gwin32registrykey.h < gwin32registrykey-little-endian.patch
-
+	patch -p0 gtk+-$(TARGET_GTK_VERSION)/gtk/gtktextattributes.h < patches/gtktextattributes-gi-scanner.patch
+	patch -p0 glib-2.50.0/gio/gwin32registrykey.h < patches/gwin32registrykey-little-endian.patch

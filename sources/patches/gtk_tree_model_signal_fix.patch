@@ -1,6 +1,7 @@
---- gtk+-2.14.3/gtk/gtktreemodel.c	2009-01-04 11:52:01.000000000 -0600
-+++ gtktreemodel.c	2009-01-04 12:03:58.000000000 -0600
-@@ -193,14 +193,15 @@
+diff -Naur gtk+-3.22.1.orig/gtk/gtktreemodel.c gtk+-3.22.1/gtk/gtktreemodel.c
+--- gtk+-3.22.1.orig/gtk/gtktreemodel.c	2016-08-29 18:20:43.000000000 +0100
++++ gtk+-3.22.1/gtk/gtktreemodel.c	2016-10-17 13:57:41.204889300 +0100
+@@ -395,14 +395,15 @@
        closure = g_closure_new_simple (sizeof (GClosure), NULL);
        g_closure_set_marshal (closure, row_inserted_marshal);
        tree_model_signals[ROW_INSERTED] =
@@ -19,7 +20,7 @@
  
        /**
         * GtkTreeModel::row-has-child-toggled:
-@@ -242,14 +243,14 @@
+@@ -441,14 +442,14 @@
        closure = g_closure_new_simple (sizeof (GClosure), NULL);
        g_closure_set_marshal (closure, row_deleted_marshal);
        tree_model_signals[ROW_DELETED] =
@@ -30,14 +31,14 @@
 -                       closure,
 +                       G_STRUCT_OFFSET (GtkTreeModelIface, row_deleted),
                         NULL, NULL,
-                        _gtk_marshal_VOID__BOXED,
+                        NULL,
                         G_TYPE_NONE, 1,
 -                       row_deleted_params);
 +                       GTK_TYPE_TREE_PATH);
  
        /**
-        * GtkTreeModel::rows-reordered:
-@@ -268,14 +269,15 @@
+        * GtkTreeModel::rows-reordered: (skip)
+@@ -471,14 +472,15 @@
        closure = g_closure_new_simple (sizeof (GClosure), NULL);
        g_closure_set_marshal (closure, rows_reordered_marshal);
        tree_model_signals[ROWS_REORDERED] =
@@ -51,8 +52,8 @@
                         _gtk_marshal_VOID__BOXED_BOXED_POINTER,
                         G_TYPE_NONE, 3,
 -                       rows_reordered_params);
-+                      GTK_TYPE_TREE_PATH | G_SIGNAL_TYPE_STATIC_SCOPE,
-+                      GTK_TYPE_TREE_ITER, G_TYPE_POINTER);
++                       GTK_TYPE_TREE_PATH | G_SIGNAL_TYPE_STATIC_SCOPE,
++                       GTK_TYPE_TREE_ITER, G_TYPE_POINTER);
        initialized = TRUE;
      }
  }
