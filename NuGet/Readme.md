@@ -25,7 +25,7 @@ pacman -S mingw-w64-x86_64-pango mingw-w64-x86_64-atk mingw-w64-x86_64-gtk3
 
 And installed the executor python module
 ```
-C:\Python35\Scripts\pip.exe install executor
+C:\Python35\Scripts\pip.exe install executor yattag vsgen
 ```
 
 ### Running Build
@@ -48,7 +48,7 @@ sudo apt-get install libglib2.0-dev libpango1.0-dev libatk1.0-dev libgtk-3-dev
 
 Then install the executor python module
 ```
-pip3 install executor
+pip3 install executor yattag vsgen
 ```
 
 The version of Nuget needs to be the latest for linux

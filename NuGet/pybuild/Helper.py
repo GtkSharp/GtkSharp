@@ -1,4 +1,4 @@
-#! python3
+#!/usr/bin/python3
 """Helper Functions"""
 
 import os, subprocess, shutil, sys
@@ -57,7 +57,7 @@ class Helper(object):
                    break
        return ret
 
-    def get_gtk_version(msyspath):
+    def get_gtk_version_msys(msyspath):
         ret = ''
         pacman_path = join(msyspath, 'usr\\bin\\pacman.exe')
         # pull version from msys2 / pacman
@@ -72,7 +72,3 @@ class Helper(object):
                     ret = ret[:-2]
                 break
         return ret
-
-    def copy_files(src_glob, dst_folder):
-        for fname in iglob(src_glob):
-            shutil.copy(fname, join(dst_folder, ntpath.basename(fname)))
