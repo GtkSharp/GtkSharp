@@ -200,7 +200,7 @@ namespace Gtk {
 
 		public Gtk.TreeIter AppendValues (Gtk.TreeIter parent, Array values) {
 			Gtk.TreeIter iter = AppendNode (parent);
-			SetValues (iter, values);
+			SetValues (iter, values.Explode ());
 			return iter;
 		}
 		
@@ -212,12 +212,14 @@ namespace Gtk {
 
 		public Gtk.TreeIter AppendValues (Array values) {
 			Gtk.TreeIter iter = AppendNode ();
-			SetValues (iter, values);
+			SetValues (iter, values.Explode ());
 			return iter;
 		}
 		
 		public Gtk.TreeIter AppendValues (params object[] values) {
-			return AppendValues ((Array) values);
+			Gtk.TreeIter iter = AppendNode ();
+			SetValues (iter, values);
+			return iter;
 		}
 
 		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]

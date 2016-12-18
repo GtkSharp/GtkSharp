@@ -110,7 +110,7 @@ namespace Gtk {
 		public Gtk.TreeIter AppendValues (Array values) 
 		{
 			Gtk.TreeIter iter = Append();
-			SetValues (iter, values);
+			SetValues (iter, values.Explode ());
 			return iter;
 		}
 		

@@ -22,6 +22,7 @@ sources = 				\
 	ActionGroup.cs		\
 	Adjustment.cs			\
 	Application.cs			\
+	ArrayExtensions.cs	\
 	Bin.cs				\
 	BindingAttribute.cs		\
 	Builder.cs			\
