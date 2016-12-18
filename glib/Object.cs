@@ -728,7 +728,7 @@ namespace GLib {
 		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_get_property (IntPtr obj, IntPtr name, ref GLib.Value val);
 
-		protected GLib.Value GetProperty (string name)
+		public GLib.Value GetProperty (string name)
 		{
 			Value val = new Value (this, name);
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
@@ -740,7 +740,7 @@ namespace GLib {
 		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void g_object_set_property (IntPtr obj, IntPtr name, ref GLib.Value val);
 
-		protected void SetProperty (string name, GLib.Value val)
+		public void SetProperty (string name, GLib.Value val)
 		{
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			g_object_set_property (Raw, native_name, ref val);
