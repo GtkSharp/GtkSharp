@@ -695,6 +695,14 @@
         <parameter type="GCancellable*" name="cancellable" />
       </parameters>
     </callback>
+    <callback name="VfsFileLookupFunc" cname="GVfsFileLookupFunc">
+      <return-type type="GFile*" />
+      <parameters>
+        <parameter type="GVfs*" name="vfs" />
+        <parameter type="const-char*" name="identifier" />
+        <parameter type="gpointer" name="user_data" />
+      </parameters>
+    </callback>
     <callback name="Win32RegistryKeyWatchCallbackFunc" cname="GWin32RegistryKeyWatchCallbackFunc">
       <return-type type="void" />
       <parameters>
@@ -1048,7 +1056,7 @@
       <method name="AddActionEntries" cname="g_action_map_add_action_entries">
         <return-type type="void" />
         <parameters>
-          <parameter type="const-GActionEntry*" name="entries" array="true" />
+          <parameter type="const-GActionEntry*" name="entries" />
           <parameter type="gint" name="n_entries" />
           <parameter type="gpointer" name="user_data" />
         </parameters>
@@ -1321,6 +1329,23 @@
         <parameters>
           <parameter type="const-char*" name="uri" />
           <parameter type="GAppLaunchContext*" name="launch_context" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="LaunchDefaultForUriAsync" cname="g_app_info_launch_default_for_uri_async" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="uri" />
+          <parameter type="GAppLaunchContext*" name="launch_context" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="LaunchDefaultForUriFinish" cname="g_app_info_launch_default_for_uri_finish" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="result" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
@@ -1679,6 +1704,7 @@
         <method vm="eject_with_operation_finish" />
         <method vm="get_sort_key" />
         <method vm="get_symbolic_icon" />
+        <method vm="is_removable" />
       </class_struct>
       <signal name="Changed" cname="changed" when="LAST" field_name="changed">
         <return-type type="void" />
@@ -1848,6 +1874,10 @@
         <return-type type="GIcon*" />
         <parameters />
       </virtual_method>
+      <virtual_method name="IsRemovable" cname="is_removable">
+        <return-type type="gboolean" />
+        <parameters />
+      </virtual_method>
       <method name="CanEject" cname="g_drive_can_eject">
         <return-type type="gboolean" />
       </method>
@@ -1920,6 +1950,9 @@
         <return-type type="gboolean" />
       </method>
       <method name="IsMediaRemovable" cname="g_drive_is_media_removable">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsRemovable" cname="g_drive_is_removable">
         <return-type type="gboolean" />
       </method>
       <method name="PollForMedia" cname="g_drive_poll_for_media">
@@ -8777,6 +8810,19 @@
         <interface cname="GInitable" />
       </implements>
     </object>
+    <object name="NetworkMonitorPortal" cname="GNetworkMonitorPortal" parent="GNetworkMonitorBase">
+      <class_struct cname="GNetworkMonitorPortalClass">
+        <field name="ParentClass" cname="parent_class" type="GNetworkMonitorBaseClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GNetworkMonitorPortalPrivate*" />
+      <implements>
+        <interface cname="GNetworkMonitor" />
+        <interface cname="GInitable" />
+      </implements>
+      <method name="GetType" cname="g_network_monitor_portal_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
     <object name="NetworkService" cname="GNetworkService" parent="GObject">
       <class_struct cname="GNetworkServiceClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
@@ -9531,6 +9577,17 @@
         <return-type type="GType" />
       </method>
     </object>
+    <object name="ProxyResolverPortal" cname="GProxyResolverPortal" parent="GObject">
+      <class_struct cname="GProxyResolverPortalClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <implements>
+        <interface cname="GProxyResolver" />
+      </implements>
+      <method name="GetType" cname="g_proxy_resolver_portal_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
     <object name="Resolver" cname="GResolver" parent="GObject">
       <class_struct cname="GResolverClass">
         <field name="ParentClass" cname="parent_class" type="GObjectClass" />
@@ -9928,6 +9985,12 @@
           <parameter type="const-gchar*" name="key" />
         </parameters>
       </method>
+      <method name="GetInt64" cname="g_settings_get_int64">
+        <return-type type="gint64" />
+        <parameters>
+          <parameter type="const-gchar*" name="key" />
+        </parameters>
+      </method>
       <method name="GetMapped" cname="g_settings_get_mapped">
         <return-type type="gpointer" />
         <parameters>
@@ -9967,6 +10030,12 @@
       </method>
       <method name="GetUint" cname="g_settings_get_uint">
         <return-type type="guint" />
+        <parameters>
+          <parameter type="const-gchar*" name="key" />
+        </parameters>
+      </method>
+      <method name="GetUint64" cname="g_settings_get_uint64">
+        <return-type type="guint64" />
         <parameters>
           <parameter type="const-gchar*" name="key" />
         </parameters>
@@ -10098,6 +10167,13 @@
           <parameter type="gint" name="value" />
         </parameters>
       </method>
+      <method name="SetInt64" cname="g_settings_set_int64">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="key" />
+          <parameter type="gint64" name="value" />
+        </parameters>
+      </method>
       <method name="SetMapping" cname="g_settings_set_mapping" shared="true">
         <return-type type="GVariant*" />
         <parameters>
@@ -10125,6 +10201,13 @@
         <parameters>
           <parameter type="const-gchar*" name="key" />
           <parameter type="guint" name="value" />
+        </parameters>
+      </method>
+      <method name="SetUint64" cname="g_settings_set_uint64">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="key" />
+          <parameter type="guint64" name="value" />
         </parameters>
       </method>
       <method name="SetValue" cname="g_settings_set_value">
@@ -12858,6 +12941,24 @@
           <parameter type="const-char*" name="parse_name" />
         </parameters>
       </method>
+      <method name="RegisterUriScheme" cname="g_vfs_register_uri_scheme">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="scheme" />
+          <parameter type="GVfsFileLookupFunc" name="uri_func" />
+          <parameter type="gpointer" name="uri_data" />
+          <parameter type="GDestroyNotify" name="uri_destroy" />
+          <parameter type="GVfsFileLookupFunc" name="parse_name_func" />
+          <parameter type="gpointer" name="parse_name_data" />
+          <parameter type="GDestroyNotify" name="parse_name_destroy" />
+        </parameters>
+      </method>
+      <method name="UnregisterUriScheme" cname="g_vfs_unregister_uri_scheme">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="scheme" />
+        </parameters>
+      </method>
     </object>
     <object name="VolumeMonitor" cname="GVolumeMonitor" parent="GObject">
       <class_struct cname="GVolumeMonitorClass">
@@ -13506,6 +13607,7 @@
     </struct>
     <struct name="PollableInputStream" cname="GPollableInputStream" opaque="true" />
     <struct name="PollableOutputStream" cname="GPollableOutputStream" opaque="true" />
+    <struct name="PortalNotificationBackend" cname="GPortalNotificationBackend" opaque="true" />
     <struct name="RemoteActionGroup" cname="GRemoteActionGroup" opaque="true" />
     <boxed name="Resource" cname="GResource" opaque="true">
       <method name="EnumerateChildren" cname="g_resource_enumerate_children">

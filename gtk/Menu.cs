@@ -32,7 +32,7 @@ namespace Gtk {
 
 		public void Popup ()
 		{
-			Popup (null, null, null, 3, Global.CurrentEventTime);
+			PopupAtPointer (null);
 		}
 
 		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
