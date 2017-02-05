@@ -68,5 +68,6 @@ class GtkSharp(ProfileBase):
         dll_list = ['atk', 'cairo', 'gdk', 'gio', 'glib', 'gtk', 'pango']
         for item in dll_list:
             shutil.copy(join(self.SrcDir, item, item + "-sharp.dll"), net45_lib_dir)
+            shutil.copy(join(self.SrcDir, item, item + "-sharp.pdb"), net45_lib_dir)
             if item != 'cairo':
                 shutil.copy(join(self.SrcDir, item, item + '-sharp.dll.config'), net45_build_dir)
