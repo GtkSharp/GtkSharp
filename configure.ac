@@ -89,8 +89,9 @@ fi
 
 enable_msi="no"
 if test "x$platform_win32" = "xyes"; then
-	AC_PATH_PROG(WIX, candle, no)
-	if test "x$WIX" != "xno" ; then
+	AC_PATH_PROG(WIX_CANDLE, candle, no)
+	AC_PATH_PROG(WIX_LIGHT, light, no)
+	if test "x$WIX_CANDLE" != "xno" -a "x$WIX_LIGHT" != "xno" ; then
 		enable_msi="yes"
 	fi
 fi

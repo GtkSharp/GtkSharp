@@ -1,11 +1,14 @@
 #!/usr/bin/python3
 
-import os, json
-from vsgen.project import VSGProject
-from xml.etree import ElementTree as et
-from yattag import indent
-from os.path import abspath, join
+import json
+import os
 from collections import OrderedDict
+from os.path import join
+from xml.etree import ElementTree as et
+
+from vsgen.project import VSGProject
+from yattag import indent
+
 
 class CoreVSProject(VSGProject):
     """
@@ -51,18 +54,18 @@ class CoreVSProject(VSGProject):
         data = OrderedDict()
         ver = {'version': self.Version}
         data.update(ver)
- 
+
         depends = self.Depends
         depends2 = {'dependencies': depends}
         data.update(depends2)
-        
-        if self.Frameworks != None:
+
+        if self.Frameworks is not None:
             frameworks = {'frameworks': self.Frameworks}
         else:
             frameworks = {'frameworks': {'netstandard1.6': {'imports': 'dnxcore50'}}}
         data.update(frameworks)
 
-        if self.BuildOptions != None:
+        if self.BuildOptions is not None:
             buildopts = {'buildOptions': self.BuildOptions}
             data.update(buildopts)
 
@@ -112,8 +115,7 @@ class CoreVSProject(VSGProject):
 
         etstr = et.tostring(xml_projroot, encoding='utf-8', method='xml').decode('utf-8')
         outtxt = indent(etstr)
-        return outtxt 
-
+        return outtxt
 
     def write(self):
         """
@@ -125,7 +127,7 @@ class CoreVSProject(VSGProject):
 
         projectFileName = os.path.normpath(self.FileName)
         projxml = ''
-        if self.ProjectXml == None:
+        if self.ProjectXml is None:
             projxml = self.get_project_xml()
         else:
             projxml = self.ProjectXml
@@ -134,7 +136,7 @@ class CoreVSProject(VSGProject):
 
         jsonFileName = join(filepath, 'project.json')
 
-        if self.ProjectJson == None:
+        if self.ProjectJson is None:
             projjson = self.get_project_json()
         else:
             projjson = self.ProjectJson

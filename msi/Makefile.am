@@ -26,5 +26,5 @@ gtk-sharp-3.0.msi: gtk-sharp-3.0.wxs
 	mv binaries/libpangosharpglue-3.dll binaries/pangosharpglue-3.dll
 
 	cp $(top_builddir)/sample/GtkDemo/GtkDemo.exe binaries
-	candle -ext WixUIExtension gtk-sharp-3.0.wxs
-	light -cultures:en-us -ext WixUIExtension -ext WixNetFxExtension -out gtk-sharp-$(VERSION).msi gtk-sharp-3.0.wixobj
+	$(WIX_CANDLE) -ext WixUIExtension gtk-sharp-3.0.wxs
+	$(WIX_LIGHT) -cultures:en-us -ext WixUIExtension -ext WixNetFxExtension -out gtk-sharp-$(VERSION).msi gtk-sharp-3.0.wixobj

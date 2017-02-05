@@ -15,10 +15,10 @@ download-stamp: $(DOWNLOADS)
 	touch download-stamp
 
 unmanaged.wixobj: unmanaged.wxs redirector.exe download-stamp
-	candle unmanaged.wxs
+	$(WIX_CANDLE) unmanaged.wxs
 
 unmanaged.msm: unmanaged.wixobj
-	light unmanaged.wixobj
+	$(WIX_LIGHT) unmanaged.wixobj
 
 bundle-scanner.exe: bundle-scanner.cs
 	$(CSC) bundle-scanner.cs

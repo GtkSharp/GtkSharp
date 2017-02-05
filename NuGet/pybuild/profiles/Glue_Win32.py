@@ -1,14 +1,17 @@
 #!/usr/bin/python3
 
-import os, shutil, ntpath
-from pybuild.ProfileBase import ProfileBase
-from os.path import abspath, join
+import ntpath
+import os
+import shutil
 from glob import glob
+from os.path import abspath, join
+
 from pybuild.Helper import Helper
+from pybuild.ProfileBase import ProfileBase
 from pybuild.profiles.GtkSharp import GtkSharp
 
-class Glue_Win32(ProfileBase):
 
+class Glue_Win32(ProfileBase):
     def __init__(self):
         """Class Init"""
         super().__init__()
@@ -30,8 +33,8 @@ class Glue_Win32(ProfileBase):
         """Package up a nuget file based on the default build"""
 
         if os.name != 'nt':
-           print("Skipping Native Nuget package build, as this needs to be run on Windows")
-           return
+            print("Skipping Native Nuget package build, as this needs to be run on Windows")
+            return
 
         # Trigger build of gtksharp with specific bash for Mingw32
         builder = GtkSharp()
@@ -41,7 +44,7 @@ class Glue_Win32(ProfileBase):
         net45_build_dir = join(self.Build_NugetDir, 'build', 'net45')
         os.makedirs(net45_build_dir, exist_ok=True)
 
-        print ('Copying Files')
+        print('Copying Files')
         dll_list = self.Get_Dlls_GtkSharp_Glue()
 
         for item in dll_list:

@@ -1,11 +1,15 @@
 #!/usr/bin/python3
-import os, shutil
+import os
+import shutil
+from glob import glob
+from os.path import abspath, join
+
+import vsgen
+
+from pybuild.Helper import Helper
 from pybuild.ProfileBase import ProfileBase
 from pybuild.vsgenext.CoreVSProject import CoreVSProject
-from os.path import abspath, join
-from pybuild.Helper import Helper
-from glob import glob
-import vsgen
+
 
 # Note at this stage we can't complile GtkSharp using the .Net Core platform libraries, such as netstandard1.6
 # https://docs.microsoft.com/en-us/dotnet/articles/standard/library
@@ -19,7 +23,6 @@ import vsgen
 # TODO look into package for symbols, via NuGet -symbols
 
 class GtkSharp_Core(ProfileBase):
-
     def __init__(self):
         """Class Init"""
         super().__init__()
@@ -36,7 +39,6 @@ class GtkSharp_Core(ProfileBase):
     def Dotnet_BuildExe(self):
         return 'dotnet.exe'
 
-
     def Copy_CS_Files(self, csfiles):
         srclist = glob(join(self.SrcDir, csfiles[0]))
         destdir = join(self.Build_CoreDir, csfiles[1])
@@ -47,11 +49,11 @@ class GtkSharp_Core(ProfileBase):
     def SetupProject(self, projname):
         proj = CoreVSProject()
         proj.Name = projname
-        proj.RootNamespace=projname
+        proj.RootNamespace = projname
         proj.FileName = join(self.Build_CoreDir, projname, projname + '.xproj')
         proj.Frameworks = {'net461': {}}
         proj.Depends = {}
-        proj.BuildOptions = { "allowUnsafe": True , "outputName": projname + "-sharp"}
+        proj.BuildOptions = {"allowUnsafe": True, "outputName": projname + "-sharp"}
         proj.Version = self._Version
         self.Solution.Projects.append(proj)
         self.Solution.write()
@@ -64,8 +66,7 @@ class GtkSharp_Core(ProfileBase):
                         '--configuration', self.BuildConfig,
                         '--framework', 'net461',
                         '--output', join(self.Build_CoreDir, 'build')]
-                        , projdir)
-
+                       , projdir)
 
     def build(self):
         """Build the gtksharp binaries for .Net 4.5"""
@@ -132,7 +133,6 @@ class GtkSharp_Core(ProfileBase):
                         'glib': self._Version}
         proj.write()
         self.Build_Project(proj)
-
 
     def copy_dll(self):
         """Copy the .Net 4.5 dll's to the build dir"""

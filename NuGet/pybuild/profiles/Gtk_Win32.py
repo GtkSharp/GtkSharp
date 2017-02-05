@@ -1,14 +1,17 @@
 #!/usr/bin/python3
 """Build of GTK3 into a NuGet package - Windows 32bit"""
 
-import os, shutil, ntpath
-from pybuild.ProfileBase import ProfileBase
-from os.path import abspath, join
+import ntpath
+import os
+import shutil
 from glob import iglob
+from os.path import abspath, join
+
 from pybuild.Helper import Helper
+from pybuild.ProfileBase import ProfileBase
+
 
 class Gtk_Win32(ProfileBase):
-
     def __init__(self):
         """Class Init"""
         super().__init__()
@@ -20,7 +23,6 @@ class Gtk_Win32(ProfileBase):
     @property
     def MingwBinPath(self):
         return abspath(self._MingwBinPath)
-
 
     def Get_Dlls_Native_GTK(self):
         ret = []
@@ -74,18 +76,17 @@ class Gtk_Win32(ProfileBase):
         ret.append('libbz2-1.dll')
         return ret
 
-
     def build(self):
         """Package up a nuget file based on the default build"""
 
         if os.name != 'nt':
-           print("Skipping Native Nuget package build, as this needs to be run on Windows")
-           return
+            print("Skipping Native Nuget package build, as this needs to be run on Windows")
+            return
 
         net45_build_dir = join(self.Build_NugetDir, 'build', 'net45')
         os.makedirs(net45_build_dir, exist_ok=True)
 
-        print ('Copying Files')
+        print('Copying Files')
         shutil.copy('./misc/GtkSharp.Native.targets', join(net45_build_dir, 'GtkSharp.' + self.arch + '.targets'))
 
         # Copy dlls

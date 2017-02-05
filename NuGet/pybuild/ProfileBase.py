@@ -1,13 +1,15 @@
 #!/usr/bin/python3
 """Base class for Settings profiles"""
 
-import os, shutil
+import os
+import shutil
 from os.path import abspath, join
 from xml.etree import ElementTree as et
+
 from pybuild.Helper import Helper
 
-class ProfileBase(object):
 
+class ProfileBase(object):
     def __init__(self):
         """Class Init"""
         self._NuGetPath = 'nuget.exe'
@@ -55,12 +57,11 @@ class ProfileBase(object):
     def Version(self):
         return self._Version
 
-
-    def clean(self):
+    @staticmethod
+    def clean():
         """Clean the build dir"""
         Helper.emptydir('./build')
-        print ("Clean finished")
-
+        print("Clean finished")
 
     def build_nuget(self):
         """Package up a nuget file based on the default build"""
@@ -84,4 +85,4 @@ class ProfileBase(object):
         nugetfile = join(self.Build_NugetDir, self.NuGet_PackageName + '.' + self.Version + '.nupkg')
         os.makedirs(self.PackageDestination, exist_ok=True)
         shutil.copy(nugetfile, self.PackageDestination)
-        print ('Generation of Nuget package complete - ' + self.NuGet_PackageName)
+        print('Generation of Nuget package complete - ' + self.NuGet_PackageName)
