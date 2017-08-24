@@ -1084,5 +1084,11 @@ source_gen = custom_target(assembly_name + 'codegen',
     ],
     depends: [gapi_codegen, gapi_fixup])
 
+api_xml = custom_target(pkg + '_api_xml',
+        input: raw_api_fname,
+        output: pkg + '-api.xml',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen],
+        install: true,
+        install_dir: gapi_xml_installdir)
 gtk_api_includes = join_paths(meson.current_build_dir(), 'gtk-api.xml')
-

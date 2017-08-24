@@ -1,7 +1,8 @@
 snk = join_paths(meson.current_source_dir(), '..', 'gtk-sharp.snk')
-assembly_name = 'pango-sharp'
+pkg = 'pango'
+assembly_name = pkg + '-sharp'
 glueincludes = 'pango/pango.h'
-raw_api_fname = join_paths(meson.current_source_dir(), 'pango-api.raw')
+raw_api_fname = join_paths(meson.current_source_dir(), pkg + '-api.raw')
 metadata_fname = join_paths(meson.current_source_dir(), 'Pango.metadata')
 gluefile = join_paths(meson.current_build_dir(), 'generate.c')
 
@@ -60,7 +61,9 @@ sources = [
 
 pango_sharp = library(assembly_name, source_gen, sources,
         cs_args: ['-unsafe', '-keyfile:' + snk],
-        link_with: [glib_sharp, cairo_sharp]
+        link_with: [glib_sharp, cairo_sharp],
+        install: true,
+        install_dir: lib_install_dir
 )
 
 gluegen = custom_target('pangogluegen',

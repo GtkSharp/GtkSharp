@@ -415,4 +415,11 @@ source_gen = custom_target('gio_generated',
         output: generated_sources,
 )
 
+api_xml = custom_target(pkg + '_api_xml',
+        input: raw_api_fname,
+        output: pkg + '-api.xml',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen],
+        install: true,
+        install_dir: gapi_xml_installdir)
 gio_api_includes = join_paths(meson.current_build_dir(), 'gio-api.xml')

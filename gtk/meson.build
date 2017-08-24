@@ -1,8 +1,9 @@
 snk = join_paths(meson.current_source_dir(), '..', 'gtk-sharp.snk')
-assembly_name = 'gtk-sharp'
-symbols = join_paths(meson.current_source_dir(), 'gtk-symbols.xml')
+pkg = 'gtk'
+assembly_name = pkg + '-sharp'
+symbols = join_paths(meson.current_source_dir(), pkg + '-symbols.xml')
 
-raw_api_fname = join_paths(meson.current_source_dir(), 'gtk-api.raw')
+raw_api_fname = join_paths(meson.current_source_dir(), pkg + '-api.raw')
 metadata_fname = join_paths(meson.current_source_dir(), 'Gtk.metadata')
 glueincludes = 'gtk/gtk.h'
 gluefile = join_paths(meson.current_build_dir(), 'generate.c')
@@ -13,7 +14,9 @@ configure_file(input: assembly_name + '.dll.config.in',
 
 configure_file(input: assembly_name + '-3.0.pc.in',
         output: assembly_name + '-3.0.pc',
-        configuration : version_data)
+        configuration : version_data,
+        install_dir: pkg_install_dir,
+        install: true)
 
 subdir('generated')
 
@@ -134,6 +137,8 @@ gtk_sharp = library(assembly_name, source_gen, sources,
         link_with: [glib_sharp, pango_sharp,
             cairo_sharp, gio_sharp, atk_sharp,
             gdk_sharp],
+        install: true,
+        install_dir: lib_install_dir
 )
 
 gluegen = custom_target('gtkgluegen',

@@ -192,8 +192,7 @@ generated_sources = [
     'GLib_GLibSharp.GSourceFuncNative.cs',
 ]
 
-source_gen = []
-source_gen += [custom_target(assembly_name + 'codegen',
+source_gen = custom_target(assembly_name + 'codegen',
     input: raw_api_fname,
     output: generated_sources,
     command: [
@@ -215,6 +214,13 @@ source_gen += [custom_target(assembly_name + 'codegen',
         '--glue-libname', gluefile,
         '--schema', schema,
     ],
-    depends: [gapi_codegen, gapi_fixup])]
+    depends: [gapi_codegen, gapi_fixup])
 
+api_xml = custom_target(pkg + '_api_xml',
+        input: raw_api_fname,
+        output: pkg + '-api.xml',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen],
+        install: true,
+        install_dir: gapi_xml_installdir)
 gdk_api_includes = join_paths(meson.current_build_dir(), 'gdk-api.xml')

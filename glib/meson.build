@@ -7,7 +7,9 @@ configure_file(input: 'glib-sharp.dll.config.in',
 
 configure_file(input: 'glib-sharp-3.0.pc.in',
         output: 'glib-sharp-3.0.pc',
-        configuration : version_data)
+        configuration : version_data,
+        install_dir: pkg_install_dir,
+        install: true)
 
 policy_data = configuration_data()
 policy_data.set('ASSEMBLY_NAME', assembly_name)
@@ -90,9 +92,12 @@ sources = [
 
 glib_sharp = library(assembly_name, sources,
         cs_args: ['-unsafe', '-keyfile:' + snk],
+        install: true,
+        install_dir: lib_install_dir
 )
 
 install_infos += [assembly_name, glib_sharp.full_path()]
 
 glib_sharp_dep = declare_dependency(link_with: glib_sharp)
 glib_api_includes = join_paths(meson.current_source_dir(), 'glib-api.xml')
+install_data(glib_api_includes, install_dir: gapi_xml_installdir)

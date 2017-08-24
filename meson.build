@@ -58,13 +58,17 @@ remap_dl_data = configuration_data()
 remap_dl_data.set('LIB_PREFIX', lib_prefix)
 remap_dl_data.set('LIB_SUFFIX', lib_suffix)
 
+pkg_version = meson.project_name() + '-3.0'
 version_data = configuration_data()
 version_data.set('VERSION', meson.project_version())
-version_data.set('PACKAGE_VERSION', meson.project_name() + '-3.0')
+version_data.set('PACKAGE_VERSION', pkg_version)
 
 install_infos = []
-schema = join_paths(meson.current_source_dir(), 'gapi.xsd')
+lib_install_dir = join_paths(get_option('libdir'), 'mono', pkg_version)
+pkg_install_dir = join_paths(get_option('libdir'), 'pkgconfig')
+gapi_xml_installdir = join_paths(get_option('datadir'), 'gapi-3.0')
 
+schema = join_paths(meson.current_source_dir(), 'gapi.xsd')
 subdir('parser')
 subdir('generator')
 subdir('glib')

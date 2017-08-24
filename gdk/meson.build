@@ -1,5 +1,6 @@
 snk = join_paths(meson.current_source_dir(), '..', 'gtk-sharp.snk')
-assembly_name = 'gdk-sharp'
+pkg = 'gdk'
+assembly_name = pkg + '-sharp'
 symbols = join_paths(meson.current_source_dir(), 'gdk-symbols.xml')
 
 raw_api_fname = join_paths(meson.current_source_dir(), 'gdk-api.raw')
@@ -13,7 +14,9 @@ configure_file(input: assembly_name + '.dll.config.in',
 
 configure_file(input: assembly_name + '-3.0.pc.in',
         output: assembly_name + '-3.0.pc',
-        configuration : version_data)
+        configuration : version_data,
+        install_dir: pkg_install_dir,
+        install: true)
 
 subdir('generated')
 
@@ -64,6 +67,8 @@ sources = [
 gdk_sharp = library(assembly_name, source_gen, sources,
         cs_args: ['-unsafe', '-keyfile:' + snk],
         link_with: [glib_sharp, pango_sharp, cairo_sharp, gio_sharp],
+        install: true,
+        install_dir: lib_install_dir
 )
 
 install_infos += [assembly_name, gdk_sharp.full_path()]

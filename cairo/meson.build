@@ -65,8 +65,11 @@ sources = [
 
 cairo_sharp = library(assembly_name, sources,
         cs_args: ['-keyfile:' + snk],
+        install: true,
+        install_dir: lib_install_dir
 )
 
 install_infos += [assembly_name, cairo_sharp.full_path()]
 cairo_sharp_dep = declare_dependency(link_with: cairo_sharp)
 cairo_api_includes = join_paths(meson.current_source_dir(), 'cairo-api.xml')
+install_data(cairo_api_includes, install_dir: gapi_xml_installdir)

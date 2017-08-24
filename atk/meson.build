@@ -1,7 +1,8 @@
 snk = join_paths(meson.current_source_dir(), '..', 'gtk-sharp.snk')
-assembly_name = 'atk-sharp'
+pkg = 'atk'
 
-raw_api_fname = join_paths(meson.current_source_dir(), 'atk-api.raw')
+assembly_name = pkg + '-sharp'
+raw_api_fname = join_paths(meson.current_source_dir(), pkg + '-api.raw')
 metadata_fname = join_paths(meson.current_source_dir(), 'Atk.metadata')
 glueincludes = 'atk/atk.h'
 gluefile = join_paths(meson.current_build_dir(), 'generate.c')
@@ -26,6 +27,8 @@ sources = [
 atk_sharp = library(assembly_name, source_gen, sources,
         cs_args: ['-unsafe', '-keyfile:' + snk],
         link_with: glib_sharp,
+        install: true,
+        install_dir: lib_install_dir
 )
 
 gluegen = custom_target('atkgluegen',
