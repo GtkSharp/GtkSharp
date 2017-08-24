@@ -68,10 +68,14 @@ namespace GtkSharp.Generation {
 		}
 
 		protected virtual string RawGetter (string qpname) {
+            if (container_type is InterfaceGen)
+                return "implementor.GetProperty (" + qpname + ")";
 			return "GetProperty (" + qpname + ")";
 		}
 
 		protected virtual string RawSetter (string qpname) {
+            if (container_type is InterfaceGen)
+                return "implementor.SetProperty(" + qpname + ", val)";
 			return "SetProperty(" + qpname + ", val)";
 		}
 

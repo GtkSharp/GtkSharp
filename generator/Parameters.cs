@@ -206,7 +206,7 @@ namespace GtkSharp.Generation {
 					return false;
 				}
 
-				if (p.IsOptional && p.PassAs == String.Empty)
+				if (p.IsOptional && p.PassAs == String.Empty && p.IsUserData == false)
 					has_optional = true;
 
 				IGeneratable gen = p.Generatable;
