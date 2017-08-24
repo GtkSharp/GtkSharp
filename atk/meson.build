@@ -28,6 +28,16 @@ atk_sharp = library(assembly_name, source_gen, sources,
         link_with: glib_sharp,
 )
 
+gluegen = custom_target('atkgluegen',
+        input: raw_api_fname,
+        output: 'generate.c',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen])
+
+library('atksharpglue-3', gluegen,
+        dependencies: [glib_dep, gio_dep, atk_dep],
+        install: true)
+
 install_infos += [assembly_name, atk_sharp.full_path()]
 atk_sharp_dep = declare_dependency(link_with: atk_sharp)
 

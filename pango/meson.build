@@ -63,5 +63,15 @@ pango_sharp = library(assembly_name, source_gen, sources,
         link_with: [glib_sharp, cairo_sharp]
 )
 
+gluegen = custom_target('pangogluegen',
+        input: raw_api_fname,
+        output: 'generate.c',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen])
+
+library('pangosharpglue-3', gluegen,
+        dependencies: [glib_dep, gio_dep, pango_dep],
+        install: true)
+
 install_infos += [assembly_name, pango_sharp.full_path()]
 pango_sharp_dep = declare_dependency(link_with: pango_sharp)

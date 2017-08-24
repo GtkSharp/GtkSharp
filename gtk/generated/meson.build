@@ -1058,8 +1058,7 @@ generated_sources = [
     'Gtk_MapEventHandler.cs',
 ]
 
-source_gen = []
-source_gen += [custom_target(assembly_name + 'codegen',
+source_gen = custom_target(assembly_name + 'codegen',
     input: raw_api_fname,
     output: generated_sources,
     command: [
@@ -1083,7 +1082,7 @@ source_gen += [custom_target(assembly_name + 'codegen',
         '--glue-libname', gluefile,
         '--schema', schema,
     ],
-    depends: [gapi_codegen, gapi_fixup])]
+    depends: [gapi_codegen, gapi_fixup])
 
 gtk_api_includes = join_paths(meson.current_build_dir(), 'gtk-api.xml')
 
