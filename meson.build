@@ -1,7 +1,7 @@
 project('gtk-sharp', ['cs', 'c'], version: '3.22.6')
 
 if host_machine.system() == 'windows'
-  if h.get(0) == host_machine.cpu()
+  if host_machine.cpu() == 'amd64'
     add_project_arguments('-define:WIN64LONGS', language: 'cs')
   endif
 endif
@@ -12,11 +12,22 @@ mono_required_version = '>=3.2.0'
 gtk_required_version='>=3.0.0'
 glib_required_version='>=2.32.0'
 
-# FIXME Handle .net
-mono = meson.get_compiler('cs')
-if not mono.version().version_compare(mono_required_version)
-  error('Mono required version @0@ not found (@1@)'.format(
-    mono_required_version, mono.version()))
+csc = meson.get_compiler('cs')
+
+runtime = ''
+if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
+  runtime_debug_flags=' --debug'
+endif
+if csc.get_id() == 'mono'
+    if not csc.version().version_compare(mono_required_version)
+        error('Mono required version @0@ not found (@1@)'.format(
+            mono_required_version, csc.version()))
+    endif
+
+    mono_runtime_dep = dependency('mono', required: false)
+    if mono_runtime_dep.found()
+        runtime = 'mono' + runtime_debug_flags
+    endif
 endif
 
 assemblyinfo='/AssemblyInfo.cs'
@@ -39,14 +50,6 @@ assembly_data.set_quoted('API_VERSION', apiversion)
 configure_file(input: 'AssemblyInfo.cs.in', output: 'AssemblyInfo.cs', configuration : assembly_data)
 
 policy_config = files('policy.config.in')
-runtime = ''
-if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
-  runtime_debug_flags=' --debug'
-endif
-if mono_runtime_dep.found()
-  runtime = 'mono' + runtime_debug_flags
-endif
-
 if host_machine.system() == 'osx'
   lib_prefix=''
   lib_suffix='.dylib'
