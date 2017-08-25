@@ -48,4 +48,4 @@ library('giosharpglue-3', gluegen,
         install: true)
 
 install_infos += [assembly_name, gio_sharp.full_path()]
-gio_sharp_dep = declare_dependency(link_with: gio_sharp)
+gio_sharp_dep = declare_dependency(link_with: [glib_sharp, gio_sharp])

@@ -59,9 +59,10 @@ sources = [
     'Units.cs',
 ]
 
+deps = [glib_sharp, cairo_sharp]
 pango_sharp = library(assembly_name, source_gen, sources,
         cs_args: ['-unsafe', '-keyfile:' + snk],
-        link_with: [glib_sharp, cairo_sharp],
+        link_with: deps,
         install: true,
         install_dir: lib_install_dir
 )
@@ -77,4 +78,4 @@ library('pangosharpglue-3', gluegen,
         install: true)
 
 install_infos += [assembly_name, pango_sharp.full_path()]
-pango_sharp_dep = declare_dependency(link_with: pango_sharp)
+pango_sharp_dep = declare_dependency(link_with: deps + [pango_sharp])

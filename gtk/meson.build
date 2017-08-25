@@ -132,11 +132,10 @@ sources = [
     'Window.cs',
 ]
 
+deps = [glib_sharp, pango_sharp, cairo_sharp, gio_sharp, atk_sharp, gdk_sharp]
 gtk_sharp = library(assembly_name, source_gen, sources, 
         cs_args: ['-unsafe', '-keyfile:' + snk, '-nowarn:0618,0612,0169'],
-        link_with: [glib_sharp, pango_sharp,
-            cairo_sharp, gio_sharp, atk_sharp,
-            gdk_sharp],
+        link_with: deps,
         install: true,
         install_dir: lib_install_dir
 )
@@ -152,4 +151,4 @@ library('gtksharpglue-3', gluegen,
         install: true)
 
 install_infos += [assembly_name, gtk_sharp.full_path()]
-gtk_sharp_dep = declare_dependency(link_with: gtk_sharp)
+gtk_sharp_dep = declare_dependency(link_with: deps + [gtk_sharp])

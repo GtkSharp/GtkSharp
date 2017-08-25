@@ -64,13 +64,14 @@ sources = [
     'Window.cs',
 ]
 
+deps = [glib_sharp, pango_sharp, cairo_sharp, gio_sharp]
 gdk_sharp = library(assembly_name, source_gen, sources,
         cs_args: ['-unsafe', '-keyfile:' + snk],
-        link_with: [glib_sharp, pango_sharp, cairo_sharp, gio_sharp],
+        link_with: deps,
         install: true,
         install_dir: lib_install_dir
 )
 
 install_infos += [assembly_name, gdk_sharp.full_path()]
-gdk_sharp_dep = declare_dependency(link_with: gdk_sharp)
+gdk_sharp_dep = declare_dependency(link_with: deps + [gdk_sharp])
 

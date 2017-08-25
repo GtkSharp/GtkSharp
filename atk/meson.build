@@ -42,5 +42,4 @@ library('atksharpglue-3', gluegen,
         install: true)
 
 install_infos += [assembly_name, atk_sharp.full_path()]
-atk_sharp_dep = declare_dependency(link_with: atk_sharp)
-
+atk_sharp_dep = declare_dependency(link_with: [glib_sharp, atk_sharp])
