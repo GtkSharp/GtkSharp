@@ -24,9 +24,10 @@ assemblyinfo='/AssemblyInfo.cs'
 gacutil = find_program('gacutil')
 al = find_program('al')
 
-glib_dep = dependency('glib-2.0', version: glib_required_version)
-gio_dep = dependency('gio-2.0', version: glib_required_version)
-mono_runtime_dep = dependency('mono', required: false)
+glib_dep = dependency('glib-2.0', version: glib_required_version,
+        fallback: ['glib', 'libglib_dep'])
+gio_dep = dependency('gio-2.0', version: glib_required_version,
+        fallback: ['glib', 'libgio_dep'])
 
 # FIXME Check how to enabled debug flags (if at all needed).
 
