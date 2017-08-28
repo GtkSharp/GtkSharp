@@ -72,6 +72,16 @@ gdk_sharp = library(assembly_name, source_gen, sources,
         install_dir: lib_install_dir
 )
 
+gluegen = custom_target('gdkgluegen',
+        input: raw_api_fname,
+        output: 'generate.c',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen])
+
+library('gdksharpglue-3', gluegen,
+        dependencies: [glib_dep, gio_dep, atk_dep, gdk_dep],
+        install: true)
+
 install_infos += [assembly_name, gdk_sharp.full_path()]
 gdk_sharp_dep = declare_dependency(link_with: deps + [gdk_sharp])
 
