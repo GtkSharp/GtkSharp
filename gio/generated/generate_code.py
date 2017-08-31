@@ -37,8 +37,9 @@ if __name__ == "__main__":
 
     shutil.copyfile(opts.api_raw, api_xml)
 
-    cmd = [opts.gapi_fixup, "--api=" + api_xml,
-                           "--metadata=" + opts.metadata]
+    cmd = [opts.gapi_fixup, "--api=" + api_xml]
+    if opts.metadata:
+        cmd += ["--metadata=" + opts.metadata]
     if opts.symbols:
         cmd.extend(['--symbols=' + opts.symbols])
     subprocess.check_call(cmd)

@@ -113,6 +113,7 @@ gtk_dep = dependency('gtk+-3.0', version: gtk_required_version, required: false)
 if gtk_dep.found() and atk_dep.found() and pango_dep.found()
     subdir('gtk')
     subdir('sample/GtkDemo')
+    subdir('sample/valtest')
     has_gtk = true
 else
     has_gtk = false
