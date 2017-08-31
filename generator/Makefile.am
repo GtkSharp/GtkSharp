@@ -65,6 +65,7 @@ sources = 				\
 	SimpleGen.cs			\
 	Statistics.cs			\
 	StructBase.cs			\
+	StructABIField.cs		\
 	StructField.cs			\
 	StructGen.cs			\
 	SymbolTable.cs			\

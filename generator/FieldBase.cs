@@ -26,7 +26,13 @@ namespace GtkSharp.Generation {
 	using System.Xml;
 
 	public abstract class FieldBase : PropertyBase {
+		public FieldBase abi_field = null;
+
 		public FieldBase (XmlElement elem, ClassBase container_type) : base (elem, container_type) {}
+		public FieldBase (XmlElement elem, ClassBase container_type, FieldBase abi_field) : base (elem, container_type) {
+			abi_field = abi_field;
+		}
+
 
 		public virtual bool Validate (LogWriter log)
 		{
@@ -60,7 +66,7 @@ namespace GtkSharp.Generation {
 
 		protected abstract string DefaultAccess { get; }
 
-		internal string Access {
+		protected virtual string Access {
 			get {
 				return elem.HasAttribute ("access") ? elem.GetAttribute ("access") : DefaultAccess;
 			}
@@ -90,13 +96,28 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		string getterName, setterName;
-		string getOffsetName, offsetName;
+		private bool UseABIStruct(GenerationInfo gen_info) {
+			return (abi_field != null && abi_field.getOffsetName != null &&
+						gen_info.GlueWriter == null);
+		}
 
-		void CheckGlue ()
+		string getterName, setterName;
+		protected string getOffsetName, offsetName;
+
+		void CheckGlue (GenerationInfo gen_info)
 		{
 			getterName = setterName = getOffsetName = null;
 			if (Access != "public")
+				return;
+
+			if (UseABIStruct(gen_info)) {
+				getOffsetName = abi_field.getOffsetName;
+				offsetName = "GetFieldOffset(\"" + ((StructField)abi_field).EqualityName + "\")";
+
+				return;
+			}
+
+			if (gen_info.GlueWriter == null)
 				return;
 
 			string prefix = (container_type.NS + "Sharp_" + container_type.NS + "_" + container_type.Name).Replace(".", "__").ToLower ();
@@ -119,17 +140,22 @@ namespace GtkSharp.Generation {
 			StreamWriter sw = gen_info.Writer;
 			SymbolTable table = SymbolTable.Table;
 
+			if (gen_info.GlueWriter == null) {
+				base.GenerateImports(gen_info, indent);
+				return;
+			}
+
 			if (getterName != null) {
 				sw.WriteLine (indent + "[DllImport (\"{0}\")]", gen_info.GluelibName);
 				sw.WriteLine (indent + "extern static {0} {1} ({2} raw);",
-					      table.GetMarshalType (CType), getterName,
-					      container_type.MarshalType);
+						  table.GetMarshalType (CType), getterName,
+						  container_type.MarshalType);
 			}
 
 			if (setterName != null) {
 				sw.WriteLine (indent + "[DllImport (\"{0}\")]", gen_info.GluelibName);
 				sw.WriteLine (indent + "extern static void {0} ({1} raw, {2} value);",
-					      setterName, container_type.MarshalType, table.GetMarshalType (CType));
+						  setterName, container_type.MarshalType, table.GetMarshalType (CType));
 			}
 
 			if (getOffsetName != null) {
@@ -147,15 +173,15 @@ namespace GtkSharp.Generation {
 			if (Ignored || Hidden)
 				return;
 
-			CheckGlue ();
-			if ((getterName != null || setterName != null || getOffsetName != null) && gen_info.GlueWriter == null) {
-				LogWriter log = new LogWriter (container_type.QualifiedName);
-				log.Member = Name;
-				log.Warn ("needs glue for field access.  Specify --glue-filename");
+			CheckGlue (gen_info);
+
+			GenerateImports (gen_info, indent);
+
+			if (Getter == null && getterName == null && offsetName == null &&
+					Setter == null && setterName == null) {
 				return;
 			}
 
-			GenerateImports (gen_info, indent);
 
 			SymbolTable table = SymbolTable.Table;
 			IGeneratable gen = table [CType];
@@ -222,7 +248,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine (indent + "}");
 			sw.WriteLine ("");
 
-			if (getterName != null || setterName != null || getOffsetName != null)
+			if ((getterName != null || setterName != null || getOffsetName != null) && gen_info.GlueWriter != null)
 				GenerateGlue (gen_info);
 		}
 

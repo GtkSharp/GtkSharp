@@ -118,7 +118,7 @@ namespace GtkSharp.Generation {
 
 			if (dirs.ContainsKey (dir)) {
 				result = dirs [dir];
-				if  (result.assembly_name != assembly_name) {
+				if	(result.assembly_name != assembly_name) {
 					Console.WriteLine ("Can't put multiple assemblies in one directory.");
 					return null;
 				}
@@ -175,6 +175,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine (" {");
 			sw.WriteLine ();
 
+			GenerateStructureABI (gen_info);
 			GenCtors (gen_info);
 			GenProperties (gen_info, null);
 			GenFields (gen_info);
@@ -285,7 +286,7 @@ namespace GtkSharp.Generation {
 
 			ObjectGen child_ancestor = Parent as ObjectGen;
 			while (child_ancestor.CName != "GtkContainer" &&
-			       child_ancestor.childprops.Count == 0)
+				   child_ancestor.childprops.Count == 0)
 				child_ancestor = child_ancestor.Parent as ObjectGen;
 
 			sw.WriteLine ("\t\tpublic class " + Name + "Child : " + child_ancestor.NS + "." + child_ancestor.Name + "." + child_ancestor.Name + "Child {");

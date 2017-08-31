@@ -72,7 +72,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public bool Hidden {
+		public virtual bool Hidden {
 			get {
 				return elem.GetAttributeAsBoolean ("hidden");
 			}

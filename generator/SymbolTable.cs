@@ -245,12 +245,22 @@ namespace GtkSharp.Generation {
 			return gen.FromNative (val);
 		}
 
-		public string GetCSType(string c_type)
+		public string GetCSType(string c_type, bool default_pointer)
 		{
 			IGeneratable gen = this[c_type];
-			if (gen == null)
-				return "";
-			return gen.QualifiedName;
+            if (gen == null) {
+                if (c_type.EndsWith("*") && default_pointer)
+                    return "UintPtr";
+
+                return "";
+            }
+
+            return gen.QualifiedName;
+		}
+
+		public string GetCSType(string c_type)
+		{
+            return GetCSType(c_type, false);
 		}
 		
 		public string GetName(string c_type)

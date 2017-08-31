@@ -39,6 +39,9 @@ namespace GtkSharp.Generation {
 		protected IList<string> managed_interfaces = new List<string>();
 		protected IList<Ctor> ctors = new List<Ctor>();
 
+		protected IList<StructABIField> abi_fields = new List<StructABIField> ();
+		protected bool abi_fields_valid; // false if the instance structure contains a bitfield or fields of unknown types
+
 		private bool ctors_initted = false;
 		private Dictionary<string, Ctor> clash_map;
 		private bool deprecated = false;
@@ -71,10 +74,24 @@ namespace GtkSharp.Generation {
 					
 			deprecated = elem.GetAttributeAsBoolean ("deprecated");
 			isabstract = elem.GetAttributeAsBoolean ("abstract");
+			abi_fields_valid = true;
+			bool has_parent = Elem.GetAttribute("parent") != "";
 
+			int num_abi_fields = 0;
 			foreach (XmlNode node in elem.ChildNodes) {
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
+				StructABIField abi_field = null;
+
+				// Make sure ABI fields are taken into account, even when hidden.
+				if (node.Name == "field") {
+					num_abi_fields += 1;
+					if (num_abi_fields != 1 || !has_parent) { // Skip instance parent struct
+						abi_field = new StructABIField (member, this);
+						abi_fields.Add (abi_field);
+					}
+				}
+
 				if (member.GetAttributeAsBoolean ("hidden"))
 					continue;
 				
@@ -98,7 +115,10 @@ namespace GtkSharp.Generation {
 					name = member.GetAttribute("name");
 					while (fields.ContainsKey (name))
 						name += "mangled";
-					fields.Add (name, new ObjectField (member, this));
+
+					var field = new ObjectField (member, this);
+					field.abi_field = abi_field;
+					fields.Add (name, field);
 					break;
 
 				case "implements":
@@ -120,6 +140,89 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		protected virtual bool CanGenerateABIStruct {
+			get {
+				return (abi_fields_valid);
+			}
+		}
+
+		bool CheckABIStructParent(LogWriter log, out string cs_parent_struct) {
+			cs_parent_struct = null;
+			if (!CanGenerateABIStruct)
+				return false;
+
+			var parent = SymbolTable.Table[Elem.GetAttribute("parent")];
+			string cs_parent = SymbolTable.Table.GetCSType(Elem.GetAttribute("parent"));
+			var parent_can_generate = true;
+
+			cs_parent_struct = null;
+			if (parent != null) {
+				// FIXME Add that information to ManualGen and use it.
+				if (parent.CName == "GInitiallyUnowned" || parent.CName == "GObject") {
+					cs_parent_struct = "GLib.Object.GObject";
+				} else {
+					parent_can_generate = false;
+					var _parent = parent as ClassBase;
+
+					if (_parent != null) {
+						string tmp;
+						parent_can_generate = _parent.CheckABIStructParent(log, out tmp);
+					}
+
+					if (parent_can_generate) {
+						cs_parent_struct = cs_parent + "._" + parent.CName + "ABI";
+					}
+				}
+
+				if (!parent_can_generate) {
+					log.Warn("Can't generate ABI structrure as the parent structure '" +
+							parent.CName + "' can't be generated.");
+					return false;
+				}
+			} else {
+				cs_parent_struct = "";
+			}
+			return parent_can_generate;
+		}
+
+		protected virtual void WriteInstanceOffsetMethod(StreamWriter sw,
+				string cs_parent_struct) {
+			if (cs_parent_struct == "")
+				sw.WriteLine ("\t\tpublic virtual uint instance_offset { get { return 0; }}");
+			else
+				sw.WriteLine ("\t\tpublic override uint instance_offset {{ get {{ return ((uint) Marshal.SizeOf(typeof ({0})) + base.instance_offset); }} }}", cs_parent_struct);
+		}
+
+		protected void GenerateStructureABI (GenerationInfo gen_info)
+		{
+			string cs_parent_struct = null;
+
+			LogWriter log = new LogWriter (QualifiedName);
+			if (!CheckABIStructParent (log, out cs_parent_struct))
+				return;
+
+			StreamWriter sw = gen_info.Writer;
+
+			var _new = "";
+			if (cs_parent_struct != "")
+				_new = "new";
+
+			WriteInstanceOffsetMethod(sw, cs_parent_struct);
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic " + _new + " unsafe uint GetFieldOffset(string field) {");
+			sw.WriteLine ("\t\t\treturn (uint) (instance_offset + (uint) Marshal.OffsetOf(typeof({0}), field));",
+					(QualifiedName + "._" + CName + "ABI"));
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+
+			sw.WriteLine ("\t\t[StructLayout (LayoutKind.Sequential)]");
+			sw.WriteLine ("\t\tpublic struct _" + CName + "ABI" + " {");
+			foreach (StructABIField field in abi_fields)
+				field.Generate (gen_info, "\t\t\t");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+		}
+
 		public override bool Validate ()
 		{
 			LogWriter log = new LogWriter (QualifiedName);
@@ -134,6 +237,11 @@ namespace GtkSharp.Generation {
 					log.Warn ("implements invalid GInterface " + iface);
 					return false;
 				}
+			}
+
+			foreach (StructABIField abi_field in abi_fields) {
+				if (!abi_field.Validate(log))
+					abi_fields_valid = false;
 			}
 
 			ArrayList invalids = new ArrayList ();

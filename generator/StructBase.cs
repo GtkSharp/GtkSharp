@@ -60,6 +60,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		protected override void WriteInstanceOffsetMethod(StreamWriter sw, string cs_parent_struct) {
+			if (cs_parent_struct == "")
+				sw.WriteLine ("\t\tpublic uint instance_offset { get { return 0; }}");
+			else
+				sw.WriteLine ("\t\tpublic override uint instance_offset {{ get {{ return ((uint) Marshal.SizeOf(typeof ({0})) + base.instance_offset); }} }}", cs_parent_struct);
+		}
+
 		public override string DefaultValue {
 			get {
 				return QualifiedName + ".Zero";

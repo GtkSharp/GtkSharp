@@ -187,6 +187,21 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		protected override bool CanGenerateABIStruct {
+			get {
+				if (!abi_fields_valid) {
+					Console.WriteLine("invalid fields");
+					return false;
+				}
+
+				// No instance structure for interfaces
+				if (is_interface)
+					return false;
+
+				return class_struct_name != null;
+			}
+		}
+
 		protected void GenerateClassStruct (GenerationInfo gen_info)
 		{
 			if (class_struct_name == null || !CanGenerateClassStruct) return;
