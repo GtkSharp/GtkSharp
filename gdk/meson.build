@@ -12,11 +12,12 @@ configure_file(input: assembly_name + '.dll.config.in',
         output: assembly_name + '.dll.config',
         configuration : remap_dl_data)
 
-configure_file(input: assembly_name + '-3.0.pc.in',
-        output: assembly_name + '-3.0.pc',
-        configuration : version_data,
-        install_dir: pkg_install_dir,
-        install: true)
+if install
+    configure_file(input: assembly_name + '-3.0.pc.in',
+            output: assembly_name + '-3.0.pc',
+            configuration : version_data,
+            install_dir: pkg_install_dir)
+endif
 
 subdir('generated')
 
@@ -68,7 +69,7 @@ deps = [glib_sharp, pango_sharp, cairo_sharp, gio_sharp]
 gdk_sharp = library(assembly_name, source_gen, sources,
         cs_args: ['-unsafe', '-keyfile:' + snk],
         link_with: deps,
-        install: true,
+        install: install,
         install_dir: lib_install_dir
 )
 
@@ -80,7 +81,7 @@ gluegen = custom_target('gdkgluegen',
 
 library('gdksharpglue-3', gluegen,
         dependencies: [glib_dep, gio_dep, atk_dep, gdk_dep],
-        install: true)
+        install: install)
 
 install_infos += [assembly_name, gdk_sharp.full_path()]
 gdk_sharp_dep = declare_dependency(link_with: deps + [gdk_sharp])

@@ -27,7 +27,7 @@ sources = [
 atk_sharp = library(assembly_name, source_gen, sources,
         cs_args: ['-unsafe', '-keyfile:' + snk],
         link_with: glib_sharp,
-        install: true,
+        install: install,
         install_dir: lib_install_dir
 )
 
@@ -39,7 +39,7 @@ gluegen = custom_target('atkgluegen',
 
 library('atksharpglue-3', gluegen,
         dependencies: [glib_dep, gio_dep, atk_dep],
-        install: true)
+        install: install)
 
 install_infos += [assembly_name, atk_sharp.full_path()]
 atk_sharp_dep = declare_dependency(link_with: [glib_sharp, atk_sharp])

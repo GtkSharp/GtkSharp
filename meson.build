@@ -30,6 +30,7 @@ if csc.get_id() == 'mono'
     endif
 endif
 
+install = get_option('install')
 assemblyinfo='/AssemblyInfo.cs'
 
 gacutil = find_program('gacutil')
@@ -118,5 +119,7 @@ else
     message('Gtk not found, not building')
 endif
 
-gacutil_install = join_paths(meson.current_source_dir(), 'gacutil_install.py')
-meson.add_install_script(gacutil_install, install_infos)
+if install
+    gacutil_install = join_paths(meson.current_source_dir(), 'gacutil_install.py')
+    meson.add_install_script(gacutil_install, install_infos)
+endif

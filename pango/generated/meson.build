@@ -138,6 +138,6 @@ api_xml = custom_target(pkg + '_api_xml',
         output: pkg + '-api.xml',
         command: [generate_api, '--fakeglue'],
         depends: [source_gen],
-        install: true,
+        install: install,
         install_dir: gapi_xml_installdir)
 pango_api_includes = join_paths(meson.current_build_dir(), pkg + '-api.xml')

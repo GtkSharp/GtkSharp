@@ -1,13 +1,6 @@
 gapi_fixup = executable('gapi-fixup', 'gapi-fixup.cs',
     install_dir : gapi_installdir,
-    install: true)
-
-configure_file(input: 'gapi3-fixup.in',
-        output: 'gapi3-fixup',
-        configuration : gapi_parser_data,
-        install_dir: get_option('bindir'),
-        install: true)
-
+    install: install)
 
 gapi_codegen = executable('gapi_codegen',
     'AliasGen.cs',
@@ -73,10 +66,22 @@ gapi_codegen = executable('gapi_codegen',
     'VMSignature.cs',
     'XmlElementExtensions.cs',
     install_dir : gapi_installdir,
-    install: true)
+    install: install)
 
-configure_file(input: 'gapi3-codegen.in',
-        output: 'gapi3-codegen',
-        configuration : gapi_parser_data,
-        install_dir: get_option('bindir'),
-        install: true)
+if install
+    configure_file(input: 'gapi3-fixup.in',
+            output: 'gapi3-fixup',
+            configuration : gapi_parser_data,
+            install_dir: get_option('bindir'))
+    configure_file(input: 'gapi3-codegen.in',
+            output: 'gapi3-codegen',
+            configuration : gapi_parser_data,
+            install_dir: get_option('bindir'))
+else
+    configure_file(input: 'gapi3-fixup.in',
+            output: 'gapi3-fixup',
+            configuration : gapi_parser_data)
+    configure_file(input: 'gapi3-codegen.in',
+            output: 'gapi3-codegen',
+            configuration : gapi_parser_data)
+endif

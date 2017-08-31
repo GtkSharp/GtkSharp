@@ -11,11 +11,12 @@ configure_file(input: assembly_name + '.dll.config.in',
         output: assembly_name + '.dll.config',
         configuration : remap_dl_data)
 
-configure_file(input: assembly_name + '-3.0.pc.in',
-        output: assembly_name + '-3.0.pc',
-        configuration : version_data,
-        install_dir: pkg_install_dir,
-        install: true)
+if install
+    configure_file(input: assembly_name + '-3.0.pc.in',
+            output: assembly_name + '-3.0.pc',
+            configuration : version_data,
+            install_dir: pkg_install_dir)
+endif
 
 subdir('generated')
 
@@ -33,7 +34,7 @@ sources = [
 gio_sharp = library(assembly_name, source_gen, sources,
         cs_args: ['-unsafe', '-keyfile:' + snk],
         link_with: glib_sharp,
-        install: true,
+        install: install,
         install_dir: lib_install_dir
 )
 
@@ -43,9 +44,9 @@ gluegen = custom_target('giogluegen',
         command: [generate_api, '--fakeglue'],
         depends: [source_gen])
 
-library('giosharpglue-3', gluegen,
+gio_glue = library('giosharpglue-3', gluegen,
         dependencies: [glib_dep, gio_dep],
-        install: true)
+        install: install)
 
 install_infos += [assembly_name, gio_sharp.full_path()]
 gio_sharp_dep = declare_dependency(link_with: [glib_sharp, gio_sharp])

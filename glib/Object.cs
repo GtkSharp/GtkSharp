@@ -819,11 +819,11 @@ namespace GLib {
 			return g_type_check_instance_is_a (obj, GType.Object.Val);
 		}
 
-		struct GTypeInstance {
+		public struct GTypeInstance {
 			public IntPtr g_class;
 		}
 
-		struct GObject {
+		public struct GObject {
 			public GTypeInstance type_instance;
 			public uint ref_count;
 			public IntPtr qdata;
