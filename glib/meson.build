@@ -98,6 +98,7 @@ glib_sharp = library(assembly_name, sources,
         install_dir: lib_install_dir
 )
 
+nuget_infos += [['GlibSharp', glib_sharp, []]]
 install_infos += [assembly_name, glib_sharp.full_path()]
 
 glib_api_includes = join_paths(meson.current_source_dir(), 'glib-api.xml')

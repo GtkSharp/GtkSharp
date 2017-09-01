@@ -151,5 +151,7 @@ library('gtksharpglue-3', gluegen,
         dependencies: [glib_dep, gio_dep, atk_dep, gdk_dep, gtk_dep],
         install: install)
 
+nuget_infos += [['GtkSharp', gtk_sharp, ['GlibSharp', 'GioSharp',
+    'AtkSharp', 'GdkSharp']]]
 install_infos += [assembly_name, gtk_sharp.full_path()]
 gtk_sharp_dep = declare_dependency(link_with: deps + [gtk_sharp])

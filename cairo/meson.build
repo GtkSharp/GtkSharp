@@ -69,6 +69,7 @@ cairo_sharp = library(assembly_name, sources,
         install_dir: lib_install_dir
 )
 
+nuget_infos += [['CairoSharp', cairo_sharp, []]]
 install_infos += [assembly_name, cairo_sharp.full_path()]
 cairo_api_includes = join_paths(meson.current_source_dir(), 'cairo-api.xml')
 

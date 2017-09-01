@@ -83,6 +83,7 @@ library('gdksharpglue-3', gluegen,
         dependencies: [glib_dep, gio_dep, atk_dep, gdk_dep],
         install: install)
 
+nuget_infos += [['GdkSharp', gdk_sharp, ['GlibSharp', 'GioSharp', 'AtkSharp']]]
 install_infos += [assembly_name, gdk_sharp.full_path()]
 gdk_sharp_dep = declare_dependency(link_with: deps + [gdk_sharp])
 

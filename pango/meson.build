@@ -77,5 +77,6 @@ library('pangosharpglue-3', gluegen,
         dependencies: [glib_dep, gio_dep, pango_dep],
         install: install)
 
+nuget_infos += [['PangoSharp', pango_sharp, ['GlibSharp', 'GioSharp']]]
 install_infos += [assembly_name, pango_sharp.full_path()]
 pango_sharp_dep = declare_dependency(link_with: deps + [pango_sharp])

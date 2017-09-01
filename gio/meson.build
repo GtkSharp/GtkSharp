@@ -36,5 +36,6 @@ gio_sharp = library(assembly_name, source_gen, sources,
         install_dir: lib_install_dir
 )
 
+nuget_infos += [['GioSharp', gio_sharp, ['GlibSharp']]]
 install_infos += [assembly_name, gio_sharp.full_path()]
 gio_sharp_dep = declare_dependency(link_with: [glib_sharp, gio_sharp])
