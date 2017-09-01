@@ -5,7 +5,7 @@ assemblies=../../glib/glib-sharp.dll ../../gio/gio-sharp.dll ../../cairo/cairo-s
 references=$(addprefix -r:, $(assemblies))
 
 valtest.exe: generated-stamp Valtest.cs $(assemblies)
-	$(CSC) $(CSFLAGS) -out:valtest.exe $(references) $(srcdir)/Valtest.cs $(GENERATED_SOURCES_OPTION)
+	$(CSC) $(CSFLAGS) -unsafe -out:valtest.exe $(references) $(srcdir)/Valtest.cs $(GENERATED_SOURCES_OPTION)
 
 libvalobj_la_SOURCES =	\
 	valobj.c	\

@@ -5,7 +5,7 @@ assemblies=../../glib/glib-sharp.dll ../../gio/gio-sharp.dll ../../pango/pango-s
 references=$(addprefix -r:, $(assemblies))
 
 opaquetest.exe: generated-stamp OpaqueTest.cs $(assemblies)
-	$(CSC) $(CSFLAGS) -out:opaquetest.exe $(references) $(srcdir)/OpaqueTest.cs $(GENERATED_SOURCES_OPTION)
+	$(CSC) $(CSFLAGS) -unsafe -out:opaquetest.exe $(references) $(srcdir)/OpaqueTest.cs $(GENERATED_SOURCES_OPTION)
 
 libopaque_la_SOURCES =	\
 	opaques.c	\
