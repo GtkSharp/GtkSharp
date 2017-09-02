@@ -107,8 +107,6 @@ source_gen = custom_target('atk_generated',
             '--metadata', metadata_fname,
             '--gapi-codegen', gapi_codegen.full_path(),
             '--extra-includes', glib_api_includes,
-            '--glue-file', gluefile,
-            '--glue-includes', glueincludes,
             '--out', meson.current_build_dir(),
             '--files', ';'.join(generated_sources),
             '--assembly-name', meson.project_name()

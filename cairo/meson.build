@@ -3,8 +3,6 @@ assembly_name = 'cairo-sharp'
 
 raw_api_fname = join_paths(meson.current_source_dir(), 'cairo-api.raw')
 metadata_fname = join_paths(meson.current_source_dir(), 'cairo.metadata')
-glueincludes = ''
-gluefile = join_paths(meson.current_build_dir(), 'generate.c')
 
 sources = [
     'Antialias.cs',
