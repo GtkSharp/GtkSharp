@@ -1,5 +1,3 @@
-project('gtk-sharp', ['cs', 'c'], version: '3.22.6')
-
 if host_machine.system() == 'windows'
   if host_machine.cpu() == 'amd64'
     add_project_arguments('-define:WIN64LONGS', language: 'cs')
