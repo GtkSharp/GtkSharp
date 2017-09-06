@@ -9,24 +9,10 @@ Building & Installing Gtk#:
     Install the gtk-3 development headers first. On Debian, this can be done using:
     apt-get install libgtk-3-dev
 
-    The build is the traditional:
+    We are using [meson](http://mesonbuild.com/) as a build system, you can build with
 
-        ./configure
-        make
-        make install
-
-    You may want to consider using configure's prefix option to install
-    Gtk# using the same prefix as Mono.  That way all of your .NET assemblies
-    get placed in the same place, and you don't need to do any extra "configuring"
-    to make it so mono (and mint) can find your assemblies.  In other words,
-    doing something like:
-
-        ./configure --prefix=`pkg-config --variable=prefix mono`
-        make
-        make install
-
-    If you are compiling from GIT, you will need libtool and the auto* tools
-    and will need to replace the configure above with autogen.sh.
+        meson build/
+        ninja -C build/
 
 
 The gui-thread-check profiler module.
