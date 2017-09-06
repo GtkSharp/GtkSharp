@@ -149,6 +149,7 @@ gluegen = custom_target('gtkgluegen',
 
 library('gtksharpglue-3', gluegen,
         dependencies: [glib_dep, gio_dep, atk_dep, gdk_dep, gtk_dep],
+        c_args: ['-Wno-error=discarded-qualifiers'],
         install: install)
 
 nuget_infos += [['GtkSharp', gtk_sharp, ['GlibSharp', 'GioSharp',
