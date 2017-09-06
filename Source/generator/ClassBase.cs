@@ -90,6 +90,9 @@ namespace GtkSharp.Generation {
 						abi_field = new StructABIField (member, this);
 						abi_fields.Add (abi_field);
 					}
+				} else if (node.Name == "union") {
+					abi_field = new UnionABIField (member, this);
+					abi_fields.Add (abi_field);
 				}
 
 				if (member.GetAttributeAsBoolean ("hidden"))
