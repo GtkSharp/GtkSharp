@@ -22,7 +22,7 @@ sources = [
     'Util.cs',
 ]
 
-atk_sharp = library(assembly_name, source_gen, sources,
+atk_sharp = library(assembly_name, source_gen, sources, assemblyinfo,
         cs_args: ['-unsafe', '-keyfile:' + snk],
         link_with: glib_sharp,
         install: install,

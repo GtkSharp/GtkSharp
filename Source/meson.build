@@ -46,8 +46,8 @@ gio_dep = dependency('gio-2.0', version: glib_required_version,
 
 prefix = get_option('prefix')
 assembly_data = configuration_data()
-assembly_data.set_quoted('API_VERSION', apiversion)
-configure_file(input: 'AssemblyInfo.cs.in', output: 'AssemblyInfo.cs', configuration : assembly_data)
+assembly_data.set('API_VERSION', apiversion)
+assemblyinfo = configure_file(input: 'AssemblyInfo.cs.in', output: 'AssemblyInfo.cs', configuration : assembly_data)
 
 policy_config = files('policy.config.in')
 if host_machine.system() == 'osx'

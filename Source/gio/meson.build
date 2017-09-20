@@ -29,7 +29,7 @@ sources = [
     'IFile.cs'
 ]
 
-gio_sharp = library(assembly_name, source_gen, sources,
+gio_sharp = library(assembly_name, source_gen, sources, assemblyinfo,
         cs_args: ['-unsafe', '-keyfile:' + snk],
         link_with: glib_sharp,
         install: install,
