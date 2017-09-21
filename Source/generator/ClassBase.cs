@@ -190,10 +190,12 @@ namespace GtkSharp.Generation {
 
 		protected virtual void WriteInstanceOffsetMethod(StreamWriter sw,
 				string cs_parent_struct) {
+			string cs_parent = SymbolTable.Table.GetCSType(Elem.GetAttribute("parent"));
+
 			if (cs_parent_struct == "")
-				sw.WriteLine ("\t\tpublic virtual uint instance_offset { get { return 0; }}");
+				sw.WriteLine ("\t\tpublic static uint instance_offset { get { return 0; }}");
 			else
-				sw.WriteLine ("\t\tpublic override uint instance_offset {{ get {{ return ((uint) Marshal.SizeOf(typeof ({0})) + base.instance_offset); }} }}", cs_parent_struct);
+				sw.WriteLine ("\t\tpublic static uint instance_offset {{ get {{ return ((uint) Marshal.SizeOf(typeof ({0})) + {1}.instance_offset); }} }}", cs_parent_struct, cs_parent);
 		}
 
 		protected void GenerateStructureABI (GenerationInfo gen_info)

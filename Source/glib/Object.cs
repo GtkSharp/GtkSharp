@@ -823,7 +823,7 @@ namespace GLib {
 			public IntPtr g_class;
 		}
 
-		public virtual uint instance_offset { get { return 0; }}
+		public static uint instance_offset { get { return 0; }}
 		public uint GetFieldOffset(string field) { throw new NotImplementedException(); return 0; }
 		public struct GObject {
 			public GTypeInstance type_instance;
