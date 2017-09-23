@@ -8,7 +8,22 @@ namespace MonoDevelop.GtkSharp.Addin
 {
     public class GladeDesktopApplication : DesktopApplication
     {
-        private static readonly string s_unixgladeapp = "-c '" + File.ReadAllText("glade.sh") + "'";
+        private static readonly string s_unixgladeapp;
+
+        static GladeDesktopApplication()
+        {
+            try
+            {
+                var assembly = typeof(GladeDesktopApplication).Assembly.Location;
+                var gladesh = Path.Combine(Path.GetDirectoryName(assembly), "glade.sh");
+
+                s_unixgladeapp = "-c '" + File.ReadAllText(gladesh) + "'";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
 
         private readonly string _filename;
 
