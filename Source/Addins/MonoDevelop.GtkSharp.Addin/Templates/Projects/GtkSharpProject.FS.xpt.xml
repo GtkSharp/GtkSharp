@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<Template>
+    <TemplateConfiguration>
+        <_Name>Gtk# Application</_Name>
+        <Icon>md-gui-project</Icon>
+        <_Category>multiplat/app/gtk</_Category>
+        <LanguageName>F#</LanguageName>
+        <Image id="md-gui-project" />
+        <_Description>Creates a new Gtk# multiplatform application.</_Description>
+        <GroupId>gtk-project</GroupId>
+    </TemplateConfiguration>
+    <Actions>
+        <Open filename="MainWindow.cs" />
+    </Actions>
+    <Combine name="${ProjectName}" directory=".">
+        <Options>
+            <StartupProject>${ProjectName}</StartupProject>
+        </Options>
+        <Project name="${ProjectName}" directory=".">
+            <Options Target = "WinExe"/>
+            <References>
+                <Reference type="Gac" refto="System" />
+            </References>
+            <Packages>
+                <package id="gtk-sharp3" />
+            </Packages>
+            <Files>
+                <FileTemplateReference TemplateID="FSharpAssemblyInfo" name="AssemblyInfo.cs" />
+            </Files>
+        </Project>
+    </Combine>
+</Template>

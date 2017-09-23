@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionModel>
+    <Dependencies>
+        <Addin id="MonoDevelop.Ide" version="7.1"/>
+        <Addin id="MonoDevelop.Core" version="7.1"/>
+    </Dependencies> 
+    
+    <Runtime>
+        <Import file="glade.sh" />
+        
+        <!-- Project Templates -->
+        <Import file="Templates/Projects/Data/MainWindow.cs" />
+        <Import file="Templates/Projects/Data/MainWindow.glade" />
+        <Import file="Templates/Projects/Data/Program.cs" />
+        <Import file="Templates/Projects/GtkSharpProject.CS.xpt.xml" />
+        <Import file="Templates/Projects/GtkSharpProject.FS.xpt.xml" />
+
+        <!-- File Templates -->
+        <Import file="Templates/File/Data/Dialog.cs" />
+        <Import file="Templates/File/Data/Dialog.glade" />
+        <Import file="Templates/File/Data/Widget.cs" />
+        <Import file="Templates/File/Data/Widget.glade" />
+        <Import file="Templates/File/Data/Window.cs" />
+        <Import file="Templates/File/Data/Window.glade" />
+        <Import file="Templates/File/Dialog.CS.xft.xml" />
+        <Import file="Templates/File/Widget.CS.xft.xml" />
+        <Import file="Templates/File/Window.CS.xft.xml" />
+    </Runtime>
+    
+    <ConditionType id="CheckMissing" type="MonoDevelop.GtkSharp.Addin.CheckMissing" />
+    <Extension path="/MonoDevelop/Ide/ProjectTemplateCategories/multiplat">
+        <Condition id="CheckMissing">
+            <Category id="app" name="App" insertbefore="library" />
+        </Condition>
+    </Extension>
+    
+    <Extension path="/MonoDevelop/Ide/ProjectTemplateCategories/multiplat/app">
+        <Category id="gtk" name="Gtk#" />
+    </Extension>
+    
+    <Extension path="/MonoDevelop/Ide/ProjectTemplates">
+        <ProjectTemplate id="gtk-cs-project" file="Templates/Projects/GtkSharpProject.CS.xpt.xml" />
+        
+        <!-- TODO: Implement fsharp template -->
+        <!--ProjectTemplate id="gtk-fs-project" file="Templates/Projects/GtkSharpProject.FS.xpt.xml" /-->
+    </Extension>
+    
+    <Extension path="/MonoDevelop/Ide/FileTemplates">
+        <FileTemplate id="gtk.cs.dialog" file="Templates/File/Dialog.CS.xft.xml" />
+        <FileTemplate id="gtk.cs.widget" file="Templates/File/Widget.CS.xft.xml" />
+        <FileTemplate id="gtk.cs.window" file="Templates/File/Window.CS.xft.xml" />
+    </Extension>
+    
+    <Extension path="/MonoDevelop/Ide/DisplayBindings">
+        <DisplayBinding id="GladeApp" insertbefore="DefaultDisplayBinding" class="MonoDevelop.GtkSharp.Addin.GladeDisplayBinding" />
+    </Extension>
+</ExtensionModel>
