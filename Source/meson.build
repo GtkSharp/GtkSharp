@@ -30,7 +30,7 @@ if csc.get_id() == 'mono'
     endif
 
     add_project_arguments('-keyfile:' + join_paths(meson.current_source_dir(), 'gtk-sharp.snk'),
-        languages: ['cs'])
+        language: ['cs'])
 endif
 
 install = get_option('install')
