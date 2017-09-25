@@ -674,7 +674,7 @@ namespace GLib {
 			get { return NativeType.ToString (); }
 		}
 
-		internal GLib.GType NativeType {
+		public GLib.GType NativeType {
 			get { return LookupGType (); }
 		}
 
