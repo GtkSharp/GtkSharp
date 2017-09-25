@@ -1,4 +1,3 @@
-snk = join_paths(meson.current_source_dir(), '..', 'gtk-sharp.snk')
 pkg = 'pango'
 assembly_name = pkg + '-sharp'
 raw_api_fname = join_paths(meson.current_source_dir(), pkg + '-api.raw')
@@ -59,7 +58,7 @@ sources = [
 
 deps = [glib_sharp, cairo_sharp]
 pango_sharp = library(assembly_name, source_gen, sources, assemblyinfo,
-        cs_args: ['-unsafe', '-keyfile:' + snk],
+        cs_args: ['-unsafe'],
         link_with: deps,
         install: install,
         install_dir: lib_install_dir

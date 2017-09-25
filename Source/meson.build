@@ -17,6 +17,7 @@ runtime = ''
 if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
   runtime_debug_flags=' --debug'
 endif
+
 if csc.get_id() == 'mono'
     if not csc.version().version_compare(mono_required_version)
         error('Mono required version @0@ not found (@1@)'.format(
@@ -27,6 +28,9 @@ if csc.get_id() == 'mono'
     if mono_runtime_dep.found()
         runtime = 'mono' + runtime_debug_flags
     endif
+
+    add_project_arguments('-keyfile:' + join_paths(meson.current_source_dir(), 'gtk-sharp.snk'),
+        languages: ['cs'])
 endif
 
 install = get_option('install')
