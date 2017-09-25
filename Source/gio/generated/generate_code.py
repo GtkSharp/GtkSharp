@@ -37,12 +37,17 @@ if __name__ == "__main__":
 
     shutil.copyfile(opts.api_raw, api_xml)
 
+    if shutil.which('mono'):
+        launcher = ['mono']
+    else:
+        launcher = []
+
     cmd = [opts.gapi_fixup, "--api=" + api_xml]
     if opts.metadata:
         cmd += ["--metadata=" + opts.metadata]
     if opts.symbols:
         cmd.extend(['--symbols=' + opts.symbols])
-    subprocess.check_call(cmd)
+    subprocess.check_call(launcher + cmd)
 
     cmd = [
         opts.gapi_codegen, '--generate', api_xml,
@@ -57,8 +62,7 @@ if __name__ == "__main__":
 
     cmd += ['-I' + i for i in opts.extra_includes]
 
-    print(' '.join(cmd))
-    subprocess.check_call(cmd)
+    subprocess.check_call(launcher + cmd)
 
     # WORKAROUND: Moving files into the out directory with special names
     # as meson doesn't like path separator in output names.
