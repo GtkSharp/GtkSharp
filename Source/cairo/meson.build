@@ -1,4 +1,3 @@
-snk = join_paths(meson.current_source_dir(), 'mono.snk')
 assembly_name = 'cairo-sharp'
 
 raw_api_fname = join_paths(meson.current_source_dir(), 'cairo-api.raw')
@@ -62,7 +61,6 @@ sources = [
 ]
 
 cairo_sharp = library(assembly_name, sources, assemblyinfo,
-        cs_args: ['-keyfile:' + snk],
         install: install,
         install_dir: lib_install_dir
 )

@@ -1,4 +1,3 @@
-snk = join_paths(meson.current_source_dir(), '..', 'gtk-sharp.snk')
 assembly_name = 'glib-sharp'
 
 configure_file(input: 'glib-sharp.dll.config.in',
@@ -93,7 +92,7 @@ sources = [
 
 
 glib_sharp = library(assembly_name, sources, assemblyinfo,
-        cs_args: ['-unsafe', '-keyfile:' + snk],
+        cs_args: ['-unsafe'],
         install: install,
         install_dir: lib_install_dir
 )

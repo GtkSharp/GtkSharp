@@ -1,4 +1,3 @@
-snk = join_paths(meson.current_source_dir(), '..', 'gtk-sharp.snk')
 pkg = 'gdk'
 assembly_name = pkg + '-sharp'
 symbols = join_paths(meson.current_source_dir(), 'gdk-symbols.xml')
@@ -65,7 +64,7 @@ sources = [
 
 deps = [glib_sharp, pango_sharp, cairo_sharp, gio_sharp]
 gdk_sharp = library(assembly_name, source_gen, sources, assemblyinfo,
-        cs_args: ['-unsafe', '-keyfile:' + snk],
+        cs_args: ['-unsafe'],
         link_with: deps,
         install: install,
         install_dir: lib_install_dir
