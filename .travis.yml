@@ -1,0 +1,12 @@
+language:
+    - csharp
+
+before_install:
+    - sudo apt-get install -y git python3-pip unzip
+    - wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
+    - unzip ninja-linux.zip
+    - sudo mv ninja /usr/bin/
+    - sudo pip3 install git+https://github.com/mesonbuild/meson/
+
+script:
+    - meson build/ && ninja -C build/
