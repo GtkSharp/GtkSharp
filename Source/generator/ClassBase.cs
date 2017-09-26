@@ -195,7 +195,7 @@ namespace GtkSharp.Generation {
 			if (cs_parent_struct == "")
 				sw.WriteLine ("\t\tpublic static uint instance_offset { get { return 0; }}");
 			else
-				sw.WriteLine ("\t\tpublic static uint instance_offset {{ get {{ return ((uint) Marshal.SizeOf(typeof ({0})) + {1}.instance_offset); }} }}", cs_parent_struct, cs_parent);
+				sw.WriteLine ("\t\tpublic static new uint instance_offset {{ get {{ return ((uint) Marshal.SizeOf(typeof ({0})) + {1}.instance_offset); }} }}", cs_parent_struct, cs_parent);
 		}
 
 		protected void GenerateStructureABI (GenerationInfo gen_info)
