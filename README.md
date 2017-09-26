@@ -6,6 +6,8 @@ libraries. Gtk# is free software, licensed under the GNU LGPL.
 Building & Installing Gtk#:
 ---------------------------
 
+[![Join the chat at https://gitter.im/GLibSharp/GtkSharp](https://badges.gitter.im/GLibSharp/GtkSharp.svg)](https://gitter.im/GLibSharp/GtkSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
     Install the gtk-3 development headers first. On Debian, this can be done using:
     apt-get install libgtk-3-dev
 
