@@ -97,7 +97,7 @@ namespace GtkSharp.Generation {
 			return NS + "Sharp." + Name + "Wrapper.GetManagedDelegate (" + var + ")";
 		}
 
-		public void WriteAccessors (StreamWriter sw, string indent, string var)
+		public void WriteAccessors (TextWriter sw, string indent, string var)
 		{
 			sw.WriteLine (indent + "get {");
 			sw.WriteLine (indent + "\treturn " + FromNative (var) + ";");

@@ -35,6 +35,15 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public override string GenerateGetSizeOf () {
+			return NS + "." + Name + ".abi_info.Size";
+		}
+
+		public override string GenerateAlign () {
+			return NS + "." + Name + ".abi_info.Align";
+		}
+
+
 		public override string MarshalType {
 			get {
 				return "IntPtr";
@@ -58,7 +67,7 @@ namespace GtkSharp.Generation {
 			return FromNative (var, false);
 		}
 
-		public void WriteAccessors (StreamWriter sw, string indent, string var)
+		public void WriteAccessors (TextWriter sw, string indent, string var)
 		{
 			sw.WriteLine (indent + "get {");
 			sw.WriteLine (indent + "\treturn " + FromNative (var, false) + ";");
