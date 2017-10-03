@@ -41,7 +41,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		int ArrayLength {
+		public int ArrayLength {
 			get {
 				if (!IsArray)
 					return 0;
@@ -50,17 +50,17 @@ namespace GtkSharp.Generation {
 				try {
 					result = Int32.Parse (elem.GetAttribute("array_len"));
 				} catch (Exception) {
-                    LogWriter log = new LogWriter (container_type.Name + "." + Name);
+					LogWriter log = new LogWriter (container_type.Name + "." + Name);
 
 					log.Warn("Non-numeric array_len: \"" + elem.GetAttribute("array_len") +
-					         "\" incorrectly generated");
+							 "\" incorrectly generated");
 					result = 0;
 				}
 				return result;
 			}
 		}
 
-		bool IsNullTermArray {
+		public bool IsNullTermArray {
 			get { return elem.GetAttributeAsBoolean ("null_term_array"); }
 		}
 
@@ -102,6 +102,54 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		bool IsFixedSizeArray() {
+			return IsArray && !IsNullTermArray && ArrayLength != 0;
+		}
+
+		public bool IsCPointer() {
+			IGeneratable gen = SymbolTable.Table[CType];
+
+			return (CType.EndsWith("*") ||
+						CType.EndsWith ("pointer") ||
+						gen is CallbackGen ||
+						cstype == "string" ||
+						(CType == "guint8" && (IsArray && IsNullTermArray)) ||
+						elem.GetAttributeAsBoolean("is_callback"));
+
+		}
+
+		public virtual string GenerateGetSizeOf(string indent) {
+			string cstype = SymbolTable.Table.GetCSType(CType, true);
+			string res = "";
+			IGeneratable gen = SymbolTable.Table[CType];
+			var is_pointer = false;
+
+			if (IsCPointer()) {
+				is_pointer = true;
+				cstype = "IntPtr";
+			} else if (gen != null) {
+				res = gen.GenerateGetSizeOf();
+			}
+
+			if (res != null && res != "") {
+				if (IsFixedSizeArray())
+					res += " * " + ArrayLength;
+
+				return indent + res;
+			}
+
+			var _enum = gen as EnumGen;
+			if (_enum != null && !is_pointer)
+				res = "(uint) Marshal.SizeOf(System.Enum.GetUnderlyingType(typeof(" + cstype + ")))";
+			else
+				res = "(uint) Marshal.SizeOf(typeof(" + cstype + "))";
+
+			if (IsFixedSizeArray())
+				res += " * " + ArrayLength;
+
+			return res;
+		}
+
 		public bool IsPadding {
 			get {
 				if (elem.GetAttributeAsBoolean ("is-padding"))
@@ -114,7 +162,7 @@ namespace GtkSharp.Generation {
 
 		public bool IsPointer {
 			get {
-				return (CType.EndsWith ("*") || CType.EndsWith ("pointer"));
+				return IsCPointer();
 			}
 		}
 
@@ -141,60 +189,85 @@ namespace GtkSharp.Generation {
 
 		public override void Generate (GenerationInfo gen_info, string indent)
 		{
-			if (Hidden)
+			Generate(gen_info, indent, false, gen_info.Writer);
+		}
+
+		public void Generate (GenerationInfo gen_info, string indent, bool use_cnames,
+				TextWriter sw)
+		{
+			if (Hidden && !use_cnames)
 				return;
 
 			visible = Access != "private";
 
-			StreamWriter sw = gen_info.Writer;
 			SymbolTable table = SymbolTable.Table;
 
 			string wrapped = table.GetCSType (CType);
+
 			string wrapped_name = SymbolTable.Table.MangleName (CName);
+			string name = Name;
+			string studly_name = StudlyName;
+			string cstype = CSType;
+
 			IGeneratable gen = table [CType];
+
+			if (use_cnames) {
+				name = studly_name = wrapped_name = SymbolTable.Table.MangleName (CName).Replace(".", "_");
+
+				var mangen = gen as ManualGen;
+				if (mangen != null) {
+					if (mangen.AbiType != null)
+						cstype = mangen.AbiType;
+				}
+
+				if (IsCPointer())
+					cstype = "IntPtr";
+			}
 
 			if (IsArray && !IsNullTermArray) {
 				sw.WriteLine (indent + "[MarshalAs (UnmanagedType.ByValArray, SizeConst=" + ArrayLength + ")]");
-				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, StudlyName);
+				sw.WriteLine (indent + "{0} {1} {2};", Access, cstype, studly_name);
 			} else if (IsArray && IsNullTermArray) {
-				sw.WriteLine (indent + "private {0} {1};", "IntPtr", StudlyName+ "Ptr");
+				sw.WriteLine (indent + "private {0} {1};", "IntPtr", studly_name+ "Ptr");
 				if ((Readable || Writable) && Access == "public") {
-					sw.WriteLine (indent + "public {0} {1} {{", CSType, StudlyName);
+					sw.WriteLine (indent + "public {0} {1} {{", cstype, studly_name);
 					if (Readable)
 						sw.WriteLine (indent + "\tget {{ return GLib.Marshaller.StructArrayFromNullTerminatedIntPtr<{0}> ({1}); }}",
-						              base.CSType, StudlyName + "Ptr");
+									  base.CSType, studly_name + "Ptr");
 					if (Writable)
 						sw.WriteLine (indent + "\tset {{ {0} = GLib.Marshaller.StructArrayToNullTerminatedStructArrayIntPtr<{1}> (value); }}",
-						              StudlyName + "Ptr", base.CSType);
+									  studly_name + "Ptr", base.CSType);
 					sw.WriteLine (indent + "}");
 				}
 			} else if (IsBitfield) {
 				base.Generate (gen_info, indent);
 			} else if (gen is IAccessor) {
-				sw.WriteLine (indent + "private {0} {1};", gen.MarshalType, Name);
+				sw.WriteLine (indent + "private {0} {1};", gen.MarshalType, name);
 
 				if (Access != "private") {
 					IAccessor acc = table [CType] as IAccessor;
-					sw.WriteLine (indent + Access + " " + wrapped + " " + StudlyName + " {");
-					acc.WriteAccessors (sw, indent + "\t", Name);
+					sw.WriteLine (indent + Access + " " + wrapped + " " + studly_name + " {");
+					acc.WriteAccessors (sw, indent + "\t", name);
 					sw.WriteLine (indent + "}");
 				}
 			} else if (IsPointer && (gen is StructGen || gen is BoxedGen || gen is UnionGen)) {
-				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
+				sw.WriteLine (indent + "private {0} {1};", cstype, name);
 				sw.WriteLine ();
 				if (Access != "private") {
 					sw.WriteLine (indent + Access + " " + wrapped + " " + wrapped_name + " {");
-					sw.WriteLine (indent + "\tget { return " + table.FromNative (CType, Name) + "; }");
+					sw.WriteLine (indent + "\tget { return " + table.FromNative (CType, name) + "; }");
 					sw.WriteLine (indent + "}");
 				}
-			} else if (IsPointer && CSType != "string") {
+			} else if (IsPointer && cstype != "string") {
 				// FIXME: probably some fields here which should be visible.
 				visible = false;
-				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
+				sw.WriteLine (indent + "private {0} {1};", cstype, name);
 			} else {
-				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, Access == "public" ? StudlyName : Name);
+				sw.WriteLine (indent + "{0} {1} {2};", Access, cstype, Access == "public" ? studly_name : name);
 			}
 		}
 	}
 }
+
+
 

@@ -71,7 +71,7 @@ namespace GtkSharp.Generation {
 		}
 
 		protected ClassBase (XmlElement ns, XmlElement elem) : base (ns, elem) {
-					
+
 			deprecated = elem.GetAttributeAsBoolean ("deprecated");
 			isabstract = elem.GetAttributeAsBoolean ("abstract");
 			abi_fields_valid = true;
@@ -147,7 +147,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected virtual bool CanGenerateABIStruct(LogWriter log) {
+		public virtual bool CanGenerateABIStruct(LogWriter log) {
 			return (abi_fields_valid);
 		}
 
@@ -165,7 +165,7 @@ namespace GtkSharp.Generation {
 			if (parent != null) {
 				// FIXME Add that information to ManualGen and use it.
 				if (parent.CName == "GInitiallyUnowned" || parent.CName == "GObject") {
-					cs_parent_struct = "GLib.Object.GObject";
+					cs_parent_struct = "GLib.Object";
 				} else {
 					parent_can_generate = false;
 					var _parent = parent as ClassBase;
@@ -175,9 +175,8 @@ namespace GtkSharp.Generation {
 						parent_can_generate = _parent.CheckABIStructParent(log, out tmp);
 					}
 
-					if (parent_can_generate) {
-						cs_parent_struct = cs_parent + "._" + parent.CName + "ABI";
-					}
+					if (parent_can_generate)
+						cs_parent_struct = cs_parent;
 				}
 
 				if (!parent_can_generate) {
@@ -189,16 +188,6 @@ namespace GtkSharp.Generation {
 				cs_parent_struct = "";
 			}
 			return parent_can_generate;
-		}
-
-		protected virtual void WriteInstanceOffsetMethod(StreamWriter sw,
-				string cs_parent_struct) {
-			string cs_parent = SymbolTable.Table.GetCSType(Elem.GetAttribute("parent"));
-
-			if (cs_parent_struct == "")
-				sw.WriteLine ("\t\tpublic static uint instance_offset { get { return 0; }}");
-			else
-				sw.WriteLine ("\t\tpublic static new uint instance_offset {{ get {{ return ((uint) Marshal.SizeOf(typeof ({0})) + {1}.instance_offset); }} }}", cs_parent_struct, cs_parent);
 		}
 
 		protected void GenerateStructureABI (GenerationInfo gen_info)
@@ -213,21 +202,54 @@ namespace GtkSharp.Generation {
 
 			var _new = "";
 			if (cs_parent_struct != "")
-				_new = "new";
+				_new = "new ";
 
-			WriteInstanceOffsetMethod(sw, cs_parent_struct);
 			sw.WriteLine ();
-			sw.WriteLine ("\t\tpublic " + _new + " unsafe uint GetFieldOffset(string field) {");
-			sw.WriteLine ("\t\t\treturn (uint) (instance_offset + (uint) Marshal.OffsetOf(typeof({0}), field));",
-					(QualifiedName + "._" + CName + "ABI"));
+			sw.WriteLine ("\t\t// Internal representation of the wrapped structure ABI.");
+			sw.WriteLine ("\t\tstatic GLib.AbiStruct _abi_info = null;");
+			sw.WriteLine ("\t\tstatic public " + _new + "GLib.AbiStruct abi_info {");
+			sw.WriteLine ("\t\t\tget {");
+			sw.WriteLine ("\t\t\t\tif (_abi_info == null)");
+			sw.WriteLine ("\t\t\t\t\t_abi_info = new GLib.AbiStruct (new List<GLib.AbiField>{ ");
+
+			// Generate Tests
+			if (abi_fields.Count > 0 && gen_info.CAbiWriter != null) {
+				gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"sizeof({0}.{1})\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", sizeof({2}));", NS, Name, CName);
+				gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"sizeof({0}.{1})\\\": \\\"\" + {0}.{1}.abi_info.Size + \"\\\"\");", NS, Name);
+			}
+
+			StructABIField prev = null;
+			StructABIField next = null;
+
+			StringWriter field_alignment_structures_writer = new StringWriter();
+			for(int i=0; i < abi_fields.Count; i++) {
+				var field = abi_fields[i];
+				next = abi_fields.Count > i +1 ? abi_fields[i + 1] : null;
+
+				prev = field.Generate(gen_info, "\t\t\t\t\t", prev, next, cs_parent_struct,
+						field_alignment_structures_writer);
+				var union = field as UnionABIField;
+				if (union == null && gen_info.CAbiWriter != null) {
+					gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"{0}.{1}.{2}\\\": \\\"\" + {0}.{1}.abi_info.GetFieldOffset(\"{2}\") + \"\\\"\");", NS, Name, field.CName);
+					gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"{0}.{1}.{2}\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", G_STRUCT_OFFSET({3}, {2}));", NS, Name, field.CName, CName);
+				}
+
+			}
+
+			if (abi_fields.Count > 0 && gen_info.CAbiWriter != null) {
+				gen_info.AbiWriter.Flush();
+				gen_info.CAbiWriter.Flush();
+			}
+
+			sw.WriteLine ("\t\t\t\t\t});");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t\t\treturn _abi_info;");
+			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 
-			sw.WriteLine ("\t\t[StructLayout (LayoutKind.Sequential)]");
-			sw.WriteLine ("\t\tpublic struct _" + CName + "ABI" + " {");
-			foreach (StructABIField field in abi_fields)
-				field.Generate (gen_info, "\t\t\t");
-			sw.WriteLine ("\t\t}");
+			sw.WriteLine (field_alignment_structures_writer.ToString());
+			sw.WriteLine ("\t\t// End of the ABI representation.");
 			sw.WriteLine ();
 		}
 
@@ -250,6 +272,10 @@ namespace GtkSharp.Generation {
 			foreach (StructABIField abi_field in abi_fields) {
 				if (!abi_field.Validate(log))
 					abi_fields_valid = false;
+			}
+			if (abi_fields_valid)
+				foreach (StructABIField abi_field in abi_fields) {
+					abi_field.SetGetOffseName();
 			}
 
 			ArrayList invalids = new ArrayList ();
@@ -348,8 +374,9 @@ namespace GtkSharp.Generation {
 
 		protected void GenFields (GenerationInfo gen_info)
 		{
-			foreach (ObjectField field in fields.Values)
+			foreach (ObjectField field in fields.Values) {
 				field.Generate (gen_info, "\t\t");
+			}
 		}
 
 		protected void GenConstants (GenerationInfo gen_info)
@@ -391,7 +418,7 @@ namespace GtkSharp.Generation {
 
 			foreach (Method method in methods.Values) {
 				if (IgnoreMethod (method, implementor))
-				    	continue;
+					continue;
 
 				string oname = null, oprotection = null;
 				if (collisions != null && collisions.ContainsKey (method.Name)) {

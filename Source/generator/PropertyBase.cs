@@ -26,7 +26,7 @@ namespace GtkSharp.Generation {
 	public abstract class PropertyBase {
 
 		protected XmlElement elem;
-		protected ClassBase container_type;
+		public ClassBase container_type;
 
 		public PropertyBase (XmlElement elem, ClassBase container_type)
 		{
@@ -40,7 +40,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string CName {
+		public virtual string CName {
 			get {
 				return elem.GetAttribute ("cname");
 			}

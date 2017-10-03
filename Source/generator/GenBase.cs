@@ -96,6 +96,14 @@ namespace GtkSharp.Generation {
 
 		public abstract bool Validate ();
 
+		public virtual string GenerateGetSizeOf () {
+			return null;
+		}
+
+		public virtual string GenerateAlign () {
+			return null;
+		}
+
 		public void Generate ()
 		{
 			GenerationInfo geninfo = new GenerationInfo (ns);

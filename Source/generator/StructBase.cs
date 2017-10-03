@@ -60,13 +60,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected override void WriteInstanceOffsetMethod(StreamWriter sw, string cs_parent_struct) {
-			if (cs_parent_struct == "")
-				sw.WriteLine ("\t\tpublic uint instance_offset { get { return 0; }}");
-			else
-				sw.WriteLine ("\t\tpublic new uint instance_offset {{ get {{ return ((uint) Marshal.SizeOf(typeof ({0})) + base.instance_offset); }} }}", cs_parent_struct);
-		}
-
 		public override string DefaultValue {
 			get {
 				return QualifiedName + ".Zero";
@@ -134,7 +127,7 @@ namespace GtkSharp.Generation {
 			equals.Append ("true");
 
 			foreach (StructField field in fields) {
-				if (field.IsPadding)
+				if (field.IsPadding || field.Hidden)
 					continue;
 				if (field.IsBitfield) {
 					if (need_field) {
@@ -217,9 +210,16 @@ namespace GtkSharp.Generation {
 			return base.Validate ();
 		}
 
+		public override bool CanGenerateABIStruct(LogWriter log) {
+			log.Info("Not generating any ABI structs for managed structures");
+
+			return false;
+		}
+
 		public override void Generate (GenerationInfo gen_info)
 		{
 			bool need_close = false;
+
 			if (gen_info.Writer == null) {
 				gen_info.Writer = gen_info.OpenStream (Name, NS);
 				need_close = true;

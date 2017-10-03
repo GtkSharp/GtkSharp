@@ -33,27 +33,66 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public void Generate(GenerationInfo gen_info, string indent){
+		public string GenerateGetSize(string indent) {
+			var size = indent += "new List<string>() {";
+			var is_first = true;
+			foreach (StructABIField field in fields) {
+				if (!is_first)
+					size += ",";
+				is_first = false;
+
+				size +=  "\"" + field.CName + "\"";
+			}
+
+			return size + "}";
+		}
+
+		public void EnsureParentStructName (string parent_name) {
+			var name = Elem.GetAttribute("name");
+
+			if (!unique_field) {
+				parent_name = parent_name + '.' + name;
+			}
+
+			StructABIField next_field = null;
+			foreach (var field in fields) {
+				field.parent_structure_name = parent_name;
+			}
+		}
+
+		public StructField Generate(GenerationInfo gen_info, string indent,
+				string parent_name, StructABIField prev_field,
+				StructABIField next, string struct_parent_name,
+				TextWriter tw)
+		{
 			StreamWriter sw = gen_info.Writer;
 			var name = Elem.GetAttribute("name");
 			var cname = Elem.GetAttribute("cname");
 
-			if (unique_field) {
-				sw.WriteLine (indent + "[FieldOffset(0)]");
-				foreach (StructABIField field in fields)
-					field.Generate(gen_info, indent);
-
-				return;
+			if (!unique_field) {
+				parent_name = parent_name + '.' + name;
 			}
 
-			sw.WriteLine (indent + "struct __" + name + "{");
-			foreach (StructABIField field in fields) {
-				field.Generate(gen_info, indent + "\t");
+			StructABIField next_field = null;
+			sw.WriteLine(indent + "// union struct " + parent_name);
+			for(int i=0; i < fields.Count; i++) {
+				var field = fields[i];
+				next_field = fields.Count > i + 1 ? fields[i + 1] : null;
+
+				field.parent_structure_name = parent_name;
+
+				field.Generate(gen_info, indent, prev_field, next_field, struct_parent_name,
+						tw);
+
+				prev_field = field;
 			}
-			sw.WriteLine (indent + "}");
-			sw.WriteLine (indent + "[FieldOffset(0)]");
-			sw.WriteLine (indent + "private __" + name + " " + cname + ";");
+
+			sw.WriteLine(indent + "// End " + parent_name);
+			sw.WriteLine();
+
+			return prev_field;
 		}
+
 	}
 
 	public class UnionABIField : StructABIField {
@@ -70,18 +109,41 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public override void Generate (GenerationInfo gen_info, string indent) {
+		public override StructABIField Generate (GenerationInfo gen_info, string indent,
+				StructABIField prev_field, StructABIField next_field, string parent_name,
+				TextWriter tw) {
 			StreamWriter sw = gen_info.Writer;
 			var name = Elem.GetAttribute("name");
 			var cname = Elem.GetAttribute("cname");
 
-			sw.WriteLine (indent + "[StructLayout(LayoutKind.Explicit)]");
-			sw.WriteLine (indent + "struct __" + name + " {");
+			foreach (UnionSubstruct _struct in substructs)
+				_struct.EnsureParentStructName(cname);
+
 			foreach (UnionSubstruct _struct in substructs) {
-				_struct.Generate(gen_info, indent + "\t");
+				_struct.Generate(gen_info, indent + "\t", cname, prev_field,
+						next_field, parent_name, tw);
 			}
-			sw.WriteLine (indent + "}");
-			sw.WriteLine (indent + "private __" + name + " " + cname + ";");
+
+			base.Generate(gen_info, indent, prev_field, next_field, parent_name, null);
+
+
+			return this;
+		}
+
+		public override string GenerateGetSizeOf(string indent) {
+			string res = indent + "new List<List<string>>() {  // union " + Elem.GetAttribute("cname") + "\n";
+			bool first = true;
+
+			indent += "\t\t\t";
+			foreach (UnionSubstruct _struct in substructs) {
+				if (!first)
+					res +=  ",\n";
+				first = false;
+				res += _struct.GenerateGetSize(indent + "\t\t\t");
+			}
+			res += "\n" + indent + "\t\t  }";
+
+			return res;
 		}
 
 		public override bool Validate (LogWriter log)

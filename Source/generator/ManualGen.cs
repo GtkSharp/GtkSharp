@@ -27,6 +27,7 @@ namespace GtkSharp.Generation {
 	public class ManualGen : SimpleBase {
 		
 		string from_fmt;
+		string abi_type;
 
 		public ManualGen (string ctype, string type) : base (ctype, type, "null")
 		{
@@ -37,10 +38,22 @@ namespace GtkSharp.Generation {
 		{
 			this.from_fmt = from_fmt;
 		}
-		
+
+		public ManualGen (string ctype, string type, string from_fmt, string abi_type) : base (ctype, type, "null")
+		{
+			this.from_fmt = from_fmt;
+			this.abi_type = abi_type;
+		}
+
 		public override string MarshalType {
 			get {
 				return "IntPtr";
+			}
+		}
+
+		public string AbiType {
+			get {
+				return abi_type;
 			}
 		}
 
@@ -52,6 +65,10 @@ namespace GtkSharp.Generation {
 		public override string FromNative(string var)
 		{
 			return String.Format (from_fmt, var);
+		}
+
+		public override string GenerateGetSizeOf () {
+			return "(uint) Marshal.SizeOf(typeof(" + abi_type + "))";
 		}
 	}
 }

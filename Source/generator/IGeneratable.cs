@@ -48,6 +48,12 @@ namespace GtkSharp.Generation {
 		// Generates an expression to convert var from MarshalType
 		string FromNative (string var);
 
+		// Generates code to get size of the type
+		string GenerateGetSizeOf ();
+
+		// Generates code to get size of the type
+		string GenerateAlign ();
+
 		bool Validate ();
 
 		void Generate ();

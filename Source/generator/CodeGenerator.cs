@@ -34,9 +34,13 @@ namespace GtkSharp.Generation {
 		public static int Main (string[] args)
 		{
 			bool show_help = false;
+			bool all_opaque = true;
 			string dir = "";
 			string assembly_name = "";
 			string gapidir = "";
+			string abi_cs_usings = "";
+			string abi_cs_file = "";
+			string abi_c_file = "";
 			string glue_filename = "";
 			string glue_includes = "";
 			string gluelib_name = "";
@@ -59,6 +63,12 @@ namespace GtkSharp.Generation {
 					(string v) => { assembly_name = v; } },
 				{ "gapidir=", "GAPI xml data  folder.",
 					(string v) => { gapidir = v; } },
+				{ "abi-cs-filename=", "Filename for the generated CSharp ABI checker.",
+					(string v) => { abi_cs_file = v; } },
+				{ "abi-cs-usings=", "Namespaces to use in the CS ABI checker.",
+					(string v) => { abi_cs_usings = v; } },
+				{ "abi-c-filename=", "Filename for the generated C ABI checker.",
+					(string v) => { abi_c_file = v; } },
 				{ "glue-filename=", "Filename for the generated C glue code.",
 					(string v) => { glue_filename = v; } },
 				{ "glue-includes=", "Content of #include directive to add in the generated C glue code.",
@@ -130,7 +140,8 @@ namespace GtkSharp.Generation {
 
 			GenerationInfo gen_info = null;
 			if (dir != "" || assembly_name != "" || glue_filename != "" || glue_includes != "" || gluelib_name != "")
-				gen_info = new GenerationInfo (dir, assembly_name, glue_filename, glue_includes, gluelib_name);
+				gen_info = new GenerationInfo (dir, assembly_name, glue_filename, glue_includes, gluelib_name,
+						abi_c_file, abi_cs_file, abi_cs_usings);
 			
 			foreach (IGeneratable gen in gens) {
 				if (gen_info == null)
@@ -142,7 +153,7 @@ namespace GtkSharp.Generation {
 			ObjectGen.GenerateMappers ();
 
 			if (gen_info != null)
-				gen_info.CloseGlueWriter ();
+				gen_info.CloseWriters ();
 
 			Statistics.Report();
 			return 0;

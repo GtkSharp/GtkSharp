@@ -187,7 +187,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected override bool CanGenerateABIStruct(LogWriter log) {
+		public override bool CanGenerateABIStruct(LogWriter log) {
 			if (!abi_fields_valid) {
 				log.Info(CName + " has invalid fields");
 
@@ -337,6 +337,9 @@ namespace GtkSharp.Generation {
 			invalids.Clear ();
 
 			return true;
+		}
+		public override string GenerateGetSizeOf () {
+			return NS + "." + Name + ".abi_info.GetABISize()";
 		}
 	}
 }

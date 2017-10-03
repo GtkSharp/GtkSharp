@@ -21,6 +21,8 @@ policy = configure_file(input: policy_config,
         configuration : policy_data)
 
 sources = [
+    'AbiField.cs',
+    'AbiStruct.cs',
     'Argv.cs',
     'Bytes.cs',
     'ConnectBeforeAttribute.cs',
@@ -39,6 +41,7 @@ sources = [
     'GString.cs',
     'GType.cs',
     'GTypeAttribute.cs',
+    'HookList.cs',
     'Idle.cs',
     'InitiallyUnowned.cs',
     'IOChannel.cs',
@@ -88,7 +91,7 @@ sources = [
     'ValueArray.cs',
     'Value.cs',
     'Variant.cs',
-    'VariantType.cs' ]
+    'VariantType.cs']
 
 
 glib_sharp = library(assembly_name, sources, assemblyinfo,

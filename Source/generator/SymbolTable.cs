@@ -128,9 +128,17 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GVariant", "GLib.Variant"));
 			AddType (new ManualGen ("GVariantType", "GLib.VariantType"));
 			AddType (new ManualGen ("GValueArray", "GLib.ValueArray"));
-			AddType (new ManualGen ("GMutex", "GLib.Mutex"));
-			AddType (new ManualGen ("GRecMutex", "GLib.RecMutex"));
-			AddType (new ManualGen ("GCond", "GLib.Cond"));
+			AddType (new ManualGen ("GMutex", "GLib.Mutex",
+						"new GLib.Mutex({0})",
+						"GLib.Mutex.ABI"));
+
+			AddType (new ManualGen ("GRecMutex",
+						"GLib.RecMutex",
+						"new GLib.RecMutex({0})",
+						"GLib.RecMutex.ABI"));
+			AddType (new ManualGen ("GCond", "GLib.Cond",
+						"new GLib.Cond({0})",
+						"GLib.Cond.ABI"));
 			AddType (new ManualGen ("GDateTime", "GLib.DateTime"));
 			AddType (new ManualGen ("GDate", "GLib.Date"));
 			AddType (new ManualGen ("GSource", "GLib.Source"));
@@ -141,9 +149,12 @@ namespace GtkSharp.Generation {
 			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
 			AddType (new MarshalGen ("GType", "GLib.GType", "IntPtr", "{0}.Val", "new GLib.GType({0})", "GLib.GType.None"));
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
-			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify", "null"));
+			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify", "null",
+						"(uint) Marshal.SizeOf(typeof(IntPtr))"));
 			AddType (new SimpleGen ("GThread", "GLib.Thread", "null"));
 			AddType (new ManualGen ("GBytes", "GLib.Bytes"));
+			AddType (new SimpleGen ("GHookList", "GLib.HookList", "null",
+						"GLib.HookList.abi_info.Size"));
 
 			// FIXME: These ought to be handled properly.
 			AddType (new SimpleGen ("GC", "IntPtr", "IntPtr.Zero"));
@@ -160,6 +171,9 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("va_list", "IntPtr", "IntPtr.Zero"));
 			AddType (new SimpleGen ("GParamSpec", "IntPtr", "IntPtr.Zero"));
 			AddType (new SimpleGen ("gconstpointer", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GBoxedCopyFunc", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GBoxedFreeFunc", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GHookFinalizeFunc", "IntPtr", "IntPtr.Zero"));
 		}
 		
 		public void AddType (IGeneratable gen)
@@ -250,19 +264,19 @@ namespace GtkSharp.Generation {
 		public string GetCSType(string c_type, bool default_pointer)
 		{
 			IGeneratable gen = this[c_type];
-            if (gen == null) {
-                if (c_type.EndsWith("*") && default_pointer)
-                    return "UintPtr";
+			if (gen == null) {
+				if (c_type.EndsWith("*") && default_pointer)
+					return "IntPtr";
 
-                return "";
-            }
+				return "";
+			}
 
-            return gen.QualifiedName;
+			return gen.QualifiedName;
 		}
 
 		public string GetCSType(string c_type)
 		{
-            return GetCSType(c_type, false);
+			return GetCSType(c_type, false);
 		}
 		
 		public string GetName(string c_type)

@@ -823,8 +823,6 @@ namespace GLib {
 			public IntPtr g_class;
 		}
 
-		public static uint instance_offset { get { return 0; }}
-		public uint GetFieldOffset(string field) { throw new NotImplementedException(); return 0; }
 		public struct GObject {
 			public GTypeInstance type_instance;
 			public uint ref_count;
@@ -848,5 +846,56 @@ namespace GLib {
 			if (Environment.GetEnvironmentVariable ("GTK_SHARP_DEBUG") != null)
 				GLib.Log.SetLogHandler ("GLib-GObject", GLib.LogLevelFlags.All, new GLib.LogFunc (GLib.Log.PrintTraceLogFunction));
 		}
+
+		// Internal representation of the wrapped ABI structure.
+		static public AbiStruct abi_info = new AbiStruct(new List<AbiField> {
+				new GLib.AbiField("g_type_instance"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, null
+					, "ref_count"
+					, (long) Marshal.OffsetOf(typeof(GObject_g_type_instanceAlign), "g_type_instance")
+					, 0
+					),
+				new GLib.AbiField("ref_count"
+					, -1
+					, (uint) Marshal.SizeOf(typeof(uint)) // ref_count
+					, "g_type_instance"
+					, "qdata"
+					, (long) Marshal.OffsetOf(typeof(GObject_ref_countAlign), "ref_count")
+					, 0
+					),
+				new GLib.AbiField("qdata"
+					, -1
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // qdata
+					, "ref_count"
+					, null
+					, (long) Marshal.OffsetOf(typeof(GObject_qdataAlign), "qdata")
+					, 0
+					),
+			}
+		);
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct GObject_g_type_instanceAlign
+		{
+			sbyte f1;
+			private IntPtr g_type_instance;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct GObject_ref_countAlign
+		{
+			sbyte f1;
+			private uint ref_count;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct GObject_qdataAlign
+		{
+			sbyte f1;
+			private IntPtr qdata;
+		}
+		// End of the ABI representation.
 	}
 }

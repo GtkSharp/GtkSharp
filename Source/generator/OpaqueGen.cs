@@ -80,7 +80,6 @@ namespace GtkSharp.Generation {
 			sw.WriteLine (" {");
 			sw.WriteLine ();
 
-			GenerateStructureABI(gen_info);
 			GenConstants (gen_info);
 			GenFields (gen_info);
 			GenMethods (gen_info, null, null);
@@ -196,6 +195,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ();
 			}
 
+			GenerateStructureABI(gen_info);
 			sw.WriteLine ("#endregion");
 
 			sw.WriteLine ("\t}");

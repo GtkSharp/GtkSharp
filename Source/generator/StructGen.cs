@@ -35,7 +35,6 @@ namespace GtkSharp.Generation {
 
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name, NS);
 			base.Generate (gen_info);
-			GenerateStructureABI(gen_info);
 			if (GetMethod ("GetType") == null && GetMethod ("GetGType") == null) {
 				sw.WriteLine ("\t\tprivate static GLib.GType GType {");
 				sw.WriteLine ("\t\t\tget { return GLib.GType.Pointer; }");

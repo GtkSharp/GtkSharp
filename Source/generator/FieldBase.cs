@@ -27,6 +27,8 @@ namespace GtkSharp.Generation {
 
 	public abstract class FieldBase : PropertyBase {
 		public FieldBase abi_field = null;
+		string getterName, setterName;
+		protected string getOffsetName, offsetName;
 
 		public FieldBase (XmlElement elem, ClassBase container_type) : base (elem, container_type) {}
 		public FieldBase (XmlElement elem, ClassBase container_type, FieldBase abi_field) : base (elem, container_type) {
@@ -97,12 +99,12 @@ namespace GtkSharp.Generation {
 		}
 
 		private bool UseABIStruct(GenerationInfo gen_info) {
+			if (!container_type.CanGenerateABIStruct(new LogWriter(container_type.CName)))
+				return false;
+
 			return (abi_field != null && abi_field.getOffsetName != null &&
 						gen_info.GlueWriter == null);
 		}
-
-		string getterName, setterName;
-		protected string getOffsetName, offsetName;
 
 		void CheckGlue (GenerationInfo gen_info)
 		{
@@ -112,7 +114,7 @@ namespace GtkSharp.Generation {
 
 			if (UseABIStruct(gen_info)) {
 				getOffsetName = abi_field.getOffsetName;
-				offsetName = "GetFieldOffset(\"" + ((StructField)abi_field).EqualityName + "\")";
+				offsetName = "abi_info.GetFieldOffset(\"" + ((StructField)abi_field).CName + "\")";
 
 				return;
 			}

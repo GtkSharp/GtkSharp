@@ -82,6 +82,11 @@ namespace GtkSharp.Generation {
 		{
 			return "(" + QualifiedName + ") " + var;
 		}
+
+		public override string GenerateAlign () {
+			return null;
+		}
+
 		
 		public override void Generate (GenerationInfo gen_info)
 		{
