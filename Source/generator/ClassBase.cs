@@ -115,6 +115,10 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "field":
+					// FIXME Generate callbacks.
+					if (member.GetAttributeAsBoolean ("is_callback"))
+						continue;
+
 					name = member.GetAttribute("name");
 					while (fields.ContainsKey (name))
 						name += "mangled";

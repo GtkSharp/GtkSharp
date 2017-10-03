@@ -36,6 +36,9 @@ namespace GtkSharp.Generation {
 		{
 			string cstype = SymbolTable.Table.GetCSType(CType, true);
 
+			if (elem.GetAttributeAsBoolean("is_callback"))
+				return true;
+
 			if (cstype == null || cstype == "") {
 				log.Warn (" field \"" + CName + "\" has no cstype, can't generate ABI field.");
 
