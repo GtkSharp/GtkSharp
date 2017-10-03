@@ -143,15 +143,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected virtual bool CanGenerateABIStruct {
-			get {
-				return (abi_fields_valid);
-			}
+		protected virtual bool CanGenerateABIStruct(LogWriter log) {
+			return (abi_fields_valid);
 		}
 
 		bool CheckABIStructParent(LogWriter log, out string cs_parent_struct) {
 			cs_parent_struct = null;
-			if (!CanGenerateABIStruct)
+
+			if (!CanGenerateABIStruct(log))
 				return false;
 
 			var parent = SymbolTable.Table[Elem.GetAttribute("parent")];

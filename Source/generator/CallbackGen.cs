@@ -47,7 +47,7 @@ namespace GtkSharp.Generation {
 		public override bool Validate ()
 		{
 			valid = true;
-			LogWriter log = new LogWriter ();
+			LogWriter log = new LogWriter (QualifiedName);
 			log.Type = QualifiedName;
 			if (!retval.Validate (log) || !parms.Validate (log)) {
 				Statistics.ThrottledCount++;
@@ -196,7 +196,8 @@ namespace GtkSharp.Generation {
 			if (!Validate ())
 				return String.Empty;
 
-			body = new MethodBody (parms);
+			LogWriter log = new LogWriter (qualname);
+			body = new MethodBody (parms, log);
 
 			StreamWriter save_sw = gen_info.Writer;
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (qualname, NS);

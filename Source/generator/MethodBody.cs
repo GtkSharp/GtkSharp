@@ -29,10 +29,12 @@ namespace GtkSharp.Generation {
 	public class MethodBody  {
 		
 		Parameters parameters;
+		LogWriter log;
 
-		public MethodBody (Parameters parms)
+		public MethodBody (Parameters parms, LogWriter _log)
 		{
 			parameters = parms;
+			log = _log;
 		}
 
 		private string CastFromInt (string type)
@@ -131,7 +133,7 @@ namespace GtkSharp.Generation {
 					case "call":
 					default:
 						if (p.Scope == String.Empty)
-							Console.WriteLine (gen_info.CurrentMember + " - defaulting " + gen.Name + " param to 'call' scope. Specify callback scope (call|async|notified) attribute with fixup.");
+							log.Warn (gen_info.CurrentMember + " - defaulting " + gen.Name + " param to 'call' scope. Specify callback scope (call|async|notified) attribute with fixup.");
 						sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = new {0} ({1});", wrapper, name);
 						break;
 					}

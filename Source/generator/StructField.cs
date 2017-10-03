@@ -50,8 +50,10 @@ namespace GtkSharp.Generation {
 				try {
 					result = Int32.Parse (elem.GetAttribute("array_len"));
 				} catch (Exception) {
-					Console.Write ("Non-numeric array_len: " + elem.GetAttribute("array_len"));
-					Console.WriteLine (" warning: array field {0} incorrectly generated", Name);
+                    LogWriter log = new LogWriter (container_type.Name + "." + Name);
+
+					log.Warn("Non-numeric array_len: \"" + elem.GetAttribute("array_len") +
+					         "\" incorrectly generated");
 					result = 0;
 				}
 				return result;

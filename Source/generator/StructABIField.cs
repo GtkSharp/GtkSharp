@@ -37,7 +37,7 @@ namespace GtkSharp.Generation {
 			string cstype = SymbolTable.Table.GetCSType(CType, true);
 
 			if (cstype == null || cstype == "") {
-				Console.WriteLine("(" + container_type.CName + ") VOOM " + CName + " " + CType + "=> " + cstype);
+				log.Warn (" field \"" + CName + "\" has no cstype, can't generate ABI field.");
 
 				return false;
 			}

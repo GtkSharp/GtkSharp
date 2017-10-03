@@ -29,6 +29,8 @@ namespace GtkSharp.Generation {
 
 	public class CodeGenerator  {
 
+		static LogWriter log = new LogWriter ("CodeGenerator");
+
 		public static int Main (string[] args)
 		{
 			bool show_help = false;
@@ -104,11 +106,13 @@ namespace GtkSharp.Generation {
 
 			Parser p = new Parser ();
 			foreach (string include in includes) {
+				log.Info("Parsing included gapi: " + include);
 				IGeneratable[] curr_gens = p.Parse (include, schema_name, gapidir);
 				table.AddTypes (curr_gens);
 			}
 
 			foreach (string filename in filenames) {
+			log.Info("Parsing included gapi: " + filename);
 				IGeneratable[] curr_gens = p.Parse (filename, schema_name, gapidir);
 				table.AddTypes (curr_gens);
 				gens.AddRange (curr_gens);

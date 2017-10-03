@@ -70,8 +70,10 @@ namespace GtkSharp.Generation {
 		MethodBody body;
 		public MethodBody Body {
 			get {
-				if (body == null)
-					body = new MethodBody (parms);
+				if (body == null) {
+					LogWriter log = new LogWriter (Name);
+					body = new MethodBody (parms, log);
+				}
 				return body;
 			}
 		}

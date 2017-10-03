@@ -32,6 +32,8 @@ namespace GtkSharp.Generation
 
 		public NativeStructGen (XmlElement ns, XmlElement elem) : base (ns, elem)
 		{
+			LogWriter log = new LogWriter (QualifiedName);
+
 			foreach (XmlNode node in elem.ChildNodes) {
 
 				if (!(node is XmlElement)) continue;
@@ -44,7 +46,7 @@ namespace GtkSharp.Generation
 
 				default:
 					if (!IsNodeNameHandled (node.Name))
-						Console.WriteLine ("Unexpected node " + node.Name + " in " + CName);
+						log.Warn ("Unexpected node " + node.Name + " in " + CName);
 					break;
 				}
 			}

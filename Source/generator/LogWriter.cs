@@ -28,10 +28,18 @@ namespace GtkSharp.Generation {
 		
 		string type;
 		string member;
+		int level;
 
-		public LogWriter () {}
+		public LogWriter () {
+			var l = Environment.GetEnvironmentVariable("CODEGEN_DEBUG");
 
-		public LogWriter (string type)
+			level = 1;
+			if (l != null) {
+				level = Int32.Parse(l);
+			}
+		}
+
+		public LogWriter (string type): this()
 		{
 			this.type = type;
 		}
@@ -53,7 +61,14 @@ namespace GtkSharp.Generation {
 
 		public void Warn (string warning)
 		{
-			Console.WriteLine ("{0}{1} - {2}", Type, String.IsNullOrEmpty (Member) ? String.Empty : "." + Member, warning);
+			if (level > 0)
+				Console.WriteLine ("WARN: {0}{1} - {2}", Type, String.IsNullOrEmpty (Member) ? String.Empty : "." + Member, warning);
+		}
+
+		public void Info (string info)
+		{
+			if (level > 1)
+				Console.WriteLine ("INFO: {0}{1} - {2}", Type, String.IsNullOrEmpty (Member) ? String.Empty : "." + Member, info);
 		}
 	}
 }

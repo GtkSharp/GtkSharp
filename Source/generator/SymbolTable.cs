@@ -28,6 +28,7 @@ namespace GtkSharp.Generation {
 	public class SymbolTable {
 		
 		static SymbolTable table = null;
+		static LogWriter log = new LogWriter ("SymbolTable");
 
 		IDictionary<string, IGeneratable> types = new Dictionary<string, IGeneratable> ();
 		
@@ -163,13 +164,14 @@ namespace GtkSharp.Generation {
 		
 		public void AddType (IGeneratable gen)
 		{
+			log.Info("Adding " + gen.CName + " = " + gen);
 			types [gen.CName] = gen;
 		}
 		
 		public void AddTypes (IGeneratable[] gens)
 		{
 			foreach (IGeneratable gen in gens)
-				types [gen.CName] = gen;
+				AddType(gen);
 		}
 		
 		public int Count {
