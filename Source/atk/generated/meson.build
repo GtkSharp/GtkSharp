@@ -109,12 +109,27 @@ source_gen = custom_target('atk_generated',
             '--extra-includes', glib_api_includes,
             '--out', meson.current_build_dir(),
             '--files', ';'.join(generated_sources),
-            '--assembly-name', meson.project_name()
+            '--assembly-name', assembly_name,
+            '--glue-includes', 'atk/atk.h',
+            '--abi-cs-usings', 'Atk,GLib',
         ],
         depends: [gapi_codegen, gapi_fixup],
         input: raw_api_fname,
         output: generated_sources,
 )
+
+c_abi = custom_target(assembly_name + '_c_abi',
+        input: raw_api_fname,
+        output: assembly_name + '-abi.c',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen])
+
+cs_abi = custom_target(assembly_name + '_cs_abi',
+        input: raw_api_fname,
+        output: assembly_name + '-abi.cs',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen])
+
 
 api_xml = custom_target(pkg + '_api_xml',
         input: raw_api_fname,

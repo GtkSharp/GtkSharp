@@ -1065,7 +1065,7 @@ source_gen = custom_target(assembly_name + 'codegen',
         generate_api,
         '--api-raw', '@INPUT@',
         '--gapi-fixup', gapi_fixup.full_path(),
-        '--metadata', metadata_fname,
+        '--metadata', metadata,
         '--symbols', symbols,
         '--gapi-codegen', gapi_codegen.full_path(),
         '--extra-includes', glib_api_includes,
@@ -1078,9 +1078,22 @@ source_gen = custom_target(assembly_name + 'codegen',
         '--out', meson.current_build_dir(),
         '--files', ';'.join(generated_sources),
         '--assembly-name', assembly_name,
+        '--abi-cs-usings', 'Gtk,GLib',
         '--schema', schema,
     ],
     depends: [gapi_codegen, gapi_fixup])
+
+c_abi = custom_target(assembly_name + '_c_abi',
+        input: raw_api_fname,
+        output: assembly_name + '-abi.c',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen])
+
+cs_abi = custom_target(assembly_name + '_cs_abi',
+        input: raw_api_fname,
+        output: assembly_name + '-abi.cs',
+        command: [generate_api, '--fakeglue'],
+        depends: [source_gen])
 
 api_xml = custom_target(pkg + '_api_xml',
         input: raw_api_fname,

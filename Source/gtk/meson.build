@@ -3,7 +3,7 @@ assembly_name = pkg + '-sharp'
 symbols = join_paths(meson.current_source_dir(), pkg + '-symbols.xml')
 
 raw_api_fname = join_paths(meson.current_source_dir(), pkg + '-api.raw')
-metadata_fname = join_paths(meson.current_source_dir(), 'Gtk.metadata')
+metadata = files('Gtk.metadata')
 glueincludes = 'gtk/gtk.h'
 gluefile = join_paths(meson.current_build_dir(), 'generate.c')
 
@@ -144,3 +144,15 @@ nuget_infos += [['GtkSharp', gtk_sharp, ['GlibSharp', 'GioSharp',
     'AtkSharp', 'GdkSharp']]]
 install_infos += [assembly_name, gtk_sharp.full_path()]
 gtk_sharp_dep = declare_dependency(link_with: deps + [gtk_sharp])
+
+if add_languages('c', required: false)
+    c_abi_exe = executable(assembly_name + '_c_abi', c_abi,
+            c_args: ['-Wno-deprecated', '-Wno-deprecated-declarations'],
+            dependencies: [glib_dep, gio_dep, atk_dep, gdk_dep, gtk_dep])
+
+    cs_abi_exe = executable(assembly_name + '_cs_abi', cs_abi,
+            cs_args: ['-nowarn:169', '-nowarn:108', '-nowarn:114', '-nowarn:0618', '-unsafe'],
+            dependencies: [gtk_sharp_dep])
+
+    test(assembly_name + 'abi', diff, args: [c_abi_exe.full_path(), cs_abi_exe.full_path()])
+endif
