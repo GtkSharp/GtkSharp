@@ -140,17 +140,6 @@ gtk_sharp = library(assembly_name, source_gen, sources, assemblyinfo,
         install_dir: lib_install_dir
 )
 
-gluegen = custom_target('gtkgluegen',
-        input: raw_api_fname,
-        output: 'generate.c',
-        command: [generate_api, '--fakeglue'],
-        depends: [source_gen])
-
-library('gtksharpglue-3', gluegen,
-        dependencies: [glib_dep, gio_dep, atk_dep, gdk_dep, gtk_dep],
-        c_args: ['-Wno-error=discarded-qualifiers'],
-        install: install)
-
 nuget_infos += [['GtkSharp', gtk_sharp, ['GlibSharp', 'GioSharp',
     'AtkSharp', 'GdkSharp']]]
 install_infos += [assembly_name, gtk_sharp.full_path()]

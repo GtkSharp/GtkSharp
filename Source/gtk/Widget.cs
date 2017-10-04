@@ -37,7 +37,7 @@ namespace Gtk {
 
 		public void AddAccelerator (string accel_signal, AccelGroup accel_group, AccelKey accel_key)
 		{
-			this.AddAccelerator (accel_signal, accel_group, (uint) accel_key.Key, accel_key.AccelMods, accel_key.AccelFlags);
+			this.AddAccelerator (accel_signal, accel_group, (uint) accel_key.Key, accel_key.AccelMods, (Gtk.AccelFlags) accel_key.AccelFlags);
 		}
 
 		/*
@@ -110,9 +110,12 @@ namespace Gtk {
 			if (ActivateMarshalCallback == null)
 				ActivateMarshalCallback = new ClosureMarshal (ActivateMarshal_cb);
 
-			GtkWidgetClass klass = GetClassStruct (gtype, false);
-			klass.ActivateSignal = RegisterSignal ("activate_signal", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None, new GLib.GType [0], ActivateMarshalCallback);
-			OverrideClassStruct (gtype, klass);
+			unsafe {
+				uint* raw_ptr = (uint*)(((long) gtype.GetClassPtr()) + (long) class_abi.GetFieldOffset("activate_signal"));
+
+				*raw_ptr = RegisterSignal ("activate_signal", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None,
+						new GLib.GType [0], ActivateMarshalCallback);
+			}
 		}
 
 		[GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectActivate")]

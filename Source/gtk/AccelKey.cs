@@ -23,8 +23,7 @@ namespace Gtk {
 		{
 			this.Key = key;
 			this.AccelMods = mods;
-			this._bitfield0 = 0;
-			this.AccelFlags = flags;
+			this.AccelFlags = (ushort)flags;
 		}
 	}
 }
