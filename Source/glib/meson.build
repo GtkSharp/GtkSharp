@@ -54,6 +54,7 @@ sources = [
     'MainLoop.cs',
     'ManagedValue.cs',
     'Markup.cs',
+    'MarkupParser.cs',
     'Marshaller.cs',
     'MissingIntPtrCtorException.cs',
     'Mutex.cs',
