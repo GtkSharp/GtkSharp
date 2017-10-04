@@ -8,10 +8,13 @@ namespace GtkSharp.Generation {
 	public class StructABIField : StructField {
 		protected new ClassBase container_type;
 		public string parent_structure_name;
+		public string abi_info_name;
 
-		public StructABIField (XmlElement elem, ClassBase container_type) : base (elem, container_type) {
+		public StructABIField (XmlElement elem, ClassBase container_type,
+				string info_name) : base (elem, container_type) {
 			this.container_type = container_type;
 			this.getOffsetName = null;
+			this.abi_info_name = info_name;
 		}
 
 		public override string CName {
@@ -80,7 +83,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(indent + ", -1");
 			} else {
 				if (parent_name != "")
-					sw.WriteLine(indent + ", " + parent_name + ".abi_info.Fields");
+					sw.WriteLine(indent + ", " + parent_name + "." + abi_info_name + ".Fields");
 				else
 					sw.WriteLine(indent + ", 0");
 			}
@@ -102,6 +105,9 @@ namespace GtkSharp.Generation {
 				// Do not generate structs if the type is a simple pointer.
 				if (IsCPointer())
 					min_align = "(uint) Marshal.SizeOf(typeof(IntPtr))";
+
+				if (IsBitfield)
+					min_align = "1";
 
 				if (min_align == null) {
 					var tmpindent = "\t\t";

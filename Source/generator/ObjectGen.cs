@@ -311,38 +311,7 @@ namespace GtkSharp.Generation {
 		void GenClassMembers (GenerationInfo gen_info, string cs_parent)
 		{
 			GenVirtualMethods (gen_info, null);
-
-			if (class_struct_name == null || !CanGenerateClassStruct) return;
-			StreamWriter sw = gen_info.Writer;
-			GenerateClassStruct (gen_info);
-			if (cs_parent == "")
-				sw.WriteLine ("\t\tstatic uint class_offset = 0;");
-			else
-				sw.WriteLine ("\t\tstatic uint class_offset = ((GLib.GType) typeof ({0})).GetClassSize ();", cs_parent);
-			sw.WriteLine ("\t\tstatic Dictionary<GLib.GType, {0}> class_structs;", class_struct_name);
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tstatic {0} GetClassStruct (GLib.GType gtype, bool use_cache)", class_struct_name);
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tif (class_structs == null)");
-			sw.WriteLine ("\t\t\t\tclass_structs = new Dictionary<GLib.GType, {0}> ();", class_struct_name);
-			sw.WriteLine ();
-			sw.WriteLine ("\t\t\tif (use_cache && class_structs.ContainsKey (gtype))");
-			sw.WriteLine ("\t\t\t\treturn class_structs [gtype];");
-			sw.WriteLine ("\t\t\telse {");
-			sw.WriteLine ("\t\t\t\tIntPtr class_ptr = new IntPtr (gtype.GetClassPtr ().ToInt64 () + class_offset);");
-			sw.WriteLine ("\t\t\t\t{0} class_struct = ({0}) Marshal.PtrToStructure (class_ptr, typeof ({0}));", class_struct_name);
-			sw.WriteLine ("\t\t\t\tif (use_cache)");
-			sw.WriteLine ("\t\t\t\t\tclass_structs.Add (gtype, class_struct);");
-			sw.WriteLine ("\t\t\t\treturn class_struct;");
-			sw.WriteLine ("\t\t\t}");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tstatic void OverrideClassStruct (GLib.GType gtype, {0} class_struct)", class_struct_name);
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tIntPtr class_ptr = new IntPtr (gtype.GetClassPtr ().ToInt64 () + class_offset);");
-			sw.WriteLine ("\t\t\tMarshal.StructureToPtr (class_struct, class_ptr, false);");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
+			GenerateStructureABI(gen_info, abi_class_members, "class_abi", ClassStructName);
 		}
 
 		/* Keep this in sync with the one in glib/GType.cs */

@@ -32,7 +32,11 @@ namespace GtkSharp.Generation {
 		bool is_interface;
 		protected string class_struct_name = null;
 		bool class_fields_valid; // false if the class structure contains a bitfield or fields of unknown types
+
 		ArrayList class_members = new ArrayList ();
+		protected List<StructABIField> abi_class_members = new List<StructABIField> ();
+		bool class_abi_valid = true;
+
 		protected IList<ClassField> class_fields = new List<ClassField> ();
 		// The default handlers of these signals need to be overridden with g_signal_override_class_closure
 		protected IList<GObjectVM> virtual_methods = new List<GObjectVM> ();
@@ -85,12 +89,31 @@ namespace GtkSharp.Generation {
 			}
 				
 			if (class_elem == null) return;
+			
+			if (class_elem.GetAttributeAsBoolean("private")) {
+				class_abi_valid = false;
+				return;
+			}
+
 			class_struct_name = class_elem.GetAttribute ("cname");
 
+			int num_abi_fields = 0;
 			for (int node_idx = 0; node_idx < class_elem.ChildNodes.Count; node_idx++) {
 				XmlNode node = class_elem.ChildNodes [node_idx];
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
+
+				// Make sure ABI fields are taken into account, even when hidden.
+				if (node.Name == "field") {
+					num_abi_fields += 1;
+					if (num_abi_fields != 1) { // Skip instance parent struct
+						abi_class_members.Add (new StructABIField (member, this, "class_abi"));
+					}
+				} else if (node.Name == "union") {
+					abi_class_members.Add (new UnionABIField (member, this, "class_abi"));
+				} else if (node.Name == "method") {
+					abi_class_members.Add (new MethodABIField (member, this, "class_abi"));
+				}
 
 				switch (member.Name) {
 				case "method":
@@ -183,7 +206,7 @@ namespace GtkSharp.Generation {
 				* as they may contain class fields which don't appear in the old (version 1) API files. There are also cases in which the order of the
 				* <signal> and <virtual_method> elements do not match the struct layout.
 				*/
-				return (is_interface || this.ParserVersion >= 2) && (class_fields_valid || class_struct_name == "GtkWidgetClass");
+				return (is_interface || this.ParserVersion >= 2) && (class_abi_valid || class_struct_name == "GtkWidgetClass");
 			}
 		}
 
@@ -301,6 +324,10 @@ namespace GtkSharp.Generation {
 			foreach (ClassField field in class_fields)
 				if (!field.Validate (log))
 					class_fields_valid = false;
+
+			foreach (StructABIField field in abi_class_members)
+				if (!field.Validate (log))
+					class_abi_valid = false;
 			
 			foreach (InterfaceVM vm in interface_vms)
 				if (!vm.Validate (log))
@@ -339,7 +366,7 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 		public override string GenerateGetSizeOf () {
-			return NS + "." + Name + ".abi_info.GetABISize()";
+			return NS + "." + Name + ".abi_info.Size";
 		}
 	}
 }

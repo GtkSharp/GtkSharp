@@ -875,6 +875,155 @@ namespace GLib {
 					),
 			}
 		);
+		//
+		// Internal representation of the wrapped ABI structure.
+		static public AbiStruct class_abi = new AbiStruct(new List<AbiField> {
+				new GLib.AbiField("type_class"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, null
+					, "construct_props"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("construct_props"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "type_class"
+					, "constructor_cb"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("constructor_cb"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "construct_props"
+					, "set_prop_cb"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("set_prop_cb"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "constructor_cb"
+					, "get_prop_cb"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("get_prop_cb"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "set_prop_cb"
+					, "dispose"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dispose"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "get_prop_cb"
+					, "finalize"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("finalize"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "dispose"
+					, "dispatch_properties_changed"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dispatch_properties_changed"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "finalize"
+					, "notify"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("notify"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "dispatch_properties_changed"
+					, "constructed"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("constructed"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "notify"
+					, "dummy1"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dummy1"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "constructed"
+					, "dummy2"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dummy2"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "dummy1"
+					, "dummy3"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dummy3"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "dummy2"
+					, "dummy4"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dummy3"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "dummy2"
+					, "dummy4"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dummy4"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "dummy3"
+					, "dummy5"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dummy5"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "dummy4"
+					, "dummy6"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dummy6"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "dummy5"
+					, "dummy7"
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+				new GLib.AbiField("dummy7"
+					, 0
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, "dummy6"
+					, null
+					, (uint) Marshal.SizeOf(typeof(IntPtr)) // g_type_instance
+					, 0
+					),
+			}
+		);
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct GObject_g_type_instanceAlign

@@ -114,7 +114,7 @@ namespace GtkSharp.Generation {
 
 			if (UseABIStruct(gen_info)) {
 				getOffsetName = abi_field.getOffsetName;
-				offsetName = "abi_info.GetFieldOffset(\"" + ((StructField)abi_field).CName + "\")";
+				offsetName = ((StructABIField) abi_field).abi_info_name + ".GetFieldOffset(\"" + ((StructField)abi_field).CName + "\")";
 
 				return;
 			}

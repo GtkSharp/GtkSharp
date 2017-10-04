@@ -47,7 +47,7 @@ namespace GtkSharp.Generation {
 		}
 
 		protected string ctype;
-		public string CType {
+		public virtual string CType {
 			get {
 				if (ctype == null) {
 					if (elem.GetAttribute("bits") == "1")

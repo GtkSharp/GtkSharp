@@ -106,7 +106,7 @@ namespace GtkSharp.Generation {
 			return IsArray && !IsNullTermArray && ArrayLength != 0;
 		}
 
-		public bool IsCPointer() {
+		public virtual bool IsCPointer() {
 			IGeneratable gen = SymbolTable.Table[CType];
 
 			return (CType.EndsWith("*") ||
@@ -177,11 +177,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string StudlyName {
+		public virtual string StudlyName {
 			get {
 				string studly = base.Name;
 				if (studly == "")
-					throw new Exception ("API file must be regenerated with a current version of the GAPI parser. It is incompatible with this version of the GAPI code generator.");
+					throw new Exception (CName + "API file must be regenerated with a current version of the GAPI parser. It is incompatible with this version of the GAPI code generator.");
 
 				return studly;
 			}

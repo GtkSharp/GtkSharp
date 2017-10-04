@@ -39,7 +39,7 @@ namespace GtkSharp.Generation {
 		protected IList<string> managed_interfaces = new List<string>();
 		protected IList<Ctor> ctors = new List<Ctor>();
 
-		protected IList<StructABIField> abi_fields = new List<StructABIField> ();
+		protected List<StructABIField> abi_fields = new List<StructABIField> ();
 		protected bool abi_fields_valid; // false if the instance structure contains a bitfield or fields of unknown types
 
 		private bool ctors_initted = false;
@@ -87,11 +87,11 @@ namespace GtkSharp.Generation {
 				if (node.Name == "field") {
 					num_abi_fields += 1;
 					if (num_abi_fields != 1 || !has_parent) { // Skip instance parent struct
-						abi_field = new StructABIField (member, this);
+						abi_field = new StructABIField (member, this, "abi_info");
 						abi_fields.Add (abi_field);
 					}
 				} else if (node.Name == "union") {
-					abi_field = new UnionABIField (member, this);
+					abi_field = new UnionABIField (member, this, "abi_info");
 					abi_fields.Add (abi_field);
 				}
 
@@ -190,9 +190,17 @@ namespace GtkSharp.Generation {
 			return parent_can_generate;
 		}
 
-		protected void GenerateStructureABI (GenerationInfo gen_info)
+		protected void GenerateStructureABI (GenerationInfo gen_info) {
+			GenerateStructureABI(gen_info, null, "abi_info", CName);
+		}
+
+		protected void GenerateStructureABI (GenerationInfo gen_info, List<StructABIField> _fields,
+				string info_name, string structname)
 		{
 			string cs_parent_struct = null;
+
+			if (_fields == null)
+				_fields = abi_fields;
 
 			LogWriter log = new LogWriter (QualifiedName);
 			if (!CheckABIStructParent (log, out cs_parent_struct))
@@ -206,44 +214,44 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine ();
 			sw.WriteLine ("\t\t// Internal representation of the wrapped structure ABI.");
-			sw.WriteLine ("\t\tstatic GLib.AbiStruct _abi_info = null;");
-			sw.WriteLine ("\t\tstatic public " + _new + "GLib.AbiStruct abi_info {");
+			sw.WriteLine ("\t\tstatic GLib.AbiStruct _" + info_name + " = null;");
+			sw.WriteLine ("\t\tstatic public " + _new + "GLib.AbiStruct " + info_name + " {");
 			sw.WriteLine ("\t\t\tget {");
-			sw.WriteLine ("\t\t\t\tif (_abi_info == null)");
-			sw.WriteLine ("\t\t\t\t\t_abi_info = new GLib.AbiStruct (new List<GLib.AbiField>{ ");
+			sw.WriteLine ("\t\t\t\tif (_" + info_name + " == null)");
+			sw.WriteLine ("\t\t\t\t\t_" + info_name + " = new GLib.AbiStruct (new List<GLib.AbiField>{ ");
 
 			// Generate Tests
-			if (abi_fields.Count > 0 && gen_info.CAbiWriter != null) {
-				gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"sizeof({0}.{1})\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", sizeof({2}));", NS, Name, CName);
-				gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"sizeof({0}.{1})\\\": \\\"\" + {0}.{1}.abi_info.Size + \"\\\"\");", NS, Name);
+			if (_fields.Count > 0 && gen_info.CAbiWriter != null) {
+				gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"sizeof({0})\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", sizeof({0}));", structname);
+				gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"sizeof({0})\\\": \\\"\" + {1}.{2}." + info_name + ".Size + \"\\\"\");", structname, NS, Name);
 			}
 
 			StructABIField prev = null;
 			StructABIField next = null;
 
 			StringWriter field_alignment_structures_writer = new StringWriter();
-			for(int i=0; i < abi_fields.Count; i++) {
-				var field = abi_fields[i];
-				next = abi_fields.Count > i +1 ? abi_fields[i + 1] : null;
+			for(int i=0; i < _fields.Count; i++) {
+				var field = _fields[i];
+				next = _fields.Count > i +1 ? _fields[i + 1] : null;
 
 				prev = field.Generate(gen_info, "\t\t\t\t\t", prev, next, cs_parent_struct,
 						field_alignment_structures_writer);
 				var union = field as UnionABIField;
-				if (union == null && gen_info.CAbiWriter != null) {
-					gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"{0}.{1}.{2}\\\": \\\"\" + {0}.{1}.abi_info.GetFieldOffset(\"{2}\") + \"\\\"\");", NS, Name, field.CName);
-					gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"{0}.{1}.{2}\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", G_STRUCT_OFFSET({3}, {2}));", NS, Name, field.CName, CName);
+				if (union == null && gen_info.CAbiWriter != null && !field.IsBitfield) {
+					gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"{0}.{3}\\\": \\\"\" + {1}.{2}." + info_name + ".GetFieldOffset(\"{3}\") + \"\\\"\");", structname, NS, Name, field.CName);
+					gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"{0}.{1}\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", G_STRUCT_OFFSET({0}, {1}));", structname, field.CName);
 				}
 
 			}
 
-			if (abi_fields.Count > 0 && gen_info.CAbiWriter != null) {
+			if (_fields.Count > 0 && gen_info.CAbiWriter != null) {
 				gen_info.AbiWriter.Flush();
 				gen_info.CAbiWriter.Flush();
 			}
 
 			sw.WriteLine ("\t\t\t\t\t});");
 			sw.WriteLine ();
-			sw.WriteLine ("\t\t\t\treturn _abi_info;");
+			sw.WriteLine ("\t\t\t\treturn _" + info_name + ";");
 			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();

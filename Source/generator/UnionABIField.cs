@@ -11,8 +11,9 @@ namespace GtkSharp.Generation {
 		XmlElement Elem;
 		bool is_valid;
 		bool unique_field;
+		public string abi_info_name;
 
-		public UnionSubstruct(XmlElement elem, ClassBase container_type) {
+		public UnionSubstruct(XmlElement elem, ClassBase container_type, string abi_info_name) {
 			fields = new List<StructABIField> ();
 			Elem = elem;
 			is_valid = true;
@@ -25,10 +26,10 @@ namespace GtkSharp.Generation {
 						continue;
 					}
 
-					fields.Add(new StructABIField (child_field, container_type));
+					fields.Add(new StructABIField (child_field, container_type, abi_info_name));
 				}
 			} else if (Elem.Name == "field") {
-				fields.Add(new StructABIField (Elem, container_type));
+				fields.Add(new StructABIField (Elem, container_type, abi_info_name));
 				unique_field = true;
 			}
 		}
@@ -101,11 +102,12 @@ namespace GtkSharp.Generation {
 		protected List<UnionSubstruct> substructs = new List<UnionSubstruct> ();
 
 
-		public UnionABIField (XmlElement elem, ClassBase container_type) : base (elem, container_type) {
+		public UnionABIField (XmlElement elem, ClassBase container_type, string info_name) :
+				base (elem, container_type, info_name) {
 			Elem = elem;
 			is_valid = true;
 			foreach (XmlElement union_child in elem.ChildNodes) {
-				substructs.Add(new UnionSubstruct(union_child, container_type));
+				substructs.Add(new UnionSubstruct(union_child, container_type, abi_info_name));
 			}
 		}
 
