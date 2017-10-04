@@ -231,7 +231,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t\t\t\t_" + info_name + " = new GLib.AbiStruct (new List<GLib.AbiField>{ ");
 
 				if (gen_info.CAbiWriter != null) {
-					gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"sizeof({0})\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", sizeof({0}));", structname);
+					gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"sizeof({0})\\\": \\\"%\" G_GUINT64_FORMAT \"\\\"\\n\", (guint64) sizeof({0}));", structname);
 					gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"sizeof({0})\\\": \\\"\" + {1}.{2}." + info_name + ".Size + \"\\\"\");", structname, NS, Name);
 				}
 			} else {
@@ -257,7 +257,7 @@ namespace GtkSharp.Generation {
 				var union = field as UnionABIField;
 				if (union == null && gen_info.CAbiWriter != null && !field.IsBitfield) {
 					gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"{0}.{3}\\\": \\\"\" + {1}.{2}." + info_name + ".GetFieldOffset(\"{3}\") + \"\\\"\");", structname, NS, Name, field.CName);
-					gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"{0}.{1}\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", G_STRUCT_OFFSET({0}, {1}));", structname, field.CName);
+					gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"{0}.{1}\\\": \\\"%\" G_GUINT64_FORMAT \"\\\"\\n\", (guint64) G_STRUCT_OFFSET({0}, {1}));", structname, field.CName);
 				}
 
 			}
