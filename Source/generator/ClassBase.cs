@@ -75,7 +75,7 @@ namespace GtkSharp.Generation {
 			deprecated = elem.GetAttributeAsBoolean ("deprecated");
 			isabstract = elem.GetAttributeAsBoolean ("abstract");
 			abi_fields_valid = true;
-			bool has_parent = Elem.GetAttribute("parent") != "";
+			string parent_type = Elem.GetAttribute("parent");
 
 			int num_abi_fields = 0;
 			foreach (XmlNode node in elem.ChildNodes) {
@@ -86,7 +86,13 @@ namespace GtkSharp.Generation {
 				// Make sure ABI fields are taken into account, even when hidden.
 				if (node.Name == "field") {
 					num_abi_fields += 1;
-					if (num_abi_fields != 1 || !has_parent) { // Skip instance parent struct
+					// Skip instance parent struct if present, taking into account
+					// bindinator broken behaviour concerning parent field (ie.
+					// marking it as pointer, somehow risky but good enough for now.)
+					if (num_abi_fields != 1 ||
+							parent_type == "" ||
+							(member.GetAttribute("type").Replace("*", "") != parent_type
+							 )) {
 						abi_field = new StructABIField (member, this, "abi_info");
 						abi_fields.Add (abi_field);
 					}
