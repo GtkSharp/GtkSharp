@@ -8,7 +8,7 @@ endif
 version = meson.project_version()
 apiversion = '3.0.0.0'
 mono_required_version = '>=3.2.0'
-gtk_required_version='>=3.0.0'
+gtk_required_version='>=3.22.0'
 glib_required_version='>=2.32.0'
 
 csc = meson.get_compiler('cs')
