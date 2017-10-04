@@ -50,5 +50,5 @@ executable('GtkDemo',
     'DemoPrinting.cs',
     link_with: [glib_sharp, gio_sharp, cairo_sharp, pango_sharp,
         atk_sharp, gdk_sharp, gtk_sharp],
-    cs_args: resource_flags
+    cs_args: resource_flags + ['-nowarn:0612']
 )
