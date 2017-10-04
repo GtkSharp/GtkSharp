@@ -172,14 +172,23 @@ namespace GtkSharp.Parsing {
 			while (attr_iter.MoveNext ()) {
 				string path = attr_iter.Current.GetAttribute ("path", "");
 				string attr_name = attr_iter.Current.GetAttribute ("name", "");
+
+				int max_matches = -1;
+				var max_matches_str = attr_iter.Current.GetAttribute ("max-matches", "");
+				if (max_matches_str != "")
+					max_matches = Convert.ToInt32(max_matches_str);
+
 				XPathNodeIterator api_iter = api_nav.Select (path);
-				bool matched = false;
+				var nmatches = 0;
 				while (api_iter.MoveNext ()) {
 					XmlElement node = ((IHasXmlNode)api_iter.Current).GetNode () as XmlElement;
 					node.SetAttribute (attr_name, attr_iter.Current.Value);
-					matched = true;
+					nmatches++;
+
+					if (max_matches > 0 && nmatches == max_matches)
+						break;
 				}
-				if (!matched)
+				if (nmatches == 0)
 					Console.WriteLine ("Warning: <attr path=\"{0}\"/> matched no nodes", path);
 			}
 
