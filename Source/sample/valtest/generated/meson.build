@@ -24,7 +24,7 @@ source_gen = custom_target(assembly_name + 'codegen',
         '--assembly-name', assembly_name,
         '--schema', schema,
     ],
-    depends: [gapi_codegen, gapi_fixup])
+    depends: [gapi_codegen, gapi_fixup, api_xml])
 
 api_xml = custom_target(pkg + '_api_xml',
         input: raw_api_fname,
