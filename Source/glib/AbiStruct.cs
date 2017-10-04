@@ -35,6 +35,9 @@ namespace GLib {
 	public class AbiStruct {
 		public OrderedDictionary Fields = null;
 
+		public AbiStruct(OrderedDictionary fields) {
+			Fields = fields;
+		}
 		public AbiStruct(List<GLib.AbiField> fields) {
 			Fields = new OrderedDictionary();
 

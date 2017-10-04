@@ -224,12 +224,24 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tstatic public " + _new + "GLib.AbiStruct " + info_name + " {");
 			sw.WriteLine ("\t\t\tget {");
 			sw.WriteLine ("\t\t\t\tif (_" + info_name + " == null)");
-			sw.WriteLine ("\t\t\t\t\t_" + info_name + " = new GLib.AbiStruct (new List<GLib.AbiField>{ ");
 
 			// Generate Tests
-			if (_fields.Count > 0 && gen_info.CAbiWriter != null) {
-				gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"sizeof({0})\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", sizeof({0}));", structname);
-				gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"sizeof({0})\\\": \\\"\" + {1}.{2}." + info_name + ".Size + \"\\\"\");", structname, NS, Name);
+			var using_parent_fields = false;
+			if (_fields.Count > 0) {
+				sw.WriteLine ("\t\t\t\t\t_" + info_name + " = new GLib.AbiStruct (new List<GLib.AbiField>{ ");
+
+				if (gen_info.CAbiWriter != null) {
+					gen_info.CAbiWriter.WriteLine("\tg_print(\"\\\"sizeof({0})\\\": \\\"%\" G_GOFFSET_FORMAT \"\\\"\\n\", sizeof({0}));", structname);
+					gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"sizeof({0})\\\": \\\"\" + {1}.{2}." + info_name + ".Size + \"\\\"\");", structname, NS, Name);
+				}
+			} else {
+				if (cs_parent_struct != "") {
+					sw.WriteLine ("\t\t\t\t\t_" + info_name + " = new GLib.AbiStruct ({0}.{1}.Fields);", cs_parent_struct, info_name);
+					using_parent_fields = true;
+				} else {
+					sw.WriteLine ("\t\t\t\t\t_" + info_name + " = new GLib.AbiStruct (new List<GLib.AbiField>{ ");
+					using_parent_fields = false;
+				}
 			}
 
 			StructABIField prev = null;
@@ -255,7 +267,8 @@ namespace GtkSharp.Generation {
 				gen_info.CAbiWriter.Flush();
 			}
 
-			sw.WriteLine ("\t\t\t\t\t});");
+			if (!using_parent_fields)
+				sw.WriteLine ("\t\t\t\t\t});");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\t\t\treturn _" + info_name + ";");
 			sw.WriteLine ("\t\t\t}");
