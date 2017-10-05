@@ -80,9 +80,15 @@ gapi_xml_installdir = join_paths(get_option('datadir'), 'gapi-3.0')
 
 schema = join_paths(meson.current_source_dir(), 'gapi.xsd')
 
+
+if host_machine.system() == 'windows'
+    pathsep = ';'
+else
+    pathsep = ':'
+endif
 mono_path = ''
 foreach d: [ 'glib',  'gio' ]
-    mono_path += ':' + join_paths(meson.current_build_dir(), d)
+    mono_path += pathsep + join_paths(meson.current_build_dir(), d)
 endforeach
 
 subdir('parser')
@@ -92,7 +98,7 @@ subdir('gio')
 
 cairo_dep = dependency('cairo', required: false)
 if cairo_dep.found()
-    mono_path += ':' + join_paths(meson.current_build_dir(), 'cairo')
+    mono_path += pathsep + join_paths(meson.current_build_dir(), 'cairo')
     subdir('cairo')
 else
     message('Cairo not found, not building')
@@ -100,7 +106,7 @@ endif
 
 pango_dep = dependency('pango', required: false)
 if pango_dep.found()
-    mono_path += ':' + join_paths(meson.current_build_dir(), 'pango')
+    mono_path += pathsep + join_paths(meson.current_build_dir(), 'pango')
     subdir('pango')
 else
     message('Pango not found, not building')
@@ -108,7 +114,7 @@ endif
 
 atk_dep = dependency('atk', required: false)
 if atk_dep.found()
-    mono_path += ':' + join_paths(meson.current_build_dir(), 'atk')
+    mono_path += pathsep + join_paths(meson.current_build_dir(), 'atk')
     subdir('atk')
 else
     message('Atk not found, not building')
@@ -116,7 +122,7 @@ endif
 
 gdk_dep = dependency('gdk-3.0', version: gtk_required_version, required: false)
 if gdk_dep.found() and atk_dep.found() and pango_dep.found()
-    mono_path += ':' + join_paths(meson.current_build_dir(), 'gdk')
+    mono_path += pathsep + join_paths(meson.current_build_dir(), 'gdk')
     subdir('gdk')
     has_gdk = true
 else
@@ -126,7 +132,7 @@ endif
 
 gtk_dep = dependency('gtk+-3.0', version: gtk_required_version, required: false)
 if gtk_dep.found() and atk_dep.found() and pango_dep.found()
-    mono_path += ':' + join_paths(meson.current_build_dir(), 'gtk')
+    mono_path += pathsep + join_paths(meson.current_build_dir(), 'gtk')
     subdir('gtk')
     subdir('sample/GtkDemo')
     subdir('sample/valtest')
@@ -151,7 +157,7 @@ foreach nugetinfo: nuget_infos
             '--builddir', meson.current_build_dir()]
 
     foreach dep: nugetinfo[2]
-        cmd += ['--dependency=' + dep + ':' + version]
+        cmd += ['--dependency=' + dep + pathsep + version]
     endforeach
 
     deps += [custom_target(nugetinfo[0] + '-nugget', command: cmd,
