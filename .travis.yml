@@ -1,13 +1,13 @@
+sudo: required
+
 language:
     - csharp
 
+services:
+    docker
+
 before_install:
-    - sudo apt-get install -y git python3-pip unzip build-essential libgtk-3-dev
-    - sudo apt-get build-dep -y libgtk-3-0
-    - wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
-    - unzip ninja-linux.zip
-    - sudo mv ninja /usr/bin/
-    - sudo pip3 install git+https://github.com/mesonbuild/meson/
+    - docker build -t gtk-sharp-debian9 .
 
 script:
-    - meson build/ && ninja -C build/ test
+    - docker run gtk-sharp-debian9
