@@ -1,7 +1,7 @@
 FROM debian:9
 
 RUN apt-get update && \
-    apt-get install -y git python3 python3-pip ninja-build mono-devel libgtk-3-dev
+    apt-get install -y git mono-devel libgtk-3-dev msbuild
 
 RUN pip3 install git+https://github.com/mesonbuild/meson/
 
