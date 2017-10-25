@@ -28,7 +28,7 @@ namespace Gdk {
 
 	public partial class PixbufLoader {
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgobject-2.0-0", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_ref (IntPtr handle);
 
 		internal IntPtr PixbufHandle {

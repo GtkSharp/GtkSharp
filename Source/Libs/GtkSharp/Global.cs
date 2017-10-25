@@ -20,7 +20,7 @@ namespace Gtk {
 
 	public partial class Global {
 
-		internal const string GtkNativeDll = "libgtk-3-0.dll";
+		internal const string GtkNativeDll = "libgtk-3-0";
 
 		public static bool ShowUri (string uri)
 		{

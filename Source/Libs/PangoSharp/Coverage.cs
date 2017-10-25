@@ -25,7 +25,7 @@ namespace Pango {
 
 	public partial class Coverage {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_coverage_to_bytes (IntPtr raw, out IntPtr bytes, out int n_bytes);
 
 		public void ToBytes(out byte[] bytes) 

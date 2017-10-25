@@ -25,7 +25,7 @@ namespace Pango {
 
 	public partial class Context {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_context_list_families(IntPtr raw, out IntPtr families, out int n_families);
 
 		public FontFamily [] Families {
@@ -46,7 +46,7 @@ namespace Pango {
 			}
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_context_list_families(IntPtr raw, IntPtr families, out int n_families);
 
 		[Obsolete]

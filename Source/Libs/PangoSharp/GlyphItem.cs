@@ -25,7 +25,7 @@ namespace Pango {
 
 	public partial struct GlyphItem {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_glyph_item_apply_attrs(ref Pango.GlyphItem raw, IntPtr text, IntPtr list);
 
 		public GlyphItem[] ApplyAttrs (string text, Pango.AttrList list)

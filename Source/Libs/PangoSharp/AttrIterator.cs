@@ -25,7 +25,7 @@ namespace Pango {
 
 	public partial class AttrIterator {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_attr_iterator_get_font(IntPtr raw, IntPtr desc, out IntPtr language, out IntPtr extra_attrs);
 
 		public void GetFont (out Pango.FontDescription desc, out Pango.Language language, out Pango.Attribute[] extra_attrs)
@@ -46,7 +46,7 @@ namespace Pango {
 				extra_attrs [i++] = Pango.Attribute.GetAttribute (raw_attr);
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_iterator_get_attrs (IntPtr raw);
 
 		public Pango.Attribute[] Attrs {

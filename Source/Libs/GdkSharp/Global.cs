@@ -26,7 +26,7 @@ namespace Gdk {
 
 	public partial class Global {
 
-		internal const string GdkNativeDll = "libgdk-3-0.dll";
+		internal const string GdkNativeDll = "libgdk-3-0";
 
 		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_list_visuals ();

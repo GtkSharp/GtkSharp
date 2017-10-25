@@ -25,7 +25,7 @@ namespace Pango {
 
 	public partial class FontFamily {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_font_family_list_faces(IntPtr raw, out IntPtr faces, out int n_faces);
 
 		public FontFace [] Faces {
@@ -46,7 +46,7 @@ namespace Pango {
 			}
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_font_family_list_faces(IntPtr raw, IntPtr faces, out int n_faces);
 
 		[Obsolete]

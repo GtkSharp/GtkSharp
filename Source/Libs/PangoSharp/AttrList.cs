@@ -25,10 +25,10 @@ namespace Pango {
 
 	public partial class AttrList {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attribute_copy (IntPtr raw);
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_attr_list_insert (IntPtr raw, IntPtr attr);
 
 		public void Insert (Pango.Attribute attr) 
@@ -36,7 +36,7 @@ namespace Pango {
 			pango_attr_list_insert (Handle, pango_attribute_copy (attr.Handle));
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_attr_list_insert_before (IntPtr raw, IntPtr attr);
 
 		public void InsertBefore (Pango.Attribute attr)

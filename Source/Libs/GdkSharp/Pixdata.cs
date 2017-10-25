@@ -23,7 +23,7 @@ namespace Gdk {
 
 	public partial struct Pixdata {
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgdk_pixbuf-2.0-0", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr gdk_pixdata_serialize (ref Gdk.Pixdata raw, out uint len);
 	
 		public byte [] Serialize () {

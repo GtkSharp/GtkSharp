@@ -77,7 +77,7 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libgobject-2.0-0", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_object_ref (IntPtr raw);
 
 		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]

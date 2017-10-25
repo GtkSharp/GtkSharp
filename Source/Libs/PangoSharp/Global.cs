@@ -25,7 +25,9 @@ namespace Pango {
 
 	public partial class Global {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static string PangoNativeDll = "libpango-1.0-0";
+
+		[DllImport (PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool pango_scan_int(IntPtr pos, out int out_param);
 
 		[Obsolete]
@@ -37,7 +39,7 @@ namespace Pango {
 			return ret;
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool pango_parse_markup (IntPtr markup, int length, uint accel_marker, out IntPtr attr_list_handle, out IntPtr text, out uint accel_char, IntPtr err);
 
 		public static bool ParseMarkup (string markup, char accel_marker, out Pango.AttrList attrs, out string text, out char accel_char)

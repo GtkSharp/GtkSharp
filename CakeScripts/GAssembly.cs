@@ -3,7 +3,7 @@ using P = System.IO.Path;
 
 public class GAssembly
 {
-    public static ICakeContext Cake;
+    private ICakeContext Cake;
 
     public bool Init { get; private set; }
     public string Name { get; private set; }
@@ -13,12 +13,13 @@ public class GAssembly
     public string RawApi { get; private set; }
     public string Metadata { get; private set; }
 
-    public string[] Includes { get; set; }
+    public string[] Deps { get; set; }
     public string ExtraArgs { get; set; }
 
     public GAssembly(string name)
     {
-        Includes = new string[0];
+        Cake = Settings.Cake;
+        Deps = new string[0];
 
         Name = name;
         Dir = P.Combine("Source", "Libs", name);
@@ -32,20 +33,21 @@ public class GAssembly
 
     public void Prepare()
     {
+        Cake.CreateDirectory(GDir);
+
         // Raw API file found, time to generate some stuff!!!
         if (Cake.FileExists(RawApi))
         {
-            Cake.DeleteDirectory(GDir, true);
-            Cake.CreateDirectory(GDir);
-
             // Fixup API file
             var tempapi = P.Combine(GDir, Name + "-api.xml");
             var symfile = P.Combine(Dir, Name + "-symbols.xml");
             Cake.CopyFile(RawApi, tempapi);
             GapiFixup.Run(tempapi, Metadata, Cake.FileExists(symfile) ? symfile : string.Empty);
 
+            var extraargs = ExtraArgs + " ";
+
             // Locate APIs to include
-            foreach(var dep in Includes)
+            foreach(var dep in Deps)
             {
                 var ipath = P.Combine("Source", "Libs", dep, dep + "-api.xml");
 
@@ -53,17 +55,14 @@ public class GAssembly
                     ipath = P.Combine("Source", "Libs", dep, "Generated", dep + "-api.xml");
 
                 if (Cake.FileExists(ipath))
-                {
-                    ExtraArgs += "--include=" + ipath + " ";
-                    ExtraArgs += "--include=" + ipath + " ";
-                }
+                    extraargs += " --include=" + ipath + " ";
             }
 
             // Generate code
-            GAssembly.Cake.DotNetCoreExecute(P.Combine("BuildOutput", "Generator", "GapiCodegen.dll"), 
+            Cake.DotNetCoreExecute("BuildOutput/Generator/GapiCodegen.dll", 
                 "--outdir=" + GDir + " " +
-                "--schema=" + P.Combine("Source", "Libs", "Gapi.xsd") + " " +
-                ExtraArgs + " " +
+                "--schema=Source/Libs/Gapi.xsd " +
+                extraargs + " " +
                 "--assembly-name=" + Name + " " +
                 "--generate=" + tempapi
             );
@@ -74,6 +73,7 @@ public class GAssembly
 
     public void Clean()
     {
-        Cake.DeleteDirectory(GDir, true);
+        if (Cake.DirectoryExists(GDir))
+            Cake.DeleteDirectory(GDir, new DeleteDirectorySettings { Recursive = true, Force = true });
     }
 }

@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrFallback : Attribute {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_fallback_new (bool fallback);
 
 		public AttrFallback (bool fallback) : this (pango_attr_fallback_new (fallback)) {}

@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrFamily : Attribute {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_family_new (IntPtr family);
 
 		public AttrFamily (string family) : base (NewAttrFamily (family)) {}

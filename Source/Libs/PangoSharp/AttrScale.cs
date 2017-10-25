@@ -23,7 +23,7 @@ namespace Pango {
 
 	public class AttrScale : Attribute {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_attr_scale_new (double scale);
 
 		public AttrScale (double scale) : this (pango_attr_scale_new (scale)) {}

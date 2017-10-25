@@ -26,7 +26,7 @@ namespace Pango {
 
 	public partial class Layout {
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_layout_get_lines(IntPtr raw);
 
 		public LayoutLine[] Lines {
@@ -43,7 +43,7 @@ namespace Pango {
 			}
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_layout_set_markup_with_accel (IntPtr raw, IntPtr markup, int length, uint accel_marker, out uint accel_char);
 
 		public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char)
@@ -55,7 +55,7 @@ namespace Pango {
 			accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_layout_get_log_attrs (IntPtr raw, out IntPtr attrs, out int n_attrs);
 
 		public LogAttr [] LogAttrs {
@@ -76,7 +76,7 @@ namespace Pango {
 			}
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_layout_set_text (IntPtr raw, IntPtr text, int length);
 
 		public void SetText (string text) 
@@ -86,7 +86,7 @@ namespace Pango {
 			GLib.Marshaller.Free (native_text);
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_layout_set_markup (IntPtr raw, IntPtr markup, int length);
 
 		public void SetMarkup (string markup) 

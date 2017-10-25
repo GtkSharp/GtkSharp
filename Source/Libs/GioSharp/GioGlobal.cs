@@ -24,6 +24,6 @@ namespace GLib
 {
 	public partial class GioGlobal
 	{
-		internal const string GioNativeDll = "libgio-2.0-0.dll";
+		internal const string GioNativeDll = "libgio-2.0-0";
 	}
 }

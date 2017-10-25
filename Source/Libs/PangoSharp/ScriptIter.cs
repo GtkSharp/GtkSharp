@@ -27,7 +27,7 @@ namespace Pango {
 
 		public ScriptIter(IntPtr raw) : base(raw) {}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr pango_script_iter_new(IntPtr text, int length);
 
 		public ScriptIter (string text)
@@ -36,7 +36,7 @@ namespace Pango {
 			Raw = pango_script_iter_new (native_text, -1);
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_script_iter_free (IntPtr raw);
 
 		~ScriptIter ()
@@ -46,10 +46,10 @@ namespace Pango {
 			Raw = IntPtr.Zero;
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void pango_script_iter_get_range (IntPtr raw, out IntPtr start, out IntPtr end, out Pango.Script script);
 
-		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libglib-2.0-0", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr g_utf8_pointer_to_offset (IntPtr str, IntPtr pos);
 
 		public void GetRange (out int start, out int len, out Pango.Script script)
@@ -62,7 +62,7 @@ namespace Pango {
 			len = (int)g_utf8_pointer_to_offset (start_ptr, end_ptr);
 		}
 
-		[DllImport ("libpango-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool pango_script_iter_next (IntPtr raw);
 
 		public bool Next ()

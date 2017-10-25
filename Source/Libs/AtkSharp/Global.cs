@@ -28,7 +28,7 @@ namespace Atk {
 
 	public partial class Global {
 
-		[DllImport ("libatk-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport ("libatk-1.0-0", CallingConvention = CallingConvention.Cdecl)]
 		static extern uint atk_add_global_event_listener (GLib.Signal.EmissionHookNative hook, IntPtr event_type);
 		
 		public static uint AddGlobalEventListener (GLib.Signal.EmissionHook hook, string event_type)
