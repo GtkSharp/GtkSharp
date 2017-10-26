@@ -25,7 +25,7 @@ namespace Pango {
 
 	public partial class Global {
 
-		public static string PangoNativeDll = "libpango-1.0-0";
+		internal const string PangoNativeDll = "libpango-1.0-0";
 
 		[DllImport (PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern bool pango_scan_int(IntPtr pos, out int out_param);

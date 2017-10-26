@@ -14,6 +14,7 @@ public class GAssembly
     public string Metadata { get; private set; }
 
     public string[] Deps { get; set; }
+    public string[] NativeDeps { get; set; }
     public string ExtraArgs { get; set; }
 
     public GAssembly(string name)
@@ -42,7 +43,10 @@ public class GAssembly
             var tempapi = P.Combine(GDir, Name + "-api.xml");
             var symfile = P.Combine(Dir, Name + "-symbols.xml");
             Cake.CopyFile(RawApi, tempapi);
-            GapiFixup.Run(tempapi, Metadata, Cake.FileExists(symfile) ? symfile : string.Empty);
+            Cake.DotNetCoreExecute("BuildOutput/Tools/GapiFixup.dll", 
+                "--metadata=" + Metadata + " " + "--api=" + tempapi + 
+                (Cake.FileExists(symfile) ? " --symbols=" + symfile : string.Empty)
+            );
 
             var extraargs = ExtraArgs + " ";
 
@@ -59,7 +63,7 @@ public class GAssembly
             }
 
             // Generate code
-            Cake.DotNetCoreExecute("BuildOutput/Generator/GapiCodegen.dll", 
+            Cake.DotNetCoreExecute("BuildOutput/Tools/GapiCodegen.dll", 
                 "--outdir=" + GDir + " " +
                 "--schema=Source/Libs/Gapi.xsd " +
                 extraargs + " " +
@@ -75,5 +79,22 @@ public class GAssembly
     {
         if (Cake.DirectoryExists(GDir))
             Cake.DeleteDirectory(GDir, new DeleteDirectorySettings { Recursive = true, Force = true });
+    }
+
+    public void GenerateLinuxStubs()
+    {
+        for (int i = 0; i < NativeDeps.Length; i += 2)
+        {
+            Cake.CreateDirectory(P.Combine(Dir, "linux-x64"));
+            Cake.CreateDirectory(P.Combine(Dir, "linux-x86"));
+
+            // Generate x64 stub
+            Cake.StartProcess("gcc", "-shared -o BuildOutput/LinuxStubs/" + NativeDeps[i] + " BuildOutput/LinuxStubs/empty.c");
+            Cake.StartProcess("gcc", "-Wl,--no-as-needed -shared -o " + P.Combine(Dir, "linux-x64", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:BuildOutput/LinuxStubs/" + NativeDeps[i] + "");
+
+            // GEnerate x86 stub
+            Cake.StartProcess("gcc", "-m32 -shared -o BuildOutput/LinuxStubs/" + NativeDeps[i] + " BuildOutput/LinuxStubs/empty.c");
+            Cake.StartProcess("gcc", "-m32 -Wl,--no-as-needed -shared -o " + P.Combine(Dir, "linux-x86", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:BuildOutput/LinuxStubs/" + NativeDeps[i] + "");
+        }
     }
 }
