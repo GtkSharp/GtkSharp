@@ -106,6 +106,19 @@ Task("PackageNuGet")
         DotNetCorePack(gassembly.Csproj, settings);
 });
 
+Task("PackageTemplates")
+    .IsDependentOn("Init")
+    .Does(() =>
+{
+    var settings = new NuGetPackSettings
+    {
+        BasePath = "Source/Templates/NetCore/GtkSharp.Template.CSharp",
+        OutputDirectory = "BuildOutput/NugetPackages"
+    };
+
+    NuGetPack("Source/Templates/NetCore/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.nuspec", settings);
+});
+
 // TASK TARGETS
 
 Task("Default")
