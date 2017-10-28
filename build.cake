@@ -32,18 +32,18 @@ var glist = new List<GAssembly>()
         NativeDeps = new[] { "libatk-1.0.so.0", "libatk-1.0-0" },
         ExtraArgs = "--abi-cs-usings=Atk,GLib"
     },
-    new GAssembly("CairSharp")
+    new GAssembly("CairoSharp")
     {
         NativeDeps = new[] { "libcairo.so.2", "libcairo-2" }
     },
     new GAssembly("PangoSharp")
     {
-        Deps = new[] { "GLibSharp", "CairSharp" },
+        Deps = new[] { "GLibSharp", "CairoSharp" },
         NativeDeps = new[] { "libpango-1.0.so.0", "libpango-1.0-0" }
     },
     new GAssembly("GdkSharp")
     {
-        Deps = new[] { "GLibSharp", "GioSharp", "CairSharp", "PangoSharp" },
+        Deps = new[] { "GLibSharp", "GioSharp", "CairoSharp", "PangoSharp" },
         NativeDeps = new[] {
             "libgdk-3.so.0", "libgdk-3-0",
             "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0-0"
@@ -51,7 +51,7 @@ var glist = new List<GAssembly>()
     },
     new GAssembly("GtkSharp")
     {
-        Deps = new[] { "GLibSharp", "GioSharp", "AtkSharp", "CairSharp", "PangoSharp", "GdkSharp" },
+        Deps = new[] { "GLibSharp", "GioSharp", "AtkSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
         NativeDeps = new[] { "libgtk-3.so.0", "libgtk-3-0" },
         ExtraArgs = "--abi-cs-usings=Gtk,GLib"
     }
@@ -86,7 +86,7 @@ Task("Prepare")
     // Generate code and prepare libs projects
     foreach(var gassembly in list)
         gassembly.Prepare();
-    DotNetCoreRestore("Source/Libs/GLibSharp.sln");
+    DotNetCoreRestore("Source/Libs/GtkSharp.sln");
 });
 
 Task("GenerateLinuxStubs")
@@ -126,7 +126,7 @@ Task("Build")
     };
 
     if (list.Count == glist.Count)
-        DotNetCoreBuild("Source/Libs/GLibSharp.sln", settings);
+        DotNetCoreBuild("Source/Libs/GtkSharp.sln", settings);
     else
     {
         foreach(var gassembly in list)
