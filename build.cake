@@ -18,7 +18,7 @@ Task("Init")
     .Does(() =>
 {
     // Assign some common properties
-    msbuildsettings = msbuildsettings.WithProperty("Version", "3.22.24.7");
+    msbuildsettings = msbuildsettings.WithProperty("Version", "3.22.24.9");
     msbuildsettings = msbuildsettings.WithProperty("Authors", "'GtkSharp Contributors'");
     msbuildsettings = msbuildsettings.WithProperty("PackageLicenseUrl", "'https://github.com/cra0zy/GtkSharp/blob/cakecore/LICENSE'");
 
