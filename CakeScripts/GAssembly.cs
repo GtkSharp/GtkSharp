@@ -85,16 +85,20 @@ public class GAssembly
     {
         for (int i = 0; i < NativeDeps.Length; i += 2)
         {
+            // Generate x64 stubs
             Cake.CreateDirectory(P.Combine(Dir, "linux-x64"));
-            Cake.CreateDirectory(P.Combine(Dir, "linux-x86"));
-
-            // Generate x64 stub
             Cake.StartProcess("gcc", "-shared -o BuildOutput/LinuxStubs/" + NativeDeps[i] + " BuildOutput/LinuxStubs/empty.c");
             Cake.StartProcess("gcc", "-Wl,--no-as-needed -shared -o " + P.Combine(Dir, "linux-x64", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:BuildOutput/LinuxStubs/" + NativeDeps[i] + "");
 
-            // GEnerate x86 stub
+            // Generate x86 stubs
+            Cake.CreateDirectory(P.Combine(Dir, "linux-x86"));
             Cake.StartProcess("gcc", "-m32 -shared -o BuildOutput/LinuxStubs/" + NativeDeps[i] + " BuildOutput/LinuxStubs/empty.c");
             Cake.StartProcess("gcc", "-m32 -Wl,--no-as-needed -shared -o " + P.Combine(Dir, "linux-x86", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:BuildOutput/LinuxStubs/" + NativeDeps[i] + "");
+
+            // Generate arm stubs
+            Cake.CreateDirectory(P.Combine(Dir, "linux-arm"));
+            Cake.StartProcess("arm-none-eabi-gcc", "-shared -o BuildOutput/LinuxStubs/" + NativeDeps[i] + " BuildOutput/LinuxStubs/empty.c");
+            Cake.StartProcess("arm-none-eabi-gcc", "-Wl,--no-as-needed -shared -o " + P.Combine(Dir, "linux-arm", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:BuildOutput/LinuxStubs/" + NativeDeps[i] + "");
         }
     }
 }
