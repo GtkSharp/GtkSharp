@@ -17,11 +17,13 @@ var list = new List<GAssembly>();
 Task("Init")
     .Does(() =>
 {
-    // Assign version
-    msbuildsettings = msbuildsettings.WithProperty("Version", "3.0.0.0");
-    msbuildsettings = msbuildsettings.WithProperty("Authors", "'GLibSharp Team'");
+    // Assign some common properties
+    msbuildsettings = msbuildsettings.WithProperty("Version", "3.22.24.0");
+    msbuildsettings = msbuildsettings.WithProperty("Authors", "'GtkSharp Contributors'");
+    msbuildsettings = msbuildsettings.WithProperty("PackageLicenseUrl", "'https://github.com/cra0zy/GtkSharp/blob/cakecore/LICENSE'");
 
     // Add stuff to list
+    Settings.Init();
     foreach(var gassembly in Settings.AssemblyList)
         if(string.IsNullOrEmpty(Settings.Assembly) || Settings.Assembly == gassembly.Name)
             list.Add(gassembly);
