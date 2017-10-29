@@ -83,22 +83,28 @@ public class GAssembly
 
     public void GenerateLinuxStubs()
     {
+        var basedir = P.Combine("..", "..", Dir);
+
+        Cake.DeleteDirectory(P.Combine(basedir, "linux-x86"), new DeleteDirectorySettings { Recursive = true, Force = true });
+        Cake.DeleteDirectory(P.Combine(basedir, "linux-x64"), new DeleteDirectorySettings { Recursive = true, Force = true });
+        Cake.DeleteDirectory(P.Combine(basedir, "linux-arm"), new DeleteDirectorySettings { Recursive = true, Force = true });
+
         for (int i = 0; i < NativeDeps.Length; i += 2)
         {
-            // Generate x64 stubs
-            Cake.CreateDirectory(P.Combine(Dir, "linux-x64"));
-            Cake.StartProcess("gcc", "-shared -o BuildOutput/LinuxStubs/" + NativeDeps[i] + " BuildOutput/LinuxStubs/empty.c");
-            Cake.StartProcess("gcc", "-Wl,--no-as-needed -shared -o " + P.Combine(Dir, "linux-x64", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:BuildOutput/LinuxStubs/" + NativeDeps[i] + "");
-
             // Generate x86 stubs
-            Cake.CreateDirectory(P.Combine(Dir, "linux-x86"));
-            Cake.StartProcess("gcc", "-m32 -shared -o BuildOutput/LinuxStubs/" + NativeDeps[i] + " BuildOutput/LinuxStubs/empty.c");
-            Cake.StartProcess("gcc", "-m32 -Wl,--no-as-needed -shared -o " + P.Combine(Dir, "linux-x86", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:BuildOutput/LinuxStubs/" + NativeDeps[i] + "");
+            Cake.CreateDirectory(P.Combine(basedir, "linux-x86"));
+            Cake.StartProcess("gcc", "-m32 -shared -o " + NativeDeps[i] + " empty.c");
+            Cake.StartProcess("gcc", "-m32 -Wl,--no-as-needed -shared -o " + P.Combine(basedir, "linux-x86", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:" + NativeDeps[i] + "");
+
+            // Generate x64 stubs
+            Cake.CreateDirectory(P.Combine(basedir, "linux-x64"));
+            Cake.StartProcess("gcc", "-shared -o " + NativeDeps[i] + " empty.c");
+            Cake.StartProcess("gcc", "-Wl,--no-as-needed -shared -o " + P.Combine(basedir, "linux-x64", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:" + NativeDeps[i] + "");
 
             // Generate arm stubs
-            Cake.CreateDirectory(P.Combine(Dir, "linux-arm"));
-            Cake.StartProcess("arm-none-eabi-gcc", "-shared -o BuildOutput/LinuxStubs/" + NativeDeps[i] + " BuildOutput/LinuxStubs/empty.c");
-            Cake.StartProcess("arm-none-eabi-gcc", "-Wl,--no-as-needed -shared -o " + P.Combine(Dir, "linux-arm", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:BuildOutput/LinuxStubs/" + NativeDeps[i] + "");
+            Cake.CreateDirectory(P.Combine(basedir, "linux-arm"));
+            Cake.StartProcess("arm-none-eabi-gcc", "-shared -o " + NativeDeps[i] + " empty.c");
+            Cake.StartProcess("arm-none-eabi-gcc", "-Wl,--no-as-needed -shared -o " + P.Combine(basedir, "linux-arm", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:" + NativeDeps[i] + "");
         }
     }
 }

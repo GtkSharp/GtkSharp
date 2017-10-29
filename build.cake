@@ -18,7 +18,7 @@ Task("Init")
     .Does(() =>
 {
     // Assign some common properties
-    msbuildsettings = msbuildsettings.WithProperty("Version", "3.22.24.0");
+    msbuildsettings = msbuildsettings.WithProperty("Version", "3.22.24.7");
     msbuildsettings = msbuildsettings.WithProperty("Authors", "'GtkSharp Contributors'");
     msbuildsettings = msbuildsettings.WithProperty("PackageLicenseUrl", "'https://github.com/cra0zy/GtkSharp/blob/cakecore/LICENSE'");
 
@@ -51,9 +51,11 @@ Task("GenerateLinuxStubs")
     .Does(() => 
 {
     CreateDirectory("BuildOutput/LinuxStubs");
-    FileWriteText("BuildOutput/LinuxStubs/empty.c", "");
+    System.IO.Directory.SetCurrentDirectory("BuildOutput/LinuxStubs");
+    FileWriteText("empty.c", "");
     foreach(var gassembly in list)
         gassembly.GenerateLinuxStubs();
+    System.IO.Directory.SetCurrentDirectory("../..");
     DeleteDirectory("BuildOutput/LinuxStubs", new DeleteDirectorySettings { Recursive = true, Force = true });
 });
 
