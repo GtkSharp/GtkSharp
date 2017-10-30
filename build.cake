@@ -6,7 +6,7 @@
 // VARS
 
 Settings.Cake = Context;
-Settings.Version = "3.22.24.10";
+Settings.Version = "3.22.24.11";
 Settings.BuildTarget = Argument("BuildTarget", "Default");
 Settings.Assembly = Argument("Assembly", "");
 
