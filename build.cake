@@ -6,6 +6,7 @@
 // VARS
 
 Settings.Cake = Context;
+Settings.Version = "3.22.24.10";
 Settings.BuildTarget = Argument("BuildTarget", "Default");
 Settings.Assembly = Argument("Assembly", "");
 
@@ -18,7 +19,7 @@ Task("Init")
     .Does(() =>
 {
     // Assign some common properties
-    msbuildsettings = msbuildsettings.WithProperty("Version", "3.22.24.9");
+    msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
     msbuildsettings = msbuildsettings.WithProperty("Authors", "'GtkSharp Contributors'");
     msbuildsettings = msbuildsettings.WithProperty("PackageLicenseUrl", "'https://github.com/cra0zy/GtkSharp/blob/cakecore/LICENSE'");
 
@@ -117,7 +118,8 @@ Task("PackageTemplates")
     var settings = new NuGetPackSettings
     {
         BasePath = "Source/Templates/NetCore/GtkSharp.Template.CSharp",
-        OutputDirectory = "BuildOutput/NugetPackages"
+        OutputDirectory = "BuildOutput/NugetPackages",
+        Version = Settings.Version
     };
 
     NuGetPack("Source/Templates/NetCore/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.nuspec", settings);
