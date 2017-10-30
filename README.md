@@ -2,6 +2,8 @@
 
 GtkSharp is a C# wrapper for Gtk and its related components. The component list includes the following libraries: glib, gio, cairo, pango, atk, gdk.
 
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/GtkSharp/Lobby)
+
 * [Building from source](#building-from-source)
 * [Using the library](#using-the-library)
 * [License](#license)
