@@ -32,6 +32,16 @@ A breakdown on how the source is structured:
 
 On both Windows and Linux the library assumes that you have Gtk installed on your system. See [Installing Gtk on Windows](https://github.com/cra0zy/GtkSharp/wiki/Installing-Gtk-on-Windows) wiki page for more details on how to do it on Windows.
 
+Available NuGet packages:
+
+* [GtkSharp](https://www.nuget.org/packages/GtkSharp/)
+* [GdkSharp](https://www.nuget.org/packages/GdkSharp/)
+* [GioSharp](https://www.nuget.org/packages/GioSharp/)
+* [GLibSharp](https://www.nuget.org/packages/GLibSharp/)
+* [AtkSharp](https://www.nuget.org/packages/AtkSharp/)
+* [PangoSharp](https://www.nuget.org/packages/PangoSharp/)
+* [CairoSharp](https://www.nuget.org/packages/CairoSharp/)
+
 To create a new gtk app project, simply use `dotnet new` templating engine:
 
 * install: `dotnet new --install GtkSharp.Template.CSharp`
