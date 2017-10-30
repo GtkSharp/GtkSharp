@@ -13,7 +13,7 @@ Pre requirements for building from source are that you have .Net Core and msbuil
 To build the repository, first clone it:
 
 ```sh
-git clone https://github.com/cra0zy/GtkSharp.git
+git clone https://github.com/GtkSharp/GtkSharp.git
 cd GtkSharp
 ```
 
