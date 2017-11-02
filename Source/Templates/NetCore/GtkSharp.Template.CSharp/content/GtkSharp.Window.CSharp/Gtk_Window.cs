@@ -11,13 +11,6 @@ namespace GtkNamespace
         private Gtk_Window(Builder builder) : base(builder.GetObject("Gtk_Window").Handle)
         {
             builder.Autoconnect(this);
-
-            DeleteEvent += OnDeleteEvent;
-        }
-
-        private void OnDeleteEvent(object sender, DeleteEventArgs a)
-        {
-            Application.Quit();
         }
     }
 }

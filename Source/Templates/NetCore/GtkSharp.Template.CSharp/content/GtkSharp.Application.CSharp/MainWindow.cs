@@ -19,11 +19,11 @@ namespace GtkNamespace
         {
             builder.Autoconnect(this);
 
-            DeleteEvent += OnDeleteEvent;
+            DeleteEvent += Window_DeleteEvent;
             _button1.Clicked += Button1_Clicked;
         }
 
-        private void OnDeleteEvent(object sender, DeleteEventArgs a)
+        private void Window_DeleteEvent(object sender, DeleteEventArgs a)
         {
             Application.Quit();
         }

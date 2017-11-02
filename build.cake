@@ -123,6 +123,7 @@ Task("PackageTemplates")
     };
 
     NuGetPack("Source/Templates/NetCore/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.nuspec", settings);
+    NuGetPack("Source/Templates/NetCore/GtkSharp.Template.VBNet/GtkSharp.Template.VBNet.nuspec", settings);
 });
 
 // TASK TARGETS

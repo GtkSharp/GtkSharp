@@ -10,12 +10,13 @@ namespace GtkNamespace
 
         private Gtk_Dialog(Builder builder) : base(builder.GetObject("Gtk_Dialog").Handle)
         {
+            builder.Autoconnect(this);
             DefaultResponse = ResponseType.Cancel;
 
-            Response += OnResponse;
+            Response += Dialog_Response;
         }
 
-        private void OnResponse(object o, ResponseArgs args)
+        private void Dialog_Response(object o, ResponseArgs args)
         {
             Hide();
         }

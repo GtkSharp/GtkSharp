@@ -10,7 +10,7 @@ namespace GtkNamespace
 
         private Gtk_Widget(Builder builder) : base(builder.GetObject("Gtk_Widget").Handle)
         {
-            
+            builder.Autoconnect(this);
         }
     }
 }
