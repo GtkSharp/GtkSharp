@@ -117,12 +117,14 @@ Task("PackageTemplates")
 {
     var settings = new NuGetPackSettings
     {
-        BasePath = "Source/Templates/NetCore/GtkSharp.Template.CSharp",
         OutputDirectory = "BuildOutput/NugetPackages",
         Version = Settings.Version
     };
 
+    settings.BasePath = "Source/Templates/NetCore/GtkSharp.Template.CSharp";
     NuGetPack("Source/Templates/NetCore/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.nuspec", settings);
+
+    settings.BasePath = "Source/Templates/NetCore/GtkSharp.Template.VBNet";
     NuGetPack("Source/Templates/NetCore/GtkSharp.Template.VBNet/GtkSharp.Template.VBNet.nuspec", settings);
 });
 
