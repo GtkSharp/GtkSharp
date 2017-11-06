@@ -52,6 +52,10 @@ class Settings
                 Deps = new[] { "GLibSharp", "GioSharp", "AtkSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
                 NativeDeps = new[] { "libgtk-3.so.0", "libgtk-3-0.dll" },
                 ExtraArgs = "--abi-cs-usings=Gtk,GLib"
+            },
+            new GAssembly("GstSharp")
+            {
+                Deps = new[] { "GLibSharp", "GioSharp" }
             }
         };
     }
