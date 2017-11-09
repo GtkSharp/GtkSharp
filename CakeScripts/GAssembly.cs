@@ -85,10 +85,18 @@ public class GAssembly
     {
         var basedir = P.Combine("..", "..", Dir);
 
-        Cake.DeleteDirectory(P.Combine(basedir, "linux-x86"), new DeleteDirectorySettings { Recursive = true, Force = true });
-        Cake.DeleteDirectory(P.Combine(basedir, "linux-x64"), new DeleteDirectorySettings { Recursive = true, Force = true });
-        Cake.DeleteDirectory(P.Combine(basedir, "linux-arm"), new DeleteDirectorySettings { Recursive = true, Force = true });
+        if (Cake.DirectoryExists(P.Combine(basedir, "linux-x86")))
+            Cake.DeleteDirectory(P.Combine(basedir, "linux-x86"), new DeleteDirectorySettings { Recursive = true, Force = true });
+        Cake.CreateDirectory(P.Combine(basedir, "linux-x86"));
 
+        if (Cake.DirectoryExists(P.Combine(basedir, "linux-x64")))
+            Cake.DeleteDirectory(P.Combine(basedir, "linux-x64"), new DeleteDirectorySettings { Recursive = true, Force = true });
+        Cake.CreateDirectory(P.Combine(basedir, "linux-x64"));
+
+        if (Cake.DirectoryExists(P.Combine(basedir, "linux-arm")))
+            Cake.DeleteDirectory(P.Combine(basedir, "linux-arm"), new DeleteDirectorySettings { Recursive = true, Force = true });
+        Cake.CreateDirectory(P.Combine(basedir, "linux-arm"));
+        
         for (int i = 0; i < NativeDeps.Length; i += 2)
         {
             // Generate x86 stubs
