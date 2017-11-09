@@ -36,9 +36,9 @@ Task("Prepare")
 {
     // Build tools
     DotNetCoreRestore("Source/Tools/Tools.sln");
-    MSBuild("Source/Tools/Tools.sln", new MSBuildSettings {
-        Verbosity = Verbosity.Minimal,
-        Configuration = "Release",
+    DotNetCoreBuild("Source/Tools/Tools.sln", new DotNetCoreBuildSettings {
+        Verbosity = DotNetCoreVerbosity.Minimal,
+        Configuration = "Release"
     });
 
     // Generate code and prepare libs projects
