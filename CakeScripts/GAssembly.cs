@@ -1,5 +1,6 @@
 using System;
 using P = System.IO.Path;
+using F = System.IO.File;
 
 public class GAssembly
 {
@@ -84,6 +85,7 @@ public class GAssembly
     public void GenerateLinuxStubs()
     {
         var basedir = P.Combine("..", "..", Dir);
+        var lines = new List<string>();
 
         if (Cake.DirectoryExists(P.Combine(basedir, "linux-x86")))
             Cake.DeleteDirectory(P.Combine(basedir, "linux-x86"), new DeleteDirectorySettings { Recursive = true, Force = true });
@@ -97,8 +99,11 @@ public class GAssembly
             Cake.DeleteDirectory(P.Combine(basedir, "linux-arm"), new DeleteDirectorySettings { Recursive = true, Force = true });
         Cake.CreateDirectory(P.Combine(basedir, "linux-arm"));
         
+        lines.Add("<configuration>");
         for (int i = 0; i < NativeDeps.Length; i += 2)
         {
+            lines.Add("  <dllmap dll=\"" + NativeDeps[i + 1] +"\" target=\"" + NativeDeps[i] + "\"/>");
+
             // Generate x86 stubs
             Cake.CreateDirectory(P.Combine(basedir, "linux-x86"));
             Cake.StartProcess("gcc", "-m32 -shared -o " + NativeDeps[i] + " empty.c");
@@ -114,5 +119,8 @@ public class GAssembly
             Cake.StartProcess("arm-none-eabi-gcc", "-shared -o " + NativeDeps[i] + " empty.c");
             Cake.StartProcess("arm-none-eabi-gcc", "-Wl,--no-as-needed -shared -o " + P.Combine(basedir, "linux-arm", NativeDeps[i + 1] + ".so") + " -fPIC -L. -l:" + NativeDeps[i] + "");
         }
+        lines.Add("</configuration>");
+
+        F.WriteAllLines(P.Combine(basedir, Name + ".dll.config"), lines.ToArray());
     }
 }
