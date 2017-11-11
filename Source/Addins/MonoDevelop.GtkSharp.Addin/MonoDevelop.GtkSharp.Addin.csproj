@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\MonoDevelop.Addins.0.4.1\build\MonoDevelop.Addins.props" Condition="Exists('packages\MonoDevelop.Addins.0.4.1\build\MonoDevelop.Addins.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -36,19 +37,6 @@
     <EmbeddedResource Include="Properties\Manifest.addin.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Templates\Projects\GtkSharpProject.CS.xpt.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Projects\Data\Program.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Projects\Data\MainWindow.glade">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Projects\Data\MainWindow.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Templates\File\Window.CS.xft.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -76,21 +64,25 @@
     <None Include="Templates\File\Widget.CS.xft.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Projects\GtkSharpProject.FS.xpt.xml">
+    <None Include="packages.config" />
+    <None Include="Templates\GtkSharp.Template.CSharp.nupkg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="glade.sh">
-      <LogicalName>glade.sh</LogicalName>
+    <None Include="Templates\GtkSharp.Template.VBNet.nupkg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
-    <Folder Include="Templates\Projects\" />
-    <Folder Include="Templates\Projects\Data\" />
     <Folder Include="Templates\File\" />
     <Folder Include="Templates\File\Data\" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="dbus-sharp">
+      <HintPath>References\dbus-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MonoDevelop.Addins.0.3.3\build\net40\MonoDevelop.Addins.targets" Condition="Exists('..\packages\MonoDevelop.Addins.0.3.3\build\net40\MonoDevelop.Addins.targets')" />
+  <Import Project="packages\MonoDevelop.Addins.0.4.1\build\MonoDevelop.Addins.targets" Condition="Exists('packages\MonoDevelop.Addins.0.4.1\build\MonoDevelop.Addins.targets')" />
 </Project>

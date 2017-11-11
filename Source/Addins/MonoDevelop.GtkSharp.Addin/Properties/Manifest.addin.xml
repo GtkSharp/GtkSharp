@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ExtensionModel>
-    <Dependencies>
-        <Addin id="MonoDevelop.Ide" version="7.1"/>
-        <Addin id="MonoDevelop.Core" version="7.1"/>
-    </Dependencies> 
-    
     <Runtime>
-        <Import file="glade.sh" />
-        
         <!-- Project Templates -->
-        <Import file="Templates/Projects/Data/MainWindow.cs" />
-        <Import file="Templates/Projects/Data/MainWindow.glade" />
-        <Import file="Templates/Projects/Data/Program.cs" />
-        <Import file="Templates/Projects/GtkSharpProject.CS.xpt.xml" />
-        <Import file="Templates/Projects/GtkSharpProject.FS.xpt.xml" />
-
+        <Import file="Templates/GtkSharp.Template.CSharp.nupkg" />
+        <Import file="Templates/GtkSharp.Template.VBNet.nupkg" />
+		
         <!-- File Templates -->
         <Import file="Templates/File/Data/Dialog.cs" />
         <Import file="Templates/File/Data/Dialog.glade" />
@@ -35,14 +25,26 @@
     </Extension>
     
     <Extension path="/MonoDevelop/Ide/ProjectTemplateCategories/multiplat/app">
-        <Category id="gtk" name="Gtk#" />
+        <Category id="gtk" name="Gtk" />
     </Extension>
-    
-    <Extension path="/MonoDevelop/Ide/ProjectTemplates">
-        <ProjectTemplate id="gtk-cs-project" file="Templates/Projects/GtkSharpProject.CS.xpt.xml" />
-        
-        <!-- TODO: Implement fsharp template -->
-        <!--ProjectTemplate id="gtk-fs-project" file="Templates/Projects/GtkSharpProject.FS.xpt.xml" /-->
+
+	<Extension path="/MonoDevelop/Ide/Templates">
+        <Template
+            id="GtkSharp.Application.CSharp"
+            _overrideDescription="Creates a new Gtk multiplatform application."
+            path="Templates/GtkSharp.Template.CSharp.nupkg"
+            category="multiplat/app/gtk"
+            icon="md-gui-project"
+            imageId="md-gui-project"
+            defaultParameters="targetframework=net471" />
+        <Template
+            id="GtkSharp.Application.VBNet"
+            _overrideDescription="Creates a new Gtk multiplatform application."
+            path="Templates/GtkSharp.Template.VBNet.nupkg"
+            category="multiplat/app/gtk"
+            icon="md-gui-project"
+            imageId="md-gui-project"
+            defaultParameters="targetframework=net471" />
     </Extension>
     
     <Extension path="/MonoDevelop/Ide/FileTemplates">

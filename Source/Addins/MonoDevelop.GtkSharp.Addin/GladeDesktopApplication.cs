@@ -1,30 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using Microsoft.Win32;
+using System.Text;
+using DBus;
+using MonoDevelop.Ide.Commands;
 using MonoDevelop.Ide.Desktop;
 
 namespace MonoDevelop.GtkSharp.Addin
 {
     public class GladeDesktopApplication : DesktopApplication
     {
-        private static readonly string s_unixgladeapp;
-
-        static GladeDesktopApplication()
-        {
-            try
-            {
-                var assembly = typeof(GladeDesktopApplication).Assembly.Location;
-                var gladesh = Path.Combine(Path.GetDirectoryName(assembly), "glade.sh");
-
-                s_unixgladeapp = "-c '" + File.ReadAllText(gladesh) + "'";
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-        }
-
         private readonly string _filename;
 
         public GladeDesktopApplication(string filename) : base("GladeApp", "Glade", true)
@@ -36,25 +21,28 @@ namespace MonoDevelop.GtkSharp.Addin
         {
             try
             {
-                var process = new Process();
-
-                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                if (Environment.OSVersion.Platform != PlatformID.Win32NT)
                 {
-                    var location = Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\GNOME Foundation Glade Interface Designer", "InstallLocation", "");
-                    if (location != null)
+                    var bus = Bus.Session.GetObject<IFlatpak>("org.freedesktop.Flatpak", new ObjectPath("/org/freedesktop/Flatpak/Development"));
+
+                    if (bus != null)
                     {
-                        process.StartInfo.FileName = Path.Combine(location.ToString(), "bin", "glade.exe");
-                        process.StartInfo.Arguments = _filename;
+                        var pid = bus.HostCommand(
+                            new byte[0],
+                            new byte[][] {
+                                Encoding.ASCII.GetBytes ("xdg-open\0"),
+                                Encoding.ASCII.GetBytes (_filename + "\0")
+                            },
+                            new Dictionary<UInt32, UnixFD> { },
+                            new Dictionary<string, string> { },
+                            0
+                        );
+
+                        return;
                     }
                 }
-                else
-                {
-                    process.StartInfo.FileName = "bash";
-                    process.StartInfo.Arguments = s_unixgladeapp.Replace("$@", _filename);
-                }
 
-                if (!string.IsNullOrEmpty(process.StartInfo.FileName))
-                    process.Start();
+                Process.Start(_filename);
             }
             catch (Exception ex)
             {
