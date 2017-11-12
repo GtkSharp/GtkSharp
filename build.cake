@@ -6,7 +6,7 @@
 // VARS
 
 Settings.Cake = Context;
-Settings.Version = "3.22.24.15";
+Settings.Version = "3.22.24.16";
 Settings.BuildTarget = Argument("BuildTarget", "Default");
 Settings.Assembly = Argument("Assembly", "");
 
@@ -132,6 +132,10 @@ Task("PackageTemplates")
 
 Task("Default")
     .IsDependentOn("Build");
+    
+Task("FullBuild")
+    .IsDependentOn("PackageNuGet")
+	.IsDependentOn("PackageTemplates");
 
 // EXECUTION
 
