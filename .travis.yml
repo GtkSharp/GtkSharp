@@ -3,4 +3,14 @@ mono: latest
 dotnet: 2.0.0
 dist: trusty
 script:
- - ./build.sh
+- "./build.sh"
+deploy:
+  provider: releases
+  api_key:
+    secure: $TOKEN
+  file: BuildOutput/NugetPackages/*
+  skip_cleanup: true
+  on:
+    branch: master
+    repo: GtkSharp/GtkSharp
+    tags: true
