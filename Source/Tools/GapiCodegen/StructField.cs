@@ -152,8 +152,8 @@ namespace GtkSharp.Generation {
 
 		public bool IsPadding {
 			get {
-				if (elem.GetAttributeAsBoolean ("is-padding"))
-					return elem.GetAttributeAsBoolean ("is-padding");
+				if (elem.GetAttributeAsBoolean ("padding"))
+					return elem.GetAttributeAsBoolean ("padding");
 
 				return (elem.GetAttribute ("access") == "private" && (
 					CName.StartsWith ("dummy") || CName.StartsWith ("padding")));

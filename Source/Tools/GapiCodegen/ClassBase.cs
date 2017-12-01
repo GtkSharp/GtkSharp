@@ -252,8 +252,11 @@ namespace GtkSharp.Generation {
 				var field = _fields[i];
 				next = _fields.Count > i +1 ? _fields[i + 1] : null;
 
+
 				prev = field.Generate(gen_info, "\t\t\t\t\t", prev, next, cs_parent_struct,
 						field_alignment_structures_writer);
+				if (field.IsPadding)
+					continue;
 				var union = field as UnionABIField;
 				if (union == null && gen_info.CAbiWriter != null && !field.IsBitfield) {
 					gen_info.AbiWriter.WriteLine("\t\t\tConsole.WriteLine(\"\\\"{0}.{3}\\\": \\\"\" + {1}.{2}." + info_name + ".GetFieldOffset(\"{3}\") + \"\\\"\");", structname, NS, Name, field.CName);
