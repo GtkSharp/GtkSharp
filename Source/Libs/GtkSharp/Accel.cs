@@ -33,7 +33,7 @@ namespace Gtk {
 			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (file_name);
 			gtk_accel_map_save (native);
 			GLib.Marshaller.Free (native);
-		}
+        }
 
 		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
 		static extern void gtk_accel_map_add_filter(IntPtr filter_pattern);
