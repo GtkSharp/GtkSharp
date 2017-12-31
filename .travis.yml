@@ -11,6 +11,7 @@ deploy:
   file_glob: true
   file: BuildOutput/NugetPackages/*
   skip_cleanup: true
+  provider: script
   script: nuget push ./BuildOutput/NuGetPackages/*.nupkg -Verbosity detailed -ApiKey $NUGETAPIKEY -Source https://www.nuget.org/api/v2/package
   on:
     branch: master
