@@ -6,10 +6,8 @@ namespace GtkNamespace
 {
     class MainWindow : Window
     {
-#pragma warning disable 0649
-        [UI] private Label _label1;
-        [UI] private Button _button1;
-#pragma warning restore 0649
+        [UI] private Label _label1 = null;
+        [UI] private Button _button1 = null;
 
         private int _counter;
 
