@@ -81,6 +81,20 @@ Task("Build")
     }
 });
 
+Task("RunSamples")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
+    var settings = new DotNetCoreBuildSettings
+    {
+        Configuration = "Release",
+        MSBuildSettings = msbuildsettings
+    };
+
+    DotNetCoreBuild("Source/Samples/Samples.csproj", settings);
+    DotNetCoreRun("Source/Samples/Samples.csproj");
+});
+
 Task("PackageNuGet")
     .IsDependentOn("Build")
     .Does(() =>
