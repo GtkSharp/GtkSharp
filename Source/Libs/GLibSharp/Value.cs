@@ -383,7 +383,7 @@ namespace GLib {
 			case PlatformID.Win32S:
 			case PlatformID.Win32Windows:
 			case PlatformID.WinCE:
-				g_value_set_long (ref this, (int) val);
+				g_value_set_long2 (ref this, (int) val);
 				break;
 			default:
 				g_value_set_long (ref this, new IntPtr (val));
@@ -398,7 +398,7 @@ namespace GLib {
 			case PlatformID.Win32S:
 			case PlatformID.Win32Windows:
 			case PlatformID.WinCE:
-				g_value_set_ulong (ref this, (uint) val);
+				g_value_set_ulong2 (ref this, (uint) val);
 				break;
 			default:
 				g_value_set_ulong (ref this, new UIntPtr (val));
@@ -610,145 +610,145 @@ namespace GLib {
 			g_value_init (ref this, spec.ValueType.Val);
 		}
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_object_class_find_property (IntPtr klass, IntPtr name);
+		delegate IntPtr d_g_object_class_find_property(IntPtr klass, IntPtr name);
+		static d_g_object_class_find_property g_object_class_find_property = Marshal.GetDelegateForFunctionPointer<d_g_object_class_find_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_class_find_property"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_type_check_value_holds (ref Value val, IntPtr gtype);
+		delegate bool d_g_type_check_value_holds(ref Value val, IntPtr gtype);
+		static d_g_type_check_value_holds g_type_check_value_holds = Marshal.GetDelegateForFunctionPointer<d_g_type_check_value_holds>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_check_value_holds"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_init (ref GLib.Value val, IntPtr gtype);
+		delegate void d_g_value_init(ref GLib.Value val, IntPtr gtype);
+		static d_g_value_init g_value_init = Marshal.GetDelegateForFunctionPointer<d_g_value_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_init"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_unset (ref GLib.Value val);
+		delegate void d_g_value_unset(ref GLib.Value val);
+		static d_g_value_unset g_value_unset = Marshal.GetDelegateForFunctionPointer<d_g_value_unset>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_unset"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_boolean (ref Value val, bool data);
+		delegate void d_g_value_set_boolean(ref Value val, bool data);
+		static d_g_value_set_boolean g_value_set_boolean = Marshal.GetDelegateForFunctionPointer<d_g_value_set_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_boolean"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_uchar (ref Value val, byte data);
+		delegate void d_g_value_set_uchar(ref Value val, byte data);
+		static d_g_value_set_uchar g_value_set_uchar = Marshal.GetDelegateForFunctionPointer<d_g_value_set_uchar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_uchar"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_char (ref Value val, sbyte data);
+		delegate void d_g_value_set_char(ref Value val, sbyte data);
+		static d_g_value_set_char g_value_set_char = Marshal.GetDelegateForFunctionPointer<d_g_value_set_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_char"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_boxed (ref Value val, IntPtr data);
+		delegate void d_g_value_set_boxed(ref Value val, IntPtr data);
+		static d_g_value_set_boxed g_value_set_boxed = Marshal.GetDelegateForFunctionPointer<d_g_value_set_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_boxed"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_double (ref Value val, double data);
+		delegate void d_g_value_set_double(ref Value val, double data);
+		static d_g_value_set_double g_value_set_double = Marshal.GetDelegateForFunctionPointer<d_g_value_set_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_double"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_float (ref Value val, float data);
+		delegate void d_g_value_set_float(ref Value val, float data);
+		static d_g_value_set_float g_value_set_float = Marshal.GetDelegateForFunctionPointer<d_g_value_set_float>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_float"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_int (ref Value val, int data);
+		delegate void d_g_value_set_int(ref Value val, int data);
+		static d_g_value_set_int g_value_set_int = Marshal.GetDelegateForFunctionPointer<d_g_value_set_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_int"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_int64 (ref Value val, long data);
+		delegate void d_g_value_set_int64(ref Value val, long data);
+		static d_g_value_set_int64 g_value_set_int64 = Marshal.GetDelegateForFunctionPointer<d_g_value_set_int64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_int64"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_long (ref Value val, IntPtr data);
+		delegate void d_g_value_set_long(ref Value val, IntPtr data);
+		static d_g_value_set_long g_value_set_long = Marshal.GetDelegateForFunctionPointer<d_g_value_set_long>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_long"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_long (ref Value val, int data);
+		delegate void d_g_value_set_long2(ref Value val, int data);
+		static d_g_value_set_long2 g_value_set_long2 = Marshal.GetDelegateForFunctionPointer<d_g_value_set_long2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_long"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_uint64 (ref Value val, ulong data);
+		delegate void d_g_value_set_uint64(ref Value val, ulong data);
+		static d_g_value_set_uint64 g_value_set_uint64 = Marshal.GetDelegateForFunctionPointer<d_g_value_set_uint64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_uint64"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_object (ref Value val, IntPtr data);
+		delegate void d_g_value_set_object(ref Value val, IntPtr data);
+		static d_g_value_set_object g_value_set_object = Marshal.GetDelegateForFunctionPointer<d_g_value_set_object>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_object"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_param (ref Value val, IntPtr data);
+		delegate void d_g_value_set_param(ref Value val, IntPtr data);
+		static d_g_value_set_param g_value_set_param = Marshal.GetDelegateForFunctionPointer<d_g_value_set_param>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_param"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_pointer (ref Value val, IntPtr data);
+		delegate void d_g_value_set_pointer(ref Value val, IntPtr data);
+		static d_g_value_set_pointer g_value_set_pointer = Marshal.GetDelegateForFunctionPointer<d_g_value_set_pointer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_pointer"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_string (ref Value val, IntPtr data);
+		delegate void d_g_value_set_string(ref Value val, IntPtr data);
+		static d_g_value_set_string g_value_set_string = Marshal.GetDelegateForFunctionPointer<d_g_value_set_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_string"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_uint (ref Value val, uint data);
+		delegate void d_g_value_set_uint(ref Value val, uint data);
+		static d_g_value_set_uint g_value_set_uint = Marshal.GetDelegateForFunctionPointer<d_g_value_set_uint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_uint"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_ulong (ref Value val, UIntPtr data);
+		delegate void d_g_value_set_ulong(ref Value val, UIntPtr data);
+		static d_g_value_set_ulong g_value_set_ulong = Marshal.GetDelegateForFunctionPointer<d_g_value_set_ulong>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_ulong"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_ulong (ref Value val, uint data);
+		delegate void d_g_value_set_ulong2(ref Value val, uint data);
+		static d_g_value_set_ulong2 g_value_set_ulong2 = Marshal.GetDelegateForFunctionPointer<d_g_value_set_ulong2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_ulong"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_enum (ref Value val, int data);
+		delegate void d_g_value_set_enum(ref Value val, int data);
+		static d_g_value_set_enum g_value_set_enum = Marshal.GetDelegateForFunctionPointer<d_g_value_set_enum>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_enum"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_flags (ref Value val, uint data);
+		delegate void d_g_value_set_flags(ref Value val, uint data);
+		static d_g_value_set_flags g_value_set_flags = Marshal.GetDelegateForFunctionPointer<d_g_value_set_flags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_flags"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_value_set_variant (ref Value val, IntPtr data);
+		delegate void d_g_value_set_variant(ref Value val, IntPtr data);
+		static d_g_value_set_variant g_value_set_variant = Marshal.GetDelegateForFunctionPointer<d_g_value_set_variant>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_variant"));
 		
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_value_get_boolean (ref Value val);
+		delegate bool d_g_value_get_boolean(ref Value val);
+		static d_g_value_get_boolean g_value_get_boolean = Marshal.GetDelegateForFunctionPointer<d_g_value_get_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_boolean"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern byte g_value_get_uchar (ref Value val);
+		delegate byte d_g_value_get_uchar(ref Value val);
+		static d_g_value_get_uchar g_value_get_uchar = Marshal.GetDelegateForFunctionPointer<d_g_value_get_uchar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_uchar"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern sbyte g_value_get_char (ref Value val);
+		delegate sbyte d_g_value_get_char(ref Value val);
+		static d_g_value_get_char g_value_get_char = Marshal.GetDelegateForFunctionPointer<d_g_value_get_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_char"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_value_get_boxed (ref Value val);
+		delegate IntPtr d_g_value_get_boxed(ref Value val);
+		static d_g_value_get_boxed g_value_get_boxed = Marshal.GetDelegateForFunctionPointer<d_g_value_get_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_boxed"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern double g_value_get_double (ref Value val);
+		delegate double d_g_value_get_double(ref Value val);
+		static d_g_value_get_double g_value_get_double = Marshal.GetDelegateForFunctionPointer<d_g_value_get_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_double"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern float g_value_get_float (ref Value val);
+		delegate float d_g_value_get_float(ref Value val);
+		static d_g_value_get_float g_value_get_float = Marshal.GetDelegateForFunctionPointer<d_g_value_get_float>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_float"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_value_get_int (ref Value val);
+		delegate int d_g_value_get_int(ref Value val);
+		static d_g_value_get_int g_value_get_int = Marshal.GetDelegateForFunctionPointer<d_g_value_get_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_int"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern long g_value_get_int64 (ref Value val);
+		delegate long d_g_value_get_int64(ref Value val);
+		static d_g_value_get_int64 g_value_get_int64 = Marshal.GetDelegateForFunctionPointer<d_g_value_get_int64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_int64"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_value_get_long (ref Value val);
+		delegate IntPtr d_g_value_get_long(ref Value val);
+		static d_g_value_get_long g_value_get_long = Marshal.GetDelegateForFunctionPointer<d_g_value_get_long>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_long"));
 
-		[DllImport (Global.GObjectNativeDll, EntryPoint = "g_value_get_long", CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_value_get_long_as_int (ref Value val);
+		delegate int d_g_value_get_long_as_int(ref Value val);
+		static d_g_value_get_long_as_int g_value_get_long_as_int = Marshal.GetDelegateForFunctionPointer<d_g_value_get_long_as_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_long"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern ulong g_value_get_uint64 (ref Value val);
+		delegate ulong d_g_value_get_uint64(ref Value val);
+		static d_g_value_get_uint64 g_value_get_uint64 = Marshal.GetDelegateForFunctionPointer<d_g_value_get_uint64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_uint64"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern UIntPtr g_value_get_ulong (ref Value val);
+		delegate UIntPtr d_g_value_get_ulong(ref Value val);
+		static d_g_value_get_ulong g_value_get_ulong = Marshal.GetDelegateForFunctionPointer<d_g_value_get_ulong>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_ulong"));
 
-		[DllImport (Global.GObjectNativeDll, EntryPoint = "g_value_get_ulong", CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_value_get_ulong_as_uint (ref Value val);
+		delegate int d_g_value_get_ulong_as_uint(ref Value val);
+		static d_g_value_get_ulong_as_uint g_value_get_ulong_as_uint = Marshal.GetDelegateForFunctionPointer<d_g_value_get_ulong_as_uint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_ulong"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_value_get_object (ref Value val);
+		delegate IntPtr d_g_value_get_object(ref Value val);
+		static d_g_value_get_object g_value_get_object = Marshal.GetDelegateForFunctionPointer<d_g_value_get_object>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_object"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_value_get_param (ref Value val);
+		delegate IntPtr d_g_value_get_param(ref Value val);
+		static d_g_value_get_param g_value_get_param = Marshal.GetDelegateForFunctionPointer<d_g_value_get_param>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_param"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_value_get_pointer (ref Value val);
+		delegate IntPtr d_g_value_get_pointer(ref Value val);
+		static d_g_value_get_pointer g_value_get_pointer = Marshal.GetDelegateForFunctionPointer<d_g_value_get_pointer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_pointer"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_value_get_string (ref Value val);
+		delegate IntPtr d_g_value_get_string(ref Value val);
+		static d_g_value_get_string g_value_get_string = Marshal.GetDelegateForFunctionPointer<d_g_value_get_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_string"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_value_get_uint (ref Value val);
+		delegate uint d_g_value_get_uint(ref Value val);
+		static d_g_value_get_uint g_value_get_uint = Marshal.GetDelegateForFunctionPointer<d_g_value_get_uint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_uint"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_value_get_enum (ref Value val);
+		delegate int d_g_value_get_enum(ref Value val);
+		static d_g_value_get_enum g_value_get_enum = Marshal.GetDelegateForFunctionPointer<d_g_value_get_enum>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_enum"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_value_get_flags (ref Value val);
+		delegate uint d_g_value_get_flags(ref Value val);
+		static d_g_value_get_flags g_value_get_flags = Marshal.GetDelegateForFunctionPointer<d_g_value_get_flags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_flags"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_strv_get_type ();
+		delegate IntPtr d_g_strv_get_type();
+		static d_g_strv_get_type g_strv_get_type = Marshal.GetDelegateForFunctionPointer<d_g_strv_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_strv_get_type"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_value_get_variant (ref Value val);
+		delegate IntPtr d_g_value_get_variant(ref Value val);
+		static d_g_value_get_variant g_value_get_variant = Marshal.GetDelegateForFunctionPointer<d_g_value_get_variant>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_variant"));
 	}
 }

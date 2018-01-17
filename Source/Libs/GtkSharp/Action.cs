@@ -28,8 +28,8 @@ namespace Gtk {
 		public Action (string name, string label) : this (name, label, null, null)
 		{}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_action_get_proxies (IntPtr raw);
+		delegate IntPtr d_gtk_action_get_proxies(IntPtr raw);
+		static d_gtk_action_get_proxies gtk_action_get_proxies = Marshal.GetDelegateForFunctionPointer<d_gtk_action_get_proxies>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_action_get_proxies"));
 
 		public Gtk.Widget[] Proxies {
 			get {

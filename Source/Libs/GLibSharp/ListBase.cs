@@ -190,8 +190,8 @@ namespace GLib {
 			return fullname + "Adapter";
 		}
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_object_unref (IntPtr item);
+		delegate void d_g_object_unref(IntPtr item);
+		static d_g_object_unref g_object_unref = Marshal.GetDelegateForFunctionPointer<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
 		public void Empty ()
 		{

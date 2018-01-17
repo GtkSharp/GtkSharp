@@ -37,8 +37,8 @@ namespace GLib {
 			return Delete (null);
 		}
 		
-		[DllImport (GioGlobal.GioNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_file_get_uri(IntPtr raw);
+		delegate IntPtr d_g_file_get_uri(IntPtr raw);
+		static d_g_file_get_uri g_file_get_uri = Marshal.GetDelegateForFunctionPointer<d_g_file_get_uri>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_file_get_uri"));
 		
 		public System.Uri Uri {
 			get {

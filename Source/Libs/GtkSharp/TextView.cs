@@ -26,8 +26,8 @@ namespace Gtk {
 
 	public partial class TextView {
 				
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_text_view_new_with_buffer (IntPtr buffer);
+		delegate IntPtr d_gtk_text_view_new_with_buffer(IntPtr buffer);
+		static d_gtk_text_view_new_with_buffer gtk_text_view_new_with_buffer = Marshal.GetDelegateForFunctionPointer<d_gtk_text_view_new_with_buffer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_view_new_with_buffer"));
 
 		public TextView (TextBuffer buffer) : base (IntPtr.Zero)
 		{

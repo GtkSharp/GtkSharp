@@ -27,8 +27,8 @@ namespace Gtk {
 
 	public partial class Image {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_image_new_from_icon_set(IntPtr icon_set, int size);
+		delegate IntPtr d_gtk_image_new_from_icon_set(IntPtr icon_set, int size);
+		static d_gtk_image_new_from_icon_set gtk_image_new_from_icon_set = Marshal.GetDelegateForFunctionPointer<d_gtk_image_new_from_icon_set>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_icon_set"));
 
 		public Image (Gtk.IconSet icon_set, Gtk.IconSize size) : base (IntPtr.Zero)
 		{
@@ -45,8 +45,8 @@ namespace Gtk {
 			Raw = gtk_image_new_from_icon_set(icon_set.Handle, (int) size);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_image_new_from_stock(IntPtr stock_id, int size);
+		delegate IntPtr d_gtk_image_new_from_stock(IntPtr stock_id, int size);
+		static d_gtk_image_new_from_stock gtk_image_new_from_stock = Marshal.GetDelegateForFunctionPointer<d_gtk_image_new_from_stock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_stock"));
 
 		public Image (string stock_id, Gtk.IconSize size) : base (IntPtr.Zero)
 		{

@@ -23,8 +23,8 @@ namespace Pango {
 
 	public class AttrStrikethroughColor : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_strikethrough_color_new (ushort red, ushort green, ushort blue);
+		delegate IntPtr d_pango_attr_strikethrough_color_new(ushort red, ushort green, ushort blue);
+		static d_pango_attr_strikethrough_color_new pango_attr_strikethrough_color_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_strikethrough_color_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_strikethrough_color_new"));
 
 		public AttrStrikethroughColor (ushort red, ushort green, ushort blue) : this (pango_attr_strikethrough_color_new (red, green, blue)) {}
 

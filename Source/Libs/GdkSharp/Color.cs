@@ -35,8 +35,8 @@ namespace Gdk {
 			Pixel = 0;
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint gdk_color_hash(ref Gdk.Color raw);
+		delegate uint d_gdk_color_hash(ref Gdk.Color raw);
+		static d_gdk_color_hash gdk_color_hash = Marshal.GetDelegateForFunctionPointer<d_gdk_color_hash>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_color_hash"));
 
 		public override int GetHashCode() {
 			return (int) gdk_color_hash(ref this);

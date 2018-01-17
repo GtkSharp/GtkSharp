@@ -191,11 +191,12 @@ namespace GtkSharp.Generation {
 			string import_sig = IsStatic ? "" : container_type.MarshalType + " raw";
 			import_sig += !IsStatic && Parameters.Count > 0 ? ", " : "";
 			import_sig += Parameters.ImportSignature.ToString();
-			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + "\", CallingConvention = CallingConvention.Cdecl)]");
-			if (retval.MarshalType.StartsWith ("[return:"))
-				sw.WriteLine("\t\t" + retval.MarshalType + " static extern " + Safety + retval.CSType + " " + CName + "(" + import_sig + ");");
+
+			if (retval.MarshalType.StartsWith("[return:"))
+				sw.WriteLine("\t\tdelegate " + retval.CSType + " d_" + CName + "(" + import_sig + ");");
 			else
-				sw.WriteLine("\t\tstatic extern " + Safety + retval.MarshalType + " " + CName + "(" + import_sig + ");");
+                sw.WriteLine("\t\tdelegate " + retval.MarshalType + " d_" + CName + "(" + import_sig + ");");
+			sw.WriteLine("\t\tstatic d_" + CName + " " + CName + " = Marshal.GetDelegateForFunctionPointer<d_" + CName + ">(FuncLoader.GetProcAddress(GLibrary.Load(\"" + LibraryName + "\"), \"" + CName + "\"));");
 			sw.WriteLine();
 		}
 

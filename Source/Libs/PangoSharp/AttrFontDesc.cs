@@ -23,11 +23,11 @@ namespace Pango {
 
 	public class AttrFontDesc : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_font_desc_new (IntPtr font_desc);
+		delegate IntPtr d_pango_attr_font_desc_new(IntPtr font_desc);
+		static d_pango_attr_font_desc_new pango_attr_font_desc_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_font_desc_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_font_desc_new"));
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_font_description_copy(IntPtr raw);
+		delegate IntPtr d_pango_font_description_copy(IntPtr raw);
+		static d_pango_font_description_copy pango_font_description_copy = Marshal.GetDelegateForFunctionPointer<d_pango_font_description_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_description_copy"));
 
 		public AttrFontDesc (Pango.FontDescription font_desc) : this (pango_attr_font_desc_new (pango_font_description_copy (font_desc.Handle))) {}
 

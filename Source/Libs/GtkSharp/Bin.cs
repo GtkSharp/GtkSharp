@@ -25,8 +25,8 @@ namespace Gtk {
 
 	public partial class Bin {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_bin_get_child(IntPtr raw);
+		delegate IntPtr d_gtk_bin_get_child(IntPtr raw);
+		static d_gtk_bin_get_child gtk_bin_get_child = Marshal.GetDelegateForFunctionPointer<d_gtk_bin_get_child>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_bin_get_child"));
 
 		public new Gtk.Widget Child { 
 			get {

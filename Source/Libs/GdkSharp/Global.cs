@@ -26,10 +26,8 @@ namespace Gdk {
 
 	public partial class Global {
 
-		internal const string GdkNativeDll = "libgdk-3-0.dll";
-
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_list_visuals ();
+		delegate IntPtr d_gdk_list_visuals();
+		static d_gdk_list_visuals gdk_list_visuals = Marshal.GetDelegateForFunctionPointer<d_gdk_list_visuals>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_list_visuals"));
 
 		public static Visual[] ListVisuals ()
 		{
@@ -107,8 +105,8 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gdk_init_check(ref int argc, ref IntPtr argv);
+		delegate bool d_gdk_init_check(ref int argc, ref IntPtr argv);
+		static d_gdk_init_check gdk_init_check = Marshal.GetDelegateForFunctionPointer<d_gdk_init_check>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_init_check"));
 
 		public static bool InitCheck (ref string[] argv)
 		{
@@ -121,8 +119,8 @@ namespace Gdk {
 			return result;
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_parse_args(ref int argc, ref IntPtr argv);
+		delegate void d_gdk_parse_args(ref int argc, ref IntPtr argv);
+		static d_gdk_parse_args gdk_parse_args = Marshal.GetDelegateForFunctionPointer<d_gdk_parse_args>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_parse_args"));
 
 		public static void ParseArgs (ref string[] argv)
 		{
@@ -134,8 +132,8 @@ namespace Gdk {
 			argv = a.GetArgs (argc);
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_query_depths (out IntPtr depths, out int n_depths);
+		delegate void d_gdk_query_depths(out IntPtr depths, out int n_depths);
+		static d_gdk_query_depths gdk_query_depths = Marshal.GetDelegateForFunctionPointer<d_gdk_query_depths>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_query_depths"));
 
 		public static int[] QueryDepths ()
 		{
@@ -146,8 +144,8 @@ namespace Gdk {
 			Marshal.Copy (ptr, result, 0, count);
 			return result;
 		}
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_query_visual_types (out IntPtr types, out int n_types);
+		delegate void d_gdk_query_visual_types(out IntPtr types, out int n_types);
+		static d_gdk_query_visual_types gdk_query_visual_types = Marshal.GetDelegateForFunctionPointer<d_gdk_query_visual_types>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_query_visual_types"));
 
 		public static VisualType[] QueryVisualTypes ()
 		{

@@ -80,8 +80,8 @@ namespace Gtk {
 				actions[0].Changed += changed;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_action_group_list_actions (IntPtr raw);
+		delegate IntPtr d_gtk_action_group_list_actions(IntPtr raw);
+		static d_gtk_action_group_list_actions gtk_action_group_list_actions = Marshal.GetDelegateForFunctionPointer<d_gtk_action_group_list_actions>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_action_group_list_actions"));
 
 		public Gtk.Action[] ListActions() {
 			IntPtr raw_ret = gtk_action_group_list_actions (Handle);

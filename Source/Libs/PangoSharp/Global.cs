@@ -25,22 +25,17 @@ namespace Pango {
 
 	public partial class Global {
 
-		internal const string PangoNativeDll = "libpango-1.0-0.dll";
-
-		[DllImport (PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool pango_scan_int(IntPtr pos, out int out_param);
-
 		[Obsolete]
 		public static bool ScanInt(string pos, out int out_param) {
 			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (pos);
-			bool raw_ret = pango_scan_int(native, out out_param);
+			bool raw_ret = pango_scan_int(ref native, out out_param);
 			GLib.Marshaller.Free (native);
 			bool ret = raw_ret;
 			return ret;
 		}
 
-		[DllImport (PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool pango_parse_markup (IntPtr markup, int length, uint accel_marker, out IntPtr attr_list_handle, out IntPtr text, out uint accel_char, IntPtr err);
+		delegate bool d_pango_parse_markup(IntPtr markup, int length, uint accel_marker, out IntPtr attr_list_handle, out IntPtr text, out uint accel_char, IntPtr err);
+		static d_pango_parse_markup pango_parse_markup = Marshal.GetDelegateForFunctionPointer<d_pango_parse_markup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_parse_markup"));
 
 		public static bool ParseMarkup (string markup, char accel_marker, out Pango.AttrList attrs, out string text, out char accel_char)
 		{

@@ -27,20 +27,20 @@ namespace Gtk {
 
 		public FileChooserNative (IntPtr raw) : base(raw) {}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_file_chooser_native_new(IntPtr title, IntPtr parent, int action, IntPtr accept_label, IntPtr cancel_label);
+		delegate IntPtr d_gtk_file_chooser_native_new(IntPtr title, IntPtr parent, int action, IntPtr accept_label, IntPtr cancel_label);
+		static d_gtk_file_chooser_native_new gtk_file_chooser_native_new = Marshal.GetDelegateForFunctionPointer<d_gtk_file_chooser_native_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_new"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern string gtk_file_chooser_native_get_accept_label(IntPtr self);
+		delegate string d_gtk_file_chooser_native_get_accept_label(IntPtr self);
+		static d_gtk_file_chooser_native_get_accept_label gtk_file_chooser_native_get_accept_label = Marshal.GetDelegateForFunctionPointer<d_gtk_file_chooser_native_get_accept_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_get_accept_label"));
 
-                [DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern string gtk_file_chooser_native_set_accept_label(IntPtr self, string accept_label);
+		delegate string d_gtk_file_chooser_native_set_accept_label(IntPtr self, string accept_label);
+		static d_gtk_file_chooser_native_set_accept_label gtk_file_chooser_native_set_accept_label = Marshal.GetDelegateForFunctionPointer<d_gtk_file_chooser_native_set_accept_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_set_accept_label"));
 
-                [DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern string gtk_file_chooser_native_get_cancel_label(IntPtr self);
+		delegate string d_gtk_file_chooser_native_get_cancel_label(IntPtr self);
+		static d_gtk_file_chooser_native_get_cancel_label gtk_file_chooser_native_get_cancel_label = Marshal.GetDelegateForFunctionPointer<d_gtk_file_chooser_native_get_cancel_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_get_cancel_label"));
 
-                [DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern string gtk_file_chooser_native_set_cancel_label(IntPtr self, string cancel_label);
+		delegate string d_gtk_file_chooser_native_set_cancel_label(IntPtr self, string cancel_label);
+		static d_gtk_file_chooser_native_set_cancel_label gtk_file_chooser_native_set_cancel_label = Marshal.GetDelegateForFunctionPointer<d_gtk_file_chooser_native_set_cancel_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_set_cancel_label"));
 
                 public FileChooserNative (string title, Gtk.Window parent, Gtk.FileChooserAction action, string accept_label, string cancel_label) : base(FileChooserNativeCreate(title, parent, action, accept_label, cancel_label))
                 {

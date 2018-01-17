@@ -23,8 +23,8 @@ namespace Pango {
 
 	public class AttrUnderline : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_underline_new (Pango.Underline underline);
+		delegate IntPtr d_pango_attr_underline_new(Pango.Underline underline);
+		static d_pango_attr_underline_new pango_attr_underline_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_underline_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_underline_new"));
 
 		public AttrUnderline (Pango.Underline underline) : this (pango_attr_underline_new (underline)) {}
 

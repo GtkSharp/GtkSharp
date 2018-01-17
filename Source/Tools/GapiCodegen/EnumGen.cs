@@ -117,8 +117,9 @@ namespace GtkSharp.Generation {
 			if (Elem.HasAttribute ("gtype")) {
 				sw.WriteLine ();
 				sw.WriteLine ("\tinternal class " + Name + "GType {");
-				sw.WriteLine ("\t\t[DllImport (\"" + LibraryName + "\", CallingConvention = CallingConvention.Cdecl)]");
-				sw.WriteLine ("\t\tstatic extern IntPtr " + Elem.GetAttribute ("gtype") + " ();");
+                var funcname = Elem.GetAttribute("gtype");
+                sw.WriteLine ("\t\tdelegate IntPtr d_" + funcname + "();");
+				sw.WriteLine ("\t\tstatic d_" + funcname + " " + funcname + " = Marshal.GetDelegateForFunctionPointer<d_" + funcname + ">(FuncLoader.GetProcAddress(GLibrary.Load(\"" + LibraryName + "\"), \"" + funcname + "\"));");
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic static GLib.GType GType {");
 				sw.WriteLine ("\t\t\tget {");

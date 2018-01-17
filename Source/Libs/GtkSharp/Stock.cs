@@ -25,8 +25,8 @@ namespace Gtk {
 
 	public partial class Stock {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_stock_list_ids ();
+		delegate IntPtr d_gtk_stock_list_ids();
+		static d_gtk_stock_list_ids gtk_stock_list_ids = Marshal.GetDelegateForFunctionPointer<d_gtk_stock_list_ids>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_stock_list_ids"));
 
 		public static string[] ListIds ()
 		{
@@ -49,8 +49,8 @@ namespace Gtk {
 			public IntPtr TranslationDomain;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_stock_lookup (IntPtr stock_id, out ConstStockItem item);
+		delegate bool d_gtk_stock_lookup(IntPtr stock_id, out ConstStockItem item);
+		static d_gtk_stock_lookup gtk_stock_lookup = Marshal.GetDelegateForFunctionPointer<d_gtk_stock_lookup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_stock_lookup"));
 
 		public static Gtk.StockItem Lookup (string stock_id) {
 			ConstStockItem const_item;

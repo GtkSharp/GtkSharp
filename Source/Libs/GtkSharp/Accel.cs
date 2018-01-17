@@ -25,8 +25,8 @@ namespace Gtk {
 
 	public partial class Accel {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_accel_map_save(IntPtr file_name);
+		delegate void d_gtk_accel_map_save(IntPtr file_name);
+		static d_gtk_accel_map_save gtk_accel_map_save = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_save>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_save"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.Save instead")]
 		public static void MapSave(string file_name) {
@@ -35,8 +35,8 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
         }
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_accel_map_add_filter(IntPtr filter_pattern);
+		delegate void d_gtk_accel_map_add_filter(IntPtr filter_pattern);
+		static d_gtk_accel_map_add_filter gtk_accel_map_add_filter = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_add_filter>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_add_filter"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.AddFilter instead")]
 		public static void MapAddFilter(string filter_pattern) {
@@ -45,8 +45,8 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_accel_map_foreach_unfiltered(IntPtr data, GtkSharp.AccelMapForeachNative foreach_func);
+		delegate void d_gtk_accel_map_foreach_unfiltered(IntPtr data, GtkSharp.AccelMapForeachNative foreach_func);
+		static d_gtk_accel_map_foreach_unfiltered gtk_accel_map_foreach_unfiltered = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_foreach_unfiltered>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_foreach_unfiltered"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.ForeachUnfiltered instead")]
 		public static void MapForeachUnfiltered(IntPtr data, Gtk.AccelMapForeach foreach_func) {
@@ -54,16 +54,16 @@ namespace Gtk {
 			gtk_accel_map_foreach_unfiltered(data, foreach_func_wrapper.NativeDelegate);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_accel_map_save_fd(int fd);
+		delegate void d_gtk_accel_map_save_fd(int fd);
+		static d_gtk_accel_map_save_fd gtk_accel_map_save_fd = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_save_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_save_fd"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.SaveFd instead")]
 		public static void MapSaveFd(int fd) {
 			gtk_accel_map_save_fd(fd);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_accel_map_add_entry(IntPtr accel_path, uint accel_key, int accel_mods);
+		delegate void d_gtk_accel_map_add_entry(IntPtr accel_path, uint accel_key, int accel_mods);
+		static d_gtk_accel_map_add_entry gtk_accel_map_add_entry = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_add_entry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_add_entry"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.AddEntry instead")]
 		public static void MapAddEntry(string accel_path, uint accel_key, Gdk.ModifierType accel_mods) {
@@ -72,16 +72,16 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_accel_map_load_fd(int fd);
+		delegate void d_gtk_accel_map_load_fd(int fd);
+		static d_gtk_accel_map_load_fd gtk_accel_map_load_fd = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_load_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_load_fd"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.LoadFd instead")]
 		public static void MapLoadFd(int fd) {
 			gtk_accel_map_load_fd(fd);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_accel_map_lookup_entry(IntPtr accel_path, ref Gtk.AccelKey key);
+		delegate bool d_gtk_accel_map_lookup_entry(IntPtr accel_path, ref Gtk.AccelKey key);
+		static d_gtk_accel_map_lookup_entry gtk_accel_map_lookup_entry = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_lookup_entry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_lookup_entry"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.LookupEntry instead")]
 		public static bool MapLookupEntry(string accel_path, Gtk.AccelKey key) {
@@ -91,8 +91,8 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_accel_map_change_entry(IntPtr accel_path, uint accel_key, int accel_mods, bool replace);
+		delegate bool d_gtk_accel_map_change_entry(IntPtr accel_path, uint accel_key, int accel_mods, bool replace);
+		static d_gtk_accel_map_change_entry gtk_accel_map_change_entry = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_change_entry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_change_entry"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.ChangeEntry instead")]
 		public static bool MapChangeEntry (string accel_path, uint accel_key, Gdk.ModifierType accel_mods, bool replace) {
@@ -102,8 +102,8 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_accel_map_load (IntPtr file_name);
+		delegate void d_gtk_accel_map_load(IntPtr file_name);
+		static d_gtk_accel_map_load gtk_accel_map_load = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_load>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_load"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.Load instead")]
 		public static void MapLoad (string file_name) {
@@ -112,8 +112,8 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_accel_map_foreach(IntPtr data, GtkSharp.AccelMapForeachNative foreach_func);
+		delegate void d_gtk_accel_map_foreach(IntPtr data, GtkSharp.AccelMapForeachNative foreach_func);
+		static d_gtk_accel_map_foreach gtk_accel_map_foreach = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_map_foreach>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_map_foreach"));
 
 		[Obsolete("Moved to AccelMap class. Use AccelMap.Foreach instead")]
 		public static void MapForeach(IntPtr data, Gtk.AccelMapForeach foreach_func) {
@@ -121,8 +121,8 @@ namespace Gtk {
 			gtk_accel_map_foreach(data, foreach_func_wrapper.NativeDelegate);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_accel_groups_from_object (IntPtr obj);
+		delegate IntPtr d_gtk_accel_groups_from_object(IntPtr obj);
+		static d_gtk_accel_groups_from_object gtk_accel_groups_from_object = Marshal.GetDelegateForFunctionPointer<d_gtk_accel_groups_from_object>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_accel_groups_from_object"));
 
 		public static AccelGroup[] GroupsFromObject (GLib.Object obj)
 		{

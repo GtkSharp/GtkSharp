@@ -309,7 +309,7 @@ namespace GLib {
 				ret_obj = ret.Val;
 				ret.Dispose ();
 			} else
-				g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, IntPtr.Zero);
+				g_signal_emitv2 (inst_and_params.ArrayPtr, signal_id, gquark, IntPtr.Zero);
 			
 			foreach (GLib.Value val in vals)
 				val.Dispose ();
@@ -357,33 +357,33 @@ namespace GLib {
 			g_signal_override_class_closure (id, gtype.Val, closure);
 		}
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_cclosure_new (Delegate cb, IntPtr data, IntPtr notify);
+		delegate IntPtr d_g_cclosure_new(Delegate cb, IntPtr data, IntPtr notify);
+		static d_g_cclosure_new g_cclosure_new = Marshal.GetDelegateForFunctionPointer<d_g_cclosure_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_cclosure_new"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_signal_get_invocation_hint (IntPtr instance);
+		delegate IntPtr d_g_signal_get_invocation_hint(IntPtr instance);
+		static d_g_signal_get_invocation_hint g_signal_get_invocation_hint = Marshal.GetDelegateForFunctionPointer<d_g_signal_get_invocation_hint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_get_invocation_hint"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, ref GLib.Value return_value);
+		delegate void d_g_signal_emitv(IntPtr instance_and_params, uint signal_id, uint gquark_detail, ref GLib.Value return_value);
+		static d_g_signal_emitv g_signal_emitv = Marshal.GetDelegateForFunctionPointer<d_g_signal_emitv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_emitv"));
 		
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, IntPtr return_value);
+		delegate void d_g_signal_emitv2(IntPtr instance_and_params, uint signal_id, uint gquark_detail, IntPtr return_value);
+		static d_g_signal_emitv2 g_signal_emitv2 = Marshal.GetDelegateForFunctionPointer<d_g_signal_emitv2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_emitv"));
 		
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_signal_lookup (IntPtr name, IntPtr itype);
+		delegate uint d_g_signal_lookup(IntPtr name, IntPtr itype);
+		static d_g_signal_lookup g_signal_lookup = Marshal.GetDelegateForFunctionPointer<d_g_signal_lookup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_lookup"));
 		
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_signal_override_class_closure (uint id, IntPtr gtype, IntPtr closure);
+		delegate void d_g_signal_override_class_closure(uint id, IntPtr gtype, IntPtr closure);
+		static d_g_signal_override_class_closure g_signal_override_class_closure = Marshal.GetDelegateForFunctionPointer<d_g_signal_override_class_closure>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_override_class_closure"));
 		
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_signal_query (uint signal_id, out Query query);
+		delegate void d_g_signal_query(uint signal_id, out Query query);
+		static d_g_signal_query g_signal_query = Marshal.GetDelegateForFunctionPointer<d_g_signal_query>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_query"));
 
 		//better not to expose g_quark_from_static_string () due to memory allocation issues
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_quark_from_string (IntPtr str);
+		delegate uint d_g_quark_from_string(IntPtr str);
+		static d_g_quark_from_string g_quark_from_string = Marshal.GetDelegateForFunctionPointer<d_g_quark_from_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_quark_from_string"));
 		
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern ulong g_signal_add_emission_hook (uint signal_id, uint gquark_detail, EmissionHookNative hook_func, IntPtr hook_data, IntPtr data_destroy);
+		delegate ulong d_g_signal_add_emission_hook(uint signal_id, uint gquark_detail, EmissionHookNative hook_func, IntPtr hook_data, IntPtr data_destroy);
+		static d_g_signal_add_emission_hook g_signal_add_emission_hook = Marshal.GetDelegateForFunctionPointer<d_g_signal_add_emission_hook>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_add_emission_hook"));
 
 	}
 }

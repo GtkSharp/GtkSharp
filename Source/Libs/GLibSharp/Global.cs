@@ -27,12 +27,8 @@ namespace GLib {
 
 	public class Global
 	{
-
 		//this is a static class
 		private Global () {}
-
-		internal const string GLibNativeDll = "libglib-2.0-0.dll";
-		internal const string GObjectNativeDll = "libgobject-2.0-0.dll";
 
 		internal static bool IsWindowsPlatform {
 			get {
@@ -59,11 +55,11 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_set_prgname (IntPtr name);
+		delegate void d_g_set_prgname(IntPtr name);
+		static d_g_set_prgname g_set_prgname = Marshal.GetDelegateForFunctionPointer<d_g_set_prgname>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_set_prgname"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_get_prgname ();
+		delegate IntPtr d_g_get_prgname();
+		static d_g_get_prgname g_get_prgname = Marshal.GetDelegateForFunctionPointer<d_g_get_prgname>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_get_prgname"));
 
 		public static string ApplicationName {
 			get {
@@ -76,14 +72,14 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_set_application_name (IntPtr name);
+		delegate void d_g_set_application_name(IntPtr name);
+		static d_g_set_application_name g_set_application_name = Marshal.GetDelegateForFunctionPointer<d_g_set_application_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_set_application_name"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_get_application_name ();
+		delegate IntPtr d_g_get_application_name();
+		static d_g_get_application_name g_get_application_name = Marshal.GetDelegateForFunctionPointer<d_g_get_application_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_get_application_name"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_format_size_for_display (long size);
+		delegate IntPtr d_g_format_size_for_display(long size);
+		static d_g_format_size_for_display g_format_size_for_display = Marshal.GetDelegateForFunctionPointer<d_g_format_size_for_display>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_format_size_for_display"));
 		
 		static public string FormatSizeForDisplay (long size)
 		{

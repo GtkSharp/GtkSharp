@@ -48,23 +48,11 @@ namespace Gtk {
 		}
 		*/
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_tree_view_get_path_at_pos (IntPtr raw,
-								  int x,
-								  int y,
-								  out IntPtr path,
-								  out IntPtr column,
-								  out int cell_x,
-								  out int cell_y);
+		delegate bool d_gtk_tree_view_get_path_at_pos(IntPtr raw, int x, int y, out IntPtr path, out IntPtr column, out int cell_x, out int cell_y);
+		static d_gtk_tree_view_get_path_at_pos gtk_tree_view_get_path_at_pos = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_view_get_path_at_pos>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos"));
 
-		[DllImport (Global.GtkNativeDll, EntryPoint="gtk_tree_view_get_path_at_pos", CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_tree_view_get_path_at_pos_intptr (IntPtr raw,
-								  int x,
-								  int y,
-								  out IntPtr path,
-								  out IntPtr column,
-								  IntPtr cell_x,
-								  IntPtr cell_y);
+		delegate bool d_gtk_tree_view_get_path_at_pos_intptr(IntPtr raw, int x, int y, out IntPtr path, out IntPtr column, IntPtr cell_x, IntPtr cell_y);
+		static d_gtk_tree_view_get_path_at_pos_intptr gtk_tree_view_get_path_at_pos_intptr = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_view_get_path_at_pos_intptr>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos_intptr"));
 
 		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path, out Gtk.TreeViewColumn column, out int cell_x, out int cell_y)
 		{

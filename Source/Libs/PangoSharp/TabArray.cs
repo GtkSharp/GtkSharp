@@ -25,8 +25,8 @@ namespace Pango {
 
 	public partial class TabArray {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_tab_array_get_tabs (IntPtr raw, out IntPtr alignments, out IntPtr locations);
+		delegate void d_pango_tab_array_get_tabs(IntPtr raw, out IntPtr alignments, out IntPtr locations);
+		static d_pango_tab_array_get_tabs pango_tab_array_get_tabs = Marshal.GetDelegateForFunctionPointer<d_pango_tab_array_get_tabs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_tab_array_get_tabs"));
 
 		public void GetTabs (out TabAlign[] alignments, out int[] locations) 
 		{

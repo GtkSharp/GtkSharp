@@ -23,8 +23,8 @@ namespace Gtk {
 
 	public partial class Drag {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_drag_set_icon_default(IntPtr context);
+		delegate void d_gtk_drag_set_icon_default(IntPtr context);
+		static d_gtk_drag_set_icon_default gtk_drag_set_icon_default = Marshal.GetDelegateForFunctionPointer<d_gtk_drag_set_icon_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_drag_set_icon_default"));
 
 		public static void SetIconDefault(Gdk.DragContext context)
 		{

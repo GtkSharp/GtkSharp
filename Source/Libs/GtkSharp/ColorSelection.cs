@@ -23,8 +23,8 @@ namespace Gtk {
 
 	public partial class ColorSelection {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_color_selection_palette_to_string(Gdk.Color[] colors, int n_colors);
+		delegate IntPtr d_gtk_color_selection_palette_to_string(Gdk.Color[] colors, int n_colors);
+		static d_gtk_color_selection_palette_to_string gtk_color_selection_palette_to_string = Marshal.GetDelegateForFunctionPointer<d_gtk_color_selection_palette_to_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_color_selection_palette_to_string"));
 
 		/// <summary> PaletteToString Method </summary>
 		public static string PaletteToString(Gdk.Color[] colors) {
@@ -34,8 +34,8 @@ namespace Gtk {
 			return ret;
 		}
 		
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_color_selection_palette_from_string(IntPtr str, out IntPtr colors, out int n_colors);
+		delegate bool d_gtk_color_selection_palette_from_string(IntPtr str, out IntPtr colors, out int n_colors);
+		static d_gtk_color_selection_palette_from_string gtk_color_selection_palette_from_string = Marshal.GetDelegateForFunctionPointer<d_gtk_color_selection_palette_from_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_color_selection_palette_from_string"));
 
 		public static Gdk.Color[] PaletteFromString(string str) {
 			IntPtr parsedColors;
@@ -59,11 +59,11 @@ namespace Gtk {
 			return colors;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_color_selection_set_previous_color(IntPtr raw, ref Gdk.Color color);
+		delegate void d_gtk_color_selection_set_previous_color(IntPtr raw, ref Gdk.Color color);
+		static d_gtk_color_selection_set_previous_color gtk_color_selection_set_previous_color = Marshal.GetDelegateForFunctionPointer<d_gtk_color_selection_set_previous_color>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_color_selection_set_previous_color"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_color_selection_get_previous_color(IntPtr raw, out Gdk.Color color);
+		delegate void d_gtk_color_selection_get_previous_color(IntPtr raw, out Gdk.Color color);
+		static d_gtk_color_selection_get_previous_color gtk_color_selection_get_previous_color = Marshal.GetDelegateForFunctionPointer<d_gtk_color_selection_get_previous_color>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_color_selection_get_previous_color"));
 
 		// Create Gtk# property to replace two Gtk+ functions
 		public Gdk.Color PreviousColor

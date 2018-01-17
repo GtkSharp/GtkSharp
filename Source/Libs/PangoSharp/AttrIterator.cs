@@ -25,8 +25,8 @@ namespace Pango {
 
 	public partial class AttrIterator {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_attr_iterator_get_font(IntPtr raw, IntPtr desc, out IntPtr language, out IntPtr extra_attrs);
+		delegate void d_pango_attr_iterator_get_font(IntPtr raw, IntPtr desc, out IntPtr language, out IntPtr extra_attrs);
+		static d_pango_attr_iterator_get_font pango_attr_iterator_get_font = Marshal.GetDelegateForFunctionPointer<d_pango_attr_iterator_get_font>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_iterator_get_font"));
 
 		public void GetFont (out Pango.FontDescription desc, out Pango.Language language, out Pango.Attribute[] extra_attrs)
 		{
@@ -46,8 +46,8 @@ namespace Pango {
 				extra_attrs [i++] = Pango.Attribute.GetAttribute (raw_attr);
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_iterator_get_attrs (IntPtr raw);
+		delegate IntPtr d_pango_attr_iterator_get_attrs(IntPtr raw);
+		static d_pango_attr_iterator_get_attrs pango_attr_iterator_get_attrs = Marshal.GetDelegateForFunctionPointer<d_pango_attr_iterator_get_attrs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_iterator_get_attrs"));
 
 		public Pango.Attribute[] Attrs {
 			get {

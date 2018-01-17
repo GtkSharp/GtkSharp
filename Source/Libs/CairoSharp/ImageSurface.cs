@@ -60,7 +60,7 @@ namespace Cairo {
 		}
 
 		public ImageSurface (IntPtr data, Format format, int width, int height, int stride)
-			: base (NativeMethods.cairo_image_surface_create_for_data (data, format, width, height, stride), true)
+			: base (NativeMethods.cairo_image_surface_create_for_data2 (data, format, width, height, stride), true)
 		{
 		}
 

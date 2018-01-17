@@ -31,8 +31,8 @@ namespace GLib
 		{
 		}
 
-		[DllImport (GioGlobal.GioNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_application_run (IntPtr raw, int argc, IntPtr argv);
+		delegate int d_g_application_run(IntPtr raw, int argc, IntPtr argv);
+		static d_g_application_run g_application_run = Marshal.GetDelegateForFunctionPointer<d_g_application_run>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_application_run"));
 
 		public int Run ()
 		{

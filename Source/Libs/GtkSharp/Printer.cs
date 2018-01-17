@@ -25,8 +25,8 @@ namespace Gtk {
 
 	public partial class Printer {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_enumerate_printers (GtkSharp.PrinterFuncNative func, IntPtr func_data, GLib.DestroyNotify destroy, bool wait);
+		delegate void d_gtk_enumerate_printers(GtkSharp.PrinterFuncNative func, IntPtr func_data, GLib.DestroyNotify destroy, bool wait);
+		static d_gtk_enumerate_printers gtk_enumerate_printers = Marshal.GetDelegateForFunctionPointer<d_gtk_enumerate_printers>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_enumerate_printers"));
 
 		public static void EnumeratePrinters (Gtk.PrinterFunc func, bool wait) 
 		{

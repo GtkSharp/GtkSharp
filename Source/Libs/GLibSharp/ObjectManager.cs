@@ -83,7 +83,7 @@ namespace GLib {
 			return result;
 		}
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_type_parent (IntPtr typ);
+		delegate IntPtr d_g_type_parent(IntPtr typ);
+		static d_g_type_parent g_type_parent = Marshal.GetDelegateForFunctionPointer<d_g_type_parent>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_parent"));
 	}
 }

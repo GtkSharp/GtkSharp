@@ -76,8 +76,8 @@ namespace GLib {
 
 		public Source(IntPtr raw) : base(raw) {}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_source_new(IntPtr source_funcs, uint struct_size);
+		delegate IntPtr d_g_source_new(IntPtr source_funcs, uint struct_size);
+		static d_g_source_new g_source_new = Marshal.GetDelegateForFunctionPointer<d_g_source_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_new"));
 
 		public Source (GLib.SourceFuncs source_funcs, uint struct_size)
 		{
@@ -147,8 +147,8 @@ namespace GLib {
 			return result;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_source_remove (uint tag);
+		delegate bool d_g_source_remove(uint tag);
+		static d_g_source_remove g_source_remove = Marshal.GetDelegateForFunctionPointer<d_g_source_remove>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove"));
 
 		public static bool Remove (uint tag)
 		{
@@ -163,8 +163,8 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_source_get_type();
+		delegate IntPtr d_g_source_get_type();
+		static d_g_source_get_type g_source_get_type = Marshal.GetDelegateForFunctionPointer<d_g_source_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_type"));
 
 		public static GLib.GType GType {
 			get {
@@ -174,8 +174,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_source_get_context(IntPtr raw);
+		delegate IntPtr d_g_source_get_context(IntPtr raw);
+		static d_g_source_get_context g_source_get_context = Marshal.GetDelegateForFunctionPointer<d_g_source_get_context>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_context"));
 
 		public GLib.MainContext Context {
 			get  {
@@ -185,11 +185,11 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_source_get_priority(IntPtr raw);
+		delegate int d_g_source_get_priority(IntPtr raw);
+		static d_g_source_get_priority g_source_get_priority = Marshal.GetDelegateForFunctionPointer<d_g_source_get_priority>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_priority"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_set_priority(IntPtr raw, int priority);
+		delegate void d_g_source_set_priority(IntPtr raw, int priority);
+		static d_g_source_set_priority g_source_set_priority = Marshal.GetDelegateForFunctionPointer<d_g_source_set_priority>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_priority"));
 
 		public int Priority {
 			get  {
@@ -202,11 +202,11 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_source_get_name(IntPtr raw);
+		delegate IntPtr d_g_source_get_name(IntPtr raw);
+		static d_g_source_get_name g_source_get_name = Marshal.GetDelegateForFunctionPointer<d_g_source_get_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_name"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_set_name(IntPtr raw, IntPtr name);
+		delegate void d_g_source_set_name(IntPtr raw, IntPtr name);
+		static d_g_source_set_name g_source_set_name = Marshal.GetDelegateForFunctionPointer<d_g_source_set_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_name"));
 
 		public string Name {
 			get  {
@@ -221,15 +221,15 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_add_child_source(IntPtr raw, IntPtr child_source);
+		delegate void d_g_source_add_child_source(IntPtr raw, IntPtr child_source);
+		static d_g_source_add_child_source g_source_add_child_source = Marshal.GetDelegateForFunctionPointer<d_g_source_add_child_source>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_add_child_source"));
 
 		public void AddChildSource(GLib.Source child_source) {
 			g_source_add_child_source(Handle, child_source == null ? IntPtr.Zero : child_source.Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_add_poll(IntPtr raw, IntPtr fd);
+		delegate void d_g_source_add_poll(IntPtr raw, IntPtr fd);
+		static d_g_source_add_poll g_source_add_poll = Marshal.GetDelegateForFunctionPointer<d_g_source_add_poll>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_add_poll"));
 
 		public void AddPoll(GLib.PollFD fd) {
 			IntPtr native_fd = GLib.Marshaller.StructureToPtrAlloc (fd);
@@ -238,8 +238,8 @@ namespace GLib {
 			Marshal.FreeHGlobal (native_fd);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_source_attach(IntPtr raw, IntPtr context);
+		delegate uint d_g_source_attach(IntPtr raw, IntPtr context);
+		static d_g_source_attach g_source_attach = Marshal.GetDelegateForFunctionPointer<d_g_source_attach>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_attach"));
 
 		public uint Attach(GLib.MainContext context) {
 			uint raw_ret = g_source_attach(Handle, context == null ? IntPtr.Zero : context.Handle);
@@ -251,11 +251,11 @@ namespace GLib {
 			return Attach (null);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_source_get_can_recurse(IntPtr raw);
+		delegate bool d_g_source_get_can_recurse(IntPtr raw);
+		static d_g_source_get_can_recurse g_source_get_can_recurse = Marshal.GetDelegateForFunctionPointer<d_g_source_get_can_recurse>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_can_recurse"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_set_can_recurse(IntPtr raw, bool can_recurse);
+		delegate void d_g_source_set_can_recurse(IntPtr raw, bool can_recurse);
+		static d_g_source_set_can_recurse g_source_set_can_recurse = Marshal.GetDelegateForFunctionPointer<d_g_source_set_can_recurse>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_can_recurse"));
 
 		public bool CanRecurse {
 			get {
@@ -268,8 +268,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_get_current_time(IntPtr raw, IntPtr timeval);
+		delegate void d_g_source_get_current_time(IntPtr raw, IntPtr timeval);
+		static d_g_source_get_current_time g_source_get_current_time = Marshal.GetDelegateForFunctionPointer<d_g_source_get_current_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_current_time"));
 
 		[Obsolete]
 		public void GetCurrentTime(GLib.TimeVal timeval) {
@@ -279,8 +279,8 @@ namespace GLib {
 			Marshal.FreeHGlobal (native_timeval);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_source_get_id(IntPtr raw);
+		delegate uint d_g_source_get_id(IntPtr raw);
+		static d_g_source_get_id g_source_get_id = Marshal.GetDelegateForFunctionPointer<d_g_source_get_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_id"));
 
 		public uint Id {
 			get {
@@ -290,11 +290,11 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern long g_source_get_ready_time(IntPtr raw);
+		delegate long d_g_source_get_ready_time(IntPtr raw);
+		static d_g_source_get_ready_time g_source_get_ready_time = Marshal.GetDelegateForFunctionPointer<d_g_source_get_ready_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_ready_time"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_set_ready_time(IntPtr raw, long ready_time);
+		delegate void d_g_source_set_ready_time(IntPtr raw, long ready_time);
+		static d_g_source_set_ready_time g_source_set_ready_time = Marshal.GetDelegateForFunctionPointer<d_g_source_set_ready_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_ready_time"));
 
 		public long ReadyTime {
 			get {
@@ -307,8 +307,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern long g_source_get_time(IntPtr raw);
+		delegate long d_g_source_get_time(IntPtr raw);
+		static d_g_source_get_time g_source_get_time = Marshal.GetDelegateForFunctionPointer<d_g_source_get_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_time"));
 
 		public long Time {
 			get {
@@ -318,8 +318,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_source_is_destroyed(IntPtr raw);
+		delegate bool d_g_source_is_destroyed(IntPtr raw);
+		static d_g_source_is_destroyed g_source_is_destroyed = Marshal.GetDelegateForFunctionPointer<d_g_source_is_destroyed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_is_destroyed"));
 
 		public bool IsDestroyed {
 			get {
@@ -329,15 +329,15 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_modify_unix_fd(IntPtr raw, IntPtr tag, int new_events);
+		delegate void d_g_source_modify_unix_fd(IntPtr raw, IntPtr tag, int new_events);
+		static d_g_source_modify_unix_fd g_source_modify_unix_fd = Marshal.GetDelegateForFunctionPointer<d_g_source_modify_unix_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_modify_unix_fd"));
 
 		public void ModifyUnixFd(IntPtr tag, GLib.IOCondition new_events) {
 			g_source_modify_unix_fd(Handle, tag, (int) new_events);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_source_query_unix_fd(IntPtr raw, IntPtr tag);
+		delegate int d_g_source_query_unix_fd(IntPtr raw, IntPtr tag);
+		static d_g_source_query_unix_fd g_source_query_unix_fd = Marshal.GetDelegateForFunctionPointer<d_g_source_query_unix_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_query_unix_fd"));
 
 		public GLib.IOCondition QueryUnixFd(IntPtr tag) {
 			int raw_ret = g_source_query_unix_fd(Handle, tag);
@@ -345,15 +345,15 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_remove_child_source(IntPtr raw, IntPtr child_source);
+		delegate void d_g_source_remove_child_source(IntPtr raw, IntPtr child_source);
+		static d_g_source_remove_child_source g_source_remove_child_source = Marshal.GetDelegateForFunctionPointer<d_g_source_remove_child_source>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_child_source"));
 
 		public void RemoveChildSource(GLib.Source child_source) {
 			g_source_remove_child_source(Handle, child_source == null ? IntPtr.Zero : child_source.Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_remove_poll(IntPtr raw, IntPtr fd);
+		delegate void d_g_source_remove_poll(IntPtr raw, IntPtr fd);
+		static d_g_source_remove_poll g_source_remove_poll = Marshal.GetDelegateForFunctionPointer<d_g_source_remove_poll>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_poll"));
 
 		public void RemovePoll(GLib.PollFD fd) {
 			IntPtr native_fd = GLib.Marshaller.StructureToPtrAlloc (fd);
@@ -362,15 +362,15 @@ namespace GLib {
 			Marshal.FreeHGlobal (native_fd);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_remove_unix_fd(IntPtr raw, IntPtr tag);
+		delegate void d_g_source_remove_unix_fd(IntPtr raw, IntPtr tag);
+		static d_g_source_remove_unix_fd g_source_remove_unix_fd = Marshal.GetDelegateForFunctionPointer<d_g_source_remove_unix_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_unix_fd"));
 
 		public void RemoveUnixFd(IntPtr tag) {
 			g_source_remove_unix_fd(Handle, tag);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_set_callback_indirect(IntPtr raw, IntPtr callback_data, IntPtr callback_funcs);
+		delegate void d_g_source_set_callback_indirect(IntPtr raw, IntPtr callback_data, IntPtr callback_funcs);
+		static d_g_source_set_callback_indirect g_source_set_callback_indirect = Marshal.GetDelegateForFunctionPointer<d_g_source_set_callback_indirect>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_callback_indirect"));
 
 		public void SetCallbackIndirect(IntPtr callback_data, GLib.SourceCallbackFuncs callback_funcs) {
 			IntPtr native_callback_funcs = GLib.Marshaller.StructureToPtrAlloc (callback_funcs);
@@ -379,8 +379,8 @@ namespace GLib {
 			Marshal.FreeHGlobal (native_callback_funcs);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_set_funcs(IntPtr raw, IntPtr value);
+		delegate void d_g_source_set_funcs(IntPtr raw, IntPtr value);
+		static d_g_source_set_funcs g_source_set_funcs = Marshal.GetDelegateForFunctionPointer<d_g_source_set_funcs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_funcs"));
 
 		public GLib.SourceFuncs Funcs {
 			set {
@@ -391,8 +391,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_source_remove_by_funcs_user_data(IntPtr funcs, IntPtr user_data);
+		delegate bool d_g_source_remove_by_funcs_user_data(IntPtr funcs, IntPtr user_data);
+		static d_g_source_remove_by_funcs_user_data g_source_remove_by_funcs_user_data = Marshal.GetDelegateForFunctionPointer<d_g_source_remove_by_funcs_user_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_by_funcs_user_data"));
 
 		public static bool RemoveByFuncsUserData(GLib.SourceFuncs funcs, IntPtr user_data) {
 			IntPtr native_funcs = GLib.Marshaller.StructureToPtrAlloc (funcs);
@@ -403,8 +403,8 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_source_remove_by_user_data(IntPtr user_data);
+		delegate bool d_g_source_remove_by_user_data(IntPtr user_data);
+		static d_g_source_remove_by_user_data g_source_remove_by_user_data = Marshal.GetDelegateForFunctionPointer<d_g_source_remove_by_user_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_by_user_data"));
 
 		public static bool RemoveByUserData(IntPtr user_data) {
 			bool raw_ret = g_source_remove_by_user_data(user_data);
@@ -412,8 +412,8 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_set_name_by_id(uint tag, IntPtr name);
+		delegate void d_g_source_set_name_by_id(uint tag, IntPtr name);
+		static d_g_source_set_name_by_id g_source_set_name_by_id = Marshal.GetDelegateForFunctionPointer<d_g_source_set_name_by_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_name_by_id"));
 
 		public static void SetNameById(uint tag, string name) {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
@@ -421,8 +421,8 @@ namespace GLib {
 			GLib.Marshaller.Free (native_name);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_source_ref(IntPtr raw);
+		delegate IntPtr d_g_source_ref(IntPtr raw);
+		static d_g_source_ref g_source_ref = Marshal.GetDelegateForFunctionPointer<d_g_source_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_ref"));
 
 		protected override void Ref (IntPtr raw)
 		{
@@ -432,8 +432,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_unref(IntPtr raw);
+		delegate void d_g_source_unref(IntPtr raw);
+		static d_g_source_unref g_source_unref = Marshal.GetDelegateForFunctionPointer<d_g_source_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_unref"));
 
 		protected override void Unref (IntPtr raw)
 		{
@@ -443,8 +443,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_source_destroy(IntPtr raw);
+		delegate void d_g_source_destroy(IntPtr raw);
+		static d_g_source_destroy g_source_destroy = Marshal.GetDelegateForFunctionPointer<d_g_source_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_destroy"));
 
 		protected override void Free (IntPtr raw)
 		{

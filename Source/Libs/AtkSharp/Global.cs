@@ -27,11 +27,12 @@ namespace Atk {
 	using System.Runtime.InteropServices;
 
 	public partial class Global {
-
-		[DllImport ("libatk-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern uint atk_add_global_event_listener (GLib.Signal.EmissionHookNative hook, IntPtr event_type);
 		
-		public static uint AddGlobalEventListener (GLib.Signal.EmissionHook hook, string event_type)
+		delegate uint d_atk_add_global_event_listener(GLib.Signal.EmissionHookNative hook, IntPtr event_type);
+        static d_atk_add_global_event_listener atk_add_global_event_listener = Marshal.GetDelegateForFunctionPointer<d_atk_add_global_event_listener>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Atk), "atk_add_global_event_listener"));
+
+
+        public static uint AddGlobalEventListener (GLib.Signal.EmissionHook hook, string event_type)
 		{
 			IntPtr native_event_type = GLib.Marshaller.StringToPtrGStrdup (event_type);
 			uint id = atk_add_global_event_listener (new GLib.Signal.EmissionHookMarshaler (hook).Callback, native_event_type);

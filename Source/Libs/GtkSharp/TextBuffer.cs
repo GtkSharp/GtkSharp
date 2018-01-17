@@ -25,8 +25,8 @@ namespace Gtk {
 
 	public partial class TextBuffer {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_text_buffer_set_text (IntPtr raw, IntPtr text, int len);
+		delegate void d_gtk_text_buffer_set_text(IntPtr raw, IntPtr text, int len);
+		static d_gtk_text_buffer_set_text gtk_text_buffer_set_text = Marshal.GetDelegateForFunctionPointer<d_gtk_text_buffer_set_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_set_text"));
 
 		public void Clear ()
 		{
@@ -46,8 +46,8 @@ namespace Gtk {
 			gtk_text_buffer_paste_clipboard(Handle, clipboard.Handle, IntPtr.Zero, true);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_text_buffer_insert (IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len);
+		delegate void d_gtk_text_buffer_insert(IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len);
+		static d_gtk_text_buffer_insert gtk_text_buffer_insert = Marshal.GetDelegateForFunctionPointer<d_gtk_text_buffer_insert>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_insert"));
 
 		[Obsolete ("Replaced by 'ref TextIter iter' overload")]
 		public void Insert (TextIter iter, string text)
@@ -109,8 +109,8 @@ namespace Gtk {
 			Text = text;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_text_buffer_insert_interactive(IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len, bool default_editable);
+		delegate bool d_gtk_text_buffer_insert_interactive(IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len, bool default_editable);
+		static d_gtk_text_buffer_insert_interactive gtk_text_buffer_insert_interactive = Marshal.GetDelegateForFunctionPointer<d_gtk_text_buffer_insert_interactive>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_insert_interactive"));
 
 		public bool InsertInteractive(ref Gtk.TextIter iter, string text, bool default_editable)
 		{
@@ -120,8 +120,8 @@ namespace Gtk {
 			return result;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_text_buffer_insert_interactive_at_cursor(IntPtr raw, IntPtr text, int len, bool default_editable);
+		delegate bool d_gtk_text_buffer_insert_interactive_at_cursor(IntPtr raw, IntPtr text, int len, bool default_editable);
+		static d_gtk_text_buffer_insert_interactive_at_cursor gtk_text_buffer_insert_interactive_at_cursor = Marshal.GetDelegateForFunctionPointer<d_gtk_text_buffer_insert_interactive_at_cursor>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_insert_interactive_at_cursor"));
 
 		public bool InsertInteractiveAtCursor(string text, bool default_editable)
 		{
@@ -131,8 +131,8 @@ namespace Gtk {
 			return result;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_text_buffer_insert_at_cursor(IntPtr raw, IntPtr text, int len);
+		delegate void d_gtk_text_buffer_insert_at_cursor(IntPtr raw, IntPtr text, int len);
+		static d_gtk_text_buffer_insert_at_cursor gtk_text_buffer_insert_at_cursor = Marshal.GetDelegateForFunctionPointer<d_gtk_text_buffer_insert_at_cursor>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_insert_at_cursor"));
 
 		public void InsertAtCursor(string text)
 		{
@@ -141,8 +141,8 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_text_buffer_serialize (IntPtr raw, IntPtr content_buffer, IntPtr format, ref Gtk.TextIter start, ref Gtk.TextIter end, out UIntPtr length);
+		delegate IntPtr d_gtk_text_buffer_serialize(IntPtr raw, IntPtr content_buffer, IntPtr format, ref Gtk.TextIter start, ref Gtk.TextIter end, out UIntPtr length);
+		static d_gtk_text_buffer_serialize gtk_text_buffer_serialize = Marshal.GetDelegateForFunctionPointer<d_gtk_text_buffer_serialize>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_serialize"));
 
 		public byte[] Serialize(Gtk.TextBuffer content_buffer, Gdk.Atom format, Gtk.TextIter start, Gtk.TextIter end)
 		{
@@ -156,11 +156,11 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_text_buffer_get_serialize_formats(IntPtr raw, out int n_formats);
+		delegate IntPtr d_gtk_text_buffer_get_serialize_formats(IntPtr raw, out int n_formats);
+		static d_gtk_text_buffer_get_serialize_formats gtk_text_buffer_get_serialize_formats = Marshal.GetDelegateForFunctionPointer<d_gtk_text_buffer_get_serialize_formats>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_get_serialize_formats"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_text_buffer_get_deserialize_formats(IntPtr raw, out int n_formats);
+		delegate IntPtr d_gtk_text_buffer_get_deserialize_formats(IntPtr raw, out int n_formats);
+		static d_gtk_text_buffer_get_deserialize_formats gtk_text_buffer_get_deserialize_formats = Marshal.GetDelegateForFunctionPointer<d_gtk_text_buffer_get_deserialize_formats>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_get_deserialize_formats"));
 
 		public Gdk.Atom[] DeserializeFormats {
 			get {

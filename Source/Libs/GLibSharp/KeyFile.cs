@@ -539,125 +539,125 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_free (IntPtr raw);
+		delegate void d_g_key_file_free(IntPtr raw);
+		static d_g_key_file_free g_key_file_free = Marshal.GetDelegateForFunctionPointer<d_g_key_file_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_free"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_get_boolean (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		delegate bool d_g_key_file_get_boolean(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_get_boolean g_key_file_get_boolean = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_boolean"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_boolean_list (IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_boolean_list(IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
+		static d_g_key_file_get_boolean_list g_key_file_get_boolean_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_boolean_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_boolean_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_comment (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_comment(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_get_comment g_key_file_get_comment = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_comment"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern double g_key_file_get_double (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		delegate double d_g_key_file_get_double(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_get_double g_key_file_get_double = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_double"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_double_list (IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_double_list(IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
+		static d_g_key_file_get_double_list g_key_file_get_double_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_double_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_double_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_groups (IntPtr raw, IntPtr dummy);
+		delegate IntPtr d_g_key_file_get_groups(IntPtr raw, IntPtr dummy);
+		static d_g_key_file_get_groups g_key_file_get_groups = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_groups>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_groups"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern int g_key_file_get_integer (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		delegate int d_g_key_file_get_integer(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_get_integer g_key_file_get_integer = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_integer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_integer"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_integer_list (IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_integer_list(IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
+		static d_g_key_file_get_integer_list g_key_file_get_integer_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_integer_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_integer_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_keys (IntPtr raw, IntPtr group_name, IntPtr dummy, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_keys(IntPtr raw, IntPtr group_name, IntPtr dummy, out IntPtr error);
+		static d_g_key_file_get_keys g_key_file_get_keys = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_keys>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_keys"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_locale_string (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_locale_string(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, out IntPtr error);
+		static d_g_key_file_get_locale_string g_key_file_get_locale_string = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_locale_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_locale_string"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_locale_string_list (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr dummy, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_locale_string_list(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr dummy, out IntPtr error);
+		static d_g_key_file_get_locale_string_list g_key_file_get_locale_string_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_locale_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_locale_string_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_start_group (IntPtr raw);
+		delegate IntPtr d_g_key_file_get_start_group(IntPtr raw);
+		static d_g_key_file_get_start_group g_key_file_get_start_group = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_start_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_start_group"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_string (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_string(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_get_string g_key_file_get_string = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_string"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_string_list (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr dummy, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_string_list(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr dummy, out IntPtr error);
+		static d_g_key_file_get_string_list g_key_file_get_string_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_string_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_get_value (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		delegate IntPtr d_g_key_file_get_value(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_get_value g_key_file_get_value = Marshal.GetDelegateForFunctionPointer<d_g_key_file_get_value>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_value"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_has_group (IntPtr raw, IntPtr group_name);
+		delegate bool d_g_key_file_has_group(IntPtr raw, IntPtr group_name);
+		static d_g_key_file_has_group g_key_file_has_group = Marshal.GetDelegateForFunctionPointer<d_g_key_file_has_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_has_group"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_has_key (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		delegate bool d_g_key_file_has_key(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_has_key g_key_file_has_key = Marshal.GetDelegateForFunctionPointer<d_g_key_file_has_key>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_has_key"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_load_from_data (IntPtr raw, byte[] data, UIntPtr length, int flags, out IntPtr error);
+		delegate bool d_g_key_file_load_from_data(IntPtr raw, byte[] data, UIntPtr length, int flags, out IntPtr error);
+		static d_g_key_file_load_from_data g_key_file_load_from_data = Marshal.GetDelegateForFunctionPointer<d_g_key_file_load_from_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_load_from_data"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_load_from_data_dirs (IntPtr raw, IntPtr file, out IntPtr full_path, int flags, out IntPtr error);
+		delegate bool d_g_key_file_load_from_data_dirs(IntPtr raw, IntPtr file, out IntPtr full_path, int flags, out IntPtr error);
+		static d_g_key_file_load_from_data_dirs g_key_file_load_from_data_dirs = Marshal.GetDelegateForFunctionPointer<d_g_key_file_load_from_data_dirs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_load_from_data_dirs"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_load_from_dirs (IntPtr raw, IntPtr file, IntPtr search_dirs, out IntPtr full_path, int flags, out IntPtr error);
+		delegate bool d_g_key_file_load_from_dirs(IntPtr raw, IntPtr file, IntPtr search_dirs, out IntPtr full_path, int flags, out IntPtr error);
+		static d_g_key_file_load_from_dirs g_key_file_load_from_dirs = Marshal.GetDelegateForFunctionPointer<d_g_key_file_load_from_dirs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_load_from_dirs"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_load_from_file (IntPtr raw, IntPtr file, int flags, out IntPtr error);
+		delegate bool d_g_key_file_load_from_file(IntPtr raw, IntPtr file, int flags, out IntPtr error);
+		static d_g_key_file_load_from_file g_key_file_load_from_file = Marshal.GetDelegateForFunctionPointer<d_g_key_file_load_from_file>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_load_from_file"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_new ();
+		delegate IntPtr d_g_key_file_new();
+		static d_g_key_file_new g_key_file_new = Marshal.GetDelegateForFunctionPointer<d_g_key_file_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_new"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_remove_comment (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		delegate bool d_g_key_file_remove_comment(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_remove_comment g_key_file_remove_comment = Marshal.GetDelegateForFunctionPointer<d_g_key_file_remove_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_remove_comment"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_remove_group (IntPtr raw, IntPtr group_name, out IntPtr error);
+		delegate bool d_g_key_file_remove_group(IntPtr raw, IntPtr group_name, out IntPtr error);
+		static d_g_key_file_remove_group g_key_file_remove_group = Marshal.GetDelegateForFunctionPointer<d_g_key_file_remove_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_remove_group"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_remove_key (IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		delegate bool d_g_key_file_remove_key(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_remove_key g_key_file_remove_key = Marshal.GetDelegateForFunctionPointer<d_g_key_file_remove_key>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_remove_key"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_boolean (IntPtr raw, IntPtr group_name, IntPtr key, bool value);
+		delegate void d_g_key_file_set_boolean(IntPtr raw, IntPtr group_name, IntPtr key, bool value);
+		static d_g_key_file_set_boolean g_key_file_set_boolean = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_boolean"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_boolean_list (IntPtr raw, IntPtr group_name, IntPtr key, bool[] list, UIntPtr n_list);
+		delegate void d_g_key_file_set_boolean_list(IntPtr raw, IntPtr group_name, IntPtr key, bool[] list, UIntPtr n_list);
+		static d_g_key_file_set_boolean_list g_key_file_set_boolean_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_boolean_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_boolean_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern bool g_key_file_set_comment (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr comment, out IntPtr error);
+		delegate bool d_g_key_file_set_comment(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr comment, out IntPtr error);
+		static d_g_key_file_set_comment g_key_file_set_comment = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_comment"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_double (IntPtr raw, IntPtr group_name, IntPtr key, double value);
+		delegate void d_g_key_file_set_double(IntPtr raw, IntPtr group_name, IntPtr key, double value);
+		static d_g_key_file_set_double g_key_file_set_double = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_double"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_double_list (IntPtr raw, IntPtr group_name, IntPtr key, double[] list, UIntPtr n_list);
+		delegate void d_g_key_file_set_double_list(IntPtr raw, IntPtr group_name, IntPtr key, double[] list, UIntPtr n_list);
+		static d_g_key_file_set_double_list g_key_file_set_double_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_double_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_double_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_integer (IntPtr raw, IntPtr group_name, IntPtr key, int value);
+		delegate void d_g_key_file_set_integer(IntPtr raw, IntPtr group_name, IntPtr key, int value);
+		static d_g_key_file_set_integer g_key_file_set_integer = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_integer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_integer"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_integer_list (IntPtr raw, IntPtr group_name, IntPtr key, int[] list, UIntPtr n_list);
+		delegate void d_g_key_file_set_integer_list(IntPtr raw, IntPtr group_name, IntPtr key, int[] list, UIntPtr n_list);
+		static d_g_key_file_set_integer_list g_key_file_set_integer_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_integer_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_integer_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_list_separator (IntPtr raw, byte separator);
+		delegate void d_g_key_file_set_list_separator(IntPtr raw, byte separator);
+		static d_g_key_file_set_list_separator g_key_file_set_list_separator = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_list_separator>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_list_separator"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_locale_string (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr value);
+		delegate void d_g_key_file_set_locale_string(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr value);
+		static d_g_key_file_set_locale_string g_key_file_set_locale_string = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_locale_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_locale_string"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_locale_string_list (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr list, UIntPtr length);
+		delegate void d_g_key_file_set_locale_string_list(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr list, UIntPtr length);
+		static d_g_key_file_set_locale_string_list g_key_file_set_locale_string_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_locale_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_locale_string_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_string (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr value);
+		delegate void d_g_key_file_set_string(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr value);
+		static d_g_key_file_set_string g_key_file_set_string = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_string"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_string_list (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr list, UIntPtr n_list);
+		delegate void d_g_key_file_set_string_list(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr list, UIntPtr n_list);
+		static d_g_key_file_set_string_list g_key_file_set_string_list = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_string_list"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern void g_key_file_set_value (IntPtr raw, IntPtr group_name, IntPtr key, IntPtr value);
+		delegate void d_g_key_file_set_value(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr value);
+		static d_g_key_file_set_value g_key_file_set_value = Marshal.GetDelegateForFunctionPointer<d_g_key_file_set_value>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_value"));
 
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_key_file_to_data (IntPtr raw, out UIntPtr length, IntPtr dummy);
+		delegate IntPtr d_g_key_file_to_data(IntPtr raw, out UIntPtr length, IntPtr dummy);
+		static d_g_key_file_to_data g_key_file_to_data = Marshal.GetDelegateForFunctionPointer<d_g_key_file_to_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_to_data"));
 
 	}
 }

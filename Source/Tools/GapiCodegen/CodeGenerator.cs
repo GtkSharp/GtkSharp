@@ -29,6 +29,8 @@ namespace GtkSharp.Generation {
 
 	public class CodeGenerator  {
 
+		public static ulong Counter = 0;
+
 		static LogWriter log = new LogWriter ("CodeGenerator");
 
 		public static int Main (string[] args)

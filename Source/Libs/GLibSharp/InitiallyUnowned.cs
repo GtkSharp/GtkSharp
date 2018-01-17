@@ -33,8 +33,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		private static extern void g_object_ref_sink (IntPtr raw);
+		delegate void d_g_object_ref_sink(IntPtr raw);
+		static d_g_object_ref_sink g_object_ref_sink = Marshal.GetDelegateForFunctionPointer<d_g_object_ref_sink>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref_sink"));
 
 		protected override IntPtr Raw {
 			get {
@@ -47,14 +47,14 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_object_is_floating (IntPtr raw);
+		delegate bool d_g_object_is_floating(IntPtr raw);
+		static d_g_object_is_floating g_object_is_floating = Marshal.GetDelegateForFunctionPointer<d_g_object_is_floating>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_is_floating"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_object_force_floating (IntPtr raw);
+		delegate void d_g_object_force_floating(IntPtr raw);
+		static d_g_object_force_floating g_object_force_floating = Marshal.GetDelegateForFunctionPointer<d_g_object_force_floating>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_force_floating"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_object_unref (IntPtr raw);
+		delegate void d_g_object_unref(IntPtr raw);
+		static d_g_object_unref g_object_unref = Marshal.GetDelegateForFunctionPointer<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
 		public bool IsFloating {
 			get {

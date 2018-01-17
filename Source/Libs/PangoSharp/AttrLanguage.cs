@@ -23,8 +23,8 @@ namespace Pango {
 
 	public class AttrLanguage : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_language_new (IntPtr language);
+		delegate IntPtr d_pango_attr_language_new(IntPtr language);
+		static d_pango_attr_language_new pango_attr_language_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_language_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_language_new"));
 
 		public AttrLanguage (Pango.Language language) : this (pango_attr_language_new (language.Handle)) {}
 

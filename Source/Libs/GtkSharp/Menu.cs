@@ -35,8 +35,8 @@ namespace Gtk {
 			PopupAtPointer (null);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_menu_set_screen (IntPtr raw, IntPtr screen);
+		delegate void d_gtk_menu_set_screen(IntPtr raw, IntPtr screen);
+		static d_gtk_menu_set_screen gtk_menu_set_screen = Marshal.GetDelegateForFunctionPointer<d_gtk_menu_set_screen>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_set_screen"));
 
 		public new Gdk.Screen Screen {
 			get {
@@ -47,8 +47,8 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_menu_set_active (IntPtr raw, uint index_);
+		delegate void d_gtk_menu_set_active(IntPtr raw, uint index_);
+		static d_gtk_menu_set_active gtk_menu_set_active = Marshal.GetDelegateForFunctionPointer<d_gtk_menu_set_active>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_set_active"));
 
 		public void SetActive (uint index_)
 		{

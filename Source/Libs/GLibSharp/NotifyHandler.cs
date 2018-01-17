@@ -22,8 +22,8 @@ namespace GLib {
 	public delegate void NotifyHandler (object o, NotifyArgs args);
 
 	public class NotifyArgs : GLib.SignalArgs {
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_param_spec_get_name (IntPtr pspec);
+		delegate IntPtr d_g_param_spec_get_name(IntPtr pspec);
+		static d_g_param_spec_get_name g_param_spec_get_name = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_get_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_get_name"));
 
 		public string Property {
 			get {

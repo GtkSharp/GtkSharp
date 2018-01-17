@@ -223,8 +223,8 @@ namespace Gtk {
 				this.handler_type = handler_type;		
 			}
 		
-			[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-			static extern void gtk_builder_connect_signals_full(IntPtr raw, GtkSharp.BuilderConnectFuncNative func, IntPtr user_data);
+		delegate void d_gtk_builder_connect_signals_full(IntPtr raw, GtkSharp.BuilderConnectFuncNative func, IntPtr user_data);
+		static d_gtk_builder_connect_signals_full gtk_builder_connect_signals_full = Marshal.GetDelegateForFunctionPointer<d_gtk_builder_connect_signals_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_builder_connect_signals_full"));
 		
 			public void ConnectSignals() {
 				GtkSharp.BuilderConnectFuncWrapper func_wrapper = new GtkSharp.BuilderConnectFuncWrapper (new BuilderConnectFunc (ConnectFunc));

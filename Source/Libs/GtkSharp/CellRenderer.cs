@@ -28,8 +28,8 @@ namespace Gtk {
 
 	public partial class CellRenderer {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_cell_renderer_start_editing (IntPtr handle, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, int flags);
+		delegate IntPtr d_gtk_cell_renderer_start_editing(IntPtr handle, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, int flags);
+		static d_gtk_cell_renderer_start_editing gtk_cell_renderer_start_editing = Marshal.GetDelegateForFunctionPointer<d_gtk_cell_renderer_start_editing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_cell_renderer_start_editing"));
 
 		public ICellEditable StartEditing (Widget widget, Gdk.Event evnt, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
 		{
@@ -40,12 +40,12 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_cell_renderer_render (IntPtr handle, IntPtr drawable, IntPtr widget, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, ref Gdk.Rectangle expose_area, int flags);
+		delegate void d_gtk_cell_renderer_render2(IntPtr handle, IntPtr drawable, IntPtr widget, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, ref Gdk.Rectangle expose_area, int flags);
+		static d_gtk_cell_renderer_render2 gtk_cell_renderer_render2 = Marshal.GetDelegateForFunctionPointer<d_gtk_cell_renderer_render2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_cell_renderer_render"));
 		
 		public void Render (Cairo.Context context, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, CellRendererState flags)
 		{
-			gtk_cell_renderer_render (Handle, context == null ? IntPtr.Zero : context.Handle, widget == null ? IntPtr.Zero : widget.Handle, ref background_area, ref cell_area, ref expose_area, (int) flags);
+			gtk_cell_renderer_render2 (Handle, context == null ? IntPtr.Zero : context.Handle, widget == null ? IntPtr.Zero : widget.Handle, ref background_area, ref cell_area, ref expose_area, (int) flags);
 		}
 
 		// We have to implement this VM manually because x_offset, y_offset, width and height params may be NULL and therefore cannot be treated as "out int"

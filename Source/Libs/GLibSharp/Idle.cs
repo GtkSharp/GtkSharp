@@ -69,8 +69,8 @@ namespace GLib {
 		{
 		}
 		
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_idle_add (IdleHandlerInternal d, IntPtr data);
+		delegate uint d_g_idle_add(IdleHandlerInternal d, IntPtr data);
+		static d_g_idle_add g_idle_add = Marshal.GetDelegateForFunctionPointer<d_g_idle_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add"));
 
 		public static uint Add (IdleHandler hndlr)
 		{
@@ -84,8 +84,8 @@ namespace GLib {
 			return p.ID;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_idle_add_full (int priority, IdleHandlerInternal d, IntPtr data, DestroyNotify notify);
+		delegate uint d_g_idle_add_full(int priority, IdleHandlerInternal d, IntPtr data, DestroyNotify notify);
+		static d_g_idle_add_full g_idle_add_full = Marshal.GetDelegateForFunctionPointer<d_g_idle_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add_full"));
 
 		public static uint Add (IdleHandler hndlr, Priority priority)
 		{

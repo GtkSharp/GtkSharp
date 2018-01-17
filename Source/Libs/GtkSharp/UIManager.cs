@@ -37,16 +37,16 @@ namespace Gtk {
 			return AddUiFromString (new System.IO.StreamReader (s).ReadToEnd ());
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint gtk_ui_manager_new_merge_id (IntPtr raw);
+		delegate uint d_gtk_ui_manager_new_merge_id(IntPtr raw);
+		static d_gtk_ui_manager_new_merge_id gtk_ui_manager_new_merge_id = Marshal.GetDelegateForFunctionPointer<d_gtk_ui_manager_new_merge_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_new_merge_id"));
 
 		public uint NewMergeId ()
 		{
 			return gtk_ui_manager_new_merge_id (Handle);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_ui_manager_get_toplevels (IntPtr raw, int types);
+		delegate IntPtr d_gtk_ui_manager_get_toplevels(IntPtr raw, int types);
+		static d_gtk_ui_manager_get_toplevels gtk_ui_manager_get_toplevels = Marshal.GetDelegateForFunctionPointer<d_gtk_ui_manager_get_toplevels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_toplevels"));
 
 		public Widget[] GetToplevels (Gtk.UIManagerItemType types) {
 			IntPtr raw_ret = gtk_ui_manager_get_toplevels (Handle, (int) types);
@@ -58,8 +58,8 @@ namespace Gtk {
 			return result;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_ui_manager_get_action_groups (IntPtr raw);
+		delegate IntPtr d_gtk_ui_manager_get_action_groups(IntPtr raw);
+		static d_gtk_ui_manager_get_action_groups gtk_ui_manager_get_action_groups = Marshal.GetDelegateForFunctionPointer<d_gtk_ui_manager_get_action_groups>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_action_groups"));
 
 		public ActionGroup[] ActionGroups { 
 			get {

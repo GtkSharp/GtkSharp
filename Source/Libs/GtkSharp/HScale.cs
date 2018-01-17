@@ -25,8 +25,8 @@ namespace Gtk {
 
 	public partial class HScale {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_hscale_new_with_range (double min, double max, double step);
+		delegate IntPtr d_gtk_hscale_new_with_range(double min, double max, double step);
+		static d_gtk_hscale_new_with_range gtk_hscale_new_with_range = Marshal.GetDelegateForFunctionPointer<d_gtk_hscale_new_with_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_hscale_new_with_range"));
 
 		public HScale (double min, double max, double step) : base (IntPtr.Zero)
 		{

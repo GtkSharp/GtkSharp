@@ -30,8 +30,8 @@ namespace GLib {
 
 		private Marshaller () {}
 		
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_free (IntPtr mem);
+		delegate void d_g_free(IntPtr mem);
+		static d_g_free g_free = Marshal.GetDelegateForFunctionPointer<d_g_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_free"));
 
 		public static void Free (IntPtr ptr)
 		{
@@ -47,23 +47,15 @@ namespace GLib {
 				g_free (ptrs [i]);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_filename_to_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
-
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_filename_to_utf8_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
-
+		delegate IntPtr d_g_filename_to_utf8(IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
+		static d_g_filename_to_utf8 g_filename_to_utf8 = Marshal.GetDelegateForFunctionPointer<d_g_filename_to_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_filename_to_utf8"));
+		
 		public static string FilenamePtrToString (IntPtr ptr) 
 		{
 			if (ptr == IntPtr.Zero) return null;
 			
 			IntPtr dummy, error;
-			IntPtr utf8;
-
-			if (Global.IsWindowsPlatform)
-				utf8 = g_filename_to_utf8_utf8 (ptr, -1, IntPtr.Zero, out dummy, out error);
-			else
-				utf8 = g_filename_to_utf8 (ptr, -1, IntPtr.Zero, out dummy, out error);
+			IntPtr utf8 = g_filename_to_utf8 (ptr, -1, IntPtr.Zero, out dummy, out error);
 
 			if (error != IntPtr.Zero)
 				throw new GLib.GException (error);
@@ -124,11 +116,8 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_filename_from_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
-
-		[DllImport (Global.GLibNativeDll)]
-		static extern IntPtr g_filename_from_utf8_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
+		delegate IntPtr d_g_filename_from_utf8(IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
+		static d_g_filename_from_utf8 g_filename_from_utf8 = Marshal.GetDelegateForFunctionPointer<d_g_filename_from_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_filename_from_utf8"));
 
 		public static IntPtr StringToFilenamePtr (string str) 
 		{
@@ -137,13 +126,7 @@ namespace GLib {
 
 			IntPtr dummy, error;
 			IntPtr utf8 = StringToPtrGStrdup (str);
-
-			IntPtr result;
-
-			if (Global.IsWindowsPlatform)
-				result = g_filename_from_utf8_utf8 (utf8, -1, IntPtr.Zero, out dummy, out error);
-			else
-				result = g_filename_from_utf8 (utf8, -1, IntPtr.Zero, out dummy, out error);
+			IntPtr result = g_filename_from_utf8 (utf8, -1, IntPtr.Zero, out dummy, out error);
 
 			g_free (utf8);
 			if (error != IntPtr.Zero)
@@ -194,8 +177,8 @@ namespace GLib {
 			return result;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_strfreev (IntPtr mem);
+		delegate void d_g_strfreev(IntPtr mem);
+		static d_g_strfreev g_strfreev = Marshal.GetDelegateForFunctionPointer<d_g_strfreev>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_strfreev"));
 
 		public static void StrFreeV (IntPtr null_term_array)
 		{
@@ -239,8 +222,8 @@ namespace GLib {
 			return members;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_malloc(UIntPtr size);
+		delegate IntPtr d_g_malloc(UIntPtr size);
+		static d_g_malloc g_malloc = Marshal.GetDelegateForFunctionPointer<d_g_malloc>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_malloc"));
 
 		public static IntPtr Malloc (ulong size)
 		{
@@ -260,11 +243,11 @@ namespace GLib {
 			return local_epoch.AddSeconds (time_t.ToInt64 () + utc_offset);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_malloc0 (UIntPtr size);
+		delegate IntPtr d_g_malloc0(UIntPtr size);
+		static d_g_malloc0 g_malloc0 = Marshal.GetDelegateForFunctionPointer<d_g_malloc0>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_malloc0"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_unichar_to_utf8 (uint c, IntPtr buf);
+		delegate int d_g_unichar_to_utf8(uint c, IntPtr buf);
+		static d_g_unichar_to_utf8 g_unichar_to_utf8 = Marshal.GetDelegateForFunctionPointer<d_g_unichar_to_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_unichar_to_utf8"));
 
 		public static char GUnicharToChar (uint ucs4_char)
 		{ 
@@ -288,8 +271,8 @@ namespace GLib {
 			return PtrToStringGFree (buf);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_utf16_to_ucs4 (ref ushort c, IntPtr len, IntPtr d1, IntPtr d2, IntPtr d3);
+		delegate IntPtr d_g_utf16_to_ucs4(ref ushort c, IntPtr len, IntPtr d1, IntPtr d2, IntPtr d3);
+		static d_g_utf16_to_ucs4 g_utf16_to_ucs4 = Marshal.GetDelegateForFunctionPointer<d_g_utf16_to_ucs4>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_utf16_to_ucs4"));
 
 		public static uint CharToGUnichar (char c)
 		{

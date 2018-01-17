@@ -155,17 +155,17 @@ namespace GLib {
 			return false;
 		}
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_object_add_toggle_ref (IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
+		delegate void d_g_object_add_toggle_ref(IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
+		static d_g_object_add_toggle_ref g_object_add_toggle_ref = Marshal.GetDelegateForFunctionPointer<d_g_object_add_toggle_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_add_toggle_ref"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_object_remove_toggle_ref (IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
+		delegate void d_g_object_remove_toggle_ref(IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
+		static d_g_object_remove_toggle_ref g_object_remove_toggle_ref = Marshal.GetDelegateForFunctionPointer<d_g_object_remove_toggle_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_remove_toggle_ref"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_object_ref (IntPtr raw);
+		delegate IntPtr d_g_object_ref(IntPtr raw);
+		static d_g_object_ref g_object_ref = Marshal.GetDelegateForFunctionPointer<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_object_unref (IntPtr raw);
+		delegate void d_g_object_unref(IntPtr raw);
+		static d_g_object_unref g_object_unref = Marshal.GetDelegateForFunctionPointer<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
 	}
 }

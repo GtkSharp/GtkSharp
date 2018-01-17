@@ -23,8 +23,8 @@ namespace Pango {
 
 	public class AttrGravity : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_gravity_new (int gravity);
+		delegate IntPtr d_pango_attr_gravity_new(int gravity);
+		static d_pango_attr_gravity_new pango_attr_gravity_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_gravity_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_gravity_new"));
 
 		public AttrGravity (Gravity gravity) : this (pango_attr_gravity_new ((int) gravity)) {}
 

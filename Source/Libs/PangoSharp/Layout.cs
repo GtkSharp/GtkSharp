@@ -26,8 +26,8 @@ namespace Pango {
 
 	public partial class Layout {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_layout_get_lines(IntPtr raw);
+		delegate IntPtr d_pango_layout_get_lines(IntPtr raw);
+		static d_pango_layout_get_lines pango_layout_get_lines = Marshal.GetDelegateForFunctionPointer<d_pango_layout_get_lines>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_lines"));
 
 		public LayoutLine[] Lines {
 			get {
@@ -43,8 +43,8 @@ namespace Pango {
 			}
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_layout_set_markup_with_accel (IntPtr raw, IntPtr markup, int length, uint accel_marker, out uint accel_char);
+		delegate void d_pango_layout_set_markup_with_accel(IntPtr raw, IntPtr markup, int length, uint accel_marker, out uint accel_char);
+		static d_pango_layout_set_markup_with_accel pango_layout_set_markup_with_accel = Marshal.GetDelegateForFunctionPointer<d_pango_layout_set_markup_with_accel>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_markup_with_accel"));
 
 		public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char)
 		{
@@ -55,8 +55,8 @@ namespace Pango {
 			accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_layout_get_log_attrs (IntPtr raw, out IntPtr attrs, out int n_attrs);
+		delegate void d_pango_layout_get_log_attrs(IntPtr raw, out IntPtr attrs, out int n_attrs);
+		static d_pango_layout_get_log_attrs pango_layout_get_log_attrs = Marshal.GetDelegateForFunctionPointer<d_pango_layout_get_log_attrs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_log_attrs"));
 
 		public LogAttr [] LogAttrs {
 			get {
@@ -76,8 +76,8 @@ namespace Pango {
 			}
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_layout_set_text (IntPtr raw, IntPtr text, int length);
+		delegate void d_pango_layout_set_text(IntPtr raw, IntPtr text, int length);
+		static d_pango_layout_set_text pango_layout_set_text = Marshal.GetDelegateForFunctionPointer<d_pango_layout_set_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_text"));
 
 		public void SetText (string text) 
 		{
@@ -86,8 +86,8 @@ namespace Pango {
 			GLib.Marshaller.Free (native_text);
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_layout_set_markup (IntPtr raw, IntPtr markup, int length);
+		delegate void d_pango_layout_set_markup(IntPtr raw, IntPtr markup, int length);
+		static d_pango_layout_set_markup pango_layout_set_markup = Marshal.GetDelegateForFunctionPointer<d_pango_layout_set_markup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_markup"));
 
 		public void SetMarkup (string markup) 
 		{

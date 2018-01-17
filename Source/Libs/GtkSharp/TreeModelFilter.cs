@@ -25,10 +25,10 @@ namespace Gtk {
 
 	public partial class TreeModelFilter {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_tree_model_iter_children (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
+		delegate bool d_gtk_tree_model_iter_children2(IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
+		static d_gtk_tree_model_iter_children2 gtk_tree_model_iter_children2 = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_model_iter_children2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_children"));
 		public bool IterChildren (out Gtk.TreeIter iter) {
-			bool raw_ret = gtk_tree_model_iter_children (Handle, out iter, IntPtr.Zero);
+			bool raw_ret = gtk_tree_model_iter_children2 (Handle, out iter, IntPtr.Zero);
 			bool ret = raw_ret;
 			return ret;
 		}
@@ -39,10 +39,10 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_tree_model_iter_nth_child (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
+		delegate bool d_gtk_tree_model_iter_nth_child2(IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
+		static d_gtk_tree_model_iter_nth_child2 gtk_tree_model_iter_nth_child2 = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_model_iter_nth_child2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_nth_child"));
 		public bool IterNthChild (out Gtk.TreeIter iter, int n) {
-			bool raw_ret = gtk_tree_model_iter_nth_child (Handle, out iter, IntPtr.Zero, n);
+			bool raw_ret = gtk_tree_model_iter_nth_child2 (Handle, out iter, IntPtr.Zero, n);
 			bool ret = raw_ret;
 			return ret;
 		}
@@ -83,8 +83,8 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_tree_model_filter_set_modify_func(IntPtr raw, int n_columns, IntPtr[] types, GtkSharp.TreeModelFilterModifyFuncNative func, IntPtr data, GLib.DestroyNotify destroy);
+		delegate void d_gtk_tree_model_filter_set_modify_func(IntPtr raw, int n_columns, IntPtr[] types, GtkSharp.TreeModelFilterModifyFuncNative func, IntPtr data, GLib.DestroyNotify destroy);
+		static d_gtk_tree_model_filter_set_modify_func gtk_tree_model_filter_set_modify_func = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_model_filter_set_modify_func>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_filter_set_modify_func"));
 
 		public void SetModifyFunc (int n_columns, GLib.GType[] types, TreeModelFilterModifyFunc func) 
 		{
@@ -96,8 +96,8 @@ namespace Gtk {
 			gtk_tree_model_filter_set_modify_func (Handle, n_columns, native_types, func_wrapper.NativeDelegate, (IntPtr) gch, GLib.DestroyHelper.NotifyHandler);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_tree_model_filter_convert_child_iter_to_iter (IntPtr raw, out Gtk.TreeIter filter_iter, ref Gtk.TreeIter child_iter);
+		delegate bool d_gtk_tree_model_filter_convert_child_iter_to_iter(IntPtr raw, out Gtk.TreeIter filter_iter, ref Gtk.TreeIter child_iter);
+		static d_gtk_tree_model_filter_convert_child_iter_to_iter gtk_tree_model_filter_convert_child_iter_to_iter = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_model_filter_convert_child_iter_to_iter>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_filter_convert_child_iter_to_iter"));
 
 		public TreeIter ConvertChildIterToIter (Gtk.TreeIter child_iter)
 		{

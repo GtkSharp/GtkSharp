@@ -47,19 +47,6 @@ Task("Prepare")
     DotNetCoreRestore("Source/Libs/GtkSharp.sln");
 });
 
-Task("GenerateLinuxStubs")
-    .IsDependentOn("Init")
-    .Does(() => 
-{
-    CreateDirectory("BuildOutput/LinuxStubs");
-    System.IO.Directory.SetCurrentDirectory("BuildOutput/LinuxStubs");
-    FileWriteText("empty.c", "");
-    foreach(var gassembly in list)
-        gassembly.GenerateLinuxStubs();
-    System.IO.Directory.SetCurrentDirectory("../..");
-    DeleteDirectory("BuildOutput/LinuxStubs", new DeleteDirectorySettings { Recursive = true, Force = true });
-});
-
 Task("Clean")
     .IsDependentOn("Init")
     .Does(() =>

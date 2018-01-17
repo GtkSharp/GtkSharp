@@ -27,16 +27,16 @@ namespace GLib {
 
 		IntPtr handle;
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_string_free (IntPtr mem, bool free_segments);
+		delegate IntPtr d_g_string_free(IntPtr mem, bool free_segments);
+		static d_g_string_free g_string_free = Marshal.GetDelegateForFunctionPointer<d_g_string_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_free"));
 
 		~GString ()
 		{
 			g_string_free (handle, true);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_string_new (IntPtr text);
+		delegate IntPtr d_g_string_new(IntPtr text);
+		static d_g_string_new g_string_new = Marshal.GetDelegateForFunctionPointer<d_g_string_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_new"));
 
 		public GString (string text) 
 		{

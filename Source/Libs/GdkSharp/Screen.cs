@@ -25,8 +25,8 @@ namespace Gdk {
 
 	public partial class Screen {
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_screen_get_toplevel_windows (IntPtr raw);
+		delegate IntPtr d_gdk_screen_get_toplevel_windows(IntPtr raw);
+		static d_gdk_screen_get_toplevel_windows gdk_screen_get_toplevel_windows = Marshal.GetDelegateForFunctionPointer<d_gdk_screen_get_toplevel_windows>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_screen_get_toplevel_windows"));
 
 		public Window[] ToplevelWindows
 		{
@@ -42,8 +42,8 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_screen_list_visuals (IntPtr raw);
+		delegate IntPtr d_gdk_screen_list_visuals(IntPtr raw);
+		static d_gdk_screen_list_visuals gdk_screen_list_visuals = Marshal.GetDelegateForFunctionPointer<d_gdk_screen_list_visuals>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_screen_list_visuals"));
 
 		public Visual[] ListVisuals ()
 		{
@@ -57,11 +57,11 @@ namespace Gdk {
 			return result;
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_screen_get_font_options(IntPtr raw);
+		delegate IntPtr d_gdk_screen_get_font_options(IntPtr raw);
+		static d_gdk_screen_get_font_options gdk_screen_get_font_options = Marshal.GetDelegateForFunctionPointer<d_gdk_screen_get_font_options>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_screen_get_font_options"));
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_screen_set_font_options(IntPtr raw, IntPtr options);
+		delegate void d_gdk_screen_set_font_options(IntPtr raw, IntPtr options);
+		static d_gdk_screen_set_font_options gdk_screen_set_font_options = Marshal.GetDelegateForFunctionPointer<d_gdk_screen_set_font_options>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_screen_set_font_options"));
 
 		[GLib.Property ("font-options")]
 		public Cairo.FontOptions FontOptions {

@@ -23,8 +23,8 @@ namespace Pango {
 
 	public class AttrRise : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_rise_new (int rise);
+		delegate IntPtr d_pango_attr_rise_new(int rise);
+		static d_pango_attr_rise_new pango_attr_rise_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_rise_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_rise_new"));
 
 		public AttrRise (int rise) : this (pango_attr_rise_new (rise)) {}
 

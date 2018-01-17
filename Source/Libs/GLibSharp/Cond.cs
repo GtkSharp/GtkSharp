@@ -16,43 +16,43 @@ namespace GLib {
 			int i2;
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_cond_broadcast(IntPtr raw);
+		delegate void d_g_cond_broadcast(IntPtr raw);
+		static d_g_cond_broadcast g_cond_broadcast = Marshal.GetDelegateForFunctionPointer<d_g_cond_broadcast>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_cond_broadcast"));
 
 		public void Broadcast() {
 			g_cond_broadcast(Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_cond_clear(IntPtr raw);
+		delegate void d_g_cond_clear(IntPtr raw);
+		static d_g_cond_clear g_cond_clear = Marshal.GetDelegateForFunctionPointer<d_g_cond_clear>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_cond_clear"));
 
 		public void Clear() {
 			g_cond_clear(Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_cond_init(IntPtr raw);
+		delegate void d_g_cond_init(IntPtr raw);
+		static d_g_cond_init g_cond_init = Marshal.GetDelegateForFunctionPointer<d_g_cond_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_cond_init"));
 
 		public void Init() {
 			g_cond_init(Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_cond_signal(IntPtr raw);
+		delegate void d_g_cond_signal(IntPtr raw);
+		static d_g_cond_signal g_cond_signal = Marshal.GetDelegateForFunctionPointer<d_g_cond_signal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_cond_signal"));
 
 		public void Signal() {
 			g_cond_signal(Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_cond_wait(IntPtr raw, IntPtr mutex);
+		delegate void d_g_cond_wait(IntPtr raw, IntPtr mutex);
+		static d_g_cond_wait g_cond_wait = Marshal.GetDelegateForFunctionPointer<d_g_cond_wait>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_cond_wait"));
 
 		public void Wait(GLib.Mutex mutex) {
 			g_cond_wait(Handle, mutex == null ? IntPtr.Zero : mutex.Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_cond_wait_until(IntPtr raw, IntPtr mutex, long end_time);
+		delegate bool d_g_cond_wait_until(IntPtr raw, IntPtr mutex, long end_time);
+		static d_g_cond_wait_until g_cond_wait_until = Marshal.GetDelegateForFunctionPointer<d_g_cond_wait_until>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_cond_wait_until"));
 
 		public bool WaitUntil(GLib.Mutex mutex, long end_time) {
 			bool raw_ret = g_cond_wait_until(Handle, mutex == null ? IntPtr.Zero : mutex.Handle, end_time);

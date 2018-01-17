@@ -25,10 +25,10 @@ namespace Gtk {
 
 	public partial class TreeModelSort {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_tree_model_iter_children (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
+		delegate bool d_gtk_tree_model_iter_children2(IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
+		static d_gtk_tree_model_iter_children2 gtk_tree_model_iter_children2 = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_model_iter_children2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_children"));
 		public bool IterChildren (out Gtk.TreeIter iter) {
-			bool raw_ret = gtk_tree_model_iter_children (Handle, out iter, IntPtr.Zero);
+			bool raw_ret = gtk_tree_model_iter_children2 (Handle, out iter, IntPtr.Zero);
 			bool ret = raw_ret;
 			return ret;
 		}
@@ -39,10 +39,10 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_tree_model_iter_nth_child (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
+		delegate bool d_gtk_tree_model_iter_nth_child2(IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
+		static d_gtk_tree_model_iter_nth_child2 gtk_tree_model_iter_nth_child2 = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_model_iter_nth_child2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_nth_child"));
 		public bool IterNthChild (out Gtk.TreeIter iter, int n) {
-			bool raw_ret = gtk_tree_model_iter_nth_child (Handle, out iter, IntPtr.Zero, n);
+			bool raw_ret = gtk_tree_model_iter_nth_child2 (Handle, out iter, IntPtr.Zero, n);
 			bool ret = raw_ret;
 			return ret;
 		}

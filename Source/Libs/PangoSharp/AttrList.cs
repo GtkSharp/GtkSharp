@@ -25,19 +25,19 @@ namespace Pango {
 
 	public partial class AttrList {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attribute_copy (IntPtr raw);
+		delegate IntPtr d_pango_attribute_copy(IntPtr raw);
+		static d_pango_attribute_copy pango_attribute_copy = Marshal.GetDelegateForFunctionPointer<d_pango_attribute_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attribute_copy"));
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_attr_list_insert (IntPtr raw, IntPtr attr);
+		delegate void d_pango_attr_list_insert(IntPtr raw, IntPtr attr);
+		static d_pango_attr_list_insert pango_attr_list_insert = Marshal.GetDelegateForFunctionPointer<d_pango_attr_list_insert>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_list_insert"));
 
 		public void Insert (Pango.Attribute attr) 
 		{
 			pango_attr_list_insert (Handle, pango_attribute_copy (attr.Handle));
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_attr_list_insert_before (IntPtr raw, IntPtr attr);
+		delegate void d_pango_attr_list_insert_before(IntPtr raw, IntPtr attr);
+		static d_pango_attr_list_insert_before pango_attr_list_insert_before = Marshal.GetDelegateForFunctionPointer<d_pango_attr_list_insert_before>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_list_insert_before"));
 
 		public void InsertBefore (Pango.Attribute attr)
 		{

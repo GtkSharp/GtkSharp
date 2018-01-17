@@ -25,11 +25,11 @@ namespace Gtk {
 
 	public partial class SelectionData {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		private static extern IntPtr gtk_selection_data_get_text (IntPtr selection_data);
+		delegate IntPtr d_gtk_selection_data_get_text(IntPtr selection_data);
+		static d_gtk_selection_data_get_text gtk_selection_data_get_text = Marshal.GetDelegateForFunctionPointer<d_gtk_selection_data_get_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_selection_data_get_text"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		private static extern void gtk_selection_data_set_text (IntPtr selection_data, IntPtr str, int len);
+		delegate void d_gtk_selection_data_set_text(IntPtr selection_data, IntPtr str, int len);
+		static d_gtk_selection_data_set_text gtk_selection_data_set_text = Marshal.GetDelegateForFunctionPointer<d_gtk_selection_data_set_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_selection_data_set_text"));
 
 		public string Text {
 			get {
@@ -45,8 +45,8 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		private static extern IntPtr gtk_selection_data_get_data (IntPtr selection_data);
+		delegate IntPtr d_gtk_selection_data_get_data(IntPtr selection_data);
+		static d_gtk_selection_data_get_data gtk_selection_data_get_data = Marshal.GetDelegateForFunctionPointer<d_gtk_selection_data_get_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_selection_data_get_data"));
 
 		public byte[] Data {
 			get {
@@ -61,8 +61,8 @@ namespace Gtk {
 			Set(type, format, data, data.Length);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_selection_data_get_targets(IntPtr raw, out IntPtr targets, out int n_atoms);
+		delegate bool d_gtk_selection_data_get_targets(IntPtr raw, out IntPtr targets, out int n_atoms);
+		static d_gtk_selection_data_get_targets gtk_selection_data_get_targets = Marshal.GetDelegateForFunctionPointer<d_gtk_selection_data_get_targets>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_selection_data_get_targets"));
 
 		public Gdk.Atom [] Targets {
 			get {

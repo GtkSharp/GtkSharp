@@ -25,8 +25,8 @@ namespace Gtk {
 
 	public partial class MenuItem {
 				
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_menu_item_new_with_mnemonic (IntPtr label);
+		delegate IntPtr d_gtk_menu_item_new_with_mnemonic(IntPtr label);
+		static d_gtk_menu_item_new_with_mnemonic gtk_menu_item_new_with_mnemonic = Marshal.GetDelegateForFunctionPointer<d_gtk_menu_item_new_with_mnemonic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_item_new_with_mnemonic"));
 
 		public MenuItem (string label) : base (IntPtr.Zero)
 		{

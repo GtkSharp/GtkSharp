@@ -25,8 +25,8 @@ namespace Gtk {
 
 	public partial struct TextIter {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint gtk_text_iter_get_char(ref Gtk.TextIter raw);
+		delegate uint d_gtk_text_iter_get_char(ref Gtk.TextIter raw);
+		static d_gtk_text_iter_get_char gtk_text_iter_get_char = Marshal.GetDelegateForFunctionPointer<d_gtk_text_iter_get_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_iter_get_char"));
 
 		public string Char { 
 			get {
@@ -34,8 +34,8 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_text_iter_get_marks (ref TextIter iter);
+		delegate IntPtr d_gtk_text_iter_get_marks(ref TextIter iter);
+		static d_gtk_text_iter_get_marks gtk_text_iter_get_marks = Marshal.GetDelegateForFunctionPointer<d_gtk_text_iter_get_marks>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_iter_get_marks"));
 
 		public TextMark[] Marks {
 			get {
@@ -50,8 +50,8 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_text_iter_get_tags (ref TextIter iter);
+		delegate IntPtr d_gtk_text_iter_get_tags(ref TextIter iter);
+		static d_gtk_text_iter_get_tags gtk_text_iter_get_tags = Marshal.GetDelegateForFunctionPointer<d_gtk_text_iter_get_tags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_iter_get_tags"));
 
 		public TextTag[] Tags {
 			get {
@@ -66,8 +66,8 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_text_iter_get_toggled_tags (ref TextIter iter, bool toggled_on);
+		delegate IntPtr d_gtk_text_iter_get_toggled_tags(ref TextIter iter, bool toggled_on);
+		static d_gtk_text_iter_get_toggled_tags gtk_text_iter_get_toggled_tags = Marshal.GetDelegateForFunctionPointer<d_gtk_text_iter_get_toggled_tags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_iter_get_toggled_tags"));
 
 		public TextTag[] GetToggledTags (bool toggled_on)
 		{

@@ -21,8 +21,8 @@ namespace Gtk {
 	public partial class TreePath {
 
 		// Patch submitted by malte on bug #49518
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_tree_path_get_indices(IntPtr raw);
+		delegate IntPtr d_gtk_tree_path_get_indices(IntPtr raw);
+		static d_gtk_tree_path_get_indices gtk_tree_path_get_indices = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_path_get_indices>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_path_get_indices"));
 
 		public int [] Indices { 
 			get {

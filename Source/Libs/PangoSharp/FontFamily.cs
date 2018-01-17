@@ -25,14 +25,14 @@ namespace Pango {
 
 	public partial class FontFamily {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_font_family_list_faces(IntPtr raw, out IntPtr faces, out int n_faces);
+		delegate void d_pango_font_family_list_faces2(IntPtr raw, out IntPtr faces, out int n_faces);
+		static d_pango_font_family_list_faces2 pango_font_family_list_faces2 = Marshal.GetDelegateForFunctionPointer<d_pango_font_family_list_faces2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_family_list_faces"));
 
 		public FontFace [] Faces {
 			get {
 				int count;
 				IntPtr array_ptr;
-				pango_font_family_list_faces (Handle, out array_ptr, out count);
+				pango_font_family_list_faces2 (Handle, out array_ptr, out count);
 				if (array_ptr == IntPtr.Zero)
 					return new FontFace [0];
 				FontFace [] result = new FontFace [count];
@@ -46,8 +46,8 @@ namespace Pango {
 			}
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_font_family_list_faces(IntPtr raw, IntPtr faces, out int n_faces);
+		delegate void d_pango_font_family_list_faces(IntPtr raw, IntPtr faces, out int n_faces);
+		static d_pango_font_family_list_faces pango_font_family_list_faces = Marshal.GetDelegateForFunctionPointer<d_pango_font_family_list_faces>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_family_list_faces"));
 
 		[Obsolete]
 		public int ListFaces(Pango.FontFace faces) {

@@ -25,8 +25,8 @@ namespace Gdk {
 
 	public partial class DisplayManager {
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_display_manager_list_displays (IntPtr raw);
+		delegate IntPtr d_gdk_display_manager_list_displays(IntPtr raw);
+		static d_gdk_display_manager_list_displays gdk_display_manager_list_displays = Marshal.GetDelegateForFunctionPointer<d_gdk_display_manager_list_displays>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_display_manager_list_displays"));
 
 		public Display[] ListDisplays ()
 		{

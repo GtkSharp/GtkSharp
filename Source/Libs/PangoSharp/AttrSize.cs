@@ -23,11 +23,11 @@ namespace Pango {
 
 	public class AttrSize : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_size_new (int size);
+		delegate IntPtr d_pango_attr_size_new(int size);
+		static d_pango_attr_size_new pango_attr_size_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_size_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_size_new"));
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_size_new_absolute (int size);
+		delegate IntPtr d_pango_attr_size_new_absolute(int size);
+		static d_pango_attr_size_new_absolute pango_attr_size_new_absolute = Marshal.GetDelegateForFunctionPointer<d_pango_attr_size_new_absolute>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_size_new_absolute"));
 
 		public AttrSize (int size) : this (pango_attr_size_new (size)) {}
 

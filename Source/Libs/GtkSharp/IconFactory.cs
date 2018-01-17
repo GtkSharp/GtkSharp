@@ -20,8 +20,8 @@ namespace Gtk {
 
 	public partial class IconFactory {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		extern static void gtk_icon_size_lookup (IconSize size, out int width, out int height);
+		delegate void d_gtk_icon_size_lookup(IconSize size, out int width, out int height);
+		static d_gtk_icon_size_lookup gtk_icon_size_lookup = Marshal.GetDelegateForFunctionPointer<d_gtk_icon_size_lookup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_size_lookup"));
 
 		/// <summary> Query icon dimensions </summary>
                 /// <remarks> Queries dimensions for icons of the specified size. </remarks>

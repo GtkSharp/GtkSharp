@@ -43,8 +43,8 @@ namespace Gtk {
 			GLib.Marshaller.Free (label_as_native);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_radio_menu_item_new_with_mnemonic(IntPtr group, IntPtr label);
+		delegate IntPtr d_gtk_radio_menu_item_new_with_mnemonic(IntPtr group, IntPtr label);
+		static d_gtk_radio_menu_item_new_with_mnemonic gtk_radio_menu_item_new_with_mnemonic = Marshal.GetDelegateForFunctionPointer<d_gtk_radio_menu_item_new_with_mnemonic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_menu_item_new_with_mnemonic"));
 
 		public RadioMenuItem (RadioMenuItem[] group, string label) : base (IntPtr.Zero)
 		{
@@ -71,11 +71,11 @@ namespace Gtk {
 			GLib.Marshaller.Free (native_label);
 		}
 
-		[DllImport(Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_radio_menu_item_get_group(IntPtr raw);
+		delegate IntPtr d_gtk_radio_menu_item_get_group(IntPtr raw);
+		static d_gtk_radio_menu_item_get_group gtk_radio_menu_item_get_group = Marshal.GetDelegateForFunctionPointer<d_gtk_radio_menu_item_get_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_menu_item_get_group"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_radio_menu_item_set_group(IntPtr raw, IntPtr list);
+		delegate void d_gtk_radio_menu_item_set_group(IntPtr raw, IntPtr list);
+		static d_gtk_radio_menu_item_set_group gtk_radio_menu_item_set_group = Marshal.GetDelegateForFunctionPointer<d_gtk_radio_menu_item_set_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_menu_item_set_group"));
 
 		[GLib.Property ("group")]
 		public RadioMenuItem[] Group {

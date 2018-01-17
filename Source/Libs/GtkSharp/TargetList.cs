@@ -23,8 +23,8 @@ namespace Gtk {
 
 	public partial class TargetList {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_target_list_new(Gtk.TargetEntry[] targets, uint n_targets);
+		delegate IntPtr d_gtk_target_list_new(Gtk.TargetEntry[] targets, uint n_targets);
+		static d_gtk_target_list_new gtk_target_list_new = Marshal.GetDelegateForFunctionPointer<d_gtk_target_list_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_target_list_new"));
 
 		public TargetList() : base(gtk_target_list_new(null, 0)) {}
 

@@ -20,9 +20,8 @@ namespace Gtk {
 
 	public partial class IconSet {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		unsafe static extern void gtk_icon_set_get_sizes (
-			IntPtr raw, out int *pointer_to_enum, out int n_sizes);
+		unsafe delegate void d_gtk_icon_set_get_sizes(IntPtr raw, out int *pointer_to_enum, out int n_sizes);
+		static d_gtk_icon_set_get_sizes gtk_icon_set_get_sizes = Marshal.GetDelegateForFunctionPointer<d_gtk_icon_set_get_sizes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_set_get_sizes"));
 
 		/// <summary> Sizes Property </summary>
 		/// <remarks> To be completed </remarks>

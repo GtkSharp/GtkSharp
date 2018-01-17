@@ -58,11 +58,11 @@ namespace Gtk {
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void ClosureMarshal (IntPtr closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data);
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_closure_new_simple (int closure_size, IntPtr dummy);
+		delegate IntPtr d_g_closure_new_simple(int closure_size, IntPtr dummy);
+		static d_g_closure_new_simple g_closure_new_simple = Marshal.GetDelegateForFunctionPointer<d_g_closure_new_simple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_new_simple"));
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_closure_set_marshal (IntPtr closure, ClosureMarshal marshaler);
+		delegate void d_g_closure_set_marshal(IntPtr closure, ClosureMarshal marshaler);
+		static d_g_closure_set_marshal g_closure_set_marshal = Marshal.GetDelegateForFunctionPointer<d_g_closure_set_marshal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_set_marshal"));
 
 		static IntPtr CreateClosure (ClosureMarshal marshaler) {
 			IntPtr raw_closure = g_closure_new_simple (Marshal.SizeOf (typeof (GClosure)), IntPtr.Zero);
@@ -70,8 +70,8 @@ namespace Gtk {
 			return raw_closure;
 		}
 
-		[DllImport ("libgobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_signal_newv (IntPtr signal_name, IntPtr gtype, GLib.Signal.Flags signal_flags, IntPtr closure, IntPtr accumulator, IntPtr accu_data, IntPtr c_marshaller, IntPtr return_type, uint n_params, [MarshalAs (UnmanagedType.LPArray)] IntPtr[] param_types);
+		delegate uint d_g_signal_newv(IntPtr signal_name, IntPtr gtype, GLib.Signal.Flags signal_flags, IntPtr closure, IntPtr accumulator, IntPtr accu_data, IntPtr c_marshaller, IntPtr return_type, uint n_params, [MarshalAs (UnmanagedType.LPArray)] IntPtr[] param_types);
+		static d_g_signal_newv g_signal_newv = Marshal.GetDelegateForFunctionPointer<d_g_signal_newv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_newv"));
 
 		static uint RegisterSignal (string signal_name, GLib.GType gtype, GLib.Signal.Flags signal_flags, GLib.GType return_type, GLib.GType[] param_types, ClosureMarshal marshaler)
 		{
@@ -170,11 +170,11 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_binding_set_by_class (IntPtr class_ptr);
+		delegate IntPtr d_gtk_binding_set_by_class(IntPtr class_ptr);
+		static d_gtk_binding_set_by_class gtk_binding_set_by_class = Marshal.GetDelegateForFunctionPointer<d_gtk_binding_set_by_class>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_set_by_class"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_binding_entry_add_signall (IntPtr binding_set, uint keyval, Gdk.ModifierType modifiers, IntPtr signal_name, IntPtr binding_args);
+		delegate void d_gtk_binding_entry_add_signall(IntPtr binding_set, uint keyval, Gdk.ModifierType modifiers, IntPtr signal_name, IntPtr binding_args);
+		static d_gtk_binding_entry_add_signall gtk_binding_entry_add_signall = Marshal.GetDelegateForFunctionPointer<d_gtk_binding_entry_add_signall>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_entry_add_signall"));
 
 		[StructLayout(LayoutKind.Sequential)]
 		struct GtkBindingArg {
@@ -242,11 +242,11 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_widget_class_find_style_property (IntPtr class_ptr, IntPtr property_name);
+		delegate IntPtr d_gtk_widget_class_find_style_property(IntPtr class_ptr, IntPtr property_name);
+		static d_gtk_widget_class_find_style_property gtk_widget_class_find_style_property = Marshal.GetDelegateForFunctionPointer<d_gtk_widget_class_find_style_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_find_style_property"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_widget_style_get_property (IntPtr inst, IntPtr property_name, ref GLib.Value value);
+		delegate IntPtr d_gtk_widget_style_get_property(IntPtr inst, IntPtr property_name, ref GLib.Value value);
+		static d_gtk_widget_style_get_property gtk_widget_style_get_property = Marshal.GetDelegateForFunctionPointer<d_gtk_widget_style_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_style_get_property"));
 
 		internal GLib.Value StyleGetPropertyValue (string property_name)
 		{
@@ -264,8 +264,8 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_widget_list_mnemonic_labels (IntPtr raw);
+		delegate IntPtr d_gtk_widget_list_mnemonic_labels(IntPtr raw);
+		static d_gtk_widget_list_mnemonic_labels gtk_widget_list_mnemonic_labels = Marshal.GetDelegateForFunctionPointer<d_gtk_widget_list_mnemonic_labels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_list_mnemonic_labels"));
 
 		public Widget[] ListMnemonicLabels ()
 		{
@@ -406,8 +406,8 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		private static extern void gtk_widget_destroy (IntPtr raw);
+		delegate void d_gtk_widget_destroy(IntPtr raw);
+		static d_gtk_widget_destroy gtk_widget_destroy = Marshal.GetDelegateForFunctionPointer<d_gtk_widget_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_destroy"));
 
 		public virtual void Destroy ()
 		{

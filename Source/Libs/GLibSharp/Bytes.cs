@@ -27,8 +27,8 @@ namespace GLib {
 
 	public partial class Bytes : GLib.Opaque, IComparable<Bytes>, IEquatable<Bytes>
 	{
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_bytes_get_type ();
+		delegate IntPtr d_g_bytes_get_type();
+		static d_g_bytes_get_type g_bytes_get_type = Marshal.GetDelegateForFunctionPointer<d_g_bytes_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_get_type"));
 
 		public static GLib.GType GType { 
 			get {
@@ -40,56 +40,56 @@ namespace GLib {
 
 		public Bytes (IntPtr raw) : base (raw) {}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_bytes_new (byte [] data, UIntPtr size);
+		delegate IntPtr d_g_bytes_new(byte [] data, UIntPtr size);
+		static d_g_bytes_new g_bytes_new = Marshal.GetDelegateForFunctionPointer<d_g_bytes_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_new"));
 
 		public Bytes (byte [] data)
 		{
 			Raw = g_bytes_new (data, new UIntPtr ((ulong)data.Length));
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_bytes_new_from_bytes (IntPtr raw, UIntPtr offset, UIntPtr length);
+		delegate IntPtr d_g_bytes_new_from_bytes(IntPtr raw, UIntPtr offset, UIntPtr length);
+		static d_g_bytes_new_from_bytes g_bytes_new_from_bytes = Marshal.GetDelegateForFunctionPointer<d_g_bytes_new_from_bytes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_new_from_bytes"));
 
 		public Bytes (Bytes bytes, ulong offset, ulong length)
 		{
 			Raw = g_bytes_new_from_bytes (bytes.Handle, new UIntPtr (offset), new UIntPtr (length));
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_bytes_new_take (byte [] data, UIntPtr size);
+		delegate IntPtr d_g_bytes_new_take(byte [] data, UIntPtr size);
+		static d_g_bytes_new_take g_bytes_new_take = Marshal.GetDelegateForFunctionPointer<d_g_bytes_new_take>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_new_take"));
 
 		public static Bytes NewTake (byte [] data)
 		{
 			return new Bytes (g_bytes_new_take (data, new UIntPtr ((ulong)data.Length)));
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_bytes_new_static (byte [] data, UIntPtr size);
+		delegate IntPtr d_g_bytes_new_static(byte [] data, UIntPtr size);
+		static d_g_bytes_new_static g_bytes_new_static = Marshal.GetDelegateForFunctionPointer<d_g_bytes_new_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_new_static"));
 
 		public static Bytes NewStatic (byte [] data)
 		{
 			return new Bytes (g_bytes_new_static (data, new UIntPtr ((ulong)data.Length)));
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_bytes_compare (IntPtr raw, IntPtr bytes);
+		delegate int d_g_bytes_compare(IntPtr raw, IntPtr bytes);
+		static d_g_bytes_compare g_bytes_compare = Marshal.GetDelegateForFunctionPointer<d_g_bytes_compare>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_compare"));
 
 		public int CompareTo (Bytes bytes)
 		{
 			return g_bytes_compare (Handle, bytes.Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_bytes_equal (IntPtr raw, IntPtr bytes2);
+		delegate bool d_g_bytes_equal(IntPtr raw, IntPtr bytes2);
+		static d_g_bytes_equal g_bytes_equal = Marshal.GetDelegateForFunctionPointer<d_g_bytes_equal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_equal"));
 
 		public bool Equals (Bytes other)
 		{
 			return g_bytes_equal (Handle, other.Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern UIntPtr g_bytes_get_size (IntPtr raw);
+		delegate UIntPtr d_g_bytes_get_size(IntPtr raw);
+		static d_g_bytes_get_size g_bytes_get_size = Marshal.GetDelegateForFunctionPointer<d_g_bytes_get_size>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_get_size"));
 
 		public ulong Size { 
 			get {
@@ -97,16 +97,16 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_bytes_hash (IntPtr raw);
+		delegate uint d_g_bytes_hash(IntPtr raw);
+		static d_g_bytes_hash g_bytes_hash = Marshal.GetDelegateForFunctionPointer<d_g_bytes_hash>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_hash"));
 
 		public uint GetHash ()
 		{
 			return g_bytes_hash (Handle);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_bytes_get_data (IntPtr raw, out UIntPtr size);
+		delegate IntPtr d_g_bytes_get_data(IntPtr raw, out UIntPtr size);
+		static d_g_bytes_get_data g_bytes_get_data = Marshal.GetDelegateForFunctionPointer<d_g_bytes_get_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_get_data"));
 
 		public byte [] Data {
 			get {
@@ -124,8 +124,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_bytes_ref (IntPtr raw);
+		delegate IntPtr d_g_bytes_ref(IntPtr raw);
+		static d_g_bytes_ref g_bytes_ref = Marshal.GetDelegateForFunctionPointer<d_g_bytes_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_ref"));
 
 		protected override void Ref (IntPtr raw)
 		{
@@ -135,8 +135,8 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_bytes_unref (IntPtr raw);
+		delegate void d_g_bytes_unref(IntPtr raw);
+		static d_g_bytes_unref g_bytes_unref = Marshal.GetDelegateForFunctionPointer<d_g_bytes_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_unref"));
 
 		protected override void Unref (IntPtr raw)
 		{

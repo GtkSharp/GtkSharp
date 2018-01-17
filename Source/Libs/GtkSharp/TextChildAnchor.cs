@@ -25,8 +25,8 @@ namespace Gtk {
 
 	public partial class TextChildAnchor {
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_text_child_anchor_get_widgets (IntPtr raw);
+		delegate IntPtr d_gtk_text_child_anchor_get_widgets(IntPtr raw);
+		static d_gtk_text_child_anchor_get_widgets gtk_text_child_anchor_get_widgets = Marshal.GetDelegateForFunctionPointer<d_gtk_text_child_anchor_get_widgets>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_child_anchor_get_widgets"));
 
 		public Widget[] Widgets {
 			get {

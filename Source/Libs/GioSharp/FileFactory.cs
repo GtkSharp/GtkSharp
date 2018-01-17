@@ -27,8 +27,8 @@ namespace GLib
 {
 	public class FileFactory
 	{
-		[DllImport (GioGlobal.GioNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		private static extern IntPtr g_file_new_for_uri (string uri);
+		delegate IntPtr d_g_file_new_for_uri(string uri);
+		static d_g_file_new_for_uri g_file_new_for_uri = Marshal.GetDelegateForFunctionPointer<d_g_file_new_for_uri>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_file_new_for_uri"));
 
 		public static IFile NewForUri (string uri)
 		{
@@ -40,16 +40,16 @@ namespace GLib
 			return GLib.FileAdapter.GetObject (g_file_new_for_uri (uri.ToString ()), false) as IFile;
 		}
 
-		[DllImport (GioGlobal.GioNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		private static extern IntPtr g_file_new_for_path (string path);
+		delegate IntPtr d_g_file_new_for_path(string path);
+		static d_g_file_new_for_path g_file_new_for_path = Marshal.GetDelegateForFunctionPointer<d_g_file_new_for_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_file_new_for_path"));
 		
 		public static IFile NewForPath (string path)
 		{
 			return GLib.FileAdapter.GetObject (g_file_new_for_path (path), false) as IFile;
 		}
 
-		[DllImport (GioGlobal.GioNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		private static extern IntPtr g_file_new_for_commandline_arg (string arg);
+		delegate IntPtr d_g_file_new_for_commandline_arg(string arg);
+		static d_g_file_new_for_commandline_arg g_file_new_for_commandline_arg = Marshal.GetDelegateForFunctionPointer<d_g_file_new_for_commandline_arg>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_file_new_for_commandline_arg"));
 
 		public static IFile NewFromCommandlineArg (string arg)
 		{

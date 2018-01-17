@@ -26,18 +26,18 @@ namespace Gdk {
 
 	public partial class Property {
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_property_change(IntPtr window, IntPtr property, IntPtr type, int format, int mode, out byte data, int nelements);
+		delegate void d_gdk_property_change2(IntPtr window, IntPtr property, IntPtr type, int format, int mode, out byte data, int nelements);
+		static d_gdk_property_change2 gdk_property_change2 = Marshal.GetDelegateForFunctionPointer<d_gdk_property_change2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_property_change"));
 
 		[Obsolete ("Replaced by corrected overload with data parameter")]
 		public static byte Change(Gdk.Window window, Gdk.Atom property, Gdk.Atom type, int format, Gdk.PropMode mode, int nelements) {
 			byte data;
-			gdk_property_change(window == null ? IntPtr.Zero : window.Handle, property == null ? IntPtr.Zero : property.Handle, type == null ? IntPtr.Zero : type.Handle, format, (int) mode, out data, nelements);
+			gdk_property_change2(window == null ? IntPtr.Zero : window.Handle, property == null ? IntPtr.Zero : property.Handle, type == null ? IntPtr.Zero : type.Handle, format, (int) mode, out data, nelements);
 			return data;
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gdk_property_get(IntPtr window, IntPtr property, IntPtr type, UIntPtr offset, UIntPtr length, bool pdelete, out IntPtr actual_property_type, out int actual_format, out int actual_length, out IntPtr data);
+		delegate bool d_gdk_property_get(IntPtr window, IntPtr property, IntPtr type, UIntPtr offset, UIntPtr length, bool pdelete, out IntPtr actual_property_type, out int actual_format, out int actual_length, out IntPtr data);
+		static d_gdk_property_get gdk_property_get = Marshal.GetDelegateForFunctionPointer<d_gdk_property_get>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_property_get"));
 
 		public static bool Get(Gdk.Window window, Gdk.Atom property, Gdk.Atom type, ulong offset, ulong length, int pdelete, out Gdk.Atom actual_property_type, out int actual_format, out int actual_length, out byte[] data) {
 			IntPtr actual_property_type_as_native;

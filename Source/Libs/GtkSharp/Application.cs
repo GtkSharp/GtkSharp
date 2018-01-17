@@ -31,13 +31,13 @@ namespace Gtk {
 		const int WS_EX_TOOLWINDOW = 0x00000080;
 		const int WS_OVERLAPPEDWINDOW = 0x00CF0000;
 
-		[DllImport ("user32.dll", EntryPoint="CreateWindowExW", CharSet=CharSet.Unicode, CallingConvention=CallingConvention.StdCall)]
-		static extern IntPtr Win32CreateWindow (int dwExStyle, string lpClassName, string lpWindowName,int dwStyle, int x, int y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lParam);
+		delegate IntPtr d_Win32CreateWindow(int dwExStyle, string lpClassName, string lpWindowName,int dwStyle, int x, int y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lParam);
+        static d_Win32CreateWindow Win32CreateWindow;
 
-		[DllImport ("user32.dll", EntryPoint="DestroyWindow", CharSet=CharSet.Unicode, CallingConvention=CallingConvention.StdCall)]
-		static extern bool Win32DestroyWindow (IntPtr window); 
+		delegate bool d_Win32DestroyWindow(IntPtr window);
+        static d_Win32DestroyWindow Win32DestroyWindow;
 
-		static Application ()
+        static Application ()
 		{
 			if (!GLib.Thread.Supported)
 				GLib.Thread.Init ();
@@ -47,6 +47,9 @@ namespace Gtk {
 			case PlatformID.Win32S:
 			case PlatformID.Win32Windows:
 			case PlatformID.WinCE:
+				Win32CreateWindow = Marshal.GetDelegateForFunctionPointer<d_Win32CreateWindow>(FuncLoader.GetProcAddress(GLibrary.Load("user32.dll"), "CreateWindowExW"));
+				Win32DestroyWindow = Marshal.GetDelegateForFunctionPointer<d_Win32DestroyWindow>(FuncLoader.GetProcAddress(GLibrary.Load("user32.dll"), "DestroyWindow"));
+
 				// No idea why we need to create that window, but it enables visual styles on the Windows platform
 				IntPtr window = Win32CreateWindow (WS_EX_TOOLWINDOW, "static", "gtk-sharp visual styles window", WS_OVERLAPPEDWINDOW, 0, 0, 0, 0, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 				Win32DestroyWindow (window);
@@ -56,11 +59,11 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_init (ref int argc, ref IntPtr argv);
+		delegate void d_gtk_init(ref int argc, ref IntPtr argv);
+		static d_gtk_init gtk_init = Marshal.GetDelegateForFunctionPointer<d_gtk_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_init"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_init_check (ref int argc, ref IntPtr argv);
+		delegate bool d_gtk_init_check(ref int argc, ref IntPtr argv);
+		static d_gtk_init_check gtk_init_check = Marshal.GetDelegateForFunctionPointer<d_gtk_init_check>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_init_check"));
 
 		static void SetPrgname ()
 		{
@@ -125,16 +128,16 @@ namespace Gtk {
 			return do_init (progname, ref args, true);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_main ();
+		delegate void d_gtk_main();
+		static d_gtk_main gtk_main = Marshal.GetDelegateForFunctionPointer<d_gtk_main>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main"));
 
 		public static void Run ()
 		{
 			gtk_main ();
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_events_pending ();
+		delegate bool d_gtk_events_pending();
+		static d_gtk_events_pending gtk_events_pending = Marshal.GetDelegateForFunctionPointer<d_gtk_events_pending>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_events_pending"));
 
 
 		public static bool EventsPending ()
@@ -142,11 +145,11 @@ namespace Gtk {
 			return gtk_events_pending ();
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_main_iteration ();
+		delegate void d_gtk_main_iteration();
+		static d_gtk_main_iteration gtk_main_iteration = Marshal.GetDelegateForFunctionPointer<d_gtk_main_iteration>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main_iteration"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool gtk_main_iteration_do (bool blocking);
+		delegate bool d_gtk_main_iteration_do(bool blocking);
+		static d_gtk_main_iteration_do gtk_main_iteration_do = Marshal.GetDelegateForFunctionPointer<d_gtk_main_iteration_do>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main_iteration_do"));
 
 		public static void RunIteration ()
 		{
@@ -158,8 +161,8 @@ namespace Gtk {
 			return gtk_main_iteration_do (blocking);
 		}
 		
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_main_quit ();
+		delegate void d_gtk_main_quit();
+		static d_gtk_main_quit gtk_main_quit = Marshal.GetDelegateForFunctionPointer<d_gtk_main_quit>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main_quit"));
 
 		public static void Quit ()
 		{
@@ -167,8 +170,8 @@ namespace Gtk {
 		}
 
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gtk_get_current_event ();
+		delegate IntPtr d_gtk_get_current_event();
+		static d_gtk_get_current_event gtk_get_current_event = Marshal.GetDelegateForFunctionPointer<d_gtk_get_current_event>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_get_current_event"));
 
 		public static Gdk.Event CurrentEvent {
 			get {

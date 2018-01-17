@@ -323,104 +323,104 @@ namespace GLib {
 			return (IOChannelError) g_io_channel_error_from_errno (en);
 		}
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_io_channel_unix_new (int fd);
+		delegate IntPtr d_g_io_channel_unix_new(int fd);
+		static d_g_io_channel_unix_new g_io_channel_unix_new = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_unix_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_unix_new"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_io_channel_new_file (IntPtr filename, IntPtr mode, out IntPtr error);
+		delegate IntPtr d_g_io_channel_new_file(IntPtr filename, IntPtr mode, out IntPtr error);
+		static d_g_io_channel_new_file g_io_channel_new_file = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_new_file>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_new_file"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_io_channel_new_file_utf8 (IntPtr filename, IntPtr mode, out IntPtr error);
+		delegate IntPtr d_g_io_channel_new_file_utf8(IntPtr filename, IntPtr mode, out IntPtr error);
+		static d_g_io_channel_new_file_utf8 g_io_channel_new_file_utf8 = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_new_file_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_new_file_utf8"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_error_quark ();
+		delegate int d_g_io_channel_error_quark();
+		static d_g_io_channel_error_quark g_io_channel_error_quark = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_error_quark>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_error_quark"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_error_from_errno (int en);
+		delegate int d_g_io_channel_error_from_errno(int en);
+		static d_g_io_channel_error_from_errno g_io_channel_error_from_errno = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_error_from_errno>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_error_from_errno"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_flush (IntPtr raw, out IntPtr error);
+		delegate int d_g_io_channel_flush(IntPtr raw, out IntPtr error);
+		static d_g_io_channel_flush g_io_channel_flush = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_flush>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_flush"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_io_channel_init (IntPtr raw);
+		delegate void d_g_io_channel_init(IntPtr raw);
+		static d_g_io_channel_init g_io_channel_init = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_init"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_read_chars (IntPtr raw, byte[] buf, UIntPtr count, out UIntPtr bytes_read, out IntPtr error);
+		delegate int d_g_io_channel_read_chars(IntPtr raw, byte[] buf, UIntPtr count, out UIntPtr bytes_read, out IntPtr error);
+		static d_g_io_channel_read_chars g_io_channel_read_chars = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_read_chars>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_read_chars"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_read_line (IntPtr raw, out IntPtr str_return, IntPtr length, out UIntPtr terminator_pos, out IntPtr error);
+		delegate int d_g_io_channel_read_line(IntPtr raw, out IntPtr str_return, IntPtr length, out UIntPtr terminator_pos, out IntPtr error);
+		static d_g_io_channel_read_line g_io_channel_read_line = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_read_line>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_read_line"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_read_to_end (IntPtr raw, out IntPtr str_return, out UIntPtr length, out IntPtr error);
+		delegate int d_g_io_channel_read_to_end(IntPtr raw, out IntPtr str_return, out UIntPtr length, out IntPtr error);
+		static d_g_io_channel_read_to_end g_io_channel_read_to_end = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_read_to_end>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_read_to_end"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_read_unichar (IntPtr raw, out uint thechar, out IntPtr error);
+		delegate int d_g_io_channel_read_unichar(IntPtr raw, out uint thechar, out IntPtr error);
+		static d_g_io_channel_read_unichar g_io_channel_read_unichar = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_read_unichar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_read_unichar"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_seek_position (IntPtr raw, long offset, int type, out IntPtr error);
+		delegate int d_g_io_channel_seek_position(IntPtr raw, long offset, int type, out IntPtr error);
+		static d_g_io_channel_seek_position g_io_channel_seek_position = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_seek_position>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_seek_position"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_shutdown (IntPtr raw, bool flush, out IntPtr err);
+		delegate int d_g_io_channel_shutdown(IntPtr raw, bool flush, out IntPtr err);
+		static d_g_io_channel_shutdown g_io_channel_shutdown = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_shutdown>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_shutdown"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_write_chars (IntPtr raw, byte[] buf, IntPtr count, out UIntPtr bytes_written, out IntPtr error);
+		delegate int d_g_io_channel_write_chars(IntPtr raw, byte[] buf, IntPtr count, out UIntPtr bytes_written, out IntPtr error);
+		static d_g_io_channel_write_chars g_io_channel_write_chars = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_write_chars>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_write_chars"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_write_unichar (IntPtr raw, uint thechar, out IntPtr error);
+		delegate int d_g_io_channel_write_unichar(IntPtr raw, uint thechar, out IntPtr error);
+		static d_g_io_channel_write_unichar g_io_channel_write_unichar = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_write_unichar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_write_unichar"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_get_buffer_condition (IntPtr raw);
+		delegate int d_g_io_channel_get_buffer_condition(IntPtr raw);
+		static d_g_io_channel_get_buffer_condition g_io_channel_get_buffer_condition = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_get_buffer_condition>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_buffer_condition"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_io_channel_get_buffered (IntPtr raw);
+		delegate bool d_g_io_channel_get_buffered(IntPtr raw);
+		static d_g_io_channel_get_buffered g_io_channel_get_buffered = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_get_buffered>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_buffered"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_io_channel_set_buffered (IntPtr raw, bool buffered);
+		delegate void d_g_io_channel_set_buffered(IntPtr raw, bool buffered);
+		static d_g_io_channel_set_buffered g_io_channel_set_buffered = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_set_buffered>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_buffered"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern UIntPtr g_io_channel_get_buffer_size (IntPtr raw);
+		delegate UIntPtr d_g_io_channel_get_buffer_size(IntPtr raw);
+		static d_g_io_channel_get_buffer_size g_io_channel_get_buffer_size = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_get_buffer_size>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_buffer_size"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_io_channel_set_buffer_size (IntPtr raw, UIntPtr size);
+		delegate void d_g_io_channel_set_buffer_size(IntPtr raw, UIntPtr size);
+		static d_g_io_channel_set_buffer_size g_io_channel_set_buffer_size = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_set_buffer_size>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_buffer_size"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_io_channel_get_close_on_unref (IntPtr raw);
+		delegate bool d_g_io_channel_get_close_on_unref(IntPtr raw);
+		static d_g_io_channel_get_close_on_unref g_io_channel_get_close_on_unref = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_get_close_on_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_close_on_unref"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_io_channel_set_close_on_unref (IntPtr raw, bool do_close);
+		delegate void d_g_io_channel_set_close_on_unref(IntPtr raw, bool do_close);
+		static d_g_io_channel_set_close_on_unref g_io_channel_set_close_on_unref = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_set_close_on_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_close_on_unref"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_io_channel_get_encoding (IntPtr raw);
+		delegate IntPtr d_g_io_channel_get_encoding(IntPtr raw);
+		static d_g_io_channel_get_encoding g_io_channel_get_encoding = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_get_encoding>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_encoding"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_set_encoding (IntPtr raw, IntPtr encoding, out IntPtr error);
+		delegate int d_g_io_channel_set_encoding(IntPtr raw, IntPtr encoding, out IntPtr error);
+		static d_g_io_channel_set_encoding g_io_channel_set_encoding = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_set_encoding>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_encoding"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_get_flags (IntPtr raw);
+		delegate int d_g_io_channel_get_flags(IntPtr raw);
+		static d_g_io_channel_get_flags g_io_channel_get_flags = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_get_flags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_flags"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_set_flags (IntPtr raw, int flags, out IntPtr error);
+		delegate int d_g_io_channel_set_flags(IntPtr raw, int flags, out IntPtr error);
+		static d_g_io_channel_set_flags g_io_channel_set_flags = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_set_flags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_flags"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_io_channel_get_line_term (IntPtr raw, out int length);
+		delegate IntPtr d_g_io_channel_get_line_term(IntPtr raw, out int length);
+		static d_g_io_channel_get_line_term g_io_channel_get_line_term = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_get_line_term>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_line_term"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_io_channel_set_line_term (IntPtr raw, byte[] term, int length);
+		delegate void d_g_io_channel_set_line_term(IntPtr raw, byte[] term, int length);
+		static d_g_io_channel_set_line_term g_io_channel_set_line_term = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_set_line_term>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_line_term"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern int g_io_channel_unix_get_fd (IntPtr raw);
+		delegate int d_g_io_channel_unix_get_fd(IntPtr raw);
+		static d_g_io_channel_unix_get_fd g_io_channel_unix_get_fd = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_unix_get_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_unix_get_fd"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_io_channel_ref (IntPtr raw);
+		delegate IntPtr d_g_io_channel_ref(IntPtr raw);
+		static d_g_io_channel_ref g_io_channel_ref = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_ref"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_io_channel_unref (IntPtr raw);
+		delegate void d_g_io_channel_unref(IntPtr raw);
+		static d_g_io_channel_unref g_io_channel_unref = Marshal.GetDelegateForFunctionPointer<d_g_io_channel_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_unref"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_io_add_watch_full (IntPtr raw, int priority, int condition, IOFuncNative func, IntPtr user_data, DestroyNotify notify);
+		delegate uint d_g_io_add_watch_full(IntPtr raw, int priority, int condition, IOFuncNative func, IntPtr user_data, DestroyNotify notify);
+		static d_g_io_add_watch_full g_io_add_watch_full = Marshal.GetDelegateForFunctionPointer<d_g_io_add_watch_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_add_watch_full"));
 
-		[DllImport (Global.GLibNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_io_create_watch (IntPtr raw, int condition);
+		delegate IntPtr d_g_io_create_watch(IntPtr raw, int condition);
+		static d_g_io_create_watch g_io_create_watch = Marshal.GetDelegateForFunctionPointer<d_g_io_create_watch>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_create_watch"));
 	}
 
 	public delegate bool IOFunc (IOChannel source, IOCondition condition);

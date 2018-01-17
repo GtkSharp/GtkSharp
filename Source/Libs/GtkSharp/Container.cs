@@ -27,11 +27,11 @@ namespace Gtk
 
     public partial class Container : IEnumerable
     {
-        [DllImport(Global.GtkNativeDll)]
-        static extern GParamSpec gtk_container_class_find_child_property (IntPtr cclass, string property_name);
+		delegate GParamSpec d_gtk_container_class_find_child_property(IntPtr cclass, string property_name);
+		static d_gtk_container_class_find_child_property gtk_container_class_find_child_property = Marshal.GetDelegateForFunctionPointer<d_gtk_container_class_find_child_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_class_find_child_property"));
 
-        [DllImport(Global.GtkNativeDll)]
-        static extern void gtk_container_child_get_property(IntPtr container, IntPtr child, string property_name, ref GLib.Value value);
+		delegate void d_gtk_container_child_get_property(IntPtr container, IntPtr child, string property_name, ref GLib.Value value);
+		static d_gtk_container_child_get_property gtk_container_child_get_property = Marshal.GetDelegateForFunctionPointer<d_gtk_container_child_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_child_get_property"));
 
         struct GTypeInstance
         {
@@ -91,11 +91,11 @@ namespace Gtk
             }
         }
 
-        [DllImport(Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-        static extern bool gtk_container_get_focus_chain(IntPtr raw, out IntPtr list_ptr);
+		delegate bool d_gtk_container_get_focus_chain(IntPtr raw, out IntPtr list_ptr);
+		static d_gtk_container_get_focus_chain gtk_container_get_focus_chain = Marshal.GetDelegateForFunctionPointer<d_gtk_container_get_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_get_focus_chain"));
 
-        [DllImport(Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-        static extern void gtk_container_set_focus_chain(IntPtr raw, IntPtr list_ptr);
+		delegate void d_gtk_container_set_focus_chain(IntPtr raw, IntPtr list_ptr);
+		static d_gtk_container_set_focus_chain gtk_container_set_focus_chain = Marshal.GetDelegateForFunctionPointer<d_gtk_container_set_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_set_focus_chain"));
 
         public Widget[] FocusChain
         {

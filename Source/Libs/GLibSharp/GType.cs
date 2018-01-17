@@ -431,37 +431,37 @@ namespace GLib {
 			return GType.Is (ValFromInstancePtr (raw), this);
 		}
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_type_class_peek (IntPtr gtype);
+		delegate IntPtr d_g_type_class_peek(IntPtr gtype);
+		static d_g_type_class_peek g_type_class_peek = Marshal.GetDelegateForFunctionPointer<d_g_type_class_peek>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_class_peek"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_type_class_ref (IntPtr gtype);
+		delegate IntPtr d_g_type_class_ref(IntPtr gtype);
+		static d_g_type_class_ref g_type_class_ref = Marshal.GetDelegateForFunctionPointer<d_g_type_class_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_class_ref"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_type_default_interface_peek (IntPtr gtype);
+		delegate IntPtr d_g_type_default_interface_peek(IntPtr gtype);
+		static d_g_type_default_interface_peek g_type_default_interface_peek = Marshal.GetDelegateForFunctionPointer<d_g_type_default_interface_peek>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_default_interface_peek"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_type_default_interface_ref (IntPtr gtype);
+		delegate IntPtr d_g_type_default_interface_ref(IntPtr gtype);
+		static d_g_type_default_interface_ref g_type_default_interface_ref = Marshal.GetDelegateForFunctionPointer<d_g_type_default_interface_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_default_interface_ref"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_type_from_name (string name);
+		delegate IntPtr d_g_type_from_name(string name);
+		static d_g_type_from_name g_type_from_name = Marshal.GetDelegateForFunctionPointer<d_g_type_from_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_from_name"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_type_init ();
+		delegate void d_g_type_init();
+		static d_g_type_init g_type_init = Marshal.GetDelegateForFunctionPointer<d_g_type_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_init"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_type_name (IntPtr raw);
+		delegate IntPtr d_g_type_name(IntPtr raw);
+		static d_g_type_name g_type_name = Marshal.GetDelegateForFunctionPointer<d_g_type_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_name"));
 		
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_type_parent (IntPtr type);
+		delegate IntPtr d_g_type_parent(IntPtr type);
+		static d_g_type_parent g_type_parent = Marshal.GetDelegateForFunctionPointer<d_g_type_parent>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_parent"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_type_query (IntPtr type, out GTypeQuery query);
+		delegate void d_g_type_query(IntPtr type, out GTypeQuery query);
+		static d_g_type_query g_type_query = Marshal.GetDelegateForFunctionPointer<d_g_type_query>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_query"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_type_register_static (IntPtr parent, IntPtr name, ref GTypeInfo info, int flags);
+		delegate IntPtr d_g_type_register_static(IntPtr parent, IntPtr name, ref GTypeInfo info, int flags);
+		static d_g_type_register_static g_type_register_static = Marshal.GetDelegateForFunctionPointer<d_g_type_register_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_register_static"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);
+		delegate bool d_g_type_is_a(IntPtr type, IntPtr is_a_type);
+		static d_g_type_is_a g_type_is_a = Marshal.GetDelegateForFunctionPointer<d_g_type_is_a>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_is_a"));
 	}
 }

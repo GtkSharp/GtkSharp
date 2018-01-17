@@ -201,26 +201,26 @@ namespace GLib {
 			}
 		}
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_cclosure_new (Delegate cb, IntPtr user_data, ClosureNotify notify);
+		delegate IntPtr d_g_cclosure_new(Delegate cb, IntPtr user_data, ClosureNotify notify);
+		static d_g_cclosure_new g_cclosure_new = Marshal.GetDelegateForFunctionPointer<d_g_cclosure_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_cclosure_new"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_closure_new_simple (int closure_size, IntPtr dummy);
+		delegate IntPtr d_g_closure_new_simple(int closure_size, IntPtr dummy);
+		static d_g_closure_new_simple g_closure_new_simple = Marshal.GetDelegateForFunctionPointer<d_g_closure_new_simple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_new_simple"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_closure_set_marshal (IntPtr closure, ClosureMarshal marshaler);
+		delegate void d_g_closure_set_marshal(IntPtr closure, ClosureMarshal marshaler);
+		static d_g_closure_set_marshal g_closure_set_marshal = Marshal.GetDelegateForFunctionPointer<d_g_closure_set_marshal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_set_marshal"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_closure_add_finalize_notifier (IntPtr closure, IntPtr dummy, ClosureNotify notify);
+		delegate void d_g_closure_add_finalize_notifier(IntPtr closure, IntPtr dummy, ClosureNotify notify);
+		static d_g_closure_add_finalize_notifier g_closure_add_finalize_notifier = Marshal.GetDelegateForFunctionPointer<d_g_closure_add_finalize_notifier>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_add_finalize_notifier"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint g_signal_connect_closure (IntPtr obj, IntPtr name, IntPtr closure, bool is_after);
+		delegate uint d_g_signal_connect_closure(IntPtr obj, IntPtr name, IntPtr closure, bool is_after);
+		static d_g_signal_connect_closure g_signal_connect_closure = Marshal.GetDelegateForFunctionPointer<d_g_signal_connect_closure>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_connect_closure"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void g_signal_handler_disconnect (IntPtr instance, uint handler);
+		delegate void d_g_signal_handler_disconnect(IntPtr instance, uint handler);
+		static d_g_signal_handler_disconnect g_signal_handler_disconnect = Marshal.GetDelegateForFunctionPointer<d_g_signal_handler_disconnect>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_handler_disconnect"));
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
+		delegate bool d_g_signal_handler_is_connected(IntPtr instance, uint handler);
+		static d_g_signal_handler_is_connected g_signal_handler_is_connected = Marshal.GetDelegateForFunctionPointer<d_g_signal_handler_is_connected>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_handler_is_connected"));
 	}
 }
 

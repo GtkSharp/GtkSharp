@@ -1,9 +1,9 @@
 // SignalAttribute.cs
 //
 // Author:
-//   Ricardo Fernández Pascual <ric@users.sourceforge.net>
+//   Ricardo Fernï¿½ndez Pascual <ric@users.sourceforge.net>
 //
-// Copyright (c) Ricardo Fernández Pascual <ric@users.sourceforge.net>
+// Copyright (c) Ricardo Fernï¿½ndez Pascual <ric@users.sourceforge.net>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 

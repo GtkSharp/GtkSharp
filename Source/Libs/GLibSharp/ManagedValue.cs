@@ -66,8 +66,8 @@ namespace GLib {
 		static FreeFunc free;
 		static GType boxed_type = GType.Invalid;
 
-		[DllImport (Global.GObjectNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_boxed_type_register_static (IntPtr typename, CopyFunc copy_func, FreeFunc free_func);
+		delegate IntPtr d_g_boxed_type_register_static(IntPtr typename, CopyFunc copy_func, FreeFunc free_func);
+		static d_g_boxed_type_register_static g_boxed_type_register_static = Marshal.GetDelegateForFunctionPointer<d_g_boxed_type_register_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_boxed_type_register_static"));
 		
 		public static GType GType {
 			get {

@@ -28,8 +28,8 @@ namespace Gtk {
 
 		static Hashtable wrappers = new Hashtable ();
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern uint gtk_key_snooper_install (GtkSharp.KeySnoopFuncNative snooper, IntPtr func_data);
+		delegate uint d_gtk_key_snooper_install(GtkSharp.KeySnoopFuncNative snooper, IntPtr func_data);
+		static d_gtk_key_snooper_install gtk_key_snooper_install = Marshal.GetDelegateForFunctionPointer<d_gtk_key_snooper_install>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_key_snooper_install"));
 
 		public static uint SnooperInstall (Gtk.KeySnoopFunc snooper) 
 		{
@@ -39,8 +39,8 @@ namespace Gtk {
 			return ret;
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gtk_key_snooper_remove (uint snooper_handler_id);
+		delegate void d_gtk_key_snooper_remove(uint snooper_handler_id);
+		static d_gtk_key_snooper_remove gtk_key_snooper_remove = Marshal.GetDelegateForFunctionPointer<d_gtk_key_snooper_remove>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_key_snooper_remove"));
 
 		public static void SnooperRemove (uint snooper_handler_id) 
 		{

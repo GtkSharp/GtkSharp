@@ -32,11 +32,11 @@ namespace Gdk {
 
 		public Window (Gdk.Window parent, Gdk.WindowAttr attributes, Gdk.WindowAttributesType attributes_mask) : this (parent, attributes, (int)attributes_mask) {}
 
-		[DllImport(Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_window_get_background_pattern(IntPtr raw);
+		delegate IntPtr d_gdk_window_get_background_pattern(IntPtr raw);
+		static d_gdk_window_get_background_pattern gdk_window_get_background_pattern = Marshal.GetDelegateForFunctionPointer<d_gdk_window_get_background_pattern>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_get_background_pattern"));
 
-		[DllImport(Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_window_set_background_pattern(IntPtr raw, IntPtr pattern);
+		delegate void d_gdk_window_set_background_pattern(IntPtr raw, IntPtr pattern);
+		static d_gdk_window_set_background_pattern gdk_window_set_background_pattern = Marshal.GetDelegateForFunctionPointer<d_gdk_window_set_background_pattern>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_set_background_pattern"));
 
 		public Cairo.Pattern BackgroundPattern { 
 			get {
@@ -49,8 +49,8 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_window_get_children(IntPtr raw);
+		delegate IntPtr d_gdk_window_get_children(IntPtr raw);
+		static d_gdk_window_get_children gdk_window_get_children = Marshal.GetDelegateForFunctionPointer<d_gdk_window_get_children>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_get_children"));
 
 		public Window[] Children {
 			get {
@@ -65,8 +65,8 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_window_set_icon_list(IntPtr raw, IntPtr pixbufs);
+		delegate void d_gdk_window_set_icon_list(IntPtr raw, IntPtr pixbufs);
+		static d_gdk_window_set_icon_list gdk_window_set_icon_list = Marshal.GetDelegateForFunctionPointer<d_gdk_window_set_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_set_icon_list"));
 
 		public Pixbuf[] IconList {
 			set {
@@ -77,11 +77,11 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport ("libgobject-2.0-0", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr g_object_ref (IntPtr raw);
+		delegate IntPtr d_g_object_ref(IntPtr raw);
+		static d_g_object_ref g_object_ref = Marshal.GetDelegateForFunctionPointer<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_window_destroy(IntPtr raw);
+		delegate void d_gdk_window_destroy(IntPtr raw);
+		static d_gdk_window_destroy gdk_window_destroy = Marshal.GetDelegateForFunctionPointer<d_gdk_window_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_destroy"));
 
 		public void Destroy () 
 		{
@@ -97,11 +97,11 @@ namespace Gdk {
 			gdk_window_move_resize (Handle, rect.X, rect.Y, rect.Width, rect.Height);
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_window_get_user_data (IntPtr raw, out IntPtr data);
+		delegate void d_gdk_window_get_user_data(IntPtr raw, out IntPtr data);
+		static d_gdk_window_get_user_data gdk_window_get_user_data = Marshal.GetDelegateForFunctionPointer<d_gdk_window_get_user_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_get_user_data"));
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_window_set_user_data(IntPtr raw, IntPtr user_data);
+		delegate void d_gdk_window_set_user_data(IntPtr raw, IntPtr user_data);
+		static d_gdk_window_set_user_data gdk_window_set_user_data = Marshal.GetDelegateForFunctionPointer<d_gdk_window_set_user_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_set_user_data"));
 		public IntPtr UserData {
 			get {
 				IntPtr data;
@@ -113,11 +113,11 @@ namespace Gdk {
 			}
 		} 
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_window_add_filter (IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
+		delegate void d_gdk_window_add_filter(IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
+		static d_gdk_window_add_filter gdk_window_add_filter = Marshal.GetDelegateForFunctionPointer<d_gdk_window_add_filter>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_add_filter"));
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_window_remove_filter (IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
+		delegate void d_gdk_window_remove_filter(IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
+		static d_gdk_window_remove_filter gdk_window_remove_filter = Marshal.GetDelegateForFunctionPointer<d_gdk_window_remove_filter>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_remove_filter"));
 
 		static IDictionary<FilterFunc, GdkSharp.FilterFuncWrapper> filter_all_hash;
 		static IDictionary<FilterFunc, GdkSharp.FilterFuncWrapper> FilterAllHash {

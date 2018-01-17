@@ -23,8 +23,8 @@ namespace Pango {
 
 	public class AttrFamily : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_family_new (IntPtr family);
+		delegate IntPtr d_pango_attr_family_new(IntPtr family);
+		static d_pango_attr_family_new pango_attr_family_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_family_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_family_new"));
 
 		public AttrFamily (string family) : base (NewAttrFamily (family)) {}
 

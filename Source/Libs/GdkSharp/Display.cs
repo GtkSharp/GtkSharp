@@ -26,8 +26,8 @@ namespace Gdk {
 
 	public partial class Display {
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_display_get_pointer(IntPtr raw, IntPtr screen, out int x, out int y, out int mask);
+		delegate void d_gdk_display_get_pointer(IntPtr raw, IntPtr screen, out int x, out int y, out int mask);
+		static d_gdk_display_get_pointer gdk_display_get_pointer = Marshal.GetDelegateForFunctionPointer<d_gdk_display_get_pointer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_display_get_pointer"));
 
 		[Obsolete]
 		public void GetPointer(Gdk.Screen screen, out int x, out int y, out Gdk.ModifierType mask) {
@@ -36,13 +36,13 @@ namespace Gdk {
 			mask = (Gdk.ModifierType) mask_as_int;
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void gdk_display_get_pointer(IntPtr raw, out IntPtr screen, out int x, out int y, out int mask);
+		delegate void d_gdk_display_get_pointer2(IntPtr raw, out IntPtr screen, out int x, out int y, out int mask);
+		static d_gdk_display_get_pointer2 gdk_display_get_pointer2 = Marshal.GetDelegateForFunctionPointer<d_gdk_display_get_pointer2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_display_get_pointer"));
 
 		public void GetPointer(out Gdk.Screen screen, out int x, out int y, out Gdk.ModifierType mask) {
 			IntPtr screen_handle;
 			int mask_as_int;
-			gdk_display_get_pointer(Handle, out screen_handle, out x, out y, out mask_as_int);
+			gdk_display_get_pointer2(Handle, out screen_handle, out x, out y, out mask_as_int);
 			screen = (Gdk.Screen) GLib.Object.GetObject(screen_handle);
 			mask = (Gdk.ModifierType) mask_as_int;
 		}
@@ -66,8 +66,8 @@ namespace Gdk {
 			GetPointer (out screen, out x, out y, out mod);
 		}
 
-		[DllImport (Global.GdkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_display_list_devices (IntPtr raw);
+		delegate IntPtr d_gdk_display_list_devices(IntPtr raw);
+		static d_gdk_display_list_devices gdk_display_list_devices = Marshal.GetDelegateForFunctionPointer<d_gdk_display_list_devices>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_display_list_devices"));
 
 		public Device[] ListDevices ()
 		{

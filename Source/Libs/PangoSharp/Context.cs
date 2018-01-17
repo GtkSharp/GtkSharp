@@ -25,14 +25,14 @@ namespace Pango {
 
 	public partial class Context {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_context_list_families(IntPtr raw, out IntPtr families, out int n_families);
+		delegate void d_pango_context_list_families2(IntPtr raw, out IntPtr families, out int n_families);
+		static d_pango_context_list_families2 pango_context_list_families2 = Marshal.GetDelegateForFunctionPointer<d_pango_context_list_families2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_context_list_families"));
 
 		public FontFamily [] Families {
 			get {
 				int count;
 				IntPtr array_ptr;
-				pango_context_list_families (Handle, out array_ptr, out count);
+				pango_context_list_families2 (Handle, out array_ptr, out count);
 				if (array_ptr == IntPtr.Zero)
 					return new FontFamily [0];
 				FontFamily [] result = new FontFamily [count];
@@ -46,8 +46,8 @@ namespace Pango {
 			}
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_context_list_families(IntPtr raw, IntPtr families, out int n_families);
+		delegate void d_pango_context_list_families(IntPtr raw, IntPtr families, out int n_families);
+		static d_pango_context_list_families pango_context_list_families = Marshal.GetDelegateForFunctionPointer<d_pango_context_list_families>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_context_list_families"));
 
 		[Obsolete]
 		public int ListFamilies(Pango.FontFamily families) {

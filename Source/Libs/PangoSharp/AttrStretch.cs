@@ -23,8 +23,8 @@ namespace Pango {
 
 	public class AttrStretch : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_stretch_new (Pango.Stretch stretch);
+		delegate IntPtr d_pango_attr_stretch_new(Pango.Stretch stretch);
+		static d_pango_attr_stretch_new pango_attr_stretch_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_stretch_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_stretch_new"));
 
 		public AttrStretch (Pango.Stretch stretch) : this (pango_attr_stretch_new (stretch)) {}
 

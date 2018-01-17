@@ -93,8 +93,8 @@ namespace Pango {
 			Dispose ();
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern void pango_attribute_destroy (IntPtr raw);
+		delegate void d_pango_attribute_destroy(IntPtr raw);
+		static d_pango_attribute_destroy pango_attribute_destroy = Marshal.GetDelegateForFunctionPointer<d_pango_attribute_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attribute_destroy"));
 
 		public void Dispose ()
 		{
@@ -149,15 +149,15 @@ namespace Pango {
 			}
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attribute_copy (IntPtr raw);
+		delegate IntPtr d_pango_attribute_copy(IntPtr raw);
+		static d_pango_attribute_copy pango_attribute_copy = Marshal.GetDelegateForFunctionPointer<d_pango_attribute_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attribute_copy"));
 
 		public Pango.Attribute Copy () {
 			return GetAttribute (pango_attribute_copy (raw));
 		}
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern bool pango_attribute_equal (IntPtr raw1, IntPtr raw2);
+		delegate bool d_pango_attribute_equal(IntPtr raw1, IntPtr raw2);
+		static d_pango_attribute_equal pango_attribute_equal = Marshal.GetDelegateForFunctionPointer<d_pango_attribute_equal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attribute_equal"));
 
 		public bool Equal (Pango.Attribute attr2) {
 			return pango_attribute_equal (raw, attr2.raw);

@@ -23,8 +23,8 @@ namespace Pango {
 
 	public class AttrFallback : Attribute {
 
-		[DllImport (Global.PangoNativeDll, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr pango_attr_fallback_new (bool fallback);
+		delegate IntPtr d_pango_attr_fallback_new(bool fallback);
+		static d_pango_attr_fallback_new pango_attr_fallback_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_fallback_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_fallback_new"));
 
 		public AttrFallback (bool fallback) : this (pango_attr_fallback_new (fallback)) {}
 

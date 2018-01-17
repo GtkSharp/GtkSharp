@@ -86,8 +86,8 @@ namespace Gdk {
 			return new Pixbuf (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_pixbuf_scale_simple(IntPtr raw, int dest_width, int dest_height, int interp_type);
+		delegate IntPtr d_gdk_pixbuf_scale_simple(IntPtr raw, int dest_width, int dest_height, int interp_type);
+		static d_gdk_pixbuf_scale_simple gdk_pixbuf_scale_simple = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_scale_simple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_scale_simple"));
 
 		public Gdk.Pixbuf ScaleSimple(int dest_width, int dest_height, Gdk.InterpType interp_type) {
 			IntPtr raw_ret = gdk_pixbuf_scale_simple(Handle, dest_width, dest_height, (int) interp_type);
@@ -95,8 +95,8 @@ namespace Gdk {
 			return ret;
 		}
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_pixbuf_composite_color_simple(IntPtr raw, int dest_width, int dest_height, int interp_type, int overall_alpha, int check_size, uint color1, uint color2);
+		delegate IntPtr d_gdk_pixbuf_composite_color_simple(IntPtr raw, int dest_width, int dest_height, int interp_type, int overall_alpha, int check_size, uint color1, uint color2);
+		static d_gdk_pixbuf_composite_color_simple gdk_pixbuf_composite_color_simple = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_composite_color_simple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_composite_color_simple"));
 
 		public Gdk.Pixbuf CompositeColorSimple(int dest_width, int dest_height, Gdk.InterpType interp_type, int overall_alpha, int check_size, uint color1, uint color2) {
 			IntPtr raw_ret = gdk_pixbuf_composite_color_simple(Handle, dest_width, dest_height, (int) interp_type, overall_alpha, check_size, color1, color2);
@@ -104,8 +104,8 @@ namespace Gdk {
 			return ret;
 		}
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_pixbuf_add_alpha(IntPtr raw, bool substitute_color, byte r, byte g, byte b);
+		delegate IntPtr d_gdk_pixbuf_add_alpha(IntPtr raw, bool substitute_color, byte r, byte g, byte b);
+		static d_gdk_pixbuf_add_alpha gdk_pixbuf_add_alpha = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_add_alpha>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_add_alpha"));
 
 		public Gdk.Pixbuf AddAlpha(bool substitute_color, byte r, byte g, byte b) {
 			IntPtr raw_ret = gdk_pixbuf_add_alpha(Handle, substitute_color, r, g, b);
@@ -146,8 +146,8 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_pixbuf_new_from_data(byte[] data, int colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, DestroyHelper.NativeDelegate destroy_fn, IntPtr destroy_fn_data);
+		delegate IntPtr d_gdk_pixbuf_new_from_data(byte[] data, int colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, DestroyHelper.NativeDelegate destroy_fn, IntPtr destroy_fn_data);
+		static d_gdk_pixbuf_new_from_data gdk_pixbuf_new_from_data = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_new_from_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_new_from_data"));
 
 		public Pixbuf (byte[] data, Gdk.Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn) : base (IntPtr.Zero)
 		{
@@ -175,8 +175,8 @@ namespace Gdk {
 		}
 		*/
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern unsafe IntPtr gdk_pixbuf_new_from_inline(int len, IntPtr data, bool copy_pixels, out IntPtr error);
+		delegate IntPtr d_gdk_pixbuf_new_from_inline(int len, IntPtr data, bool copy_pixels, out IntPtr error);
+		static d_gdk_pixbuf_new_from_inline gdk_pixbuf_new_from_inline = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_new_from_inline>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_new_from_inline"));
 
 		public unsafe Pixbuf(int data_length, void *data, bool copy_pixels) : base (IntPtr.Zero)
 		{
@@ -198,8 +198,8 @@ namespace Gdk {
 //
 // the 'Pixels' property
 //
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_pixbuf_get_pixels(IntPtr raw);
+		delegate IntPtr d_gdk_pixbuf_get_pixels(IntPtr raw);
+		static d_gdk_pixbuf_get_pixels gdk_pixbuf_get_pixels = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_get_pixels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_get_pixels"));
 
                 public IntPtr Pixels {
                 	get {
@@ -208,8 +208,8 @@ namespace Gdk {
                 	}
                 }
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr gdk_pixbuf_get_formats();
+		delegate IntPtr d_gdk_pixbuf_get_formats();
+		static d_gdk_pixbuf_get_formats gdk_pixbuf_get_formats = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_get_formats>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_get_formats"));
 
 		public static PixbufFormat[] Formats {
 			get {
@@ -224,8 +224,8 @@ namespace Gdk {
 			}
 		}
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern unsafe bool gdk_pixbuf_save(IntPtr raw, IntPtr filename, IntPtr type, out IntPtr error, IntPtr dummy);
+		delegate bool d_gdk_pixbuf_save(IntPtr raw, IntPtr filename, IntPtr type, out IntPtr error, IntPtr dummy);
+		static d_gdk_pixbuf_save gdk_pixbuf_save = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_save>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_save"));
 
 		public unsafe bool Save(string filename, string type) {
 			IntPtr error = IntPtr.Zero;
@@ -238,8 +238,8 @@ namespace Gdk {
 			return ret;
 		}
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern unsafe bool gdk_pixbuf_save_to_bufferv (IntPtr raw, out IntPtr buffer, out IntPtr buffer_size, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
+		delegate bool d_gdk_pixbuf_save_to_bufferv(IntPtr raw, out IntPtr buffer, out IntPtr buffer_size, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
+		static d_gdk_pixbuf_save_to_bufferv gdk_pixbuf_save_to_bufferv = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_save_to_bufferv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_save_to_bufferv"));
 
 		IntPtr[] NullTerm (string[] src)
 		{
@@ -286,8 +286,8 @@ namespace Gdk {
 			return result;
 		}
 
-		[DllImport ("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern unsafe bool gdk_pixbuf_save_to_callbackv (IntPtr raw, GdkSharp.PixbufSaveFuncNative save_func, IntPtr user_data, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
+		delegate bool d_gdk_pixbuf_save_to_callbackv(IntPtr raw, GdkSharp.PixbufSaveFuncNative save_func, IntPtr user_data, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
+		static d_gdk_pixbuf_save_to_callbackv gdk_pixbuf_save_to_callbackv = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_save_to_callbackv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_save_to_callbackv"));
 
 		public unsafe void SaveToCallback (PixbufSaveFunc save_func, string type)
 		{
@@ -310,8 +310,8 @@ namespace Gdk {
 				throw new GLib.GException (error);
 		}
 
-		[DllImport("libgdk_pixbuf-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-		static extern unsafe bool gdk_pixbuf_savev(IntPtr raw, IntPtr filename, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
+		delegate bool d_gdk_pixbuf_savev(IntPtr raw, IntPtr filename, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
+		static d_gdk_pixbuf_savev gdk_pixbuf_savev = Marshal.GetDelegateForFunctionPointer<d_gdk_pixbuf_savev>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_savev"));
 
 		public unsafe bool Savev(string filename, string type, string[] option_keys, string[] option_values) {
 			IntPtr error = IntPtr.Zero;

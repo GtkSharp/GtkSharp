@@ -27,32 +27,32 @@ namespace Gtk {
 
 		public NativeDialog (IntPtr raw) : base(raw) { }
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern void gtk_native_dialog_show (IntPtr self);
+		delegate void d_gtk_native_dialog_show(IntPtr self);
+		static d_gtk_native_dialog_show gtk_native_dialog_show = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_show>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_show"));
 
 		public void Show ()
 		{
 			gtk_native_dialog_show (Handle);
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern void gtk_native_dialog_hide (IntPtr self);
+		delegate void d_gtk_native_dialog_hide(IntPtr self);
+		static d_gtk_native_dialog_hide gtk_native_dialog_hide = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_hide>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_hide"));
 
                 public void Hide ()
                 {
                         gtk_native_dialog_hide (Handle);
                 }
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern void gtk_native_dialog_destroy (IntPtr self);
+		delegate void d_gtk_native_dialog_destroy(IntPtr self);
+		static d_gtk_native_dialog_destroy gtk_native_dialog_destroy = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_destroy"));
 
                 public void Destroy ()
                 {
                         gtk_native_dialog_destroy (Handle);
                 }
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern bool gtk_native_dialog_get_visible (IntPtr self);
+		delegate bool d_gtk_native_dialog_get_visible(IntPtr self);
+		static d_gtk_native_dialog_get_visible gtk_native_dialog_get_visible = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_get_visible>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_visible"));
 
 		public bool Visible {
 			get {
@@ -60,11 +60,11 @@ namespace Gtk {
 			}
 		}
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern void gtk_native_dialog_set_modal (IntPtr self, bool modal);
+		delegate void d_gtk_native_dialog_set_modal(IntPtr self, bool modal);
+		static d_gtk_native_dialog_set_modal gtk_native_dialog_set_modal = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_set_modal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_modal"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern bool gtk_native_dialog_get_modal (IntPtr self);
+		delegate bool d_gtk_native_dialog_get_modal(IntPtr self);
+		static d_gtk_native_dialog_get_modal gtk_native_dialog_get_modal = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_get_modal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_modal"));
 
 		public bool Modal {
 			set {
@@ -75,11 +75,11 @@ namespace Gtk {
                         }
                 }
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern void gtk_native_dialog_set_title (IntPtr self, string title);
+		delegate void d_gtk_native_dialog_set_title(IntPtr self, string title);
+		static d_gtk_native_dialog_set_title gtk_native_dialog_set_title = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_set_title>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_title"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern string gtk_native_dialog_get_title (IntPtr self);
+		delegate string d_gtk_native_dialog_get_title(IntPtr self);
+		static d_gtk_native_dialog_get_title gtk_native_dialog_get_title = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_get_title>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_title"));
 
                 public string Title {
                         set {
@@ -90,14 +90,14 @@ namespace Gtk {
                         }
                 }
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern void gtk_native_dialog_set_transient_for (IntPtr self, IntPtr parent);
+		delegate void d_gtk_native_dialog_set_transient_for(IntPtr self, IntPtr parent);
+		static d_gtk_native_dialog_set_transient_for gtk_native_dialog_set_transient_for = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_set_transient_for>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_transient_for"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern IntPtr gtk_native_dialog_get_transient_for (IntPtr self);
+		delegate IntPtr d_gtk_native_dialog_get_transient_for(IntPtr self);
+		static d_gtk_native_dialog_get_transient_for gtk_native_dialog_get_transient_for = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_get_transient_for>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_transient_for"));
 
-		[DllImport (Global.GtkNativeDll, CallingConvention = CallingConvention.Cdecl)]
-                static extern int gtk_native_dialog_run (IntPtr self);
+		delegate int d_gtk_native_dialog_run(IntPtr self);
+		static d_gtk_native_dialog_run gtk_native_dialog_run = Marshal.GetDelegateForFunctionPointer<d_gtk_native_dialog_run>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_run"));
 
 		public int Run ()
                 {
