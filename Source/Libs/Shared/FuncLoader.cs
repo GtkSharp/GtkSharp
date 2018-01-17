@@ -33,9 +33,9 @@ class GLibrary
         _libdict.Add((Library.Gio, "libgio-2.0-0.dll", "libgio-2.0.so.0", "libgio-2.0.0.dylib"));
         _libdict.Add((Library.Atk, "libatk-1.0-0.dll", "libatk-1.0.so.0", "libatk-1.0.0.dylib"));
         _libdict.Add((Library.Pango, "libpango-1.0-0.dll", "libpango-1.0.so.0", "libpango-1.0.0.dylib"));
-        _libdict.Add((Library.Gdk, "libgdk-3-0.dll", "libgdk-3.so.0", "libgdk-quartz-3.0.0.dylib"));
+        _libdict.Add((Library.Gdk, "libgdk-3-0.dll", "libgdk-3.so.0", "libgdk-3.0.dylib"));
         _libdict.Add((Library.GdkPixbuf, "libgdk_pixbuf-2.0-0.dll", "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0.dylib"));
-        _libdict.Add((Library.Gtk, "libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-quartz-3.0.0.dylib"));
+        _libdict.Add((Library.Gtk, "libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-3.0.dylib"));
     }
 
     public static IntPtr Load(string libname)
