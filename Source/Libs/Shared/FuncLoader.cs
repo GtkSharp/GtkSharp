@@ -19,11 +19,12 @@ enum Library
 class GLibrary
 {
     private static Dictionary<Library, IntPtr> _libraries;
+    private static Dictionary<string, IntPtr> _customlibraries;
     private static List<(Library Library, string WindowsLib, string LinuxLib, string OSXLib)> _libdict;
-    private static IntPtr _temp = FuncLoader.LoadLibrary("libgtk-3.so.0");
 
     static GLibrary()
     {
+        _customlibraries = new Dictionary<string, IntPtr>();
         _libraries = new Dictionary<Library, IntPtr>();
         _libdict = new List<(Library, string, string, string)>();
         _libdict.Add((Library.GLib, "libglib-2.0-0.dll", "libglib-2.0.so.0", "libglib-2.0.0.dylib"));
@@ -44,7 +45,11 @@ class GLibrary
         if (index != -1)
             return Load(_libdict[index].Library);
 
-        return _temp;
+        var ret = IntPtr.Zero;
+        if (!_customlibraries.TryGetValue(libname, out ret))
+            _customlibraries[libname] = ret = FuncLoader.LoadLibrary(libname);
+
+        return ret;
     }
 
     public static IntPtr Load(Library library)
@@ -60,7 +65,6 @@ class GLibrary
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 s = i.OSXLib;
 
-            // Console.WriteLine(s);
             _libraries[library] = ret = FuncLoader.LoadLibrary(s);
         }
 
