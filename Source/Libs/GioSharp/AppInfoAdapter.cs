@@ -24,7 +24,7 @@ namespace GLib {
 	
 	public partial class AppInfoAdapter {
 		delegate IntPtr d_g_app_info_get_all();
-		static d_g_app_info_get_all g_app_info_get_all = Marshal.GetDelegateForFunctionPointer<d_g_app_info_get_all>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_app_info_get_all"));
+		static d_g_app_info_get_all g_app_info_get_all = FuncLoader.LoadFunction<d_g_app_info_get_all>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_app_info_get_all"));
 
 		public static GLib.IAppInfo[] GetAll () {
 			IntPtr raw_ret = g_app_info_get_all();

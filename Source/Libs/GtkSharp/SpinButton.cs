@@ -27,7 +27,7 @@ namespace Gtk {
 	public partial class SpinButton {
 				
 		delegate IntPtr d_gtk_spin_button_new_with_range(double min, double max, double step);
-		static d_gtk_spin_button_new_with_range gtk_spin_button_new_with_range = Marshal.GetDelegateForFunctionPointer<d_gtk_spin_button_new_with_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_spin_button_new_with_range"));
+		static d_gtk_spin_button_new_with_range gtk_spin_button_new_with_range = FuncLoader.LoadFunction<d_gtk_spin_button_new_with_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_spin_button_new_with_range"));
 
 		public SpinButton (double min, double max, double step) : base (IntPtr.Zero)
 		{

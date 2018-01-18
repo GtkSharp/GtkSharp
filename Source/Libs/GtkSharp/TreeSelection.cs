@@ -26,7 +26,7 @@ namespace Gtk {
 	public partial class TreeSelection {
 
 		delegate IntPtr d_gtk_tree_selection_get_selected_rows2(IntPtr raw, IntPtr model);
-		static d_gtk_tree_selection_get_selected_rows2 gtk_tree_selection_get_selected_rows2 = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_selection_get_selected_rows2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_selection_get_selected_rows"));
+		static d_gtk_tree_selection_get_selected_rows2 gtk_tree_selection_get_selected_rows2 = FuncLoader.LoadFunction<d_gtk_tree_selection_get_selected_rows2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_selection_get_selected_rows"));
 
 		public TreePath[] GetSelectedRows ()
 		{
@@ -39,7 +39,7 @@ namespace Gtk {
 		}
 
 		delegate bool d_gtk_tree_selection_get_selected_without_model(IntPtr raw, IntPtr model, out Gtk.TreeIter iter);
-		static d_gtk_tree_selection_get_selected_without_model gtk_tree_selection_get_selected_without_model = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_selection_get_selected_without_model>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_selection_get_selected_without_model"));
+		static d_gtk_tree_selection_get_selected_without_model gtk_tree_selection_get_selected_without_model = FuncLoader.LoadFunction<d_gtk_tree_selection_get_selected_without_model>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_selection_get_selected_without_model"));
 		
 		public bool GetSelected (out Gtk.TreeIter iter)
 		{

@@ -38,7 +38,7 @@ namespace Gtk {
 		}
 
 		delegate uint d_gtk_ui_manager_new_merge_id(IntPtr raw);
-		static d_gtk_ui_manager_new_merge_id gtk_ui_manager_new_merge_id = Marshal.GetDelegateForFunctionPointer<d_gtk_ui_manager_new_merge_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_new_merge_id"));
+		static d_gtk_ui_manager_new_merge_id gtk_ui_manager_new_merge_id = FuncLoader.LoadFunction<d_gtk_ui_manager_new_merge_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_new_merge_id"));
 
 		public uint NewMergeId ()
 		{
@@ -46,7 +46,7 @@ namespace Gtk {
 		}
 
 		delegate IntPtr d_gtk_ui_manager_get_toplevels(IntPtr raw, int types);
-		static d_gtk_ui_manager_get_toplevels gtk_ui_manager_get_toplevels = Marshal.GetDelegateForFunctionPointer<d_gtk_ui_manager_get_toplevels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_toplevels"));
+		static d_gtk_ui_manager_get_toplevels gtk_ui_manager_get_toplevels = FuncLoader.LoadFunction<d_gtk_ui_manager_get_toplevels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_toplevels"));
 
 		public Widget[] GetToplevels (Gtk.UIManagerItemType types) {
 			IntPtr raw_ret = gtk_ui_manager_get_toplevels (Handle, (int) types);
@@ -59,7 +59,7 @@ namespace Gtk {
 		}
 
 		delegate IntPtr d_gtk_ui_manager_get_action_groups(IntPtr raw);
-		static d_gtk_ui_manager_get_action_groups gtk_ui_manager_get_action_groups = Marshal.GetDelegateForFunctionPointer<d_gtk_ui_manager_get_action_groups>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_action_groups"));
+		static d_gtk_ui_manager_get_action_groups gtk_ui_manager_get_action_groups = FuncLoader.LoadFunction<d_gtk_ui_manager_get_action_groups>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_action_groups"));
 
 		public ActionGroup[] ActionGroups { 
 			get {

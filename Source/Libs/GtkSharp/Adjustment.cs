@@ -24,7 +24,7 @@ namespace Gtk {
 	public partial class Adjustment {
 
 		delegate IntPtr d_gtk_adjustment_new(double value, double lower, double upper, double step_increment, double page_increment, double page_size);
-		static d_gtk_adjustment_new gtk_adjustment_new = Marshal.GetDelegateForFunctionPointer<d_gtk_adjustment_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_adjustment_new"));
+		static d_gtk_adjustment_new gtk_adjustment_new = FuncLoader.LoadFunction<d_gtk_adjustment_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_adjustment_new"));
 
 		public Adjustment (double value, double lower, double upper, double step_increment, double page_increment, double page_size) : base (IntPtr.Zero)
 		{
@@ -43,10 +43,10 @@ namespace Gtk {
 		}
 
 		delegate void d_g_object_freeze_notify(IntPtr inst);
-		static d_g_object_freeze_notify g_object_freeze_notify = Marshal.GetDelegateForFunctionPointer<d_g_object_freeze_notify>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_freeze_notify"));
+		static d_g_object_freeze_notify g_object_freeze_notify = FuncLoader.LoadFunction<d_g_object_freeze_notify>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_freeze_notify"));
 
 		delegate void d_g_object_thaw_notify(IntPtr inst);
-		static d_g_object_thaw_notify g_object_thaw_notify = Marshal.GetDelegateForFunctionPointer<d_g_object_thaw_notify>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_thaw_notify"));
+		static d_g_object_thaw_notify g_object_thaw_notify = FuncLoader.LoadFunction<d_g_object_thaw_notify>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_thaw_notify"));
 
 		public void SetBounds (double lower, double upper, double step_increment, double page_increment, double page_size)
 		{

@@ -26,7 +26,7 @@ namespace GLib {
 		private IntPtr handle;
 	
 		delegate IntPtr d_g_main_loop_new(IntPtr context, bool isRunning);
-		static d_g_main_loop_new g_main_loop_new = Marshal.GetDelegateForFunctionPointer<d_g_main_loop_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_new"));
+		static d_g_main_loop_new g_main_loop_new = FuncLoader.LoadFunction<d_g_main_loop_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_new"));
 
 		public MainLoop () : this (MainContext.Default) { }
 
@@ -38,7 +38,7 @@ namespace GLib {
 		}
 		
 		delegate void d_g_main_loop_unref(IntPtr loop);
-		static d_g_main_loop_unref g_main_loop_unref = Marshal.GetDelegateForFunctionPointer<d_g_main_loop_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_unref"));
+		static d_g_main_loop_unref g_main_loop_unref = FuncLoader.LoadFunction<d_g_main_loop_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_unref"));
 
 		~MainLoop ()
 		{
@@ -47,7 +47,7 @@ namespace GLib {
 		}
 
 		delegate bool d_g_main_loop_is_running(IntPtr loop);
-		static d_g_main_loop_is_running g_main_loop_is_running = Marshal.GetDelegateForFunctionPointer<d_g_main_loop_is_running>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_is_running"));
+		static d_g_main_loop_is_running g_main_loop_is_running = FuncLoader.LoadFunction<d_g_main_loop_is_running>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_is_running"));
 
 		public bool IsRunning {
 			get {
@@ -56,7 +56,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_main_loop_run(IntPtr loop);
-		static d_g_main_loop_run g_main_loop_run = Marshal.GetDelegateForFunctionPointer<d_g_main_loop_run>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_run"));
+		static d_g_main_loop_run g_main_loop_run = FuncLoader.LoadFunction<d_g_main_loop_run>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_run"));
 
 		public void Run ()
 		{
@@ -64,7 +64,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_main_loop_quit(IntPtr loop);
-		static d_g_main_loop_quit g_main_loop_quit = Marshal.GetDelegateForFunctionPointer<d_g_main_loop_quit>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_quit"));
+		static d_g_main_loop_quit g_main_loop_quit = FuncLoader.LoadFunction<d_g_main_loop_quit>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_quit"));
 
 		public void Quit ()
 		{
@@ -72,7 +72,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_main_loop_get_context(IntPtr loop);
-		static d_g_main_loop_get_context g_main_loop_get_context = Marshal.GetDelegateForFunctionPointer<d_g_main_loop_get_context>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_get_context"));
+		static d_g_main_loop_get_context g_main_loop_get_context = FuncLoader.LoadFunction<d_g_main_loop_get_context>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_get_context"));
 
 		public MainContext Context {
 			get {

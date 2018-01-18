@@ -156,16 +156,16 @@ namespace GLib {
 		}
 
 		delegate void d_g_object_add_toggle_ref(IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
-		static d_g_object_add_toggle_ref g_object_add_toggle_ref = Marshal.GetDelegateForFunctionPointer<d_g_object_add_toggle_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_add_toggle_ref"));
+		static d_g_object_add_toggle_ref g_object_add_toggle_ref = FuncLoader.LoadFunction<d_g_object_add_toggle_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_add_toggle_ref"));
 
 		delegate void d_g_object_remove_toggle_ref(IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
-		static d_g_object_remove_toggle_ref g_object_remove_toggle_ref = Marshal.GetDelegateForFunctionPointer<d_g_object_remove_toggle_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_remove_toggle_ref"));
+		static d_g_object_remove_toggle_ref g_object_remove_toggle_ref = FuncLoader.LoadFunction<d_g_object_remove_toggle_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_remove_toggle_ref"));
 
 		delegate IntPtr d_g_object_ref(IntPtr raw);
-		static d_g_object_ref g_object_ref = Marshal.GetDelegateForFunctionPointer<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
+		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
 
 		delegate void d_g_object_unref(IntPtr raw);
-		static d_g_object_unref g_object_unref = Marshal.GetDelegateForFunctionPointer<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
+		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
 	}
 }

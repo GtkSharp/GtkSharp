@@ -24,7 +24,7 @@ namespace Gdk {
 	public partial struct Pixdata {
 
 		delegate IntPtr d_gdk_pixdata_serialize(ref Gdk.Pixdata raw, out uint len);
-		static d_gdk_pixdata_serialize gdk_pixdata_serialize = Marshal.GetDelegateForFunctionPointer<d_gdk_pixdata_serialize>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixdata_serialize"));
+		static d_gdk_pixdata_serialize gdk_pixdata_serialize = FuncLoader.LoadFunction<d_gdk_pixdata_serialize>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixdata_serialize"));
 	
 		public byte [] Serialize () {
 			uint len;

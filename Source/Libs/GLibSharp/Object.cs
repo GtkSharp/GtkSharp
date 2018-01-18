@@ -78,10 +78,10 @@ namespace GLib {
 		public static bool WarnOnFinalize { get; set; }
 
 		delegate IntPtr d_g_object_ref(IntPtr raw);
-		static d_g_object_ref g_object_ref = Marshal.GetDelegateForFunctionPointer<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
+		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
 
 		delegate void d_g_object_unref(IntPtr raw);
-		static d_g_object_unref g_object_unref = Marshal.GetDelegateForFunctionPointer<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
+		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 		
 		public static Object TryGetObject (IntPtr o)
 		{
@@ -402,7 +402,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_param_spec_get_name(IntPtr pspec);
-		static d_g_param_spec_get_name g_param_spec_get_name = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_get_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_get_name"));
+		static d_g_param_spec_get_name g_param_spec_get_name = FuncLoader.LoadFunction<d_g_param_spec_get_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_get_name"));
 
 		static IntPtr ConstructorCallback (IntPtr gtypeval, uint n_construct_properties, IntPtr construct_properties)
 		{
@@ -441,7 +441,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_object_class_override_property(IntPtr klass, uint prop_id, IntPtr name);
-		static d_g_object_class_override_property g_object_class_override_property = Marshal.GetDelegateForFunctionPointer<d_g_object_class_override_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_class_override_property"));
+		static d_g_object_class_override_property g_object_class_override_property = FuncLoader.LoadFunction<d_g_object_class_override_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_class_override_property"));
 
 		public static void OverrideProperty (IntPtr oclass, uint property_id, string name)
 		{
@@ -457,7 +457,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_object_class_find_property(IntPtr klass, IntPtr name);
-		static d_g_object_class_find_property g_object_class_find_property = Marshal.GetDelegateForFunctionPointer<d_g_object_class_find_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_class_find_property"));
+		static d_g_object_class_find_property g_object_class_find_property = FuncLoader.LoadFunction<d_g_object_class_find_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_class_find_property"));
 
 		static IntPtr FindClassProperty (GLib.Object o, string name)
 		{
@@ -467,7 +467,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_object_interface_find_property(IntPtr klass, IntPtr name);
-		static d_g_object_interface_find_property g_object_interface_find_property = Marshal.GetDelegateForFunctionPointer<d_g_object_interface_find_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_interface_find_property"));
+		static d_g_object_interface_find_property g_object_interface_find_property = FuncLoader.LoadFunction<d_g_object_interface_find_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_interface_find_property"));
 
 		static IntPtr FindInterfaceProperty (GType type, string name)
 		{
@@ -477,7 +477,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_object_class_install_property(IntPtr klass, uint prop_id, IntPtr param_spec);
-		static d_g_object_class_install_property g_object_class_install_property = Marshal.GetDelegateForFunctionPointer<d_g_object_class_install_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_class_install_property"));
+		static d_g_object_class_install_property g_object_class_install_property = FuncLoader.LoadFunction<d_g_object_class_install_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_class_install_property"));
 
 		static IntPtr RegisterProperty (GType type, string name, string nick, string blurb, uint property_id, GType property_type, bool can_read, bool can_write)
 		{
@@ -568,7 +568,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_type_add_interface_static(IntPtr gtype, IntPtr iface_type, ref GInterfaceInfo info);
-		static d_g_type_add_interface_static g_type_add_interface_static = Marshal.GetDelegateForFunctionPointer<d_g_type_add_interface_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_add_interface_static"));
+		static d_g_type_add_interface_static g_type_add_interface_static = FuncLoader.LoadFunction<d_g_type_add_interface_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_add_interface_static"));
 
 		protected internal static GType RegisterGType (System.Type t)
 		{
@@ -606,7 +606,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_object_new(IntPtr gtype, IntPtr dummy);
-		static d_g_object_new g_object_new = Marshal.GetDelegateForFunctionPointer<d_g_object_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_new"));
+		static d_g_object_new g_object_new = FuncLoader.LoadFunction<d_g_object_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_new"));
 
 		struct GParameter {
 			public IntPtr name;
@@ -614,7 +614,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_object_newv(IntPtr gtype, int n_params, GParameter[] parms);
-		static d_g_object_newv g_object_newv = Marshal.GetDelegateForFunctionPointer<d_g_object_newv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_newv"));
+		static d_g_object_newv g_object_newv = FuncLoader.LoadFunction<d_g_object_newv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_newv"));
 
 		protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
@@ -726,7 +726,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_object_get_property(IntPtr obj, IntPtr name, ref GLib.Value val);
-		static d_g_object_get_property g_object_get_property = Marshal.GetDelegateForFunctionPointer<d_g_object_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_get_property"));
+		static d_g_object_get_property g_object_get_property = FuncLoader.LoadFunction<d_g_object_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_get_property"));
 
 		public GLib.Value GetProperty (string name)
 		{
@@ -738,7 +738,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_object_set_property(IntPtr obj, IntPtr name, ref GLib.Value val);
-		static d_g_object_set_property g_object_set_property = Marshal.GetDelegateForFunctionPointer<d_g_object_set_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_set_property"));
+		static d_g_object_set_property g_object_set_property = FuncLoader.LoadFunction<d_g_object_set_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_set_property"));
 
 		public void SetProperty (string name, GLib.Value val)
 		{
@@ -748,7 +748,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_object_notify(IntPtr obj, IntPtr property_name);
-		static d_g_object_notify g_object_notify = Marshal.GetDelegateForFunctionPointer<d_g_object_notify>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_notify"));
+		static d_g_object_notify g_object_notify = FuncLoader.LoadFunction<d_g_object_notify>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_notify"));
 
 		protected void Notify (string property_name)
 		{
@@ -809,10 +809,10 @@ namespace GLib {
 		}
 
 		protected delegate void d_g_signal_chain_from_overridden(IntPtr args, ref GLib.Value retval);
-		protected static d_g_signal_chain_from_overridden g_signal_chain_from_overridden = Marshal.GetDelegateForFunctionPointer<d_g_signal_chain_from_overridden>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_chain_from_overridden"));
+		protected static d_g_signal_chain_from_overridden g_signal_chain_from_overridden = FuncLoader.LoadFunction<d_g_signal_chain_from_overridden>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_chain_from_overridden"));
 
 		delegate bool d_g_type_check_instance_is_a(IntPtr obj, IntPtr gtype);
-		static d_g_type_check_instance_is_a g_type_check_instance_is_a = Marshal.GetDelegateForFunctionPointer<d_g_type_check_instance_is_a>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_check_instance_is_a"));
+		static d_g_type_check_instance_is_a g_type_check_instance_is_a = FuncLoader.LoadFunction<d_g_type_check_instance_is_a>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_check_instance_is_a"));
 
 		internal static bool IsObject (IntPtr obj)
 		{

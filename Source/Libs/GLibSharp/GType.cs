@@ -432,36 +432,36 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_type_class_peek(IntPtr gtype);
-		static d_g_type_class_peek g_type_class_peek = Marshal.GetDelegateForFunctionPointer<d_g_type_class_peek>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_class_peek"));
+		static d_g_type_class_peek g_type_class_peek = FuncLoader.LoadFunction<d_g_type_class_peek>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_class_peek"));
 
 		delegate IntPtr d_g_type_class_ref(IntPtr gtype);
-		static d_g_type_class_ref g_type_class_ref = Marshal.GetDelegateForFunctionPointer<d_g_type_class_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_class_ref"));
+		static d_g_type_class_ref g_type_class_ref = FuncLoader.LoadFunction<d_g_type_class_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_class_ref"));
 
 		delegate IntPtr d_g_type_default_interface_peek(IntPtr gtype);
-		static d_g_type_default_interface_peek g_type_default_interface_peek = Marshal.GetDelegateForFunctionPointer<d_g_type_default_interface_peek>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_default_interface_peek"));
+		static d_g_type_default_interface_peek g_type_default_interface_peek = FuncLoader.LoadFunction<d_g_type_default_interface_peek>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_default_interface_peek"));
 
 		delegate IntPtr d_g_type_default_interface_ref(IntPtr gtype);
-		static d_g_type_default_interface_ref g_type_default_interface_ref = Marshal.GetDelegateForFunctionPointer<d_g_type_default_interface_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_default_interface_ref"));
+		static d_g_type_default_interface_ref g_type_default_interface_ref = FuncLoader.LoadFunction<d_g_type_default_interface_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_default_interface_ref"));
 
 		delegate IntPtr d_g_type_from_name(string name);
-		static d_g_type_from_name g_type_from_name = Marshal.GetDelegateForFunctionPointer<d_g_type_from_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_from_name"));
+		static d_g_type_from_name g_type_from_name = FuncLoader.LoadFunction<d_g_type_from_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_from_name"));
 
 		delegate void d_g_type_init();
-		static d_g_type_init g_type_init = Marshal.GetDelegateForFunctionPointer<d_g_type_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_init"));
+		static d_g_type_init g_type_init = FuncLoader.LoadFunction<d_g_type_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_init"));
 
 		delegate IntPtr d_g_type_name(IntPtr raw);
-		static d_g_type_name g_type_name = Marshal.GetDelegateForFunctionPointer<d_g_type_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_name"));
+		static d_g_type_name g_type_name = FuncLoader.LoadFunction<d_g_type_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_name"));
 		
 		delegate IntPtr d_g_type_parent(IntPtr type);
-		static d_g_type_parent g_type_parent = Marshal.GetDelegateForFunctionPointer<d_g_type_parent>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_parent"));
+		static d_g_type_parent g_type_parent = FuncLoader.LoadFunction<d_g_type_parent>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_parent"));
 
 		delegate void d_g_type_query(IntPtr type, out GTypeQuery query);
-		static d_g_type_query g_type_query = Marshal.GetDelegateForFunctionPointer<d_g_type_query>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_query"));
+		static d_g_type_query g_type_query = FuncLoader.LoadFunction<d_g_type_query>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_query"));
 
 		delegate IntPtr d_g_type_register_static(IntPtr parent, IntPtr name, ref GTypeInfo info, int flags);
-		static d_g_type_register_static g_type_register_static = Marshal.GetDelegateForFunctionPointer<d_g_type_register_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_register_static"));
+		static d_g_type_register_static g_type_register_static = FuncLoader.LoadFunction<d_g_type_register_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_register_static"));
 
 		delegate bool d_g_type_is_a(IntPtr type, IntPtr is_a_type);
-		static d_g_type_is_a g_type_is_a = Marshal.GetDelegateForFunctionPointer<d_g_type_is_a>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_is_a"));
+		static d_g_type_is_a g_type_is_a = FuncLoader.LoadFunction<d_g_type_is_a>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_is_a"));
 	}
 }

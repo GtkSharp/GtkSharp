@@ -27,7 +27,7 @@ namespace Gdk {
 	public partial class Property {
 
 		delegate void d_gdk_property_change2(IntPtr window, IntPtr property, IntPtr type, int format, int mode, out byte data, int nelements);
-		static d_gdk_property_change2 gdk_property_change2 = Marshal.GetDelegateForFunctionPointer<d_gdk_property_change2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_property_change"));
+		static d_gdk_property_change2 gdk_property_change2 = FuncLoader.LoadFunction<d_gdk_property_change2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_property_change"));
 
 		[Obsolete ("Replaced by corrected overload with data parameter")]
 		public static byte Change(Gdk.Window window, Gdk.Atom property, Gdk.Atom type, int format, Gdk.PropMode mode, int nelements) {
@@ -37,7 +37,7 @@ namespace Gdk {
 		}
 
 		delegate bool d_gdk_property_get(IntPtr window, IntPtr property, IntPtr type, UIntPtr offset, UIntPtr length, bool pdelete, out IntPtr actual_property_type, out int actual_format, out int actual_length, out IntPtr data);
-		static d_gdk_property_get gdk_property_get = Marshal.GetDelegateForFunctionPointer<d_gdk_property_get>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_property_get"));
+		static d_gdk_property_get gdk_property_get = FuncLoader.LoadFunction<d_gdk_property_get>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_property_get"));
 
 		public static bool Get(Gdk.Window window, Gdk.Atom property, Gdk.Atom type, ulong offset, ulong length, int pdelete, out Gdk.Atom actual_property_type, out int actual_format, out int actual_length, out byte[] data) {
 			IntPtr actual_property_type_as_native;

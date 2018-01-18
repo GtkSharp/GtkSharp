@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrForeground : Attribute {
 
 		delegate IntPtr d_pango_attr_foreground_new(ushort red, ushort green, ushort blue);
-		static d_pango_attr_foreground_new pango_attr_foreground_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_foreground_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_foreground_new"));
+		static d_pango_attr_foreground_new pango_attr_foreground_new = FuncLoader.LoadFunction<d_pango_attr_foreground_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_foreground_new"));
 
 		public AttrForeground (ushort red, ushort green, ushort blue) : this (pango_attr_foreground_new (red, green, blue)) {}
 

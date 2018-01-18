@@ -61,7 +61,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_clear_error(ref IntPtr errptr);
-		static d_g_clear_error g_clear_error = Marshal.GetDelegateForFunctionPointer<d_g_clear_error>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_clear_error"));
+		static d_g_clear_error g_clear_error = FuncLoader.LoadFunction<d_g_clear_error>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_clear_error"));
 		~GException ()
 		{
 			g_clear_error (ref errptr);

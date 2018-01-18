@@ -144,61 +144,61 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_param_spec_char(IntPtr name, IntPtr nick, IntPtr blurb, sbyte min, sbyte max, sbyte dval, int flags);
-		static d_g_param_spec_char g_param_spec_char = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_char"));
+		static d_g_param_spec_char g_param_spec_char = FuncLoader.LoadFunction<d_g_param_spec_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_char"));
 
 		delegate IntPtr d_g_param_spec_uchar(IntPtr name, IntPtr nick, IntPtr blurb, byte min, byte max, byte dval, int flags);
-		static d_g_param_spec_uchar g_param_spec_uchar = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_uchar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_uchar"));
+		static d_g_param_spec_uchar g_param_spec_uchar = FuncLoader.LoadFunction<d_g_param_spec_uchar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_uchar"));
 
 		delegate IntPtr d_g_param_spec_boolean(IntPtr name, IntPtr nick, IntPtr blurb, bool dval, int flags);
-		static d_g_param_spec_boolean g_param_spec_boolean = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_boolean"));
+		static d_g_param_spec_boolean g_param_spec_boolean = FuncLoader.LoadFunction<d_g_param_spec_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_boolean"));
 
 		delegate IntPtr d_g_param_spec_enum(IntPtr name, IntPtr nick, IntPtr blurb, IntPtr enum_type, int dval, int flags);
-		static d_g_param_spec_enum g_param_spec_enum = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_enum>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_enum"));
+		static d_g_param_spec_enum g_param_spec_enum = FuncLoader.LoadFunction<d_g_param_spec_enum>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_enum"));
 
 		delegate IntPtr d_g_param_spec_int(IntPtr name, IntPtr nick, IntPtr blurb, int min, int max, int dval, int flags);
-		static d_g_param_spec_int g_param_spec_int = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_int"));
+		static d_g_param_spec_int g_param_spec_int = FuncLoader.LoadFunction<d_g_param_spec_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_int"));
 
 		delegate IntPtr d_g_param_spec_uint(IntPtr name, IntPtr nick, IntPtr blurb, uint min, uint max, uint dval, int flags);
-		static d_g_param_spec_uint g_param_spec_uint = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_uint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_uint"));
+		static d_g_param_spec_uint g_param_spec_uint = FuncLoader.LoadFunction<d_g_param_spec_uint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_uint"));
 
 		delegate IntPtr d_g_param_spec_long(IntPtr name, IntPtr nick, IntPtr blurb, IntPtr min, IntPtr max, IntPtr dval, int flags);
-		static d_g_param_spec_long g_param_spec_long = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_long>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_long"));
+		static d_g_param_spec_long g_param_spec_long = FuncLoader.LoadFunction<d_g_param_spec_long>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_long"));
 
 		delegate IntPtr d_g_param_spec_ulong(IntPtr name, IntPtr nick, IntPtr blurb, UIntPtr min, UIntPtr max, UIntPtr dval, int flags);
-		static d_g_param_spec_ulong g_param_spec_ulong = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_ulong>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_ulong"));
+		static d_g_param_spec_ulong g_param_spec_ulong = FuncLoader.LoadFunction<d_g_param_spec_ulong>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_ulong"));
 
 		delegate IntPtr d_g_param_spec_int64(IntPtr name, IntPtr nick, IntPtr blurb, long min, long max, long dval, int flags);
-		static d_g_param_spec_int64 g_param_spec_int64 = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_int64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_int64"));
+		static d_g_param_spec_int64 g_param_spec_int64 = FuncLoader.LoadFunction<d_g_param_spec_int64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_int64"));
 
 		delegate IntPtr d_g_param_spec_uint64(IntPtr name, IntPtr nick, IntPtr blurb, ulong min, ulong max, ulong dval, int flags);
-		static d_g_param_spec_uint64 g_param_spec_uint64 = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_uint64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_uint64"));
+		static d_g_param_spec_uint64 g_param_spec_uint64 = FuncLoader.LoadFunction<d_g_param_spec_uint64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_uint64"));
 
 		delegate IntPtr d_g_param_spec_float(IntPtr name, IntPtr nick, IntPtr blurb, float min, float max, float dval, int flags);
-		static d_g_param_spec_float g_param_spec_float = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_float>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_float"));
+		static d_g_param_spec_float g_param_spec_float = FuncLoader.LoadFunction<d_g_param_spec_float>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_float"));
 
 		delegate IntPtr d_g_param_spec_double(IntPtr name, IntPtr nick, IntPtr blurb, double min, double max, double dval, int flags);
-		static d_g_param_spec_double g_param_spec_double = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_double"));
+		static d_g_param_spec_double g_param_spec_double = FuncLoader.LoadFunction<d_g_param_spec_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_double"));
 
 		delegate IntPtr d_g_param_spec_string(IntPtr name, IntPtr nick, IntPtr blurb, IntPtr dval, int flags);
-		static d_g_param_spec_string g_param_spec_string = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_string"));
+		static d_g_param_spec_string g_param_spec_string = FuncLoader.LoadFunction<d_g_param_spec_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_string"));
 
 		delegate IntPtr d_g_param_spec_pointer(IntPtr name, IntPtr nick, IntPtr blurb, int flags);
-		static d_g_param_spec_pointer g_param_spec_pointer = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_pointer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_pointer"));
+		static d_g_param_spec_pointer g_param_spec_pointer = FuncLoader.LoadFunction<d_g_param_spec_pointer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_pointer"));
 
 		delegate IntPtr d_g_param_spec_gtype(IntPtr name, IntPtr nick, IntPtr blurb, IntPtr dval, int flags);
-		static d_g_param_spec_gtype g_param_spec_gtype = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_gtype>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_gtype"));
+		static d_g_param_spec_gtype g_param_spec_gtype = FuncLoader.LoadFunction<d_g_param_spec_gtype>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_gtype"));
 
 		delegate IntPtr d_g_param_spec_boxed(IntPtr name, IntPtr nick, IntPtr blurb, IntPtr return_type, int flags);
-		static d_g_param_spec_boxed g_param_spec_boxed = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_boxed"));
+		static d_g_param_spec_boxed g_param_spec_boxed = FuncLoader.LoadFunction<d_g_param_spec_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_boxed"));
 
 		delegate IntPtr d_g_param_spec_object(IntPtr name, IntPtr nick, IntPtr blurb, IntPtr return_type, int flags);
-		static d_g_param_spec_object g_param_spec_object = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_object>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_object"));
+		static d_g_param_spec_object g_param_spec_object = FuncLoader.LoadFunction<d_g_param_spec_object>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_object"));
 
 		delegate IntPtr d_g_gtype_get_type();
-		static d_g_gtype_get_type g_gtype_get_type = Marshal.GetDelegateForFunctionPointer<d_g_gtype_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_gtype_get_type"));
+		static d_g_gtype_get_type g_gtype_get_type = FuncLoader.LoadFunction<d_g_gtype_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_gtype_get_type"));
 
 		delegate bool d_g_type_is_a(IntPtr a, IntPtr b);
-		static d_g_type_is_a g_type_is_a = Marshal.GetDelegateForFunctionPointer<d_g_type_is_a>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_is_a"));
+		static d_g_type_is_a g_type_is_a = FuncLoader.LoadFunction<d_g_type_is_a>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_is_a"));
 
 	}
 }

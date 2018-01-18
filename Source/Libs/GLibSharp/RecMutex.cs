@@ -19,28 +19,28 @@ namespace GLib {
 
 
 		delegate void d_g_rec_mutex_clear(IntPtr raw);
-		static d_g_rec_mutex_clear g_rec_mutex_clear = Marshal.GetDelegateForFunctionPointer<d_g_rec_mutex_clear>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_clear"));
+		static d_g_rec_mutex_clear g_rec_mutex_clear = FuncLoader.LoadFunction<d_g_rec_mutex_clear>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_clear"));
 
 		public void Clear() {
 			g_rec_mutex_clear(Handle);
 		}
 
 		delegate void d_g_rec_mutex_init(IntPtr raw);
-		static d_g_rec_mutex_init g_rec_mutex_init = Marshal.GetDelegateForFunctionPointer<d_g_rec_mutex_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_init"));
+		static d_g_rec_mutex_init g_rec_mutex_init = FuncLoader.LoadFunction<d_g_rec_mutex_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_init"));
 
 		public void Init() {
 			g_rec_mutex_init(Handle);
 		}
 
 		delegate void d_g_rec_mutex_lock(IntPtr raw);
-		static d_g_rec_mutex_lock g_rec_mutex_lock = Marshal.GetDelegateForFunctionPointer<d_g_rec_mutex_lock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_lock"));
+		static d_g_rec_mutex_lock g_rec_mutex_lock = FuncLoader.LoadFunction<d_g_rec_mutex_lock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_lock"));
 
 		public void Lock() {
 			g_rec_mutex_lock(Handle);
 		}
 
 		delegate bool d_g_rec_mutex_trylock(IntPtr raw);
-		static d_g_rec_mutex_trylock g_rec_mutex_trylock = Marshal.GetDelegateForFunctionPointer<d_g_rec_mutex_trylock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_trylock"));
+		static d_g_rec_mutex_trylock g_rec_mutex_trylock = FuncLoader.LoadFunction<d_g_rec_mutex_trylock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_trylock"));
 
 		public bool Trylock() {
 			bool raw_ret = g_rec_mutex_trylock(Handle);
@@ -49,7 +49,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_rec_mutex_unlock(IntPtr raw);
-		static d_g_rec_mutex_unlock g_rec_mutex_unlock = Marshal.GetDelegateForFunctionPointer<d_g_rec_mutex_unlock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_unlock"));
+		static d_g_rec_mutex_unlock g_rec_mutex_unlock = FuncLoader.LoadFunction<d_g_rec_mutex_unlock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_rec_mutex_unlock"));
 
 		public void Unlock() {
 			g_rec_mutex_unlock(Handle);

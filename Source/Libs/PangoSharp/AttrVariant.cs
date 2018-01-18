@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrVariant : Attribute {
 
 		delegate IntPtr d_pango_attr_variant_new(Pango.Variant variant);
-		static d_pango_attr_variant_new pango_attr_variant_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_variant_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_variant_new"));
+		static d_pango_attr_variant_new pango_attr_variant_new = FuncLoader.LoadFunction<d_pango_attr_variant_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_variant_new"));
 
 		public AttrVariant (Pango.Variant variant) : this (pango_attr_variant_new (variant)) {}
 

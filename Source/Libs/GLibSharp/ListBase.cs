@@ -191,7 +191,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_object_unref(IntPtr item);
-		static d_g_object_unref g_object_unref = Marshal.GetDelegateForFunctionPointer<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
+		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
 		public void Empty ()
 		{

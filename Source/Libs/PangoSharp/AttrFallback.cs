@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrFallback : Attribute {
 
 		delegate IntPtr d_pango_attr_fallback_new(bool fallback);
-		static d_pango_attr_fallback_new pango_attr_fallback_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_fallback_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_fallback_new"));
+		static d_pango_attr_fallback_new pango_attr_fallback_new = FuncLoader.LoadFunction<d_pango_attr_fallback_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_fallback_new"));
 
 		public AttrFallback (bool fallback) : this (pango_attr_fallback_new (fallback)) {}
 

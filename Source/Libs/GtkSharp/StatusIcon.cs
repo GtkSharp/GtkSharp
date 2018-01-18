@@ -39,7 +39,7 @@ namespace Gtk {
 		static MenuPositionFuncNative StatusIconPositionMenuFunc = null;
 
 		delegate void d_gtk_menu_popup(IntPtr menu,  IntPtr parent_menu_shell, IntPtr parent_menu_item, MenuPositionFuncNative func, IntPtr data, uint button, uint activate_time);
-		static d_gtk_menu_popup gtk_menu_popup = Marshal.GetDelegateForFunctionPointer<d_gtk_menu_popup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_popup"));
+		static d_gtk_menu_popup gtk_menu_popup = FuncLoader.LoadFunction<d_gtk_menu_popup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_popup"));
 
 		public void PresentMenu (Menu menu, uint button, uint activate_time) 
 		{
@@ -85,7 +85,7 @@ namespace Gtk {
 		}
 
 		delegate bool d_gtk_status_icon_get_geometry(IntPtr raw, out IntPtr screen, IntPtr area, out int orientation);
-		static d_gtk_status_icon_get_geometry gtk_status_icon_get_geometry = Marshal.GetDelegateForFunctionPointer<d_gtk_status_icon_get_geometry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_status_icon_get_geometry"));
+		static d_gtk_status_icon_get_geometry gtk_status_icon_get_geometry = FuncLoader.LoadFunction<d_gtk_status_icon_get_geometry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_status_icon_get_geometry"));
 
 		public bool GetGeometry(out Gdk.Screen screen, out Gdk.Rectangle area, out Gtk.Orientation orientation)
 		{

@@ -26,7 +26,7 @@ namespace Gtk {
 	public partial class RadioButton {
 
 		delegate IntPtr d_gtk_radio_button_new_with_mnemonic(IntPtr group, IntPtr label);
-		static d_gtk_radio_button_new_with_mnemonic gtk_radio_button_new_with_mnemonic = Marshal.GetDelegateForFunctionPointer<d_gtk_radio_button_new_with_mnemonic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_button_new_with_mnemonic"));
+		static d_gtk_radio_button_new_with_mnemonic gtk_radio_button_new_with_mnemonic = FuncLoader.LoadFunction<d_gtk_radio_button_new_with_mnemonic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_button_new_with_mnemonic"));
 
 		// creates a new group for this RadioButton
 		public RadioButton (string label)
@@ -37,10 +37,10 @@ namespace Gtk {
 		}
 
 		delegate IntPtr d_gtk_radio_button_get_group(IntPtr raw);
-		static d_gtk_radio_button_get_group gtk_radio_button_get_group = Marshal.GetDelegateForFunctionPointer<d_gtk_radio_button_get_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_button_get_group"));
+		static d_gtk_radio_button_get_group gtk_radio_button_get_group = FuncLoader.LoadFunction<d_gtk_radio_button_get_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_button_get_group"));
 
 		delegate void d_gtk_radio_button_set_group(IntPtr raw, IntPtr list);
-		static d_gtk_radio_button_set_group gtk_radio_button_set_group = Marshal.GetDelegateForFunctionPointer<d_gtk_radio_button_set_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_button_set_group"));
+		static d_gtk_radio_button_set_group gtk_radio_button_set_group = FuncLoader.LoadFunction<d_gtk_radio_button_set_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_button_set_group"));
 
 		[GLib.Property ("group")]
 		public RadioButton[] Group {

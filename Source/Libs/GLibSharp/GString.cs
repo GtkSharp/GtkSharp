@@ -28,7 +28,7 @@ namespace GLib {
 		IntPtr handle;
 
 		delegate IntPtr d_g_string_free(IntPtr mem, bool free_segments);
-		static d_g_string_free g_string_free = Marshal.GetDelegateForFunctionPointer<d_g_string_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_free"));
+		static d_g_string_free g_string_free = FuncLoader.LoadFunction<d_g_string_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_free"));
 
 		~GString ()
 		{
@@ -36,7 +36,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_string_new(IntPtr text);
-		static d_g_string_new g_string_new = Marshal.GetDelegateForFunctionPointer<d_g_string_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_new"));
+		static d_g_string_new g_string_new = FuncLoader.LoadFunction<d_g_string_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_new"));
 
 		public GString (string text) 
 		{

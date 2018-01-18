@@ -27,7 +27,7 @@ namespace Gtk {
 	public partial class Plug {
 
 		delegate IntPtr d_gtk_plug_new(UIntPtr socket_id);
-		static d_gtk_plug_new gtk_plug_new = Marshal.GetDelegateForFunctionPointer<d_gtk_plug_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_plug_new"));
+		static d_gtk_plug_new gtk_plug_new = FuncLoader.LoadFunction<d_gtk_plug_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_plug_new"));
 
 		public Plug (ulong socket_id) : base (IntPtr.Zero)
 		{
@@ -40,7 +40,7 @@ namespace Gtk {
 		}
 
 		delegate IntPtr d_gtk_plug_new_for_display(IntPtr display, UIntPtr socket_id);
-		static d_gtk_plug_new_for_display gtk_plug_new_for_display = Marshal.GetDelegateForFunctionPointer<d_gtk_plug_new_for_display>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_plug_new_for_display"));
+		static d_gtk_plug_new_for_display gtk_plug_new_for_display = FuncLoader.LoadFunction<d_gtk_plug_new_for_display>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_plug_new_for_display"));
 
 		public Plug (Gdk.Display display, ulong socket_id) : base (IntPtr.Zero)
 		{

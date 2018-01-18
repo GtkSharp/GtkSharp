@@ -26,10 +26,10 @@ namespace Gtk
 	public partial class RadioAction
 	{
 		delegate IntPtr d_gtk_radio_action_get_group(IntPtr raw);
-		static d_gtk_radio_action_get_group gtk_radio_action_get_group = Marshal.GetDelegateForFunctionPointer<d_gtk_radio_action_get_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_action_get_group"));
+		static d_gtk_radio_action_get_group gtk_radio_action_get_group = FuncLoader.LoadFunction<d_gtk_radio_action_get_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_action_get_group"));
 
 		delegate void d_gtk_radio_action_set_group(IntPtr raw, IntPtr list);
-		static d_gtk_radio_action_set_group gtk_radio_action_set_group = Marshal.GetDelegateForFunctionPointer<d_gtk_radio_action_set_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_action_set_group"));
+		static d_gtk_radio_action_set_group gtk_radio_action_set_group = FuncLoader.LoadFunction<d_gtk_radio_action_set_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_action_set_group"));
 
 		[GLib.Property ("group")]
 		public RadioAction[] Group {

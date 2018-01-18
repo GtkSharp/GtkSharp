@@ -29,7 +29,7 @@ namespace Atk {
 	public partial class Global {
 		
 		delegate uint d_atk_add_global_event_listener(GLib.Signal.EmissionHookNative hook, IntPtr event_type);
-        static d_atk_add_global_event_listener atk_add_global_event_listener = Marshal.GetDelegateForFunctionPointer<d_atk_add_global_event_listener>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Atk), "atk_add_global_event_listener"));
+        static d_atk_add_global_event_listener atk_add_global_event_listener = FuncLoader.LoadFunction<d_atk_add_global_event_listener>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Atk), "atk_add_global_event_listener"));
 
 
         public static uint AddGlobalEventListener (GLib.Signal.EmissionHook hook, string event_type)

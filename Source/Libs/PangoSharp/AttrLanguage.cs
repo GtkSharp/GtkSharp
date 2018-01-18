@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrLanguage : Attribute {
 
 		delegate IntPtr d_pango_attr_language_new(IntPtr language);
-		static d_pango_attr_language_new pango_attr_language_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_language_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_language_new"));
+		static d_pango_attr_language_new pango_attr_language_new = FuncLoader.LoadFunction<d_pango_attr_language_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_language_new"));
 
 		public AttrLanguage (Pango.Language language) : this (pango_attr_language_new (language.Handle)) {}
 

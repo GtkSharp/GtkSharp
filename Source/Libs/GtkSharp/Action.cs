@@ -29,7 +29,7 @@ namespace Gtk {
 		{}
 
 		delegate IntPtr d_gtk_action_get_proxies(IntPtr raw);
-		static d_gtk_action_get_proxies gtk_action_get_proxies = Marshal.GetDelegateForFunctionPointer<d_gtk_action_get_proxies>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_action_get_proxies"));
+		static d_gtk_action_get_proxies gtk_action_get_proxies = FuncLoader.LoadFunction<d_gtk_action_get_proxies>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_action_get_proxies"));
 
 		public Gtk.Widget[] Proxies {
 			get {

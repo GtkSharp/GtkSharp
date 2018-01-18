@@ -27,7 +27,7 @@ namespace Gdk {
 	public partial class Keymap {
 
 		delegate bool d_gdk_keymap_get_entries_for_keycode(IntPtr raw, uint hardware_keycode, out IntPtr keys, out IntPtr keyvals, out int n_entries);
-		static d_gdk_keymap_get_entries_for_keycode gdk_keymap_get_entries_for_keycode = Marshal.GetDelegateForFunctionPointer<d_gdk_keymap_get_entries_for_keycode>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_keymap_get_entries_for_keycode"));
+		static d_gdk_keymap_get_entries_for_keycode gdk_keymap_get_entries_for_keycode = FuncLoader.LoadFunction<d_gdk_keymap_get_entries_for_keycode>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_keymap_get_entries_for_keycode"));
 
 		public void GetEntriesForKeycode(uint hardware_keycode, out Gdk.KeymapKey[] keys, out uint[] keyvals) 
 		{
@@ -52,7 +52,7 @@ namespace Gdk {
 		}
 
 		delegate bool d_gdk_keymap_get_entries_for_keyval(IntPtr raw, uint keyval, out IntPtr keys, out int n_keys);
-		static d_gdk_keymap_get_entries_for_keyval gdk_keymap_get_entries_for_keyval = Marshal.GetDelegateForFunctionPointer<d_gdk_keymap_get_entries_for_keyval>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_keymap_get_entries_for_keyval"));
+		static d_gdk_keymap_get_entries_for_keyval gdk_keymap_get_entries_for_keyval = FuncLoader.LoadFunction<d_gdk_keymap_get_entries_for_keyval>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_keymap_get_entries_for_keyval"));
 
 		public KeymapKey[] GetEntriesForKeyval (uint keyval) 
 		{

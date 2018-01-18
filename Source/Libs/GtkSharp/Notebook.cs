@@ -33,7 +33,7 @@ namespace Gtk {
 		}
 
 		delegate int d_gtk_notebook_page_num(IntPtr handle, IntPtr child);
-		static d_gtk_notebook_page_num gtk_notebook_page_num = Marshal.GetDelegateForFunctionPointer<d_gtk_notebook_page_num>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_notebook_page_num"));
+		static d_gtk_notebook_page_num gtk_notebook_page_num = FuncLoader.LoadFunction<d_gtk_notebook_page_num>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_notebook_page_num"));
 
 		public int PageNum (Widget child)
 		{

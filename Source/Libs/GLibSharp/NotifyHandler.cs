@@ -23,7 +23,7 @@ namespace GLib {
 
 	public class NotifyArgs : GLib.SignalArgs {
 		delegate IntPtr d_g_param_spec_get_name(IntPtr pspec);
-		static d_g_param_spec_get_name g_param_spec_get_name = Marshal.GetDelegateForFunctionPointer<d_g_param_spec_get_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_get_name"));
+		static d_g_param_spec_get_name g_param_spec_get_name = FuncLoader.LoadFunction<d_g_param_spec_get_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_param_spec_get_name"));
 
 		public string Property {
 			get {

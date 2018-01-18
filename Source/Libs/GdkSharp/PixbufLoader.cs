@@ -29,7 +29,7 @@ namespace Gdk {
 	public partial class PixbufLoader {
 
 		delegate IntPtr d_g_object_ref(IntPtr handle);
-		static d_g_object_ref g_object_ref = Marshal.GetDelegateForFunctionPointer<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
+		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
 
 		internal IntPtr PixbufHandle {
 			get {

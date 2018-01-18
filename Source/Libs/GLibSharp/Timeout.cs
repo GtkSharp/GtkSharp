@@ -65,7 +65,7 @@ namespace GLib {
 		
 		private Timeout () {} 
 		delegate uint d_g_timeout_add(uint interval, TimeoutHandlerInternal d, IntPtr data);
-		static d_g_timeout_add g_timeout_add = Marshal.GetDelegateForFunctionPointer<d_g_timeout_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_timeout_add"));
+		static d_g_timeout_add g_timeout_add = FuncLoader.LoadFunction<d_g_timeout_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_timeout_add"));
 
 		public static uint Add (uint interval, TimeoutHandler hndlr)
 		{
@@ -80,7 +80,7 @@ namespace GLib {
 		}
 
 		delegate uint d_g_timeout_add_full(int priority, uint interval, TimeoutHandlerInternal d, IntPtr data, DestroyNotify notify);
-		static d_g_timeout_add_full g_timeout_add_full = Marshal.GetDelegateForFunctionPointer<d_g_timeout_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_timeout_add_full"));
+		static d_g_timeout_add_full g_timeout_add_full = FuncLoader.LoadFunction<d_g_timeout_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_timeout_add_full"));
 
 		public static uint Add (uint interval, TimeoutHandler hndlr, Priority priority)
 		{
@@ -95,7 +95,7 @@ namespace GLib {
 		}
 
 		delegate uint d_g_timeout_add_seconds(uint interval, TimeoutHandlerInternal d, IntPtr data);
-		static d_g_timeout_add_seconds g_timeout_add_seconds = Marshal.GetDelegateForFunctionPointer<d_g_timeout_add_seconds>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_timeout_add_seconds"));
+		static d_g_timeout_add_seconds g_timeout_add_seconds = FuncLoader.LoadFunction<d_g_timeout_add_seconds>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_timeout_add_seconds"));
 
 		public static uint AddSeconds (uint interval, TimeoutHandler hndlr)
 		{

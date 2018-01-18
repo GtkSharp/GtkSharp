@@ -24,10 +24,10 @@ namespace Pango {
 	public class AttrSize : Attribute {
 
 		delegate IntPtr d_pango_attr_size_new(int size);
-		static d_pango_attr_size_new pango_attr_size_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_size_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_size_new"));
+		static d_pango_attr_size_new pango_attr_size_new = FuncLoader.LoadFunction<d_pango_attr_size_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_size_new"));
 
 		delegate IntPtr d_pango_attr_size_new_absolute(int size);
-		static d_pango_attr_size_new_absolute pango_attr_size_new_absolute = Marshal.GetDelegateForFunctionPointer<d_pango_attr_size_new_absolute>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_size_new_absolute"));
+		static d_pango_attr_size_new_absolute pango_attr_size_new_absolute = FuncLoader.LoadFunction<d_pango_attr_size_new_absolute>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_size_new_absolute"));
 
 		public AttrSize (int size) : this (pango_attr_size_new (size)) {}
 

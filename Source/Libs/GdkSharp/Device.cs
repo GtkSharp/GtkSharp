@@ -26,10 +26,10 @@ namespace Gdk {
 	public partial class Device {
 
 		delegate void d_gdk_device_free_history(IntPtr events, int n_events);
-		static d_gdk_device_free_history gdk_device_free_history = Marshal.GetDelegateForFunctionPointer<d_gdk_device_free_history>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_device_free_history"));
+		static d_gdk_device_free_history gdk_device_free_history = FuncLoader.LoadFunction<d_gdk_device_free_history>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_device_free_history"));
 
 		delegate bool d_gdk_device_get_history(IntPtr device, IntPtr window, uint start, uint stop, out IntPtr events, out int n_events);
-		static d_gdk_device_get_history gdk_device_get_history = Marshal.GetDelegateForFunctionPointer<d_gdk_device_get_history>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_device_get_history"));
+		static d_gdk_device_get_history gdk_device_get_history = FuncLoader.LoadFunction<d_gdk_device_get_history>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_device_get_history"));
 
 		public TimeCoord[] GetHistory (Gdk.Window window, uint start, uint stop)
 		{

@@ -26,7 +26,7 @@ namespace Pango {
 	public partial class Coverage {
 
 		delegate void d_pango_coverage_to_bytes(IntPtr raw, out IntPtr bytes, out int n_bytes);
-		static d_pango_coverage_to_bytes pango_coverage_to_bytes = Marshal.GetDelegateForFunctionPointer<d_pango_coverage_to_bytes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_coverage_to_bytes"));
+		static d_pango_coverage_to_bytes pango_coverage_to_bytes = FuncLoader.LoadFunction<d_pango_coverage_to_bytes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_coverage_to_bytes"));
 
 		public void ToBytes(out byte[] bytes) 
 		{

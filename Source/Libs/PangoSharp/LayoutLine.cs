@@ -27,7 +27,7 @@ namespace Pango {
 
 #if NOT_BROKEN
 		delegate void d_pango_layout_line_get_x_ranges(IntPtr raw, int start_index, int end_index, out IntPtr ranges_handle, out int n_ranges);
-		static d_pango_layout_line_get_x_ranges pango_layout_line_get_x_ranges = Marshal.GetDelegateForFunctionPointer<d_pango_layout_line_get_x_ranges>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_line_get_x_ranges"));
+		static d_pango_layout_line_get_x_ranges pango_layout_line_get_x_ranges = FuncLoader.LoadFunction<d_pango_layout_line_get_x_ranges>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_line_get_x_ranges"));
 #endif
 
 		public void GetXRanges(int start_index, int end_index, out int[][] ranges)

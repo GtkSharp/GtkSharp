@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrUnderlineColor : Attribute {
 
 		delegate IntPtr d_pango_attr_underline_color_new(ushort red, ushort green, ushort blue);
-		static d_pango_attr_underline_color_new pango_attr_underline_color_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_underline_color_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_underline_color_new"));
+		static d_pango_attr_underline_color_new pango_attr_underline_color_new = FuncLoader.LoadFunction<d_pango_attr_underline_color_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_underline_color_new"));
 
 		public AttrUnderlineColor (ushort red, ushort green, ushort blue) : this (pango_attr_underline_color_new (red, green, blue)) {}
 

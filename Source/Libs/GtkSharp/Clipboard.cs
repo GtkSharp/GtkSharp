@@ -26,10 +26,10 @@ namespace Gtk {
 	public partial class Clipboard {
 
 		delegate bool d_gtk_clipboard_set_with_data(IntPtr raw, TargetEntry[] targets, int n_targets, GtkSharp.ClipboardGetFuncNative get_func, GtkSharp.ClipboardClearFuncNative clear_func, IntPtr data);
-		static d_gtk_clipboard_set_with_data gtk_clipboard_set_with_data = Marshal.GetDelegateForFunctionPointer<d_gtk_clipboard_set_with_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_set_with_data"));
+		static d_gtk_clipboard_set_with_data gtk_clipboard_set_with_data = FuncLoader.LoadFunction<d_gtk_clipboard_set_with_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_set_with_data"));
 
 		delegate bool d_gtk_clipboard_set_with_owner(IntPtr raw, TargetEntry[] targets, int n_targets, GtkSharp.ClipboardGetFuncNative get_func, GtkSharp.ClipboardClearFuncNative clear_func, IntPtr owner);
-		static d_gtk_clipboard_set_with_owner gtk_clipboard_set_with_owner = Marshal.GetDelegateForFunctionPointer<d_gtk_clipboard_set_with_owner>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_set_with_owner"));
+		static d_gtk_clipboard_set_with_owner gtk_clipboard_set_with_owner = FuncLoader.LoadFunction<d_gtk_clipboard_set_with_owner>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_set_with_owner"));
 
 		void ClearProxy (Clipboard clipboard)
 		{
@@ -74,7 +74,7 @@ namespace Gtk {
 		}
 
 		delegate IntPtr d_gtk_clipboard_wait_for_rich_text(IntPtr raw, IntPtr buffer, out IntPtr format, out UIntPtr length);
-		static d_gtk_clipboard_wait_for_rich_text gtk_clipboard_wait_for_rich_text = Marshal.GetDelegateForFunctionPointer<d_gtk_clipboard_wait_for_rich_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_wait_for_rich_text"));
+		static d_gtk_clipboard_wait_for_rich_text gtk_clipboard_wait_for_rich_text = FuncLoader.LoadFunction<d_gtk_clipboard_wait_for_rich_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_wait_for_rich_text"));
 
 		public byte[] WaitForRichText(Gtk.TextBuffer buffer, out Gdk.Atom format) 
 		{
@@ -116,7 +116,7 @@ namespace Gtk {
 		}
 
 		delegate void d_gtk_clipboard_request_rich_text(IntPtr raw, IntPtr buffer, RichTextReceivedFuncNative cb, IntPtr user_data);
-		static d_gtk_clipboard_request_rich_text gtk_clipboard_request_rich_text = Marshal.GetDelegateForFunctionPointer<d_gtk_clipboard_request_rich_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_request_rich_text"));
+		static d_gtk_clipboard_request_rich_text gtk_clipboard_request_rich_text = FuncLoader.LoadFunction<d_gtk_clipboard_request_rich_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_request_rich_text"));
 
 		public void RequestRichText (Gtk.TextBuffer buffer, RichTextReceivedFunc cb) 
 		{

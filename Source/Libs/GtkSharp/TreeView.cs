@@ -49,10 +49,10 @@ namespace Gtk {
 		*/
 
 		delegate bool d_gtk_tree_view_get_path_at_pos(IntPtr raw, int x, int y, out IntPtr path, out IntPtr column, out int cell_x, out int cell_y);
-		static d_gtk_tree_view_get_path_at_pos gtk_tree_view_get_path_at_pos = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_view_get_path_at_pos>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos"));
+		static d_gtk_tree_view_get_path_at_pos gtk_tree_view_get_path_at_pos = FuncLoader.LoadFunction<d_gtk_tree_view_get_path_at_pos>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos"));
 
 		delegate bool d_gtk_tree_view_get_path_at_pos_intptr(IntPtr raw, int x, int y, out IntPtr path, out IntPtr column, IntPtr cell_x, IntPtr cell_y);
-		static d_gtk_tree_view_get_path_at_pos_intptr gtk_tree_view_get_path_at_pos_intptr = Marshal.GetDelegateForFunctionPointer<d_gtk_tree_view_get_path_at_pos_intptr>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos_intptr"));
+		static d_gtk_tree_view_get_path_at_pos_intptr gtk_tree_view_get_path_at_pos_intptr = FuncLoader.LoadFunction<d_gtk_tree_view_get_path_at_pos_intptr>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos_intptr"));
 
 		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path, out Gtk.TreeViewColumn column, out int cell_x, out int cell_y)
 		{

@@ -30,7 +30,7 @@ namespace GLib {
 		private Markup () {}
 		
 		delegate IntPtr d_g_markup_escape_text(IntPtr text, int len);
-		static d_g_markup_escape_text g_markup_escape_text = Marshal.GetDelegateForFunctionPointer<d_g_markup_escape_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_markup_escape_text"));
+		static d_g_markup_escape_text g_markup_escape_text = FuncLoader.LoadFunction<d_g_markup_escape_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_markup_escape_text"));
 		
 		static public string EscapeText (string s)
 		{

@@ -124,7 +124,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_logv(IntPtr log_domain, LogLevelFlags flags, IntPtr message);
-		static d_g_logv g_logv = Marshal.GetDelegateForFunctionPointer<d_g_logv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_logv"));
+		static d_g_logv g_logv = FuncLoader.LoadFunction<d_g_logv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_logv"));
 		
 		public void WriteLog (string logDomain, LogLevelFlags flags, string format, params object [] args)
 		{
@@ -136,7 +136,7 @@ namespace GLib {
 		}
 
 		delegate uint d_g_log_set_handler(IntPtr log_domain, LogLevelFlags flags, LogFuncNative log_func, IntPtr user_data);
-		static d_g_log_set_handler g_log_set_handler = Marshal.GetDelegateForFunctionPointer<d_g_log_set_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_handler"));
+		static d_g_log_set_handler g_log_set_handler = FuncLoader.LoadFunction<d_g_log_set_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_handler"));
 		
 		public static uint SetLogHandler (string logDomain, LogLevelFlags flags, LogFunc logFunc)
 		{
@@ -153,7 +153,7 @@ namespace GLib {
 		}
 
 		delegate uint d_g_log_remove_handler(IntPtr log_domain, uint handler_id);
-		static d_g_log_remove_handler g_log_remove_handler = Marshal.GetDelegateForFunctionPointer<d_g_log_remove_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_remove_handler"));
+		static d_g_log_remove_handler g_log_remove_handler = FuncLoader.LoadFunction<d_g_log_remove_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_remove_handler"));
 
 		public static void RemoveLogHandler (string logDomain, uint handlerID)
 		{
@@ -168,7 +168,7 @@ namespace GLib {
 		}
 
 		delegate PrintFuncNative d_g_set_print_handler(PrintFuncNative handler);
-		static d_g_set_print_handler g_set_print_handler = Marshal.GetDelegateForFunctionPointer<d_g_set_print_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_set_print_handler"));
+		static d_g_set_print_handler g_set_print_handler = FuncLoader.LoadFunction<d_g_set_print_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_set_print_handler"));
 
 		public static PrintFunc SetPrintHandler (PrintFunc handler)
 		{
@@ -179,7 +179,7 @@ namespace GLib {
 		}
 		
 		delegate PrintFuncNative d_g_set_printerr_handler(PrintFuncNative handler);
-		static d_g_set_printerr_handler g_set_printerr_handler = Marshal.GetDelegateForFunctionPointer<d_g_set_printerr_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_set_printerr_handler"));
+		static d_g_set_printerr_handler g_set_printerr_handler = FuncLoader.LoadFunction<d_g_set_printerr_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_set_printerr_handler"));
 
 		public static PrintFunc SetPrintErrorHandler (PrintFunc handler)
 		{
@@ -190,7 +190,7 @@ namespace GLib {
 		}
 		
 		delegate void d_g_log_default_handler(IntPtr log_domain, LogLevelFlags log_level, IntPtr message, IntPtr unused_data);
-		static d_g_log_default_handler g_log_default_handler = Marshal.GetDelegateForFunctionPointer<d_g_log_default_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_default_handler"));
+		static d_g_log_default_handler g_log_default_handler = FuncLoader.LoadFunction<d_g_log_default_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_default_handler"));
 
 		public static void DefaultHandler (string logDomain, LogLevelFlags logLevel, string message)
 						   
@@ -203,7 +203,7 @@ namespace GLib {
 		}
 
 		delegate LogLevelFlags d_g_log_set_always_fatal(LogLevelFlags fatal_mask);
-		static d_g_log_set_always_fatal g_log_set_always_fatal = Marshal.GetDelegateForFunctionPointer<d_g_log_set_always_fatal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_always_fatal"));
+		static d_g_log_set_always_fatal g_log_set_always_fatal = FuncLoader.LoadFunction<d_g_log_set_always_fatal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_always_fatal"));
 		
 		public static LogLevelFlags SetAlwaysFatal (LogLevelFlags fatalMask)
 		{
@@ -211,7 +211,7 @@ namespace GLib {
 		}
 
 		delegate LogLevelFlags d_g_log_set_fatal_mask(IntPtr log_domain, LogLevelFlags fatal_mask);
-		static d_g_log_set_fatal_mask g_log_set_fatal_mask = Marshal.GetDelegateForFunctionPointer<d_g_log_set_fatal_mask>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_fatal_mask"));
+		static d_g_log_set_fatal_mask g_log_set_fatal_mask = FuncLoader.LoadFunction<d_g_log_set_fatal_mask>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_fatal_mask"));
 		
 		public static LogLevelFlags SetAlwaysFatal (string logDomain, LogLevelFlags fatalMask)
 		{
@@ -245,7 +245,7 @@ namespace GLib {
 		}
 
 		delegate LogFuncNative d_g_log_set_default_handler(LogFuncNative log_func, IntPtr user_data);
-		static d_g_log_set_default_handler g_log_set_default_handler = Marshal.GetDelegateForFunctionPointer<d_g_log_set_default_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_default_handler"));
+		static d_g_log_set_default_handler g_log_set_default_handler = FuncLoader.LoadFunction<d_g_log_set_default_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_default_handler"));
 		
 		public static LogFunc SetDefaultHandler (LogFunc log_func)
 		{

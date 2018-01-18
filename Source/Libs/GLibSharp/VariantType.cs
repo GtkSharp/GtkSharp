@@ -48,7 +48,7 @@ namespace GLib {
 		public static VariantType ByteStringArray = new VariantType ("aay");
 
 		delegate bool d_g_variant_type_string_is_valid(IntPtr type_string);
-		static d_g_variant_type_string_is_valid g_variant_type_string_is_valid = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_string_is_valid>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_string_is_valid"));
+		static d_g_variant_type_string_is_valid g_variant_type_string_is_valid = FuncLoader.LoadFunction<d_g_variant_type_string_is_valid>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_string_is_valid"));
 
 		public static bool StringIsValid (string type_string)
 		{
@@ -77,7 +77,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_variant_type_free(IntPtr handle);
-		static d_g_variant_type_free g_variant_type_free = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_free"));
+		static d_g_variant_type_free g_variant_type_free = FuncLoader.LoadFunction<d_g_variant_type_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_free"));
 
 		void Dispose (bool disposing)
 		{
@@ -91,7 +91,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_copy(IntPtr handle);
-		static d_g_variant_type_copy g_variant_type_copy = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_copy"));
+		static d_g_variant_type_copy g_variant_type_copy = FuncLoader.LoadFunction<d_g_variant_type_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_copy"));
 
 		public VariantType (IntPtr handle)
 		{
@@ -99,7 +99,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_new(IntPtr type_name);
-		static d_g_variant_type_new g_variant_type_new = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new"));
+		static d_g_variant_type_new g_variant_type_new = FuncLoader.LoadFunction<d_g_variant_type_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new"));
 
 		public VariantType (string type_string)
 		{
@@ -114,7 +114,7 @@ namespace GLib {
 		}
 
 		delegate bool d_g_variant_type_equal(IntPtr a, IntPtr b);
-		static d_g_variant_type_equal g_variant_type_equal = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_equal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_equal"));
+		static d_g_variant_type_equal g_variant_type_equal = FuncLoader.LoadFunction<d_g_variant_type_equal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_equal"));
 
 		public override bool Equals (object o)
 		{
@@ -122,7 +122,7 @@ namespace GLib {
 		}
 
 		delegate int d_g_variant_type_hash(IntPtr a);
-		static d_g_variant_type_hash g_variant_type_hash = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_hash>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_hash"));
+		static d_g_variant_type_hash g_variant_type_hash = FuncLoader.LoadFunction<d_g_variant_type_hash>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_hash"));
 
 		public override int GetHashCode ()
 		{
@@ -130,7 +130,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_peek_string(IntPtr a);
-		static d_g_variant_type_peek_string g_variant_type_peek_string = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_peek_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_peek_string"));
+		static d_g_variant_type_peek_string g_variant_type_peek_string = FuncLoader.LoadFunction<d_g_variant_type_peek_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_peek_string"));
 
 		public override string ToString ()
 		{
@@ -138,7 +138,7 @@ namespace GLib {
 		}
 
 		delegate bool d_g_variant_type_is_array(IntPtr type);
-		static d_g_variant_type_is_array g_variant_type_is_array = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_is_array>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_array"));
+		static d_g_variant_type_is_array g_variant_type_is_array = FuncLoader.LoadFunction<d_g_variant_type_is_array>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_array"));
 
 		public bool IsArray {
 			get { return g_variant_type_is_array (Handle); }
@@ -146,56 +146,56 @@ namespace GLib {
 
 
 		delegate bool d_g_variant_type_is_basic(IntPtr type);
-		static d_g_variant_type_is_basic g_variant_type_is_basic = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_is_basic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_basic"));
+		static d_g_variant_type_is_basic g_variant_type_is_basic = FuncLoader.LoadFunction<d_g_variant_type_is_basic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_basic"));
 
 		public bool IsBasic {
 			get { return g_variant_type_is_basic (Handle); }
 		}
 
 		delegate bool d_g_variant_type_is_container(IntPtr type);
-		static d_g_variant_type_is_container g_variant_type_is_container = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_is_container>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_container"));
+		static d_g_variant_type_is_container g_variant_type_is_container = FuncLoader.LoadFunction<d_g_variant_type_is_container>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_container"));
 
 		public bool IsContainer {
 			get { return g_variant_type_is_container (Handle); }
 		}
 
 		delegate bool d_g_variant_type_is_definite(IntPtr type);
-		static d_g_variant_type_is_definite g_variant_type_is_definite = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_is_definite>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_definite"));
+		static d_g_variant_type_is_definite g_variant_type_is_definite = FuncLoader.LoadFunction<d_g_variant_type_is_definite>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_definite"));
 
 		public bool IsDefinite {
 			get { return g_variant_type_is_definite (Handle); }
 		}
 
 		delegate bool d_g_variant_type_is_dict_entry(IntPtr type);
-		static d_g_variant_type_is_dict_entry g_variant_type_is_dict_entry = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_is_dict_entry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_dict_entry"));
+		static d_g_variant_type_is_dict_entry g_variant_type_is_dict_entry = FuncLoader.LoadFunction<d_g_variant_type_is_dict_entry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_dict_entry"));
 
 		public bool IsDictionaryEntry {
 			get { return g_variant_type_is_dict_entry (Handle); }
 		}
 
 		delegate bool d_g_variant_type_is_maybe(IntPtr type);
-		static d_g_variant_type_is_maybe g_variant_type_is_maybe = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_is_maybe>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_maybe"));
+		static d_g_variant_type_is_maybe g_variant_type_is_maybe = FuncLoader.LoadFunction<d_g_variant_type_is_maybe>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_maybe"));
 
 		public bool IsMaybe {
 			get { return g_variant_type_is_maybe (Handle); }
 		}
 
 		delegate bool d_g_variant_type_is_tuple(IntPtr type);
-		static d_g_variant_type_is_tuple g_variant_type_is_tuple = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_is_tuple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_tuple"));
+		static d_g_variant_type_is_tuple g_variant_type_is_tuple = FuncLoader.LoadFunction<d_g_variant_type_is_tuple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_tuple"));
 
 		public bool IsTuple {
 			get { return g_variant_type_is_tuple (Handle); }
 		}
 
 		delegate bool d_g_variant_type_is_variant(IntPtr type);
-		static d_g_variant_type_is_variant g_variant_type_is_variant = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_is_variant>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_variant"));
+		static d_g_variant_type_is_variant g_variant_type_is_variant = FuncLoader.LoadFunction<d_g_variant_type_is_variant>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_variant"));
 
 		public bool IsVariant {
 			get { return g_variant_type_is_variant (Handle); }
 		}
 
 		delegate bool d_g_variant_type_is_subtype_of(IntPtr type, IntPtr supertype);
-		static d_g_variant_type_is_subtype_of g_variant_type_is_subtype_of = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_is_subtype_of>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_subtype_of"));
+		static d_g_variant_type_is_subtype_of g_variant_type_is_subtype_of = FuncLoader.LoadFunction<d_g_variant_type_is_subtype_of>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_is_subtype_of"));
 
 		public bool IsSubtypeOf (VariantType supertype)
 		{
@@ -203,7 +203,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_element(IntPtr type);
-		static d_g_variant_type_element g_variant_type_element = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_element>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_element"));
+		static d_g_variant_type_element g_variant_type_element = FuncLoader.LoadFunction<d_g_variant_type_element>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_element"));
 
 		public VariantType Element ()
 		{
@@ -211,7 +211,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_first(IntPtr type);
-		static d_g_variant_type_first g_variant_type_first = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_first>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_first"));
+		static d_g_variant_type_first g_variant_type_first = FuncLoader.LoadFunction<d_g_variant_type_first>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_first"));
 
 		public VariantType First ()
 		{
@@ -219,7 +219,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_next(IntPtr type);
-		static d_g_variant_type_next g_variant_type_next = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_next>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_next"));
+		static d_g_variant_type_next g_variant_type_next = FuncLoader.LoadFunction<d_g_variant_type_next>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_next"));
 
 		public VariantType Next ()
 		{
@@ -227,7 +227,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_n_items(IntPtr type);
-		static d_g_variant_type_n_items g_variant_type_n_items = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_n_items>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_n_items"));
+		static d_g_variant_type_n_items g_variant_type_n_items = FuncLoader.LoadFunction<d_g_variant_type_n_items>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_n_items"));
 
 		public long NItems ()
 		{
@@ -235,7 +235,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_key(IntPtr type);
-		static d_g_variant_type_key g_variant_type_key = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_key>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_key"));
+		static d_g_variant_type_key g_variant_type_key = FuncLoader.LoadFunction<d_g_variant_type_key>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_key"));
 
 		public VariantType Key ()
 		{
@@ -243,7 +243,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_value(IntPtr type);
-		static d_g_variant_type_value g_variant_type_value = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_value>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_value"));
+		static d_g_variant_type_value g_variant_type_value = FuncLoader.LoadFunction<d_g_variant_type_value>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_value"));
 
 		public VariantType Value ()
 		{
@@ -251,7 +251,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_new_array(IntPtr element);
-		static d_g_variant_type_new_array g_variant_type_new_array = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_new_array>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new_array"));
+		static d_g_variant_type_new_array g_variant_type_new_array = FuncLoader.LoadFunction<d_g_variant_type_new_array>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new_array"));
 
 		public static VariantType NewArray (VariantType element)
 		{
@@ -261,7 +261,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_new_dict_entry(IntPtr key, IntPtr value);
-		static d_g_variant_type_new_dict_entry g_variant_type_new_dict_entry = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_new_dict_entry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new_dict_entry"));
+		static d_g_variant_type_new_dict_entry g_variant_type_new_dict_entry = FuncLoader.LoadFunction<d_g_variant_type_new_dict_entry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new_dict_entry"));
 
 		public static VariantType NewDictionaryEntry (VariantType key, VariantType value)
 		{
@@ -271,7 +271,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_new_maybe(IntPtr element);
-		static d_g_variant_type_new_maybe g_variant_type_new_maybe = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_new_maybe>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new_maybe"));
+		static d_g_variant_type_new_maybe g_variant_type_new_maybe = FuncLoader.LoadFunction<d_g_variant_type_new_maybe>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new_maybe"));
 
 		public static VariantType NewMaybe (VariantType element)
 		{
@@ -281,7 +281,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_variant_type_new_tuple(IntPtr[] items, int n_items);
-		static d_g_variant_type_new_tuple g_variant_type_new_tuple = Marshal.GetDelegateForFunctionPointer<d_g_variant_type_new_tuple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new_tuple"));
+		static d_g_variant_type_new_tuple g_variant_type_new_tuple = FuncLoader.LoadFunction<d_g_variant_type_new_tuple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_new_tuple"));
 
 		public static VariantType NewTuple (VariantType[] items)
 		{

@@ -40,7 +40,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_time_val_add(IntPtr raw, IntPtr microseconds);
-		static d_g_time_val_add g_time_val_add = Marshal.GetDelegateForFunctionPointer<d_g_time_val_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_add"));
+		static d_g_time_val_add g_time_val_add = FuncLoader.LoadFunction<d_g_time_val_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_add"));
 
 		public void Add(long microseconds) {
 			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));
@@ -51,7 +51,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_time_val_to_iso8601(IntPtr raw);
-		static d_g_time_val_to_iso8601 g_time_val_to_iso8601 = Marshal.GetDelegateForFunctionPointer<d_g_time_val_to_iso8601>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_to_iso8601"));
+		static d_g_time_val_to_iso8601 g_time_val_to_iso8601 = FuncLoader.LoadFunction<d_g_time_val_to_iso8601>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_to_iso8601"));
 
 		public string ToIso8601() {
 			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));
@@ -64,7 +64,7 @@ namespace GLib {
 		}
 
 		delegate bool d_g_time_val_from_iso8601(IntPtr iso_date, IntPtr time_);
-		static d_g_time_val_from_iso8601 g_time_val_from_iso8601 = Marshal.GetDelegateForFunctionPointer<d_g_time_val_from_iso8601>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_from_iso8601"));
+		static d_g_time_val_from_iso8601 g_time_val_from_iso8601 = FuncLoader.LoadFunction<d_g_time_val_from_iso8601>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_from_iso8601"));
 
 		public static bool FromIso8601(string iso_date, out GLib.TimeVal time_) {
 			IntPtr native_iso_date = GLib.Marshaller.StringToPtrGStrdup (iso_date);

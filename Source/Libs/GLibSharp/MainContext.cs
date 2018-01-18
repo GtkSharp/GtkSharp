@@ -28,7 +28,7 @@ namespace GLib {
 		IntPtr handle;
 
 		delegate IntPtr d_g_main_context_new();
-		static d_g_main_context_new g_main_context_new = Marshal.GetDelegateForFunctionPointer<d_g_main_context_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_new"));
+		static d_g_main_context_new g_main_context_new = FuncLoader.LoadFunction<d_g_main_context_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_new"));
 
 		public MainContext ()
 		{
@@ -36,7 +36,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_main_context_ref(IntPtr raw);
-		static d_g_main_context_ref g_main_context_ref = Marshal.GetDelegateForFunctionPointer<d_g_main_context_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_ref"));
+		static d_g_main_context_ref g_main_context_ref = FuncLoader.LoadFunction<d_g_main_context_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_ref"));
 
 		public MainContext (IntPtr raw)
 		{
@@ -51,7 +51,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_main_context_unref(IntPtr raw);
-		static d_g_main_context_unref g_main_context_unref = Marshal.GetDelegateForFunctionPointer<d_g_main_context_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_unref"));
+		static d_g_main_context_unref g_main_context_unref = FuncLoader.LoadFunction<d_g_main_context_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_unref"));
 
 		~MainContext ()
 		{
@@ -60,7 +60,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_main_context_default();
-		static d_g_main_context_default g_main_context_default = Marshal.GetDelegateForFunctionPointer<d_g_main_context_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_default"));
+		static d_g_main_context_default g_main_context_default = FuncLoader.LoadFunction<d_g_main_context_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_default"));
 
 		public static MainContext Default {
 			get {
@@ -69,7 +69,7 @@ namespace GLib {
 		}
 
 		delegate IntPtr d_g_main_context_thread_default();
-		static d_g_main_context_thread_default g_main_context_thread_default = Marshal.GetDelegateForFunctionPointer<d_g_main_context_thread_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_thread_default"));
+		static d_g_main_context_thread_default g_main_context_thread_default = FuncLoader.LoadFunction<d_g_main_context_thread_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_thread_default"));
 
 		public MainContext ThreadDefault {
 			get {
@@ -80,7 +80,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_main_context_push_thread_default(IntPtr raw);
-		static d_g_main_context_push_thread_default g_main_context_push_thread_default = Marshal.GetDelegateForFunctionPointer<d_g_main_context_push_thread_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_push_thread_default"));
+		static d_g_main_context_push_thread_default g_main_context_push_thread_default = FuncLoader.LoadFunction<d_g_main_context_push_thread_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_push_thread_default"));
 
 		public void PushThreadDefault ()
 		{
@@ -88,7 +88,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_main_context_pop_thread_default(IntPtr raw);
-		static d_g_main_context_pop_thread_default g_main_context_pop_thread_default = Marshal.GetDelegateForFunctionPointer<d_g_main_context_pop_thread_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_pop_thread_default"));
+		static d_g_main_context_pop_thread_default g_main_context_pop_thread_default = FuncLoader.LoadFunction<d_g_main_context_pop_thread_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_pop_thread_default"));
 
 		public void PopThreadDefault ()
 		{
@@ -97,7 +97,7 @@ namespace GLib {
 
 
 		delegate bool d_g_main_context_iteration(IntPtr raw, bool may_block);
-		static d_g_main_context_iteration g_main_context_iteration = Marshal.GetDelegateForFunctionPointer<d_g_main_context_iteration>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_iteration"));
+		static d_g_main_context_iteration g_main_context_iteration = FuncLoader.LoadFunction<d_g_main_context_iteration>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_iteration"));
 
 		public bool RunIteration (bool may_block)
 		{
@@ -110,7 +110,7 @@ namespace GLib {
 		}
 
 		delegate bool d_g_main_context_pending(IntPtr raw);
-		static d_g_main_context_pending g_main_context_pending = Marshal.GetDelegateForFunctionPointer<d_g_main_context_pending>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_pending"));
+		static d_g_main_context_pending g_main_context_pending = FuncLoader.LoadFunction<d_g_main_context_pending>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_pending"));
 
 		public bool HasPendingEvents
 		{
@@ -120,7 +120,7 @@ namespace GLib {
 		}
 
 		delegate void d_g_main_context_wakeup(IntPtr raw);
-		static d_g_main_context_wakeup g_main_context_wakeup = Marshal.GetDelegateForFunctionPointer<d_g_main_context_wakeup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_wakeup"));
+		static d_g_main_context_wakeup g_main_context_wakeup = FuncLoader.LoadFunction<d_g_main_context_wakeup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_wakeup"));
 
 		public void Wakeup ()
 		{
@@ -143,7 +143,7 @@ namespace GLib {
 
 
 		delegate int d_g_main_depth();
-		static d_g_main_depth g_main_depth = Marshal.GetDelegateForFunctionPointer<d_g_main_depth>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_depth"));
+		static d_g_main_depth g_main_depth = FuncLoader.LoadFunction<d_g_main_depth>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_depth"));
 		public static int Depth {
 			get { return g_main_depth (); }
 		}

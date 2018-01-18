@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrScale : Attribute {
 
 		delegate IntPtr d_pango_attr_scale_new(double scale);
-		static d_pango_attr_scale_new pango_attr_scale_new = Marshal.GetDelegateForFunctionPointer<d_pango_attr_scale_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_scale_new"));
+		static d_pango_attr_scale_new pango_attr_scale_new = FuncLoader.LoadFunction<d_pango_attr_scale_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_scale_new"));
 
 		public AttrScale (double scale) : this (pango_attr_scale_new (scale)) {}
 

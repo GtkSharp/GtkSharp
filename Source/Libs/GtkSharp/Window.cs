@@ -32,10 +32,10 @@ namespace Gtk {
 		}
 
 		delegate IntPtr d_gtk_window_get_default_icon_list();
-		static d_gtk_window_get_default_icon_list gtk_window_get_default_icon_list = Marshal.GetDelegateForFunctionPointer<d_gtk_window_get_default_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_get_default_icon_list"));
+		static d_gtk_window_get_default_icon_list gtk_window_get_default_icon_list = FuncLoader.LoadFunction<d_gtk_window_get_default_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_get_default_icon_list"));
 
 		delegate void d_gtk_window_set_default_icon_list(IntPtr list);
-		static d_gtk_window_set_default_icon_list gtk_window_set_default_icon_list = Marshal.GetDelegateForFunctionPointer<d_gtk_window_set_default_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_set_default_icon_list"));
+		static d_gtk_window_set_default_icon_list gtk_window_set_default_icon_list = FuncLoader.LoadFunction<d_gtk_window_set_default_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_set_default_icon_list"));
 
 		public static Gdk.Pixbuf[] DefaultIconList {
 			get {
@@ -57,10 +57,10 @@ namespace Gtk {
 		}
 
 		delegate IntPtr d_gtk_window_get_icon_list(IntPtr raw);
-		static d_gtk_window_get_icon_list gtk_window_get_icon_list = Marshal.GetDelegateForFunctionPointer<d_gtk_window_get_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_get_icon_list"));
+		static d_gtk_window_get_icon_list gtk_window_get_icon_list = FuncLoader.LoadFunction<d_gtk_window_get_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_get_icon_list"));
 
 		delegate void d_gtk_window_set_icon_list(IntPtr raw, IntPtr list);
-		static d_gtk_window_set_icon_list gtk_window_set_icon_list = Marshal.GetDelegateForFunctionPointer<d_gtk_window_set_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_set_icon_list"));
+		static d_gtk_window_set_icon_list gtk_window_set_icon_list = FuncLoader.LoadFunction<d_gtk_window_set_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_set_icon_list"));
 
 		public Gdk.Pixbuf[] IconList {
 			get {
