@@ -5,15 +5,20 @@ dist: trusty
 script:
 - "./build.sh --BuildTarget=FullBuild"
 deploy:
-  skip_cleanup: true
-  provider: releases
-  api_key:
-    secure: rg2WI5q/uyxotAuUCMxv4L+kMVxd3Ge/1Oe7GytqDsdn/bW2HpxAG8CessB+nrQBKVSssOPU5puBG0c91aKcZFzWycZYN0AnUg8otILHBpJFg9A4igRPi4fAgdQodEXWAHuzeAP0EKl1c8RnBA5b4cHTsgZe/uy1r1rLg5PLA9ZKKCe/0kqFUQxwN3HvrysjvEyzS5fw5ILjwUZyRA+hzfBB5HD4Z7DkwKOmdOwdd9qNo4RxFVWIpUw7Fd3IaHDtjjqAJkZIwQA2+LL+4YBk+7reLGE/V0sDe3cK3rOfse/axQeD3ha1ASK4Q2Ye0yAfEKsxg3NrAPkPyF4CFhnTqtauwPKCEfkNyOlpum9T++2VepSN3qd3E58/K9aNmemilU+Z4KE4hMzJeY4OG3PBmSvp/F7ALNIBDL1BzltTCGbHX7vXKONKtRbDgUA6tX9qXxpf806KWfO7CpClibgLHGjF2jQOP0Eamn7vbCHCqbR8JLS5MolcsefLoatgg8zoK0670axrRIwV/UWnLSBHyo9rtOHnSBfh1r9TGOqO5h1ICa24nz6gUN1b4mP9B9nZsVzuWPWFSjJFPtmBOfOprLwP/xN6bwQgW3p4bVQLGF4/CuGRlnIhVl+hgFZNcobmkwyvFvAd2h/523KLUz0epNzYlk4vi5r1nP2vIIafLps=
-  file_glob: true
-  file: BuildOutput/NugetPackages/*
-  provider: script
-  script: chmod +x pushnuget.sh && ./pushnuget.sh
-  on:
-    branch: master
-    repo: GtkSharp/GtkSharp
-    tags: true
+  - provider: releases
+    skip_cleanup: true
+    api_key:
+      secure: rg2WI5q/uyxotAuUCMxv4L+kMVxd3Ge/1Oe7GytqDsdn/bW2HpxAG8CessB+nrQBKVSssOPU5puBG0c91aKcZFzWycZYN0AnUg8otILHBpJFg9A4igRPi4fAgdQodEXWAHuzeAP0EKl1c8RnBA5b4cHTsgZe/uy1r1rLg5PLA9ZKKCe/0kqFUQxwN3HvrysjvEyzS5fw5ILjwUZyRA+hzfBB5HD4Z7DkwKOmdOwdd9qNo4RxFVWIpUw7Fd3IaHDtjjqAJkZIwQA2+LL+4YBk+7reLGE/V0sDe3cK3rOfse/axQeD3ha1ASK4Q2Ye0yAfEKsxg3NrAPkPyF4CFhnTqtauwPKCEfkNyOlpum9T++2VepSN3qd3E58/K9aNmemilU+Z4KE4hMzJeY4OG3PBmSvp/F7ALNIBDL1BzltTCGbHX7vXKONKtRbDgUA6tX9qXxpf806KWfO7CpClibgLHGjF2jQOP0Eamn7vbCHCqbR8JLS5MolcsefLoatgg8zoK0670axrRIwV/UWnLSBHyo9rtOHnSBfh1r9TGOqO5h1ICa24nz6gUN1b4mP9B9nZsVzuWPWFSjJFPtmBOfOprLwP/xN6bwQgW3p4bVQLGF4/CuGRlnIhVl+hgFZNcobmkwyvFvAd2h/523KLUz0epNzYlk4vi5r1nP2vIIafLps=
+    file_glob: true
+    file: BuildOutput/NugetPackages/*
+    on:
+      branch: master
+      repo: GtkSharp/GtkSharp
+      tags: true
+  - provider: script
+    skip_cleanup: true
+    script: chmod +x pushnuget.sh && ./pushnuget.sh
+    on:
+      branch: master
+      repo: GtkSharp/GtkSharp
+      tags: true
