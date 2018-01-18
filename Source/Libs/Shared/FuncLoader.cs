@@ -61,8 +61,16 @@ class FuncLoader
             ret = Linux.dlsym(library, function);
 
         if (ret == IntPtr.Zero)
-            throw new EntryPointNotFoundException(function);
+            Console.WriteLine("[WARNING] Function not found: " + function);
 
         return ret;
+    }
+
+    public static T LoadFunction<T>(IntPtr procaddress)
+    {
+        if (procaddress == IntPtr.Zero)
+            return default(T);
+
+        return Marshal.GetDelegateForFunctionPointer<T>(procaddress);
     }
 }

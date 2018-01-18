@@ -119,7 +119,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\tinternal class " + Name + "GType {");
                 var funcname = Elem.GetAttribute("gtype");
                 sw.WriteLine ("\t\tdelegate IntPtr d_" + funcname + "();");
-				sw.WriteLine ("\t\tstatic d_" + funcname + " " + funcname + " = Marshal.GetDelegateForFunctionPointer<d_" + funcname + ">(FuncLoader.GetProcAddress(GLibrary.Load(\"" + LibraryName + "\"), \"" + funcname + "\"));");
+				sw.WriteLine ("\t\tstatic d_" + funcname + " " + funcname + " = FuncLoader.LoadFunction<d_" + funcname + ">(FuncLoader.GetProcAddress(GLibrary.Load(\"" + LibraryName + "\"), \"" + funcname + "\"));");
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic static GLib.GType GType {");
 				sw.WriteLine ("\t\t\tget {");
