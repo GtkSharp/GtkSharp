@@ -62,7 +62,7 @@ public class GAssembly
             // Generate code
             Cake.DotNetCoreExecute("BuildOutput/Tools/GapiCodegen.dll", 
                 "--outdir=" + GDir + " " +
-                "--schema=Source/Libs/Gapi.xsd " +
+                "--schema=Source/Libs/Shared/Gapi.xsd " +
                 extraargs + " " +
                 "--assembly-name=" + Name + " " +
                 "--generate=" + tempapi

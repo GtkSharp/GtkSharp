@@ -44,7 +44,7 @@ Task("Prepare")
     // Generate code and prepare libs projects
     foreach(var gassembly in list)
         gassembly.Prepare();
-    DotNetCoreRestore("Source/Libs/GtkSharp.sln");
+    DotNetCoreRestore("Source/GtkSharp.sln");
 });
 
 Task("Clean")
@@ -73,7 +73,7 @@ Task("Build")
     };
 
     if (list.Count == Settings.AssemblyList.Count)
-        DotNetCoreBuild("Source/Libs/GtkSharp.sln", settings);
+        DotNetCoreBuild("Source/GtkSharp.sln", settings);
     else
     {
         foreach(var gassembly in list)
