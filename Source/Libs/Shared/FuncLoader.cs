@@ -62,8 +62,6 @@ class FuncLoader
 
         if (ret == IntPtr.Zero)
             Console.WriteLine("[WARNING] Function not found: " + function);
-        else
-            Console.WriteLine("Function found: " + function);
 
         return ret;
     }
