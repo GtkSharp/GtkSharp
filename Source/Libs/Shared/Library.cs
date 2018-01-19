@@ -7,6 +7,7 @@ enum Library
     Gio,
     Atk,
     Pango,
+    PangoCairo,
     Gdk,
     GdkPixbuf,
     Gtk

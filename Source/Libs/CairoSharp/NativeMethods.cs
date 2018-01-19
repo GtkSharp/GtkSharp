@@ -41,8 +41,6 @@ namespace Cairo
 
 	internal static class NativeMethods
 	{
-		const string cairo = "libcairo-2.dll";
-		
 		internal delegate void d_cairo_append_path(IntPtr cr, IntPtr path);
 		internal static d_cairo_append_path cairo_append_path = FuncLoader.LoadFunction<d_cairo_append_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_append_path"));
 		
@@ -222,7 +220,7 @@ namespace Cairo
 		internal delegate IntPtr d_cairo_ft_font_face_create_for_pattern(IntPtr fc_pattern);
 		internal static d_cairo_ft_font_face_create_for_pattern cairo_ft_font_face_create_for_pattern = FuncLoader.LoadFunction<d_cairo_ft_font_face_create_for_pattern>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_ft_font_face_create_for_pattern"));
 		
-		internal delegate void d_cairo_ft_font_options_substitute(FontOptions options, IntPtr pattern);
+		internal delegate void d_cairo_ft_font_options_substitute(IntPtr options, IntPtr pattern);
 		internal static d_cairo_ft_font_options_substitute cairo_ft_font_options_substitute = FuncLoader.LoadFunction<d_cairo_ft_font_options_substitute>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_ft_font_options_substitute"));
 		
 		internal delegate IntPtr d_cairo_ft_scaled_font_lock_face(IntPtr scaled_font);

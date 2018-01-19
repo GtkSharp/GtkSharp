@@ -38,12 +38,12 @@ namespace Gtk {
 			return (TreePath[]) GLib.Marshaller.ListToArray (list, typeof (Gtk.TreePath));
 		}
 
-		delegate bool d_gtk_tree_selection_get_selected_without_model(IntPtr raw, IntPtr model, out Gtk.TreeIter iter);
-		static d_gtk_tree_selection_get_selected_without_model gtk_tree_selection_get_selected_without_model = FuncLoader.LoadFunction<d_gtk_tree_selection_get_selected_without_model>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_selection_get_selected_without_model"));
+		delegate bool d_gtk_tree_selection_get_selected2(IntPtr raw, IntPtr model, out Gtk.TreeIter iter);
+		static d_gtk_tree_selection_get_selected2 gtk_tree_selection_get_selected2 = FuncLoader.LoadFunction<d_gtk_tree_selection_get_selected2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_selection_get_selected"));
 		
 		public bool GetSelected (out Gtk.TreeIter iter)
 		{
-			return gtk_tree_selection_get_selected_without_model (Handle, IntPtr.Zero, out iter);
+			return gtk_tree_selection_get_selected2 (Handle, IntPtr.Zero, out iter);
 		}
 	}
 }

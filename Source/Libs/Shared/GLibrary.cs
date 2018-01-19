@@ -22,6 +22,7 @@ class GLibrary
         _libdict.Add((Library.Gdk, "libgdk-3-0.dll", "libgdk-3.so.0", "libgdk-3.0.dylib"));
         _libdict.Add((Library.GdkPixbuf, "libgdk_pixbuf-2.0-0.dll", "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0.dylib"));
         _libdict.Add((Library.Gtk, "libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-3.0.dylib"));
+        _libdict.Add((Library.PangoCairo, "libpangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib"));
     }
 
     public static IntPtr Load(string libname)

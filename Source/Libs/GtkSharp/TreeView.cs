@@ -51,8 +51,8 @@ namespace Gtk {
 		delegate bool d_gtk_tree_view_get_path_at_pos(IntPtr raw, int x, int y, out IntPtr path, out IntPtr column, out int cell_x, out int cell_y);
 		static d_gtk_tree_view_get_path_at_pos gtk_tree_view_get_path_at_pos = FuncLoader.LoadFunction<d_gtk_tree_view_get_path_at_pos>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos"));
 
-		delegate bool d_gtk_tree_view_get_path_at_pos_intptr(IntPtr raw, int x, int y, out IntPtr path, out IntPtr column, IntPtr cell_x, IntPtr cell_y);
-		static d_gtk_tree_view_get_path_at_pos_intptr gtk_tree_view_get_path_at_pos_intptr = FuncLoader.LoadFunction<d_gtk_tree_view_get_path_at_pos_intptr>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos_intptr"));
+		delegate bool d_gtk_tree_view_get_path_at_pos2(IntPtr raw, int x, int y, out IntPtr path, out IntPtr column, IntPtr cell_x, IntPtr cell_y);
+		static d_gtk_tree_view_get_path_at_pos2 gtk_tree_view_get_path_at_pos2 = FuncLoader.LoadFunction<d_gtk_tree_view_get_path_at_pos2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos"));
 
 		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path, out Gtk.TreeViewColumn column, out int cell_x, out int cell_y)
 		{
@@ -75,7 +75,7 @@ namespace Gtk {
 		{
 			IntPtr pathHandle;
 			IntPtr columnHandle;
-			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, out columnHandle, IntPtr.Zero, IntPtr.Zero);
+			bool raw_ret = gtk_tree_view_get_path_at_pos2 (Handle, x, y, out pathHandle, out columnHandle, IntPtr.Zero, IntPtr.Zero);
 			if (raw_ret)
 				path = (Gtk.TreePath) GLib.Opaque.GetOpaque (pathHandle, typeof (Gtk.TreePath), true);
 			else
@@ -88,7 +88,7 @@ namespace Gtk {
 		{
 			IntPtr pathHandle;
 			IntPtr columnHandle;
-			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, out columnHandle, IntPtr.Zero, IntPtr.Zero);
+			bool raw_ret = gtk_tree_view_get_path_at_pos2 (Handle, x, y, out pathHandle, out columnHandle, IntPtr.Zero, IntPtr.Zero);
 			if (raw_ret) {
 				path = (Gtk.TreePath) GLib.Opaque.GetOpaque (pathHandle, typeof (Gtk.TreePath), true);
 				column = (Gtk.TreeViewColumn) GLib.Object.GetObject (columnHandle, false);
