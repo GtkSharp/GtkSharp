@@ -7,7 +7,6 @@ namespace Samples
     class MainWindow : Window
     {
         private HeaderBar _headerBar;
-        private HPaned _panned;
         private TreeView _treeView;
         private Box _boxContent;
         private TreeStore _store;
@@ -30,17 +29,24 @@ namespace Samples
 
             Titlebar = _headerBar;
 
-            _panned = new HPaned();
-            _panned.Position = 200;
+            var hpanned = new HPaned();
+            hpanned.Position = 200;
 
             _treeView = new TreeView();
             _treeView.HeadersVisible = false;
-            _panned.Pack1(_treeView, false, true);
+            hpanned.Pack1(_treeView, false, true);
+
+            var vpanned = new VPaned();
+            vpanned.Position = 400;
 
             _boxContent = new Box(Orientation.Vertical, 0);
-            _panned.Pack2(_boxContent, true, true);
+            vpanned.Pack1(_boxContent, true, true);
 
-            Child = _panned;
+            vpanned.Pack2(ApplicationOutput.Widget, false, true);
+
+            hpanned.Pack2(vpanned, true, true);
+
+            Child = hpanned;
 
             // Fill up data
             FillUpTreeView();

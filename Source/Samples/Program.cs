@@ -6,7 +6,6 @@ namespace Samples
     class Program
     {
         public static Application App;
-
         public static Window Win;
 
         [STAThread]

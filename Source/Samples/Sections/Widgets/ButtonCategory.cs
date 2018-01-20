@@ -10,6 +10,8 @@ namespace Samples
         {
             var btn = new Button("Click Me");
             PackStart(btn, true, true, 0);
+
+            btn.Clicked += (sender, e) => ApplicationOutput.WriteLine(sender, "Clicked");
         }
     }
 }
