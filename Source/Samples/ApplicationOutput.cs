@@ -1,23 +1,23 @@
 using System;
-using System.Diagnostics;
 using Gtk;
 
 namespace Samples
 {
     static class ApplicationOutput
     {
-        public static Widget Widget { get; set; }
-        private static ScrolledWindow _scrolledWindow;
-        private static TextView _textView;
+        private static readonly ScrolledWindow _scrolledWindow;
+        private static readonly TextView _textView;
 
         static ApplicationOutput()
         {
             var vbox = new VBox();
 
-            var labelTitle = new Label();
-            labelTitle.Text = "Application Output:";
-            labelTitle.Margin = 4;
-            labelTitle.Xalign = 0f;
+            var labelTitle = new Label
+            {
+                Text = "Application Output:",
+                Margin = 4,
+                Xalign = 0f
+            };
             vbox.PackStart(labelTitle, false, true, 0);
 
             _scrolledWindow = new ScrolledWindow();
@@ -26,18 +26,29 @@ namespace Samples
             vbox.PackStart(_scrolledWindow, true, true, 0);
 
             Widget = vbox;
+
+            _textView.SizeAllocated += TextView_SizeAllocated;
+        }
+
+        public static Widget Widget { get; set; }
+
+        private static void TextView_SizeAllocated(object o, SizeAllocatedArgs args)
+        {
+            _textView.ScrollToIter(_textView.Buffer.EndIter, 0, false, 0, 0);
         }
 
         public static void WriteLine(object o, string e)
         {
-            WriteLine("[" + Environment.TickCount + "] " + o.GetType().ToString() + ": " + e);
+            WriteLine("[" + Environment.TickCount + "] " + o.GetType() + ": " + e);
         }
 
         public static void WriteLine(string line)
         {
             var enditer = _textView.Buffer.EndIter;
-            _textView.Buffer.Insert(ref enditer, line + Environment.NewLine);
-            _textView.ScrollToIter(enditer, 0, false, 0, 0);
+            if (_textView.Buffer.Text.Length > 0)
+                line = Environment.NewLine + line;
+            _textView.Buffer.Insert(ref enditer, line);
+
         }
     }
 }

@@ -40,6 +40,7 @@ namespace Samples
             vpanned.Position = 400;
 
             _boxContent = new Box(Orientation.Vertical, 0);
+            _boxContent.Margin = 8;
             vpanned.Pack1(_boxContent, true, true);
 
             vpanned.Pack2(ApplicationOutput.Widget, false, true);

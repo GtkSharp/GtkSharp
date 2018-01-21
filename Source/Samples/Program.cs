@@ -48,16 +48,17 @@ namespace Samples
 
         private static void AboutActivated(object sender, EventArgs e)
         {
-            var dialog = new AboutDialog();
-            dialog.TransientFor = Win;
-            dialog.ProgramName = "GtkSharp Sample Application";
-            dialog.Version = "1.0.0.0";
-            dialog.Comments = "A sample application for the GtkSharp project.";
-            dialog.LogoIconName = "system-run-symbolic";
-            dialog.License = "This sample application is licensed under public domain.";
-            dialog.Website = "https://www.github.com/GtkSharp/GtkSharp";
-            dialog.WebsiteLabel = "GtkSharp Website";
-
+            var dialog = new AboutDialog
+            {
+                TransientFor = Win,
+                ProgramName = "GtkSharp Sample Application",
+                Version = "1.0.0.0",
+                Comments = "A sample application for the GtkSharp project.",
+                LogoIconName = "system-run-symbolic",
+                License = "This sample application is licensed under public domain.",
+                Website = "https://www.github.com/GtkSharp/GtkSharp",
+                WebsiteLabel = "GtkSharp Website"
+            };
             dialog.Run();
             dialog.Hide();
         }
