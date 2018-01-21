@@ -1,6 +1,7 @@
 using Gtk;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Samples
 {
@@ -11,6 +12,8 @@ namespace Samples
         private Box _boxContent;
         private TreeStore _store;
         private Dictionary<string, (Type type, Widget widget)> _items;
+        private TextView _textViewCode;
+        private Notebook _notebook;
 
         public MainWindow() : base(WindowType.Toplevel)
         {
@@ -36,16 +39,25 @@ namespace Samples
             _treeView.HeadersVisible = false;
             hpanned.Pack1(_treeView, false, true);
 
-            var vpanned = new VPaned();
-            vpanned.Position = 400;
+            _notebook = new Notebook();
 
+            var scroll1 = new ScrolledWindow();
+            var vpanned = new VPaned();
+            vpanned.Position = 300;
             _boxContent = new Box(Orientation.Vertical, 0);
             _boxContent.Margin = 8;
             vpanned.Pack1(_boxContent, true, true);
-
             vpanned.Pack2(ApplicationOutput.Widget, false, true);
+            scroll1.Child = vpanned;
+            _notebook.AppendPage(scroll1, new Label { Text = "Data", Expand = true });
 
-            hpanned.Pack2(vpanned, true, true);
+            var scroll2 = new ScrolledWindow();
+            _textViewCode = new TextView();
+            _textViewCode.Margin = 3;
+            scroll2.Child = _textViewCode;
+            _notebook.AppendPage(scroll2, new Label { Text = "Code", Expand = true });
+
+            hpanned.Pack2(_notebook, true, true);
 
             Child = hpanned;
 
@@ -65,12 +77,20 @@ namespace Samples
 
                 while (_boxContent.Children.Length > 0)
                     _boxContent.Remove(_boxContent.Children[0]);
+                _notebook.CurrentPage = 0;
+                _notebook.ShowTabs = false;
 
                 if (_items.TryGetValue(s, out var item))
                 {
+                    _notebook.ShowTabs = true;
+
                     if (item.widget == null)
                         _items[s] = item = (item.type, Activator.CreateInstance(item.type) as Widget);
-                    
+
+                    using (var stream = typeof(ListSection).Assembly.GetManifestResourceStream("GtkSharp.Samples." + item.type.Name + ".cs"))
+                        using (var reader = new StreamReader(stream))
+                            _textViewCode.Buffer.Text = reader.ReadToEnd();
+
                     _boxContent.PackStart(item.widget, true, true, 0);
                     _boxContent.ShowAll();
                 }
