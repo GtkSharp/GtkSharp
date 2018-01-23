@@ -8,10 +8,9 @@ namespace Samples
         public EntrySection()
         {
             AddItem(CreateSimpleEntry());
-            AddItem(CreateSimpleCenterAlignedTextEntry());
             AddItem(CreateSimpleRightAlignedTextEntry());
             AddItem(CreateMaxLimitEntry());
-            AddItem(CreateHolderTextEntry());
+            AddItem(CreatePlaceholderEntry());
             AddItem(CreateInvisibleCharEntry());
         }
 
@@ -23,16 +22,6 @@ namespace Samples
             entry.Changed += (sender, e) => ApplicationOutput.WriteLine(sender, "Changed");
 
             return ("Simple entry:", entry);
-        }
-
-        public (string, Widget) CreateSimpleCenterAlignedTextEntry()
-        {
-            var entry = new Entry("Center Aligned Text");
-            entry.Xalign = 0.5f;
-
-            entry.Changed += (sender, e) => ApplicationOutput.WriteLine(sender, "Changed");
-
-            return ("Center aligned text entry:", entry);
         }
 
         public (string, Widget) CreateSimpleRightAlignedTextEntry()
@@ -55,14 +44,14 @@ namespace Samples
             return ("Text length limited entry:", entry);
         }
 
-        public (string, Widget) CreateHolderTextEntry()
+        public (string, Widget) CreatePlaceholderEntry()
         {
             var entry = new Entry();
             entry.PlaceholderText = "Please fill with information";
 
             entry.Changed += (sender, e) => ApplicationOutput.WriteLine(sender, "Changed");
 
-            return ("Holder text entry:", entry);
+            return ("Placeholder text entry:", entry);
         }
 
         public (string, Widget) CreateInvisibleCharEntry()
