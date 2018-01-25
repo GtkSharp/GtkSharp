@@ -12,7 +12,7 @@ namespace Samples
             AddItem(CreateMaxLimitEntry());
             AddItem(CreatePlaceholderEntry());
             AddItem(CreateInvisibleCharEntry());
-            AddItem(CreateSearchEntry());
+            AddItem(CreateCustomActionsEntry());
             AddItem(CreateProgressEntry());
             AddItem(CreateCompletionEntry());
         }
@@ -69,12 +69,12 @@ namespace Samples
             return ("Invisible text entry:", entry);
         }
 
-        public (string, Widget) CreateSearchEntry()
+        public (string, Widget) CreateCustomActionsEntry()
         {
             var entry = new Entry();
             entry.PlaceholderText = "Search";
-            entry.SetIconFromIconName(EntryIconPosition.Primary, "edit-find");
-            entry.SetIconFromIconName(EntryIconPosition.Secondary, "edit-clear");
+            entry.SetIconFromIconName(EntryIconPosition.Primary, "edit-find-symbolic");
+            entry.SetIconFromIconName(EntryIconPosition.Secondary, "edit-clear-symbolic");
 
             entry.IconRelease += (o, args) =>
             {
