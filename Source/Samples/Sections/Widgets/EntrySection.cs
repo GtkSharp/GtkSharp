@@ -91,7 +91,7 @@ namespace Samples
                 }
             };
 
-            return ("Search entry:", entry);
+            return ("Custom actions entry:", entry);
         }
 
         public (string, Widget) CreateProgressEntry()
