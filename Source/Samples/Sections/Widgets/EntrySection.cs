@@ -106,13 +106,12 @@ namespace Samples
             return ("Progress entry:", entry);
         }
 
-        Entry DemoEntry = new Entry();
-
         public (string, Widget) CreateCompletionEntry()
         {
             // create completion object and assign it to entry
             var completion = new EntryCompletion();
-            DemoEntry.Completion = completion;
+            var entry = new Entry();
+            entry.Completion = completion;
 
             // create values store
             var store = new ListStore(typeof(string));
@@ -141,31 +140,29 @@ namespace Samples
                                           
             // model filter
             var filter = new TreeModelFilter(store, null);
-            filter.VisibleFunc = new TreeModelFilterVisibleFunc(FilterTree);
+            filter.VisibleFunc = (model, iter) =>
+            {
+                if (string.IsNullOrEmpty(entry.Text))
+                    return true;
+
+                var o = model.GetValue(iter, 0);
+                var searchString = o as string;
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    if (searchString.StartsWith(entry.Text, System.StringComparison.InvariantCultureIgnoreCase))
+                        return true;
+                    else
+                        return false;
+                }
+
+                return true;
+            };
 
             // assign treemodel as the completion
             completion.Model = filter;
             completion.TextColumn = 0;
 
-            return ("Completion Entry:",DemoEntry);
-        }
-
-        private bool FilterTree(ITreeModel model, TreeIter iter)
-        {
-            if (string.IsNullOrEmpty(DemoEntry.Text))
-                return true;
-            
-            var o = model.GetValue(iter, 0);
-            string searchString = o as string;
-            if (searchString != null)
-            {
-                if (searchString.StartsWith(DemoEntry.Text,System.StringComparison.InvariantCultureIgnoreCase))
-                    return true;
-                else
-                    return false;
-            }
-
-            return true;
+            return ("Completion Entry:",entry);
         }
     }
 }
