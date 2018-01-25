@@ -1,3 +1,6 @@
+// This is free and unencumbered software released into the public domain.
+// Happy coding!!! - GtkSharp Team
+
 using Gtk;
 using System;
 using System.Collections.Generic;
