@@ -151,12 +151,7 @@ namespace Samples
                 var o = model.GetValue(iter, 0);
                 var searchString = o as string;
                 if (!string.IsNullOrEmpty(searchString))
-                {
-                    if (searchString.StartsWith(entry.Text, System.StringComparison.InvariantCultureIgnoreCase))
-                        return true;
-                    else
-                        return false;
-                }
+                    return searchString.StartsWith(entry.Text, System.StringComparison.InvariantCultureIgnoreCase);
 
                 return true;
             };
