@@ -620,6 +620,14 @@ namespace Cairo {
 			NativeMethods.cairo_clip (handle);
 		}
 
+		public Rectangle ClipExtents()
+		{
+			CheckDisposed();
+			double x1, y1, x2, y2;
+			NativeMethods.cairo_clip_extents(handle, out x1, out y1, out x2, out y2);
+			return new Rectangle(x1, y1, x2 - x1, y2 - y1);
+		}
+
 		public void ClipPreserve ()
 		{
 			CheckDisposed ();
