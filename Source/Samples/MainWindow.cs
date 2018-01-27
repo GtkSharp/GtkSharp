@@ -134,8 +134,8 @@ namespace Samples
                 {
                     if (attribute is SectionAttribute a)
                     {
-                        _store.AppendValues(dict[a.Category], a.Name);
-                        _items[a.Name] = (type, null);
+                        _store.AppendValues(dict[a.Category], a.ContentType.Name);
+                        _items[a.ContentType.Name] = (type, null);
                     }
                 }
             }

@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Samples
 {
-    [Section(Name= "Entry", Category = Category.Widgets)]
+    [Section(ContentType = typeof(Entry), Category = Category.Widgets)]
     class EntrySection : ListSection
     {
         public EntrySection()
