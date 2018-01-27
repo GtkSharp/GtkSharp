@@ -6,7 +6,7 @@ using Gtk;
 
 namespace Samples
 {
-    [Section(Name = "Link Button", Category = Category.Widgets)]
+    [Section(ContentType = typeof(LinkButton), Category = Category.Widgets)]
     class LinkButtonSection : ListSection
     {
         public LinkButtonSection()

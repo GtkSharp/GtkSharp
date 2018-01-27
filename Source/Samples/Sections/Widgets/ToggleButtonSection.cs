@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Samples
 {
-    [Section(Name = "Toggle Button", Category = Category.Widgets)]
+    [Section(ContentType = typeof(ToggleButton), Category = Category.Widgets)]
     class ToggleButtonSection : ListSection
     {
         public ToggleButtonSection()

@@ -7,7 +7,7 @@ namespace Samples
 {
     class SectionAttribute : Attribute
     {
-        public string Name { get; set; }
+        public Type ContentType { get; set; }
 
         public Category Category { get; set; }
     }

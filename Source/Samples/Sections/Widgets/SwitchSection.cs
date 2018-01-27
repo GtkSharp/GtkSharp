@@ -5,10 +5,10 @@ using Gtk;
 
 namespace Samples
 {
-    [Section(Name = "Switch Button", Category = Category.Widgets)]
-    class SwitchButtonSection : ListSection
+    [Section(ContentType = typeof(Switch), Category = Category.Widgets)]
+    class SwitchSection : ListSection
     {
-        public SwitchButtonSection()
+        public SwitchSection()
         {
             AddItem(CreateSwitchButton());
         }
