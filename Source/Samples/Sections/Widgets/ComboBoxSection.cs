@@ -16,12 +16,17 @@ namespace Samples
 
         public (string, Widget) CreateSimpleCombo()
         {
+            // initialize with a new store of values
             var combo = new ComboBox(new string[] {
                 "First Value",
                 "Second Value",
                 "Third Value"
             });
 
+            // selects the first index to be displayed
+            combo.Active = 0;
+
+            // changed event
             combo.Changed += (sender, e) => 
                 ApplicationOutput.WriteLine(sender, $"Combo selection index is now {combo.Active}");
 
@@ -32,7 +37,8 @@ namespace Samples
         {
             var combo = ComboBox.NewWithEntry();
 
-            combo.Clear();
+            // set column wich displays values
+            combo.EntryTextColumn = 0;
 
             // create values store
             var store = new ListStore(typeof(string));
@@ -40,17 +46,16 @@ namespace Samples
             store.AppendValues("Second Value");
             store.AppendValues("Third Value");
 
-            // create cell
-            var cell = new CellRendererText();
-
-            // add cell to combo
-            combo.PackStart(cell, true);
-
-            // add text attribute to combo
-            combo.AddAttribute(cell, "text", 0);
 
             // assign store to combo
             combo.Model = store;
+
+            // selects the third choice from store to be displayed
+            combo.Active = 2;
+
+            // changed event
+            combo.Changed += (sender, e) =>
+                ApplicationOutput.WriteLine(sender, $"Combo selection index is now {combo.Active}");
 
             return ("ComboBox with Entry:", combo);
         }
