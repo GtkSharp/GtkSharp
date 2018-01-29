@@ -30,12 +30,37 @@ class FuncLoader
         public static extern IntPtr dlsym(IntPtr handle, string symbol);
     }
 
-    private static bool IsWindows, IsOSX;
+    [DllImport("libc")]
+    private static extern int uname(IntPtr buf);
+
+    public static bool IsWindows, IsOSX;
 
     static FuncLoader()
     {
-        IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-        IsOSX = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+        switch (Environment.OSVersion.Platform)
+        {
+            case PlatformID.Win32NT:
+            case PlatformID.Win32S:
+            case PlatformID.Win32Windows:
+            case PlatformID.WinCE:
+                IsWindows = true;
+                break;
+            case PlatformID.MacOSX:
+                IsOSX = true;
+                break;
+            case PlatformID.Unix:
+                try
+                {
+                    var buf = Marshal.AllocHGlobal(8192);
+                    if (uname(buf) == 0 && Marshal.PtrToStringAnsi(buf) == "Darwin")
+                        IsOSX = true;
+
+                    Marshal.FreeHGlobal(buf);
+                }
+                catch { }
+
+                break;
+        }
     }
 
     public static IntPtr LoadLibrary(string libname)
