@@ -47,9 +47,9 @@ class GLibrary
             var i = _libdict.Find((e) => e.Library == library);
             var s = i.LinuxLib;
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (FuncLoader.IsWindows)
                 s = i.WindowsLib;
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            else if (FuncLoader.IsOSX)
                 s = i.OSXLib;
 
             _libraries[library] = ret = FuncLoader.LoadLibrary(s);
