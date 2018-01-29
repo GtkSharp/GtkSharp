@@ -89,7 +89,9 @@ namespace GtkSharp.Generation {
 				string wrapped_name = SymbolTable.Table.MangleName (CName);
 				IGeneratable gen = table [CType];
 
-				if (IsArray || gen is IAccessor)
+				if (IsArray && IsNullTermArray)
+					return StudlyName + "Ptr";
+				else if (IsArray || gen is IAccessor)
 					return Access == "public" ? StudlyName : Name;
 				else if (IsBitfield)
 					return Name;
