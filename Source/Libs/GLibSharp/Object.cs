@@ -511,6 +511,7 @@ namespace GLib {
 		{
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			g_object_class_override_property (oclass, property_id, native_name);
+			GLib.Marshaller.Free (native_name);	
 		}
 
 		[Obsolete ("Use OverrideProperty(oclass,property_id,name)")]
@@ -527,7 +528,14 @@ namespace GLib {
 		{
 			IntPtr gobjectclass = Marshal.ReadIntPtr (o.Handle);
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			return g_object_class_find_property (gobjectclass, native_name);
+			try
+			{
+				return g_object_class_find_property (gobjectclass, native_name);
+			}
+			finally
+			{
+				GLib.Marshaller.Free (native_name);
+			}
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_object_interface_find_property(IntPtr klass, IntPtr name);
@@ -537,7 +545,14 @@ namespace GLib {
 		{
 			IntPtr g_iface = type.GetDefaultInterfacePtr ();
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			return g_object_interface_find_property (g_iface, native_name);
+			try
+			{
+				return g_object_interface_find_property (g_iface, native_name);
+			}
+			finally
+			{
+				GLib.Marshaller.Free (native_name);
+			}
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_class_install_property(IntPtr klass, uint prop_id, IntPtr param_spec);
