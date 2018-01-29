@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Samples
 {
-    [Section(Name = "Radio Button", Category = Category.Widgets)]
+    [Section(ContentType = typeof(RadioButton), Category = Category.Widgets)]
     class RadioButtonSection : ListSection
     {
         public RadioButtonSection()
