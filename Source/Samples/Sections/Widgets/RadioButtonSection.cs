@@ -36,12 +36,12 @@ namespace Samples
             radio4.Active = true;
 
             // event example
-            radio1.Toggled += OnRadioClicked;
-            radio2.Toggled += OnRadioClicked;
-            radio3.Toggled += OnRadioClicked;
-            radio4.Toggled += OnRadioClicked;
-            radio5.Toggled += OnRadioClicked;
-            radio6.Toggled += OnRadioClicked;
+            radio1.Toggled += OnRadioToggled;
+            radio2.Toggled += OnRadioToggled;
+            radio3.Toggled += OnRadioToggled;
+            radio4.Toggled += OnRadioToggled;
+            radio5.Toggled += OnRadioToggled;
+            radio6.Toggled += OnRadioToggled;
 
             // add buttons to a box
             // so we can display this example
@@ -57,7 +57,7 @@ namespace Samples
             return ("Radio button:", box);
         }
 
-        void OnRadioClicked(object sender, System.EventArgs e)
+        void OnRadioToggled(object sender, System.EventArgs e)
         {
             var s = sender as RadioButton;
             ApplicationOutput.WriteLine(sender, $"{s.Label} is now {s.Active}");
