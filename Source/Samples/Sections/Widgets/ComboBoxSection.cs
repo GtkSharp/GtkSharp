@@ -46,7 +46,6 @@ namespace Samples
             store.AppendValues("Second Value");
             store.AppendValues("Third Value");
 
-
             // assign store to combo
             combo.Model = store;
 
