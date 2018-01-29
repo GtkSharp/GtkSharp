@@ -6,7 +6,7 @@
 // Copyright (c) 2003-2004 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
-// modify it under the terms of version 2 of the Lesser GNU General 
+// modify it under the terms of version 2 of the Lesser GNU General
 // Public License as published by the Free Software Foundation.
 //
 // This program is distributed in the hope that it will be useful,
@@ -76,12 +76,12 @@ namespace GLib {
 
 		public Value (uint val) : this (GType.UInt)
 		{
-			g_value_set_uint (ref this, val); 
+			g_value_set_uint (ref this, val);
 		}
 
 		public Value (ushort val) : this (GType.UInt)
 		{
-			g_value_set_uint (ref this, val); 
+			g_value_set_uint (ref this, val);
 		}
 
 		public Value (long val) : this (GType.Int64)
@@ -107,7 +107,7 @@ namespace GLib {
 		public Value (string val) : this (GType.String)
 		{
 			IntPtr native_val = GLib.Marshaller.StringToPtrGStrdup (val);
-			g_value_set_string (ref this, native_val); 
+			g_value_set_string (ref this, native_val);
 			GLib.Marshaller.Free (native_val);
 		}
 
@@ -118,7 +118,7 @@ namespace GLib {
 
 		public Value (IntPtr val) : this (GType.Pointer)
 		{
-			g_value_set_pointer (ref this, val); 
+			g_value_set_pointer (ref this, val);
 		}
 
 		public Value (Variant variant) : this (GType.Variant)
@@ -179,7 +179,7 @@ namespace GLib {
 			Marshal.FreeHGlobal (native_array);
 		}
 
-		public void Dispose () 
+		public void Dispose ()
 		{
 			g_value_unset (ref this);
 		}
@@ -254,6 +254,12 @@ namespace GLib {
 			return g_value_get_double (ref val);
 		}
 
+		public static explicit operator GLib.GType (Value val)
+		{
+			return g_value_get_gtype (ref val);
+		}
+
+
 		public static explicit operator string (Value val)
 		{
 			IntPtr str = g_value_get_string (ref val);
@@ -309,7 +315,7 @@ namespace GLib {
 		object ToRegisteredType () {
 			Type t = GLib.GType.LookupType (type);
 			ConstructorInfo ci = null;
-			
+
 			try {
 				while (ci == null && t != null) {
 					if (!t.IsAbstract)
@@ -323,14 +329,14 @@ namespace GLib {
 
 			if (ci == null)
 				throw new Exception ("Unknown type " + new GType (type).ToString ());
-			
+
 			return ci.Invoke (new object[] {this});
 		}
 
 		void FromRegisteredType (object val) {
 			Type t = GLib.GType.LookupType (type);
 			MethodInfo mi = null;
-			
+
 			try {
 				while (mi == null && t != null) {
 					mi = t.GetMethod ("SetGValue", new Type[] { Type.GetType ("GLib.Value&") });
@@ -342,10 +348,10 @@ namespace GLib {
 			} catch (Exception) {
 				mi = null;
 			}
-			
+
 			if (mi == null)
 				throw new Exception ("Unknown type " + new GType (type).ToString ());
-			
+
 			object[] parameters = new object[] { this };
 			mi.Invoke (val, parameters);
 			this = (GLib.Value) parameters[0];
@@ -410,7 +416,7 @@ namespace GLib {
 		object ToEnum ()
 		{
 			Type t = GType.LookupType (type);
-			
+
 			if (t == null) {
 				if (HoldsFlags)
 					return g_value_get_flags (ref this);
@@ -606,7 +612,7 @@ namespace GLib {
 
 			if (spec_ptr == IntPtr.Zero)
 				throw new Exception (String.Format ("No property with name '{0}' in type '{1}'", name, gtype.ToString()));
-			
+
 			ParamSpec spec = new ParamSpec (spec_ptr);
 			g_value_init (ref this, spec.ValueType.Val);
 		}
@@ -685,7 +691,7 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_variant(ref Value val, IntPtr data);
 		static d_g_value_set_variant g_value_set_variant = FuncLoader.LoadFunction<d_g_value_set_variant>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_variant"));
-		
+
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_value_get_boolean(ref Value val);
 		static d_g_value_get_boolean g_value_get_boolean = FuncLoader.LoadFunction<d_g_value_get_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_boolean"));
@@ -704,6 +710,9 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate float d_g_value_get_float(ref Value val);
 		static d_g_value_get_float g_value_get_float = FuncLoader.LoadFunction<d_g_value_get_float>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_float"));
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_g_value_get_gtype(ref Value val);
+		static d_g_value_get_type g_value_get_gtype = FuncLoader.LoadFunction<d_g_value_get_variant>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_gtype"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_value_get_int(ref Value val);
 		static d_g_value_get_int g_value_get_int = FuncLoader.LoadFunction<d_g_value_get_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_int"));
