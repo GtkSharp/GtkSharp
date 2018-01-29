@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Samples
 {
-    [Section(Name = "ComboBox", Category = Category.Widgets)]
+    [Section(ContentType = typeof(ComboBox), Category = Category.Widgets)]
     class ComboBoxSection : ListSection
     {
         public ComboBoxSection()

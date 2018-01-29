@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Samples
 {
-    [Section(Name = "CheckButton", Category = Category.Widgets)]
+    [Section(ContentType = typeof(CheckButton), Category = Category.Widgets)]
     class CheckButtonSection : ListSection
     {
         public CheckButtonSection()
