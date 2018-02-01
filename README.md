@@ -32,7 +32,7 @@ A breakdown on how the source is structured:
 
 ## Using the library
 
-On both Windows and Linux the library assumes that you have Gtk installed on your system. See [Installing Gtk on Windows](https://github.com/cra0zy/GtkSharp/wiki/Installing-Gtk-on-Windows) wiki page for more details on how to do it on Windows.
+On both Windows and Linux the library assumes that you have Gtk installed on your system. See [Installing Gtk on Windows](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Windows) wiki page for more details on how to do it on Windows.
 
 Available NuGet packages:
 
