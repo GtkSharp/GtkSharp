@@ -85,9 +85,6 @@ class FuncLoader
         else
             ret = Linux.dlsym(library, function);
 
-        if (ret == IntPtr.Zero)
-            Console.WriteLine("[WARNING] Function not found: " + function);
-
         return ret;
     }
 
