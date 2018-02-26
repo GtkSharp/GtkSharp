@@ -125,6 +125,9 @@ Task("PackageTemplates")
     settings.BasePath = "Source/Templates/GtkSharp.Template.CSharp";
     NuGetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.nuspec", settings);
 
+    settings.BasePath = "Source/Templates/GtkSharp.Template.FSharp";
+    NuGetPack("Source/Templates/GtkSharp.Template.FSharp/GtkSharp.Template.FSharp.nuspec", settings);
+
     settings.BasePath = "Source/Templates/GtkSharp.Template.VBNet";
     NuGetPack("Source/Templates/GtkSharp.Template.VBNet/GtkSharp.Template.VBNet.nuspec", settings);
 });
