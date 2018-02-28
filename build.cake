@@ -19,7 +19,8 @@ Task("Init")
     .Does(() =>
 {
     var version = System.Environment.GetEnvironmentVariable("TRAVIS_TAG");
-    Information("Version detected: " + version);
+    if (!string.IsNullOrEmpty(version))
+        Settings.Version = version;
 	
     // Assign some common properties
     msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
@@ -48,6 +49,9 @@ Task("Prepare")
     foreach(var gassembly in list)
         gassembly.Prepare();
     DotNetCoreRestore("Source/GtkSharp.sln");
+
+    // Addin
+    DotNetCoreRestore("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln");
 });
 
 Task("Clean")
@@ -135,6 +139,38 @@ Task("PackageTemplates")
     NuGetPack("Source/Templates/GtkSharp.Template.VBNet/GtkSharp.Template.VBNet.nuspec", settings);
 });
 
+Task("PackageAddin")
+    .IsDependentOn("PackageTemplates")
+    .Does(() =>
+{
+    // Copy the current version nuget templates
+    CopyFile(
+        "BuildOutput/NugetPackages/GtkSharp.Template.CSharp." + Settings.Version + ".nupkg",
+        "Source/Addins/MonoDevelop.GtkSharp.Addin/Templates/GtkSharp.Template.CSharp.nupkg"
+    );
+    CopyFile(
+        "BuildOutput/NugetPackages/GtkSharp.Template.FSharp." + Settings.Version + ".nupkg",
+        "Source/Addins/MonoDevelop.GtkSharp.Addin/Templates/GtkSharp.Template.FSharp.nupkg"
+    );
+
+    // Generate version code info
+    var versionline = "[assembly: Mono.Addins.Addin(\"MonoDevelop.GtkSharp.Addin\", Version = \"" + Settings.Version + "\")]";
+    FileWriteText("Source/Addins/MonoDevelop.GtkSharp.Addin/Properties/AddinInfo.Version.cs", versionline);
+
+    // Build MonoDevelop addin
+    var msbuildsettings = new MSBuildSettings
+    {
+        Configuration = "Release",
+    };
+    msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
+    msbuildsettings = msbuildsettings.WithProperty("MDBinDir", "/opt/MonoDevelop/bin/");
+    msbuildsettings = msbuildsettings.WithTarget("PackageAddin");
+
+    // We need monodevelop on the build system to build the addin
+    // lets wait for its packaging to be finished.
+    // MSBuild("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln", msbuildsettings);
+});
+
 // TASK TARGETS
 
 Task("Default")
@@ -142,7 +178,8 @@ Task("Default")
     
 Task("FullBuild")
     .IsDependentOn("PackageNuGet")
-	.IsDependentOn("PackageTemplates");
+	.IsDependentOn("PackageTemplates")
+	.IsDependentOn("PackageAddin");
 
 // EXECUTION
 

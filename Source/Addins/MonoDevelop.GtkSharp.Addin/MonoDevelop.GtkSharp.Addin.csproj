@@ -1,88 +1,88 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\MonoDevelop.Addins.0.4.1\build\MonoDevelop.Addins.props" Condition="Exists('packages\MonoDevelop.Addins.0.4.1\build\MonoDevelop.Addins.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{52AC8491-F6B7-4631-92BA-D5E95A091B74}</ProjectGuid>
-    <ProjectTypeGuids>{86F6BF2A-E449-4B3E-813B-9ACC37E5545F};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
-    <RootNamespace>MonoDevelop.GtkSharp.Addin</RootNamespace>
-    <AssemblyName>MonoDevelop.GtkSharp.Addin</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net461</TargetFramework>
+    <OutputPath>..\..\..\BuildOutput\Addins\MonoDevelop\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\AddinInfo.cs" />
-    <Compile Include="CheckMissing.cs" />
-    <Compile Include="GladeDisplayBindings.cs" />
-    <Compile Include="GladeDesktopApplication.cs" />
+    <PackageReference Include="MonoDevelop.Addins" Version="0.4.4" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Manifest.addin.xml" />
+    <None Remove="Templates\File\Dialog.CS.xft.xml" />
+    <None Remove="Templates\File\Widget.CS.xft.xml" />
+    <None Remove="Templates\File\Window.CS.xft.xml" />
+    <None Remove="Templates\File\Data\Dialog.glade" />
+    <None Remove="Templates\File\Data\Widget.glade" />
+    <None Remove="Templates\File\Data\Window.glade" />
+    <None Remove="Templates\GtkSharp.Template.CSharp.nupkg" />
+    <None Remove="Templates\GtkSharp.Template.VBNet.nupkg" />
+    <None Remove="Templates\GtkSharp.Template.FSharp.nupkg" />
+    <None Remove="Templates\File\Data\Dialog.fs" />
+    <None Remove="Templates\File\Data\Widget.fs" />
+    <None Remove="Templates\File\Data\Window.fs" />
+    <None Remove="Templates\File\Dialog.FS.xft.xml" />
+    <None Remove="Templates\File\Widget.FS.xft.xml" />
+    <None Remove="Templates\File\Window.FS.xft.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Templates\File\Window.CS.xft.xml">
+    <Content Include="Templates\File\Dialog.CS.xft.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\File\Data\Window.glade">
+    </Content>
+    <Content Include="Templates\File\Widget.CS.xft.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\File\Data\Window.cs">
+    </Content>
+    <Content Include="Templates\File\Window.CS.xft.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\File\Data\Dialog.glade">
+    </Content>
+    <Content Include="Templates\File\Data\Dialog.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\File\Data\Dialog.cs">
+    </Content>
+    <Content Include="Templates\File\Data\Dialog.glade">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\File\Dialog.CS.xft.xml">
+    </Content>
+    <Content Include="Templates\File\Data\Widget.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\File\Data\Widget.glade">
+    </Content>
+    <Content Include="Templates\File\Data\Widget.glade">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\File\Data\Widget.cs">
+    </Content>
+    <Content Include="Templates\File\Data\Window.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\File\Widget.CS.xft.xml">
+    </Content>
+    <Content Include="Templates\File\Data\Window.glade">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-    <None Include="Templates\GtkSharp.Template.CSharp.nupkg">
+    </Content>
+    <Content Include="Templates\GtkSharp.Template.CSharp.nupkg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\GtkSharp.Template.VBNet.nupkg">
+    </Content>
+    <Content Include="Templates\GtkSharp.Template.VBNet.nupkg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="Templates\GtkSharp.Template.FSharp.nupkg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\File\Data\Dialog.fs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\File\Data\Widget.fs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\File\Data\Window.fs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\File\Dialog.FS.xft.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\File\Widget.FS.xft.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\File\Window.FS.xft.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Templates\" />
-    <Folder Include="Templates\File\" />
-    <Folder Include="Templates\File\Data\" />
+    <Compile Remove="Templates\File\Data\Dialog.cs" />
+    <Compile Remove="Templates\File\Data\Widget.cs" />
+    <Compile Remove="Templates\File\Data\Window.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="dbus-sharp">
-      <HintPath>References\dbus-sharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\MonoDevelop.Addins.0.3.3\build\net40\MonoDevelop.Addins.targets" Condition="Exists('..\packages\MonoDevelop.Addins.0.3.3\build\net40\MonoDevelop.Addins.targets')" />
-  <Import Project="packages\MonoDevelop.Addins.0.4.1\build\MonoDevelop.Addins.targets" Condition="Exists('packages\MonoDevelop.Addins.0.4.1\build\MonoDevelop.Addins.targets')" />
 </Project>

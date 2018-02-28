@@ -1,4 +1,4 @@
-using MonoDevelop.Core;
+﻿using MonoDevelop.Core;
 using MonoDevelop.Ide.Desktop;
 using MonoDevelop.Ide.Gui;
 using MonoDevelop.Projects;

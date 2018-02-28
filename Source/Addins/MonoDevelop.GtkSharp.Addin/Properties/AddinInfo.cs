@@ -1,12 +1,10 @@
-using Mono.Addins;
+﻿using Mono.Addins;
 using Mono.Addins.Description;
 
-[assembly: Addin("MonoDevelop.GtkSharp.Addin", Version="1.0")]
-
-[assembly: AddinName("Gtk# Addin")]
+[assembly: AddinName("GtkSharp Addin")]
 [assembly: AddinCategory("IDE extensions")]
-[assembly: AddinDescription("Provides modern Gtk# file / project templates and glade file integration.")]
-[assembly: AddinAuthor("cra0zy")]
+[assembly: AddinDescription("Provides modern Gtk project and file templates, as well as glade file integration.")]
+[assembly: AddinAuthor("GtkSharp Contributors")]
 [assembly: AddinUrl("https://github.com/GtkSharp/GtkSharp")]
 
 [assembly: AddinDependency("MonoDevelop.Core", MonoDevelop.BuildInfo.Version)]
