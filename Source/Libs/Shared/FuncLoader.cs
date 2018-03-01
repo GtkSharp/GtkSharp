@@ -32,6 +32,9 @@ class FuncLoader
 
     [DllImport("libc")]
     private static extern int uname(IntPtr buf);
+    
+    private const int RTLD_LAZY = 0x0001;
+    private const int RTLD_GLOBAL = 0x0100;
 
     public static bool IsWindows, IsOSX;
 
@@ -69,9 +72,9 @@ class FuncLoader
             return Windows.LoadLibraryW(libname);
 
         if (IsOSX)
-            return OSX.dlopen(libname, 1);
+            return OSX.dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
 
-        return Linux.dlopen(libname, 1);
+        return Linux.dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
     }
 
     public static IntPtr GetProcAddress(IntPtr library, string function)
