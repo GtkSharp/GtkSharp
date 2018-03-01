@@ -11,13 +11,6 @@ namespace ${Namespace}
         private ${EscapedIdentifier}(Builder builder) : base(builder.GetObject("${EscapedIdentifier}").Handle)
         {
             builder.Autoconnect(this);
-
-            DeleteEvent += OnDeleteEvent;
-        }
-
-        private void OnDeleteEvent(object sender, DeleteEventArgs a)
-        {
-            Application.Quit();
         }
     }
 }

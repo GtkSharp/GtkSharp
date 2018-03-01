@@ -10,6 +10,7 @@ namespace ${Namespace}
 
         private MyDialog(Builder builder) : base(builder.GetObject("${EscapedIdentifier}").Handle)
         {
+            builder.Autoconnect(this);
             DefaultResponse = ResponseType.Cancel;
 
             Response += OnResponse;

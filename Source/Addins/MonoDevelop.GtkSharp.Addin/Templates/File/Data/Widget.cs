@@ -10,7 +10,7 @@ namespace ${Namespace}
 
         private ${EscapedIdentifier}(Builder builder) : base(builder.GetObject("${EscapedIdentifier}").Handle)
         {
-            
+            builder.Autoconnect(this);
         }
     }
 }
