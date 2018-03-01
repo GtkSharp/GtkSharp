@@ -45,9 +45,6 @@ namespace GLib {
 			public bool Handler ()
 			{
 				try {
-				    if (real_handler == null)
-				        return false;
-				
 					TimeoutHandler timeout_handler = (TimeoutHandler) real_handler;
 
 					bool cont = timeout_handler ();
