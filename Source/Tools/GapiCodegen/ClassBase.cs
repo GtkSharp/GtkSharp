@@ -46,6 +46,12 @@ namespace GtkSharp.Generation {
 		private Dictionary<string, Ctor> clash_map;
 		private bool deprecated = false;
 		private bool isabstract = false;
+		public bool nameConstructors {
+			get {
+				return Elem.GetAttributeAsBoolean("name_constructors");
+			}
+		}
+
 
 		public IDictionary<string, Method> Methods {
 			get {
@@ -563,7 +569,11 @@ namespace GtkSharp.Generation {
 			clash_map = new Dictionary<string, Ctor>();
 
 			foreach (Ctor ctor in ctors) {
-				if (clash_map.ContainsKey (ctor.Signature.Types)) {
+				if (nameConstructors) {
+					ctor.IsStatic = true;
+					if (Parent != null && Parent.HasStaticCtor (ctor.StaticName))
+						ctor.Modifiers = "new ";
+				} else if (clash_map.ContainsKey (ctor.Signature.Types)) {
 					Ctor clash = clash_map [ctor.Signature.Types];
 					Ctor alter = ctor.Preferred ? clash : ctor;
 					alter.IsStatic = true;

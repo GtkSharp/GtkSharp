@@ -38,6 +38,7 @@ namespace GtkSharp.Generation {
 			preferred = elem.GetAttributeAsBoolean ("preferred");
 			if (implementor is ObjectGen)
 				needs_chaining = true;
+
 			name = implementor.Name;
 		}
 
