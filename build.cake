@@ -1,5 +1,6 @@
 #load CakeScripts\GAssembly.cs
 #load CakeScripts\Settings.cs
+#load CakeScripts\NativeWindowsDeps.cs
 #addin "Cake.FileHelpers&version=2.0.0"
 #addin "Cake.Incubator&version=1.7.2"
 
@@ -14,6 +15,20 @@ var msbuildsettings = new DotNetCoreMSBuildSettings();
 var list = new List<GAssembly>();
 
 // TASKS
+
+Task("FetchWindowsDeps32Bit")
+    .IsDependentOn("Init")
+    .Does(() =>
+{
+    NativeWindowsDeps.Fetch32Bit();
+});
+
+Task("FetchWindowsDeps64Bit")
+    .IsDependentOn("Init")
+    .Does(() =>
+{
+    NativeWindowsDeps.Fetch64Bit();
+});
 
 Task("Init")
     .Does(() =>
@@ -173,8 +188,12 @@ Task("PackageAddin")
 
 // TASK TARGETS
 
+Task("FetchDeps")
+    .IsDependentOn("FetchWindowsDeps32Bit")
+    .IsDependentOn("FetchWindowsDeps64Bit");
+
 Task("Default")
-    .IsDependentOn("Build");
+    .IsDependentOn("FetchDeps");
     
 Task("FullBuild")
     .IsDependentOn("PackageNuGet")

@@ -15,12 +15,14 @@ public class GAssembly
     public string Metadata { get; private set; }
 
     public string[] Deps { get; set; }
+    public string[] NativeDeps { get; set; }
     public string ExtraArgs { get; set; }
 
     public GAssembly(string name)
     {
         Cake = Settings.Cake;
         Deps = new string[0];
+        NativeDeps = new string[0];
 
         Name = name;
         Dir = P.Combine("Source", "Libs", name);
