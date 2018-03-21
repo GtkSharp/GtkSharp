@@ -129,25 +129,24 @@ namespace Samples
 
             // lets override the default match function so we can use the contains mode
             // instead of the default startswith
-            completion.MatchFunc = EntryCompletionMatchFunc;
+            completion.MatchFunc = (EntryCompletion comp, string key, TreeIter iter) =>
+            {
+                if (string.IsNullOrEmpty(key))
+                    return false;
+
+                var o = comp.Model.GetValue(iter, 0);
+                var stringToSearch = o as string;
+
+                if (!string.IsNullOrEmpty(stringToSearch))
+                    return stringToSearch.IndexOf(key, System.StringComparison.InvariantCultureIgnoreCase) >= 0;
+
+                return false;
+            };
+
             completion.TextColumn = 0;
 
 
             return ("Completion Entry:",entry);
-        }
-
-        private bool EntryCompletionMatchFunc(EntryCompletion completion, string key, TreeIter iter)
-        {
-            if (string.IsNullOrEmpty(key))
-                return false;
-            
-            var o = completion.Model.GetValue(iter, 0);
-            var stringToSearch = o as string;
-
-            if (!string.IsNullOrEmpty(stringToSearch))
-                return stringToSearch.IndexOf(key, System.StringComparison.InvariantCultureIgnoreCase) >= 0;
-
-            return false;
         }
 
         public (string, Widget) CreateInsensitiveEntry()
