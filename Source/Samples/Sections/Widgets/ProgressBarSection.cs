@@ -68,7 +68,7 @@ namespace Samples
 
         public (string, Widget) CreatePulseProgressBar()
         {
-            // this is used when application can report progress
+            // this is used when application cant report progress
 
             var pb = new ProgressBar();
 
