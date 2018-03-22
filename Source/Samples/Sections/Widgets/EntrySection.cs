@@ -18,6 +18,7 @@ namespace Samples
             AddItem(CreateCustomActionsEntry());
             AddItem(CreateProgressEntry());
             AddItem(CreateCompletionEntry());
+            AddItem(CreateInsensitiveEntry());
         }
 
         public (string, Widget) CreateSimpleEntry()
@@ -123,44 +124,40 @@ namespace Samples
             store.AppendValues("Better and bigger example");
             store.AppendValues("Some other example");
 
-            // create tree column
-            var column = new TreeViewColumn();
-            column.Reorderable = false;
-            column.SortIndicator = false;
-            column.Clickable = true;
-            column.SortColumnId = 0;
+            // assign treemodel as the completion
+            completion.Model = store;
 
-            // create cells
-            var cell = new CellRendererText();
-            column.PackStart(cell, true);
-
-            // set cell functions
-            column.SetCellDataFunc(cell, (TreeViewColumn tree_column, CellRenderer cellRenderer, ITreeModel tree_model, TreeIter iter) =>
+            // lets override the default match function so we can use the contains mode
+            // instead of the default startswith
+            completion.MatchFunc = (EntryCompletion comp, string key, TreeIter iter) =>
             {
-                var m = tree_model.GetValue(iter, 0);
-                (cellRenderer as CellRendererText).Text = (string)m;
-            });
-                                          
-            // model filter
-            var filter = new TreeModelFilter(store, null);
-            filter.VisibleFunc = (model, iter) =>
-            {
-                if (string.IsNullOrEmpty(entry.Text))
-                    return true;
+                if (string.IsNullOrEmpty(key))
+                    return false;
 
-                var o = model.GetValue(iter, 0);
-                var searchString = o as string;
-                if (!string.IsNullOrEmpty(searchString))
-                    return searchString.StartsWith(entry.Text, System.StringComparison.InvariantCultureIgnoreCase);
+                var o = comp.Model.GetValue(iter, 0);
+                var stringToSearch = o as string;
 
-                return true;
+                if (!string.IsNullOrEmpty(stringToSearch))
+                    return stringToSearch.IndexOf(key, System.StringComparison.InvariantCultureIgnoreCase) >= 0;
+
+                return false;
             };
 
-            // assign treemodel as the completion
-            completion.Model = filter;
             completion.TextColumn = 0;
+
 
             return ("Completion Entry:",entry);
         }
+
+        public (string, Widget) CreateInsensitiveEntry()
+        {
+            var entry = new Entry();
+            entry.Text = "Cannot change this";
+
+            entry.Sensitive = false;
+
+            return ("Insensitive entry:", entry);
+        }
+    
     }
 }
