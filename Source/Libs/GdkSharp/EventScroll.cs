@@ -41,6 +41,8 @@ namespace Gdk {
 			public IntPtr device;
 			public double x_root;
 			public double y_root;
+			public double delta_x;
+			public double delta_y;
 		}
 
 		NativeStruct Native {
@@ -101,6 +103,15 @@ namespace Gdk {
 			}
 		}
 
+		public double DeltaX {
+			get { return Native.delta_x; }
+			set {
+				NativeStruct native = Native;
+				native.delta_x = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
 		public double Y {
 			get { return Native.y; }
 			set {
@@ -115,6 +126,15 @@ namespace Gdk {
 			set {
 				NativeStruct native = Native;
 				native.y_root = value;
+				Marshal.StructureToPtr (native, Handle, false);
+			}
+		}
+
+		public double DeltaY {
+			get { return Native.delta_y; }
+			set {
+				NativeStruct native = Native;
+				native.delta_y = value;
 				Marshal.StructureToPtr (native, Handle, false);
 			}
 		}
