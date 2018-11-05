@@ -21,32 +21,6 @@ namespace GLib {
 
 	public class VariantType : IDisposable {
 
-		public static VariantType Boolean = new VariantType ("b");
-		public static VariantType Byte = new VariantType ("y");
-		public static VariantType Int16 = new VariantType ("n");
-		public static VariantType UInt16 = new VariantType ("q");
-		public static VariantType Int32 = new VariantType ("i");
-		public static VariantType Uint32 = new VariantType ("u");
-		public static VariantType Int64 = new VariantType ("x");
-		public static VariantType UInt64 = new VariantType ("t");
-		public static VariantType Double = new VariantType ("d");
-		public static VariantType String = new VariantType ("s");
-		public static VariantType Path = new VariantType ("o");
-		public static VariantType Signature = new VariantType ("g");
-		public static VariantType Variant = new VariantType ("v");
-		public static VariantType HandleType = new VariantType ("h");
-		public static VariantType Unit = new VariantType ("()");
-		public static VariantType Any = new VariantType ("*");
-		public static VariantType Basic = new VariantType ("?");
-		public static VariantType Maybe = new VariantType ("m*");
-		public static VariantType Array = new VariantType ("a*");
-		public static VariantType Tuple = new VariantType ("r");
-		public static VariantType DictEntry = new VariantType ("{?*}");
-		public static VariantType Dictionary = new VariantType ("a{?*}");
-		public static VariantType StringArray = new VariantType ("as");
-		public static VariantType ByteString = new VariantType ("ay");
-		public static VariantType ByteStringArray = new VariantType ("aay");
-
 		delegate bool d_g_variant_type_string_is_valid(IntPtr type_string);
 		static d_g_variant_type_string_is_valid g_variant_type_string_is_valid = FuncLoader.LoadFunction<d_g_variant_type_string_is_valid>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_string_is_valid"));
 
@@ -292,5 +266,32 @@ namespace GLib {
 			result.handle = g_variant_type_new_tuple (native, native.Length);
 			return result;
 		}
+		
+		// These fields depend on function pointers and therefore must be placed below them.
+		public static VariantType Boolean = new VariantType ("b");
+		public static VariantType Byte = new VariantType ("y");
+		public static VariantType Int16 = new VariantType ("n");
+		public static VariantType UInt16 = new VariantType ("q");
+		public static VariantType Int32 = new VariantType ("i");
+		public static VariantType Uint32 = new VariantType ("u");
+		public static VariantType Int64 = new VariantType ("x");
+		public static VariantType UInt64 = new VariantType ("t");
+		public static VariantType Double = new VariantType ("d");
+		public static VariantType String = new VariantType ("s");
+		public static VariantType Path = new VariantType ("o");
+		public static VariantType Signature = new VariantType ("g");
+		public static VariantType Variant = new VariantType ("v");
+		public static VariantType HandleType = new VariantType ("h");
+		public static VariantType Unit = new VariantType ("()");
+		public static VariantType Any = new VariantType ("*");
+		public static VariantType Basic = new VariantType ("?");
+		public static VariantType Maybe = new VariantType ("m*");
+		public static VariantType Array = new VariantType ("a*");
+		public static VariantType Tuple = new VariantType ("r");
+		public static VariantType DictEntry = new VariantType ("{?*}");
+		public static VariantType Dictionary = new VariantType ("a{?*}");
+		public static VariantType StringArray = new VariantType ("as");
+		public static VariantType ByteString = new VariantType ("ay");
+		public static VariantType ByteStringArray = new VariantType ("aay");
 	}
 }
