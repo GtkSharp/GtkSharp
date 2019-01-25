@@ -43,7 +43,7 @@ namespace GLib {
 
 		public ValueArray (IntPtr raw)
 		{
-			handle = raw;
+			handle = g_value_array_copy (raw);
 		}
 		
 		~ValueArray ()
