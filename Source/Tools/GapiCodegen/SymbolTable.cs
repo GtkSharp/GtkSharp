@@ -232,6 +232,7 @@ namespace GtkSharp.Generation {
 				return trim_type;
 			
 			if (trim_type.StartsWith("const-")) return trim_type.Substring(6);
+			if (trim_type.StartsWith("const ")) return trim_type.Substring(6);
 			return trim_type;
 		}
 
