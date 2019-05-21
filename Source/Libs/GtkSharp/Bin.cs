@@ -25,6 +25,8 @@ namespace Gtk {
 
 	public partial class Bin {
 
+		protected Bin() : base() { }
+
 		delegate IntPtr d_gtk_bin_get_child(IntPtr raw);
 		static d_gtk_bin_get_child gtk_bin_get_child = FuncLoader.LoadFunction<d_gtk_bin_get_child>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_bin_get_child"));
 

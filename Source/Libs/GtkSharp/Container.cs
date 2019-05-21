@@ -53,6 +53,8 @@ namespace Gtk
             uint ref_count;
             uint param_id;
         };
+        
+        protected Container() : base() { }
 
         public GLib.Value ChildGetProperty(Gtk.Widget child, string property_name)
         {
