@@ -112,7 +112,7 @@ namespace GLib {
 			try {
 				GCHandle gch = (GCHandle) data;
 				ToggleRef tref = (ToggleRef)gch.Target;
-				tref.Toggle (is_last_ref);
+				tref?.Toggle (is_last_ref);
 			} catch (Exception e) {
 				ExceptionManager.RaiseUnhandledException (e, false);
 			}
