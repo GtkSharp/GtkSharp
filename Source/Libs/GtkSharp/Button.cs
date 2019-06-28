@@ -23,7 +23,7 @@ namespace Gtk {
 	using System;
 	using System.Runtime.InteropServices;
 
-	public partial class Button {
+	public partial class Button : IButton {
 
 		delegate IntPtr d_gtk_button_new_from_stock(IntPtr stock_id);
 		static d_gtk_button_new_from_stock gtk_button_new_from_stock = FuncLoader.LoadFunction<d_gtk_button_new_from_stock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_button_new_from_stock"));
