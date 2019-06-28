@@ -73,6 +73,16 @@ namespace GLib {
 				tref.Dispose ();
 			else
 				tref.QueueUnref ();
+
+			// Free all internal signals, else the garbage collector is not
+			// able to free the object.
+			if (signals != null)
+			{
+				foreach (var sig in signals.Keys)
+					signals[sig].Free ();
+			}
+
+			signals = null;
 		}
 
 		public static bool WarnOnFinalize { get; set; }
