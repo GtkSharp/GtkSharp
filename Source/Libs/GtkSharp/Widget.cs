@@ -27,7 +27,7 @@ namespace Gtk {
 	using System.Collections.Generic;
 	using System.Runtime.InteropServices;
 
-	public partial class Widget {
+	public partial class Widget : IWidget {
 
 		[Obsolete ("Replaced by Window property.")]
 		public Gdk.Window GdkWindow {

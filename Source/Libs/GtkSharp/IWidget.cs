@@ -20,10 +20,8 @@
 
 namespace Gtk {
 
-	using System;
-	
-	public interface IButton : IWidget
+	public interface IWidget
 	{
-		event EventHandler Clicked;
+		bool Sensitive { get; set;}
 	}
 }
