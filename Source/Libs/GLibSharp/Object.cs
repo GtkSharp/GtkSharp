@@ -26,11 +26,36 @@ namespace GLib {
 
 	using System;
 	using System.Collections.Generic;
-	using System.Reflection;
+    using System.ComponentModel;
+    using System.Reflection;
 	using System.Runtime.InteropServices;
 
-	public class Object : IWrapper, IDisposable {
+	public class Object : IWrapper, IDisposable, INotifyPropertyChanged {
 
+
+		private Dictionary<PropertyChangedEventHandler, NotifyHandler> propertyChangedListener = new Dictionary<PropertyChangedEventHandler, NotifyHandler>();
+		public event PropertyChangedEventHandler PropertyChanged {
+			add {
+				NotifyHandler handler = (object o, NotifyArgs n) => 
+				{ 
+					value(o, new PropertyChangedEventArgs(n.Property)); 
+				};
+
+				if(!propertyChangedListener.ContainsKey(value))
+				{
+					propertyChangedListener[value] = handler;
+					AddNotification(handler);
+				}
+			}
+			remove {
+				if(propertyChangedListener.ContainsKey(value))
+				{
+					RemoveNotification(propertyChangedListener[value]);
+					propertyChangedListener.Remove(value);
+				}
+			}
+		}
+		
 		IntPtr handle;
 		ToggleRef tref;
 		bool disposed = false;
@@ -1035,7 +1060,7 @@ namespace GLib {
 			}
 		);
 
-		[StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential)]
 		public struct GObject_g_type_instanceAlign
 		{
 			sbyte f1;
