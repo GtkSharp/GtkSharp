@@ -16,5 +16,26 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: ./build.sh --BuildTarget=FullBuild --BuildVersion=$(version)
-  displayName: 'CAKE Script'
+  - script: ./build.sh --BuildTarget=FullBuild --BuildVersion=$(version)
+    displayName: 'CAKE Script'
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Binaries
+    inputs:
+      pathtoPublish: BuildOutput/Release
+      artifactName: Binaries
+      publishLocation: container
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish NuGet
+    inputs:
+      pathtoPublish: BuildOutput/NugetPackages
+      artifactName: NuGet
+      publishLocation: container
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Samples
+    inputs:
+      pathtoPublish: BuildOutput/Samples
+      artifactName: Samples
+      publishLocation: container
