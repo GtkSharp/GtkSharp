@@ -20,22 +20,31 @@ steps:
     displayName: 'CAKE Script'
 
   - task: PublishBuildArtifacts@1
-    displayName: Publish Binaries
+    displayName: Publish Binaries Artifact
     inputs:
       pathtoPublish: BuildOutput/Release
       artifactName: Binaries
       publishLocation: container
 
   - task: PublishBuildArtifacts@1
-    displayName: Publish NuGet
+    displayName: Publish NuGet Artifact
     inputs:
       pathtoPublish: BuildOutput/NugetPackages
       artifactName: NuGet
       publishLocation: container
 
   - task: PublishBuildArtifacts@1
-    displayName: Publish Samples
+    displayName: Publish Samples Artifact
     inputs:
       pathtoPublish: BuildOutput/Samples
       artifactName: Samples
       publishLocation: container
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish to MyGet
+    condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    inputs:
+      command: 'push'
+      packagesToPush: 'BuildOutput/NugetPackages/*.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: '5167ff63-e617-405e-a8f1-8cac89433e2d/1678f7d9-b3a8-4618-9193-93718f939e4b'
