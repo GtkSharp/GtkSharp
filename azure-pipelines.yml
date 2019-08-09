@@ -1,3 +1,7 @@
+variables:
+  versionbase: 3.22.25
+  increment: $[counter(variables['versionbase'], 1)]
+  version: $(versionbase).$(increment)
 
 trigger:
   branches:
@@ -12,5 +16,5 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: ./build.sh --BuildTarget=FullBuild
+- script: ./build.sh --BuildTarget=FullBuild --BuildVersion=$(version)
   displayName: 'CAKE Script'
