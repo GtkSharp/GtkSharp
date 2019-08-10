@@ -160,12 +160,9 @@ Task("PackageAddin")
         Configuration = configuration,
     };
     msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
-    msbuildsettings = msbuildsettings.WithProperty("MDBinDir", "/opt/MonoDevelop/bin/");
     msbuildsettings = msbuildsettings.WithTarget("PackageAddin");
 
-    // We need monodevelop on the build system to build the addin
-    // lets wait for its packaging to be finished.
-    // MSBuild("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln", msbuildsettings);
+    MSBuild("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln", msbuildsettings);
 });
 
 // TASK TARGETS
