@@ -16,6 +16,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+  - script: echo "##vso[build.updatebuildnumber]$(version)"
+    displayName: 'Set Build Number'
+
   - script: ./build.sh --BuildTarget=FullBuild --BuildVersion=$(version)
     displayName: 'CAKE Script'
 
