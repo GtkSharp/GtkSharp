@@ -4,13 +4,13 @@ using Gtk;
 namespace GtkNamespace
 {
     [Template("Gtk_Composite_Widget.glade")]
-    [TypeName(nameof(Gtk_Composite_Widget))]
-    public class Gtk_Composite_Widget : Bin
+    [TypeName(nameof(GtkCompositeWidget))]
+    public class GtkCompositeWidget : Bin
     {
         [Child]
         private Button Button;
 
-        public Gtk_Composite_Widget()
+        public GtkCompositeWidget()
         {
             
         }
