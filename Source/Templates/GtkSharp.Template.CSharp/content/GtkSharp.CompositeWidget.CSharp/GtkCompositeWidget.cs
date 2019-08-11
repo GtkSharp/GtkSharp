@@ -3,7 +3,7 @@ using Gtk;
 
 namespace GtkNamespace
 {
-    [Template("Gtk_Composite_Widget.glade")]
+    [Template("GtkCompositeWidget.glade")]
     [TypeName(nameof(GtkCompositeWidget))]
     public class GtkCompositeWidget : Bin
     {
