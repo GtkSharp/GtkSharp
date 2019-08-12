@@ -6,9 +6,10 @@
 // VARS
 
 Settings.Cake = Context;
-Settings.Version = "3.22.24.30";
+Settings.Version = Argument("BuildVersion", "3.22.24.30");
 Settings.BuildTarget = Argument("BuildTarget", "Default");
 Settings.Assembly = Argument("Assembly", "");
+var configuration = Argument("Configuration", "Release");
 
 var msbuildsettings = new DotNetCoreMSBuildSettings();
 var list = new List<GAssembly>();
@@ -18,10 +19,6 @@ var list = new List<GAssembly>();
 Task("Init")
     .Does(() =>
 {
-    var version = System.Environment.GetEnvironmentVariable("TRAVIS_TAG");
-    if (!string.IsNullOrEmpty(version))
-        Settings.Version = version;
-	
     // Assign some common properties
     msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
     msbuildsettings = msbuildsettings.WithProperty("Authors", "'GtkSharp Contributors'");
@@ -42,7 +39,7 @@ Task("Prepare")
     DotNetCoreRestore("Source/Tools/Tools.sln");
     DotNetCoreBuild("Source/Tools/Tools.sln", new DotNetCoreBuildSettings {
         Verbosity = DotNetCoreVerbosity.Minimal,
-        Configuration = "Release"
+        Configuration = configuration
     });
 
     // Generate code and prepare libs projects
@@ -75,7 +72,7 @@ Task("Build")
 {
     var settings = new DotNetCoreBuildSettings
     {
-        Configuration = "Release",
+        Configuration = configuration,
         MSBuildSettings = msbuildsettings
     };
 
@@ -94,7 +91,7 @@ Task("RunSamples")
 {
     var settings = new DotNetCoreBuildSettings
     {
-        Configuration = "Release",
+        Configuration = configuration,
         MSBuildSettings = msbuildsettings
     };
 
@@ -109,7 +106,7 @@ Task("PackageNuGet")
     var settings = new DotNetCorePackSettings
     {
         MSBuildSettings = msbuildsettings,
-        Configuration = "Release",
+        Configuration = configuration,
         OutputDirectory = "BuildOutput/NugetPackages",
         NoBuild = true,
 
@@ -160,15 +157,12 @@ Task("PackageAddin")
     // Build MonoDevelop addin
     var msbuildsettings = new MSBuildSettings
     {
-        Configuration = "Release",
+        Configuration = configuration,
     };
     msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
-    msbuildsettings = msbuildsettings.WithProperty("MDBinDir", "/opt/MonoDevelop/bin/");
     msbuildsettings = msbuildsettings.WithTarget("PackageAddin");
 
-    // We need monodevelop on the build system to build the addin
-    // lets wait for its packaging to be finished.
-    // MSBuild("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln", msbuildsettings);
+    MSBuild("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln", msbuildsettings);
 });
 
 // TASK TARGETS

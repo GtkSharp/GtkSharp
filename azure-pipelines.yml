@@ -1,0 +1,51 @@
+variables:
+  versionbase: 3.22.25
+  increment: $[counter(variables['versionbase'], 1)]
+  version: $(versionbase).$(increment)
+
+trigger:
+  branches:
+    include:
+    - master
+    - develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - script: echo "##vso[build.updatebuildnumber]$(version)"
+    displayName: 'Set Build Number'
+
+  - script: sudo apt install -y monodevelop
+    displayName: 'Install MonoDevelop'
+
+  - script: ./build.sh --BuildTarget=FullBuild --BuildVersion=$(version)
+    displayName: 'CAKE Script'
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Binaries Artifact
+    inputs:
+      pathtoPublish: BuildOutput/Release
+      artifactName: Binaries
+      publishLocation: container
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish NuGet Artifact
+    inputs:
+      pathtoPublish: BuildOutput/NugetPackages
+      artifactName: NuGet
+      publishLocation: container
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Samples Artifact
+    inputs:
+      pathtoPublish: BuildOutput/Samples
+      artifactName: Samples
+      publishLocation: container
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish MonoDevelop Addin
+    inputs:
+      pathtoPublish: BuildOutput/Addins/MonoDevelop/MonoDevelop.GtkSharp.Addin_$(version).mpack
+      artifactName: MonoDevelop Addin
+      publishLocation: container

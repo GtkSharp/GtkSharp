@@ -28,15 +28,61 @@ namespace GLib {
 	using System.Collections.Generic;
 	using System.Reflection;
 	using System.Runtime.InteropServices;
+	using System.Linq;
 
 	public class Object : IWrapper, IDisposable {
 
+		protected internal bool owned;
 		IntPtr handle;
 		ToggleRef tref;
 		bool disposed = false;
 		static uint idx = 1;
 		static Dictionary<IntPtr, ToggleRef> Objects = new Dictionary<IntPtr, ToggleRef>();
 		static Dictionary<IntPtr, Dictionary<IntPtr, GLib.Value>> PropertiesToSet = new Dictionary<IntPtr, Dictionary<IntPtr, GLib.Value>>();
+
+		static readonly List<long> IgnoreAddresses = new List<long> ();
+		static readonly Dictionary<long, string> ConstructionTraces = new Dictionary<long, string> ();
+
+		public static void PrintHeldObjects ()
+		{
+			Console.WriteLine ($"---- BEGIN HELD OBJECTS ({Objects.Count - IgnoreAddresses.Count}) [Total: {Objects.Count}]----:");
+			lock (Objects)
+			{
+				foreach (var obj in Objects)
+				{
+					if (IgnoreAddresses.Contains (obj.Key.ToInt64 ()))
+						continue;
+
+					Console.WriteLine (obj.Key.ToInt64 () + " -> " + obj.Value.Target.GetType ());
+					if (ConstructionTraces.ContainsKey (obj.Key.ToInt64 ()))
+						Console.WriteLine (" AT: " + ConstructionTraces[obj.Key.ToInt64 ()].Split (Environment.NewLine.ToCharArray ()).FirstOrDefault (x => x.Contains ("OpenMedicus"))); //Aggregate((x,y) => x + Environment.NewLine + y)
+				}
+			}
+
+			Console.WriteLine ($"---- END HELD OBJECTS ({Objects.Count - IgnoreAddresses.Count}) [Total: {Objects.Count}]----:");
+		}
+
+		public static void SetIgnore ()
+		{
+			IgnoreAddresses.Clear ();
+			lock (Objects)
+			{
+				foreach (var address in Objects)
+					IgnoreAddresses.Add (address.Key.ToInt64 ());
+			}
+		}
+
+		static bool traceConstruction = true;
+
+		public bool TraceConstruction
+		{
+			get => traceConstruction;
+			set
+			{
+				ConstructionTraces.Clear ();
+				traceConstruction = value;
+			}
+		}
 
 		~Object ()
 		{
@@ -65,14 +111,35 @@ namespace GLib {
 				}
 			}
 
+//			Console.WriteLine ("Disposed " + GetType() + " " + RefCount);
 			handle = IntPtr.Zero;
 			if (tref == null)
 				return;
-			
+
 			if (disposing)
 				tref.Dispose ();
 			else
 				tref.QueueUnref ();
+
+			// Free all internal signals, else the garbage collector is not
+			// able to free the object.
+			if (signals != null)
+			{
+				foreach (var sig in signals.Keys)
+					signals[sig].Free ();
+			}
+
+			signals = null;
+		}
+
+		public void FreeSignals ()
+		{
+			if (signals != null) {
+				var copy = signals.Values;
+				signals = null;
+				foreach (Signal s in copy)
+					s.Free ();
+			}
 		}
 
 		public static bool WarnOnFinalize { get; set; }
@@ -122,9 +189,6 @@ namespace GLib {
 					g_object_unref (obj.Handle);
 				return obj;
 			}
-
-			if (!owned_ref)
-				g_object_ref (o);
 
 			obj = GLib.ObjectManager.CreateObject(o); 
 			if (obj == null) {

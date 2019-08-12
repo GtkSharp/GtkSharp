@@ -57,8 +57,6 @@ To create a new gtk app project, simply use `dotnet new` templating engine:
 * uninstall: `dotnet new --uninstall GtkSharp.Template.CSharp`
 * generate project: `dotnet new gtkapp`
 
-Visual Studio and MonoDevelop addins will be available in the coming weeks.
-
 ## License
 
 GtkSharp and its related components are licensed under [LGPL v2.0 license](LICENSE), while [Samples](Source/Samples) are licenced under [The Unlicense](Source/Samples/LICENSE).

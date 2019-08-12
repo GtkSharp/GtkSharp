@@ -38,7 +38,8 @@ namespace GLib {
 			gch = GCHandle.Alloc (this);
 			reference = target;
 			g_object_add_toggle_ref (target.Handle, ToggleNotifyCallback, (IntPtr) gch);
-			g_object_unref (target.Handle);
+			if (target.owned && !(target is InitiallyUnowned))
+				g_object_unref (target.Handle);
 		}
 
 		public IntPtr Handle {
@@ -66,7 +67,9 @@ namespace GLib {
 		}
 
   		void Free ()
-  		{
+		{
+			Target?.FreeSignals ();
+
 			if (hardened)
 				g_object_unref (handle);
 			else
@@ -109,7 +112,7 @@ namespace GLib {
 			try {
 				GCHandle gch = (GCHandle) data;
 				ToggleRef tref = (ToggleRef)gch.Target;
-				tref.Toggle (is_last_ref);
+				tref?.Toggle (is_last_ref);
 			} catch (Exception e) {
 				ExceptionManager.RaiseUnhandledException (e, false);
 			}
