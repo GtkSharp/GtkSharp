@@ -1,7 +1,7 @@
-#load CakeScripts\GAssembly.cs
-#load CakeScripts\Settings.cs
-#addin "Cake.FileHelpers&version=2.0.0"
-#addin "Cake.Incubator&version=1.7.2"
+#load CakeScripts\GAssembly.cake
+#load CakeScripts\Settings.cake
+#addin "Cake.FileHelpers&version=3.2.0"
+#addin "Cake.Incubator&version=5.0.1"
 
 // VARS
 
