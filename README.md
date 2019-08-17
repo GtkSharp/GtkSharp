@@ -26,7 +26,7 @@ git clone https://github.com/GtkSharp/GtkSharp.git
 cd GtkSharp
 ```
 
-and then simply run either `.\build.ps1` or `./build.sh` depending your operating system.
+and then simply run either `.\build.ps1` or `./build.sh` depending your operating system. If you have [Cake](https://cakebuild.net/) installed as a .NET global tool just run `dotnet-cake`.
 
 If you wish to generate the nuget packages simply add the `--BuildTarget=PackageNuGet` as an argument when calling the build script.
 
