@@ -33,12 +33,19 @@ namespace GLib {
 
 	public class Object : IWrapper, IDisposable, INotifyPropertyChanged {
 
+		private static Dictionary<(Type, string), string> propertyConversion = new Dictionary<(Type, string), string>();
 		private Dictionary<PropertyChangedEventHandler, NotifyHandler> propertyChangedListener = new Dictionary<PropertyChangedEventHandler, NotifyHandler>();
 		public event PropertyChangedEventHandler PropertyChanged {
 			add {
 				NotifyHandler handler = (object o, NotifyArgs n) => 
-				{ 
-					value(o, new PropertyChangedEventArgs(n.Property)); 
+				{
+					var key = (Type: o.GetType(), Property: n.Property);
+					if(!propertyConversion.ContainsKey(key))
+					{
+						propertyConversion[key] = GetPropertyNameFromGLibProperty(key.Type, key.Property);
+					}
+
+					value(o, new PropertyChangedEventArgs(propertyConversion[key])); 
 				};
 
 				if(!propertyChangedListener.ContainsKey(value))
@@ -55,8 +62,17 @@ namespace GLib {
 				}
 			}
 		}
-		
-		protected internal bool owned;
+
+        private string GetPropertyNameFromGLibProperty(object parent, string property)
+        {
+            var prop = parent.GetType().GetProperties().Where(x => 
+				Attribute.IsDefined(x, typeof(PropertyAttribute))
+				&& ((PropertyAttribute)x.GetCustomAttribute(typeof(PropertyAttribute))).Name == property).FirstOrDefault();
+
+			return prop.Name;
+        }
+
+        protected internal bool owned;
 
 		IntPtr handle;
 		ToggleRef tref;
