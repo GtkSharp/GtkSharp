@@ -1,12 +1,12 @@
-#load CakeScripts\GAssembly.cs
-#load CakeScripts\Settings.cs
-#addin "Cake.FileHelpers&version=2.0.0"
-#addin "Cake.Incubator&version=1.7.2"
+#load CakeScripts\GAssembly.cake
+#load CakeScripts\Settings.cake
+#addin "Cake.FileHelpers&version=3.2.0"
+#addin "Cake.Incubator&version=5.0.1"
 
 // VARS
 
 Settings.Cake = Context;
-Settings.Version = "3.22.24.30";
+Settings.Version = Argument("BuildVersion", "3.22.24.30");
 Settings.BuildTarget = Argument("BuildTarget", "Default");
 Settings.Assembly = Argument("Assembly", "");
 var configuration = Argument("Configuration", "Release");
@@ -19,10 +19,6 @@ var list = new List<GAssembly>();
 Task("Init")
     .Does(() =>
 {
-    var version = System.Environment.GetEnvironmentVariable("TRAVIS_TAG");
-    if (!string.IsNullOrEmpty(version))
-        Settings.Version = version;
-	
     // Assign some common properties
     msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
     msbuildsettings = msbuildsettings.WithProperty("Authors", "'GtkSharp Contributors'");
@@ -164,12 +160,9 @@ Task("PackageAddin")
         Configuration = configuration,
     };
     msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
-    msbuildsettings = msbuildsettings.WithProperty("MDBinDir", "/opt/MonoDevelop/bin/");
     msbuildsettings = msbuildsettings.WithTarget("PackageAddin");
 
-    // We need monodevelop on the build system to build the addin
-    // lets wait for its packaging to be finished.
-    // MSBuild("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln", msbuildsettings);
+    MSBuild("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln", msbuildsettings);
 });
 
 // TASK TARGETS

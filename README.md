@@ -26,7 +26,7 @@ git clone https://github.com/GtkSharp/GtkSharp.git
 cd GtkSharp
 ```
 
-and then simply run either `.\build.ps1` or `./build.sh` depending your operating system.
+and then simply run either `.\build.ps1` or `./build.sh` depending your operating system. If you have [Cake](https://cakebuild.net/) installed as a .NET global tool just run `dotnet-cake`.
 
 If you wish to generate the nuget packages simply add the `--BuildTarget=PackageNuGet` as an argument when calling the build script.
 
@@ -39,7 +39,11 @@ A breakdown on how the source is structured:
 
 ## Using the library
 
-On both Windows and Linux the library assumes that you have Gtk installed on your system. See [Installing Gtk on Windows](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Windows) wiki page for more details on how to do it on Windows.
+On all systems, the library assumes that you have Gtk installed on your system.
+
+See [Installing Gtk on Windows](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Windows) wiki page for more details on how to do it on Windows.
+
+See [Installing Gtk on Mac](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Mac) wiki page for more details on how to do it on macOS.
 
 Available NuGet packages:
 
@@ -56,8 +60,6 @@ To create a new gtk app project, simply use `dotnet new` templating engine:
 * install: `dotnet new --install GtkSharp.Template.CSharp`
 * uninstall: `dotnet new --uninstall GtkSharp.Template.CSharp`
 * generate project: `dotnet new gtkapp`
-
-Visual Studio and MonoDevelop addins will be available in the coming weeks.
 
 ## License
 
