@@ -33,19 +33,23 @@ namespace GLib {
 
 	public class Object : IWrapper, IDisposable, INotifyPropertyChanged {
 
-		private static Dictionary<(Type, string), string> propertyConversion = new Dictionary<(Type, string), string>();
+		private static Dictionary<Type, Dictionary<string, string>> propertyConversion = new Dictionary<Type, Dictionary<string, string>>();
 		private Dictionary<PropertyChangedEventHandler, NotifyHandler> propertyChangedListener = new Dictionary<PropertyChangedEventHandler, NotifyHandler>();
 		public event PropertyChangedEventHandler PropertyChanged {
 			add {
 				NotifyHandler handler = (object o, NotifyArgs n) => 
 				{
-					var key = (Type: o.GetType(), Property: n.Property);
-					if(!propertyConversion.ContainsKey(key))
+					var type = o.GetType();
+					var propertyName = "";
+					if(propertyConversion.ContainsKey(type) && propertyConversion[type].ContainsKey(n.Property))
 					{
-						propertyConversion[key] = GetPropertyNameFromGLibProperty(key.Type, key.Property);
+						propertyName = propertyConversion[type][n.Property];
 					}
-
-					value(o, new PropertyChangedEventArgs(propertyConversion[key])); 
+					else
+					{
+						propertyName = n.Property;
+					}
+					value(o, new PropertyChangedEventArgs(propertyName)); 
 				};
 
 				if(!propertyChangedListener.ContainsKey(value))
@@ -62,15 +66,6 @@ namespace GLib {
 				}
 			}
 		}
-
-        private string GetPropertyNameFromGLibProperty(object parent, string property)
-        {
-            var prop = parent.GetType().GetProperties().Where(x => 
-				Attribute.IsDefined(x, typeof(PropertyAttribute))
-				&& ((PropertyAttribute)x.GetCustomAttribute(typeof(PropertyAttribute))).Name == property).FirstOrDefault();
-
-			return prop.Name;
-        }
 
         protected internal bool owned;
 
@@ -423,6 +418,13 @@ namespace GLib {
 								Properties [type] = gtype_properties;
 							}
 							gtype_properties.Add (param_spec, pinfo);
+
+							if(!propertyConversion.ContainsKey(Type))
+							{
+								propertyConversion[Type] = new Dictionary<string, string>();
+							}
+							propertyConversion[Type][property_attr.Name] = pinfo.Name;
+
 							idx++;
 						} catch (ArgumentException) {
 							throw new InvalidOperationException (String.Format ("GLib.PropertyAttribute cannot be applied to property {0} of type {1} because the return type of the property is not supported",
