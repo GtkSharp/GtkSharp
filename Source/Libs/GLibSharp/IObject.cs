@@ -1,8 +1,8 @@
-// Gtk.IButton.cs - Gtk Button interface
+// IObject.cs - Object interface
 //
-// Author: Marcel Tiede
+// Authors: Marcel Tiede
 //
-// Copyright (C) 2019 Marcel Tiede
+// Copyright (c) 2019 Marcel Tiede
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -18,12 +18,13 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-namespace Gtk {
 
-	using GLib;
+namespace GLib {
 
-	public interface IWidget : IObject
-	{
-		bool Sensitive { get; set; }
-	}
+	using System;
+    using System.ComponentModel;
+
+	public interface IObject : INotifyPropertyChanged 
+    {
+    }
 }

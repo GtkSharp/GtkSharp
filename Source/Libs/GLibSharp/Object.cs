@@ -31,7 +31,7 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 	using System.Linq;
 
-	public class Object : IWrapper, IDisposable, INotifyPropertyChanged {
+	public class Object : IWrapper, IDisposable, IObject {
 
 		private static Dictionary<Type, Dictionary<string, string>> propertyConversion = new Dictionary<Type, Dictionary<string, string>>();
 		private Dictionary<PropertyChangedEventHandler, NotifyHandler> propertyChangedListener = new Dictionary<PropertyChangedEventHandler, NotifyHandler>();
