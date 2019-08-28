@@ -37,23 +37,23 @@ namespace GLib {
 		private Dictionary<PropertyChangedEventHandler, NotifyHandler> propertyChangedListener = new Dictionary<PropertyChangedEventHandler, NotifyHandler>();
 		public event PropertyChangedEventHandler PropertyChanged {
 			add {
-				NotifyHandler handler = (object o, NotifyArgs n) => 
-				{
-					var type = o.GetType();
-					var propertyName = "";
-					if(propertyConversion.ContainsKey(type) && propertyConversion[type].ContainsKey(n.Property))
-					{
-						propertyName = propertyConversion[type][n.Property];
-					}
-					else
-					{
-						propertyName = n.Property;
-					}
-					value(o, new PropertyChangedEventArgs(propertyName)); 
-				};
-
 				if(!propertyChangedListener.ContainsKey(value))
 				{
+					NotifyHandler handler = (object o, NotifyArgs n) => 
+					{
+						var type = o.GetType();
+						var propertyName = "";
+						if(propertyConversion.ContainsKey(type) && propertyConversion[type].ContainsKey(n.Property))
+						{
+							propertyName = propertyConversion[type][n.Property];
+						}
+						else
+						{
+							propertyName = n.Property;
+						}
+						value(o, new PropertyChangedEventArgs(propertyName)); 
+					};
+
 					propertyChangedListener[value] = handler;
 					AddNotification(handler);
 				}
