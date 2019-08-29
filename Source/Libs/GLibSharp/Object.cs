@@ -68,7 +68,6 @@ namespace GLib {
 		}
 
 		protected internal bool owned;
-
 		IntPtr handle;
 		ToggleRef tref;
 		bool disposed = false;
