@@ -139,6 +139,12 @@ namespace GLib {
 
 		protected virtual void Dispose (bool disposing)
 		{
+			foreach(var keyValue in propertyChangedListener)
+			{
+				RemoveNotification(keyValue.Value);
+				propertyChangedListener.Remove(keyValue.Key);
+			}
+
 			ToggleRef tref;
 			lock (Objects) {
 				if (Objects.TryGetValue (Handle, out tref)) {
