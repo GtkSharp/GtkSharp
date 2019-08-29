@@ -26,8 +26,8 @@ namespace GLib {
 
 	using System;
 	using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Reflection;
+	using System.ComponentModel;
+	using System.Reflection;
 	using System.Runtime.InteropServices;
 	using System.Linq;
 
@@ -67,7 +67,7 @@ namespace GLib {
 			}
 		}
 
-        protected internal bool owned;
+		protected internal bool owned;
 
 		IntPtr handle;
 		ToggleRef tref;
@@ -1132,7 +1132,7 @@ namespace GLib {
 			}
 		);
 
-        [StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct GObject_g_type_instanceAlign
 		{
 			sbyte f1;

@@ -22,9 +22,9 @@
 namespace GLib {
 
 	using System;
-    using System.ComponentModel;
+	using System.ComponentModel;
 
 	public interface IObject : INotifyPropertyChanged 
-    {
-    }
+	{
+	}
 }
