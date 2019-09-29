@@ -19,7 +19,7 @@ using System;
 
 namespace Gtk {
 
-	public partial class StyleContext {
+	public partial class StyleContext : IStyleContext {
 
 		public void RenderActivity (Cairo.Context cr, double x, double y, double width, double height)
 		{
