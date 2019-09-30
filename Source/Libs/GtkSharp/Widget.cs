@@ -309,6 +309,8 @@ namespace Gtk {
 			Path (out len, out path, out path_reversed);
 		}
 
+		IStyleContext IWidget.StyleContext => this.StyleContext;
+
 		static IDictionary<IntPtr, Delegate> destroy_handlers;
 		static IDictionary<IntPtr, Delegate> DestroyHandlers {
 			get {

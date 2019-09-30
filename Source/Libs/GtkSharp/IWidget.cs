@@ -1,4 +1,4 @@
-// Gtk.IButton.cs - Gtk Button interface
+// Gtk.IWidget.cs - Gtk Widget interface
 //
 // Author: Marcel Tiede
 //
@@ -25,5 +25,6 @@ namespace Gtk {
 	public interface IWidget : IObject
 	{
 		bool Sensitive { get; set; }
+		IStyleContext StyleContext { get; }
 	}
 }
