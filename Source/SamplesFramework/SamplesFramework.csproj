@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5FE44C0F-3FD1-41CD-A944-98316E779DAA}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SamplesFramework</RootNamespace>
+    <AssemblyName>SamplesFramework</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)\..\BuildOutput\SamplesFramework</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)\..\BuildOutput\SamplesFramework</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationOutput.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sections\Category.cs" />
+    <Compile Include="Sections\Dialogs\AboutDialogSection.cs" />
+    <Compile Include="Sections\ListSection.cs" />
+    <Compile Include="Sections\SectionAttribute.cs" />
+    <Compile Include="Sections\Widgets\ButtonSection.cs" />
+    <Compile Include="Sections\Widgets\ColorButtonSection.cs" />
+    <Compile Include="Sections\Widgets\ComboBoxSection.cs" />
+    <Compile Include="Sections\Widgets\DrawingAreaSection.cs" />
+    <Compile Include="Sections\Widgets\EntrySection.cs" />
+    <Compile Include="Sections\Widgets\LabelSection.cs" />
+    <Compile Include="Sections\Widgets\LevelBarSection.cs" />
+    <Compile Include="Sections\Widgets\LinkButtonSection.cs" />
+    <Compile Include="Sections\Widgets\ProgressBarSection.cs" />
+    <Compile Include="Sections\Widgets\SpinButtonSection.cs" />
+    <Compile Include="Sections\Widgets\SpinnerSection.cs" />
+    <Compile Include="Sections\Widgets\SwitchSection.cs" />
+    <Compile Include="Sections\Widgets\ToggleButtonSection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libs\AtkSharp\AtkSharp.csproj">
+      <Project>{12a721aa-8e7f-459a-a62d-f7372350e5f1}</Project>
+      <Name>AtkSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libs\CairoSharp\CairoSharp.csproj">
+      <Project>{92c67e4c-8fde-463b-beb9-cb09970887dd}</Project>
+      <Name>CairoSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libs\GdkSharp\GdkSharp.csproj">
+      <Project>{e6d83259-6389-4768-b0a0-a649892dfe62}</Project>
+      <Name>GdkSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libs\GioSharp\GioSharp.csproj">
+      <Project>{b4b26375-bed5-4000-a38f-899ff1672b47}</Project>
+      <Name>GioSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libs\GLibSharp\GLibSharp.csproj">
+      <Project>{b29673a7-ebea-41f4-9f22-d72b333042a2}</Project>
+      <Name>GLibSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libs\GtkSharp\GtkSharp.csproj">
+      <Project>{04597e0b-375d-4e08-a16c-ee5ff3937b73}</Project>
+      <Name>GtkSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libs\PangoSharp\PangoSharp.csproj">
+      <Project>{d3e99527-1fec-4dc7-8083-85e7c338e287}</Project>
+      <Name>PangoSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="**\*.glade" />
+    <EmbeddedResource Include="**\*.glade">
+      <LogicalName>%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sections\**\*.cs" Visible="false">
+      <LogicalName>GtkSharp.Samples.%(Filename).cs</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
