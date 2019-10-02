@@ -65,7 +65,7 @@ namespace GLib {
 		static CopyFunc copy;
 		static FreeFunc free;
 		static GType boxed_type = GType.Invalid;
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_boxed_type_register_static(IntPtr typename, CopyFunc copy_func, FreeFunc free_func);
 		static d_g_boxed_type_register_static g_boxed_type_register_static = FuncLoader.LoadFunction<d_g_boxed_type_register_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_boxed_type_register_static"));
 		
@@ -145,4 +145,5 @@ namespace GLib {
 		}
 	}
 }
+
 

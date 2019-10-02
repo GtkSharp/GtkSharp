@@ -22,7 +22,7 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public class AttrLanguage : Attribute {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_language_new(IntPtr language);
 		static d_pango_attr_language_new pango_attr_language_new = FuncLoader.LoadFunction<d_pango_attr_language_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_language_new"));
 
@@ -43,3 +43,4 @@ namespace Pango {
 		}
 	}
 }
+

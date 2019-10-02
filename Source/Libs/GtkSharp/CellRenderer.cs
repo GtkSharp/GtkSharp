@@ -27,7 +27,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class CellRenderer {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_cell_renderer_start_editing(IntPtr handle, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, int flags);
 		static d_gtk_cell_renderer_start_editing gtk_cell_renderer_start_editing = FuncLoader.LoadFunction<d_gtk_cell_renderer_start_editing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_cell_renderer_start_editing"));
 
@@ -39,7 +39,7 @@ namespace Gtk {
 			var ret = (ICellEditable) GLib.Object.GetObject (raw_ret);
 			return ret;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_cell_renderer_render2(IntPtr handle, IntPtr drawable, IntPtr widget, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, ref Gdk.Rectangle expose_area, int flags);
 		static d_gtk_cell_renderer_render2 gtk_cell_renderer_render2 = FuncLoader.LoadFunction<d_gtk_cell_renderer_render2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_cell_renderer_render"));
 		
@@ -54,3 +54,4 @@ namespace Gtk {
 		delegate void OnGetSizeDelegate (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height);
 	}
 }
+

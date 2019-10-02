@@ -37,7 +37,7 @@ namespace Gtk {
 		delegate void MenuPositionFuncNative (IntPtr menu, out int x, out int y, out bool push_in, IntPtr user_data);
 
 		static MenuPositionFuncNative StatusIconPositionMenuFunc = null;
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_menu_popup(IntPtr menu,  IntPtr parent_menu_shell, IntPtr parent_menu_item, MenuPositionFuncNative func, IntPtr data, uint button, uint activate_time);
 		static d_gtk_menu_popup gtk_menu_popup = FuncLoader.LoadFunction<d_gtk_menu_popup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_popup"));
 
@@ -83,7 +83,7 @@ namespace Gtk {
 				GLib.Marshaller.Free (native_value);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_status_icon_get_geometry(IntPtr raw, out IntPtr screen, IntPtr area, out int orientation);
 		static d_gtk_status_icon_get_geometry gtk_status_icon_get_geometry = FuncLoader.LoadFunction<d_gtk_status_icon_get_geometry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_status_icon_get_geometry"));
 
@@ -107,3 +107,4 @@ namespace Gtk {
 		}
 	}
 }
+

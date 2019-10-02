@@ -609,146 +609,148 @@ namespace GLib {
 			ParamSpec spec = new ParamSpec (spec_ptr);
 			g_value_init (ref this, spec.ValueType.Val);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_object_class_find_property(IntPtr klass, IntPtr name);
 		static d_g_object_class_find_property g_object_class_find_property = FuncLoader.LoadFunction<d_g_object_class_find_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_class_find_property"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_type_check_value_holds(ref Value val, IntPtr gtype);
 		static d_g_type_check_value_holds g_type_check_value_holds = FuncLoader.LoadFunction<d_g_type_check_value_holds>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_check_value_holds"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_init(ref GLib.Value val, IntPtr gtype);
 		static d_g_value_init g_value_init = FuncLoader.LoadFunction<d_g_value_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_init"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_unset(ref GLib.Value val);
 		static d_g_value_unset g_value_unset = FuncLoader.LoadFunction<d_g_value_unset>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_unset"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_boolean(ref Value val, bool data);
 		static d_g_value_set_boolean g_value_set_boolean = FuncLoader.LoadFunction<d_g_value_set_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_boolean"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_uchar(ref Value val, byte data);
 		static d_g_value_set_uchar g_value_set_uchar = FuncLoader.LoadFunction<d_g_value_set_uchar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_uchar"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_char(ref Value val, sbyte data);
 		static d_g_value_set_char g_value_set_char = FuncLoader.LoadFunction<d_g_value_set_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_char"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_boxed(ref Value val, IntPtr data);
 		static d_g_value_set_boxed g_value_set_boxed = FuncLoader.LoadFunction<d_g_value_set_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_boxed"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_double(ref Value val, double data);
 		static d_g_value_set_double g_value_set_double = FuncLoader.LoadFunction<d_g_value_set_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_double"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_float(ref Value val, float data);
 		static d_g_value_set_float g_value_set_float = FuncLoader.LoadFunction<d_g_value_set_float>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_float"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_int(ref Value val, int data);
 		static d_g_value_set_int g_value_set_int = FuncLoader.LoadFunction<d_g_value_set_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_int"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_int64(ref Value val, long data);
 		static d_g_value_set_int64 g_value_set_int64 = FuncLoader.LoadFunction<d_g_value_set_int64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_int64"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_long(ref Value val, IntPtr data);
 		static d_g_value_set_long g_value_set_long = FuncLoader.LoadFunction<d_g_value_set_long>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_long"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_long2(ref Value val, int data);
 		static d_g_value_set_long2 g_value_set_long2 = FuncLoader.LoadFunction<d_g_value_set_long2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_long"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_uint64(ref Value val, ulong data);
 		static d_g_value_set_uint64 g_value_set_uint64 = FuncLoader.LoadFunction<d_g_value_set_uint64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_uint64"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_object(ref Value val, IntPtr data);
 		static d_g_value_set_object g_value_set_object = FuncLoader.LoadFunction<d_g_value_set_object>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_object"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_param(ref Value val, IntPtr data);
 		static d_g_value_set_param g_value_set_param = FuncLoader.LoadFunction<d_g_value_set_param>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_param"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_pointer(ref Value val, IntPtr data);
 		static d_g_value_set_pointer g_value_set_pointer = FuncLoader.LoadFunction<d_g_value_set_pointer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_pointer"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_string(ref Value val, IntPtr data);
 		static d_g_value_set_string g_value_set_string = FuncLoader.LoadFunction<d_g_value_set_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_string"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_uint(ref Value val, uint data);
 		static d_g_value_set_uint g_value_set_uint = FuncLoader.LoadFunction<d_g_value_set_uint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_uint"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_ulong(ref Value val, UIntPtr data);
 		static d_g_value_set_ulong g_value_set_ulong = FuncLoader.LoadFunction<d_g_value_set_ulong>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_ulong"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_ulong2(ref Value val, uint data);
 		static d_g_value_set_ulong2 g_value_set_ulong2 = FuncLoader.LoadFunction<d_g_value_set_ulong2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_ulong"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_enum(ref Value val, int data);
 		static d_g_value_set_enum g_value_set_enum = FuncLoader.LoadFunction<d_g_value_set_enum>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_enum"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_flags(ref Value val, uint data);
 		static d_g_value_set_flags g_value_set_flags = FuncLoader.LoadFunction<d_g_value_set_flags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_flags"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_variant(ref Value val, IntPtr data);
 		static d_g_value_set_variant g_value_set_variant = FuncLoader.LoadFunction<d_g_value_set_variant>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_variant"));
 		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_value_get_boolean(ref Value val);
 		static d_g_value_get_boolean g_value_get_boolean = FuncLoader.LoadFunction<d_g_value_get_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_boolean"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate byte d_g_value_get_uchar(ref Value val);
 		static d_g_value_get_uchar g_value_get_uchar = FuncLoader.LoadFunction<d_g_value_get_uchar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_uchar"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate sbyte d_g_value_get_char(ref Value val);
 		static d_g_value_get_char g_value_get_char = FuncLoader.LoadFunction<d_g_value_get_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_char"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_get_boxed(ref Value val);
 		static d_g_value_get_boxed g_value_get_boxed = FuncLoader.LoadFunction<d_g_value_get_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_boxed"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate double d_g_value_get_double(ref Value val);
 		static d_g_value_get_double g_value_get_double = FuncLoader.LoadFunction<d_g_value_get_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_double"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate float d_g_value_get_float(ref Value val);
 		static d_g_value_get_float g_value_get_float = FuncLoader.LoadFunction<d_g_value_get_float>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_float"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_value_get_int(ref Value val);
 		static d_g_value_get_int g_value_get_int = FuncLoader.LoadFunction<d_g_value_get_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_int"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate long d_g_value_get_int64(ref Value val);
 		static d_g_value_get_int64 g_value_get_int64 = FuncLoader.LoadFunction<d_g_value_get_int64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_int64"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_get_long(ref Value val);
 		static d_g_value_get_long g_value_get_long = FuncLoader.LoadFunction<d_g_value_get_long>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_long"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_value_get_long_as_int(ref Value val);
 		static d_g_value_get_long_as_int g_value_get_long_as_int = FuncLoader.LoadFunction<d_g_value_get_long_as_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_long"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate ulong d_g_value_get_uint64(ref Value val);
 		static d_g_value_get_uint64 g_value_get_uint64 = FuncLoader.LoadFunction<d_g_value_get_uint64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_uint64"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate UIntPtr d_g_value_get_ulong(ref Value val);
 		static d_g_value_get_ulong g_value_get_ulong = FuncLoader.LoadFunction<d_g_value_get_ulong>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_ulong"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_value_get_ulong_as_uint(ref Value val);
 		static d_g_value_get_ulong_as_uint g_value_get_ulong_as_uint = FuncLoader.LoadFunction<d_g_value_get_ulong_as_uint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_ulong"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_get_object(ref Value val);
 		static d_g_value_get_object g_value_get_object = FuncLoader.LoadFunction<d_g_value_get_object>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_object"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_get_param(ref Value val);
 		static d_g_value_get_param g_value_get_param = FuncLoader.LoadFunction<d_g_value_get_param>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_param"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_get_pointer(ref Value val);
 		static d_g_value_get_pointer g_value_get_pointer = FuncLoader.LoadFunction<d_g_value_get_pointer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_pointer"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_get_string(ref Value val);
 		static d_g_value_get_string g_value_get_string = FuncLoader.LoadFunction<d_g_value_get_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_string"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_value_get_uint(ref Value val);
 		static d_g_value_get_uint g_value_get_uint = FuncLoader.LoadFunction<d_g_value_get_uint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_uint"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_value_get_enum(ref Value val);
 		static d_g_value_get_enum g_value_get_enum = FuncLoader.LoadFunction<d_g_value_get_enum>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_enum"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_value_get_flags(ref Value val);
 		static d_g_value_get_flags g_value_get_flags = FuncLoader.LoadFunction<d_g_value_get_flags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_flags"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_strv_get_type();
 		static d_g_strv_get_type g_strv_get_type = FuncLoader.LoadFunction<d_g_strv_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_strv_get_type"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_get_variant(ref Value val);
 		static d_g_value_get_variant g_value_get_variant = FuncLoader.LoadFunction<d_g_value_get_variant>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_variant"));
 	}
 }
+

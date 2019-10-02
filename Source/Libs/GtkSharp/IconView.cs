@@ -35,7 +35,7 @@ namespace Gtk {
 				AddAttribute (cell, (string) attrs [i], (int) attrs [i + 1]);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_icon_view_scroll_to_path(IntPtr raw, IntPtr path, bool use_align, float row_align, float col_align);
 		static d_gtk_icon_view_scroll_to_path gtk_icon_view_scroll_to_path = FuncLoader.LoadFunction<d_gtk_icon_view_scroll_to_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_view_scroll_to_path"));
 
@@ -50,3 +50,4 @@ namespace Gtk {
 		}
 	}
 }
+

@@ -31,7 +31,7 @@ namespace GLib {
 		private bool managed = false;
 		internal bool elements_owned = false;
 		protected System.Type element_type = null;
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_ptr_array_sized_new(uint n_preallocs);
 		static d_g_ptr_array_sized_new g_ptr_array_sized_new = FuncLoader.LoadFunction<d_g_ptr_array_sized_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_sized_new"));
 
@@ -42,7 +42,7 @@ namespace GLib {
 			managed = owned;
 			this.elements_owned = elements_owned;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_ptr_array_new();
 		static d_g_ptr_array_new g_ptr_array_new = FuncLoader.LoadFunction<d_g_ptr_array_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_new"));
 
@@ -76,10 +76,10 @@ namespace GLib {
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_ptr_array_free(IntPtr raw, bool free_seg);
 		static d_g_ptr_array_free g_ptr_array_free = FuncLoader.LoadFunction<d_g_ptr_array_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_free"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_unref(IntPtr item);
 		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_object_unref"));
 
@@ -116,7 +116,7 @@ namespace GLib {
 				return Marshal.ReadIntPtr (Handle);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_ptr_array_add(IntPtr raw, IntPtr val);
 		static d_g_ptr_array_add g_ptr_array_add = FuncLoader.LoadFunction<d_g_ptr_array_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_add"));
 
@@ -124,7 +124,7 @@ namespace GLib {
 		{
 			g_ptr_array_add (Handle, val);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_ptr_array_remove(IntPtr raw, IntPtr data);
 		static d_g_ptr_array_remove g_ptr_array_remove = FuncLoader.LoadFunction<d_g_ptr_array_remove>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_remove"));
 
@@ -132,7 +132,7 @@ namespace GLib {
 		{
 			g_ptr_array_remove (Handle, data);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_ptr_array_remove_range(IntPtr raw, uint index, uint length);
 		static d_g_ptr_array_remove_range g_ptr_array_remove_range = FuncLoader.LoadFunction<d_g_ptr_array_remove_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_remove_range"));
 
@@ -256,7 +256,7 @@ namespace GLib {
 		{
 			return new ListEnumerator (this);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_ptr_array_copy(IntPtr raw);
 		static d_g_ptr_array_copy g_ptr_array_copy = FuncLoader.LoadFunction<d_g_ptr_array_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_copy"));
 
@@ -267,3 +267,4 @@ namespace GLib {
 		}
 	}
 }
+

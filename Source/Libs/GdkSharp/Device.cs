@@ -24,10 +24,10 @@ namespace Gdk {
 	using System.Runtime.InteropServices;
 
 	public partial class Device {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_device_free_history(IntPtr events, int n_events);
 		static d_gdk_device_free_history gdk_device_free_history = FuncLoader.LoadFunction<d_gdk_device_free_history>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_device_free_history"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gdk_device_get_history(IntPtr device, IntPtr window, uint start, uint stop, out IntPtr events, out int n_events);
 		static d_gdk_device_get_history gdk_device_get_history = FuncLoader.LoadFunction<d_gdk_device_get_history>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_device_get_history"));
 
@@ -49,4 +49,5 @@ namespace Gdk {
 		}
 	}
 }
+
 

@@ -24,7 +24,7 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public partial class FontMap {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_font_map_list_families2(IntPtr raw, out IntPtr families, out int n_families);
 		static d_pango_font_map_list_families2 pango_font_map_list_families2 = FuncLoader.LoadFunction<d_pango_font_map_list_families2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_map_list_families"));
 
@@ -45,7 +45,7 @@ namespace Pango {
 				return result;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_font_map_list_families(IntPtr raw, IntPtr families, out int n_families);
 		static d_pango_font_map_list_families pango_font_map_list_families = FuncLoader.LoadFunction<d_pango_font_map_list_families>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_map_list_families"));
 
@@ -57,3 +57,4 @@ namespace Pango {
 		}
 	}
 }
+

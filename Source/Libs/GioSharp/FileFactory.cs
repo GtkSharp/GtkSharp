@@ -27,6 +27,7 @@ namespace GLib
 {
 	public class FileFactory
 	{
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_file_new_for_uri(string uri);
 		static d_g_file_new_for_uri g_file_new_for_uri = FuncLoader.LoadFunction<d_g_file_new_for_uri>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_file_new_for_uri"));
 
@@ -39,7 +40,7 @@ namespace GLib
 		{
 			return GLib.FileAdapter.GetObject (g_file_new_for_uri (uri.ToString ()), false) as IFile;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_file_new_for_path(string path);
 		static d_g_file_new_for_path g_file_new_for_path = FuncLoader.LoadFunction<d_g_file_new_for_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_file_new_for_path"));
 		
@@ -47,7 +48,7 @@ namespace GLib
 		{
 			return GLib.FileAdapter.GetObject (g_file_new_for_path (path), false) as IFile;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_file_new_for_commandline_arg(string arg);
 		static d_g_file_new_for_commandline_arg g_file_new_for_commandline_arg = FuncLoader.LoadFunction<d_g_file_new_for_commandline_arg>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_file_new_for_commandline_arg"));
 
@@ -57,3 +58,4 @@ namespace GLib
 		}
 	}
 }
+

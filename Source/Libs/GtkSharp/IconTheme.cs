@@ -27,7 +27,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class IconTheme {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_icon_theme_list_icons(IntPtr raw, IntPtr context);
 		static d_gtk_icon_theme_list_icons gtk_icon_theme_list_icons = FuncLoader.LoadFunction<d_gtk_icon_theme_list_icons>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_list_icons"));
 
@@ -46,16 +46,16 @@ namespace Gtk {
 				result [i++] = val;
 			return result;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_icon_theme_get_search_path(IntPtr raw, out IntPtr path, out int n_elements);
 		static d_gtk_icon_theme_get_search_path gtk_icon_theme_get_search_path = FuncLoader.LoadFunction<d_gtk_icon_theme_get_search_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_get_search_path"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_icon_theme_set_search_path(IntPtr raw, IntPtr[] path, int n_elements);
 		static d_gtk_icon_theme_set_search_path gtk_icon_theme_set_search_path = FuncLoader.LoadFunction<d_gtk_icon_theme_set_search_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_set_search_path"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_icon_theme_get_search_path_utf8(IntPtr raw, out IntPtr path, out int n_elements);
 		static d_gtk_icon_theme_get_search_path_utf8 gtk_icon_theme_get_search_path_utf8 = FuncLoader.LoadFunction<d_gtk_icon_theme_get_search_path_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_get_search_path_utf8"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_icon_theme_set_search_path_utf8(IntPtr raw, IntPtr[] path, int n_elements);
 		static d_gtk_icon_theme_set_search_path_utf8 gtk_icon_theme_set_search_path_utf8 = FuncLoader.LoadFunction<d_gtk_icon_theme_set_search_path_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_set_search_path_utf8"));
 
@@ -106,7 +106,7 @@ namespace Gtk {
 		{
 			SearchPath = path;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_icon_theme_get_icon_sizes(IntPtr raw, IntPtr icon_name);
 		static d_gtk_icon_theme_get_icon_sizes gtk_icon_theme_get_icon_sizes = FuncLoader.LoadFunction<d_gtk_icon_theme_get_icon_sizes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_get_icon_sizes"));
 
@@ -128,3 +128,4 @@ namespace Gtk {
 		}
 	}
 }
+

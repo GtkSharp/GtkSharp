@@ -79,7 +79,7 @@ namespace Gtk {
 			if (changed != null)
 				actions[0].Changed += changed;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_action_group_list_actions(IntPtr raw);
 		static d_gtk_action_group_list_actions gtk_action_group_list_actions = FuncLoader.LoadFunction<d_gtk_action_group_list_actions>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_action_group_list_actions"));
 
@@ -93,3 +93,4 @@ namespace Gtk {
 		}
 	}
 }
+

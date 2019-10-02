@@ -122,7 +122,7 @@ namespace GLib {
 			if (handlers == null)
 				handlers = new System.Collections.Generic.Dictionary<uint, GCHandle> ();
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_logv(IntPtr log_domain, LogLevelFlags flags, IntPtr message);
 		static d_g_logv g_logv = FuncLoader.LoadFunction<d_g_logv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_logv"));
 		
@@ -134,7 +134,7 @@ namespace GLib {
 			Marshaller.Free (ndom);
 			Marshaller.Free (nmessage);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_log_set_handler(IntPtr log_domain, LogLevelFlags flags, LogFuncNative log_func, IntPtr user_data);
 		static d_g_log_set_handler g_log_set_handler = FuncLoader.LoadFunction<d_g_log_set_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_handler"));
 		
@@ -151,7 +151,7 @@ namespace GLib {
 			handlers [result] = gch;
 			return result;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_log_remove_handler(IntPtr log_domain, uint handler_id);
 		static d_g_log_remove_handler g_log_remove_handler = FuncLoader.LoadFunction<d_g_log_remove_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_remove_handler"));
 
@@ -166,7 +166,7 @@ namespace GLib {
 			g_log_remove_handler (ndom, handlerID);
 			Marshaller.Free (ndom);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate PrintFuncNative d_g_set_print_handler(PrintFuncNative handler);
 		static d_g_set_print_handler g_set_print_handler = FuncLoader.LoadFunction<d_g_set_print_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_set_print_handler"));
 
@@ -178,6 +178,7 @@ namespace GLib {
 			return helper.Invoker;
 		}
 		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate PrintFuncNative d_g_set_printerr_handler(PrintFuncNative handler);
 		static d_g_set_printerr_handler g_set_printerr_handler = FuncLoader.LoadFunction<d_g_set_printerr_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_set_printerr_handler"));
 
@@ -189,6 +190,7 @@ namespace GLib {
 			return helper.Invoker;
 		}
 		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_log_default_handler(IntPtr log_domain, LogLevelFlags log_level, IntPtr message, IntPtr unused_data);
 		static d_g_log_default_handler g_log_default_handler = FuncLoader.LoadFunction<d_g_log_default_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_default_handler"));
 
@@ -201,7 +203,7 @@ namespace GLib {
 			Marshaller.Free (ndom);
 			Marshaller.Free (nmess);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate LogLevelFlags d_g_log_set_always_fatal(LogLevelFlags fatal_mask);
 		static d_g_log_set_always_fatal g_log_set_always_fatal = FuncLoader.LoadFunction<d_g_log_set_always_fatal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_always_fatal"));
 		
@@ -209,7 +211,7 @@ namespace GLib {
 		{
 			return g_log_set_always_fatal (fatalMask);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate LogLevelFlags d_g_log_set_fatal_mask(IntPtr log_domain, LogLevelFlags fatal_mask);
 		static d_g_log_set_fatal_mask g_log_set_fatal_mask = FuncLoader.LoadFunction<d_g_log_set_fatal_mask>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_fatal_mask"));
 		
@@ -243,7 +245,7 @@ namespace GLib {
 				get { return new LogFunc (Invoke); }
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate LogFuncNative d_g_log_set_default_handler(LogFuncNative log_func, IntPtr user_data);
 		static d_g_log_set_default_handler g_log_set_default_handler = FuncLoader.LoadFunction<d_g_log_set_default_handler>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log_set_default_handler"));
 		
@@ -287,4 +289,5 @@ namespace GLib {
 		}
 	}
 }
+
 

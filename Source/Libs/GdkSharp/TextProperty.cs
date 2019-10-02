@@ -25,7 +25,7 @@ namespace Gdk {
 	using System.Runtime.InteropServices;
 
 	public class TextProperty {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_gdk_text_property_to_utf8_list_for_display(IntPtr display, IntPtr encoding, int format, byte[] text, int length, out IntPtr list);
 		static d_gdk_text_property_to_utf8_list_for_display gdk_text_property_to_utf8_list_for_display = FuncLoader.LoadFunction<d_gdk_text_property_to_utf8_list_for_display>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_text_property_to_utf8_list_for_display"));
 
@@ -47,3 +47,4 @@ namespace Gdk {
 		}
 	}
 }
+

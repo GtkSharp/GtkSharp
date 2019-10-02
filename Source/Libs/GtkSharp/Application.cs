@@ -31,9 +31,11 @@ namespace Gtk {
 		const int WS_EX_TOOLWINDOW = 0x00000080;
 		const int WS_OVERLAPPEDWINDOW = 0x00CF0000;
 
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		delegate IntPtr d_Win32CreateWindow(int dwExStyle, string lpClassName, string lpWindowName,int dwStyle, int x, int y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lParam);
         static d_Win32CreateWindow Win32CreateWindow;
 
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		delegate bool d_Win32DestroyWindow(IntPtr window);
         static d_Win32DestroyWindow Win32DestroyWindow;
 
@@ -58,10 +60,10 @@ namespace Gtk {
 				break;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_init(ref int argc, ref IntPtr argv);
 		static d_gtk_init gtk_init = FuncLoader.LoadFunction<d_gtk_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_init"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_init_check(ref int argc, ref IntPtr argv);
 		static d_gtk_init_check gtk_init_check = FuncLoader.LoadFunction<d_gtk_init_check>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_init_check"));
 
@@ -127,7 +129,7 @@ namespace Gtk {
 		{
 			return do_init (progname, ref args, true);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_main();
 		static d_gtk_main gtk_main = FuncLoader.LoadFunction<d_gtk_main>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main"));
 
@@ -135,7 +137,7 @@ namespace Gtk {
 		{
 			gtk_main ();
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_events_pending();
 		static d_gtk_events_pending gtk_events_pending = FuncLoader.LoadFunction<d_gtk_events_pending>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_events_pending"));
 
@@ -144,10 +146,10 @@ namespace Gtk {
 		{
 			return gtk_events_pending ();
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_main_iteration();
 		static d_gtk_main_iteration gtk_main_iteration = FuncLoader.LoadFunction<d_gtk_main_iteration>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main_iteration"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_main_iteration_do(bool blocking);
 		static d_gtk_main_iteration_do gtk_main_iteration_do = FuncLoader.LoadFunction<d_gtk_main_iteration_do>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main_iteration_do"));
 
@@ -161,6 +163,7 @@ namespace Gtk {
 			return gtk_main_iteration_do (blocking);
 		}
 		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_main_quit();
 		static d_gtk_main_quit gtk_main_quit = FuncLoader.LoadFunction<d_gtk_main_quit>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main_quit"));
 
@@ -169,7 +172,7 @@ namespace Gtk {
 			gtk_main_quit ();
 		}
 
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_get_current_event();
 		static d_gtk_get_current_event gtk_get_current_event = FuncLoader.LoadFunction<d_gtk_get_current_event>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_get_current_event"));
 
@@ -220,3 +223,4 @@ namespace Gtk {
 		}
 	}
 }
+

@@ -24,7 +24,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial struct TextIter {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_gtk_text_iter_get_char(ref Gtk.TextIter raw);
 		static d_gtk_text_iter_get_char gtk_text_iter_get_char = FuncLoader.LoadFunction<d_gtk_text_iter_get_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_iter_get_char"));
 
@@ -33,7 +33,7 @@ namespace Gtk {
 				return GLib.Marshaller.GUnicharToString (gtk_text_iter_get_char (ref this));
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_text_iter_get_marks(ref TextIter iter);
 		static d_gtk_text_iter_get_marks gtk_text_iter_get_marks = FuncLoader.LoadFunction<d_gtk_text_iter_get_marks>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_iter_get_marks"));
 
@@ -49,7 +49,7 @@ namespace Gtk {
 				return result;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_text_iter_get_tags(ref TextIter iter);
 		static d_gtk_text_iter_get_tags gtk_text_iter_get_tags = FuncLoader.LoadFunction<d_gtk_text_iter_get_tags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_iter_get_tags"));
 
@@ -65,7 +65,7 @@ namespace Gtk {
 				return result;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_text_iter_get_toggled_tags(ref TextIter iter, bool toggled_on);
 		static d_gtk_text_iter_get_toggled_tags gtk_text_iter_get_toggled_tags = FuncLoader.LoadFunction<d_gtk_text_iter_get_toggled_tags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_iter_get_toggled_tags"));
 
@@ -92,3 +92,4 @@ namespace Gtk {
 		}
 	}
 }
+

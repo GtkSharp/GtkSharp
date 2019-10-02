@@ -57,10 +57,10 @@ namespace Gtk {
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void ClosureMarshal (IntPtr closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data);
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_closure_new_simple(int closure_size, IntPtr dummy);
 		static d_g_closure_new_simple g_closure_new_simple = FuncLoader.LoadFunction<d_g_closure_new_simple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_new_simple"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_closure_set_marshal(IntPtr closure, ClosureMarshal marshaler);
 		static d_g_closure_set_marshal g_closure_set_marshal = FuncLoader.LoadFunction<d_g_closure_set_marshal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_set_marshal"));
 
@@ -69,7 +69,7 @@ namespace Gtk {
 			g_closure_set_marshal (raw_closure, marshaler);
 			return raw_closure;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_signal_newv(IntPtr signal_name, IntPtr gtype, GLib.Signal.Flags signal_flags, IntPtr closure, IntPtr accumulator, IntPtr accu_data, IntPtr c_marshaller, IntPtr return_type, uint n_params, [MarshalAs (UnmanagedType.LPArray)] IntPtr[] param_types);
 		static d_g_signal_newv g_signal_newv = FuncLoader.LoadFunction<d_g_signal_newv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_newv"));
 
@@ -169,10 +169,10 @@ namespace Gtk {
 				return binding_delegate;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_binding_set_by_class(IntPtr class_ptr);
 		static d_gtk_binding_set_by_class gtk_binding_set_by_class = FuncLoader.LoadFunction<d_gtk_binding_set_by_class>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_set_by_class"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_binding_entry_add_signall(IntPtr binding_set, uint keyval, Gdk.ModifierType modifiers, IntPtr signal_name, IntPtr binding_args);
 		static d_gtk_binding_entry_add_signall gtk_binding_entry_add_signall = FuncLoader.LoadFunction<d_gtk_binding_entry_add_signall>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_entry_add_signall"));
 
@@ -241,10 +241,10 @@ namespace Gtk {
 			value.Dispose ();
 			return ret;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_widget_class_find_style_property(IntPtr class_ptr, IntPtr property_name);
 		static d_gtk_widget_class_find_style_property gtk_widget_class_find_style_property = FuncLoader.LoadFunction<d_gtk_widget_class_find_style_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_find_style_property"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_widget_style_get_property(IntPtr inst, IntPtr property_name, ref GLib.Value value);
 		static d_gtk_widget_style_get_property gtk_widget_style_get_property = FuncLoader.LoadFunction<d_gtk_widget_style_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_style_get_property"));
 
@@ -263,7 +263,7 @@ namespace Gtk {
 				GLib.Marshaller.Free (native_name);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_widget_list_mnemonic_labels(IntPtr raw);
 		static d_gtk_widget_list_mnemonic_labels gtk_widget_list_mnemonic_labels = FuncLoader.LoadFunction<d_gtk_widget_list_mnemonic_labels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_list_mnemonic_labels"));
 
@@ -410,7 +410,7 @@ namespace Gtk {
 					InternalDestroyed += NativeDestroyHandler;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_widget_destroy(IntPtr raw);
 		static d_gtk_widget_destroy gtk_widget_destroy = FuncLoader.LoadFunction<d_gtk_widget_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_destroy"));
 
@@ -420,3 +420,4 @@ namespace Gtk {
 		}
 	}
 }
+

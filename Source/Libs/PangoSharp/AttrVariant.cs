@@ -22,7 +22,7 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public class AttrVariant : Attribute {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_variant_new(Pango.Variant variant);
 		static d_pango_attr_variant_new pango_attr_variant_new = FuncLoader.LoadFunction<d_pango_attr_variant_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_variant_new"));
 
@@ -37,3 +37,4 @@ namespace Pango {
 		}
 	}
 }
+

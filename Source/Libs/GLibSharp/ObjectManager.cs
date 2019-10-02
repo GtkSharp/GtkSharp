@@ -82,8 +82,9 @@ namespace GLib {
 			}
 			return result;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_type_parent(IntPtr typ);
 		static d_g_type_parent g_type_parent = FuncLoader.LoadFunction<d_g_type_parent>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_parent"));
 	}
 }
+

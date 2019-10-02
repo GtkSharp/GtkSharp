@@ -19,7 +19,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class IconFactory {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_icon_size_lookup(IconSize size, out int width, out int height);
 		static d_gtk_icon_size_lookup gtk_icon_size_lookup = FuncLoader.LoadFunction<d_gtk_icon_size_lookup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_size_lookup"));
 
@@ -31,3 +31,4 @@ namespace Gtk {
 		}
 	}
 }
+

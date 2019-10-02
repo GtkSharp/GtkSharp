@@ -75,7 +75,7 @@ namespace GLib {
 		private Source () {}
 
 		public Source(IntPtr raw) : base(raw) {}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_source_new(IntPtr source_funcs, uint struct_size);
 		static d_g_source_new g_source_new = FuncLoader.LoadFunction<d_g_source_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_new"));
 
@@ -146,7 +146,7 @@ namespace GLib {
 
 			return result;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_source_remove(uint tag);
 		static d_g_source_remove g_source_remove = FuncLoader.LoadFunction<d_g_source_remove>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove"));
 
@@ -162,7 +162,7 @@ namespace GLib {
 			}
 			return ret;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_source_get_type();
 		static d_g_source_get_type g_source_get_type = FuncLoader.LoadFunction<d_g_source_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_type"));
 
@@ -173,7 +173,7 @@ namespace GLib {
 				return ret;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_source_get_context(IntPtr raw);
 		static d_g_source_get_context g_source_get_context = FuncLoader.LoadFunction<d_g_source_get_context>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_context"));
 
@@ -184,10 +184,10 @@ namespace GLib {
 				return ret;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_source_get_priority(IntPtr raw);
 		static d_g_source_get_priority g_source_get_priority = FuncLoader.LoadFunction<d_g_source_get_priority>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_priority"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_set_priority(IntPtr raw, int priority);
 		static d_g_source_set_priority g_source_set_priority = FuncLoader.LoadFunction<d_g_source_set_priority>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_priority"));
 
@@ -201,10 +201,10 @@ namespace GLib {
 				g_source_set_priority(Handle, value);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_source_get_name(IntPtr raw);
 		static d_g_source_get_name g_source_get_name = FuncLoader.LoadFunction<d_g_source_get_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_name"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_set_name(IntPtr raw, IntPtr name);
 		static d_g_source_set_name g_source_set_name = FuncLoader.LoadFunction<d_g_source_set_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_name"));
 
@@ -220,14 +220,14 @@ namespace GLib {
 				GLib.Marshaller.Free (native_value);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_add_child_source(IntPtr raw, IntPtr child_source);
 		static d_g_source_add_child_source g_source_add_child_source = FuncLoader.LoadFunction<d_g_source_add_child_source>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_add_child_source"));
 
 		public void AddChildSource(GLib.Source child_source) {
 			g_source_add_child_source(Handle, child_source == null ? IntPtr.Zero : child_source.Handle);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_add_poll(IntPtr raw, IntPtr fd);
 		static d_g_source_add_poll g_source_add_poll = FuncLoader.LoadFunction<d_g_source_add_poll>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_add_poll"));
 
@@ -237,7 +237,7 @@ namespace GLib {
 			fd = GLib.PollFD.New (native_fd);
 			Marshal.FreeHGlobal (native_fd);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_source_attach(IntPtr raw, IntPtr context);
 		static d_g_source_attach g_source_attach = FuncLoader.LoadFunction<d_g_source_attach>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_attach"));
 
@@ -250,10 +250,10 @@ namespace GLib {
 		uint Attach() {
 			return Attach (null);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_source_get_can_recurse(IntPtr raw);
 		static d_g_source_get_can_recurse g_source_get_can_recurse = FuncLoader.LoadFunction<d_g_source_get_can_recurse>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_can_recurse"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_set_can_recurse(IntPtr raw, bool can_recurse);
 		static d_g_source_set_can_recurse g_source_set_can_recurse = FuncLoader.LoadFunction<d_g_source_set_can_recurse>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_can_recurse"));
 
@@ -267,7 +267,7 @@ namespace GLib {
 				g_source_set_can_recurse(Handle, value);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_get_current_time(IntPtr raw, IntPtr timeval);
 		static d_g_source_get_current_time g_source_get_current_time = FuncLoader.LoadFunction<d_g_source_get_current_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_current_time"));
 
@@ -278,7 +278,7 @@ namespace GLib {
 			timeval = GLib.TimeVal.New (native_timeval);
 			Marshal.FreeHGlobal (native_timeval);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_source_get_id(IntPtr raw);
 		static d_g_source_get_id g_source_get_id = FuncLoader.LoadFunction<d_g_source_get_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_id"));
 
@@ -289,10 +289,10 @@ namespace GLib {
 				return ret;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate long d_g_source_get_ready_time(IntPtr raw);
 		static d_g_source_get_ready_time g_source_get_ready_time = FuncLoader.LoadFunction<d_g_source_get_ready_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_ready_time"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_set_ready_time(IntPtr raw, long ready_time);
 		static d_g_source_set_ready_time g_source_set_ready_time = FuncLoader.LoadFunction<d_g_source_set_ready_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_ready_time"));
 
@@ -306,7 +306,7 @@ namespace GLib {
 				g_source_set_ready_time(Handle, value);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate long d_g_source_get_time(IntPtr raw);
 		static d_g_source_get_time g_source_get_time = FuncLoader.LoadFunction<d_g_source_get_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_get_time"));
 
@@ -317,7 +317,7 @@ namespace GLib {
 				return ret;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_source_is_destroyed(IntPtr raw);
 		static d_g_source_is_destroyed g_source_is_destroyed = FuncLoader.LoadFunction<d_g_source_is_destroyed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_is_destroyed"));
 
@@ -328,14 +328,14 @@ namespace GLib {
 				return ret;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_modify_unix_fd(IntPtr raw, IntPtr tag, int new_events);
 		static d_g_source_modify_unix_fd g_source_modify_unix_fd = FuncLoader.LoadFunction<d_g_source_modify_unix_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_modify_unix_fd"));
 
 		public void ModifyUnixFd(IntPtr tag, GLib.IOCondition new_events) {
 			g_source_modify_unix_fd(Handle, tag, (int) new_events);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_source_query_unix_fd(IntPtr raw, IntPtr tag);
 		static d_g_source_query_unix_fd g_source_query_unix_fd = FuncLoader.LoadFunction<d_g_source_query_unix_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_query_unix_fd"));
 
@@ -344,14 +344,14 @@ namespace GLib {
 			GLib.IOCondition ret = (GLib.IOCondition) raw_ret;
 			return ret;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_remove_child_source(IntPtr raw, IntPtr child_source);
 		static d_g_source_remove_child_source g_source_remove_child_source = FuncLoader.LoadFunction<d_g_source_remove_child_source>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_child_source"));
 
 		public void RemoveChildSource(GLib.Source child_source) {
 			g_source_remove_child_source(Handle, child_source == null ? IntPtr.Zero : child_source.Handle);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_remove_poll(IntPtr raw, IntPtr fd);
 		static d_g_source_remove_poll g_source_remove_poll = FuncLoader.LoadFunction<d_g_source_remove_poll>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_poll"));
 
@@ -361,14 +361,14 @@ namespace GLib {
 			fd = GLib.PollFD.New (native_fd);
 			Marshal.FreeHGlobal (native_fd);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_remove_unix_fd(IntPtr raw, IntPtr tag);
 		static d_g_source_remove_unix_fd g_source_remove_unix_fd = FuncLoader.LoadFunction<d_g_source_remove_unix_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_unix_fd"));
 
 		public void RemoveUnixFd(IntPtr tag) {
 			g_source_remove_unix_fd(Handle, tag);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_set_callback_indirect(IntPtr raw, IntPtr callback_data, IntPtr callback_funcs);
 		static d_g_source_set_callback_indirect g_source_set_callback_indirect = FuncLoader.LoadFunction<d_g_source_set_callback_indirect>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_callback_indirect"));
 
@@ -378,7 +378,7 @@ namespace GLib {
 			callback_funcs = GLib.SourceCallbackFuncs.New (native_callback_funcs);
 			Marshal.FreeHGlobal (native_callback_funcs);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_set_funcs(IntPtr raw, IntPtr value);
 		static d_g_source_set_funcs g_source_set_funcs = FuncLoader.LoadFunction<d_g_source_set_funcs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_funcs"));
 
@@ -390,7 +390,7 @@ namespace GLib {
 				Marshal.FreeHGlobal (native_value);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_source_remove_by_funcs_user_data(IntPtr funcs, IntPtr user_data);
 		static d_g_source_remove_by_funcs_user_data g_source_remove_by_funcs_user_data = FuncLoader.LoadFunction<d_g_source_remove_by_funcs_user_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_by_funcs_user_data"));
 
@@ -402,7 +402,7 @@ namespace GLib {
 			Marshal.FreeHGlobal (native_funcs);
 			return ret;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_source_remove_by_user_data(IntPtr user_data);
 		static d_g_source_remove_by_user_data g_source_remove_by_user_data = FuncLoader.LoadFunction<d_g_source_remove_by_user_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_remove_by_user_data"));
 
@@ -411,7 +411,7 @@ namespace GLib {
 			bool ret = raw_ret;
 			return ret;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_set_name_by_id(uint tag, IntPtr name);
 		static d_g_source_set_name_by_id g_source_set_name_by_id = FuncLoader.LoadFunction<d_g_source_set_name_by_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_name_by_id"));
 
@@ -420,7 +420,7 @@ namespace GLib {
 			g_source_set_name_by_id(tag, native_name);
 			GLib.Marshaller.Free (native_name);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_source_ref(IntPtr raw);
 		static d_g_source_ref g_source_ref = FuncLoader.LoadFunction<d_g_source_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_ref"));
 
@@ -431,7 +431,7 @@ namespace GLib {
 				Owned = true;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_unref(IntPtr raw);
 		static d_g_source_unref g_source_unref = FuncLoader.LoadFunction<d_g_source_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_unref"));
 
@@ -442,7 +442,7 @@ namespace GLib {
 				Owned = false;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_destroy(IntPtr raw);
 		static d_g_source_destroy g_source_destroy = FuncLoader.LoadFunction<d_g_source_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_destroy"));
 
@@ -452,3 +452,4 @@ namespace GLib {
 		}
 	}
 }
+

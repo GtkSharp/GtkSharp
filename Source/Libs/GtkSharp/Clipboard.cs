@@ -24,10 +24,10 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Clipboard {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_clipboard_set_with_data(IntPtr raw, TargetEntry[] targets, int n_targets, GtkSharp.ClipboardGetFuncNative get_func, GtkSharp.ClipboardClearFuncNative clear_func, IntPtr data);
 		static d_gtk_clipboard_set_with_data gtk_clipboard_set_with_data = FuncLoader.LoadFunction<d_gtk_clipboard_set_with_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_set_with_data"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_clipboard_set_with_owner(IntPtr raw, TargetEntry[] targets, int n_targets, GtkSharp.ClipboardGetFuncNative get_func, GtkSharp.ClipboardClearFuncNative clear_func, IntPtr owner);
 		static d_gtk_clipboard_set_with_owner gtk_clipboard_set_with_owner = FuncLoader.LoadFunction<d_gtk_clipboard_set_with_owner>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_set_with_owner"));
 
@@ -72,7 +72,7 @@ namespace Gtk {
 		{
 			Text = text;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_clipboard_wait_for_rich_text(IntPtr raw, IntPtr buffer, out IntPtr format, out UIntPtr length);
 		static d_gtk_clipboard_wait_for_rich_text gtk_clipboard_wait_for_rich_text = FuncLoader.LoadFunction<d_gtk_clipboard_wait_for_rich_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_wait_for_rich_text"));
 
@@ -114,7 +114,7 @@ namespace Gtk {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_clipboard_request_rich_text(IntPtr raw, IntPtr buffer, RichTextReceivedFuncNative cb, IntPtr user_data);
 		static d_gtk_clipboard_request_rich_text gtk_clipboard_request_rich_text = FuncLoader.LoadFunction<d_gtk_clipboard_request_rich_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_clipboard_request_rich_text"));
 
@@ -126,3 +126,4 @@ namespace Gtk {
 		}
 	}
 }
+

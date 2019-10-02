@@ -22,7 +22,7 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public class AttrShape : Attribute {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_shape_new(ref Pango.Rectangle ink_rect, ref Pango.Rectangle logical_rect);
 		static d_pango_attr_shape_new pango_attr_shape_new = FuncLoader.LoadFunction<d_pango_attr_shape_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_shape_new"));
 
@@ -54,3 +54,4 @@ namespace Pango {
 		}
 	}
 }
+

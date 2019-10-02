@@ -218,7 +218,7 @@ namespace Gdk {
 		{
 			return Offset (rect, dr.X, dr.Y);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_rectangle_get_type();
 		static d_gdk_rectangle_get_type gdk_rectangle_get_type = FuncLoader.LoadFunction<d_gdk_rectangle_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_rectangle_get_type"));
 
@@ -229,7 +229,7 @@ namespace Gdk {
 				return ret;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_rectangle_union(ref Rectangle src1, ref Rectangle src2, out Rectangle dest);
 		static d_gdk_rectangle_union gdk_rectangle_union = FuncLoader.LoadFunction<d_gdk_rectangle_union>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_rectangle_union"));
 
@@ -239,7 +239,7 @@ namespace Gdk {
 			gdk_rectangle_union (ref this, ref src, out dest);
 			return dest;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gdk_rectangle_intersect(ref Rectangle src1, ref Rectangle src2, out Rectangle dest);
 		static d_gdk_rectangle_intersect gdk_rectangle_intersect = FuncLoader.LoadFunction<d_gdk_rectangle_intersect>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_rectangle_intersect"));
 
@@ -256,3 +256,4 @@ namespace Gdk {
 		public static Rectangle Zero;
 	}
 }
+
