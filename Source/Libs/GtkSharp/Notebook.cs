@@ -31,7 +31,7 @@ namespace Gtk {
 				return GetNthPage (CurrentPage);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_gtk_notebook_page_num(IntPtr handle, IntPtr child);
 		static d_gtk_notebook_page_num gtk_notebook_page_num = FuncLoader.LoadFunction<d_gtk_notebook_page_num>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_notebook_page_num"));
 
@@ -41,3 +41,4 @@ namespace Gtk {
 		}
 	}
 }
+

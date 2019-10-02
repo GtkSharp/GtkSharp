@@ -27,7 +27,7 @@ namespace Gdk {
 	using System.Runtime.InteropServices;
 
 	public partial class PixbufLoader {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_object_ref(IntPtr handle);
 		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
 
@@ -150,4 +150,5 @@ namespace Gdk {
 		}
 	}
 }
+
 

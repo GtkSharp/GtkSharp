@@ -22,7 +22,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Drag {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_drag_set_icon_default(IntPtr context);
 		static d_gtk_drag_set_icon_default gtk_drag_set_icon_default = FuncLoader.LoadFunction<d_gtk_drag_set_icon_default>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_drag_set_icon_default"));
 
@@ -39,3 +39,4 @@ namespace Gtk {
 		}
 	}
 }
+

@@ -25,7 +25,7 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 
 	public class SList : ListBase {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_slist_copy(IntPtr l);
 		static d_g_slist_copy g_slist_copy = FuncLoader.LoadFunction<d_g_slist_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_copy"));
 		
@@ -34,6 +34,7 @@ namespace GLib {
 			return new SList (g_slist_copy (Handle));
 		}
 		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_slist_length(IntPtr l);
 		static d_g_slist_length g_slist_length = FuncLoader.LoadFunction<d_g_slist_length>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_length"));
 		
@@ -42,6 +43,7 @@ namespace GLib {
 			return g_slist_length (list);
 		}
 		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_slist_free(IntPtr l);
 		static d_g_slist_free g_slist_free = FuncLoader.LoadFunction<d_g_slist_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_free"));
 
@@ -50,7 +52,7 @@ namespace GLib {
 			if (list != IntPtr.Zero)
 				g_slist_free (list);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_slist_append(IntPtr l, IntPtr raw);
 		static d_g_slist_append g_slist_append = FuncLoader.LoadFunction<d_g_slist_append>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_append"));
 
@@ -58,7 +60,7 @@ namespace GLib {
 		{
 			return g_slist_append (list, raw);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_slist_prepend(IntPtr l, IntPtr raw);
 		static d_g_slist_prepend g_slist_prepend = FuncLoader.LoadFunction<d_g_slist_prepend>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_prepend"));
 
@@ -67,7 +69,7 @@ namespace GLib {
 			return g_slist_prepend (list, raw);
 		}
 
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_slist_nth_data(IntPtr l, uint n);
 		static d_g_slist_nth_data g_slist_nth_data = FuncLoader.LoadFunction<d_g_slist_nth_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_nth_data"));
 
@@ -97,3 +99,4 @@ namespace GLib {
 		}
 	}
 }
+

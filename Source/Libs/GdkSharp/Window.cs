@@ -31,10 +31,10 @@ namespace Gdk {
 	public partial class Window {
 
 		public Window (Gdk.Window parent, Gdk.WindowAttr attributes, Gdk.WindowAttributesType attributes_mask) : this (parent, attributes, (int)attributes_mask) {}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_window_get_background_pattern(IntPtr raw);
 		static d_gdk_window_get_background_pattern gdk_window_get_background_pattern = FuncLoader.LoadFunction<d_gdk_window_get_background_pattern>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_get_background_pattern"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_window_set_background_pattern(IntPtr raw, IntPtr pattern);
 		static d_gdk_window_set_background_pattern gdk_window_set_background_pattern = FuncLoader.LoadFunction<d_gdk_window_set_background_pattern>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_set_background_pattern"));
 
@@ -48,7 +48,7 @@ namespace Gdk {
 				gdk_window_set_background_pattern(Handle, (value == null) ? IntPtr.Zero : value.Handle);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_window_get_children(IntPtr raw);
 		static d_gdk_window_get_children gdk_window_get_children = FuncLoader.LoadFunction<d_gdk_window_get_children>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_get_children"));
 
@@ -64,7 +64,7 @@ namespace Gdk {
 				return result;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_window_set_icon_list(IntPtr raw, IntPtr pixbufs);
 		static d_gdk_window_set_icon_list gdk_window_set_icon_list = FuncLoader.LoadFunction<d_gdk_window_set_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_set_icon_list"));
 
@@ -76,10 +76,10 @@ namespace Gdk {
 				gdk_window_set_icon_list(Handle, list.Handle);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_object_ref(IntPtr raw);
 		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_window_destroy(IntPtr raw);
 		static d_gdk_window_destroy gdk_window_destroy = FuncLoader.LoadFunction<d_gdk_window_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_destroy"));
 
@@ -96,10 +96,10 @@ namespace Gdk {
 		public void MoveResize (Gdk.Rectangle rect) {
 			gdk_window_move_resize (Handle, rect.X, rect.Y, rect.Width, rect.Height);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_window_get_user_data(IntPtr raw, out IntPtr data);
 		static d_gdk_window_get_user_data gdk_window_get_user_data = FuncLoader.LoadFunction<d_gdk_window_get_user_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_get_user_data"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_window_set_user_data(IntPtr raw, IntPtr user_data);
 		static d_gdk_window_set_user_data gdk_window_set_user_data = FuncLoader.LoadFunction<d_gdk_window_set_user_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_set_user_data"));
 		public IntPtr UserData {
@@ -112,10 +112,10 @@ namespace Gdk {
 				gdk_window_set_user_data(Handle, value);
 			}
 		} 
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_window_add_filter(IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
 		static d_gdk_window_add_filter gdk_window_add_filter = FuncLoader.LoadFunction<d_gdk_window_add_filter>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_add_filter"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_window_remove_filter(IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
 		static d_gdk_window_remove_filter gdk_window_remove_filter = FuncLoader.LoadFunction<d_gdk_window_remove_filter>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_window_remove_filter"));
 
@@ -189,3 +189,4 @@ namespace Gdk {
 #endif
 	}
 }
+

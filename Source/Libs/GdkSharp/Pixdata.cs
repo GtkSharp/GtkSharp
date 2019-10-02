@@ -22,7 +22,7 @@ namespace Gdk {
 	using System.Runtime.InteropServices;
 
 	public partial struct Pixdata {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_pixdata_serialize(ref Gdk.Pixdata raw, out uint len);
 		static d_gdk_pixdata_serialize gdk_pixdata_serialize = FuncLoader.LoadFunction<d_gdk_pixdata_serialize>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixdata_serialize"));
 	
@@ -37,4 +37,5 @@ namespace Gdk {
 		}
 	}
 }
+
 

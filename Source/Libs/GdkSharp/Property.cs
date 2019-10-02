@@ -25,7 +25,7 @@ namespace Gdk {
 	using System.Runtime.InteropServices;
 
 	public partial class Property {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_property_change2(IntPtr window, IntPtr property, IntPtr type, int format, int mode, out byte data, int nelements);
 		static d_gdk_property_change2 gdk_property_change2 = FuncLoader.LoadFunction<d_gdk_property_change2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_property_change"));
 
@@ -35,7 +35,7 @@ namespace Gdk {
 			gdk_property_change2(window == null ? IntPtr.Zero : window.Handle, property == null ? IntPtr.Zero : property.Handle, type == null ? IntPtr.Zero : type.Handle, format, (int) mode, out data, nelements);
 			return data;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gdk_property_get(IntPtr window, IntPtr property, IntPtr type, UIntPtr offset, UIntPtr length, bool pdelete, out IntPtr actual_property_type, out int actual_format, out int actual_length, out IntPtr data);
 		static d_gdk_property_get gdk_property_get = FuncLoader.LoadFunction<d_gdk_property_get>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_property_get"));
 
@@ -163,4 +163,5 @@ namespace Gdk {
 #endif
 	}
 }
+
 

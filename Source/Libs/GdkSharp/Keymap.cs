@@ -25,7 +25,7 @@ namespace Gdk {
 	using System.Runtime.InteropServices;
 
 	public partial class Keymap {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gdk_keymap_get_entries_for_keycode(IntPtr raw, uint hardware_keycode, out IntPtr keys, out IntPtr keyvals, out int n_entries);
 		static d_gdk_keymap_get_entries_for_keycode gdk_keymap_get_entries_for_keycode = FuncLoader.LoadFunction<d_gdk_keymap_get_entries_for_keycode>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_keymap_get_entries_for_keycode"));
 
@@ -50,7 +50,7 @@ namespace Gdk {
 				keyvals = new uint [0];
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gdk_keymap_get_entries_for_keyval(IntPtr raw, uint keyval, out IntPtr keys, out int n_keys);
 		static d_gdk_keymap_get_entries_for_keyval gdk_keymap_get_entries_for_keyval = FuncLoader.LoadFunction<d_gdk_keymap_get_entries_for_keyval>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_keymap_get_entries_for_keyval"));
 
@@ -71,4 +71,5 @@ namespace Gdk {
 		}
 	}
 }
+
 

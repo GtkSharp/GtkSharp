@@ -25,6 +25,7 @@ namespace GLib {
 	public class MainLoop {
 		private IntPtr handle;
 	
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_main_loop_new(IntPtr context, bool isRunning);
 		static d_g_main_loop_new g_main_loop_new = FuncLoader.LoadFunction<d_g_main_loop_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_new"));
 
@@ -37,6 +38,7 @@ namespace GLib {
 			handle = g_main_loop_new (context.Handle, is_running);
 		}
 		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_main_loop_unref(IntPtr loop);
 		static d_g_main_loop_unref g_main_loop_unref = FuncLoader.LoadFunction<d_g_main_loop_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_unref"));
 
@@ -45,7 +47,7 @@ namespace GLib {
 			g_main_loop_unref (handle);
 			handle = IntPtr.Zero;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_main_loop_is_running(IntPtr loop);
 		static d_g_main_loop_is_running g_main_loop_is_running = FuncLoader.LoadFunction<d_g_main_loop_is_running>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_is_running"));
 
@@ -54,7 +56,7 @@ namespace GLib {
 				return g_main_loop_is_running (handle);
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_main_loop_run(IntPtr loop);
 		static d_g_main_loop_run g_main_loop_run = FuncLoader.LoadFunction<d_g_main_loop_run>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_run"));
 
@@ -62,7 +64,7 @@ namespace GLib {
 		{
 			g_main_loop_run (handle);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_main_loop_quit(IntPtr loop);
 		static d_g_main_loop_quit g_main_loop_quit = FuncLoader.LoadFunction<d_g_main_loop_quit>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_quit"));
 
@@ -70,7 +72,7 @@ namespace GLib {
 		{
 			g_main_loop_quit (handle);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_main_loop_get_context(IntPtr loop);
 		static d_g_main_loop_get_context g_main_loop_get_context = FuncLoader.LoadFunction<d_g_main_loop_get_context>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_loop_get_context"));
 
@@ -95,4 +97,5 @@ namespace GLib {
 		}
 	}
 }
+
 

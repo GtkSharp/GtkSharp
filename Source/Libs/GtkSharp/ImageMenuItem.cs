@@ -24,7 +24,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class ImageMenuItem {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_image_menu_item_new_with_mnemonic(IntPtr label);
 		static d_gtk_image_menu_item_new_with_mnemonic gtk_image_menu_item_new_with_mnemonic = FuncLoader.LoadFunction<d_gtk_image_menu_item_new_with_mnemonic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_menu_item_new_with_mnemonic"));
 
@@ -46,3 +46,4 @@ namespace Gtk {
 		}
 	}
 }
+

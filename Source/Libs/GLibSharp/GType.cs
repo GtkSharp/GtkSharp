@@ -430,38 +430,40 @@ namespace GLib {
 		{
 			return GType.Is (ValFromInstancePtr (raw), this);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_type_class_peek(IntPtr gtype);
 		static d_g_type_class_peek g_type_class_peek = FuncLoader.LoadFunction<d_g_type_class_peek>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_class_peek"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_type_class_ref(IntPtr gtype);
 		static d_g_type_class_ref g_type_class_ref = FuncLoader.LoadFunction<d_g_type_class_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_class_ref"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_type_default_interface_peek(IntPtr gtype);
 		static d_g_type_default_interface_peek g_type_default_interface_peek = FuncLoader.LoadFunction<d_g_type_default_interface_peek>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_default_interface_peek"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_type_default_interface_ref(IntPtr gtype);
 		static d_g_type_default_interface_ref g_type_default_interface_ref = FuncLoader.LoadFunction<d_g_type_default_interface_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_default_interface_ref"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_type_from_name(string name);
 		static d_g_type_from_name g_type_from_name = FuncLoader.LoadFunction<d_g_type_from_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_from_name"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_type_init();
 		static d_g_type_init g_type_init = FuncLoader.LoadFunction<d_g_type_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_init"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_type_name(IntPtr raw);
 		static d_g_type_name g_type_name = FuncLoader.LoadFunction<d_g_type_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_name"));
 		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_type_parent(IntPtr type);
 		static d_g_type_parent g_type_parent = FuncLoader.LoadFunction<d_g_type_parent>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_parent"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_type_query(IntPtr type, out GTypeQuery query);
 		static d_g_type_query g_type_query = FuncLoader.LoadFunction<d_g_type_query>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_query"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_type_register_static(IntPtr parent, IntPtr name, ref GTypeInfo info, int flags);
 		static d_g_type_register_static g_type_register_static = FuncLoader.LoadFunction<d_g_type_register_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_register_static"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_type_is_a(IntPtr type, IntPtr is_a_type);
 		static d_g_type_is_a g_type_is_a = FuncLoader.LoadFunction<d_g_type_is_a>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_is_a"));
 	}
 }
+

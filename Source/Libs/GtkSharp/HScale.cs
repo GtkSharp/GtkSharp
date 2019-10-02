@@ -24,7 +24,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class HScale {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_hscale_new_with_range(double min, double max, double step);
 		static d_gtk_hscale_new_with_range gtk_hscale_new_with_range = FuncLoader.LoadFunction<d_gtk_hscale_new_with_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_hscale_new_with_range"));
 
@@ -45,3 +45,4 @@ namespace Gtk {
 		}
 	}
 }
+

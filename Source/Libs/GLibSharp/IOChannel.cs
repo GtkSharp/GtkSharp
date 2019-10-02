@@ -322,103 +322,103 @@ namespace GLib {
 		{
 			return (IOChannelError) g_io_channel_error_from_errno (en);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_io_channel_unix_new(int fd);
 		static d_g_io_channel_unix_new g_io_channel_unix_new = FuncLoader.LoadFunction<d_g_io_channel_unix_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_unix_new"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_io_channel_new_file(IntPtr filename, IntPtr mode, out IntPtr error);
 		static d_g_io_channel_new_file g_io_channel_new_file = FuncLoader.LoadFunction<d_g_io_channel_new_file>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_new_file"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_io_channel_new_file_utf8(IntPtr filename, IntPtr mode, out IntPtr error);
 		static d_g_io_channel_new_file_utf8 g_io_channel_new_file_utf8 = FuncLoader.LoadFunction<d_g_io_channel_new_file_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_new_file_utf8"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_error_quark();
 		static d_g_io_channel_error_quark g_io_channel_error_quark = FuncLoader.LoadFunction<d_g_io_channel_error_quark>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_error_quark"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_error_from_errno(int en);
 		static d_g_io_channel_error_from_errno g_io_channel_error_from_errno = FuncLoader.LoadFunction<d_g_io_channel_error_from_errno>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_error_from_errno"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_flush(IntPtr raw, out IntPtr error);
 		static d_g_io_channel_flush g_io_channel_flush = FuncLoader.LoadFunction<d_g_io_channel_flush>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_flush"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_io_channel_init(IntPtr raw);
 		static d_g_io_channel_init g_io_channel_init = FuncLoader.LoadFunction<d_g_io_channel_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_init"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_read_chars(IntPtr raw, byte[] buf, UIntPtr count, out UIntPtr bytes_read, out IntPtr error);
 		static d_g_io_channel_read_chars g_io_channel_read_chars = FuncLoader.LoadFunction<d_g_io_channel_read_chars>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_read_chars"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_read_line(IntPtr raw, out IntPtr str_return, IntPtr length, out UIntPtr terminator_pos, out IntPtr error);
 		static d_g_io_channel_read_line g_io_channel_read_line = FuncLoader.LoadFunction<d_g_io_channel_read_line>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_read_line"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_read_to_end(IntPtr raw, out IntPtr str_return, out UIntPtr length, out IntPtr error);
 		static d_g_io_channel_read_to_end g_io_channel_read_to_end = FuncLoader.LoadFunction<d_g_io_channel_read_to_end>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_read_to_end"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_read_unichar(IntPtr raw, out uint thechar, out IntPtr error);
 		static d_g_io_channel_read_unichar g_io_channel_read_unichar = FuncLoader.LoadFunction<d_g_io_channel_read_unichar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_read_unichar"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_seek_position(IntPtr raw, long offset, int type, out IntPtr error);
 		static d_g_io_channel_seek_position g_io_channel_seek_position = FuncLoader.LoadFunction<d_g_io_channel_seek_position>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_seek_position"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_shutdown(IntPtr raw, bool flush, out IntPtr err);
 		static d_g_io_channel_shutdown g_io_channel_shutdown = FuncLoader.LoadFunction<d_g_io_channel_shutdown>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_shutdown"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_write_chars(IntPtr raw, byte[] buf, IntPtr count, out UIntPtr bytes_written, out IntPtr error);
 		static d_g_io_channel_write_chars g_io_channel_write_chars = FuncLoader.LoadFunction<d_g_io_channel_write_chars>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_write_chars"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_write_unichar(IntPtr raw, uint thechar, out IntPtr error);
 		static d_g_io_channel_write_unichar g_io_channel_write_unichar = FuncLoader.LoadFunction<d_g_io_channel_write_unichar>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_write_unichar"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_get_buffer_condition(IntPtr raw);
 		static d_g_io_channel_get_buffer_condition g_io_channel_get_buffer_condition = FuncLoader.LoadFunction<d_g_io_channel_get_buffer_condition>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_buffer_condition"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_io_channel_get_buffered(IntPtr raw);
 		static d_g_io_channel_get_buffered g_io_channel_get_buffered = FuncLoader.LoadFunction<d_g_io_channel_get_buffered>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_buffered"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_io_channel_set_buffered(IntPtr raw, bool buffered);
 		static d_g_io_channel_set_buffered g_io_channel_set_buffered = FuncLoader.LoadFunction<d_g_io_channel_set_buffered>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_buffered"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate UIntPtr d_g_io_channel_get_buffer_size(IntPtr raw);
 		static d_g_io_channel_get_buffer_size g_io_channel_get_buffer_size = FuncLoader.LoadFunction<d_g_io_channel_get_buffer_size>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_buffer_size"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_io_channel_set_buffer_size(IntPtr raw, UIntPtr size);
 		static d_g_io_channel_set_buffer_size g_io_channel_set_buffer_size = FuncLoader.LoadFunction<d_g_io_channel_set_buffer_size>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_buffer_size"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_io_channel_get_close_on_unref(IntPtr raw);
 		static d_g_io_channel_get_close_on_unref g_io_channel_get_close_on_unref = FuncLoader.LoadFunction<d_g_io_channel_get_close_on_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_close_on_unref"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_io_channel_set_close_on_unref(IntPtr raw, bool do_close);
 		static d_g_io_channel_set_close_on_unref g_io_channel_set_close_on_unref = FuncLoader.LoadFunction<d_g_io_channel_set_close_on_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_close_on_unref"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_io_channel_get_encoding(IntPtr raw);
 		static d_g_io_channel_get_encoding g_io_channel_get_encoding = FuncLoader.LoadFunction<d_g_io_channel_get_encoding>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_encoding"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_set_encoding(IntPtr raw, IntPtr encoding, out IntPtr error);
 		static d_g_io_channel_set_encoding g_io_channel_set_encoding = FuncLoader.LoadFunction<d_g_io_channel_set_encoding>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_encoding"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_get_flags(IntPtr raw);
 		static d_g_io_channel_get_flags g_io_channel_get_flags = FuncLoader.LoadFunction<d_g_io_channel_get_flags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_flags"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_set_flags(IntPtr raw, int flags, out IntPtr error);
 		static d_g_io_channel_set_flags g_io_channel_set_flags = FuncLoader.LoadFunction<d_g_io_channel_set_flags>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_flags"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_io_channel_get_line_term(IntPtr raw, out int length);
 		static d_g_io_channel_get_line_term g_io_channel_get_line_term = FuncLoader.LoadFunction<d_g_io_channel_get_line_term>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_get_line_term"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_io_channel_set_line_term(IntPtr raw, byte[] term, int length);
 		static d_g_io_channel_set_line_term g_io_channel_set_line_term = FuncLoader.LoadFunction<d_g_io_channel_set_line_term>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_set_line_term"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_io_channel_unix_get_fd(IntPtr raw);
 		static d_g_io_channel_unix_get_fd g_io_channel_unix_get_fd = FuncLoader.LoadFunction<d_g_io_channel_unix_get_fd>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_unix_get_fd"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_io_channel_ref(IntPtr raw);
 		static d_g_io_channel_ref g_io_channel_ref = FuncLoader.LoadFunction<d_g_io_channel_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_ref"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_io_channel_unref(IntPtr raw);
 		static d_g_io_channel_unref g_io_channel_unref = FuncLoader.LoadFunction<d_g_io_channel_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_channel_unref"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_io_add_watch_full(IntPtr raw, int priority, int condition, IOFuncNative func, IntPtr user_data, DestroyNotify notify);
 		static d_g_io_add_watch_full g_io_add_watch_full = FuncLoader.LoadFunction<d_g_io_add_watch_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_add_watch_full"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_io_create_watch(IntPtr raw, int condition);
 		static d_g_io_create_watch g_io_create_watch = FuncLoader.LoadFunction<d_g_io_create_watch>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_io_create_watch"));
 	}
@@ -472,3 +472,4 @@ namespace GLib {
 		End,
 	}
 }
+

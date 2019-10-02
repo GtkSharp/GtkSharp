@@ -26,6 +26,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Dialog {
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_dialog_new_with_buttons(IntPtr title, IntPtr i, int flags, IntPtr dummy);
 		static d_gtk_dialog_new_with_buttons gtk_dialog_new_with_buttons = FuncLoader.LoadFunction<d_gtk_dialog_new_with_buttons>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_dialog_new_with_buttons"));
 		public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags, params object[] button_data) : base(IntPtr.Zero)
@@ -60,3 +61,4 @@ namespace Gtk {
 		}
 	}
 }
+

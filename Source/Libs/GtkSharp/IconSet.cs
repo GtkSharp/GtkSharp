@@ -19,7 +19,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class IconSet {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		unsafe delegate void d_gtk_icon_set_get_sizes(IntPtr raw, out int *pointer_to_enum, out int n_sizes);
 		static d_gtk_icon_set_get_sizes gtk_icon_set_get_sizes = FuncLoader.LoadFunction<d_gtk_icon_set_get_sizes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_set_get_sizes"));
 
@@ -46,3 +46,4 @@ namespace Gtk {
 		}
 	}
 }
+

@@ -15,28 +15,28 @@ namespace GLib {
 			int i1;
 			int i2;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_mutex_clear(IntPtr raw);
 		static d_g_mutex_clear g_mutex_clear = FuncLoader.LoadFunction<d_g_mutex_clear>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_mutex_clear"));
 
 		public void Clear() {
 			g_mutex_clear(Handle);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_mutex_init(IntPtr raw);
 		static d_g_mutex_init g_mutex_init = FuncLoader.LoadFunction<d_g_mutex_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_mutex_init"));
 
 		public void Init() {
 			g_mutex_init(Handle);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_mutex_lock(IntPtr raw);
 		static d_g_mutex_lock g_mutex_lock = FuncLoader.LoadFunction<d_g_mutex_lock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_mutex_lock"));
 
 		public void Lock() {
 			g_mutex_lock(Handle);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_mutex_trylock(IntPtr raw);
 		static d_g_mutex_trylock g_mutex_trylock = FuncLoader.LoadFunction<d_g_mutex_trylock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_mutex_trylock"));
 
@@ -45,7 +45,7 @@ namespace GLib {
 			bool ret = raw_ret;
 			return ret;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_mutex_unlock(IntPtr raw);
 		static d_g_mutex_unlock g_mutex_unlock = FuncLoader.LoadFunction<d_g_mutex_unlock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_mutex_unlock"));
 
@@ -58,3 +58,4 @@ namespace GLib {
 #endregion
 	}
 }
+

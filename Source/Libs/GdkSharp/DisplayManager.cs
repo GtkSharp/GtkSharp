@@ -24,7 +24,7 @@ namespace Gdk {
 	using System.Runtime.InteropServices;
 
 	public partial class DisplayManager {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_display_manager_list_displays(IntPtr raw);
 		static d_gdk_display_manager_list_displays gdk_display_manager_list_displays = FuncLoader.LoadFunction<d_gdk_display_manager_list_displays>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_display_manager_list_displays"));
 
@@ -41,4 +41,5 @@ namespace Gdk {
 		}
 	}
 }
+
 
