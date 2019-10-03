@@ -40,10 +40,10 @@ namespace Samples
             quitAction.Activated += QuitActivated;
             App.AddAction(quitAction);
 
-            GLib.ExceptionManager.UnhandledException += exceptionArgs =>
-            {
+            //GLib.ExceptionManager.UnhandledException += exceptionArgs =>
+            //{
                 
-            };
+            //};
 
             Win.ShowAll();
             Application.Run();
