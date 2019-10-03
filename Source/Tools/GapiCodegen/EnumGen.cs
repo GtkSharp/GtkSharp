@@ -19,6 +19,8 @@
 // Boston, MA 02111-1307, USA.
 
 
+using System.Runtime.InteropServices;
+
 namespace GtkSharp.Generation {
 
 	using System;
@@ -113,11 +115,11 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (member);
 
 			sw.WriteLine ("\t}");
-
 			if (Elem.HasAttribute ("gtype")) {
 				sw.WriteLine ();
 				sw.WriteLine ("\tinternal class " + Name + "GType {");
                 var funcname = Elem.GetAttribute("gtype");
+                sw.WriteLine ("\t\t[UnmanagedFunctionPointer (CallingConvention.Cdecl)]");
                 sw.WriteLine ("\t\tdelegate IntPtr d_" + funcname + "();");
 				sw.WriteLine ("\t\tstatic d_" + funcname + " " + funcname + " = FuncLoader.LoadFunction<d_" + funcname + ">(FuncLoader.GetProcAddress(GLibrary.Load(\"" + LibraryName + "\"), \"" + funcname + "\"));");
 				sw.WriteLine ();
