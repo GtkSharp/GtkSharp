@@ -6,58 +6,56 @@ class GLibrary
 {
     private static Dictionary<Library, IntPtr> _libraries;
     private static Dictionary<string, IntPtr> _customlibraries;
-    private static List<(Library Library, string WindowsLib, string LinuxLib, string OSXLib)> _libdict;
+    private static Dictionary <Library, string[]> _libraryDefinitions;
 
     static GLibrary()
     {
         _customlibraries = new Dictionary<string, IntPtr>();
         _libraries = new Dictionary<Library, IntPtr>();
-        _libdict = new List<(Library, string, string, string)>();
-        _libdict.Add((Library.GLib, "libglib-2.0-0.dll", "libglib-2.0.so.0", "libglib-2.0.0.dylib"));
-        _libdict.Add((Library.GObject, "libgobject-2.0-0.dll", "libgobject-2.0.so.0", "libgobject-2.0.0.dylib"));
-        _libdict.Add((Library.Cairo, "libcairo-2.dll", "libcairo.so.2", "libcairo.2.dylib"));
-        _libdict.Add((Library.Gio, "libgio-2.0-0.dll", "libgio-2.0.so.0", "libgio-2.0.0.dylib"));
-        _libdict.Add((Library.Atk, "libatk-1.0-0.dll", "libatk-1.0.so.0", "libatk-1.0.0.dylib"));
-        _libdict.Add((Library.Pango, "libpango-1.0-0.dll", "libpango-1.0.so.0", "libpango-1.0.0.dylib"));
-        _libdict.Add((Library.Gdk, "libgdk-3-0.dll", "libgdk-3.so.0", "libgdk-3.0.dylib"));
-        _libdict.Add((Library.GdkPixbuf, "libgdk_pixbuf-2.0-0.dll", "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0.dylib"));
-        _libdict.Add((Library.Gtk, "libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-3.0.dylib"));
-        _libdict.Add((Library.PangoCairo, "libpangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib"));
-    }
-
-    public static IntPtr Load(string libname)
-    {
-        var index = _libdict.FindIndex((e) => (e.WindowsLib == libname || e.LinuxLib == libname || e.OSXLib == libname));
-
-        if (index != -1)
-            return Load(_libdict[index].Library);
-
-        var ret = IntPtr.Zero;
-        if (!_customlibraries.TryGetValue(libname, out ret))
-            _customlibraries[libname] = ret = FuncLoader.LoadLibrary(libname);
-
-        return ret;
+        _libraryDefinitions = new Dictionary<Library, string[]>();
+        _libraryDefinitions[Library.GLib] = new[] { "libglib-2.0-0.dll", "libglib-2.0.so.0", "libglib-2.0.0.dylib", "glib-2.dll" };
+        _libraryDefinitions[Library.GObject] = new[] { "libgobject-2.0-0.dll", "libgobject-2.0.so.0", "libgobject-2.0.0.dylib", "gobject-2.dll" };
+        _libraryDefinitions[Library.Cairo] = new[] { "libcairo-2.dll", "libcairo.so.2", "libcairo.2.dylib", "cairo.dll" };
+        _libraryDefinitions[Library.Gio] = new[] { "libgio-2.0-0.dll", "libgio-2.0.so.0", "libgio-2.0.0.dylib", "gio-2.dll" };
+        _libraryDefinitions[Library.Atk] = new[] { "libatk-1.0-0.dll", "libatk-1.0.so.0", "libatk-1.0.0.dylib", "atk-1.dll" };
+        _libraryDefinitions[Library.Pango] = new[] { "libpango-1.0-0.dll", "libpango-1.0.so.0", "libpango-1.0.0.dylib", "pango-1.dll" };
+        _libraryDefinitions[Library.Gdk] = new[] { "libgdk-3-0.dll", "libgdk-3.so.0", "libgdk-3.0.dylib", "gdk-3.dll" };
+        _libraryDefinitions[Library.GdkPixbuf] = new[] { "libgdk_pixbuf-2.0-0.dll", "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0.dylib", "gdk_pixbuf-2.dll" };
+        _libraryDefinitions[Library.Gtk] = new[] { "libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-3.0.dylib", "gtk-3.dll" };
+        _libraryDefinitions[Library.PangoCairo] = new[] { "libpangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib", "pangocairo-1.dll" };
     }
 
     public static IntPtr Load(Library library)
     {
-        IntPtr ret = IntPtr.Zero;
-        if (!_libraries.TryGetValue(library, out ret))
+        var ret = IntPtr.Zero;
+        if (_libraries.TryGetValue(library, out ret))
+            return ret;
+
+        if (FuncLoader.IsWindows)
+            ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][0]);
+        else if (FuncLoader.IsOSX)
+            ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][2]);
+        else
+            ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][1]);
+
+        if (ret == IntPtr.Zero)
         {
-            var i = _libdict.Find((e) => e.Library == library);
-            var s = i.LinuxLib;
+            for (int i = 0; i < _libraryDefinitions[library].Length; i++)
+            {
+                ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][i]);
 
-            if (FuncLoader.IsWindows)
-                s = i.WindowsLib;
-            else if (FuncLoader.IsOSX)
-                s = i.OSXLib;
-
-            _libraries[library] = ret = FuncLoader.LoadLibrary(s);
+                if (ret != IntPtr.Zero)
+                    break;
+            }
         }
 
         if (ret == IntPtr.Zero)
-            throw new DllNotFoundException(library.ToString());
+        {
+            var err = library + ": " + string.Join(", ", _libraryDefinitions);
+            throw new DllNotFoundException(err);
+        }
 
+        _libraries[library] = ret;
         return ret;
     }
 }

@@ -31,35 +31,12 @@ namespace Gtk {
 		const int WS_EX_TOOLWINDOW = 0x00000080;
 		const int WS_OVERLAPPEDWINDOW = 0x00CF0000;
 
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		delegate IntPtr d_Win32CreateWindow(int dwExStyle, string lpClassName, string lpWindowName,int dwStyle, int x, int y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lParam);
-        static d_Win32CreateWindow Win32CreateWindow;
-
-        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		delegate bool d_Win32DestroyWindow(IntPtr window);
-        static d_Win32DestroyWindow Win32DestroyWindow;
-
         static Application ()
 		{
 			if (!GLib.Thread.Supported)
 				GLib.Thread.Init ();
-
-			switch (Environment.OSVersion.Platform) {
-			case PlatformID.Win32NT:
-			case PlatformID.Win32S:
-			case PlatformID.Win32Windows:
-			case PlatformID.WinCE:
-				Win32CreateWindow = FuncLoader.LoadFunction<d_Win32CreateWindow>(FuncLoader.GetProcAddress(GLibrary.Load("user32.dll"), "CreateWindowExW"));
-				Win32DestroyWindow = FuncLoader.LoadFunction<d_Win32DestroyWindow>(FuncLoader.GetProcAddress(GLibrary.Load("user32.dll"), "DestroyWindow"));
-
-				// No idea why we need to create that window, but it enables visual styles on the Windows platform
-				IntPtr window = Win32CreateWindow (WS_EX_TOOLWINDOW, "static", "gtk-sharp visual styles window", WS_OVERLAPPEDWINDOW, 0, 0, 0, 0, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
-				Win32DestroyWindow (window);
-				break;
-			default:
-				break;
-			}
 		}
+		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_init(ref int argc, ref IntPtr argv);
 		static d_gtk_init gtk_init = FuncLoader.LoadFunction<d_gtk_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_init"));
