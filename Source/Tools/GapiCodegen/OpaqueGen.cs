@@ -186,7 +186,7 @@ namespace GtkSharp.Generation {
 #endif
 			if (set_gvalue != null) {
 				sw.WriteLine("\t\tdelegate IntPtr d_{0}(ref GLib.Value val, IntPtr obj);", set_gvalue.CName);
-                sw.WriteLine("\t\tstatic d_{0} {0} = FuncLoader.LoadFunction<d_{0}>(FuncLoader.GetProcAddress(GLibrary.Load(\"{1}\"), \"{0}\"));", set_gvalue.CName, LibraryName);
+                sw.WriteLine("\t\tstatic d_{0} {0} = FuncLoader.LoadFunction<d_{0}>(FuncLoader.GetProcAddress(GLibrary.Load({1}), \"{0}\"));", set_gvalue.CName, LibraryName);
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic void SetGValue (ref GLib.Value val)");
 				sw.WriteLine ("\t\t{");
