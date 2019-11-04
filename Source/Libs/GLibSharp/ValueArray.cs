@@ -32,7 +32,7 @@ namespace GLib {
 
 		static private IList<IntPtr> PendingFrees = new List<IntPtr> ();
 		static private bool idle_queued = false;
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_array_new(uint n_preallocs);
 		static d_g_value_array_new g_value_array_new = FuncLoader.LoadFunction<d_g_value_array_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_array_new"));
 
@@ -57,7 +57,7 @@ namespace GLib {
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_array_free(IntPtr raw);
 		static d_g_value_array_free g_value_array_free = FuncLoader.LoadFunction<d_g_value_array_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_array_free"));
 
@@ -115,7 +115,7 @@ namespace GLib {
 		public IntPtr ArrayPtr {
 			get { return Native.values; }
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_array_append(IntPtr raw, ref GLib.Value val);
 		static d_g_value_array_append g_value_array_append = FuncLoader.LoadFunction<d_g_value_array_append>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_array_append"));
 
@@ -123,7 +123,7 @@ namespace GLib {
 		{
 			g_value_array_append (Handle, ref val);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_array_insert(IntPtr raw, uint idx, ref GLib.Value val);
 		static d_g_value_array_insert g_value_array_insert = FuncLoader.LoadFunction<d_g_value_array_insert>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_array_insert"));
 
@@ -131,7 +131,7 @@ namespace GLib {
 		{
 			g_value_array_insert (Handle, idx, ref val);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_array_prepend(IntPtr raw, ref GLib.Value val);
 		static d_g_value_array_prepend g_value_array_prepend = FuncLoader.LoadFunction<d_g_value_array_prepend>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_array_prepend"));
 
@@ -139,7 +139,7 @@ namespace GLib {
 		{
 			g_value_array_prepend (Handle, ref val);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_array_remove(IntPtr raw, uint idx);
 		static d_g_value_array_remove g_value_array_remove = FuncLoader.LoadFunction<d_g_value_array_remove>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_array_remove"));
 
@@ -152,7 +152,7 @@ namespace GLib {
 		public int Count {
 			get { return (int) Native.n_values; }
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_array_get_nth(IntPtr raw, uint idx);
 		static d_g_value_array_get_nth g_value_array_get_nth = FuncLoader.LoadFunction<d_g_value_array_get_nth>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_array_get_nth"));
 
@@ -226,7 +226,7 @@ namespace GLib {
 		{
 			return new ListEnumerator (this);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_array_copy(IntPtr raw);
 		static d_g_value_array_copy g_value_array_copy = FuncLoader.LoadFunction<d_g_value_array_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_array_copy"));
 
@@ -235,7 +235,7 @@ namespace GLib {
 		{
 			return new ValueArray (g_value_array_copy (Handle));
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_array_get_type();
 		static d_g_value_array_get_type g_value_array_get_type = FuncLoader.LoadFunction<d_g_value_array_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_array_get_type"));
 
@@ -246,3 +246,4 @@ namespace GLib {
 		}
 	}
 }
+

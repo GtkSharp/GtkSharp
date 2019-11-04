@@ -24,7 +24,7 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public partial class FontFamily {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_font_family_list_faces2(IntPtr raw, out IntPtr faces, out int n_faces);
 		static d_pango_font_family_list_faces2 pango_font_family_list_faces2 = FuncLoader.LoadFunction<d_pango_font_family_list_faces2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_family_list_faces"));
 
@@ -45,7 +45,7 @@ namespace Pango {
 				return result;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_font_family_list_faces(IntPtr raw, IntPtr faces, out int n_faces);
 		static d_pango_font_family_list_faces pango_font_family_list_faces = FuncLoader.LoadFunction<d_pango_font_family_list_faces>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_family_list_faces"));
 
@@ -57,3 +57,4 @@ namespace Pango {
 		}
 	}
 }
+

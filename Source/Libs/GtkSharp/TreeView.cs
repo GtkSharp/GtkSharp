@@ -47,10 +47,10 @@ namespace Gtk {
 			}
 		}
 		*/
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_tree_view_get_path_at_pos(IntPtr raw, int x, int y, out IntPtr path, out IntPtr column, out int cell_x, out int cell_y);
 		static d_gtk_tree_view_get_path_at_pos gtk_tree_view_get_path_at_pos = FuncLoader.LoadFunction<d_gtk_tree_view_get_path_at_pos>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_tree_view_get_path_at_pos2(IntPtr raw, int x, int y, out IntPtr path, out IntPtr column, IntPtr cell_x, IntPtr cell_y);
 		static d_gtk_tree_view_get_path_at_pos2 gtk_tree_view_get_path_at_pos2 = FuncLoader.LoadFunction<d_gtk_tree_view_get_path_at_pos2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_view_get_path_at_pos"));
 
@@ -143,3 +143,4 @@ namespace Gtk {
 		}
 	}
 }
+

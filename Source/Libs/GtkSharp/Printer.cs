@@ -24,7 +24,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Printer {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_enumerate_printers(GtkSharp.PrinterFuncNative func, IntPtr func_data, GLib.DestroyNotify destroy, bool wait);
 		static d_gtk_enumerate_printers gtk_enumerate_printers = FuncLoader.LoadFunction<d_gtk_enumerate_printers>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_enumerate_printers"));
 
@@ -46,3 +46,4 @@ namespace Gtk {
 		}
 	}
 }
+

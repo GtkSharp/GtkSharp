@@ -24,7 +24,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class TreeModelAdapter {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_tree_model_iter_children2(IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
 		static d_gtk_tree_model_iter_children2 gtk_tree_model_iter_children2 = FuncLoader.LoadFunction<d_gtk_tree_model_iter_children2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_children"));
 		public bool IterChildren (out Gtk.TreeIter iter) {
@@ -38,7 +38,7 @@ namespace Gtk {
 			int ret = raw_ret;
 			return ret;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_tree_model_iter_nth_child2(IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
 		static d_gtk_tree_model_iter_nth_child2 gtk_tree_model_iter_nth_child2 = FuncLoader.LoadFunction<d_gtk_tree_model_iter_nth_child2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_nth_child"));
 		public bool IterNthChild (out Gtk.TreeIter iter, int n) {
@@ -184,3 +184,4 @@ namespace Gtk {
 		}
 	}
 }
+

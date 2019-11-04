@@ -25,7 +25,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public class StockManager {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_stock_add_static(ref Gtk.StockItem items, uint n_items);
 		static d_gtk_stock_add_static gtk_stock_add_static = FuncLoader.LoadFunction<d_gtk_stock_add_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_stock_add_static"));
 
@@ -54,7 +54,7 @@ namespace Gtk {
 				return item;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_stock_lookup(IntPtr stock_id, out ConstStockItem item);
 		static d_gtk_stock_lookup gtk_stock_lookup = FuncLoader.LoadFunction<d_gtk_stock_lookup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_stock_lookup"));
 
@@ -75,10 +75,10 @@ namespace Gtk {
 			item = StockItem.Zero;
 			return Lookup (stock_id, ref item);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_stock_add(ref Gtk.StockItem item, uint n_items);
 		static d_gtk_stock_add gtk_stock_add = FuncLoader.LoadFunction<d_gtk_stock_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_stock_add"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_stock_add2(Gtk.StockItem[] items, uint n_items);
 		static d_gtk_stock_add2 gtk_stock_add2 = FuncLoader.LoadFunction<d_gtk_stock_add2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_stock_add"));
 
@@ -100,3 +100,4 @@ namespace Gtk {
 
 	}
 }
+

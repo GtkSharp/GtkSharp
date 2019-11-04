@@ -36,7 +36,7 @@ namespace Gtk {
 
 			return AddUiFromString (new System.IO.StreamReader (s).ReadToEnd ());
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_gtk_ui_manager_new_merge_id(IntPtr raw);
 		static d_gtk_ui_manager_new_merge_id gtk_ui_manager_new_merge_id = FuncLoader.LoadFunction<d_gtk_ui_manager_new_merge_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_new_merge_id"));
 
@@ -44,7 +44,7 @@ namespace Gtk {
 		{
 			return gtk_ui_manager_new_merge_id (Handle);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_ui_manager_get_toplevels(IntPtr raw, int types);
 		static d_gtk_ui_manager_get_toplevels gtk_ui_manager_get_toplevels = FuncLoader.LoadFunction<d_gtk_ui_manager_get_toplevels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_toplevels"));
 
@@ -57,7 +57,7 @@ namespace Gtk {
 
 			return result;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_ui_manager_get_action_groups(IntPtr raw);
 		static d_gtk_ui_manager_get_action_groups gtk_ui_manager_get_action_groups = FuncLoader.LoadFunction<d_gtk_ui_manager_get_action_groups>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_action_groups"));
 
@@ -74,3 +74,4 @@ namespace Gtk {
 		}
 	}
 }
+

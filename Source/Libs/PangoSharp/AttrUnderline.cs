@@ -22,7 +22,7 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public class AttrUnderline : Attribute {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_underline_new(Pango.Underline underline);
 		static d_pango_attr_underline_new pango_attr_underline_new = FuncLoader.LoadFunction<d_pango_attr_underline_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_underline_new"));
 
@@ -37,3 +37,4 @@ namespace Pango {
 		}
 	}
 }
+

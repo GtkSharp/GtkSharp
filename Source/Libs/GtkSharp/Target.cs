@@ -24,7 +24,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Target {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_target_table_new_from_list(IntPtr list, out int n_targets);
 		static d_gtk_target_table_new_from_list gtk_target_table_new_from_list = FuncLoader.LoadFunction<d_gtk_target_table_new_from_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_target_table_new_from_list"));
 
@@ -41,3 +41,4 @@ namespace Gtk {
 		}
 	}
 }
+

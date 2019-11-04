@@ -26,9 +26,10 @@ namespace GLib {
 
 	public class FileUtils
 	{
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_file_get_contents(IntPtr filename, out IntPtr contents, out int length, out IntPtr error);
 		static d_g_file_get_contents g_file_get_contents = FuncLoader.LoadFunction<d_g_file_get_contents>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_file_get_contents"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_file_get_contents_utf8(IntPtr filename, out IntPtr contents, out int length, out IntPtr error);
 		static d_g_file_get_contents_utf8 g_file_get_contents_utf8 = FuncLoader.LoadFunction<d_g_file_get_contents_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_file_get_contents_utf8"));
 
@@ -53,3 +54,4 @@ namespace GLib {
 		private FileUtils () {}
 	}
 }
+

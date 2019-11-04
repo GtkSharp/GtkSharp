@@ -38,7 +38,7 @@ namespace GLib {
 				return GLib.TimeVal.Zero;
 			return (GLib.TimeVal) Marshal.PtrToStructure (raw, typeof (GLib.TimeVal));
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_time_val_add(IntPtr raw, IntPtr microseconds);
 		static d_g_time_val_add g_time_val_add = FuncLoader.LoadFunction<d_g_time_val_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_add"));
 
@@ -49,7 +49,7 @@ namespace GLib {
 			ReadNative (this_as_native, ref this);
 			System.Runtime.InteropServices.Marshal.FreeHGlobal (this_as_native);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_time_val_to_iso8601(IntPtr raw);
 		static d_g_time_val_to_iso8601 g_time_val_to_iso8601 = FuncLoader.LoadFunction<d_g_time_val_to_iso8601>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_to_iso8601"));
 
@@ -62,7 +62,7 @@ namespace GLib {
 			System.Runtime.InteropServices.Marshal.FreeHGlobal (this_as_native);
 			return ret;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_time_val_from_iso8601(IntPtr iso_date, IntPtr time_);
 		static d_g_time_val_from_iso8601 g_time_val_from_iso8601 = FuncLoader.LoadFunction<d_g_time_val_from_iso8601>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_from_iso8601"));
 
@@ -103,3 +103,4 @@ namespace GLib {
 #endregion
 	}
 }
+

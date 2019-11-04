@@ -189,7 +189,7 @@ namespace GLib {
 			fullname += type.Name.Substring (1); // IActivatable -> Activatable
 			return fullname + "Adapter";
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_unref(IntPtr item);
 		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
@@ -287,3 +287,4 @@ namespace GLib {
 		abstract public object Clone ();
 	}
 }
+

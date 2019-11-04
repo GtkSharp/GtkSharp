@@ -24,7 +24,7 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public partial struct GlyphItem {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_glyph_item_apply_attrs(ref Pango.GlyphItem raw, IntPtr text, IntPtr list);
 		static d_pango_glyph_item_apply_attrs pango_glyph_item_apply_attrs = FuncLoader.LoadFunction<d_pango_glyph_item_apply_attrs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_glyph_item_apply_attrs"));
 
@@ -54,3 +54,4 @@ namespace Pango {
 		}
 	}
 }
+

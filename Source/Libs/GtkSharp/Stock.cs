@@ -24,7 +24,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Stock {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_stock_list_ids();
 		static d_gtk_stock_list_ids gtk_stock_list_ids = FuncLoader.LoadFunction<d_gtk_stock_list_ids>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_stock_list_ids"));
 
@@ -48,7 +48,7 @@ namespace Gtk {
 			public uint Keyval;
 			public IntPtr TranslationDomain;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_stock_lookup(IntPtr stock_id, out ConstStockItem item);
 		static d_gtk_stock_lookup gtk_stock_lookup = FuncLoader.LoadFunction<d_gtk_stock_lookup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_stock_lookup"));
 
@@ -71,3 +71,4 @@ namespace Gtk {
 		}
 	}
 }
+

@@ -22,10 +22,10 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public class AttrSize : Attribute {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_size_new(int size);
 		static d_pango_attr_size_new pango_attr_size_new = FuncLoader.LoadFunction<d_pango_attr_size_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_size_new"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_size_new_absolute(int size);
 		static d_pango_attr_size_new_absolute pango_attr_size_new_absolute = FuncLoader.LoadFunction<d_pango_attr_size_new_absolute>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_size_new_absolute"));
 
@@ -56,3 +56,4 @@ namespace Pango {
 		}
 	}
 }
+

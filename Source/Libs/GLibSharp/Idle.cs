@@ -69,6 +69,7 @@ namespace GLib {
 		{
 		}
 		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_idle_add(IdleHandlerInternal d, IntPtr data);
 		static d_g_idle_add g_idle_add = FuncLoader.LoadFunction<d_g_idle_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add"));
 
@@ -83,7 +84,7 @@ namespace GLib {
 
 			return p.ID;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_idle_add_full(int priority, IdleHandlerInternal d, IntPtr data, DestroyNotify notify);
 		static d_g_idle_add_full g_idle_add_full = FuncLoader.LoadFunction<d_g_idle_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add_full"));
 
@@ -110,4 +111,5 @@ namespace GLib {
 		}
 	}
 }
+
 

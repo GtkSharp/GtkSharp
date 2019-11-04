@@ -30,7 +30,7 @@ namespace GLib
 		public Application () : this (null, ApplicationFlags.None)
 		{
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_application_run(IntPtr raw, int argc, IntPtr argv);
 		static d_g_application_run g_application_run = FuncLoader.LoadFunction<d_g_application_run>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_application_run"));
 
@@ -65,3 +65,4 @@ namespace GLib
 		}
 	}
 }
+

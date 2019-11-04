@@ -34,7 +34,7 @@ namespace Gdk {
 			Blue = (ushort) (b << 8 | b);
 			Pixel = 0;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_gdk_color_hash(ref Gdk.Color raw);
 		static d_gdk_color_hash gdk_color_hash = FuncLoader.LoadFunction<d_gdk_color_hash>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_color_hash"));
 
@@ -43,4 +43,5 @@ namespace Gdk {
 		}
 	}
 }
+
 

@@ -24,7 +24,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class RadioToolButton {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_radio_tool_button_new(IntPtr group);
 		static d_gtk_radio_tool_button_new gtk_radio_tool_button_new = FuncLoader.LoadFunction<d_gtk_radio_tool_button_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_tool_button_new"));
 
@@ -45,7 +45,7 @@ namespace Gtk {
 			}
 			Raw = gtk_radio_tool_button_new(native_group);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_radio_tool_button_new_from_stock(IntPtr group, IntPtr stock_id);
 		static d_gtk_radio_tool_button_new_from_stock gtk_radio_tool_button_new_from_stock = FuncLoader.LoadFunction<d_gtk_radio_tool_button_new_from_stock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_tool_button_new_from_stock"));
 
@@ -71,10 +71,10 @@ namespace Gtk {
 			Raw = gtk_radio_tool_button_new_from_stock(native_group, stock_id_as_native);
 			GLib.Marshaller.Free (stock_id_as_native);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_radio_tool_button_get_group(IntPtr raw);
 		static d_gtk_radio_tool_button_get_group gtk_radio_tool_button_get_group = FuncLoader.LoadFunction<d_gtk_radio_tool_button_get_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_tool_button_get_group"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_radio_tool_button_set_group(IntPtr raw, IntPtr list);
 		static d_gtk_radio_tool_button_set_group gtk_radio_tool_button_set_group = FuncLoader.LoadFunction<d_gtk_radio_tool_button_set_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_tool_button_set_group"));
 
@@ -99,3 +99,4 @@ namespace Gtk {
 		}
 	}
 }
+

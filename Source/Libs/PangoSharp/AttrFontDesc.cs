@@ -22,10 +22,10 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public class AttrFontDesc : Attribute {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_font_desc_new(IntPtr font_desc);
 		static d_pango_attr_font_desc_new pango_attr_font_desc_new = FuncLoader.LoadFunction<d_pango_attr_font_desc_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_font_desc_new"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_font_description_copy(IntPtr raw);
 		static d_pango_font_description_copy pango_font_description_copy = FuncLoader.LoadFunction<d_pango_font_description_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_description_copy"));
 
@@ -46,3 +46,4 @@ namespace Pango {
 		}
 	}
 }
+

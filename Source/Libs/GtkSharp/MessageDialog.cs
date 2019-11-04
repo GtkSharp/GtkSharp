@@ -19,10 +19,10 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class MessageDialog {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_message_dialog_new(IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, IntPtr msg, IntPtr args);
 		static d_gtk_message_dialog_new gtk_message_dialog_new = FuncLoader.LoadFunction<d_gtk_message_dialog_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_message_dialog_new"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_message_dialog_new_with_markup(IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, IntPtr msg, IntPtr args);
 		static d_gtk_message_dialog_new_with_markup gtk_message_dialog_new_with_markup = FuncLoader.LoadFunction<d_gtk_message_dialog_new_with_markup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_message_dialog_new_with_markup"));
 
@@ -47,3 +47,4 @@ namespace Gtk {
 
 	}
 }
+

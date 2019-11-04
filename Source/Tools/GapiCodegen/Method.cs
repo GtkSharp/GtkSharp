@@ -192,7 +192,9 @@ namespace GtkSharp.Generation {
 			import_sig += !IsStatic && Parameters.Count > 0 ? ", " : "";
 			import_sig += Parameters.ImportSignature.ToString();
 
-			if (retval.MarshalType.StartsWith("[return:"))
+            sw.WriteLine("\t\t[UnmanagedFunctionPointer (CallingConvention.Cdecl)]");
+
+            if (retval.MarshalType.StartsWith("[return:"))
 				sw.WriteLine("\t\tdelegate " + retval.CSType + " d_" + CName + "(" + import_sig + ");");
 			else
                 sw.WriteLine("\t\tdelegate " + retval.MarshalType + " d_" + CName + "(" + import_sig + ");");

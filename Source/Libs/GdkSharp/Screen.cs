@@ -24,7 +24,7 @@ namespace Gdk {
 	using System.Runtime.InteropServices;
 
 	public partial class Screen {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_screen_get_toplevel_windows(IntPtr raw);
 		static d_gdk_screen_get_toplevel_windows gdk_screen_get_toplevel_windows = FuncLoader.LoadFunction<d_gdk_screen_get_toplevel_windows>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_screen_get_toplevel_windows"));
 
@@ -41,7 +41,7 @@ namespace Gdk {
 				return result;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_screen_list_visuals(IntPtr raw);
 		static d_gdk_screen_list_visuals gdk_screen_list_visuals = FuncLoader.LoadFunction<d_gdk_screen_list_visuals>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_screen_list_visuals"));
 
@@ -56,10 +56,10 @@ namespace Gdk {
 				result [i] = list [i] as Visual;
 			return result;
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_screen_get_font_options(IntPtr raw);
 		static d_gdk_screen_get_font_options gdk_screen_get_font_options = FuncLoader.LoadFunction<d_gdk_screen_get_font_options>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_screen_get_font_options"));
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gdk_screen_set_font_options(IntPtr raw, IntPtr options);
 		static d_gdk_screen_set_font_options gdk_screen_set_font_options = FuncLoader.LoadFunction<d_gdk_screen_set_font_options>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_screen_set_font_options"));
 
@@ -78,4 +78,5 @@ namespace Gdk {
 		}
 	}
 }
+
 

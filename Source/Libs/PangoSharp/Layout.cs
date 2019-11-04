@@ -25,7 +25,7 @@ namespace Pango {
 	using System.Runtime.InteropServices;
 
 	public partial class Layout {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_layout_get_lines(IntPtr raw);
 		static d_pango_layout_get_lines pango_layout_get_lines = FuncLoader.LoadFunction<d_pango_layout_get_lines>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_lines"));
 
@@ -42,7 +42,7 @@ namespace Pango {
 				return result;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_set_markup_with_accel(IntPtr raw, IntPtr markup, int length, uint accel_marker, out uint accel_char);
 		static d_pango_layout_set_markup_with_accel pango_layout_set_markup_with_accel = FuncLoader.LoadFunction<d_pango_layout_set_markup_with_accel>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_markup_with_accel"));
 
@@ -54,7 +54,7 @@ namespace Pango {
 			GLib.Marshaller.Free (native_markup);
 			accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_get_log_attrs(IntPtr raw, out IntPtr attrs, out int n_attrs);
 		static d_pango_layout_get_log_attrs pango_layout_get_log_attrs = FuncLoader.LoadFunction<d_pango_layout_get_log_attrs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_log_attrs"));
 
@@ -75,7 +75,7 @@ namespace Pango {
 				return result;
 			}
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_set_text(IntPtr raw, IntPtr text, int length);
 		static d_pango_layout_set_text pango_layout_set_text = FuncLoader.LoadFunction<d_pango_layout_set_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_text"));
 
@@ -85,7 +85,7 @@ namespace Pango {
 			pango_layout_set_text (Handle, native_text, -1);
 			GLib.Marshaller.Free (native_text);
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_set_markup(IntPtr raw, IntPtr markup, int length);
 		static d_pango_layout_set_markup pango_layout_set_markup = FuncLoader.LoadFunction<d_pango_layout_set_markup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_markup"));
 
@@ -97,3 +97,4 @@ namespace Pango {
 		}
 	}
 }
+

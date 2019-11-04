@@ -25,7 +25,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Plug {
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_plug_new(UIntPtr socket_id);
 		static d_gtk_plug_new gtk_plug_new = FuncLoader.LoadFunction<d_gtk_plug_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_plug_new"));
 
@@ -38,7 +38,7 @@ namespace Gtk {
 			}
 			Raw = gtk_plug_new (new UIntPtr (socket_id));
 		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_plug_new_for_display(IntPtr display, UIntPtr socket_id);
 		static d_gtk_plug_new_for_display gtk_plug_new_for_display = FuncLoader.LoadFunction<d_gtk_plug_new_for_display>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_plug_new_for_display"));
 
@@ -53,3 +53,4 @@ namespace Gtk {
 		}
 	}
 }
+
