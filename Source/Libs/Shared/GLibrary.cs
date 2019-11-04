@@ -1,9 +1,13 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
 
 class GLibrary
 {
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool SetDllDirectory(string lpPathName);
+
     private static Dictionary<Library, IntPtr> _libraries;
     private static Dictionary<string, IntPtr> _customlibraries;
     private static Dictionary <Library, string[]> _libraryDefinitions;
@@ -32,17 +36,17 @@ class GLibrary
             return ret;
 
         if (FuncLoader.IsWindows)
-            ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][0]);
+            ret = LoadLibrary(_libraryDefinitions[library][0]);
         else if (FuncLoader.IsOSX)
-            ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][2]);
+            ret = LoadLibrary(_libraryDefinitions[library][2]);
         else
-            ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][1]);
+            ret = LoadLibrary(_libraryDefinitions[library][1]);
 
         if (ret == IntPtr.Zero)
         {
             for (int i = 0; i < _libraryDefinitions[library].Length; i++)
             {
-                ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][i]);
+                ret = LoadLibrary(_libraryDefinitions[library][i]);
 
                 if (ret != IntPtr.Zero)
                     break;
@@ -51,11 +55,34 @@ class GLibrary
 
         if (ret == IntPtr.Zero)
         {
-            var err = library + ": " + string.Join(", ", _libraryDefinitions);
+            var err = library + ": " + string.Join(", ", _libraryDefinitions[library]);
             throw new DllNotFoundException(err);
         }
 
         _libraries[library] = ret;
+        return ret;
+    }
+
+    private static IntPtr LoadLibrary(string libname)
+    {
+        var ret = FuncLoader.LoadLibrary(libname);
+        if (ret != IntPtr.Zero)
+            return ret;
+        
+        // Hacky solution to load libraries on Windows
+        if (FuncLoader.IsWindows)
+        {
+            var assemblyLocation = Path.GetDirectoryName(@"C:\Users\harry\.nuget\packages\glibsharp\3.22.24.47\lib\netstandard2.0\GLibSharp.dll");
+            var assemblyVersionDir = Path.GetDirectoryName(Path.GetDirectoryName(assemblyLocation));
+            var version = Path.GetFileName(assemblyVersionDir);
+            var gtkdir = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(assemblyVersionDir)), "gtksharp");
+            var nativeLibDir = Path.Combine(gtkdir, version, "runtimes", "win-x64", "native");
+            
+            SetDllDirectory(nativeLibDir);
+
+            ret = FuncLoader.LoadLibrary(Path.Combine(nativeLibDir, libname));
+        }
+
         return ret;
     }
 }
