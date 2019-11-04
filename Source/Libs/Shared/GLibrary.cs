@@ -72,7 +72,7 @@ class GLibrary
         // Hacky solution to load libraries on Windows
         if (FuncLoader.IsWindows)
         {
-            var assemblyLocation = Path.GetDirectoryName(@"C:\Users\harry\.nuget\packages\glibsharp\3.22.24.47\lib\netstandard2.0\GLibSharp.dll");
+            var assemblyLocation = Path.GetDirectoryName(typeof(GLibrary).Assembly.Location);
             var assemblyVersionDir = Path.GetDirectoryName(Path.GetDirectoryName(assemblyLocation));
             var version = Path.GetFileName(assemblyVersionDir);
             var gtkdir = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(assemblyVersionDir)), "gtksharp");
