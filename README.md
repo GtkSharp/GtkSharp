@@ -1,5 +1,7 @@
 # GtkSharp
 
+[![Build Status](https://dev.azure.com/cra0zy/GtkSharp/_apis/build/status/GtkSharp.GtkSharp?branchName=develop)](https://dev.azure.com/cra0zy/GtkSharp/_build/latest?definitionId=1&branchName=develop)
+
 GtkSharp is a C# wrapper for Gtk and its related components. The component list includes the following libraries: glib, gio, cairo, pango, atk, gdk. This is a fork of https://github.com/mono/gtk-sharp and is maintained completly separatly from that project.
 
 Differences can be seen with the following table:
@@ -8,8 +10,6 @@ Differences can be seen with the following table:
 |:--------------|:-------------------|:---------------------------------------------------|:------------------------------|
 | GtkSharp      | .NET Standard 2.0  | Gtk 3.22                                           | Does not need glue libraries. |
 | mono/gtksharp | .NET Framework 4.5 | Gtk 2 (also Gtk 3.0 but never officially released) |                               |
-
-[![Build Status](https://dev.azure.com/cra0zy/GtkSharp/_apis/build/status/GtkSharp.GtkSharp?branchName=develop)](https://dev.azure.com/cra0zy/GtkSharp/_build/latest?definitionId=1&branchName=develop)
 
 * [Building from source](#building-from-source)
 * [Using the library](#using-the-library)
