@@ -1,0 +1,16 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <GtkUrl Condition=" '$(GtkUrl)' == '' ">https://github.com/GtkSharp/Dependencies/raw/master/gtk-3.24.zip</GtkUrl>
+    <GtkDir Condition=" '$(GtkDir)' == '' ">$(LOCALAPPDATA)\Gtk\3.24</GtkDir>
+  </PropertyGroup>
+
+  <Target Name="InstallGtk" BeforeTargets="Build" Condition=" '$(SkipGtkInstall)' != 'True' and !Exists('$(GtkDir)/libgtk-3-0.dll') ">
+    <Message Importance="High" Text="Gtk has not been detected, downloading and installing it, set SkipGtkInstall to True to skip theese steps."/>
+    <Message Importance="High" Text="Ignore Gtk extract errors, bug msbuild/issues/3884"/>
+    <MakeDir Directories="$(GtkDir)"/>
+    <DownloadFile SourceUrl="$(GtkUrl)" DestinationFolder="$(GtkDir)" DestinationFileName="gtk.zip" />
+    <Unzip ContinueOnError="true" SourceFiles="$(GtkDir)/gtk.zip" DestinationFolder="$(GtkDir)" />
+  </Target>
+
+</Project>
