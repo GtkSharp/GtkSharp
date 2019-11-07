@@ -36,17 +36,25 @@ class GLibrary
             return ret;
 
         if (FuncLoader.IsWindows)
-            ret = LoadLibrary(_libraryDefinitions[library][0]);
+        {
+            ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][0]);
+
+            if (ret == IntPtr.Zero)
+            {
+                SetDllDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Gtk", "3.24"));
+                ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][0]);
+            }
+        }
         else if (FuncLoader.IsOSX)
-            ret = LoadLibrary(_libraryDefinitions[library][2]);
+            ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][2]);
         else
-            ret = LoadLibrary(_libraryDefinitions[library][1]);
+            ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][1]);
 
         if (ret == IntPtr.Zero)
         {
             for (int i = 0; i < _libraryDefinitions[library].Length; i++)
             {
-                ret = LoadLibrary(_libraryDefinitions[library][i]);
+                ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][i]);
 
                 if (ret != IntPtr.Zero)
                     break;
@@ -60,29 +68,6 @@ class GLibrary
         }
 
         _libraries[library] = ret;
-        return ret;
-    }
-
-    private static IntPtr LoadLibrary(string libname)
-    {
-        var ret = FuncLoader.LoadLibrary(libname);
-        if (ret != IntPtr.Zero)
-            return ret;
-        
-        // Hacky solution to load libraries on Windows
-        if (FuncLoader.IsWindows)
-        {
-            var assemblyLocation = Path.GetDirectoryName(typeof(GLibrary).Assembly.Location);
-            var assemblyVersionDir = Path.GetDirectoryName(Path.GetDirectoryName(assemblyLocation));
-            var version = Path.GetFileName(assemblyVersionDir);
-            var gtkdir = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(assemblyVersionDir)), "gtksharp");
-            var nativeLibDir = Path.Combine(gtkdir, version, "runtimes", "win-x64", "native");
-            
-            SetDllDirectory(nativeLibDir);
-
-            ret = FuncLoader.LoadLibrary(Path.Combine(nativeLibDir, libname));
-        }
-
         return ret;
     }
 }
