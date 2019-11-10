@@ -39,11 +39,7 @@ A breakdown on how the source is structured:
 
 ## Using the library
 
-On all systems, the library assumes that you have Gtk installed on your system.
-
-See [Installing Gtk on Windows](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Windows) wiki page for more details on how to do it on Windows.
-
-See [Installing Gtk on Mac](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Mac) wiki page for more details on how to do it on macOS.
+On macOS, you'll need to manually install Gtk, see [Installing Gtk on Mac](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Mac) wiki page for more details on how to do it.
 
 Available NuGet packages:
 
