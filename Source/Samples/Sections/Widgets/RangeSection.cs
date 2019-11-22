@@ -1,4 +1,3 @@
-
 // This is free and unencumbered software released into the public domain.
 // Happy coding!!! - GtkSharp Team
 
@@ -9,9 +8,6 @@ namespace Samples
     [Section(ContentType = typeof(Range), Category = Category.Widgets)]
     class RangeSection : ListSection
     {
-        static HScale hScale;
-        static VScale vScale;
-
         public RangeSection()
         {
             AddItem(CreateHorizontalRange());
@@ -20,9 +16,8 @@ namespace Samples
 
         public (string, Widget) CreateHorizontalRange()
         {
-            Adjustment adj;
-            adj = new Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0);
-            hScale = new HScale(adj);
+            var adj = new Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0);
+            var hScale = new HScale(adj);
             hScale.SetSizeRequest(200, -1);
             hScale.ValueChanged += (sender, e) => ApplicationOutput.WriteLine(sender, $"Value Change: {((HScale)sender).Value}");
             return ("Horizontal", hScale);
@@ -30,13 +25,11 @@ namespace Samples
 
         public (string, Widget) CreateVerticalRange()
         {
-            Adjustment adj;
-            adj = new Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0);
-            vScale = new VScale(adj);
+            var adj = new Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0);
+            var vScale = new VScale(adj);
             vScale.SetSizeRequest(-1, 200);
             vScale.ValueChanged += (sender, e) => ApplicationOutput.WriteLine(sender, $"Value Change: {((VScale)sender).Value}");
             return ("Vertical", vScale);
         }
-
     }
 }
