@@ -52,7 +52,7 @@ namespace Gtk {
 
 		public Gtk.Entry Entry {
 			get {
-				return (Gtk.Entry)Child;
+				return Child as Gtk.Entry;
 			}
 		}
 
