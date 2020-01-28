@@ -8,7 +8,7 @@
 // Copyright (c) 2013 Andres G. Aragoneses
 //
 // This program is free software; you can redistribute it and/or
-// modify it under the terms of version 2 of the Lesser GNU General 
+// modify it under the terms of version 2 of the Lesser GNU General
 // Public License as published by the Free Software Foundation.
 //
 // This program is distributed in the hope that it will be useful,
@@ -68,7 +68,7 @@ namespace GLib {
 			handle = IntPtr.Zero;
 			if (tref == null)
 				return;
-			
+
 			if (disposing)
 				tref.Dispose ();
 			else
@@ -92,7 +92,10 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_unref(IntPtr raw);
 		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
-		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate bool d_g_object_is_floating(IntPtr raw);
+		static d_g_object_is_floating g_object_is_floating = FuncLoader.LoadFunction<d_g_object_is_floating>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_is_floating"));
+
 		public static Object TryGetObject (IntPtr o)
 		{
 			if (o == IntPtr.Zero)
@@ -133,14 +136,25 @@ namespace GLib {
 				return obj;
 			}
 
-			if (!owned_ref)
+			bool unexpected_owned_floating = false;
+			// If we don't get an owned reference here then we need to increase the
+			// reference count as CreateObject() always takes an owned reference.
+			// If we get a floating reference passed, however, then we assume that
+			// we actually own it and have to sink the floating reference, which
+			// will happen in the setter for Raw later.
+			if (!owned_ref && !g_object_is_floating(o))
 				g_object_ref (o);
+			else if (owned_ref && g_object_is_floating(o))
+				unexpected_owned_floating = true;
 
-			obj = GLib.ObjectManager.CreateObject(o); 
+			obj = GLib.ObjectManager.CreateObject(o);
 			if (obj == null) {
 				g_object_unref (o);
 				return null;
 			}
+
+			if (unexpected_owned_floating)
+				Console.Error.WriteLine ("Unexpected owned floating reference of " + obj.GetType() + " instance. This will be leaked");
 
 			return obj;
 		}
@@ -457,7 +471,7 @@ namespace GLib {
 		{
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			g_object_class_override_property (oclass, property_id, native_name);
-			GLib.Marshaller.Free (native_name);	
+			GLib.Marshaller.Free (native_name);
 		}
 
 		[Obsolete ("Use OverrideProperty(oclass,property_id,name)")]
@@ -641,6 +655,10 @@ namespace GLib {
 		delegate IntPtr d_g_object_newv(IntPtr gtype, int n_params, GParameter[] parms);
 		static d_g_object_newv g_object_newv = FuncLoader.LoadFunction<d_g_object_newv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_newv"));
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_g_object_ref_sink(IntPtr raw);
+		static d_g_object_ref_sink g_object_ref_sink = FuncLoader.LoadFunction<d_g_object_ref_sink>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref_sink"));
+
 		protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
 			GType gtype = LookupGType ();
@@ -682,6 +700,13 @@ namespace GLib {
 						}
 					}
 
+					// All references that we get here are assumed to be owned by us. If we
+					// get a floating reference then we should take ownership of it by
+					// sinking it.
+					if (value != IntPtr.Zero && g_object_is_floating(value)) {
+						g_object_ref_sink(value);
+					}
+
 					handle = value;
 					if (value != IntPtr.Zero) {
 						tref = new ToggleRef (this);
@@ -689,7 +714,7 @@ namespace GLib {
 					}
 				}
 			}
-		}	
+		}
 
 		public static GLib.GType GType {
 			get { return GType.Object; }
@@ -742,10 +767,10 @@ namespace GLib {
 
 		System.Collections.Hashtable data;
 		public System.Collections.Hashtable Data {
-			get { 
+			get {
 				if (data == null)
 					data = new System.Collections.Hashtable ();
-				
+
 				return data;
 			}
 		}
