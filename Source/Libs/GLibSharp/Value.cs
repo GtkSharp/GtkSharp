@@ -711,8 +711,8 @@ namespace GLib {
 		delegate float d_g_value_get_float(ref Value val);
 		static d_g_value_get_float g_value_get_float = FuncLoader.LoadFunction<d_g_value_get_float>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_float"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_g_value_get_gtype(ref Value val);
-		static d_g_value_get_type g_value_get_gtype = FuncLoader.LoadFunction<d_g_value_get_variant>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_gtype"));
+		delegate GLib.GType d_g_value_get_gtype(ref Value val);
+		static d_g_value_get_gtype g_value_get_gtype = FuncLoader.LoadFunction<d_g_value_get_gtype>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_gtype"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_value_get_int(ref Value val);
 		static d_g_value_get_int g_value_get_int = FuncLoader.LoadFunction<d_g_value_get_int>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_int"));

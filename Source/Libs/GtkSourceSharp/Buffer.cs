@@ -5,7 +5,6 @@
     {
         public Buffer() : base(IntPtr.Zero)
         {
-            owned = true;
             Raw = gtk_source_buffer_new(IntPtr.Zero);
         }
     }
