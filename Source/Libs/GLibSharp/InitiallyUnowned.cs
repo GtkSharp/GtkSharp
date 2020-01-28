@@ -5,7 +5,7 @@
 // Copyright (c) 2004-2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
-// modify it under the terms of version 2 of the Lesser GNU General 
+// modify it under the terms of version 2 of the Lesser GNU General
 // Public License as published by the Free Software Foundation.
 //
 // This program is distributed in the hope that it will be useful,
@@ -38,26 +38,19 @@ namespace GLib {
 			}
 		}
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_ref_sink(IntPtr raw);
 		static d_g_object_ref_sink g_object_ref_sink = FuncLoader.LoadFunction<d_g_object_ref_sink>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref_sink"));
 
-		protected override IntPtr Raw {
-			get {
-				return base.Raw;
-			}
-			set {
-				if (value != IntPtr.Zero)
-					g_object_ref_sink (value);
-				base.Raw = value;
-			}
-		}
-
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_object_is_floating(IntPtr raw);
 		static d_g_object_is_floating g_object_is_floating = FuncLoader.LoadFunction<d_g_object_is_floating>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_is_floating"));
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_force_floating(IntPtr raw);
 		static d_g_object_force_floating g_object_force_floating = FuncLoader.LoadFunction<d_g_object_force_floating>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_force_floating"));
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_unref(IntPtr raw);
 		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
