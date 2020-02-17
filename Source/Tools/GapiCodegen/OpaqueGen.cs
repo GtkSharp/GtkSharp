@@ -146,7 +146,7 @@ namespace GtkSharp.Generation {
 			if (finalizer_needed) {
 				sw.WriteLine ("\t\tclass FinalizerInfo {");
 				sw.WriteLine ("\t\t\tIntPtr handle;");
-				sw.WriteLine ("\t\t\tuint timeoutHandlerId;");
+				sw.WriteLine ("\t\t\tpublic uint timeoutHandlerId;");
 				sw.WriteLine ();
 				sw.WriteLine ("\t\t\tpublic FinalizerInfo (IntPtr handle)");
 				sw.WriteLine ("\t\t\t{");
