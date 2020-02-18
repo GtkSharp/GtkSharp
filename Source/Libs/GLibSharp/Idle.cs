@@ -78,7 +78,9 @@ namespace GLib {
 			IdleProxy p = new IdleProxy (hndlr);
 			lock (p)
 			{
-				p.ID = g_idle_add ((IdleHandlerInternal) p.proxy_handler, IntPtr.Zero);
+				var gch = GCHandle.Alloc(p);
+				var userData = GCHandle.ToIntPtr(gch);
+				p.ID = g_idle_add_full (0, (IdleHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
 				Source.AddSourceHandler (p.ID, p);
 			}
 
