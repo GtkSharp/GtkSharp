@@ -10,7 +10,7 @@
 // Copyright (c) 2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
-// modify it under the terms of version 2 of the Lesser GNU General 
+// modify it under the terms of version 2 of the Lesser GNU General
 // Public License as published by the Free Software Foundation.
 //
 // This program is distributed in the hope that it will be useful,
@@ -64,14 +64,14 @@ namespace GLib {
 				return false;
 			}
 		}
-		
+
 		private Idle ()
 		{
 		}
-		
+
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate uint d_g_idle_add(IdleHandlerInternal d, IntPtr data);
-		static d_g_idle_add g_idle_add = FuncLoader.LoadFunction<d_g_idle_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add"));
+		delegate uint d_g_idle_add_full(int priority, IdleHandlerInternal d, IntPtr data, DestroyNotify notify);
+		static d_g_idle_add_full g_idle_add_full = FuncLoader.LoadFunction<d_g_idle_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add_full"));
 
 		public static uint Add (IdleHandler hndlr)
 		{
@@ -81,35 +81,14 @@ namespace GLib {
 				var gch = GCHandle.Alloc(p);
 				var userData = GCHandle.ToIntPtr(gch);
 				p.ID = g_idle_add_full (0, (IdleHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
-				Source.AddSourceHandler (p.ID, p);
 			}
 
 			return p.ID;
 		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate uint d_g_idle_add_full(int priority, IdleHandlerInternal d, IntPtr data, DestroyNotify notify);
-		static d_g_idle_add_full g_idle_add_full = FuncLoader.LoadFunction<d_g_idle_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add_full"));
 
-		public static uint Add (IdleHandler hndlr, Priority priority)
-		{
-			IdleProxy p = new IdleProxy (hndlr);
-			lock (p)
-			{
-				p.ID = g_idle_add_full ((int)priority, (IdleHandlerInternal)p.proxy_handler, IntPtr.Zero, null);
-				Source.AddSourceHandler (p.ID, p);
-			}
-
-			return p.ID;
-		}
-		
 		public static void Remove (uint id)
 		{
 			Source.Remove (id);
-		}
-
-		public static bool Remove (IdleHandler hndlr)
-		{
-			return Source.RemoveSourceHandler (hndlr);
 		}
 	}
 }
