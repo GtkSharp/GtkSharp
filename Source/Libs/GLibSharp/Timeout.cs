@@ -73,7 +73,9 @@ namespace GLib {
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 			lock (p)
 			{
-				p.ID = g_timeout_add (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
+				var gch = GCHandle.Alloc(p);
+				var userData = GCHandle.ToIntPtr(gch);
+				p.ID = g_timeout_add_full (0, interval, (TimeoutHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
 				Source.AddSourceHandler (p.ID, p);
 			}
 
