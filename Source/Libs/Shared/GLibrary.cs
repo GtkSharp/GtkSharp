@@ -46,7 +46,14 @@ class GLibrary
             }
         }
         else if (FuncLoader.IsOSX)
+        {
             ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][2]);
+
+            if (ret == IntPtr.Zero)
+            {
+                ret = FuncLoader.LoadLibrary("/usr/local/lib/" + _libraryDefinitions[library][2]);
+            }
+        }
         else
             ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][1]);
 
