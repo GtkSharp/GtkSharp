@@ -147,6 +147,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tusing System.Collections;");
 			sw.WriteLine ("\tusing System.Collections.Generic;");
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
+			sw.WriteLine ("\tusing static GLib.AbiStructExtension;");
 			sw.WriteLine ();
 
 			SymbolTable table = SymbolTable.Table;
