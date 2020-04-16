@@ -123,40 +123,6 @@ namespace Gtk
 
         }
 
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        delegate void ForallDelegate(IntPtr container, bool include_internals, IntPtr cb, IntPtr data);
-
-        static ForallDelegate ForallOldCallback;
-        static ForallDelegate ForallCallback;
-
-        public struct CallbackInvoker
-        {
-            IntPtr cb;
-            IntPtr data;
-
-            internal CallbackInvoker(IntPtr cb, IntPtr data)
-            {
-                this.cb = cb;
-                this.data = data;
-            }
-
-            internal IntPtr Data
-            {
-                get
-                {
-                    return data;
-                }
-            }
-
-            internal IntPtr Callback
-            {
-                get
-                {
-                    return cb;
-                }
-            }
-        }
-
         // Compatibility code for old ChildType() virtual method
         static IntPtr ObsoleteChildType_cb(IntPtr raw)
         {
