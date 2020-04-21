@@ -129,6 +129,7 @@ namespace Gtk
 			var obj = TryGetObject (cell);
 			var parent = obj.NativeType;
 			while ((parent = parent.GetBaseType ()) != GLib.GType.None) {
+				
 				if (parent.ToString ().StartsWith ("__gtksharp_")) {
 					continue;
 				}
@@ -156,9 +157,9 @@ namespace Gtk
 						Marshal.FreeHGlobal (d);
 					}
 				}
-			}
 
-			return;
+				return;
+			}
 		}
 
 	}
