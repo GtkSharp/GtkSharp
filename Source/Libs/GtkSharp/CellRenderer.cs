@@ -48,10 +48,6 @@ namespace Gtk {
 			gtk_cell_renderer_render2 (Handle, context == null ? IntPtr.Zero : context.Handle, widget == null ? IntPtr.Zero : widget.Handle, ref background_area, ref cell_area, ref expose_area, (int) flags);
 		}
 
-		// We have to implement this VM manually because x_offset, y_offset, width and height params may be NULL and therefore cannot be treated as "out int"
-		// TODO: Implement "nullable" attribute for value type parameters in GAPI
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		delegate void OnGetSizeDelegate (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height);
 	}
 }
 
