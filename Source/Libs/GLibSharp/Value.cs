@@ -275,9 +275,10 @@ namespace GLib {
 			return GLib.Opaque.GetOpaque (g_value_get_boxed (ref val), (Type) new GType (val.type), false);
 		}
 
-		public static explicit operator GLib.Variant (Value Val)
+		public static explicit operator GLib.Variant (Value val)
 		{
-			return new Variant (g_value_get_variant (ref Val));
+			IntPtr native_variant = g_value_get_variant (ref val);
+			return native_variant == IntPtr.Zero ? null : new Variant (native_variant);
 		}
 
 		public static explicit operator GLib.VariantType (Value val)
