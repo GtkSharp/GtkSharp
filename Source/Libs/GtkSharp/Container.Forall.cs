@@ -100,7 +100,7 @@ namespace Gtk
 					$"{nameof(ForAll)} can only be called as \"base.{nameof(ForAll)}()\". Use {nameof(Forall)}() or {nameof(Foreach)}().");
 			}
 
-			gtksharp_container_base_forall(Handle, include_internals, callback, IntPtr.Zero);
+			gtksharp_container_base_forall(Handle, include_internals, callback, ((ForAllCallbackHandler) callback.Target).data);
 		}
 
 		static ForAllNativeDelegate InternalForAllNativeDelegate(GLib.GType gtype)
