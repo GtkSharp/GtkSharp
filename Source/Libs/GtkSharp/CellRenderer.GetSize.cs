@@ -127,6 +127,8 @@ namespace Gtk
 			}
 
 			var obj = TryGetObject (cell);
+			if (obj == default)
+				return;
 			var parent = obj.NativeType;
 			while ((parent = parent.GetBaseType ()) != GLib.GType.None) {
 				
