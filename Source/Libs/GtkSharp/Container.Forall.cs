@@ -137,6 +137,9 @@ namespace Gtk
 				return;
 
 			var obj = TryGetObject(container);
+			if (obj == default)
+				return;
+			
 			var parent = obj.NativeType;
 			while ((parent = parent.GetBaseType()) != GLib.GType.None) {
 				if (parent.ToString().StartsWith("__gtksharp_")) {
