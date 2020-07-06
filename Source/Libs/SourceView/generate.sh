@@ -1,12 +1,22 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+outdir=Generated
+sourcever=4.0.0
 
-wget http://ftp.acc.umu.se/pub/GNOME/sources/gtksourceview/4.0/gtksourceview-4.0.0.tar.xz
-tar xf gtksourceview-4.0.0.tar.xz
+clear
+wget http://ftp.acc.umu.se/pub/GNOME/sources/gtksourceview/4.0/gtksourceview-$sourcever.tar.xz
+tar xf gtksourceview-$sourcever.tar.xz
 
-gapi3-parser SourceView.source
-gapi3-fixup --api=SourceView-api.xml --metadata=SourceView.metadata
-gapi3-codegen --outdir=Generated `pkg-config --cflags gtk-sharp-3.0` --generate SourceView-api.xml
-dotnet build
+if [ -d $outdir ];
+then
+    rm -rf $outdir
+fi
 
-rm gtksourceview-4.0.0.tar.xz
-rm -rf gtksourceview-4.0.0
+../../OldStuff/parser/gapi3-parser SourceView.source
+cp SourceView-api.raw SourceView-api.xml
+
+dotnet ../../../BuildOutput/Tools/GapiFixup.dll --api=SourceView-api.xml --metadata=SourceView.metadata
+dotnet ../../../BuildOutput/Tools/GapiCodegen.dll --outdir=$outdir --assembly-name=SourceView `pkg-config --cflags gtk-sharp-3.0` --generate SourceView-api.xml
+dotnet build -v m
+
+rm gtksourceview-$sourcever.tar.xz
+rm -rf gtksourceview-$sourcever

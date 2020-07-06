@@ -1,6 +1,5 @@
-﻿namespace GtkSharp.SourceView
+﻿namespace Gtk.Source
 {
-
     using System;
     public partial class GtkSourceBuffer : Gtk.TextBuffer
     {
