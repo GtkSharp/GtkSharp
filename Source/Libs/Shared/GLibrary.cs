@@ -27,6 +27,7 @@ class GLibrary
         _libraryDefinitions[Library.GdkPixbuf] = new[] { "libgdk_pixbuf-2.0-0.dll", "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0.dylib", "gdk_pixbuf-2.dll" };
         _libraryDefinitions[Library.Gtk] = new[] { "libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-3.0.dylib", "gtk-3.dll" };
         _libraryDefinitions[Library.PangoCairo] = new[] { "libpangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib", "pangocairo-1.dll" };
+        _libraryDefinitions[Library.Source] = new[] { "libgtksourceview-4-0.dll", "libgtksourceview-4.so.0", "libgtksourceview-4.0.dylib", "gtksourceview-4.dll" };
     }
 
     public static IntPtr Load(Library library)
