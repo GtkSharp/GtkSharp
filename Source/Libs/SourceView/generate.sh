@@ -12,7 +12,6 @@ then
 fi
 
 ../../OldStuff/parser/gapi3-parser SourceView.source
-cp SourceView-api.raw SourceView-api.xml
 
 dotnet ../../../BuildOutput/Tools/GapiFixup.dll --api=SourceView-api.xml --metadata=SourceView.metadata
 dotnet ../../../BuildOutput/Tools/GapiCodegen.dll --outdir=$outdir --assembly-name=SourceView `pkg-config --cflags gtk-sharp-3.0` --generate SourceView-api.xml
