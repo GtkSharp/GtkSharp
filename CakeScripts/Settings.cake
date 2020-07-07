@@ -37,7 +37,7 @@ class Settings
             },
             new GAssembly("SourceView")
             {
-                Deps = new[] { "GtkSharp", "GioSharp" },
+                Deps = new[] { "GLibSharp", "GtkSharp", "GioSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
             }
         };
     }

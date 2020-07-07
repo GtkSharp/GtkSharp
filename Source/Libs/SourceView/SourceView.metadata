@@ -15,26 +15,31 @@
   <attr path="/api/namespace/interface[@cname='GtkSourceUndoManager']/signal[@name='CanRedoChanged']" name="name">EmitCanRedoChanged</attr>
   <attr path="/api/namespace/interface[@cname='GtkSourceUndoManager']/signal[@name='CanUndoChanged']" name="name">EmitCanUndoChanged</attr>
   <remove-node path="/api/namespace/object[@cname='GtkSourceCompletionModel']" />
-  <!--<add-node path="/api"><symbol type="alias" cname="GdkRgba" name="GdkRGBA"/></add-node>
-  <add-node path="/api"><symbol type="ownable" cname="cairo_t" name="Cairo.Context"/></add-node>
-  <add-node path="/api"><symbol type="ownable" cname="variant" name="GLib.Variant"/></add-node>-->
-  <attr path="/api/namespace/object[@cname='GtkSourceGutterRendererLines']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='GtkSourceGutterRendererMarks']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='GtkSourceGutterRendererPixbuf']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='GtkSourceGutterRendererText']" name="hidden">true</attr>
-  <attr path="/api/namespace/object[@cname='GtkSourceUndoManagerDefault']" name="hidden">true</attr>
   <add-node path="/api/namespace/interface[@cname='GtkSourceEngine']"><method name="GetType" cname="gtk_source_completion_provider_get_type" shared="true"><return-type type="GType" /></method></add-node>
-  <!--<attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@name='Backward']/*/*[@name='match_start']" name="pass_as">ref</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@name='Backward']/*/*[@name='match_start']" name="pass_as">ref</attr>
   <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@name='Backward']/*/*[@name='match_end']" name="pass_as">ref</attr>
   <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@name='Backward']/*/*[@name='has_wrapped_around']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@name='Forward']/*/*[@name='match_start']" name="pass_as">ref</attr>
   <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@name='Forward']/*/*[@name='match_end']" name="pass_as">ref</attr>
-  <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@name='Forward']/*/*[@name='has_wrapped_around']" name="pass_as">out</attr>-->
-
-  <!-- GtkSourceBuffer has a property called can-undo and a method called CanUndo(), which both seem to serve the same purpose -->
+  <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@name='Forward']/*/*[@name='has_wrapped_around']" name="pass_as">out</attr>
   <remove-node path="/api/namespace/object[@cname='GtkSourceBuffer']/method[@cname='gtk_source_buffer_can_undo']" />
-  <!-- Same for can-redo and CanRedo() -->
   <remove-node path="/api/namespace/object[@cname='GtkSourceBuffer']/method[@cname='gtk_source_buffer_can_redo']" />
   <remove-node path="/api/namespace/interface[@cname='GtkSourceStyleSchemeChooser']/property[@cname='style-scheme']" />
   <attr path="/api/namespace" name="library">Library.Source</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceBuffer']/method[@cname='gtk_source_buffer_get_source_marks_at_iter']/return-type" name="element_type">GtkSourceMark</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceBuffer']/method[@cname='gtk_source_buffer_get_source_marks_at_line']/return-type" name="element_type">GtkSourceMark</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceCompletion']/method[@cname='gtk_source_completion_get_providers']/return-type" name="element_type">GtkSourceCompletionProvider</attr>
+  <attr path="/api/namespace/boxed[@cname='GtkSourceEncoding']/method[@cname='gtk_source_encoding_get_all']/return-type" name="element_type">GtkSourceEncoding</attr>
+  <attr path="/api/namespace/boxed[@cname='GtkSourceEncoding']/method[@cname='gtk_source_encoding_get_default_candidates']/return-type" name="element_type">GtkSourceEncoding</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceFileLoader']/method[@cname='gtk_source_file_loader_load_async']/parameters/parameter[@name='progress_callback']" name="scope">notify</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceFileLoader']/method[@cname='gtk_source_file_loader_load_async']/parameters/parameter[@name='callback']" name="scope">async</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceFileSaver']/method[@cname='gtk_source_file_saver_save_async']/parameters/parameter[@name='progress_callback']" name="scope">notify</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceFileSaver']/method[@cname='gtk_source_file_saver_save_async']/parameters/parameter[@name='callback']" name="scope">async</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@cname='gtk_source_search_context_backward_async']/parameters/parameter[@name='callback']" name="scope">async</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@cname='gtk_source_search_context_forward_async']/parameters/parameter[@name='callback']" name="scope">async</attr>
+
+  <!-- This is a variadic function. Unsure how we're supposed to handle it in the binding. For now I've removed it. -->
+  <attr path="/api/namespace/object[@cname='GtkSourceBuffer']/method[@cname='gtk_source_buffer_create_source_tag']" name="hidden">1</attr>
+
+  <add-node path="/api"><symbol type="ownable" cname="variant" name="GLib.Variant"/></add-node>
 </metadata>
