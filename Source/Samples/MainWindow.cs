@@ -2,6 +2,7 @@
 // Happy coding!!! - GtkSharp Team
 
 using Gtk;
+using Gtk.Source;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -55,7 +56,7 @@ namespace Samples
             _notebook.AppendPage(scroll1, new Label { Text = "Data", Expand = true });
 
             var scroll2 = new ScrolledWindow();
-            _textViewCode = new TextView();
+            _textViewCode = new GtkSourceView();
             _textViewCode.Margin = 3;
             scroll2.Child = _textViewCode;
             _notebook.AppendPage(scroll2, new Label { Text = "Code", Expand = true });
