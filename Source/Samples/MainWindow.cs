@@ -16,7 +16,7 @@ namespace Samples
         private Box _boxContent;
         private TreeStore _store;
         private Dictionary<string, (Type type, Widget widget)> _items;
-        private TextView _textViewCode;
+        private SourceView _textViewCode;
         private Notebook _notebook;
 
         public MainWindow() : base(WindowType.Toplevel)
@@ -56,7 +56,10 @@ namespace Samples
             _notebook.AppendPage(scroll1, new Label { Text = "Data", Expand = true });
 
             var scroll2 = new ScrolledWindow();
+
             _textViewCode = new SourceView();
+            _textViewCode.ShowLineNumbers = true;
+
             _textViewCode.Margin = 3;
             scroll2.Child = _textViewCode;
             _notebook.AppendPage(scroll2, new Label { Text = "Code", Expand = true });
