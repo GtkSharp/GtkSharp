@@ -11,5 +11,5 @@ enum Library
     Gdk,
     GdkPixbuf,
     Gtk,
-    Source
+    GtkSource
 }

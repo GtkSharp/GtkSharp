@@ -1,9 +1,9 @@
-﻿namespace Gtk.Source
+﻿namespace GtkSource
 {
     using System;
-    public partial class GtkSourceBuffer : Gtk.TextBuffer
+    public partial class Buffer : Gtk.TextBuffer
     {
-        public GtkSourceBuffer() : base(IntPtr.Zero)
+        public Buffer() : base(IntPtr.Zero)
         {
             owned = true;
             Raw = gtk_source_buffer_new(IntPtr.Zero);
