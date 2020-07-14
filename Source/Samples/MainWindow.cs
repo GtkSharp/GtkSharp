@@ -59,6 +59,7 @@ namespace Samples
 
             _textViewCode = new SourceView();
             _textViewCode.ShowLineNumbers = true;
+	    _textViewCode.Buffer.Language = new LanguageManager().GetLanguage("c-sharp");
 
             _textViewCode.Margin = 3;
             scroll2.Child = _textViewCode;
