@@ -545,6 +545,14 @@ namespace Cairo {
 			NativeMethods.cairo_append_path (handle, path.Handle);
 		}
 
+		public Rectangle PathExtents ()
+		{
+			CheckDisposed ();
+			double x1, y1, x2, y2;
+			NativeMethods.cairo_path_extents (handle, out x1, out y1, out x2, out y2);
+			return new Rectangle (x1, y1, x2 - x1, y2 - y1);
+		}
+
 #endregion
 
 #region Painting Methods
