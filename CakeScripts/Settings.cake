@@ -35,7 +35,7 @@ class Settings
                 Deps = new[] { "GLibSharp", "GioSharp", "AtkSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
                 ExtraArgs = "--abi-cs-usings=Gtk,GLib"
             },
-            new GAssembly("SourceView")
+            new GAssembly("GtkSourceSharp")
             {
                 Deps = new[] { "GLibSharp", "GtkSharp", "GioSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
             }
