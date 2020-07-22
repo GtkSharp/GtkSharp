@@ -23,7 +23,7 @@ namespace Gtk {
 	using System;
 	using System.Runtime.InteropServices;
 
-	public partial class NativeDialog : Gtk.FileChooserAdapter {
+	public partial class NativeDialog : GLib.Object {
 
 		public NativeDialog (IntPtr raw) : base(raw) { }
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
