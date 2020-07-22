@@ -2,6 +2,7 @@
 // Happy coding!!! - GtkSharp Team
 
 using Gtk;
+using GtkSource;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +16,7 @@ namespace Samples
         private Box _boxContent;
         private TreeStore _store;
         private Dictionary<string, (Type type, Widget widget)> _items;
-        private TextView _textViewCode;
+        private SourceView _textViewCode;
         private Notebook _notebook;
 
         public MainWindow() : base(WindowType.Toplevel)
@@ -55,7 +56,11 @@ namespace Samples
             _notebook.AppendPage(scroll1, new Label { Text = "Data", Expand = true });
 
             var scroll2 = new ScrolledWindow();
-            _textViewCode = new TextView();
+
+            _textViewCode = new SourceView();
+            _textViewCode.ShowLineNumbers = true;
+	    _textViewCode.Buffer.Language = new LanguageManager().GetLanguage("c-sharp");
+
             _textViewCode.Margin = 3;
             scroll2.Child = _textViewCode;
             _notebook.AppendPage(scroll2, new Label { Text = "Code", Expand = true });

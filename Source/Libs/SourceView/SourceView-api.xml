@@ -1,0 +1,3108 @@
+<?xml version="1.0"?>
+<api parser_version="2">
+  <!--
+
+        This file was automatically generated.
+        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+
+-->
+  <namespace name="GtkSource" library="libgtksourceview-4.so">
+    <enum name="BackgroundPatternType" cname="GtkSourceBackgroundPatternType" type="enum">
+      <member cname="GTK_SOURCE_BACKGROUND_PATTERN_TYPE_NONE" name="None" />
+      <member cname="GTK_SOURCE_BACKGROUND_PATTERN_TYPE_GRID" name="Grid" />
+    </enum>
+    <enum name="BracketMatchType" cname="GtkSourceBracketMatchType" type="enum">
+      <member cname="GTK_SOURCE_BRACKET_MATCH_NONE" name="None" />
+      <member cname="GTK_SOURCE_BRACKET_MATCH_OUT_OF_RANGE" name="OutOfRange" />
+      <member cname="GTK_SOURCE_BRACKET_MATCH_NOT_FOUND" name="NotFound" />
+      <member cname="GTK_SOURCE_BRACKET_MATCH_FOUND" name="Found" />
+    </enum>
+    <enum name="ChangeCaseType" cname="GtkSourceChangeCaseType" type="enum">
+      <member cname="GTK_SOURCE_CHANGE_CASE_LOWER" name="Lower" />
+      <member cname="GTK_SOURCE_CHANGE_CASE_UPPER" name="Upper" />
+      <member cname="GTK_SOURCE_CHANGE_CASE_TOGGLE" name="Toggle" />
+      <member cname="GTK_SOURCE_CHANGE_CASE_TITLE" name="Title" />
+    </enum>
+    <enum name="CompletionActivation" cname="GtkSourceCompletionActivation" type="flags">
+      <member cname="GTK_SOURCE_COMPLETION_ACTIVATION_NONE" name="None" />
+      <member cname="GTK_SOURCE_COMPLETION_ACTIVATION_INTERACTIVE" name="Interactive" value="1 &lt;&lt; 0" />
+      <member cname="GTK_SOURCE_COMPLETION_ACTIVATION_USER_REQUESTED" name="UserRequested" value="1 &lt;&lt; 1" />
+    </enum>
+    <enum name="CompletionError" cname="GtkSourceCompletionError" type="enum">
+      <member cname="GTK_SOURCE_COMPLETION_ERROR_ALREADY_BOUND" name="AlreadyBound" />
+      <member cname="GTK_SOURCE_COMPLETION_ERROR_NOT_BOUND" name="NotBound" />
+    </enum>
+    <enum name="CompressionType" cname="GtkSourceCompressionType" type="enum">
+      <member cname="GTK_SOURCE_COMPRESSION_TYPE_NONE" name="None" />
+      <member cname="GTK_SOURCE_COMPRESSION_TYPE_GZIP" name="Gzip" />
+    </enum>
+    <enum name="ContextFlags" cname="GtkSourceContextFlags" type="flags">
+      <member cname="GTK_SOURCE_CONTEXT_EXTEND_PARENT" name="ExtendParent" value="1 &lt;&lt; 0" />
+      <member cname="GTK_SOURCE_CONTEXT_END_PARENT" name="EndParent" value="1 &lt;&lt; 1" />
+      <member cname="GTK_SOURCE_CONTEXT_END_AT_LINE_END" name="EndAtLineEnd" value="1 &lt;&lt; 2" />
+      <member cname="GTK_SOURCE_CONTEXT_FIRST_LINE_ONLY" name="FirstLineOnly" value="1 &lt;&lt; 3" />
+      <member cname="GTK_SOURCE_CONTEXT_ONCE_ONLY" name="OnceOnly" value="1 &lt;&lt; 4" />
+      <member cname="GTK_SOURCE_CONTEXT_STYLE_INSIDE" name="StyleInside" value="1 &lt;&lt; 5" />
+    </enum>
+    <enum name="ContextRefOptions" cname="GtkSourceContextRefOptions" type="flags">
+      <member cname="GTK_SOURCE_CONTEXT_IGNORE_STYLE" name="IgnoreStyle" value="1 &lt;&lt; 0" />
+      <member cname="GTK_SOURCE_CONTEXT_OVERRIDE_STYLE" name="OverrideStyle" value="1 &lt;&lt; 1" />
+      <member cname="GTK_SOURCE_CONTEXT_REF_ORIGINAL" name="RefOriginal" value="1 &lt;&lt; 2" />
+    </enum>
+    <enum name="FileLoaderError" cname="GtkSourceFileLoaderError" type="enum">
+      <member cname="GTK_SOURCE_FILE_LOADER_ERROR_TOO_BIG" name="TooBig" />
+      <member cname="GTK_SOURCE_FILE_LOADER_ERROR_ENCODING_AUTO_DETECTION_FAILED" name="EncodingAutoDetectionFailed" />
+      <member cname="GTK_SOURCE_FILE_LOADER_ERROR_CONVERSION_FALLBACK" name="ConversionFallback" />
+    </enum>
+    <enum name="FileSaverError" cname="GtkSourceFileSaverError" type="enum">
+      <member cname="GTK_SOURCE_FILE_SAVER_ERROR_INVALID_CHARS" name="InvalidChars" />
+      <member cname="GTK_SOURCE_FILE_SAVER_ERROR_EXTERNALLY_MODIFIED" name="ExternallyModified" />
+    </enum>
+    <enum name="FileSaverFlags" cname="GtkSourceFileSaverFlags" type="flags">
+      <member cname="GTK_SOURCE_FILE_SAVER_FLAGS_NONE" name="None" />
+      <member cname="GTK_SOURCE_FILE_SAVER_FLAGS_IGNORE_INVALID_CHARS" name="IgnoreInvalidChars" value="1 &lt;&lt; 0" />
+      <member cname="GTK_SOURCE_FILE_SAVER_FLAGS_IGNORE_MODIFICATION_TIME" name="IgnoreModificationTime" value="1 &lt;&lt; 1" />
+      <member cname="GTK_SOURCE_FILE_SAVER_FLAGS_CREATE_BACKUP" name="CreateBackup" value="1 &lt;&lt; 2" />
+    </enum>
+    <enum name="GutterRendererAlignmentMode" cname="GtkSourceGutterRendererAlignmentMode" type="enum">
+      <member cname="GTK_SOURCE_GUTTER_RENDERER_ALIGNMENT_MODE_CELL" name="Cell" />
+      <member cname="GTK_SOURCE_GUTTER_RENDERER_ALIGNMENT_MODE_FIRST" name="First" />
+      <member cname="GTK_SOURCE_GUTTER_RENDERER_ALIGNMENT_MODE_LAST" name="Last" />
+    </enum>
+    <enum name="GutterRendererState" cname="GtkSourceGutterRendererState" type="flags">
+      <member cname="GTK_SOURCE_GUTTER_RENDERER_STATE_NORMAL" name="Normal" />
+      <member cname="GTK_SOURCE_GUTTER_RENDERER_STATE_CURSOR" name="Cursor" value="1 &lt;&lt; 0" />
+      <member cname="GTK_SOURCE_GUTTER_RENDERER_STATE_PRELIT" name="Prelit" value="1 &lt;&lt; 1" />
+      <member cname="GTK_SOURCE_GUTTER_RENDERER_STATE_SELECTED" name="Selected" value="1 &lt;&lt; 2" />
+    </enum>
+    <enum name="NewlineType" cname="GtkSourceNewlineType" type="enum">
+      <member cname="GTK_SOURCE_NEWLINE_TYPE_LF" name="Lf" />
+      <member cname="GTK_SOURCE_NEWLINE_TYPE_CR" name="Cr" />
+      <member cname="GTK_SOURCE_NEWLINE_TYPE_CR_LF" name="CrLf" />
+    </enum>
+    <enum name="SmartHomeEndType" cname="GtkSourceSmartHomeEndType" type="enum">
+      <member cname="GTK_SOURCE_SMART_HOME_END_DISABLED" name="Disabled" />
+      <member cname="GTK_SOURCE_SMART_HOME_END_BEFORE" name="Before" />
+      <member cname="GTK_SOURCE_SMART_HOME_END_AFTER" name="After" />
+      <member cname="GTK_SOURCE_SMART_HOME_END_ALWAYS" name="Always" />
+    </enum>
+    <enum name="SortFlags" cname="GtkSourceSortFlags" type="flags">
+      <member cname="GTK_SOURCE_SORT_FLAGS_NONE" name="None" />
+      <member cname="GTK_SOURCE_SORT_FLAGS_CASE_SENSITIVE" name="CaseSensitive" value="1 &lt;&lt; 0" />
+      <member cname="GTK_SOURCE_SORT_FLAGS_REVERSE_ORDER" name="ReverseOrder" value="1 &lt;&lt; 1" />
+      <member cname="GTK_SOURCE_SORT_FLAGS_REMOVE_DUPLICATES" name="RemoveDuplicates" value="1 &lt;&lt; 2" />
+    </enum>
+    <enum name="SpaceLocationFlags" cname="GtkSourceSpaceLocationFlags" type="flags">
+      <member cname="GTK_SOURCE_SPACE_LOCATION_NONE" name="None" />
+      <member cname="GTK_SOURCE_SPACE_LOCATION_LEADING" name="Leading" value="1 &lt;&lt; 0" />
+      <member cname="GTK_SOURCE_SPACE_LOCATION_INSIDE_TEXT" name="InsideText" value="1 &lt;&lt; 1" />
+      <member cname="GTK_SOURCE_SPACE_LOCATION_TRAILING" name="Trailing" value="1 &lt;&lt; 2" />
+      <member cname="GTK_SOURCE_SPACE_LOCATION_ALL" name="All" value="0x7" />
+    </enum>
+    <enum name="SpaceTypeFlags" cname="GtkSourceSpaceTypeFlags" type="flags">
+      <member cname="GTK_SOURCE_SPACE_TYPE_NONE" name="None" />
+      <member cname="GTK_SOURCE_SPACE_TYPE_SPACE" name="Space" value="1 &lt;&lt; 0" />
+      <member cname="GTK_SOURCE_SPACE_TYPE_TAB" name="Tab" value="1 &lt;&lt; 1" />
+      <member cname="GTK_SOURCE_SPACE_TYPE_NEWLINE" name="Newline" value="1 &lt;&lt; 2" />
+      <member cname="GTK_SOURCE_SPACE_TYPE_NBSP" name="Nbsp" value="1 &lt;&lt; 3" />
+      <member cname="GTK_SOURCE_SPACE_TYPE_ALL" name="All" value="0xf" />
+    </enum>
+    <enum name="ViewGutterPosition" cname="GtkSourceViewGutterPosition" type="enum">
+      <member cname="GTK_SOURCE_VIEW_GUTTER_POSITION_LINES" name="Lines" value="-30" />
+      <member cname="GTK_SOURCE_VIEW_GUTTER_POSITION_MARKS" name="Marks" value="-20" />
+    </enum>
+    <callback name="MountOperationFactory" cname="GtkSourceMountOperationFactory">
+      <return-type type="GMountOperation*" />
+      <parameters>
+        <parameter type="GtkSourceFile*" name="file" />
+        <parameter type="gpointer" name="userdata" />
+      </parameters>
+    </callback>
+    <interface name="CompletionProposal" cname="GtkSourceCompletionProposal">
+      <class_struct cname="GtkSourceCompletionProposalIface">
+        <field name="Parent" cname="parent" type="GTypeInterface" />
+        <method vm="get_label" />
+        <method vm="get_markup" />
+        <method vm="get_text" />
+        <method vm="get_icon" />
+        <method vm="get_icon_name" />
+        <method vm="get_gicon" />
+        <method vm="get_info" />
+        <method vm="hash" />
+        <method vm="equal" />
+        <method signal_vm="changed" />
+      </class_struct>
+      <signal name="Changed" cname="changed" when="LAST" field_name="changed">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <virtual_method name="GetLabel" cname="get_label">
+        <return-type type="gchar*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetMarkup" cname="get_markup">
+        <return-type type="gchar*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetText" cname="get_text">
+        <return-type type="gchar*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetIcon" cname="get_icon">
+        <return-type type="GdkPixbuf*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetIconName" cname="get_icon_name">
+        <return-type type="gchar*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetGicon" cname="get_gicon">
+        <return-type type="GIcon*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetInfo" cname="get_info">
+        <return-type type="gchar*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="Hash" cname="hash">
+        <return-type type="guint" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="Equal" cname="equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProposal*" name="other" />
+        </parameters>
+      </virtual_method>
+      <method name="Changed" cname="gtk_source_completion_proposal_changed">
+        <return-type type="void" />
+      </method>
+      <method name="Equal" cname="gtk_source_completion_proposal_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProposal*" name="other" />
+        </parameters>
+      </method>
+      <method name="GetGicon" cname="gtk_source_completion_proposal_get_gicon">
+        <return-type type="GIcon*" />
+      </method>
+      <method name="GetIcon" cname="gtk_source_completion_proposal_get_icon">
+        <return-type type="GdkPixbuf*" />
+      </method>
+      <method name="GetIconName" cname="gtk_source_completion_proposal_get_icon_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetInfo" cname="gtk_source_completion_proposal_get_info">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetLabel" cname="gtk_source_completion_proposal_get_label">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetMarkup" cname="gtk_source_completion_proposal_get_markup">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetText" cname="gtk_source_completion_proposal_get_text">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetType" cname="gtk_source_completion_proposal_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Hash" cname="gtk_source_completion_proposal_hash">
+        <return-type type="guint" />
+      </method>
+    </interface>
+    <interface name="CompletionProvider" cname="GtkSourceCompletionProvider">
+      <class_struct cname="GtkSourceCompletionProviderIface">
+        <field name="GIface" cname="g_iface" type="GTypeInterface" />
+        <method vm="get_name" />
+        <method vm="get_icon" />
+        <method vm="get_icon_name" />
+        <method vm="get_gicon" />
+        <method vm="populate" />
+        <method vm="match" />
+        <method vm="get_activation" />
+        <method vm="get_info_widget" />
+        <method vm="update_info" />
+        <method vm="get_start_iter" />
+        <method vm="activate_proposal" />
+        <method vm="get_interactive_delay" />
+        <method vm="get_priority" />
+      </class_struct>
+      <virtual_method name="GetName" cname="get_name">
+        <return-type type="gchar*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetIcon" cname="get_icon">
+        <return-type type="GdkPixbuf*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetIconName" cname="get_icon_name">
+        <return-type type="gchar*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetGicon" cname="get_gicon">
+        <return-type type="GIcon*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="Populate" cname="populate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceCompletionContext*" name="context" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Match" cname="match">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionContext*" name="context" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetActivation" cname="get_activation">
+        <return-type type="GtkSourceCompletionActivation" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetInfoWidget" cname="get_info_widget">
+        <return-type type="GtkWidget*" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProposal*" name="proposal" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="UpdateInfo" cname="update_info">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProposal*" name="proposal" />
+          <parameter type="GtkSourceCompletionInfo*" name="info" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetStartIter" cname="get_start_iter">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionContext*" name="context" />
+          <parameter type="GtkSourceCompletionProposal*" name="proposal" />
+          <parameter type="GtkTextIter*" name="iter" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ActivateProposal" cname="activate_proposal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProposal*" name="proposal" />
+          <parameter type="GtkTextIter*" name="iter" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetInteractiveDelay" cname="get_interactive_delay">
+        <return-type type="gint" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="GetPriority" cname="get_priority">
+        <return-type type="gint" />
+        <parameters />
+      </virtual_method>
+      <method name="ActivateProposal" cname="gtk_source_completion_provider_activate_proposal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProposal*" name="proposal" />
+          <parameter type="GtkTextIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="GetActivation" cname="gtk_source_completion_provider_get_activation">
+        <return-type type="GtkSourceCompletionActivation" />
+      </method>
+      <method name="GetGicon" cname="gtk_source_completion_provider_get_gicon">
+        <return-type type="GIcon*" />
+      </method>
+      <method name="GetIcon" cname="gtk_source_completion_provider_get_icon">
+        <return-type type="GdkPixbuf*" />
+      </method>
+      <method name="GetIconName" cname="gtk_source_completion_provider_get_icon_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetInfoWidget" cname="gtk_source_completion_provider_get_info_widget">
+        <return-type type="GtkWidget*" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProposal*" name="proposal" />
+        </parameters>
+      </method>
+      <method name="GetInteractiveDelay" cname="gtk_source_completion_provider_get_interactive_delay">
+        <return-type type="gint" />
+      </method>
+      <method name="GetName" cname="gtk_source_completion_provider_get_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetPriority" cname="gtk_source_completion_provider_get_priority">
+        <return-type type="gint" />
+      </method>
+      <method name="GetStartIter" cname="gtk_source_completion_provider_get_start_iter">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionContext*" name="context" />
+          <parameter type="GtkSourceCompletionProposal*" name="proposal" />
+          <parameter type="GtkTextIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_source_completion_provider_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Match" cname="gtk_source_completion_provider_match">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="Populate" cname="gtk_source_completion_provider_populate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceCompletionContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="UpdateInfo" cname="gtk_source_completion_provider_update_info">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProposal*" name="proposal" />
+          <parameter type="GtkSourceCompletionInfo*" name="info" />
+        </parameters>
+      </method>
+    </interface>
+    <interface name="Engine" cname="GtkSourceEngine">
+      <class_struct cname="GtkSourceEngineInterface">
+        <field name="ParentInterface" cname="parent_interface" type="GTypeInterface" />
+        <method vm="attach_buffer" />
+        <method vm="text_inserted" />
+        <method vm="text_deleted" />
+        <method vm="update_highlight" />
+        <method vm="set_style_scheme" />
+      </class_struct>
+      <virtual_method name="AttachBuffer" cname="attach_buffer">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextBuffer*" name="buffer" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="TextInserted" cname="text_inserted">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="start_offset" />
+          <parameter type="gint" name="end_offset" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="TextDeleted" cname="text_deleted">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="offset" />
+          <parameter type="gint" name="length" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="UpdateHighlight" cname="update_highlight">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="start" />
+          <parameter type="const-GtkTextIter*" name="end" />
+          <parameter type="gboolean" name="synchronous" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetStyleScheme" cname="set_style_scheme">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceStyleScheme*" name="scheme" />
+        </parameters>
+      </virtual_method>
+    </interface>
+    <interface name="StyleSchemeChooser" cname="GtkSourceStyleSchemeChooser">
+      <class_struct cname="GtkSourceStyleSchemeChooserInterface">
+        <field name="BaseInterface" cname="base_interface" type="GTypeInterface" />
+        <method vm="get_style_scheme" />
+        <method vm="set_style_scheme" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="12" />
+      </class_struct>
+      <property name="StyleScheme" cname="style-scheme" type="GtkSourceStyleScheme" readable="true" writeable="true" />
+      <virtual_method name="GetStyleScheme" cname="get_style_scheme">
+        <return-type type="GtkSourceStyleScheme*" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="SetStyleScheme" cname="set_style_scheme">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceStyleScheme*" name="scheme" />
+        </parameters>
+      </virtual_method>
+      <method name="GetStyleScheme" cname="gtk_source_style_scheme_chooser_get_style_scheme">
+        <return-type type="GtkSourceStyleScheme*" />
+      </method>
+      <method name="GetType" cname="gtk_source_style_scheme_chooser_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="SetStyleScheme" cname="gtk_source_style_scheme_chooser_set_style_scheme">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceStyleScheme*" name="scheme" />
+        </parameters>
+      </method>
+    </interface>
+    <interface name="UndoManager" cname="GtkSourceUndoManager">
+      <class_struct cname="GtkSourceUndoManagerIface">
+        <field name="Parent" cname="parent" type="GTypeInterface" />
+        <method vm="can_undo" />
+        <method vm="can_redo" />
+        <method vm="undo" />
+        <method vm="redo" />
+        <method vm="begin_not_undoable_action" />
+        <method vm="end_not_undoable_action" />
+        <method signal_vm="can_undo_changed" />
+        <method signal_vm="can_redo_changed" />
+      </class_struct>
+      <signal name="CanUndoChanged" cname="can-undo-changed" when="LAST" field_name="can_undo_changed">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="CanRedoChanged" cname="can-redo-changed" when="LAST" field_name="can_redo_changed">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <virtual_method name="CanUndo" cname="can_undo">
+        <return-type type="gboolean" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="CanRedo" cname="can_redo">
+        <return-type type="gboolean" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="Undo" cname="undo">
+        <return-type type="void" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="Redo" cname="redo">
+        <return-type type="void" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="BeginNotUndoableAction" cname="begin_not_undoable_action">
+        <return-type type="void" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="EndNotUndoableAction" cname="end_not_undoable_action">
+        <return-type type="void" />
+        <parameters />
+      </virtual_method>
+      <method name="BeginNotUndoableAction" cname="gtk_source_undo_manager_begin_not_undoable_action">
+        <return-type type="void" />
+      </method>
+      <method name="CanRedo" cname="gtk_source_undo_manager_can_redo">
+        <return-type type="gboolean" />
+      </method>
+      <method name="CanRedoChanged" cname="gtk_source_undo_manager_can_redo_changed">
+        <return-type type="void" />
+      </method>
+      <method name="CanUndo" cname="gtk_source_undo_manager_can_undo">
+        <return-type type="gboolean" />
+      </method>
+      <method name="CanUndoChanged" cname="gtk_source_undo_manager_can_undo_changed">
+        <return-type type="void" />
+      </method>
+      <method name="EndNotUndoableAction" cname="gtk_source_undo_manager_end_not_undoable_action">
+        <return-type type="void" />
+      </method>
+      <method name="GetType" cname="gtk_source_undo_manager_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Redo" cname="gtk_source_undo_manager_redo">
+        <return-type type="void" />
+      </method>
+      <method name="Undo" cname="gtk_source_undo_manager_undo">
+        <return-type type="void" />
+      </method>
+    </interface>
+    <object name="Buffer" cname="GtkSourceBuffer" parent="GtkTextBuffer">
+      <class_struct cname="GtkSourceBufferClass">
+        <field name="ParentClass" cname="parent_class" type="GtkTextBufferClass" />
+        <method signal_vm="undo" />
+        <method signal_vm="redo" />
+        <method signal_vm="bracket_matched" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="20" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceBufferPrivate*" />
+      <property name="HighlightSyntax" cname="highlight-syntax" type="gboolean" readable="true" writeable="true" />
+      <property name="HighlightMatchingBrackets" cname="highlight-matching-brackets" type="gboolean" readable="true" writeable="true" />
+      <property name="MaxUndoLevels" cname="max-undo-levels" type="gint" readable="true" writeable="true" />
+      <property name="Language" cname="language" type="GtkSourceLanguage" readable="true" writeable="true" />
+      <property name="CanUndo" cname="can-undo" type="gboolean" readable="true" />
+      <property name="CanRedo" cname="can-redo" type="gboolean" readable="true" />
+      <property name="StyleScheme" cname="style-scheme" type="GtkSourceStyleScheme" readable="true" writeable="true" />
+      <property name="UndoManager" cname="undo-manager" type="GtkSourceUndoManager" readable="true" writeable="true" construct="true" />
+      <property name="ImplicitTrailingNewline" cname="implicit-trailing-newline" type="gboolean" readable="true" writeable="true" construct="true" />
+      <signal name="HighlightUpdated" cname="highlight-updated" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="GtkTextIter" />
+          <parameter name="p1" type="GtkTextIter" />
+        </parameters>
+      </signal>
+      <signal name="SourceMarkUpdated" cname="source-mark-updated" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="GtkTextMark" />
+        </parameters>
+      </signal>
+      <signal name="Undo" cname="undo" when="LAST" field_name="undo">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="Redo" cname="redo" when="LAST" field_name="redo">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="BracketMatched" cname="bracket-matched" when="LAST" field_name="bracket_matched">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="GtkSourceBracketMatchType" name="state" />
+        </parameters>
+      </signal>
+      <method name="BackwardIterToSourceMark" cname="gtk_source_buffer_backward_iter_to_source_mark">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="const-gchar*" name="category" />
+        </parameters>
+      </method>
+      <method name="BeginNotUndoableAction" cname="gtk_source_buffer_begin_not_undoable_action">
+        <return-type type="void" />
+      </method>
+      <method name="CanRedo" cname="gtk_source_buffer_can_redo">
+        <return-type type="gboolean" />
+      </method>
+      <method name="CanUndo" cname="gtk_source_buffer_can_undo">
+        <return-type type="gboolean" />
+      </method>
+      <method name="ChangeCase" cname="gtk_source_buffer_change_case">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceChangeCaseType" name="case_type" />
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+        </parameters>
+      </method>
+      <method name="CreateSourceMark" cname="gtk_source_buffer_create_source_mark">
+        <return-type type="GtkSourceMark*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="category" />
+          <parameter type="const-GtkTextIter*" name="where" />
+        </parameters>
+      </method>
+      <method name="CreateSourceTag" cname="gtk_source_buffer_create_source_tag">
+        <return-type type="GtkTextTag*" />
+        <parameters>
+          <parameter type="const-gchar*" name="tag_name" />
+          <parameter type="const-gchar*" name="first_property_name" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </method>
+      <method name="EndNotUndoableAction" cname="gtk_source_buffer_end_not_undoable_action">
+        <return-type type="void" />
+      </method>
+      <method name="EnsureHighlight" cname="gtk_source_buffer_ensure_highlight">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="start" />
+          <parameter type="const-GtkTextIter*" name="end" />
+        </parameters>
+      </method>
+      <method name="ForwardIterToSourceMark" cname="gtk_source_buffer_forward_iter_to_source_mark">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="const-gchar*" name="category" />
+        </parameters>
+      </method>
+      <method name="GetContextClassesAtIter" cname="gtk_source_buffer_get_context_classes_at_iter">
+        <return-type type="gchar**" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="GetHighlightMatchingBrackets" cname="gtk_source_buffer_get_highlight_matching_brackets">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetHighlightSyntax" cname="gtk_source_buffer_get_highlight_syntax">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetImplicitTrailingNewline" cname="gtk_source_buffer_get_implicit_trailing_newline">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetLanguage" cname="gtk_source_buffer_get_language">
+        <return-type type="GtkSourceLanguage*" />
+      </method>
+      <method name="GetMaxUndoLevels" cname="gtk_source_buffer_get_max_undo_levels">
+        <return-type type="gint" />
+      </method>
+      <method name="GetSourceMarksAtIter" cname="gtk_source_buffer_get_source_marks_at_iter">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="const-gchar*" name="category" />
+        </parameters>
+      </method>
+      <method name="GetSourceMarksAtLine" cname="gtk_source_buffer_get_source_marks_at_line">
+        <return-type type="GSList*" />
+        <parameters>
+          <parameter type="gint" name="line" />
+          <parameter type="const-gchar*" name="category" />
+        </parameters>
+      </method>
+      <method name="GetStyleScheme" cname="gtk_source_buffer_get_style_scheme">
+        <return-type type="GtkSourceStyleScheme*" />
+      </method>
+      <method name="GetType" cname="gtk_source_buffer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetUndoManager" cname="gtk_source_buffer_get_undo_manager">
+        <return-type type="GtkSourceUndoManager*" />
+      </method>
+      <method name="IterBackwardToContextClassToggle" cname="gtk_source_buffer_iter_backward_to_context_class_toggle">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="const-gchar*" name="context_class" />
+        </parameters>
+      </method>
+      <method name="IterForwardToContextClassToggle" cname="gtk_source_buffer_iter_forward_to_context_class_toggle">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="const-gchar*" name="context_class" />
+        </parameters>
+      </method>
+      <method name="IterHasContextClass" cname="gtk_source_buffer_iter_has_context_class">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter" />
+          <parameter type="const-gchar*" name="context_class" />
+        </parameters>
+      </method>
+      <method name="JoinLines" cname="gtk_source_buffer_join_lines">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+        </parameters>
+      </method>
+      <constructor cname="gtk_source_buffer_new">
+        <parameters>
+          <parameter type="GtkTextTagTable*" name="table" />
+        </parameters>
+      </constructor>
+      <constructor cname="gtk_source_buffer_new_with_language">
+        <parameters>
+          <parameter type="GtkSourceLanguage*" name="language" />
+        </parameters>
+      </constructor>
+      <method name="Redo" cname="gtk_source_buffer_redo">
+        <return-type type="void" />
+      </method>
+      <method name="RemoveSourceMarks" cname="gtk_source_buffer_remove_source_marks">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="start" />
+          <parameter type="const-GtkTextIter*" name="end" />
+          <parameter type="const-gchar*" name="category" />
+        </parameters>
+      </method>
+      <method name="SetHighlightMatchingBrackets" cname="gtk_source_buffer_set_highlight_matching_brackets">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="highlight" />
+        </parameters>
+      </method>
+      <method name="SetHighlightSyntax" cname="gtk_source_buffer_set_highlight_syntax">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="highlight" />
+        </parameters>
+      </method>
+      <method name="SetImplicitTrailingNewline" cname="gtk_source_buffer_set_implicit_trailing_newline">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="implicit_trailing_newline" />
+        </parameters>
+      </method>
+      <method name="SetLanguage" cname="gtk_source_buffer_set_language">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceLanguage*" name="language" />
+        </parameters>
+      </method>
+      <method name="SetMaxUndoLevels" cname="gtk_source_buffer_set_max_undo_levels">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="max_undo_levels" />
+        </parameters>
+      </method>
+      <method name="SetStyleScheme" cname="gtk_source_buffer_set_style_scheme">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceStyleScheme*" name="scheme" />
+        </parameters>
+      </method>
+      <method name="SetUndoManager" cname="gtk_source_buffer_set_undo_manager">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceUndoManager*" name="manager" />
+        </parameters>
+      </method>
+      <method name="SortLines" cname="gtk_source_buffer_sort_lines">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+          <parameter type="GtkSourceSortFlags" name="flags" />
+          <parameter type="gint" name="column" />
+        </parameters>
+      </method>
+      <method name="Undo" cname="gtk_source_buffer_undo">
+        <return-type type="void" />
+      </method>
+    </object>
+    <object name="BufferInputStream" cname="GtkSourceBufferInputStream" parent="GInputStream">
+      <class_struct cname="GtkSourceBufferInputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GInputStreamClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceBufferInputStreamPrivate*" />
+      <property name="Buffer" cname="buffer" type="GtkTextBuffer" readable="true" writeable="true" construct-only="true" />
+      <property name="NewlineType" cname="newline-type" type="GtkSourceNewlineType" readable="true" writeable="true" construct-only="true" />
+      <property name="AddTrailingNewline" cname="add-trailing-newline" type="gboolean" readable="true" writeable="true" construct-only="true" />
+    </object>
+    <object name="BufferOutputStream" cname="GtkSourceBufferOutputStream" parent="GOutputStream">
+      <class_struct cname="GtkSourceBufferOutputStreamClass">
+        <field name="ParentClass" cname="parent_class" type="GOutputStreamClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceBufferOutputStreamPrivate*" />
+      <property name="Buffer" cname="buffer" type="GtkSourceBuffer" readable="true" writeable="true" construct-only="true" />
+      <property name="RemoveTrailingNewline" cname="remove-trailing-newline" type="gboolean" readable="true" writeable="true" construct-only="true" />
+    </object>
+    <object name="Completion" cname="GtkSourceCompletion" parent="GObject">
+      <class_struct cname="GtkSourceCompletionClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="proposal_activated" />
+        <method signal_vm="show" />
+        <method signal_vm="hide" />
+        <method signal_vm="populate_context" />
+        <method signal_vm="move_cursor" />
+        <method signal_vm="move_page" />
+        <method signal_vm="activate_proposal" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="20" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceCompletionPrivate*" />
+      <property name="View" cname="view" type="GtkSourceView" readable="true" writeable="true" construct-only="true" />
+      <property name="RememberInfoVisibility" cname="remember-info-visibility" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="SelectOnShow" cname="select-on-show" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="ShowHeaders" cname="show-headers" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="ShowIcons" cname="show-icons" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="Accelerators" cname="accelerators" type="guint" readable="true" writeable="true" construct="true" />
+      <property name="AutoCompleteDelay" cname="auto-complete-delay" type="guint" readable="true" writeable="true" construct="true" />
+      <property name="ProviderPageSize" cname="provider-page-size" type="guint" readable="true" writeable="true" construct="true" />
+      <property name="ProposalPageSize" cname="proposal-page-size" type="guint" readable="true" writeable="true" construct="true" />
+      <signal name="Show" cname="show" when="LAST" field_name="show">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="Hide" cname="hide" when="LAST" field_name="hide">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="PopulateContext" cname="populate-context" when="LAST" field_name="populate_context">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceCompletionContext*" name="context" />
+        </parameters>
+      </signal>
+      <signal name="MoveCursor" cname="move-cursor" when="LAST" field_name="move_cursor">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkScrollStep" name="step" />
+          <parameter type="gint" name="num" />
+        </parameters>
+      </signal>
+      <signal name="MovePage" cname="move-page" when="LAST" field_name="move_page">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkScrollStep" name="step" />
+          <parameter type="gint" name="num" />
+        </parameters>
+      </signal>
+      <signal name="ActivateProposal" cname="activate-proposal" when="LAST" field_name="activate_proposal">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <virtual_method name="ProposalActivated" cname="proposal_activated">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProvider*" name="provider" />
+          <parameter type="GtkSourceCompletionProposal*" name="proposal" />
+        </parameters>
+      </virtual_method>
+      <implements>
+        <interface cname="GtkBuildable" />
+      </implements>
+      <method name="AddProvider" cname="gtk_source_completion_add_provider">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProvider*" name="provider" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="BlockInteractive" cname="gtk_source_completion_block_interactive">
+        <return-type type="void" />
+      </method>
+      <method name="CreateContext" cname="gtk_source_completion_create_context">
+        <return-type type="GtkSourceCompletionContext*" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="position" />
+        </parameters>
+      </method>
+      <method name="ErrorQuark" cname="gtk_source_completion_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="GetInfoWindow" cname="gtk_source_completion_get_info_window">
+        <return-type type="GtkSourceCompletionInfo*" />
+      </method>
+      <method name="GetProviders" cname="gtk_source_completion_get_providers">
+        <return-type type="GList*" />
+      </method>
+      <method name="GetType" cname="gtk_source_completion_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetView" cname="gtk_source_completion_get_view">
+        <return-type type="GtkSourceView*" />
+      </method>
+      <method name="Hide" cname="gtk_source_completion_hide">
+        <return-type type="void" />
+      </method>
+      <method name="RemoveProvider" cname="gtk_source_completion_remove_provider">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProvider*" name="provider" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="Start" cname="gtk_source_completion_start">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GList*" name="providers" />
+          <parameter type="GtkSourceCompletionContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="UnblockInteractive" cname="gtk_source_completion_unblock_interactive">
+        <return-type type="void" />
+      </method>
+    </object>
+    <object name="CompletionContainer" cname="GtkSourceCompletionContainer" parent="GtkScrolledWindow">
+      <class_struct cname="GtkSourceCompletionContainerClass">
+        <field name="ParentClass" cname="parent_class" type="GtkScrolledWindowClass" />
+      </class_struct>
+    </object>
+    <object name="CompletionContext" cname="GtkSourceCompletionContext" parent="GInitiallyUnowned">
+      <class_struct cname="GtkSourceCompletionContextClass">
+        <field name="ParentClass" cname="parent_class" type="GInitiallyUnownedClass" />
+        <method signal_vm="cancelled" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceCompletionContextPrivate*" />
+      <signal name="Cancelled" cname="cancelled" when="LAST" field_name="cancelled">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <property name="Completion" cname="completion" type="GtkSourceCompletion" readable="true" writeable="true" construct-only="true" />
+      <property name="Iter" cname="iter" type="GtkTextIter" readable="true" writeable="true" />
+      <property name="Activation" cname="activation" type="GtkSourceCompletionActivation" readable="true" writeable="true" construct="true" />
+      <method name="AddProposals" cname="gtk_source_completion_context_add_proposals">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProvider*" name="provider" />
+          <parameter type="GList*" name="proposals" />
+          <parameter type="gboolean" name="finished" />
+        </parameters>
+      </method>
+      <method name="GetActivation" cname="gtk_source_completion_context_get_activation">
+        <return-type type="GtkSourceCompletionActivation" />
+      </method>
+      <method name="GetIter" cname="gtk_source_completion_context_get_iter">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_source_completion_context_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="CompletionInfo" cname="GtkSourceCompletionInfo" parent="GtkWindow">
+      <class_struct cname="GtkSourceCompletionInfoClass">
+        <field name="ParentClass" cname="parent_class" type="GtkWindowClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceCompletionInfoPrivate*" />
+      <method name="GetType" cname="gtk_source_completion_info_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="MoveToIter" cname="gtk_source_completion_info_move_to_iter">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextView*" name="view" />
+          <parameter type="GtkTextIter*" name="iter" />
+        </parameters>
+      </method>
+      <constructor cname="gtk_source_completion_info_new" />
+    </object>
+    <object name="CompletionItem" cname="GtkSourceCompletionItem" parent="GObject">
+      <class_struct cname="GtkSourceCompletionItemClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceCompletionItemPrivate*" />
+      <property name="Label" cname="label" type="gchar*" readable="true" writeable="true" />
+      <property name="Markup" cname="markup" type="gchar*" readable="true" writeable="true" />
+      <property name="Text" cname="text" type="gchar*" readable="true" writeable="true" />
+      <property name="Icon" cname="icon" type="GdkPixbuf" readable="true" writeable="true" />
+      <property name="IconName" cname="icon-name" type="gchar*" readable="true" writeable="true" />
+      <property name="Gicon" cname="gicon" type="GIcon" readable="true" writeable="true" />
+      <property name="Info" cname="info" type="gchar*" readable="true" writeable="true" />
+      <implements>
+        <interface cname="GtkSourceCompletionProposal" />
+      </implements>
+      <method name="GetType" cname="gtk_source_completion_item_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_completion_item_new" />
+      <method name="SetGicon" cname="gtk_source_completion_item_set_gicon">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GIcon*" name="gicon" />
+        </parameters>
+      </method>
+      <method name="SetIcon" cname="gtk_source_completion_item_set_icon">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkPixbuf*" name="icon" />
+        </parameters>
+      </method>
+      <method name="SetIconName" cname="gtk_source_completion_item_set_icon_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="icon_name" />
+        </parameters>
+      </method>
+      <method name="SetInfo" cname="gtk_source_completion_item_set_info">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="info" />
+        </parameters>
+      </method>
+      <method name="SetLabel" cname="gtk_source_completion_item_set_label">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="label" />
+        </parameters>
+      </method>
+      <method name="SetMarkup" cname="gtk_source_completion_item_set_markup">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="markup" />
+        </parameters>
+      </method>
+      <method name="SetText" cname="gtk_source_completion_item_set_text">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="text" />
+        </parameters>
+      </method>
+    </object>
+    <object name="CompletionModel" cname="GtkSourceCompletionModel" parent="GObject">
+      <class_struct cname="GtkSourceCompletionModelClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <method vm="providers_changed" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceCompletionModelPrivate*" />
+      <virtual_method name="ProvidersChanged" cname="providers_changed">
+        <return-type type="void" />
+        <parameters />
+      </virtual_method>
+      <implements>
+        <interface cname="GtkTreeModel" />
+      </implements>
+      <method name="AddProposals" cname="gtk_source_completion_model_add_proposals">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceCompletionProvider*" name="provider" />
+          <parameter type="GList*" name="proposals" />
+        </parameters>
+      </method>
+      <method name="FirstProposal" cname="gtk_source_completion_model_first_proposal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="GetProviders" cname="gtk_source_completion_model_get_providers">
+        <return-type type="GList*" />
+      </method>
+      <method name="GetType" cname="gtk_source_completion_model_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetVisibleProviders" cname="gtk_source_completion_model_get_visible_providers">
+        <return-type type="GList*" />
+      </method>
+      <method name="HasInfo" cname="gtk_source_completion_model_has_info">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsEmpty" cname="gtk_source_completion_model_is_empty">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gboolean" name="only_visible" />
+        </parameters>
+      </method>
+      <method name="IterEqual" cname="gtk_source_completion_model_iter_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter1" />
+          <parameter type="GtkTreeIter*" name="iter2" />
+        </parameters>
+      </method>
+      <method name="IterIsHeader" cname="gtk_source_completion_model_iter_is_header">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="IterPrevious" cname="gtk_source_completion_model_iter_previous">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="LastProposal" cname="gtk_source_completion_model_last_proposal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="NextProposal" cname="gtk_source_completion_model_next_proposal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="PreviousProposal" cname="gtk_source_completion_model_previous_proposal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="SetShowHeaders" cname="gtk_source_completion_model_set_show_headers">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="show_headers" />
+        </parameters>
+      </method>
+      <method name="SetVisibleProviders" cname="gtk_source_completion_model_set_visible_providers">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GList*" name="providers" />
+        </parameters>
+      </method>
+    </object>
+    <object name="ContextEngine" cname="GtkSourceContextEngine" parent="GObject">
+      <class_struct cname="GtkSourceContextEngineClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceContextEnginePrivate*" />
+      <implements>
+        <interface cname="GtkSourceEngine" />
+      </implements>
+    </object>
+    <object name="File" cname="GtkSourceFile" parent="GObject">
+      <class_struct cname="GtkSourceFileClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceFilePrivate*" />
+      <property name="Location" cname="location" type="GFile" readable="true" writeable="true" construct="true" />
+      <property name="Encoding" cname="encoding" type="GtkSourceEncoding" readable="true" />
+      <property name="NewlineType" cname="newline-type" type="GtkSourceNewlineType" readable="true" />
+      <property name="CompressionType" cname="compression-type" type="GtkSourceCompressionType" readable="true" />
+      <property name="ReadOnly" cname="read-only" type="gboolean" readable="true" />
+      <method name="CheckFileOnDisk" cname="gtk_source_file_check_file_on_disk">
+        <return-type type="void" />
+      </method>
+      <method name="GetCompressionType" cname="gtk_source_file_get_compression_type">
+        <return-type type="GtkSourceCompressionType" />
+      </method>
+      <method name="GetEncoding" cname="gtk_source_file_get_encoding">
+        <return-type type="const-GtkSourceEncoding*" />
+      </method>
+      <method name="GetLocation" cname="gtk_source_file_get_location">
+        <return-type type="GFile*" />
+      </method>
+      <method name="GetNewlineType" cname="gtk_source_file_get_newline_type">
+        <return-type type="GtkSourceNewlineType" />
+      </method>
+      <method name="GetType" cname="gtk_source_file_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="IsDeleted" cname="gtk_source_file_is_deleted">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsExternallyModified" cname="gtk_source_file_is_externally_modified">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsLocal" cname="gtk_source_file_is_local">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsReadonly" cname="gtk_source_file_is_readonly">
+        <return-type type="gboolean" />
+      </method>
+      <constructor cname="gtk_source_file_new" />
+      <method name="SetLocation" cname="gtk_source_file_set_location">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GFile*" name="location" />
+        </parameters>
+      </method>
+      <method name="SetMountOperationFactory" cname="gtk_source_file_set_mount_operation_factory">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceMountOperationFactory" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="notify" />
+        </parameters>
+      </method>
+    </object>
+    <object name="FileLoader" cname="GtkSourceFileLoader" parent="GObject">
+      <class_struct cname="GtkSourceFileLoaderClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceFileLoaderPrivate*" />
+      <property name="Buffer" cname="buffer" type="GtkSourceBuffer" readable="true" writeable="true" construct-only="true" />
+      <property name="File" cname="file" type="GtkSourceFile" readable="true" writeable="true" construct-only="true" />
+      <property name="Location" cname="location" type="GFile" readable="true" writeable="true" construct-only="true" />
+      <property name="InputStream" cname="input-stream" type="GInputStream" readable="true" writeable="true" construct-only="true" />
+      <method name="ErrorQuark" cname="gtk_source_file_loader_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="GetBuffer" cname="gtk_source_file_loader_get_buffer">
+        <return-type type="GtkSourceBuffer*" />
+      </method>
+      <method name="GetCompressionType" cname="gtk_source_file_loader_get_compression_type">
+        <return-type type="GtkSourceCompressionType" />
+      </method>
+      <method name="GetEncoding" cname="gtk_source_file_loader_get_encoding">
+        <return-type type="const-GtkSourceEncoding*" />
+      </method>
+      <method name="GetFile" cname="gtk_source_file_loader_get_file">
+        <return-type type="GtkSourceFile*" />
+      </method>
+      <method name="GetInputStream" cname="gtk_source_file_loader_get_input_stream">
+        <return-type type="GInputStream*" />
+      </method>
+      <method name="GetLocation" cname="gtk_source_file_loader_get_location">
+        <return-type type="GFile*" />
+      </method>
+      <method name="GetNewlineType" cname="gtk_source_file_loader_get_newline_type">
+        <return-type type="GtkSourceNewlineType" />
+      </method>
+      <method name="GetType" cname="gtk_source_file_loader_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="LoadAsync" cname="gtk_source_file_loader_load_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="io_priority" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GFileProgressCallback" name="progress_callback" />
+          <parameter type="gpointer" name="progress_callback_data" />
+          <parameter type="GDestroyNotify" name="progress_callback_notify" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="LoadFinish" cname="gtk_source_file_loader_load_finish">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="result" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <constructor cname="gtk_source_file_loader_new">
+        <parameters>
+          <parameter type="GtkSourceBuffer*" name="buffer" />
+          <parameter type="GtkSourceFile*" name="file" />
+        </parameters>
+      </constructor>
+      <constructor cname="gtk_source_file_loader_new_from_stream">
+        <parameters>
+          <parameter type="GtkSourceBuffer*" name="buffer" />
+          <parameter type="GtkSourceFile*" name="file" />
+          <parameter type="GInputStream*" name="stream" />
+        </parameters>
+      </constructor>
+      <method name="SetCandidateEncodings" cname="gtk_source_file_loader_set_candidate_encodings">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSList*" name="candidate_encodings" />
+        </parameters>
+      </method>
+    </object>
+    <object name="FileSaver" cname="GtkSourceFileSaver" parent="GObject">
+      <class_struct cname="GtkSourceFileSaverClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceFileSaverPrivate*" />
+      <property name="Buffer" cname="buffer" type="GtkSourceBuffer" readable="true" writeable="true" construct-only="true" />
+      <property name="File" cname="file" type="GtkSourceFile" readable="true" writeable="true" construct-only="true" />
+      <property name="Location" cname="location" type="GFile" readable="true" writeable="true" construct-only="true" />
+      <property name="Encoding" cname="encoding" type="GtkSourceEncoding" readable="true" writeable="true" construct="true" />
+      <property name="NewlineType" cname="newline-type" type="GtkSourceNewlineType" readable="true" writeable="true" construct="true" />
+      <property name="CompressionType" cname="compression-type" type="GtkSourceCompressionType" readable="true" writeable="true" construct="true" />
+      <property name="Flags" cname="flags" type="GtkSourceFileSaverFlags" readable="true" writeable="true" construct="true" />
+      <method name="ErrorQuark" cname="gtk_source_file_saver_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="GetBuffer" cname="gtk_source_file_saver_get_buffer">
+        <return-type type="GtkSourceBuffer*" />
+      </method>
+      <method name="GetCompressionType" cname="gtk_source_file_saver_get_compression_type">
+        <return-type type="GtkSourceCompressionType" />
+      </method>
+      <method name="GetEncoding" cname="gtk_source_file_saver_get_encoding">
+        <return-type type="const-GtkSourceEncoding*" />
+      </method>
+      <method name="GetFile" cname="gtk_source_file_saver_get_file">
+        <return-type type="GtkSourceFile*" />
+      </method>
+      <method name="GetFlags" cname="gtk_source_file_saver_get_flags">
+        <return-type type="GtkSourceFileSaverFlags" />
+      </method>
+      <method name="GetLocation" cname="gtk_source_file_saver_get_location">
+        <return-type type="GFile*" />
+      </method>
+      <method name="GetNewlineType" cname="gtk_source_file_saver_get_newline_type">
+        <return-type type="GtkSourceNewlineType" />
+      </method>
+      <method name="GetType" cname="gtk_source_file_saver_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_file_saver_new">
+        <parameters>
+          <parameter type="GtkSourceBuffer*" name="buffer" />
+          <parameter type="GtkSourceFile*" name="file" />
+        </parameters>
+      </constructor>
+      <constructor cname="gtk_source_file_saver_new_with_target">
+        <parameters>
+          <parameter type="GtkSourceBuffer*" name="buffer" />
+          <parameter type="GtkSourceFile*" name="file" />
+          <parameter type="GFile*" name="target_location" />
+        </parameters>
+      </constructor>
+      <method name="SaveAsync" cname="gtk_source_file_saver_save_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="io_priority" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GFileProgressCallback" name="progress_callback" />
+          <parameter type="gpointer" name="progress_callback_data" />
+          <parameter type="GDestroyNotify" name="progress_callback_notify" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="SaveFinish" cname="gtk_source_file_saver_save_finish">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="result" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SetCompressionType" cname="gtk_source_file_saver_set_compression_type">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceCompressionType" name="compression_type" />
+        </parameters>
+      </method>
+      <method name="SetEncoding" cname="gtk_source_file_saver_set_encoding">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GtkSourceEncoding*" name="encoding" />
+        </parameters>
+      </method>
+      <method name="SetFlags" cname="gtk_source_file_saver_set_flags">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceFileSaverFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="SetNewlineType" cname="gtk_source_file_saver_set_newline_type">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceNewlineType" name="newline_type" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Gutter" cname="GtkSourceGutter" parent="GObject">
+      <class_struct cname="GtkSourceGutterClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceGutterPrivate*" />
+      <property name="View" cname="view" type="GtkSourceView" readable="true" writeable="true" construct-only="true" />
+      <property name="WindowType" cname="window_type" type="GtkTextWindowType" readable="true" writeable="true" construct-only="true" />
+      <method name="GetRendererAtPos" cname="gtk_source_gutter_get_renderer_at_pos">
+        <return-type type="GtkSourceGutterRenderer*" />
+        <parameters>
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_source_gutter_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetView" cname="gtk_source_gutter_get_view">
+        <return-type type="GtkSourceView*" />
+      </method>
+      <method name="GetWindowType" cname="gtk_source_gutter_get_window_type">
+        <return-type type="GtkTextWindowType" />
+      </method>
+      <method name="Insert" cname="gtk_source_gutter_insert">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceGutterRenderer*" name="renderer" />
+          <parameter type="gint" name="position" />
+        </parameters>
+      </method>
+      <method name="QueueDraw" cname="gtk_source_gutter_queue_draw">
+        <return-type type="void" />
+      </method>
+      <method name="Remove" cname="gtk_source_gutter_remove">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceGutterRenderer*" name="renderer" />
+        </parameters>
+      </method>
+      <method name="Reorder" cname="gtk_source_gutter_reorder">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceGutterRenderer*" name="renderer" />
+          <parameter type="gint" name="position" />
+        </parameters>
+      </method>
+    </object>
+    <object name="GutterRenderer" cname="GtkSourceGutterRenderer" parent="GInitiallyUnowned">
+      <class_struct cname="GtkSourceGutterRendererClass">
+        <field name="ParentClass" cname="parent_class" type="GInitiallyUnownedClass" />
+        <method vm="begin" />
+        <method vm="draw" />
+        <method vm="end" />
+        <method vm="change_view" />
+        <method vm="change_buffer" />
+        <method signal_vm="query_activatable" />
+        <method signal_vm="activate" />
+        <method signal_vm="queue_draw" />
+        <method signal_vm="query_tooltip" />
+        <method signal_vm="query_data" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="20" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceGutterRendererPrivate*" />
+      <property name="Visible" cname="visible" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="Xpad" cname="xpad" type="gint" readable="true" writeable="true" construct="true" />
+      <property name="Ypad" cname="ypad" type="gint" readable="true" writeable="true" construct="true" />
+      <property name="Xalign" cname="xalign" type="gfloat" readable="true" writeable="true" construct="true" />
+      <property name="Yalign" cname="yalign" type="gfloat" readable="true" writeable="true" construct="true" />
+      <signal name="Activate" cname="activate" when="LAST" field_name="activate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="GdkRectangle*" name="area" />
+          <parameter type="GdkEvent*" name="event" />
+        </parameters>
+      </signal>
+      <signal name="QueueDraw" cname="queue-draw" when="LAST" field_name="queue_draw">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="QueryTooltip" cname="query-tooltip" when="LAST" field_name="query_tooltip">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="GdkRectangle*" name="area" />
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+          <parameter type="GtkTooltip*" name="tooltip" />
+        </parameters>
+      </signal>
+      <signal name="QueryData" cname="query-data" when="LAST" field_name="query_data">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+          <parameter type="GtkSourceGutterRendererState" name="state" />
+        </parameters>
+      </signal>
+      <signal name="QueryActivatable" cname="query-activatable" when="LAST" field_name="query_activatable">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="GdkRectangle*" name="area" />
+          <parameter type="GdkEvent*" name="event" />
+        </parameters>
+      </signal>
+      <property name="View" cname="view" type="GtkTextView" readable="true" />
+      <property name="AlignmentMode" cname="alignment-mode" type="GtkSourceGutterRendererAlignmentMode" readable="true" writeable="true" construct="true" />
+      <property name="WindowType" cname="window-type" type="GtkTextWindowType" readable="true" />
+      <property name="Size" cname="size" type="gint" readable="true" writeable="true" construct="true" />
+      <property name="BackgroundRgba" cname="background-rgba" type="GdkRgba" readable="true" writeable="true" />
+      <property name="BackgroundSet" cname="background-set" type="gboolean" readable="true" writeable="true" construct="true" />
+      <virtual_method name="Begin" cname="begin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="GdkRectangle*" name="background_area" />
+          <parameter type="GdkRectangle*" name="cell_area" />
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Draw" cname="draw">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="GdkRectangle*" name="background_area" />
+          <parameter type="GdkRectangle*" name="cell_area" />
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+          <parameter type="GtkSourceGutterRendererState" name="state" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="End" cname="end">
+        <return-type type="void" />
+        <parameters />
+      </virtual_method>
+      <virtual_method name="ChangeView" cname="change_view">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextView*" name="old_view" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ChangeBuffer" cname="change_buffer">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextBuffer*" name="old_buffer" />
+        </parameters>
+      </virtual_method>
+      <method name="Activate" cname="gtk_source_gutter_renderer_activate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="GdkRectangle*" name="area" />
+          <parameter type="GdkEvent*" name="event" />
+        </parameters>
+      </method>
+      <method name="Begin" cname="gtk_source_gutter_renderer_begin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="GdkRectangle*" name="background_area" />
+          <parameter type="GdkRectangle*" name="cell_area" />
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+        </parameters>
+      </method>
+      <method name="Draw" cname="gtk_source_gutter_renderer_draw">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="GdkRectangle*" name="background_area" />
+          <parameter type="GdkRectangle*" name="cell_area" />
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+          <parameter type="GtkSourceGutterRendererState" name="state" />
+        </parameters>
+      </method>
+      <method name="End" cname="gtk_source_gutter_renderer_end">
+        <return-type type="void" />
+      </method>
+      <method name="GetAlignment" cname="gtk_source_gutter_renderer_get_alignment">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gfloat*" name="xalign" />
+          <parameter type="gfloat*" name="yalign" />
+        </parameters>
+      </method>
+      <method name="GetAlignmentMode" cname="gtk_source_gutter_renderer_get_alignment_mode">
+        <return-type type="GtkSourceGutterRendererAlignmentMode" />
+      </method>
+      <method name="GetBackground" cname="gtk_source_gutter_renderer_get_background">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkRGBA*" name="color" />
+        </parameters>
+      </method>
+      <method name="GetPadding" cname="gtk_source_gutter_renderer_get_padding">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint*" name="xpad" />
+          <parameter type="gint*" name="ypad" />
+        </parameters>
+      </method>
+      <method name="GetSize" cname="gtk_source_gutter_renderer_get_size">
+        <return-type type="gint" />
+      </method>
+      <method name="GetType" cname="gtk_source_gutter_renderer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetView" cname="gtk_source_gutter_renderer_get_view">
+        <return-type type="GtkTextView*" />
+      </method>
+      <method name="GetVisible" cname="gtk_source_gutter_renderer_get_visible">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetWindowType" cname="gtk_source_gutter_renderer_get_window_type">
+        <return-type type="GtkTextWindowType" />
+      </method>
+      <method name="QueryActivatable" cname="gtk_source_gutter_renderer_query_activatable">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="GdkRectangle*" name="area" />
+          <parameter type="GdkEvent*" name="event" />
+        </parameters>
+      </method>
+      <method name="QueryData" cname="gtk_source_gutter_renderer_query_data">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+          <parameter type="GtkSourceGutterRendererState" name="state" />
+        </parameters>
+      </method>
+      <method name="QueryTooltip" cname="gtk_source_gutter_renderer_query_tooltip">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="GdkRectangle*" name="area" />
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+          <parameter type="GtkTooltip*" name="tooltip" />
+        </parameters>
+      </method>
+      <method name="QueueDraw" cname="gtk_source_gutter_renderer_queue_draw">
+        <return-type type="void" />
+      </method>
+      <method name="SetAlignment" cname="gtk_source_gutter_renderer_set_alignment">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gfloat" name="xalign" />
+          <parameter type="gfloat" name="yalign" />
+        </parameters>
+      </method>
+      <method name="SetAlignmentMode" cname="gtk_source_gutter_renderer_set_alignment_mode">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceGutterRendererAlignmentMode" name="mode" />
+        </parameters>
+      </method>
+      <method name="SetBackground" cname="gtk_source_gutter_renderer_set_background">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GdkRGBA*" name="color" />
+        </parameters>
+      </method>
+      <method name="SetPadding" cname="gtk_source_gutter_renderer_set_padding">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="xpad" />
+          <parameter type="gint" name="ypad" />
+        </parameters>
+      </method>
+      <method name="SetSize" cname="gtk_source_gutter_renderer_set_size">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="size" />
+        </parameters>
+      </method>
+      <method name="SetVisible" cname="gtk_source_gutter_renderer_set_visible">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="visible" />
+        </parameters>
+      </method>
+    </object>
+    <object name="GutterRendererLines" cname="GtkSourceGutterRendererLines" parent="GtkSourceGutterRendererText">
+      <class_struct cname="GtkSourceGutterRendererLinesClass">
+        <field name="ParentClass" cname="parent_class" type="GtkSourceGutterRendererTextClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceGutterRendererLinesPrivate*" />
+      <method name="GetType" cname="gtk_source_gutter_renderer_lines_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_gutter_renderer_lines_new" />
+    </object>
+    <object name="GutterRendererMarks" cname="GtkSourceGutterRendererMarks" parent="GtkSourceGutterRendererPixbuf">
+      <class_struct cname="GtkSourceGutterRendererMarksClass">
+        <field name="ParentClass" cname="parent_class" type="GtkSourceGutterRendererPixbufClass" />
+      </class_struct>
+      <method name="GetType" cname="gtk_source_gutter_renderer_marks_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_gutter_renderer_marks_new" />
+    </object>
+    <object name="GutterRendererPixbuf" cname="GtkSourceGutterRendererPixbuf" parent="GtkSourceGutterRenderer">
+      <class_struct cname="GtkSourceGutterRendererPixbufClass">
+        <field name="ParentClass" cname="parent_class" type="GtkSourceGutterRendererClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceGutterRendererPixbufPrivate*" />
+      <property name="Pixbuf" cname="pixbuf" type="GdkPixbuf" readable="true" writeable="true" />
+      <property name="IconName" cname="icon-name" type="gchar*" readable="true" writeable="true" />
+      <property name="Gicon" cname="gicon" type="GIcon" readable="true" writeable="true" />
+      <method name="GetGicon" cname="gtk_source_gutter_renderer_pixbuf_get_gicon">
+        <return-type type="GIcon*" />
+      </method>
+      <method name="GetIconName" cname="gtk_source_gutter_renderer_pixbuf_get_icon_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetPixbuf" cname="gtk_source_gutter_renderer_pixbuf_get_pixbuf">
+        <return-type type="GdkPixbuf*" />
+      </method>
+      <method name="GetType" cname="gtk_source_gutter_renderer_pixbuf_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_gutter_renderer_pixbuf_new" />
+      <method name="SetGicon" cname="gtk_source_gutter_renderer_pixbuf_set_gicon">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GIcon*" name="icon" />
+        </parameters>
+      </method>
+      <method name="SetIconName" cname="gtk_source_gutter_renderer_pixbuf_set_icon_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="icon_name" />
+        </parameters>
+      </method>
+      <method name="SetPixbuf" cname="gtk_source_gutter_renderer_pixbuf_set_pixbuf">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkPixbuf*" name="pixbuf" />
+        </parameters>
+      </method>
+    </object>
+    <object name="GutterRendererText" cname="GtkSourceGutterRendererText" parent="GtkSourceGutterRenderer">
+      <class_struct cname="GtkSourceGutterRendererTextClass">
+        <field name="ParentClass" cname="parent_class" type="GtkSourceGutterRendererClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceGutterRendererTextPrivate*" />
+      <property name="Markup" cname="markup" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="Text" cname="text" type="gchar*" readable="true" writeable="true" construct="true" />
+      <method name="GetType" cname="gtk_source_gutter_renderer_text_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="Measure" cname="gtk_source_gutter_renderer_text_measure">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="text" />
+          <parameter type="gint*" name="width" />
+          <parameter type="gint*" name="height" />
+        </parameters>
+      </method>
+      <method name="MeasureMarkup" cname="gtk_source_gutter_renderer_text_measure_markup">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="markup" />
+          <parameter type="gint*" name="width" />
+          <parameter type="gint*" name="height" />
+        </parameters>
+      </method>
+      <constructor cname="gtk_source_gutter_renderer_text_new" />
+      <method name="SetMarkup" cname="gtk_source_gutter_renderer_text_set_markup">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="markup" />
+          <parameter type="gint" name="length" />
+        </parameters>
+      </method>
+      <method name="SetText" cname="gtk_source_gutter_renderer_text_set_text">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="text" />
+          <parameter type="gint" name="length" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Language" cname="GtkSourceLanguage" parent="GObject">
+      <class_struct cname="GtkSourceLanguageClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceLanguagePrivate*" />
+      <property name="Id" cname="id" type="gchar*" readable="true" />
+      <property name="Name" cname="name" type="gchar*" readable="true" />
+      <property name="Section" cname="section" type="gchar*" readable="true" />
+      <property name="Hidden" cname="hidden" type="gboolean" readable="true" />
+      <method name="GetGlobs" cname="gtk_source_language_get_globs">
+        <return-type type="gchar**" />
+      </method>
+      <method name="GetHidden" cname="gtk_source_language_get_hidden">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetId" cname="gtk_source_language_get_id">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetMetadata" cname="gtk_source_language_get_metadata">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+      <method name="GetMimeTypes" cname="gtk_source_language_get_mime_types">
+        <return-type type="gchar**" />
+      </method>
+      <method name="GetName" cname="gtk_source_language_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetSection" cname="gtk_source_language_get_section">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetStyleFallback" cname="gtk_source_language_get_style_fallback">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="style_id" />
+        </parameters>
+      </method>
+      <method name="GetStyleIds" cname="gtk_source_language_get_style_ids">
+        <return-type type="gchar**" />
+      </method>
+      <method name="GetStyleName" cname="gtk_source_language_get_style_name">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="style_id" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_source_language_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="LanguageManager" cname="GtkSourceLanguageManager" parent="GObject">
+      <class_struct cname="GtkSourceLanguageManagerClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceLanguageManagerPrivate*" />
+      <property name="SearchPath" cname="search-path" type="GStrv" readable="true" writeable="true" />
+      <property name="LanguageIds" cname="language-ids" type="GStrv" readable="true" />
+      <method name="GetDefault" cname="gtk_source_language_manager_get_default" shared="true">
+        <return-type type="GtkSourceLanguageManager*" />
+      </method>
+      <method name="GetLanguage" cname="gtk_source_language_manager_get_language">
+        <return-type type="GtkSourceLanguage*" />
+        <parameters>
+          <parameter type="const-gchar*" name="id" />
+        </parameters>
+      </method>
+      <method name="GetLanguageIds" cname="gtk_source_language_manager_get_language_ids">
+        <return-type type="const-gchar**" />
+      </method>
+      <method name="GetSearchPath" cname="gtk_source_language_manager_get_search_path">
+        <return-type type="const-gchar**" />
+      </method>
+      <method name="GetType" cname="gtk_source_language_manager_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GuessLanguage" cname="gtk_source_language_manager_guess_language">
+        <return-type type="GtkSourceLanguage*" />
+        <parameters>
+          <parameter type="const-gchar*" name="filename" />
+          <parameter type="const-gchar*" name="content_type" />
+        </parameters>
+      </method>
+      <constructor cname="gtk_source_language_manager_new" />
+      <method name="SetSearchPath" cname="gtk_source_language_manager_set_search_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gchar**" name="dirs" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Map" cname="GtkSourceMap" parent="GtkSourceView">
+      <class_struct cname="GtkSourceMapClass">
+        <field name="ParentClass" cname="parent_class" type="GtkSourceViewClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <property name="View" cname="view" type="GtkSourceView" readable="true" writeable="true" />
+      <property name="FontDesc" cname="font-desc" type="PangoFontDescription" readable="true" writeable="true" />
+      <method name="GetType" cname="gtk_source_map_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetView" cname="gtk_source_map_get_view">
+        <return-type type="GtkSourceView*" />
+      </method>
+      <constructor cname="gtk_source_map_new" />
+      <method name="SetView" cname="gtk_source_map_set_view">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceView*" name="view" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Mark" cname="GtkSourceMark" parent="GtkTextMark">
+      <class_struct cname="GtkSourceMarkClass">
+        <field name="ParentClass" cname="parent_class" type="GtkTextMarkClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceMarkPrivate*" />
+      <property name="Category" cname="category" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <method name="GetCategory" cname="gtk_source_mark_get_category">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="gtk_source_mark_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_mark_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="const-gchar*" name="category" />
+        </parameters>
+      </constructor>
+      <method name="Next" cname="gtk_source_mark_next">
+        <return-type type="GtkSourceMark*" />
+        <parameters>
+          <parameter type="const-gchar*" name="category" />
+        </parameters>
+      </method>
+      <method name="Prev" cname="gtk_source_mark_prev">
+        <return-type type="GtkSourceMark*" />
+        <parameters>
+          <parameter type="const-gchar*" name="category" />
+        </parameters>
+      </method>
+    </object>
+    <object name="MarksSequence" cname="GtkSourceMarksSequence" parent="GObject">
+      <class_struct cname="GtkSourceMarksSequenceClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceMarksSequencePrivate*" />
+      <property name="Buffer" cname="buffer" type="GtkTextBuffer" readable="true" writeable="true" construct-only="true" />
+    </object>
+    <object name="MarkAttributes" cname="GtkSourceMarkAttributes" parent="GObject">
+      <class_struct cname="GtkSourceMarkAttributesClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceMarkAttributesPrivate*" />
+      <property name="Background" cname="background" type="GdkRgba" readable="true" writeable="true" />
+      <property name="Pixbuf" cname="pixbuf" type="GdkPixbuf" readable="true" writeable="true" />
+      <property name="IconName" cname="icon-name" type="gchar*" readable="true" writeable="true" />
+      <property name="Gicon" cname="gicon" type="GIcon" readable="true" writeable="true" />
+      <signal name="QueryTooltipText" cname="query-tooltip-text" when="LAST">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter name="p0" type="GtkSourceMark" />
+        </parameters>
+      </signal>
+      <signal name="QueryTooltipMarkup" cname="query-tooltip-markup" when="LAST">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter name="p0" type="GtkSourceMark" />
+        </parameters>
+      </signal>
+      <method name="GetBackground" cname="gtk_source_mark_attributes_get_background">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkRGBA*" name="background" />
+        </parameters>
+      </method>
+      <method name="GetGicon" cname="gtk_source_mark_attributes_get_gicon">
+        <return-type type="GIcon*" />
+      </method>
+      <method name="GetIconName" cname="gtk_source_mark_attributes_get_icon_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetPixbuf" cname="gtk_source_mark_attributes_get_pixbuf">
+        <return-type type="const-GdkPixbuf*" />
+      </method>
+      <method name="GetTooltipMarkup" cname="gtk_source_mark_attributes_get_tooltip_markup">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="GtkSourceMark*" name="mark" />
+        </parameters>
+      </method>
+      <method name="GetTooltipText" cname="gtk_source_mark_attributes_get_tooltip_text">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="GtkSourceMark*" name="mark" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_source_mark_attributes_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_mark_attributes_new" />
+      <method name="RenderIcon" cname="gtk_source_mark_attributes_render_icon">
+        <return-type type="const-GdkPixbuf*" />
+        <parameters>
+          <parameter type="GtkWidget*" name="widget" />
+          <parameter type="gint" name="size" />
+        </parameters>
+      </method>
+      <method name="SetBackground" cname="gtk_source_mark_attributes_set_background">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GdkRGBA*" name="background" />
+        </parameters>
+      </method>
+      <method name="SetGicon" cname="gtk_source_mark_attributes_set_gicon">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GIcon*" name="gicon" />
+        </parameters>
+      </method>
+      <method name="SetIconName" cname="gtk_source_mark_attributes_set_icon_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="icon_name" />
+        </parameters>
+      </method>
+      <method name="SetPixbuf" cname="gtk_source_mark_attributes_set_pixbuf">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GdkPixbuf*" name="pixbuf" />
+        </parameters>
+      </method>
+    </object>
+    <object name="PrintCompositor" cname="GtkSourcePrintCompositor" parent="GObject">
+      <class_struct cname="GtkSourcePrintCompositorClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourcePrintCompositorPrivate*" />
+      <property name="Buffer" cname="buffer" type="GtkSourceBuffer" readable="true" writeable="true" construct-only="true" />
+      <property name="TabWidth" cname="tab-width" type="guint" readable="true" writeable="true" />
+      <property name="WrapMode" cname="wrap-mode" type="GtkWrapMode" readable="true" writeable="true" />
+      <property name="HighlightSyntax" cname="highlight-syntax" type="gboolean" readable="true" writeable="true" />
+      <property name="PrintLineNumbers" cname="print-line-numbers" type="guint" readable="true" writeable="true" />
+      <property name="PrintHeader" cname="print-header" type="gboolean" readable="true" writeable="true" />
+      <property name="PrintFooter" cname="print-footer" type="gboolean" readable="true" writeable="true" />
+      <property name="BodyFontName" cname="body-font-name" type="gchar*" readable="true" writeable="true" />
+      <property name="LineNumbersFontName" cname="line-numbers-font-name" type="gchar*" readable="true" writeable="true" />
+      <property name="HeaderFontName" cname="header-font-name" type="gchar*" readable="true" writeable="true" />
+      <property name="FooterFontName" cname="footer-font-name" type="gchar*" readable="true" writeable="true" />
+      <property name="NPages" cname="n-pages" type="gint" readable="true" />
+      <method name="DrawPage" cname="gtk_source_print_compositor_draw_page">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPrintContext*" name="context" />
+          <parameter type="gint" name="page_nr" />
+        </parameters>
+      </method>
+      <method name="GetBodyFontName" cname="gtk_source_print_compositor_get_body_font_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetBottomMargin" cname="gtk_source_print_compositor_get_bottom_margin">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="GtkUnit" name="unit" />
+        </parameters>
+      </method>
+      <method name="GetBuffer" cname="gtk_source_print_compositor_get_buffer">
+        <return-type type="GtkSourceBuffer*" />
+      </method>
+      <method name="GetFooterFontName" cname="gtk_source_print_compositor_get_footer_font_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetHeaderFontName" cname="gtk_source_print_compositor_get_header_font_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetHighlightSyntax" cname="gtk_source_print_compositor_get_highlight_syntax">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetLeftMargin" cname="gtk_source_print_compositor_get_left_margin">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="GtkUnit" name="unit" />
+        </parameters>
+      </method>
+      <method name="GetLineNumbersFontName" cname="gtk_source_print_compositor_get_line_numbers_font_name">
+        <return-type type="gchar*" />
+      </method>
+      <method name="GetNPages" cname="gtk_source_print_compositor_get_n_pages">
+        <return-type type="gint" />
+      </method>
+      <method name="GetPaginationProgress" cname="gtk_source_print_compositor_get_pagination_progress">
+        <return-type type="gdouble" />
+      </method>
+      <method name="GetPrintFooter" cname="gtk_source_print_compositor_get_print_footer">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetPrintHeader" cname="gtk_source_print_compositor_get_print_header">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetPrintLineNumbers" cname="gtk_source_print_compositor_get_print_line_numbers">
+        <return-type type="guint" />
+      </method>
+      <method name="GetRightMargin" cname="gtk_source_print_compositor_get_right_margin">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="GtkUnit" name="unit" />
+        </parameters>
+      </method>
+      <method name="GetTabWidth" cname="gtk_source_print_compositor_get_tab_width">
+        <return-type type="guint" />
+      </method>
+      <method name="GetTopMargin" cname="gtk_source_print_compositor_get_top_margin">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="GtkUnit" name="unit" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_source_print_compositor_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetWrapMode" cname="gtk_source_print_compositor_get_wrap_mode">
+        <return-type type="GtkWrapMode" />
+      </method>
+      <constructor cname="gtk_source_print_compositor_new">
+        <parameters>
+          <parameter type="GtkSourceBuffer*" name="buffer" />
+        </parameters>
+      </constructor>
+      <constructor cname="gtk_source_print_compositor_new_from_view">
+        <parameters>
+          <parameter type="GtkSourceView*" name="view" />
+        </parameters>
+      </constructor>
+      <method name="Paginate" cname="gtk_source_print_compositor_paginate">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkPrintContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="SetBodyFontName" cname="gtk_source_print_compositor_set_body_font_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="font_name" />
+        </parameters>
+      </method>
+      <method name="SetBottomMargin" cname="gtk_source_print_compositor_set_bottom_margin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="margin" />
+          <parameter type="GtkUnit" name="unit" />
+        </parameters>
+      </method>
+      <method name="SetFooterFontName" cname="gtk_source_print_compositor_set_footer_font_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="font_name" />
+        </parameters>
+      </method>
+      <method name="SetFooterFormat" cname="gtk_source_print_compositor_set_footer_format">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="separator" />
+          <parameter type="const-gchar*" name="left" />
+          <parameter type="const-gchar*" name="center" />
+          <parameter type="const-gchar*" name="right" />
+        </parameters>
+      </method>
+      <method name="SetHeaderFontName" cname="gtk_source_print_compositor_set_header_font_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="font_name" />
+        </parameters>
+      </method>
+      <method name="SetHeaderFormat" cname="gtk_source_print_compositor_set_header_format">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="separator" />
+          <parameter type="const-gchar*" name="left" />
+          <parameter type="const-gchar*" name="center" />
+          <parameter type="const-gchar*" name="right" />
+        </parameters>
+      </method>
+      <method name="SetHighlightSyntax" cname="gtk_source_print_compositor_set_highlight_syntax">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="highlight" />
+        </parameters>
+      </method>
+      <method name="SetLeftMargin" cname="gtk_source_print_compositor_set_left_margin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="margin" />
+          <parameter type="GtkUnit" name="unit" />
+        </parameters>
+      </method>
+      <method name="SetLineNumbersFontName" cname="gtk_source_print_compositor_set_line_numbers_font_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="font_name" />
+        </parameters>
+      </method>
+      <method name="SetPrintFooter" cname="gtk_source_print_compositor_set_print_footer">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="print" />
+        </parameters>
+      </method>
+      <method name="SetPrintHeader" cname="gtk_source_print_compositor_set_print_header">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="print" />
+        </parameters>
+      </method>
+      <method name="SetPrintLineNumbers" cname="gtk_source_print_compositor_set_print_line_numbers">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="interval" />
+        </parameters>
+      </method>
+      <method name="SetRightMargin" cname="gtk_source_print_compositor_set_right_margin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="margin" />
+          <parameter type="GtkUnit" name="unit" />
+        </parameters>
+      </method>
+      <method name="SetTabWidth" cname="gtk_source_print_compositor_set_tab_width">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="width" />
+        </parameters>
+      </method>
+      <method name="SetTopMargin" cname="gtk_source_print_compositor_set_top_margin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="margin" />
+          <parameter type="GtkUnit" name="unit" />
+        </parameters>
+      </method>
+      <method name="SetWrapMode" cname="gtk_source_print_compositor_set_wrap_mode">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkWrapMode" name="wrap_mode" />
+        </parameters>
+      </method>
+    </object>
+    <object name="SearchContext" cname="GtkSourceSearchContext" parent="GObject">
+      <class_struct cname="GtkSourceSearchContextClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceSearchContextPrivate*" />
+      <property name="Buffer" cname="buffer" type="GtkSourceBuffer" readable="true" writeable="true" construct-only="true" />
+      <property name="Settings" cname="settings" type="GtkSourceSearchSettings" readable="true" writeable="true" construct-only="true" />
+      <property name="Highlight" cname="highlight" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="MatchStyle" cname="match-style" type="GtkSourceStyle" readable="true" writeable="true" construct="true" />
+      <property name="OccurrencesCount" cname="occurrences-count" type="gint" readable="true" />
+      <property name="RegexError" cname="regex-error" type="gpointer" readable="true" />
+      <method name="Backward" cname="gtk_source_search_context_backward">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter" />
+          <parameter type="GtkTextIter*" name="match_start" />
+          <parameter type="GtkTextIter*" name="match_end" />
+          <parameter type="gboolean*" name="has_wrapped_around" />
+        </parameters>
+      </method>
+      <method name="BackwardAsync" cname="gtk_source_search_context_backward_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="BackwardFinish" cname="gtk_source_search_context_backward_finish">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="result" />
+          <parameter type="GtkTextIter*" name="match_start" />
+          <parameter type="GtkTextIter*" name="match_end" />
+          <parameter type="gboolean*" name="has_wrapped_around" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="Forward" cname="gtk_source_search_context_forward">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter" />
+          <parameter type="GtkTextIter*" name="match_start" />
+          <parameter type="GtkTextIter*" name="match_end" />
+          <parameter type="gboolean*" name="has_wrapped_around" />
+        </parameters>
+      </method>
+      <method name="ForwardAsync" cname="gtk_source_search_context_forward_async">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="ForwardFinish" cname="gtk_source_search_context_forward_finish">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GAsyncResult*" name="result" />
+          <parameter type="GtkTextIter*" name="match_start" />
+          <parameter type="GtkTextIter*" name="match_end" />
+          <parameter type="gboolean*" name="has_wrapped_around" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="GetBuffer" cname="gtk_source_search_context_get_buffer">
+        <return-type type="GtkSourceBuffer*" />
+      </method>
+      <method name="GetHighlight" cname="gtk_source_search_context_get_highlight">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetMatchStyle" cname="gtk_source_search_context_get_match_style">
+        <return-type type="GtkSourceStyle*" />
+      </method>
+      <method name="GetOccurrencePosition" cname="gtk_source_search_context_get_occurrence_position">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="match_start" />
+          <parameter type="const-GtkTextIter*" name="match_end" />
+        </parameters>
+      </method>
+      <method name="GetOccurrencesCount" cname="gtk_source_search_context_get_occurrences_count">
+        <return-type type="gint" />
+      </method>
+      <method name="GetRegexError" cname="gtk_source_search_context_get_regex_error">
+        <return-type type="GError*" />
+      </method>
+      <method name="GetSettings" cname="gtk_source_search_context_get_settings">
+        <return-type type="GtkSourceSearchSettings*" />
+      </method>
+      <method name="GetType" cname="gtk_source_search_context_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_search_context_new">
+        <parameters>
+          <parameter type="GtkSourceBuffer*" name="buffer" />
+          <parameter type="GtkSourceSearchSettings*" name="settings" />
+        </parameters>
+      </constructor>
+      <method name="Replace" cname="gtk_source_search_context_replace">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="match_start" />
+          <parameter type="GtkTextIter*" name="match_end" />
+          <parameter type="const-gchar*" name="replace" />
+          <parameter type="gint" name="replace_length" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="ReplaceAll" cname="gtk_source_search_context_replace_all">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="const-gchar*" name="replace" />
+          <parameter type="gint" name="replace_length" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </method>
+      <method name="SetHighlight" cname="gtk_source_search_context_set_highlight">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="highlight" />
+        </parameters>
+      </method>
+      <method name="SetMatchStyle" cname="gtk_source_search_context_set_match_style">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceStyle*" name="match_style" />
+        </parameters>
+      </method>
+    </object>
+    <object name="SearchSettings" cname="GtkSourceSearchSettings" parent="GObject">
+      <class_struct cname="GtkSourceSearchSettingsClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceSearchSettingsPrivate*" />
+      <property name="SearchText" cname="search-text" type="gchar*" readable="true" writeable="true" construct="true" />
+      <property name="CaseSensitive" cname="case-sensitive" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="AtWordBoundaries" cname="at-word-boundaries" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="WrapAround" cname="wrap-around" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="RegexEnabled" cname="regex-enabled" type="gboolean" readable="true" writeable="true" construct="true" />
+      <method name="GetAtWordBoundaries" cname="gtk_source_search_settings_get_at_word_boundaries">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetCaseSensitive" cname="gtk_source_search_settings_get_case_sensitive">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetRegexEnabled" cname="gtk_source_search_settings_get_regex_enabled">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetSearchText" cname="gtk_source_search_settings_get_search_text">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="gtk_source_search_settings_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetWrapAround" cname="gtk_source_search_settings_get_wrap_around">
+        <return-type type="gboolean" />
+      </method>
+      <constructor cname="gtk_source_search_settings_new" />
+      <method name="SetAtWordBoundaries" cname="gtk_source_search_settings_set_at_word_boundaries">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="at_word_boundaries" />
+        </parameters>
+      </method>
+      <method name="SetCaseSensitive" cname="gtk_source_search_settings_set_case_sensitive">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="case_sensitive" />
+        </parameters>
+      </method>
+      <method name="SetRegexEnabled" cname="gtk_source_search_settings_set_regex_enabled">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="regex_enabled" />
+        </parameters>
+      </method>
+      <method name="SetSearchText" cname="gtk_source_search_settings_set_search_text">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="search_text" />
+        </parameters>
+      </method>
+      <method name="SetWrapAround" cname="gtk_source_search_settings_set_wrap_around">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="wrap_around" />
+        </parameters>
+      </method>
+    </object>
+    <object name="SpaceDrawer" cname="GtkSourceSpaceDrawer" parent="GObject">
+      <class_struct cname="GtkSourceSpaceDrawerClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="20" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceSpaceDrawerPrivate*" />
+      <property name="EnableMatrix" cname="enable-matrix" type="gboolean" readable="true" writeable="true" construct="true" />
+      <property name="Matrix" cname="matrix" type="variant" readable="true" writeable="true" construct="true" />
+      <method name="BindMatrixSetting" cname="gtk_source_space_drawer_bind_matrix_setting">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GSettings*" name="settings" />
+          <parameter type="const-gchar*" name="key" />
+          <parameter type="GSettingsBindFlags" name="flags" />
+        </parameters>
+      </method>
+      <method name="GetEnableMatrix" cname="gtk_source_space_drawer_get_enable_matrix">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetMatrix" cname="gtk_source_space_drawer_get_matrix">
+        <return-type type="GVariant*" />
+      </method>
+      <method name="GetType" cname="gtk_source_space_drawer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetTypesForLocations" cname="gtk_source_space_drawer_get_types_for_locations">
+        <return-type type="GtkSourceSpaceTypeFlags" />
+        <parameters>
+          <parameter type="GtkSourceSpaceLocationFlags" name="locations" />
+        </parameters>
+      </method>
+      <constructor cname="gtk_source_space_drawer_new" />
+      <method name="SetEnableMatrix" cname="gtk_source_space_drawer_set_enable_matrix">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="enable_matrix" />
+        </parameters>
+      </method>
+      <method name="SetMatrix" cname="gtk_source_space_drawer_set_matrix">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GVariant*" name="matrix" />
+        </parameters>
+      </method>
+      <method name="SetTypesForLocations" cname="gtk_source_space_drawer_set_types_for_locations">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceSpaceLocationFlags" name="locations" />
+          <parameter type="GtkSourceSpaceTypeFlags" name="types" />
+        </parameters>
+      </method>
+    </object>
+    <object name="Style" cname="GtkSourceStyle" parent="GObject">
+      <class_struct cname="GtkSourceStyleClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <property name="LineBackground" cname="line-background" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Background" cname="background" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Foreground" cname="foreground" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Bold" cname="bold" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="Italic" cname="italic" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="PangoUnderline" cname="pango-underline" type="PangoUnderline" readable="true" writeable="true" construct-only="true" />
+      <property name="Strikethrough" cname="strikethrough" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="Scale" cname="scale" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="UnderlineColor" cname="underline-color" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="LineBackgroundSet" cname="line-background-set" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="ForegroundSet" cname="foreground-set" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="BackgroundSet" cname="background-set" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="BoldSet" cname="bold-set" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="ItalicSet" cname="italic-set" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="UnderlineSet" cname="underline-set" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="StrikethroughSet" cname="strikethrough-set" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="ScaleSet" cname="scale-set" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="UnderlineColorSet" cname="underline-color-set" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <method name="Apply" cname="gtk_source_style_apply">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextTag*" name="tag" />
+        </parameters>
+      </method>
+      <method name="Copy" cname="gtk_source_style_copy">
+        <return-type type="GtkSourceStyle*" owned="true" />
+      </method>
+      <method name="GetType" cname="gtk_source_style_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="StyleScheme" cname="GtkSourceStyleScheme" parent="GObject">
+      <class_struct cname="GtkSourceStyleSchemeClass">
+        <field name="BaseClass" cname="base_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceStyleSchemePrivate*" />
+      <property name="Id" cname="id" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Name" cname="name" type="gchar*" readable="true" />
+      <property name="Description" cname="description" type="gchar*" readable="true" />
+      <property name="Filename" cname="filename" type="gchar*" readable="true" />
+      <method name="GetAuthors" cname="gtk_source_style_scheme_get_authors">
+        <return-type type="const-gchar**" />
+      </method>
+      <method name="GetDescription" cname="gtk_source_style_scheme_get_description">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetFilename" cname="gtk_source_style_scheme_get_filename">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetId" cname="gtk_source_style_scheme_get_id">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetName" cname="gtk_source_style_scheme_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetStyle" cname="gtk_source_style_scheme_get_style">
+        <return-type type="GtkSourceStyle*" />
+        <parameters>
+          <parameter type="const-gchar*" name="style_id" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_source_style_scheme_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="StyleSchemeChooserButton" cname="GtkSourceStyleSchemeChooserButton" parent="GtkButton">
+      <class_struct cname="GtkSourceStyleSchemeChooserButtonClass">
+        <field name="Parent" cname="parent" type="GtkButtonClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <implements>
+        <interface cname="GtkSourceStyleSchemeChooser" />
+      </implements>
+      <method name="GetType" cname="gtk_source_style_scheme_chooser_button_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_style_scheme_chooser_button_new" />
+    </object>
+    <object name="StyleSchemeChooserWidget" cname="GtkSourceStyleSchemeChooserWidget" parent="GtkBin">
+      <class_struct cname="GtkSourceStyleSchemeChooserWidgetClass">
+        <field name="Parent" cname="parent" type="GtkBinClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <implements>
+        <interface cname="GtkSourceStyleSchemeChooser" />
+      </implements>
+      <method name="GetType" cname="gtk_source_style_scheme_chooser_widget_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_style_scheme_chooser_widget_new" />
+    </object>
+    <object name="StyleSchemeManager" cname="GtkSourceStyleSchemeManager" parent="GObject">
+      <class_struct cname="GtkSourceStyleSchemeManagerClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="10" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceStyleSchemeManagerPrivate*" />
+      <property name="SearchPath" cname="search-path" type="GStrv" readable="true" writeable="true" />
+      <property name="SchemeIds" cname="scheme-ids" type="GStrv" readable="true" />
+      <method name="AppendSearchPath" cname="gtk_source_style_scheme_manager_append_search_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </method>
+      <method name="ForceRescan" cname="gtk_source_style_scheme_manager_force_rescan">
+        <return-type type="void" />
+      </method>
+      <method name="GetDefault" cname="gtk_source_style_scheme_manager_get_default" shared="true">
+        <return-type type="GtkSourceStyleSchemeManager*" />
+      </method>
+      <method name="GetScheme" cname="gtk_source_style_scheme_manager_get_scheme">
+        <return-type type="GtkSourceStyleScheme*" />
+        <parameters>
+          <parameter type="const-gchar*" name="scheme_id" />
+        </parameters>
+      </method>
+      <method name="GetSchemeIds" cname="gtk_source_style_scheme_manager_get_scheme_ids">
+        <return-type type="const-gchar**" />
+      </method>
+      <method name="GetSearchPath" cname="gtk_source_style_scheme_manager_get_search_path">
+        <return-type type="const-gchar**" />
+      </method>
+      <method name="GetType" cname="gtk_source_style_scheme_manager_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_source_style_scheme_manager_new" />
+      <method name="PrependSearchPath" cname="gtk_source_style_scheme_manager_prepend_search_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="path" />
+        </parameters>
+      </method>
+      <method name="SetSearchPath" cname="gtk_source_style_scheme_manager_set_search_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gchar**" name="path" />
+        </parameters>
+      </method>
+    </object>
+    <object name="UndoManagerDefault" cname="GtkSourceUndoManagerDefault" parent="GObject">
+      <class_struct cname="GtkSourceUndoManagerDefaultClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceUndoManagerDefaultPrivate*" />
+      <property name="Buffer" cname="buffer" type="GtkTextBuffer" readable="true" writeable="true" construct-only="true" />
+      <property name="MaxUndoLevels" cname="max-undo-levels" type="gint" readable="true" writeable="true" />
+      <implements>
+        <interface cname="GtkSourceUndoManager" />
+      </implements>
+      <method name="GetType" cname="gtk_source_undo_manager_default_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="SetMaxUndoLevels" cname="gtk_source_undo_manager_default_set_max_undo_levels">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="max_undo_levels" />
+        </parameters>
+      </method>
+    </object>
+    <object name="View" cname="GtkSourceView" parent="GtkTextView">
+      <class_struct cname="GtkSourceViewClass">
+        <field name="ParentClass" cname="parent_class" type="GtkTextViewClass" />
+        <method signal_vm="undo" />
+        <method signal_vm="redo" />
+        <method signal_vm="line_mark_activated" />
+        <method signal_vm="show_completion" />
+        <method signal_vm="move_lines" />
+        <method signal_vm="move_words" />
+        <field name="Padding" cname="padding" type="gpointer" array_len="20" />
+      </class_struct>
+      <field name="Priv" cname="priv" type="GtkSourceViewPrivate*" />
+      <property name="Completion" cname="completion" type="GtkSourceCompletion" readable="true" />
+      <property name="ShowLineNumbers" cname="show-line-numbers" type="gboolean" readable="true" writeable="true" />
+      <property name="ShowLineMarks" cname="show-line-marks" type="gboolean" readable="true" writeable="true" />
+      <property name="TabWidth" cname="tab-width" type="guint" readable="true" writeable="true" />
+      <property name="IndentWidth" cname="indent-width" type="gint" readable="true" writeable="true" />
+      <property name="AutoIndent" cname="auto-indent" type="gboolean" readable="true" writeable="true" />
+      <property name="InsertSpacesInsteadOfTabs" cname="insert-spaces-instead-of-tabs" type="gboolean" readable="true" writeable="true" />
+      <property name="ShowRightMargin" cname="show-right-margin" type="gboolean" readable="true" writeable="true" />
+      <property name="RightMarginPosition" cname="right-margin-position" type="guint" readable="true" writeable="true" />
+      <property name="SmartHomeEnd" cname="smart-home-end" type="GtkSourceSmartHomeEndType" readable="true" writeable="true" />
+      <property name="HighlightCurrentLine" cname="highlight-current-line" type="gboolean" readable="true" writeable="true" />
+      <property name="IndentOnTab" cname="indent-on-tab" type="gboolean" readable="true" writeable="true" />
+      <property name="BackgroundPattern" cname="background-pattern" type="GtkSourceBackgroundPatternType" readable="true" writeable="true" />
+      <property name="SmartBackspace" cname="smart-backspace" type="gboolean" readable="true" writeable="true" />
+      <property name="SpaceDrawer" cname="space-drawer" type="GtkSourceSpaceDrawer" readable="true" />
+      <signal name="Undo" cname="undo" when="LAST" field_name="undo">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="Redo" cname="redo" when="LAST" field_name="redo">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="ShowCompletion" cname="show-completion" when="LAST" field_name="show_completion">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <signal name="LineMarkActivated" cname="line-mark-activated" when="LAST" field_name="line_mark_activated">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter" />
+          <parameter type="GdkEvent*" name="event" />
+        </parameters>
+      </signal>
+      <signal name="MoveLines" cname="move-lines" when="LAST" field_name="move_lines">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="down" />
+        </parameters>
+      </signal>
+      <signal name="MoveWords" cname="move-words" when="LAST" field_name="move_words">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="step" />
+        </parameters>
+      </signal>
+      <signal name="SmartHomeEnd" cname="smart-home-end" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="GtkTextIter" />
+          <parameter name="p1" type="gint32" />
+        </parameters>
+      </signal>
+      <signal name="MoveToMatchingBracket" cname="move-to-matching-bracket" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="gboolean" />
+        </parameters>
+      </signal>
+      <signal name="ChangeNumber" cname="change-number" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="gint32" />
+        </parameters>
+      </signal>
+      <signal name="ChangeCase" cname="change-case" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="p0" type="GtkSourceChangeCaseType" />
+        </parameters>
+      </signal>
+      <signal name="JoinLines" cname="join-lines" when="LAST">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <implements>
+        <interface cname="GtkBuildable" />
+      </implements>
+      <method name="GetAutoIndent" cname="gtk_source_view_get_auto_indent">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetBackgroundPattern" cname="gtk_source_view_get_background_pattern">
+        <return-type type="GtkSourceBackgroundPatternType" />
+      </method>
+      <method name="GetCompletion" cname="gtk_source_view_get_completion">
+        <return-type type="GtkSourceCompletion*" />
+      </method>
+      <method name="GetGutter" cname="gtk_source_view_get_gutter">
+        <return-type type="GtkSourceGutter*" />
+        <parameters>
+          <parameter type="GtkTextWindowType" name="window_type" />
+        </parameters>
+      </method>
+      <method name="GetHighlightCurrentLine" cname="gtk_source_view_get_highlight_current_line">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetIndentOnTab" cname="gtk_source_view_get_indent_on_tab">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetIndentWidth" cname="gtk_source_view_get_indent_width">
+        <return-type type="gint" />
+      </method>
+      <method name="GetInsertSpacesInsteadOfTabs" cname="gtk_source_view_get_insert_spaces_instead_of_tabs">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetMarkAttributes" cname="gtk_source_view_get_mark_attributes">
+        <return-type type="GtkSourceMarkAttributes*" />
+        <parameters>
+          <parameter type="const-gchar*" name="category" />
+          <parameter type="gint*" name="priority" />
+        </parameters>
+      </method>
+      <method name="GetRightMarginPosition" cname="gtk_source_view_get_right_margin_position">
+        <return-type type="guint" />
+      </method>
+      <method name="GetShowLineMarks" cname="gtk_source_view_get_show_line_marks">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetShowLineNumbers" cname="gtk_source_view_get_show_line_numbers">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetShowRightMargin" cname="gtk_source_view_get_show_right_margin">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetSmartBackspace" cname="gtk_source_view_get_smart_backspace">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetSmartHomeEnd" cname="gtk_source_view_get_smart_home_end">
+        <return-type type="GtkSourceSmartHomeEndType" />
+      </method>
+      <method name="GetSpaceDrawer" cname="gtk_source_view_get_space_drawer">
+        <return-type type="GtkSourceSpaceDrawer*" />
+      </method>
+      <method name="GetTabWidth" cname="gtk_source_view_get_tab_width">
+        <return-type type="guint" />
+      </method>
+      <method name="GetType" cname="gtk_source_view_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetVisualColumn" cname="gtk_source_view_get_visual_column">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="IndentLines" cname="gtk_source_view_indent_lines">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+        </parameters>
+      </method>
+      <constructor cname="gtk_source_view_new" />
+      <constructor cname="gtk_source_view_new_with_buffer">
+        <parameters>
+          <parameter type="GtkSourceBuffer*" name="buffer" />
+        </parameters>
+      </constructor>
+      <method name="SetAutoIndent" cname="gtk_source_view_set_auto_indent">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="enable" />
+        </parameters>
+      </method>
+      <method name="SetBackgroundPattern" cname="gtk_source_view_set_background_pattern">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceBackgroundPatternType" name="background_pattern" />
+        </parameters>
+      </method>
+      <method name="SetHighlightCurrentLine" cname="gtk_source_view_set_highlight_current_line">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="highlight" />
+        </parameters>
+      </method>
+      <method name="SetIndentOnTab" cname="gtk_source_view_set_indent_on_tab">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="enable" />
+        </parameters>
+      </method>
+      <method name="SetIndentWidth" cname="gtk_source_view_set_indent_width">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="width" />
+        </parameters>
+      </method>
+      <method name="SetInsertSpacesInsteadOfTabs" cname="gtk_source_view_set_insert_spaces_instead_of_tabs">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="enable" />
+        </parameters>
+      </method>
+      <method name="SetMarkAttributes" cname="gtk_source_view_set_mark_attributes">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="category" />
+          <parameter type="GtkSourceMarkAttributes*" name="attributes" />
+          <parameter type="gint" name="priority" />
+        </parameters>
+      </method>
+      <method name="SetRightMarginPosition" cname="gtk_source_view_set_right_margin_position">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="pos" />
+        </parameters>
+      </method>
+      <method name="SetShowLineMarks" cname="gtk_source_view_set_show_line_marks">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="show" />
+        </parameters>
+      </method>
+      <method name="SetShowLineNumbers" cname="gtk_source_view_set_show_line_numbers">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="show" />
+        </parameters>
+      </method>
+      <method name="SetShowRightMargin" cname="gtk_source_view_set_show_right_margin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="show" />
+        </parameters>
+      </method>
+      <method name="SetSmartBackspace" cname="gtk_source_view_set_smart_backspace">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="smart_backspace" />
+        </parameters>
+      </method>
+      <method name="SetSmartHomeEnd" cname="gtk_source_view_set_smart_home_end">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceSmartHomeEndType" name="smart_home_end" />
+        </parameters>
+      </method>
+      <method name="SetTabWidth" cname="gtk_source_view_set_tab_width">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="width" />
+        </parameters>
+      </method>
+      <method name="UnindentLines" cname="gtk_source_view_unindent_lines">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+        </parameters>
+      </method>
+    </object>
+    <struct name="Action" cname="Action" opaque="true" />
+    <struct name="ActionGroup" cname="ActionGroup" opaque="true" />
+    <struct name="AddStyleIdData" cname="AddStyleIdData" opaque="true" />
+    <struct name="Context" cname="Context" opaque="true" />
+    <struct name="ContextClassTag" cname="ContextClassTag" opaque="true" />
+    <struct name="ContextDefinition" cname="ContextDefinition" opaque="true" />
+    <struct name="ContextPtr" cname="ContextPtr" opaque="true" />
+    <struct name="DefinitionChild" cname="DefinitionChild" opaque="true" />
+    <struct name="DefinitionsIter" cname="DefinitionsIter" opaque="true" />
+    <struct name="ContextClass" cname="GtkSourceContextClass" opaque="true">
+      <method name="Free" cname="gtk_source_context_class_free">
+        <return-type type="void" />
+      </method>
+      <constructor cname="gtk_source_context_class_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+          <parameter type="gboolean" name="enabled" />
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="ContextData" cname="GtkSourceContextData" opaque="true" />
+    <struct name="ContextReplace" cname="GtkSourceContextReplace" opaque="true" />
+    <boxed name="Encoding" cname="GtkSourceEncoding" opaque="true">
+      <method name="Copy" cname="gtk_source_encoding_copy">
+        <return-type type="GtkSourceEncoding*" owned="true" />
+      </method>
+      <method name="Free" cname="gtk_source_encoding_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetAll" cname="gtk_source_encoding_get_all" shared="true">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetCharset" cname="gtk_source_encoding_get_charset">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetCurrent" cname="gtk_source_encoding_get_current" shared="true">
+        <return-type type="const-GtkSourceEncoding*" />
+      </method>
+      <method name="GetDefaultCandidates" cname="gtk_source_encoding_get_default_candidates" shared="true">
+        <return-type type="GSList*" />
+      </method>
+      <method name="GetFromCharset" cname="gtk_source_encoding_get_from_charset" shared="true">
+        <return-type type="const-GtkSourceEncoding*" />
+        <parameters>
+          <parameter type="const-gchar*" name="charset" />
+        </parameters>
+      </method>
+      <method name="GetName" cname="gtk_source_encoding_get_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetType" cname="gtk_source_encoding_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="GetUtf8" cname="gtk_source_encoding_get_utf8" shared="true">
+        <return-type type="const-GtkSourceEncoding*" />
+      </method>
+      <method name="ToString" cname="gtk_source_encoding_to_string">
+        <return-type type="gchar*" />
+      </method>
+    </boxed>
+    <struct name="PixbufHelper" cname="GtkSourcePixbufHelper" opaque="true">
+      <method name="Free" cname="gtk_source_pixbuf_helper_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetGicon" cname="gtk_source_pixbuf_helper_get_gicon">
+        <return-type type="GIcon*" />
+      </method>
+      <method name="GetIconName" cname="gtk_source_pixbuf_helper_get_icon_name">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetPixbuf" cname="gtk_source_pixbuf_helper_get_pixbuf">
+        <return-type type="GdkPixbuf*" />
+      </method>
+      <constructor cname="gtk_source_pixbuf_helper_new" />
+      <method name="Render" cname="gtk_source_pixbuf_helper_render">
+        <return-type type="GdkPixbuf*" />
+        <parameters>
+          <parameter type="GtkWidget*" name="widget" />
+          <parameter type="gint" name="size" />
+        </parameters>
+      </method>
+      <method name="SetGicon" cname="gtk_source_pixbuf_helper_set_gicon">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GIcon*" name="gicon" />
+        </parameters>
+      </method>
+      <method name="SetIconName" cname="gtk_source_pixbuf_helper_set_icon_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="icon_name" />
+        </parameters>
+      </method>
+      <method name="SetPixbuf" cname="gtk_source_pixbuf_helper_set_pixbuf">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GdkPixbuf*" name="pixbuf" />
+        </parameters>
+      </method>
+    </struct>
+    <struct name="Regex" cname="GtkSourceRegex" opaque="true" />
+    <struct name="RegionIter" cname="GtkSourceRegionIter">
+      <field name="Dummy1" cname="dummy1" type="gpointer" access="private" />
+      <field name="Dummy2" cname="dummy2" type="guint32" access="private" />
+      <field name="Dummy3" cname="dummy3" type="gpointer" access="private" />
+      <method name="GetSubregion" cname="gtk_source_region_iter_get_subregion">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+        </parameters>
+      </method>
+      <method name="IsEnd" cname="gtk_source_region_iter_is_end">
+        <return-type type="gboolean" />
+      </method>
+      <method name="Next" cname="gtk_source_region_iter_next">
+        <return-type type="gboolean" />
+      </method>
+    </struct>
+    <struct name="RegionIterReal" cname="GtkSourceRegionIterReal" opaque="true" />
+    <struct name="StyleInfo" cname="GtkSourceStyleInfo" opaque="true" />
+    <struct name="InvalidRegion" cname="InvalidRegion" opaque="true" />
+    <struct name="LineInfo" cname="LineInfo" opaque="true" />
+    <struct name="LinesInfo" cname="LinesInfo" opaque="true" />
+    <struct name="MarkCategory" cname="MarkCategory" opaque="true" />
+    <struct name="ParserState" cname="ParserState" opaque="true" />
+    <struct name="Segment" cname="Segment" opaque="true" />
+    <struct name="SubPattern" cname="SubPattern" opaque="true" />
+    <struct name="SubPatternDefinition" cname="SubPatternDefinition" opaque="true" />
+    <struct name="Subregion" cname="Subregion" opaque="true" />
+    <struct name="TaskData" cname="TaskData" opaque="true" />
+    <class name="Region" cname="GtkSourceRegion_">
+      <method name="AddRegion" cname="gtk_source_region_add_region" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+          <parameter type="GtkSourceRegion*" name="region_to_add" />
+        </parameters>
+      </method>
+      <method name="AddSubregion" cname="gtk_source_region_add_subregion" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+          <parameter type="const-GtkTextIter*" name="_start" />
+          <parameter type="const-GtkTextIter*" name="_end" />
+        </parameters>
+      </method>
+      <method name="GetBounds" cname="gtk_source_region_get_bounds" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+          <parameter type="GtkTextIter*" name="start" />
+          <parameter type="GtkTextIter*" name="end" />
+        </parameters>
+      </method>
+      <method name="GetBuffer" cname="gtk_source_region_get_buffer" shared="true">
+        <return-type type="GtkTextBuffer*" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+        </parameters>
+      </method>
+      <method name="GetStartRegionIter" cname="gtk_source_region_get_start_region_iter" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+          <parameter type="GtkSourceRegionIter*" name="iter" />
+        </parameters>
+      </method>
+      <method name="IntersectRegion" cname="gtk_source_region_intersect_region" shared="true">
+        <return-type type="GtkSourceRegion*" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region1" />
+          <parameter type="GtkSourceRegion*" name="region2" />
+        </parameters>
+      </method>
+      <method name="IntersectSubregion" cname="gtk_source_region_intersect_subregion" shared="true">
+        <return-type type="GtkSourceRegion*" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+          <parameter type="const-GtkTextIter*" name="_start" />
+          <parameter type="const-GtkTextIter*" name="_end" />
+        </parameters>
+      </method>
+      <method name="IsEmpty" cname="gtk_source_region_is_empty" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+        </parameters>
+      </method>
+      <method name="New" cname="gtk_source_region_new" shared="true">
+        <return-type type="GtkSourceRegion*" />
+        <parameters>
+          <parameter type="GtkTextBuffer*" name="buffer" />
+        </parameters>
+      </method>
+      <method name="SubtractRegion" cname="gtk_source_region_subtract_region" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+          <parameter type="GtkSourceRegion*" name="region_to_subtract" />
+        </parameters>
+      </method>
+      <method name="SubtractSubregion" cname="gtk_source_region_subtract_subregion" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+          <parameter type="const-GtkTextIter*" name="_start" />
+          <parameter type="const-GtkTextIter*" name="_end" />
+        </parameters>
+      </method>
+      <method name="ToString" cname="gtk_source_region_to_string" shared="true">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="GtkSourceRegion*" name="region" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Global" cname="GtkSourceGlobal">
+      <method name="TagNew" cname="gtk_source_tag_new" shared="true">
+        <return-type type="GtkTextTag*" />
+        <parameters>
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Utils" cname="GtkSourceUtils_">
+      <method name="EscapeSearchText" cname="gtk_source_utils_escape_search_text" shared="true">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="text" />
+        </parameters>
+      </method>
+      <method name="UnescapeSearchText" cname="gtk_source_utils_unescape_search_text" shared="true">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="text" />
+        </parameters>
+      </method>
+    </class>
+  </namespace>
+</api>

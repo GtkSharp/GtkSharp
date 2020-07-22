@@ -10,5 +10,6 @@ enum Library
     PangoCairo,
     Gdk,
     GdkPixbuf,
-    Gtk
+    Gtk,
+    GtkSource
 }
