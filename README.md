@@ -50,6 +50,7 @@ Available NuGet packages:
 * [AtkSharp](https://www.nuget.org/packages/AtkSharp/)
 * [PangoSharp](https://www.nuget.org/packages/PangoSharp/)
 * [CairoSharp](https://www.nuget.org/packages/CairoSharp/)
+* [GtkSourceSharp](https://www.nuget.org/packages/GtkSourceSharp/)
 
 To create a new gtk app project, simply use `dotnet new` templating engine:
 
