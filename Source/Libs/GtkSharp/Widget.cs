@@ -391,16 +391,11 @@ namespace Gtk {
 		{
 			if (Handle == IntPtr.Zero)
 				return;
-
-			if (disposing)
-				gtk_widget_destroy (Handle);
-
 			InternalDestroyed -= NativeDestroyHandler;
-
 			base.Dispose (disposing);
 		}
 
-		protected override IntPtr Raw {
+	protected override IntPtr Raw {
 			get {
 				return base.Raw;
 			}
@@ -414,9 +409,12 @@ namespace Gtk {
 		delegate void d_gtk_widget_destroy(IntPtr raw);
 		static d_gtk_widget_destroy gtk_widget_destroy = FuncLoader.LoadFunction<d_gtk_widget_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_destroy"));
 
-		[Obsolete("Use Dispose")]
 		public virtual void Destroy ()
 		{
+			if (Handle == IntPtr.Zero)
+				return;
+			gtk_widget_destroy (Handle);
+			InternalDestroyed -= NativeDestroyHandler;
 		}
 	}
 }
