@@ -150,10 +150,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine ("\t\t\t}");
 				}
 	
-				Body.Initialize(gen_info, false, false, "");
-				if (container_type is ObjectGen) {
-					sw.WriteLine ("\t\t\towned = true;");
-				}
+				Body.Initialize(gen_info, false, false, ""); 
 				sw.WriteLine("\t\t\t{0} = {1}({2});", container_type.AssignToName, CName, Body.GetCallString (false));
 				Body.Finish (sw, "");
 				Body.HandleException (sw, "");
