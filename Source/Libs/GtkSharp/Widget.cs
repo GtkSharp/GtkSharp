@@ -370,6 +370,7 @@ namespace Gtk {
 			Gtk.Widget widget = o as Gtk.Widget;
 			if (widget == null)
 				return;
+
 			widget.OnDestroyed ();
 		}
 		
@@ -387,20 +388,41 @@ namespace Gtk {
 			base.CreateNativeObject (names, vals);
 		}
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_g_object_ref(IntPtr raw);
+		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
+
+		private bool destroyed;
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle == IntPtr.Zero)
 				return;
+
+			if (disposing && !destroyed && IsToplevel)
+			{
+				//If this is a TopLevel widget, then we do not hold a ref, only a toggle ref.
+				//Freeing our toggle ref expects a normal ref to exist, and therefore does not check if the object still exists.
+				//Take a ref here and let our toggle ref unref it.
+				g_object_ref (Handle);
+				gtk_widget_destroy (Handle);
+				destroyed = true;
+			}
+
 			InternalDestroyed -= NativeDestroyHandler;
+
 			base.Dispose (disposing);
 		}
 
-	protected override IntPtr Raw {
+		protected override IntPtr Raw {
 			get {
 				return base.Raw;
 			}
 			set {
+				if (Handle == value)
+					return;
+
 				base.Raw = value;
+
 				if (value != IntPtr.Zero)
 					InternalDestroyed += NativeDestroyHandler;
 			}
@@ -409,11 +431,18 @@ namespace Gtk {
 		delegate void d_gtk_widget_destroy(IntPtr raw);
 		static d_gtk_widget_destroy gtk_widget_destroy = FuncLoader.LoadFunction<d_gtk_widget_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_destroy"));
 
+
 		public virtual void Destroy ()
 		{
 			if (Handle == IntPtr.Zero)
 				return;
+
+			if (destroyed)
+				return;
+
 			gtk_widget_destroy (Handle);
+			destroyed = true;
+
 			InternalDestroyed -= NativeDestroyHandler;
 		}
 	}
