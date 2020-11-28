@@ -75,18 +75,21 @@ namespace Gtk {
                         }
                 }
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_native_dialog_set_title(IntPtr self, string title);
+		delegate void d_gtk_native_dialog_set_title(IntPtr self, IntPtr title);
 		static d_gtk_native_dialog_set_title gtk_native_dialog_set_title = FuncLoader.LoadFunction<d_gtk_native_dialog_set_title>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_title"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate string d_gtk_native_dialog_get_title(IntPtr self);
+		delegate IntPtr d_gtk_native_dialog_get_title(IntPtr self);
 		static d_gtk_native_dialog_get_title gtk_native_dialog_get_title = FuncLoader.LoadFunction<d_gtk_native_dialog_get_title>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_title"));
 
                 public string Title {
                         set {
-                                gtk_native_dialog_set_title (Handle, value);
+                                IntPtr native = GLib.Marshaller.StringToPtrGStrdup(value);
+                                gtk_native_dialog_set_title(Handle, native);
+                                GLib.Marshaller.Free(native);
                         }
                         get {
-                                return gtk_native_dialog_get_title (Handle);
+                                IntPtr native = gtk_native_dialog_get_title(Handle);
+                                return GLib.Marshaller.Utf8PtrToString(native);
                         }
                 }
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
