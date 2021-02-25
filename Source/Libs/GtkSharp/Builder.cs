@@ -151,6 +151,16 @@ namespace Gtk {
 			GLib.Marshaller.Free (native_name);
 			return raw_ret;
 		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_g_object_ref(IntPtr raw);
+		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
+
+		public IntPtr GetRawOwnedObject(string name) {
+			IntPtr raw_ret = GetRawObject (name);
+			g_object_ref (raw_ret);
+			return raw_ret;
+		}
 		
 		public Builder (System.IO.Stream s) : this (s, null)
 		{

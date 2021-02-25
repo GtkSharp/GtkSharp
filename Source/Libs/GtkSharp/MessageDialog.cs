@@ -26,7 +26,7 @@ namespace Gtk {
 		delegate IntPtr d_gtk_message_dialog_new_with_markup(IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, IntPtr msg, IntPtr args);
 		static d_gtk_message_dialog_new_with_markup gtk_message_dialog_new_with_markup = FuncLoader.LoadFunction<d_gtk_message_dialog_new_with_markup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_message_dialog_new_with_markup"));
 
-		public MessageDialog (Gtk.Window parent_window, DialogFlags flags, MessageType type, ButtonsType bt, bool use_markup, string format, params object[] args)
+		public MessageDialog (Gtk.Window parent_window, DialogFlags flags, MessageType type, ButtonsType bt, bool use_markup, string format, params object[] args) : base (IntPtr.Zero)
 		{
 			IntPtr p = (parent_window != null) ? parent_window.Handle : IntPtr.Zero;
 
