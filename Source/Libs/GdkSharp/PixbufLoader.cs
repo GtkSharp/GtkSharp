@@ -33,7 +33,7 @@ namespace Gdk {
 
 		internal IntPtr PixbufHandle {
 			get {
-				return gdk_pixbuf_loader_get_pixbuf (Handle);
+				return g_object_ref (gdk_pixbuf_loader_get_pixbuf (Handle));
 			}
 		}
 
