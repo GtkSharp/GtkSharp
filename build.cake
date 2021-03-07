@@ -1,7 +1,7 @@
 #load CakeScripts\GAssembly.cake
 #load CakeScripts\Settings.cake
-#addin "Cake.FileHelpers&version=3.2.0"
-#addin "Cake.Incubator&version=5.0.1"
+#addin "Cake.FileHelpers&version=4.0.0"
+#addin "Cake.Incubator&version=5.1.0"
 
 // VARS
 
@@ -63,7 +63,10 @@ Task("FullClean")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    DeleteDirectory("BuildOutput", true);
+    DeleteDirectory("BuildOutput", new DeleteDirectorySettings {
+        Recursive = true,
+        Force = true
+    });
 });
 
 Task("Build")
