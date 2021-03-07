@@ -1,12 +1,12 @@
 #load CakeScripts\GAssembly.cake
 #load CakeScripts\Settings.cake
 #addin "Cake.FileHelpers&version=4.0.0"
-#addin "Cake.Incubator&version=5.1.0"
+#addin "Cake.Incubator&version=6.0.0"
 
 // VARS
 
 Settings.Cake = Context;
-Settings.Version = Argument("BuildVersion", "3.22.24.30");
+Settings.Version = Argument("BuildVersion", "3.24.24.1");
 Settings.BuildTarget = Argument("BuildTarget", "Default");
 Settings.Assembly = Argument("Assembly", "");
 var configuration = Argument("Configuration", "Release");
@@ -139,35 +139,6 @@ Task("PackageTemplates")
     NuGetPack("Source/Templates/GtkSharp.Template.VBNet/GtkSharp.Template.VBNet.nuspec", settings);
 });
 
-Task("PackageAddin")
-    .IsDependentOn("PackageTemplates")
-    .Does(() =>
-{
-    // Copy the current version nuget templates
-    CopyFile(
-        "BuildOutput/NugetPackages/GtkSharp.Template.CSharp." + Settings.Version + ".nupkg",
-        "Source/Addins/MonoDevelop.GtkSharp.Addin/Templates/GtkSharp.Template.CSharp.nupkg"
-    );
-    CopyFile(
-        "BuildOutput/NugetPackages/GtkSharp.Template.FSharp." + Settings.Version + ".nupkg",
-        "Source/Addins/MonoDevelop.GtkSharp.Addin/Templates/GtkSharp.Template.FSharp.nupkg"
-    );
-
-    // Generate version code info
-    var versionline = "[assembly: Mono.Addins.Addin(\"MonoDevelop.GtkSharp.Addin\", Version = \"" + Settings.Version + "\")]";
-    FileWriteText("Source/Addins/MonoDevelop.GtkSharp.Addin/Properties/AddinInfo.Version.cs", versionline);
-
-    // Build MonoDevelop addin
-    var msbuildsettings = new MSBuildSettings
-    {
-        Configuration = configuration,
-    };
-    msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
-    msbuildsettings = msbuildsettings.WithTarget("PackageAddin");
-
-    MSBuild("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln", msbuildsettings);
-});
-
 // TASK TARGETS
 
 Task("Default")
@@ -175,8 +146,7 @@ Task("Default")
     
 Task("FullBuild")
     .IsDependentOn("PackageNuGet")
-	.IsDependentOn("PackageTemplates")
-	.IsDependentOn("PackageAddin");
+	.IsDependentOn("PackageTemplates");
 
 // EXECUTION
 
