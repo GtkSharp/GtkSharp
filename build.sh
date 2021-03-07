@@ -56,7 +56,7 @@ if [ ! -f "$TOOLS_DIR/packages.config" ]; then
     echo "Downloading packages.config..."
     curl -Lsfo "$TOOLS_DIR/packages.config" https://cakebuild.net/download/bootstrapper/packages
     if [ $? -ne 0 ]; then
-        echo "An error occured while downloading packages.config."
+        echo "An error occurred while downloading packages.config."
         exit 1
     fi
 fi
@@ -66,7 +66,7 @@ if [ ! -f "$NUGET_EXE" ]; then
     echo "Downloading NuGet..."
     curl -Lsfo "$NUGET_EXE" https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
     if [ $? -ne 0 ]; then
-        echo "An error occured while downloading nuget.exe."
+        echo "An error occurred while downloading nuget.exe."
         exit 1
     fi
 fi
@@ -97,5 +97,5 @@ fi
 if $SHOW_VERSION; then
     exec mono "$CAKE_EXE" -version
 else
-    exec mono "$CAKE_EXE" $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+    exec mono "$CAKE_EXE" $SCRIPT --verbosity=$VERBOSITY --configuration=$CONFIGURATION --target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
 fi
