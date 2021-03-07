@@ -42,7 +42,7 @@ class GLibrary
 
             if (ret == IntPtr.Zero)
             {
-                SetDllDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Gtk", "3.24.20"));
+                SetDllDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Gtk", "3.24.24"));
                 ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][0]);
             }
         }
