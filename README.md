@@ -2,7 +2,7 @@
 
 [![Build Status](https://dev.azure.com/cra0zy/GtkSharp/_apis/build/status/GtkSharp.GtkSharp?branchName=develop)](https://dev.azure.com/cra0zy/GtkSharp/_build/latest?definitionId=1&branchName=develop)
 
-GtkSharp is a C# wrapper for Gtk and its related components. The component list includes the following libraries: glib, gio, cairo, pango, atk, gdk. This is a fork of https://github.com/mono/gtk-sharp and is maintained completly separatly from that project.
+GtkSharp is a C# wrapper for Gtk and its related components. The component list includes the following libraries: glib, gio, cairo, pango, atk, gdk. This is a fork of https://github.com/mono/gtk-sharp and is maintained completely separately from that project.
 
 Differences can be seen with the following table:
 
