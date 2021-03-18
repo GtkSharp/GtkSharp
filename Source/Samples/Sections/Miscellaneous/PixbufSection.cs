@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading;
 using Gdk;
 using Gtk;
@@ -54,8 +55,9 @@ namespace Samples
 			var startmem = GC.GetTotalMemory (true);
 			var testfile = "Textpic.png";
 
-			using (var writeTestFile = new Pixbuf (typeof(ImageSection).Assembly, "Testpic")) {
-				writeTestFile.Save (testfile, "png");
+			using var teststream = typeof(ImageSection).Assembly.GetManifestResourceStream("Testpic");
+			using (var writeTestFile = new FileStream(testfile, FileMode.Create)) {
+				teststream.CopyTo(writeTestFile);
 			}
 
 			using (var heatup = new Pixbuf (testfile)) {
