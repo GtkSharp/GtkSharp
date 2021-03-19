@@ -7,7 +7,7 @@ Namespace GtkNamespace
         Inherits Box
 
         Public Sub New (builder as Builder)
-            MyBase.New (builder.GetRawOwnedObject("Gtk_Widget").Handle)
+            MyBase.New (builder.GetRawOwnedObject("Gtk_Widget"))
 
             builder.Autoconnect (Me)
         End Sub

@@ -8,7 +8,7 @@ namespace GtkNamespace
     {
         public Gtk_Dialog() : this(new Builder("Gtk_Dialog.glade")) { }
 
-        private Gtk_Dialog(Builder builder) : base(builder.GetRawOwnedObject("Gtk_Dialog").Handle)
+        private Gtk_Dialog(Builder builder) : base(builder.GetRawOwnedObject("Gtk_Dialog"))
         {
             builder.Autoconnect(this);
             DefaultResponse = ResponseType.Cancel;

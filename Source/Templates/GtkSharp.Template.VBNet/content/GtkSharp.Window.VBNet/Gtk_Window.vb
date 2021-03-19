@@ -7,7 +7,7 @@ Namespace GtkNamespace
         Inherits Window
 
         Public Sub New (builder as Builder)
-            MyBase.New (builder.GetRawOwnedObject("Gtk_Window").Handle)
+            MyBase.New (builder.GetRawOwnedObject("Gtk_Window"))
 
             builder.Autoconnect (Me)
         End Sub

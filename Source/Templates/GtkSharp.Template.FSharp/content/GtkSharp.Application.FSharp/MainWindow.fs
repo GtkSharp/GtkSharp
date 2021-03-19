@@ -3,7 +3,7 @@ namespace GtkNamespace
 open Gtk
 
 type MainWindow (builder : Builder) as this =
-    inherit Window(builder.GetRawOwnedObject("MainWindow").Handle)
+    inherit Window(builder.GetRawOwnedObject("MainWindow"))
 
     let mutable _label1 : Label = null
     let mutable _button1 : Button = null

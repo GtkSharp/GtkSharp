@@ -8,7 +8,7 @@ namespace GtkNamespace
     {
         public Gtk_Window() : this(new Builder("Gtk_Window.glade")) { }
 
-        private Gtk_Window(Builder builder) : base(builder.GetRawOwnedObject("Gtk_Window").Handle)
+        private Gtk_Window(Builder builder) : base(builder.GetRawOwnedObject("Gtk_Window"))
         {
             builder.Autoconnect(this);
         }
