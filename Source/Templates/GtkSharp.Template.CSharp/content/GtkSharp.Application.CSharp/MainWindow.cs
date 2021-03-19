@@ -13,7 +13,7 @@ namespace GtkNamespace
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
 
-        private MainWindow(Builder builder) : base(builder.GetObject("MainWindow").Handle)
+        private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow").Handle)
         {
             builder.Autoconnect(this);
 

@@ -11,7 +11,7 @@ Namespace GtkNamespace
         <UI>Private _button1 As Button
 
         Public Sub New (builder as Builder)
-            MyBase.New(builder.GetObject("MainWindow").Handle)
+            MyBase.New(builder.GetRawOwnedObject("MainWindow").Handle)
 
             builder.Autoconnect (Me)
             

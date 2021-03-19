@@ -7,7 +7,7 @@ Namespace GtkNamespace
         Inherits Dialog
 
         Public Sub New (builder as Builder)
-            MyBase.New (builder.GetObject("Gtk_Dialog").Handle)
+            MyBase.New (builder.GetRawOwnedObject("Gtk_Dialog").Handle)
 
             builder.Autoconnect (Me)
             DefaultResponse = ResponseType.Cancel
