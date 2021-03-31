@@ -316,33 +316,33 @@ namespace Gtk {
 
 		protected Widget() : base(IntPtr.Zero)
 		{
-			CreateNativeObject (new string [0], new GLib.Value [0]);
-
-			var type = GetType();
-			if (Templates.TryGetValue(type, out TemplateData data))
-				InitTemplate (LookupGType (type), data);
+			CreateNativeObject(new string[0], new GLib.Value[0]);
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_widget_init_template(IntPtr raw);
 		static d_gtk_widget_init_template gtk_widget_init_template = FuncLoader.LoadFunction<d_gtk_widget_init_template>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_init_template"));
-		
-		void InitTemplate(GLib.GType gtype, TemplateData data)
+
+		void InitTemplate()
 		{
-			gtk_widget_init_template (Handle);
-
-			foreach (KeyValuePair<FieldInfo, string> pair in data.FieldBindings)
+			var type = GetType();
+			if (Templates.TryGetValue(type, out TemplateData data))
 			{
-				FieldInfo field = pair.Key;
-				string name = pair.Value;
+				GLib.GType gtype = LookupGType(type);
+				gtk_widget_init_template(Handle);
+				foreach (KeyValuePair<FieldInfo, string> pair in data.FieldBindings)
+				{
+					FieldInfo field = pair.Key;
+					string name = pair.Value;
 
-				var flags = System.Reflection.BindingFlags.Public;
-				flags |= System.Reflection.BindingFlags.NonPublic;
-				flags |= System.Reflection.BindingFlags.DeclaredOnly;
-				flags |= System.Reflection.BindingFlags.Instance;
+					var flags = System.Reflection.BindingFlags.Public;
+					flags |= System.Reflection.BindingFlags.NonPublic;
+					flags |= System.Reflection.BindingFlags.DeclaredOnly;
+					flags |= System.Reflection.BindingFlags.Instance;
 
-				var child = GetTemplateChild (gtype, name);
-				field.SetValue (this, child, flags, null, null);
+					var child = GetTemplateChild(gtype, name);
+					field.SetValue(this, child, flags, null, null);
+				}
 			}
 		}
 
@@ -503,6 +503,7 @@ namespace Gtk {
 		protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
 			base.CreateNativeObject (names, vals);
+			InitTemplate();
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
