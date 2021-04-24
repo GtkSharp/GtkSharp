@@ -33,7 +33,7 @@ namespace GLib {
 
 		IntPtr handle;
 		ToggleRef tref;
-		bool disposed = false;
+		bool disposed;
 		static uint idx = 1;
 		static Dictionary<IntPtr, ToggleRef> Objects = new Dictionary<IntPtr, ToggleRef>();
 		static Dictionary<IntPtr, Dictionary<IntPtr, GLib.Value>> PropertiesToSet = new Dictionary<IntPtr, Dictionary<IntPtr, GLib.Value>>();
@@ -41,7 +41,7 @@ namespace GLib {
 		~Object ()
 		{
 			if (WarnOnFinalize)
-				Console.Error.WriteLine ("Unexpected finalization of " + GetType() + " instance.  Consider calling Dispose.");
+				Console.Error.WriteLine ("Unexpected finalization of " + GetType() + " instance.  Consider calling Dispose. (" + handle.ToInt64 () + ")");
 
 			Dispose (false);
 		}
@@ -51,9 +51,10 @@ namespace GLib {
 			if (disposed)
 				return;
 
+			GC.SuppressFinalize (this);
+
 			Dispose (true);
 			disposed = true;
-			GC.SuppressFinalize (this);
 		}
 
 		protected virtual void Dispose (bool disposing)
@@ -70,19 +71,25 @@ namespace GLib {
 				return;
 
 			if (disposing)
-				tref.Dispose ();
-			else
-				tref.QueueUnref ();
-
-			// Free all internal signals, else the garbage collector is not
-			// able to free the object.
-			if (signals != null)
 			{
-				foreach (var sig in signals.Keys)
-					signals[sig].Free ();
+				tref.Dispose ();
+
+				if (signals != null)
+				{
+					foreach (var sig in signals.Keys)
+						signals[sig].Free ();
+				}
+			}
+			else
+			{
+				if (signals != null)
+					QueueSignalFree ();
+
+				tref.QueueUnref ();
 			}
 
 			signals = null;
+			disposed = true;
 		}
 
 		public static bool WarnOnFinalize { get; set; }
@@ -807,6 +814,9 @@ namespace GLib {
 			GLib.Marshaller.Free (native_name);
 		}
 
+		public static List<Signal> PendingSignalFrees = new List<Signal> ();
+		static bool idle_queued;
+
 		Dictionary<string, Signal> signals;
 		Dictionary<string, Signal> Signals {
 			get {
@@ -851,6 +861,34 @@ namespace GLib {
 			Signal sig;
 			if (Signals.TryGetValue (name, out sig))
 				sig.RemoveDelegate (handler);
+		}
+
+		public void QueueSignalFree ()
+		{
+			lock (PendingSignalFrees) {
+				PendingSignalFrees.AddRange (signals.Values);
+				if (!idle_queued){
+					Timeout.Add (50, new TimeoutHandler (PerformQueuedSignalFrees));
+					idle_queued = true;
+				}
+			}
+		}
+
+		static bool PerformQueuedSignalFrees ()
+		{
+			Signal[] qsignals;
+
+			lock (PendingSignalFrees){
+				qsignals = new Signal[PendingSignalFrees.Count];
+				PendingSignalFrees.CopyTo (qsignals, 0);
+				PendingSignalFrees.Clear ();
+				idle_queued = false;
+			}
+
+			foreach (Signal s in qsignals)
+				s.Free ();
+
+			return false;
 		}
 
 		protected static void OverrideVirtualMethod (GType gtype, string name, Delegate cb)

@@ -71,8 +71,12 @@ namespace GLib {
 				g_object_unref (handle);
 			else
 				g_object_remove_toggle_ref (handle, ToggleNotifyCallback, (IntPtr) gch);
+
 			reference = null;
-			gch.Free ();
+
+			QueueGCHandleFree ();
+
+			handle = IntPtr.Zero;
 		}
 
 		internal void Harden ()
@@ -97,7 +101,8 @@ namespace GLib {
 				reference = new WeakReference (reference);
 			else if (!is_last_ref && reference is WeakReference) {
 				WeakReference weak = reference as WeakReference;
-				reference = weak.Target;
+				if (weak.IsAlive)
+					reference = weak.Target;
 			}
 		}
 
@@ -122,6 +127,37 @@ namespace GLib {
 					toggle_notify_callback = new ToggleNotifyHandler (RefToggled);
 				return toggle_notify_callback;
 			}
+		}
+
+		static List<GCHandle> PendingGCHandleFrees = new List<GCHandle> ();
+		static bool gc_idle_queued;
+
+		public void QueueGCHandleFree ()
+		{
+			lock (PendingGCHandleFrees) {
+				PendingGCHandleFrees.Add (gch);
+				if (!gc_idle_queued){
+					Timeout.Add (50, new TimeoutHandler (PerformGCHandleFrees));
+					gc_idle_queued = true;
+				}
+			}
+		}
+
+		static bool PerformGCHandleFrees ()
+		{
+			GCHandle[] handles;
+
+			lock (PendingGCHandleFrees){
+				handles = new GCHandle [PendingGCHandleFrees.Count];
+				PendingGCHandleFrees.CopyTo (handles, 0);
+				PendingGCHandleFrees.Clear ();
+				gc_idle_queued = false;
+			}
+
+			foreach (GCHandle r in handles)
+				r.Free ();
+
+			return false;
 		}
 
 		static List<ToggleRef> PendingDestroys = new List<ToggleRef> ();

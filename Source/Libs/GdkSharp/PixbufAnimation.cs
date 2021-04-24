@@ -21,8 +21,23 @@
 namespace Gdk {
 
 	using System;
+	using System.Runtime.InteropServices;
 
 	public partial class PixbufAnimation {
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_gdk_pixbuf_animation_new_from_file(IntPtr filename, out IntPtr error);
+		static d_gdk_pixbuf_animation_new_from_file gdk_pixbuf_animation_new_from_file = FuncLoader.LoadFunction<d_gdk_pixbuf_animation_new_from_file>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), 
+			FuncLoader.IsWindows ? "gdk_pixbuf_animation_new_from_file_utf8" : "gdk_pixbuf_animation_new_from_file"));
+
+		public PixbufAnimation(string filename) : base(IntPtr.Zero)
+		{
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup(filename);
+			IntPtr error = IntPtr.Zero;
+			Raw = gdk_pixbuf_animation_new_from_file(native_filename, out error);
+			GLib.Marshaller.Free(native_filename);
+			if (error != IntPtr.Zero) throw new GLib.GException(error);
+		}
 
 		public PixbufAnimation (System.IO.Stream stream) : base (new PixbufLoader (stream).AnimationHandle) {}
 

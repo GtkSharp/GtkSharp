@@ -39,6 +39,48 @@ namespace Gdk {
 
 	public partial class Pixbuf {
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_gdk_pixbuf_new_from_file(IntPtr filename, out IntPtr error);
+		static d_gdk_pixbuf_new_from_file gdk_pixbuf_new_from_file = FuncLoader.LoadFunction<d_gdk_pixbuf_new_from_file>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), 
+			FuncLoader.IsWindows ? "gdk_pixbuf_new_from_file_utf8" : "gdk_pixbuf_new_from_file"));
+
+		public Pixbuf(string filename) : base(IntPtr.Zero)
+		{
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup(filename);
+			IntPtr error = IntPtr.Zero;
+			Raw = gdk_pixbuf_new_from_file(native_filename, out error);
+			GLib.Marshaller.Free(native_filename);
+			if (error != IntPtr.Zero) throw new GLib.GException(error);
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_gdk_pixbuf_new_from_file_at_scale(IntPtr filename, int width, int height, bool preserve_aspect_ratio, out IntPtr error);
+		static d_gdk_pixbuf_new_from_file_at_scale gdk_pixbuf_new_from_file_at_scale = FuncLoader.LoadFunction<d_gdk_pixbuf_new_from_file_at_scale>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf),
+			FuncLoader.IsWindows ? "gdk_pixbuf_new_from_file_at_scale_utf8" : "gdk_pixbuf_new_from_file_at_scale"));
+
+		public Pixbuf(string filename, int width, int height, bool preserve_aspect_ratio) : base(IntPtr.Zero)
+		{
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup(filename);
+			IntPtr error = IntPtr.Zero;
+			Raw = gdk_pixbuf_new_from_file_at_scale(native_filename, width, height, preserve_aspect_ratio, out error);
+			GLib.Marshaller.Free(native_filename);
+			if (error != IntPtr.Zero) throw new GLib.GException(error);
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_gdk_pixbuf_new_from_file_at_size(IntPtr filename, int width, int height, out IntPtr error);
+		static d_gdk_pixbuf_new_from_file_at_size gdk_pixbuf_new_from_file_at_size = FuncLoader.LoadFunction<d_gdk_pixbuf_new_from_file_at_size>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf),
+			FuncLoader.IsWindows ? "gdk_pixbuf_new_from_file_at_size_utf8" : "gdk_pixbuf_new_from_file_at_size"));
+
+		public Pixbuf(string filename, int width, int height) : base(IntPtr.Zero)
+		{
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup(filename);
+			IntPtr error = IntPtr.Zero;
+			Raw = gdk_pixbuf_new_from_file_at_size(native_filename, width, height, out error);
+			GLib.Marshaller.Free(native_filename);
+			if (error != IntPtr.Zero) throw new GLib.GException(error);
+		}
+
 		public Pixbuf (System.IO.Stream stream) : base (IntPtr.Zero)
 		{
 			using (PixbufLoader pl = new PixbufLoader (stream)) {
@@ -202,12 +244,12 @@ namespace Gdk {
 		delegate IntPtr d_gdk_pixbuf_get_pixels(IntPtr raw);
 		static d_gdk_pixbuf_get_pixels gdk_pixbuf_get_pixels = FuncLoader.LoadFunction<d_gdk_pixbuf_get_pixels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_get_pixels"));
 
-                public IntPtr Pixels {
-                	get {
-                		IntPtr ret = gdk_pixbuf_get_pixels (Handle);
-                		return ret;
-                	}
-                }
+		public IntPtr Pixels {
+			get {
+				IntPtr ret = gdk_pixbuf_get_pixels (Handle);
+				return ret;
+			}
+		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_pixbuf_get_formats();
 		static d_gdk_pixbuf_get_formats gdk_pixbuf_get_formats = FuncLoader.LoadFunction<d_gdk_pixbuf_get_formats>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_get_formats"));
@@ -226,7 +268,8 @@ namespace Gdk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gdk_pixbuf_save(IntPtr raw, IntPtr filename, IntPtr type, out IntPtr error, IntPtr dummy);
-		static d_gdk_pixbuf_save gdk_pixbuf_save = FuncLoader.LoadFunction<d_gdk_pixbuf_save>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_save"));
+		static d_gdk_pixbuf_save gdk_pixbuf_save = FuncLoader.LoadFunction<d_gdk_pixbuf_save>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), 
+			FuncLoader.IsWindows ? "gdk_pixbuf_save_utf8" : "gdk_pixbuf_save"));
 
 		public unsafe bool Save(string filename, string type) {
 			IntPtr error = IntPtr.Zero;
@@ -312,7 +355,8 @@ namespace Gdk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gdk_pixbuf_savev(IntPtr raw, IntPtr filename, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
-		static d_gdk_pixbuf_savev gdk_pixbuf_savev = FuncLoader.LoadFunction<d_gdk_pixbuf_savev>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_savev"));
+		static d_gdk_pixbuf_savev gdk_pixbuf_savev = FuncLoader.LoadFunction<d_gdk_pixbuf_savev>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), 
+			FuncLoader.IsWindows ? "gdk_pixbuf_savev_utf8" : "gdk_pixbuf_savev"));
 
 		public unsafe bool Savev(string filename, string type, string[] option_keys, string[] option_values) {
 			IntPtr error = IntPtr.Zero;
@@ -332,5 +376,3 @@ namespace Gdk {
 		}
 	}
 }
-
-

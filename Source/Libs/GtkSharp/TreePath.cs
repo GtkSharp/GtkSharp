@@ -20,24 +20,27 @@ namespace Gtk {
 
 	public partial class TreePath {
 
-		// Patch submitted by malte on bug #49518
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_tree_path_get_indices(IntPtr raw);
-		static d_gtk_tree_path_get_indices gtk_tree_path_get_indices = FuncLoader.LoadFunction<d_gtk_tree_path_get_indices>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_path_get_indices"));
+		delegate IntPtr d_gtk_tree_path_get_indices_with_depth(IntPtr raw, out int depth);
+		static d_gtk_tree_path_get_indices_with_depth gtk_tree_path_get_indices_with_depth = FuncLoader.LoadFunction<d_gtk_tree_path_get_indices_with_depth>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_path_get_indices_with_depth"));
 
 		public int [] Indices { 
 			get {
-				IntPtr ptr = gtk_tree_path_get_indices(Handle);
-				int [] arr = new int [Depth];
-				Marshal.Copy (ptr, arr, 0, Depth);
+				IntPtr arrPtr = gtk_tree_path_get_indices_with_depth(Handle, out int depth);
+				int[] arr = new int[depth];
+				if (arrPtr != IntPtr.Zero)
+					Marshal.Copy(arrPtr, arr, 0, depth);
 				return arr;
 			}
 		}
 
-		public TreePath (int[] indices) : this ()
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_gtk_tree_path_new_from_indicesv(int[] indices, UIntPtr length);
+		static d_gtk_tree_path_new_from_indicesv gtk_tree_path_new_from_indicesv = FuncLoader.LoadFunction<d_gtk_tree_path_new_from_indicesv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_path_new_from_indicesv"));
+
+		public TreePath (int[] indices)
 		{
-			foreach (int i in indices)
-				AppendIndex (i);
+			Raw = gtk_tree_path_new_from_indicesv(indices, (UIntPtr)indices.Length);
 		}
 
 		public override bool Equals (object o)

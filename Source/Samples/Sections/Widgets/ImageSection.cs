@@ -21,28 +21,8 @@ namespace Samples
 
 		public (string, Widget) CreateContainer()
 		{
-			Stream GetResourceStream(Assembly assembly, string name)
-			{
-				var resources = assembly.GetManifestResourceNames();
-				var resourceName = resources.SingleOrDefault(str => str == name);
-
-				// try harder:
-				if (resourceName == default) {
-					resourceName = resources.SingleOrDefault(str => str.EndsWith(name));
-				}
-
-				if (resourceName == default)
-					return default;
-				var stream = assembly.GetManifestResourceStream(resourceName);
-				return stream;
-			}
-			Pixbuf image = default;
-			using (var stream = GetResourceStream(typeof(ImageSection).Assembly, "Testpic.png")) {
-				image = new Pixbuf(stream);
-			}
-
+			var image = new Pixbuf(typeof(ImageSection).Assembly, "Testpic");
 			var container = new ImageBox(image);
-
 
 			return ($"{nameof(ImageBox)}:", container);
 		}

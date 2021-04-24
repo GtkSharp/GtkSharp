@@ -26,11 +26,15 @@ namespace GLib {
 	
 	public class GException : Exception
 	{
-		IntPtr errptr;
-	
-		public GException (IntPtr errptr) : base ()
+		string msg;
+
+		public GException (IntPtr errptr)
 		{
-			this.errptr = errptr;
+			var err = (GError)Marshal.PtrToStructure(errptr, typeof(GError));
+			Domain = err.Domain;
+			Code = err.Code;
+			msg = Marshaller.Utf8PtrToString(err.Msg);
+			g_clear_error(ref errptr);
 		}
 
 		struct GError {
@@ -39,34 +43,14 @@ namespace GLib {
 			public IntPtr Msg;
 		}
 
-		public int Code {
-			get {
-				GError err = (GError) Marshal.PtrToStructure (errptr, typeof (GError));
-				return err.Code;
-			}
-		}
+		public int Code { get; private set; }
 
-		public int Domain {
-			get {
-				GError err = (GError) Marshal.PtrToStructure (errptr, typeof (GError));
-				return err.Domain;
-			}
-		}
+		public int Domain { get; private set; }
 
-		public override string Message {
-			get {
-				GError err = (GError) Marshal.PtrToStructure (errptr, typeof (GError));
-				return Marshaller.Utf8PtrToString (err.Msg);
-			}
-		}
+		public override string Message => msg;
+
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_clear_error(ref IntPtr errptr);
 		static d_g_clear_error g_clear_error = FuncLoader.LoadFunction<d_g_clear_error>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_clear_error"));
-		~GException ()
-		{
-			g_clear_error (ref errptr);
-		}
 	}
 }
-
-

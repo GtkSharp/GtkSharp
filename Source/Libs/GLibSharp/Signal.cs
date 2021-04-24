@@ -211,11 +211,10 @@ namespace GLib {
 
 		public Delegate Handler {
 			get {
-				InvocationHint hint = (InvocationHint) Marshal.PtrToStructure (g_signal_get_invocation_hint (obj.Handle), typeof (InvocationHint));
-				if (hint.run_type == Flags.RunFirst)
-					return before_handler;
-				else
-					return after_handler;
+				var hint = (InvocationHint) Marshal.PtrToStructure (g_signal_get_invocation_hint (obj.Handle), typeof (InvocationHint));
+				return hint.run_type.HasFlag(Flags.RunFirst)
+					? before_handler
+					: after_handler;
 			}
 		}
 

@@ -54,7 +54,7 @@ namespace GLib {
 					{
 						lock (this)
 						{
-							Remove ();
+							Dispose();
 						}
 					}
 					return cont;
