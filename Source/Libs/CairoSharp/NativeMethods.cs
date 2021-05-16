@@ -1027,6 +1027,10 @@ namespace Cairo
 		internal delegate void d_cairo_surface_get_device_offset(IntPtr surface, out double x, out double y);
 		internal static d_cairo_surface_get_device_offset cairo_surface_get_device_offset = FuncLoader.LoadFunction<d_cairo_surface_get_device_offset>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_surface_get_device_offset"));
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		internal delegate void d_cairo_surface_get_device_scale(IntPtr surface, out double x, out double y);
+		internal static d_cairo_surface_get_device_scale cairo_surface_get_device_scale = FuncLoader.LoadFunction<d_cairo_surface_get_device_scale>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_surface_get_device_scale"));
+
 		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
 		//internal static extern void cairo_surface_get_fallback_resolution (IntPtr surface, out double x_pixels_per_inch, out double y_pixels_per_inch);
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -1065,6 +1069,11 @@ namespace Cairo
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate void d_cairo_surface_set_device_offset(IntPtr surface, double x, double y);
 		internal static d_cairo_surface_set_device_offset cairo_surface_set_device_offset = FuncLoader.LoadFunction<d_cairo_surface_set_device_offset>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_surface_set_device_offset"));
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		internal delegate void d_cairo_surface_set_device_scale(IntPtr surface, double x, double y);
+		internal static d_cairo_surface_set_device_scale cairo_surface_set_device_scale = FuncLoader.LoadFunction<d_cairo_surface_set_device_scale>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_surface_set_device_scale"));
+
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate void d_cairo_surface_set_fallback_resolution(IntPtr surface, double x, double y);
 		internal static d_cairo_surface_set_fallback_resolution cairo_surface_set_fallback_resolution = FuncLoader.LoadFunction<d_cairo_surface_set_fallback_resolution>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_surface_set_fallback_resolution"));
