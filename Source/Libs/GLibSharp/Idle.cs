@@ -73,17 +73,22 @@ namespace GLib {
 		delegate uint d_g_idle_add_full(int priority, IdleHandlerInternal d, IntPtr data, DestroyNotify notify);
 		static d_g_idle_add_full g_idle_add_full = FuncLoader.LoadFunction<d_g_idle_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add_full"));
 
-		public static uint Add (IdleHandler hndlr)
+		public static uint Add (int priority, IdleHandler hndlr)
 		{
 			IdleProxy p = new IdleProxy (hndlr);
 			lock (p)
 			{
 				var gch = GCHandle.Alloc(p);
 				var userData = GCHandle.ToIntPtr(gch);
-				p.ID = g_idle_add_full (0, (IdleHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
+				p.ID = g_idle_add_full (priority, (IdleHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
 			}
 
 			return p.ID;
+		}
+
+		public static uint Add (IdleHandler hndlr)
+		{
+			return Add ((int)Priority.DefaultIdle, hndlr);
 		}
 
 		public static void Remove (uint id)
