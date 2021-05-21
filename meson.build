@@ -92,7 +92,7 @@ endforeach
 
 #subdir('Source')
 
-source = join_paths(meson.source_root(), 'build.sh')
+source = join_paths(meson.current_source_dir(), 'build.sh')
 message('Building @0@ ...'.format(source))
 r = run_command('sh', source)
 
