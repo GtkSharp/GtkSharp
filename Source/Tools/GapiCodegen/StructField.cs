@@ -144,7 +144,7 @@ namespace GtkSharp.Generation {
 			if (_enum != null && !is_pointer)
 				res = "(uint) Marshal.SizeOf(System.Enum.GetUnderlyingType(typeof(" + cstype + ")))";
 			else
-				res = "(uint) Marshal.SizeOf(typeof(" + cstype + "))";
+				res = "(uint) Marshal.SizeOf<" + cstype + ">()";
 
 			if (IsFixedSizeArray())
 				res += " * " + ArrayLength;

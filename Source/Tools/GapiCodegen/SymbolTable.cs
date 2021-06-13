@@ -150,7 +150,7 @@ namespace GtkSharp.Generation {
 			AddType (new MarshalGen ("GType", "GLib.GType", "IntPtr", "{0}.Val", "new GLib.GType({0})", "GLib.GType.None"));
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
 			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify", "null",
-						"(uint) Marshal.SizeOf(typeof(IntPtr))"));
+						"(uint) Marshal.SizeOf<IntPtr>()"));
 			AddType (new SimpleGen ("GThread", "GLib.Thread", "null"));
 			AddType (new ManualGen ("GBytes", "GLib.Bytes"));
 			AddType (new SimpleGen ("GHookList", "GLib.HookList", "null",

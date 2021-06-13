@@ -364,7 +364,7 @@ namespace GLib {
 
 		public static IntPtr StructArrayToNullTerminatedStructArrayIntPtr<T> (T[] InputArray)
 		{
-			int intPtrSize = Marshal.SizeOf (typeof (IntPtr));
+			int intPtrSize = Marshal.SizeOf<IntPtr>();
 			IntPtr mem = Marshal.AllocHGlobal ((InputArray.Length + 1) * intPtrSize);
 
 			for (int i = 0; i < InputArray.Length; i++) {
