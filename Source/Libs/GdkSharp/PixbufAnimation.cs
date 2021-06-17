@@ -39,13 +39,21 @@ namespace Gdk {
 			if (error != IntPtr.Zero) throw new GLib.GException(error);
 		}
 
-		public PixbufAnimation (System.IO.Stream stream) : base (new PixbufLoader (stream).AnimationHandle) {}
+		public PixbufAnimation (System.IO.Stream stream) : base (IntPtr.Zero)
+		{
+			using (var pl = new PixbufLoader (stream)) {
+				Raw = pl.AnimationHandle;
+			}
+		}
 
 		public PixbufAnimation (System.Reflection.Assembly assembly, string resource) : base (IntPtr.Zero)
 		{
 			if (assembly == null)
 				assembly = System.Reflection.Assembly.GetCallingAssembly ();
-			Raw = new PixbufLoader (assembly, resource).AnimationHandle;
+
+			using (var pl = new PixbufLoader (assembly, resource)) {
+				Raw = pl.AnimationHandle;
+			}
 		}
 
 		static public PixbufAnimation LoadFromResource (string resource)

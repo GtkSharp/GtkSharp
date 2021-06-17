@@ -55,23 +55,20 @@ namespace Pango {
 			accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_pango_layout_get_log_attrs(IntPtr raw, out IntPtr attrs, out int n_attrs);
-		static d_pango_layout_get_log_attrs pango_layout_get_log_attrs = FuncLoader.LoadFunction<d_pango_layout_get_log_attrs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_log_attrs"));
+		delegate IntPtr d_pango_layout_get_log_attrs_readonly(IntPtr raw, out int n_attrs);
+		static d_pango_layout_get_log_attrs_readonly pango_layout_get_log_attrs_readonly = FuncLoader.LoadFunction<d_pango_layout_get_log_attrs_readonly>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_log_attrs_readonly"));
 
 		public LogAttr [] LogAttrs {
 			get {
 				int count;
-				IntPtr array_ptr;
-				pango_layout_get_log_attrs (Handle, out array_ptr, out count);
-				if (array_ptr == IntPtr.Zero)
+				IntPtr array_ptr = pango_layout_get_log_attrs_readonly (Handle, out count);
+				if (array_ptr == IntPtr.Zero || count == 0)
 					return new LogAttr [0];
-				LogAttr [] result = new LogAttr [count];
-				for (int i = 0; i < count; i++) {
-					IntPtr fam_ptr = Marshal.ReadIntPtr (array_ptr, i * IntPtr.Size);
-					result [i] = LogAttr.New (fam_ptr);
-				}
-
-				GLib.Marshaller.Free (array_ptr);
+				LogAttr[] result = new LogAttr [count];
+				int[] array = new int [count];
+				Marshal.Copy(array_ptr, array, 0, count);
+				for (int i = 0; i < count; i++)
+					result[i] = new LogAttr ((uint)array[i]);
 				return result;
 			}
 		}
@@ -95,6 +92,36 @@ namespace Pango {
 			pango_layout_set_markup (Handle, native_markup, -1);
 			GLib.Marshaller.Free (native_markup);
 		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate int d_pango_layout_get_direction(IntPtr raw, int index);
+		static d_pango_layout_get_direction pango_layout_get_direction = FuncLoader.LoadFunction<d_pango_layout_get_direction>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_direction"));
+
+		public Pango.Direction GetDirection(int index)
+		{
+			int raw_ret = pango_layout_get_direction(Handle, index);
+			return (Pango.Direction)raw_ret;
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate float d_pango_layout_get_line_spacing(IntPtr raw);
+		static d_pango_layout_get_line_spacing pango_layout_get_line_spacing = FuncLoader.LoadFunction<d_pango_layout_get_line_spacing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_line_spacing"));
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_pango_layout_set_line_spacing(IntPtr raw, float factor);
+		static d_pango_layout_set_line_spacing pango_layout_set_line_spacing = FuncLoader.LoadFunction<d_pango_layout_set_line_spacing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_line_spacing"));
+
+		public float LineSpacing
+		{
+			get
+			{
+				float raw_ret = pango_layout_get_line_spacing(Handle);
+				return raw_ret;
+			}
+			set
+			{
+				pango_layout_set_line_spacing(Handle, value);
+			}
+		}
 	}
 }
-

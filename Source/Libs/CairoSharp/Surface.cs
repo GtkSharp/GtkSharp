@@ -205,6 +205,20 @@ namespace Cairo {
 			}
 		}
 
+		public PointD DeviceScale {
+			get {
+				CheckDisposed ();
+				double x, y;
+				NativeMethods.cairo_surface_get_device_scale (handle, out x, out y);
+				return new PointD(x, y);
+			}
+
+			set {
+				CheckDisposed ();
+				NativeMethods.cairo_surface_set_device_scale (handle, value.X, value.Y);
+			}
+		}
+
 		[Obsolete ("Use Dispose()")]
 		public void Destroy()
 		{
