@@ -533,8 +533,12 @@ namespace GLib {
 					g_value_set_float (ref this, (float) value);
 				else if (type == GType.Double.Val)
 					g_value_set_double (ref this, (double) value);
-				else if (type == GType.Variant.Val)
-					g_value_set_variant (ref this, ((GLib.Variant) value).Handle);
+				else if (type == GType.Variant.Val) {
+					if (value is null)
+						g_value_set_variant (ref this, IntPtr.Zero);
+					else
+						g_value_set_variant (ref this, ((GLib.Variant) value).Handle);
+				}
 				else if (type == GType.String.Val) {
 					IntPtr native = GLib.Marshaller.StringToPtrGStrdup ((string)value);
 					g_value_set_string (ref this, native);
@@ -559,11 +563,17 @@ namespace GLib {
 					g_value_set_boxed (ref this, wrapper);
 					ManagedValue.ReleaseWrapper (wrapper);
 				} else if (GType.Is (type, GType.Object))
-					if(value is GLib.Object)
+					if (value is null)
+						g_value_set_object (ref this, IntPtr.Zero);
+					else if (value is GLib.Object)
 						g_value_set_object (ref this, (value as GLib.Object).Handle);
 					else
 						g_value_set_object (ref this, ((GInterfaceAdapter)value).Handle);
 				else if (GType.Is (type, GType.Boxed)) {
+					if (value is null) {
+						g_value_set_boxed (ref this, IntPtr.Zero);
+						return;
+					}
 					if (value is IWrapper) {
 						g_value_set_boxed (ref this, ((IWrapper)value).Handle);
 						return;
