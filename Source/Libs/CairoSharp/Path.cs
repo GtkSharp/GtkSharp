@@ -36,7 +36,17 @@ namespace Cairo {
 
 	public class Path : IDisposable
 	{
+		[StructLayout(LayoutKind.Sequential)]
+		struct PathStruct
+		{
+			public Status Status;
+			public IntPtr Data;
+			public int NumData;
+		}
+
 		IntPtr handle = IntPtr.Zero;
+		Status status;
+		PathData[] data;
 
 		internal Path (IntPtr handle)
 		{
@@ -71,6 +81,58 @@ namespace Cairo {
 
 			NativeMethods.cairo_path_destroy (handle);
 			handle = IntPtr.Zero;
+		}
+
+		void CheckDisposed ()
+		{
+			if (handle == IntPtr.Zero)
+				throw new ObjectDisposedException ("Object has already been disposed");
+		}
+
+		void MarshalData ()
+		{
+			if (data == null)
+			{
+				var rawStruct = Marshal.PtrToStructure<PathStruct>(handle);
+				status = rawStruct.Status;
+				data = new PathData[rawStruct.NumData];
+				int oneDataSize = Marshal.SizeOf<PathData>();
+				for (int i = 0; i < rawStruct.NumData; i++)
+				{
+					IntPtr iPtr = new IntPtr(rawStruct.Data.ToInt64() + i * oneDataSize);
+					data[i] = Marshal.PtrToStructure<PathData>(iPtr);
+				}
+			}
+		}
+
+		public Status Status
+		{
+			get
+			{
+				CheckDisposed ();
+				MarshalData ();
+				return status;
+			}
+		}
+
+		public int NumData
+		{
+			get
+			{
+				CheckDisposed ();
+				MarshalData ();
+				return data.Length;
+			}
+		}
+
+		public PathData[] Data
+		{
+			get
+			{
+				CheckDisposed ();
+				MarshalData ();
+				return data;
+			}
 		}
 	}
 }
