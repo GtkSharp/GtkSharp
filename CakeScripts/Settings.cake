@@ -38,6 +38,10 @@ class Settings
             new GAssembly("GtkSourceSharp")
             {
                 Deps = new[] { "GLibSharp", "GtkSharp", "GioSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
+            },
+            new GAssembly("WebkitGtkSharp")
+            {
+                Deps = new[] { "GLibSharp", "GtkSharp", "GioSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
             }
         };
     }
