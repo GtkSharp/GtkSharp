@@ -19,6 +19,11 @@ namespace Samples
 
 		public WebviewSection()
 		{
+			if (!WebKit.Global.IsSupported) {
+				AddItem(($"{nameof(WebKit.WebView)}",new Label($"{typeof(WebView).Namespace} is not suported on your OS")));
+				return;
+			}
+
 			AddItem(ShowHtml());
 			AddItem(ShowUri());
 
