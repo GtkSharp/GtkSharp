@@ -32,7 +32,6 @@ class GLibrary
 		_libraryDefinitions[Library.PangoCairo] = new[] {"libpangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib", "pangocairo-1.dll"};
 		_libraryDefinitions[Library.GtkSource] = new[] {"libgtksourceview-4-0.dll", "libgtksourceview-4.so.0", "libgtksourceview-4.0.dylib", "gtksourceview-4.dll"};
         _libraryDefinitions[Library.Webkit] = new[] { "libwebkit2gtk-4.0.dll", "libwebkit2gtk-4.0.so.37", "libwebkit2gtk-4.0.dylib", "libwebkit2gtk-4.0.0.dll" };
-
 	}
 
 	public static IntPtr Load(Library library)
