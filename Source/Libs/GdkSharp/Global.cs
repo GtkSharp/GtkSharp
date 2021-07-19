@@ -160,6 +160,9 @@ namespace Gdk {
 				result [i] = (VisualType) tmp [i];
 			return result;
 		}
+		
+		public static bool IsSupported => GLibrary.IsSupported(Library.Gdk);
+		
 	}
 }
 

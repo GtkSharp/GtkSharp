@@ -50,6 +50,9 @@ namespace Pango {
 			attrs = new Pango.AttrList (attrs_handle);
 			return result;
 		}
+		
+		public static bool IsSupported => GLibrary.IsSupported(Library.Pango);
+
 	}
 }
 
