@@ -31,29 +31,20 @@ namespace Samples
 				Hexpand = true
 			};
 
-			webView.LoadString(
-				$"This is a <b>{nameof(WebView)}</b> showing html text",
-				"text/html", "UTF-8", null
-			);
-
+			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> showing html text");
 			return ($"{nameof(WebView)} show html text:", webView);
 		}
 
 		public (string, Widget) ShowUri()
 		{
-			var webView = new WebView {ViewMode = WebViewViewMode.Floating};
-
-			var scroll = new ScrolledWindow {
-				Child = webView,
-				Vexpand = true,
-				Hexpand = true,
-				PropagateNaturalHeight = true,
-				PropagateNaturalWidth = true
+			var webView = new WebView {
+					Vexpand = true,
+					Hexpand = true,
 			};
 
 			webView.LoadUri("https://github.com/GtkSharp/GtkSharp#readme");
 
-			return ($"{nameof(WebView)} show uri:", scroll);
+			return ($"{nameof(WebView)} show uri:", webView);
 		}
 
 	}
