@@ -11,5 +11,6 @@ enum Library
     Gdk,
     GdkPixbuf,
     Gtk,
-    GtkSource
+    GtkSource,
+    Webkit
 }
