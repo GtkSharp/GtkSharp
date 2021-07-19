@@ -85,6 +85,9 @@ namespace GLib {
 		{
 			return Marshaller.PtrToStringGFree (g_format_size_for_display (size));
 		}
+		
+		public static bool IsSupported => GLibrary.IsSupported(Library.GLib);
+
 	}
 }
 
