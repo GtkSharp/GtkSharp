@@ -237,6 +237,7 @@ namespace GtkSharp.Generation {
 
 		internal static string GetSizeOfExpression(string cstype)
 		{
+			// See https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types
 			bool isBlittable = cstype == "IntPtr"
 				|| cstype == "UIntPtr"
 				|| cstype == "ulong"
@@ -247,10 +248,14 @@ namespace GtkSharp.Generation {
 				|| cstype == "short"
 				|| cstype == "byte"
 				|| cstype == "sbyte"
-				|| cstype == "char"
-				|| cstype == "byte";
+				|| cstype == "float"
+				|| cstype == "double";
 			if (isBlittable)
 				return "sizeof( " + cstype + " )";
+
+			// This is optimization based on https://github.com/GtkSharp/GtkSharp/pull/261#discussion_r673381869
+			if (cstype == "bool")
+				return "sizeof( uint )";
 
 			return "Marshal.SizeOf<" + cstype + ">()";
 		}

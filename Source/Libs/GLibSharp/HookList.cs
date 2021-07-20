@@ -31,7 +31,7 @@ namespace GLib {
 						),
 				new GLib.AbiField("is_setup"
 						, -1
-						, (uint) sizeof (bool) // is_setup
+						, (uint) sizeof(uint) // is_setup
 						, "hook_size"
 						, "hooks"
 						, 1
