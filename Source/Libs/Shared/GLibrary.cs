@@ -19,19 +19,22 @@ class GLibrary
 		_customlibraries = new Dictionary<string, IntPtr>();
 		_librariesNotFound = new HashSet<Library>();
 		_libraries = new Dictionary<Library, IntPtr>();
-		_libraryDefinitions = new Dictionary<Library, string[]>();
-		_libraryDefinitions[Library.GLib] = new[] {"libglib-2.0-0.dll", "libglib-2.0.so.0", "libglib-2.0.0.dylib", "glib-2.dll"};
-		_libraryDefinitions[Library.GObject] = new[] {"libgobject-2.0-0.dll", "libgobject-2.0.so.0", "libgobject-2.0.0.dylib", "gobject-2.dll"};
-		_libraryDefinitions[Library.Cairo] = new[] {"libcairo-2.dll", "libcairo.so.2", "libcairo.2.dylib", "cairo.dll"};
-		_libraryDefinitions[Library.Gio] = new[] {"libgio-2.0-0.dll", "libgio-2.0.so.0", "libgio-2.0.0.dylib", "gio-2.dll"};
-		_libraryDefinitions[Library.Atk] = new[] {"libatk-1.0-0.dll", "libatk-1.0.so.0", "libatk-1.0.0.dylib", "atk-1.dll"};
-		_libraryDefinitions[Library.Pango] = new[] {"libpango-1.0-0.dll", "libpango-1.0.so.0", "libpango-1.0.0.dylib", "pango-1.dll"};
-		_libraryDefinitions[Library.Gdk] = new[] {"libgdk-3-0.dll", "libgdk-3.so.0", "libgdk-3.0.dylib", "gdk-3.dll"};
-		_libraryDefinitions[Library.GdkPixbuf] = new[] {"libgdk_pixbuf-2.0-0.dll", "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0.dylib", "gdk_pixbuf-2.dll"};
-		_libraryDefinitions[Library.Gtk] = new[] {"libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-3.0.dylib", "gtk-3.dll"};
-		_libraryDefinitions[Library.PangoCairo] = new[] {"libpangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib", "pangocairo-1.dll"};
-		_libraryDefinitions[Library.GtkSource] = new[] {"libgtksourceview-4-0.dll", "libgtksourceview-4.so.0", "libgtksourceview-4.0.dylib", "gtksourceview-4.dll"};
-        _libraryDefinitions[Library.Webkit] = new[] { "libwebkit2gtk-4.0.dll", "libwebkit2gtk-4.0.so.37", "libwebkit2gtk-4.0.dylib", "libwebkit2gtk-4.0.0.dll" };
+
+		_libraryDefinitions = new Dictionary<Library, string[]> {
+			[Library.GLib] = new[] {"libglib-2.0-0.dll", "libglib-2.0.so.0", "libglib-2.0.0.dylib", "glib-2.dll"},
+			[Library.GObject] = new[] {"libgobject-2.0-0.dll", "libgobject-2.0.so.0", "libgobject-2.0.0.dylib", "gobject-2.dll"},
+			[Library.Cairo] = new[] {"libcairo-2.dll", "libcairo.so.2", "libcairo.2.dylib", "cairo.dll"},
+			[Library.Gio] = new[] {"libgio-2.0-0.dll", "libgio-2.0.so.0", "libgio-2.0.0.dylib", "gio-2.dll"},
+			[Library.Atk] = new[] {"libatk-1.0-0.dll", "libatk-1.0.so.0", "libatk-1.0.0.dylib", "atk-1.dll"},
+			[Library.Pango] = new[] {"libpango-1.0-0.dll", "libpango-1.0.so.0", "libpango-1.0.0.dylib", "pango-1.dll"},
+			[Library.Gdk] = new[] {"libgdk-3-0.dll", "libgdk-3.so.0", "libgdk-3.0.dylib", "gdk-3.dll"},
+			[Library.GdkPixbuf] = new[] {"libgdk_pixbuf-2.0-0.dll", "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0.dylib", "gdk_pixbuf-2.dll"},
+			[Library.Gtk] = new[] {"libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-3.0.dylib", "gtk-3.dll"},
+			[Library.PangoCairo] = new[] {"libpangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib", "pangocairo-1.dll"},
+			[Library.GtkSource] = new[] {"libgtksourceview-4-0.dll", "libgtksourceview-4.so.0", "libgtksourceview-4.0.dylib", "gtksourceview-4.dll"},
+			[Library.Webkit] = new[] {"libwebkit2gtk-4.0.dll", "libwebkit2gtk-4.0.so.37", "libwebkit2gtk-4.0.dylib", "libwebkit2gtk-4.0.0.dll"},
+			[Library.JavaScriptCore] = new[] {"libjavascriptcoregtk-4.0.dll", "libjavascriptcoregtk-4.0.so.18", "libjavascriptcoregtk-4.0.dylib", "libjavascriptcoregtk-4.0.dll"},
+		};
 	}
 
 	public static IntPtr Load(Library library)
