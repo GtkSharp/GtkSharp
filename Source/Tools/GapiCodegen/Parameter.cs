@@ -394,7 +394,7 @@ namespace GtkSharp.Generation {
 		public override string[] Prepare {
 			get {
 				if (PassAs == "out")
-					return new string [] { "IntPtr native_" + CallName + " = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + Generatable.QualifiedName + ")));"};
+					return new string [] { "IntPtr native_" + CallName + " = Marshal.AllocHGlobal (" + GenerationInfo.GetSizeOfExpression(Generatable.QualifiedName) + ");"};
 				else
 					return new string [] { "IntPtr native_" + CallName + " = " + (Generatable as IManualMarshaler).AllocNative (CallName) + ";"};
 			}

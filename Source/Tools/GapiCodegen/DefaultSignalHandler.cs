@@ -90,7 +90,7 @@ namespace GtkSharp.Generation {
 						if (p.PassAs == "ref")
 							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = GLib.Marshaller.StructureToPtrAlloc (" + p.Generatable.CallByName (p.Name) + ");");
 						else
-							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + p.MarshalType + ")));");
+							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = Marshal.AllocHGlobal (" + GenerationInfo.GetSizeOfExpression(p.MarshalType) + ");");
 
 						sw.WriteLine ("\t\t\tvals [" + (i + 1) + "] = new GLib.Value (" + p.Name + "_ptr);");
 						cleanup += "\t\t\t" + p.Name + " = " + p.FromNative ("(" + p.MarshalType + ") Marshal.PtrToStructure (" + p.Name + "_ptr, typeof (" + p.MarshalType + "))") + ";\n";

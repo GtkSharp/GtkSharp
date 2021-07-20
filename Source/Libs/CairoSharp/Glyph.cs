@@ -75,7 +75,7 @@ namespace Cairo
 
 		internal static IntPtr GlyphsToIntPtr (Glyph[] glyphs)
 		{
-			int size = Marshal.SizeOf (glyphs[0]);
+			int size = Marshal.SizeOf<Glyph> ();
 			IntPtr dest = Marshal.AllocHGlobal (size * glyphs.Length);
 			long pos = dest.ToInt64 ();
 			for (int i = 0; i < glyphs.Length; i++, pos += size)

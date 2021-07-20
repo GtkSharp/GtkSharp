@@ -234,6 +234,26 @@ namespace GtkSharp.Generation {
 
 			return sw;
 		}
+
+		internal static string GetSizeOfExpression(string cstype)
+		{
+			bool isBlittable = cstype == "IntPtr"
+				|| cstype == "UIntPtr"
+				|| cstype == "ulong"
+				|| cstype == "long"
+				|| cstype == "uint"
+				|| cstype == "int"
+				|| cstype == "ushort"
+				|| cstype == "short"
+				|| cstype == "byte"
+				|| cstype == "sbyte"
+				|| cstype == "char"
+				|| cstype == "byte";
+			if (isBlittable)
+				return "sizeof( " + cstype + " )";
+
+			return "Marshal.SizeOf<" + cstype + ">()";
+		}
 	}
 }
 

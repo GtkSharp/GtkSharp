@@ -65,7 +65,7 @@ namespace Gtk {
 		static d_g_closure_set_marshal g_closure_set_marshal = FuncLoader.LoadFunction<d_g_closure_set_marshal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_set_marshal"));
 
 		static IntPtr CreateClosure (ClosureMarshal marshaler) {
-			IntPtr raw_closure = g_closure_new_simple (Marshal.SizeOf (typeof (GClosure)), IntPtr.Zero);
+			IntPtr raw_closure = g_closure_new_simple (Marshal.SizeOf<GClosure> (), IntPtr.Zero);
 			g_closure_set_marshal (raw_closure, marshaler);
 			return raw_closure;
 		}
@@ -149,7 +149,7 @@ namespace Gtk {
 		{
 			try {
 				GLib.Value[] inst_and_params = new GLib.Value [n_param_vals];
-				int gvalue_size = Marshal.SizeOf (typeof (GLib.Value));
+				int gvalue_size = Marshal.SizeOf<GLib.Value> ();
 				for (int idx = 0; idx < n_param_vals; idx++)
 					inst_and_params [idx] = (GLib.Value) Marshal.PtrToStructure (new IntPtr (param_values.ToInt64 () + idx * gvalue_size), typeof (GLib.Value));
 

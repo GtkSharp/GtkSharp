@@ -356,19 +356,19 @@ namespace GLib {
 			while (current != IntPtr.Zero) {
 				Marshal.PtrToStructure (current, currentStruct);
 				res.Add (currentStruct);
-				current = (IntPtr) ((long)current + Marshal.SizeOf (typeof (T)));
+				current = (IntPtr) ((long)current + Marshal.SizeOf<T> ());
 			}
 
 			return res.ToArray ();
 		}
 
-		public static IntPtr StructArrayToNullTerminatedStructArrayIntPtr<T> (T[] InputArray)
+		public static unsafe IntPtr StructArrayToNullTerminatedStructArrayIntPtr<T> (T[] InputArray)
 		{
-			int intPtrSize = Marshal.SizeOf<IntPtr>();
+			int intPtrSize = sizeof (IntPtr);
 			IntPtr mem = Marshal.AllocHGlobal ((InputArray.Length + 1) * intPtrSize);
 
 			for (int i = 0; i < InputArray.Length; i++) {
-				IntPtr structPtr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (T)));
+				IntPtr structPtr = Marshal.AllocHGlobal (Marshal.SizeOf<T> ());
 				Marshal.StructureToPtr (InputArray[i], structPtr, false);
 				// jump to next pointer
 				Marshal.WriteIntPtr (mem, structPtr);
