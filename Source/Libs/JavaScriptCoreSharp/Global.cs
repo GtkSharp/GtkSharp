@@ -1,5 +1,7 @@
-namespace JSC 
+namespace JSC
 {
+
+	// https://webkitgtk.org/reference/jsc-glib/2.32.2/
 
 	public partial class Global
 	{
