@@ -253,10 +253,6 @@ namespace GtkSharp.Generation {
 			if (isBlittable)
 				return "sizeof( " + cstype + " )";
 
-			// This is optimization based on https://github.com/GtkSharp/GtkSharp/pull/261#discussion_r673381869
-			if (cstype == "bool")
-				return "sizeof( uint )";
-
 			return "Marshal.SizeOf<" + cstype + ">()";
 		}
 	}

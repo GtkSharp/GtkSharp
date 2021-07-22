@@ -31,7 +31,7 @@ namespace GLib {
 						),
 				new GLib.AbiField("is_setup"
 						, -1
-						, (uint) sizeof(uint) // is_setup
+						, (uint) Marshal.SizeOf<bool>() // is_setup
 						, "hook_size"
 						, "hooks"
 						, 1
