@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <PackageProjectUrl>https://github.com/GtkSharp/GtkSharp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/GtkSharp/GtkSharp</RepositoryUrl>
+        <Description>GtkSoupSharp is a C# wrapper for the Gtk-Soup library.</Description>
+        <PackageTags>soupgtk;soupgtksharp;soup-sharp;wrapper</PackageTags>
+        <RootNamespace>Soup</RootNamespace>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <OutputPath>..\..\..\BuildOutput\Debug</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <OutputPath>..\..\..\BuildOutput\Release</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\Shared\*.cs">
+            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GtkSharp\GtkSharp.csproj" />
+    </ItemGroup>
+</Project>
