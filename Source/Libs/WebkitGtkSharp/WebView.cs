@@ -12,17 +12,22 @@ namespace WebKit
 			var tcs = new TaskCompletionSource<JavascriptResult>();
 			IntPtr native_script = GLib.Marshaller.StringToPtrGStrdup(script);
 
-			void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
-			{
-				var jsResult = webkit_web_view_run_javascript_finish(sourceObject, res, out var error);
-				WebKit.JavascriptResult ret = WebKit.JavascriptResult.New(jsResult);
+			try {
 
-				if (error != IntPtr.Zero) throw new GLib.GException(error);
+				void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
+				{
+					var jsResult = webkit_web_view_run_javascript_finish(sourceObject, res, out var error);
+					WebKit.JavascriptResult ret = WebKit.JavascriptResult.New(jsResult);
 
-				tcs.SetResult(ret);
+					if (error != IntPtr.Zero) throw new GLib.GException(error);
+
+					tcs.SetResult(ret);
+				}
+
+				webkit_web_view_run_javascript(Handle, native_script, IntPtr.Zero, Callback, IntPtr.Zero);
+			} finally {
+				GLib.Marshaller.Free(native_script);
 			}
-
-			webkit_web_view_run_javascript(Handle, native_script, IntPtr.Zero, Callback, IntPtr.Zero);
 
 			return tcs.Task;
 		}
