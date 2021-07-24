@@ -234,6 +234,27 @@ namespace GtkSharp.Generation {
 
 			return sw;
 		}
+
+		internal static string GetSizeOfExpression(string cstype)
+		{
+			// See https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types
+			bool isBlittable = cstype == "IntPtr"
+				|| cstype == "UIntPtr"
+				|| cstype == "ulong"
+				|| cstype == "long"
+				|| cstype == "uint"
+				|| cstype == "int"
+				|| cstype == "ushort"
+				|| cstype == "short"
+				|| cstype == "byte"
+				|| cstype == "sbyte"
+				|| cstype == "float"
+				|| cstype == "double";
+			if (isBlittable)
+				return "sizeof( " + cstype + " )";
+
+			return "Marshal.SizeOf<" + cstype + ">()";
+		}
 	}
 }
 

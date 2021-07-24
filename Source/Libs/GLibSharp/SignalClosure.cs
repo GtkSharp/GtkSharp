@@ -72,7 +72,7 @@ namespace GLib {
 
 		public SignalClosure (IntPtr obj, string signal_name, System.Type args_type)
 		{
-			raw_closure = g_closure_new_simple (Marshal.SizeOf (typeof (GClosure)), IntPtr.Zero);
+			raw_closure = g_closure_new_simple (Marshal.SizeOf<GClosure> (), IntPtr.Zero);
 			g_closure_set_marshal (raw_closure, Marshaler);
 			g_closure_add_finalize_notifier (raw_closure, IntPtr.Zero, Notify);
 			closures [raw_closure] = this;
@@ -159,7 +159,7 @@ namespace GLib {
 				args.Args = new object [n_param_vals - 1];
 				GLib.Value[] vals = new GLib.Value [n_param_vals - 1];
 				for (int i = 1; i < n_param_vals; i++) {
-					IntPtr ptr = new IntPtr (param_values.ToInt64 () + i * Marshal.SizeOf (typeof (Value)));
+					IntPtr ptr = new IntPtr (param_values.ToInt64 () + i * Marshal.SizeOf<Value> ());
 					vals [i - 1] = (Value) Marshal.PtrToStructure (ptr, typeof (Value));
 					args.Args [i - 1] = vals [i - 1].Val;
 				}
@@ -167,7 +167,7 @@ namespace GLib {
 				closure.Invoke (ci_args);
 				for (int i = 1; i < n_param_vals; i++) {
 					vals [i - 1].Update (args.Args [i - 1]);
-					IntPtr ptr = new IntPtr (param_values.ToInt64 () + i * Marshal.SizeOf (typeof (Value)));
+					IntPtr ptr = new IntPtr (param_values.ToInt64 () + i * Marshal.SizeOf<Value> ());
 					Marshal.StructureToPtr (vals [i - 1], ptr, false);
 				}
 				if (return_val == IntPtr.Zero || args.RetVal == null)

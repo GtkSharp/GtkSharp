@@ -90,7 +90,7 @@ namespace Gtk {
 		public bool GetGeometry(out Gdk.Screen screen, out Gdk.Rectangle area, out Gtk.Orientation orientation)
 		{
 			IntPtr native_screen;
-			IntPtr native_area = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (Gdk.Rectangle)));
+			IntPtr native_area = Marshal.AllocHGlobal (Marshal.SizeOf<Gdk.Rectangle> ());
 			int native_orientation;
 			bool ret = gtk_status_icon_get_geometry(Handle, out native_screen, native_area, out native_orientation);
 			if (ret) {

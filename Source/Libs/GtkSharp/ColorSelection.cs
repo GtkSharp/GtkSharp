@@ -55,7 +55,7 @@ namespace Gtk {
 			for (int i=0; i < n_colors; i++)
 			{
 				colors[i] = Gdk.Color.New(parsedColors);
-				parsedColors = (IntPtr) ((int)parsedColors + Marshal.SizeOf(colors[i]));
+				parsedColors = (IntPtr) ((int)parsedColors + Marshal.SizeOf<Gdk.Color> ());
 			}
 			return colors;
 		}

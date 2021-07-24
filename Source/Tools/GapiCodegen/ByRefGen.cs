@@ -41,7 +41,7 @@ namespace GtkSharp.Generation {
 		
 		public string AllocNative ()
 		{
-			return "Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + QualifiedName + ")))";
+			return "Marshal.AllocHGlobal (" + GenerationInfo.GetSizeOfExpression(QualifiedName) + ")";
 		}
 
 		public string AllocNative (string var_name)

@@ -104,7 +104,7 @@ namespace GtkSharp.Generation {
 
 				// Do not generate structs if the type is a simple pointer.
 				if (IsCPointer())
-					min_align = "(uint) Marshal.SizeOf(typeof(IntPtr))";
+					min_align = "(uint) sizeof(IntPtr)";
 
 				if (IsBitfield)
 					min_align = "1";
