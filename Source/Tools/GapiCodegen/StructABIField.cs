@@ -122,7 +122,7 @@ namespace GtkSharp.Generation {
 					var fieldname = SymbolTable.Table.MangleName (CName).Replace(".", "_");
 					if (IsArray && IsNullTermArray)
 						fieldname += "Ptr";
-					sw.WriteLine(indent + ", (long) Marshal.OffsetOf(typeof(" + alig_struct_name + "), \"" + fieldname + "\")");
+					sw.WriteLine(indent + ", (long) Marshal.OffsetOf<" + alig_struct_name + ">(\"" + fieldname + "\")");
 				} else {
 					sw.WriteLine(indent + ", " + min_align);
 				}

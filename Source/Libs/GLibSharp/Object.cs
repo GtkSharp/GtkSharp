@@ -942,7 +942,7 @@ namespace GLib {
 					, (uint) sizeof (IntPtr) // g_type_instance
 					, null
 					, "ref_count"
-					, (long) Marshal.OffsetOf(typeof(GObject_g_type_instanceAlign), "g_type_instance")
+					, (long) Marshal.OffsetOf<GObject_g_type_instanceAlign>("g_type_instance")
 					, 0
 					),
 				new GLib.AbiField("ref_count"
@@ -950,7 +950,7 @@ namespace GLib {
 					, (uint) sizeof (uint) // ref_count
 					, "g_type_instance"
 					, "qdata"
-					, (long) Marshal.OffsetOf(typeof(GObject_ref_countAlign), "ref_count")
+					, (long) Marshal.OffsetOf<GObject_ref_countAlign>("ref_count")
 					, 0
 					),
 				new GLib.AbiField("qdata"
@@ -958,7 +958,7 @@ namespace GLib {
 					, (uint) sizeof (IntPtr) // qdata
 					, "ref_count"
 					, null
-					, (long) Marshal.OffsetOf(typeof(GObject_qdataAlign), "qdata")
+					, (long) Marshal.OffsetOf<GObject_qdataAlign>("qdata")
 					, 0
 					),
 			}
