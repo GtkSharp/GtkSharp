@@ -18,7 +18,7 @@ namespace GLib {
 						, (uint) sizeof (ulong) // seq_id
 						, null
 						, "hook_size"
-						, (long) Marshal.OffsetOf(typeof(GHookList_seq_idAlign), "seq_id")
+						, (long) Marshal.OffsetOf<GHookList_seq_idAlign>("seq_id")
 						, 0
 						),
 				new GLib.AbiField("hook_size"
@@ -42,7 +42,7 @@ namespace GLib {
 						, (uint) sizeof (IntPtr) // hooks
 						, "is_setup"
 						, "dummy3"
-						, (long) Marshal.OffsetOf(typeof(GHookList_hooksAlign), "hooks")
+						, (long) Marshal.OffsetOf<GHookList_hooksAlign>("hooks")
 						, 0
 						),
 				new GLib.AbiField("dummy3"
@@ -50,7 +50,7 @@ namespace GLib {
 						, (uint) sizeof (IntPtr) // dummy3
 						, "hooks"
 						, "finalize_hook"
-						, (long) Marshal.OffsetOf(typeof(GHookList_dummy3Align), "dummy3")
+						, (long) Marshal.OffsetOf<GHookList_dummy3Align>("dummy3")
 						, 0
 						),
 				new GLib.AbiField("finalize_hook"
@@ -58,7 +58,7 @@ namespace GLib {
 						, (uint) sizeof (IntPtr) // finalize_hook
 						, "dummy3"
 						, "dummy"
-						, (long) Marshal.OffsetOf(typeof(GHookList_finalize_hookAlign), "finalize_hook")
+						, (long) Marshal.OffsetOf<GHookList_finalize_hookAlign>("finalize_hook")
 						, 0
 						),
 				new GLib.AbiField("dummy"
@@ -66,7 +66,7 @@ namespace GLib {
 						, (uint) sizeof (IntPtr) * 2 // dummy
 						, "finalize_hook"
 						, null
-						, (long) Marshal.OffsetOf(typeof(GHookList_dummyAlign), "dummy")
+						, (long) Marshal.OffsetOf<GHookList_dummyAlign>("dummy")
 						, 0
 						)
 			}
