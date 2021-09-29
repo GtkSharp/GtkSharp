@@ -16,6 +16,7 @@
 
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace Gtk {
 
@@ -94,6 +95,22 @@ namespace Gtk {
 		public void RenderSlider (Cairo.Context cr, double x, double y, double width, double height, Gtk.Orientation orientation)
 		{
 			Render.Slider (this, cr, x, y, width, height, orientation);
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		unsafe delegate void d_gtk_style_context_get_property(IntPtr raw, IntPtr property, int state, GLib.Value* value);
+		static d_gtk_style_context_get_property gtk_style_context_get_property = FuncLoader.LoadFunction<d_gtk_style_context_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_style_context_get_property"));
+
+		public GLib.Value GetProperty(string property, Gtk.StateFlags state)
+		{
+			var value = new GLib.Value();
+			IntPtr native_property = GLib.Marshaller.StringToPtrGStrdup(property);
+			unsafe
+			{
+				gtk_style_context_get_property(Handle, native_property, (int)state, &value);
+			}
+			GLib.Marshaller.Free(native_property);
+			return value;
 		}
 	}
 }
