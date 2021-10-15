@@ -27,6 +27,16 @@ namespace Pango {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attribute_copy(IntPtr raw);
 		static d_pango_attribute_copy pango_attribute_copy = FuncLoader.LoadFunction<d_pango_attribute_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attribute_copy"));
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_pango_attr_list_change(IntPtr raw, IntPtr attr);
+		static d_pango_attr_list_change pango_attr_list_change = FuncLoader.LoadFunction<d_pango_attr_list_change>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_list_change"));
+
+		public void Change (Pango.Attribute attr)
+		{
+			pango_attr_list_change (Handle, pango_attribute_copy (attr.Handle));
+		}
+
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_attr_list_insert(IntPtr raw, IntPtr attr);
 		static d_pango_attr_list_insert pango_attr_list_insert = FuncLoader.LoadFunction<d_pango_attr_list_insert>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_list_insert"));
@@ -35,6 +45,7 @@ namespace Pango {
 		{
 			pango_attr_list_insert (Handle, pango_attribute_copy (attr.Handle));
 		}
+
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_attr_list_insert_before(IntPtr raw, IntPtr attr);
 		static d_pango_attr_list_insert_before pango_attr_list_insert_before = FuncLoader.LoadFunction<d_pango_attr_list_insert_before>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_list_insert_before"));
@@ -45,4 +56,3 @@ namespace Pango {
 		}
 	}
 }
-
