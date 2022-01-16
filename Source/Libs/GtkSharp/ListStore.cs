@@ -271,7 +271,7 @@ namespace Gtk {
 			vals [2] = new GLib.Value (iter);
 			inst_and_params.Append (vals [2]);
 			int cnt = IterNChildren ();
-			IntPtr new_order_ptr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (int)) * cnt);
+			IntPtr new_order_ptr = Marshal.AllocHGlobal (sizeof(int) * cnt);
 			Marshal.Copy (new_order, 0, new_order_ptr, cnt);
 			vals [3] = new GLib.Value (new_order_ptr);
 			inst_and_params.Append (vals [3]);

@@ -227,7 +227,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\t\t// Internal representation of the wrapped structure ABI.");
 			sw.WriteLine ("\t\tstatic GLib.AbiStruct _" + info_name + " = null;");
-			sw.WriteLine ("\t\tstatic public " + _new + "GLib.AbiStruct " + info_name + " {");
+			sw.WriteLine ("\t\tstatic public unsafe " + _new + "GLib.AbiStruct " + info_name + " {");
 			sw.WriteLine ("\t\t\tget {");
 			sw.WriteLine ("\t\t\t\tif (_" + info_name + " == null)");
 

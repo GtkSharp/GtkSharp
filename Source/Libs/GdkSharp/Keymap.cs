@@ -39,7 +39,7 @@ namespace Gdk {
 				int[] tmp = new int [count];
 				Marshal.Copy (keyval_ptr, tmp, 0, count);
 				for (int i = 0; i < count; i++) {
-					IntPtr ptr = new IntPtr ((long) key_ptr + i * Marshal.SizeOf (typeof (KeymapKey)));
+					IntPtr ptr = new IntPtr ((long) key_ptr + i * Marshal.SizeOf<KeymapKey> ());
 					keyvals [i] = (uint) tmp [i];
 					keys [i] = KeymapKey.New (ptr);
 				}
@@ -61,7 +61,7 @@ namespace Gdk {
 			if (gdk_keymap_get_entries_for_keyval(Handle, keyval, out key_ptr, out count)) {
 				KeymapKey[] result = new KeymapKey [count];
 				for (int i = 0; i < count; i++) {
-					IntPtr ptr = new IntPtr ((long) key_ptr + i * Marshal.SizeOf (typeof (KeymapKey)));
+					IntPtr ptr = new IntPtr ((long) key_ptr + i * Marshal.SizeOf<KeymapKey> ());
 					result [i] = KeymapKey.New (ptr);
 				}
 				GLib.Marshaller.Free (key_ptr);

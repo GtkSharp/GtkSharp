@@ -12,18 +12,18 @@ namespace GLib {
 	public partial class HookList : GLib.Opaque {
 
 		// Internal representation of the wrapped ABI structure.
-		static public AbiStruct abi_info = new AbiStruct(new List<AbiField> {
+		static public unsafe AbiStruct abi_info = new AbiStruct(new List<AbiField> {
 				new GLib.AbiField("seq_id"
 						, 0
-						, (uint) Marshal.SizeOf(typeof(ulong)) // seq_id
+						, (uint) sizeof (ulong) // seq_id
 						, null
 						, "hook_size"
-						, (long) Marshal.OffsetOf(typeof(GHookList_seq_idAlign), "seq_id")
+						, (long) Marshal.OffsetOf<GHookList_seq_idAlign>("seq_id")
 						, 0
 						),
 				new GLib.AbiField("hook_size"
 						, -1
-						, (uint) Marshal.SizeOf(typeof(uint)) // hook_size
+						, (uint) sizeof (uint) // hook_size
 						, "seq_id"
 						, "is_setup"
 						, 1
@@ -31,7 +31,7 @@ namespace GLib {
 						),
 				new GLib.AbiField("is_setup"
 						, -1
-						, (uint) Marshal.SizeOf(typeof(bool)) // is_setup
+						, (uint) Marshal.SizeOf<bool>() // is_setup
 						, "hook_size"
 						, "hooks"
 						, 1
@@ -39,34 +39,34 @@ namespace GLib {
 						),
 				new GLib.AbiField("hooks"
 						, -1
-						, (uint) Marshal.SizeOf(typeof(IntPtr)) // hooks
+						, (uint) sizeof (IntPtr) // hooks
 						, "is_setup"
 						, "dummy3"
-						, (long) Marshal.OffsetOf(typeof(GHookList_hooksAlign), "hooks")
+						, (long) Marshal.OffsetOf<GHookList_hooksAlign>("hooks")
 						, 0
 						),
 				new GLib.AbiField("dummy3"
 						, -1
-						, (uint) Marshal.SizeOf(typeof(IntPtr)) // dummy3
+						, (uint) sizeof (IntPtr) // dummy3
 						, "hooks"
 						, "finalize_hook"
-						, (long) Marshal.OffsetOf(typeof(GHookList_dummy3Align), "dummy3")
+						, (long) Marshal.OffsetOf<GHookList_dummy3Align>("dummy3")
 						, 0
 						),
 				new GLib.AbiField("finalize_hook"
 						, -1
-						, (uint) Marshal.SizeOf(typeof(IntPtr)) // finalize_hook
+						, (uint) sizeof (IntPtr) // finalize_hook
 						, "dummy3"
 						, "dummy"
-						, (long) Marshal.OffsetOf(typeof(GHookList_finalize_hookAlign), "finalize_hook")
+						, (long) Marshal.OffsetOf<GHookList_finalize_hookAlign>("finalize_hook")
 						, 0
 						),
 				new GLib.AbiField("dummy"
 						, -1
-						, (uint) Marshal.SizeOf(typeof(IntPtr)) * 2 // dummy
+						, (uint) sizeof (IntPtr) * 2 // dummy
 						, "finalize_hook"
 						, null
-						, (long) Marshal.OffsetOf(typeof(GHookList_dummyAlign), "dummy")
+						, (long) Marshal.OffsetOf<GHookList_dummyAlign>("dummy")
 						, 0
 						)
 			}

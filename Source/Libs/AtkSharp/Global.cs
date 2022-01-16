@@ -40,6 +40,9 @@ namespace Atk {
 			GLib.Marshaller.Free (native_event_type);
 			return id;
 		}
+
+        public static bool IsSupported => GLibrary.IsSupported(Library.Atk);
+
 	}
 }
 

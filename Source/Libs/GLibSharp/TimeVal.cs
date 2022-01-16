@@ -43,7 +43,7 @@ namespace GLib {
 		static d_g_time_val_add g_time_val_add = FuncLoader.LoadFunction<d_g_time_val_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_add"));
 
 		public void Add(long microseconds) {
-			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));
+			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf<TimeVal> ());
 			System.Runtime.InteropServices.Marshal.StructureToPtr (this, this_as_native, false);
 			g_time_val_add(this_as_native, new IntPtr (microseconds));
 			ReadNative (this_as_native, ref this);
@@ -54,7 +54,7 @@ namespace GLib {
 		static d_g_time_val_to_iso8601 g_time_val_to_iso8601 = FuncLoader.LoadFunction<d_g_time_val_to_iso8601>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_to_iso8601"));
 
 		public string ToIso8601() {
-			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));
+			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf<TimeVal> ());
 			System.Runtime.InteropServices.Marshal.StructureToPtr (this, this_as_native, false);
 			IntPtr raw_ret = g_time_val_to_iso8601(this_as_native);
 			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
@@ -68,7 +68,7 @@ namespace GLib {
 
 		public static bool FromIso8601(string iso_date, out GLib.TimeVal time_) {
 			IntPtr native_iso_date = GLib.Marshaller.StringToPtrGStrdup (iso_date);
-			IntPtr native_time_ = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (GLib.TimeVal)));
+			IntPtr native_time_ = Marshal.AllocHGlobal (Marshal.SizeOf<GLib.TimeVal> ());
 			bool raw_ret = g_time_val_from_iso8601(native_iso_date, native_time_);
 			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_iso_date);

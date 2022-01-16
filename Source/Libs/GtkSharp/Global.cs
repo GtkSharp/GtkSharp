@@ -20,8 +20,6 @@ namespace Gtk {
 
 	public partial class Global {
 
-		internal const string GtkNativeDll = "libgtk-3-0.dll";
-
 		public static bool ShowUri (string uri)
 		{
 			return ShowUri (null, uri);
@@ -31,6 +29,9 @@ namespace Gtk {
 		{
 			return ShowUri (screen, uri, Gtk.Global.CurrentEventTime);
 		}
+
+		public static bool IsSupported => GLibrary.IsSupported(Library.Gtk);
+
 	}
 }
 

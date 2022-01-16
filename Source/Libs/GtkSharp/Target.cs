@@ -33,7 +33,7 @@ namespace Gtk {
 			IntPtr array_ptr = gtk_target_table_new_from_list (list.Handle, out n_targets);
 
 			Gtk.TargetEntry[] ret = new Gtk.TargetEntry [n_targets];
-			int unmanaged_struct_size = Marshal.SizeOf (typeof (Gtk.TargetEntry));
+			int unmanaged_struct_size = Marshal.SizeOf<Gtk.TargetEntry> ();
 			for (int i = 0; i < n_targets; i++) {
 				ret [i] = Gtk.TargetEntry.New (new IntPtr (array_ptr.ToInt64 () + i * unmanaged_struct_size));
 			}

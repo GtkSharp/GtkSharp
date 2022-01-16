@@ -92,7 +92,7 @@ namespace GLib {
 			{
 				object[] pvals = new object [n_pvals];
 				for (int i = 0; i < n_pvals; i++) {
-					IntPtr p = new IntPtr ((long) pvals_ptr + i * Marshal.SizeOf (typeof (Value)));
+					IntPtr p = new IntPtr ((long) pvals_ptr + i * Marshal.SizeOf<Value> ());
 					Value v = (Value) Marshal.PtrToStructure (p, typeof (Value));
 					pvals [i] = v.Val;
 				}
@@ -110,7 +110,7 @@ namespace GLib {
 
 			bool NativeInvoker (InvocationHint ihint, object[] pvals)
 			{
-				int val_sz = Marshal.SizeOf (typeof (Value));
+				int val_sz = Marshal.SizeOf<Value> ();
 				IntPtr buf = Marshal.AllocHGlobal (pvals.Length * val_sz);
 				Value[] vals = new Value [pvals.Length];
 				for (int i = 0; i < pvals.Length; i++) {

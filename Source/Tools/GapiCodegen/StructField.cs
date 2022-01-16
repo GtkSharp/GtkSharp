@@ -142,9 +142,9 @@ namespace GtkSharp.Generation {
 
 			var _enum = gen as EnumGen;
 			if (_enum != null && !is_pointer)
-				res = "(uint) Marshal.SizeOf(System.Enum.GetUnderlyingType(typeof(" + cstype + ")))";
+				res = "(uint) sizeof(" + cstype + ")";
 			else
-				res = "(uint) Marshal.SizeOf(typeof(" + cstype + "))";
+				res = "(uint) " + GenerationInfo.GetSizeOfExpression(cstype);
 
 			if (IsFixedSizeArray())
 				res += " * " + ArrayLength;

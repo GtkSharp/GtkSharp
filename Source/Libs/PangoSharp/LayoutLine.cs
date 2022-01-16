@@ -22,34 +22,37 @@
 namespace Pango {
 
 	using System;
+	using System.Runtime.InteropServices;
 
 	public partial class LayoutLine {
 
-#if NOT_BROKEN
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_line_get_x_ranges(IntPtr raw, int start_index, int end_index, out IntPtr ranges_handle, out int n_ranges);
 		static d_pango_layout_line_get_x_ranges pango_layout_line_get_x_ranges = FuncLoader.LoadFunction<d_pango_layout_line_get_x_ranges>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_line_get_x_ranges"));
-#endif
 
-		public void GetXRanges(int start_index, int end_index, out int[][] ranges)
+		public int[] GetXRanges(int start_index, int end_index)
 		{
-			// FIXME: this is broken
-			throw new NotImplementedException ();
-#if NOT_BROKEN
 			int count;
 			IntPtr array_ptr;
 			pango_layout_line_get_x_ranges(Handle, start_index, end_index, out array_ptr, out count);
-			ranges = new int[count] [];
-			for (int i = 0; i < count; i++) {
-				IntPtr tmp = new IntPtr (array_ptr + 2 * i * IntPtr.Size);
-				IntPtr rng_ptr = Marshal.ReadIntPtr (tmp);
-				IntPtr end_ptr = Marshal.ReadIntPtr (tmp, IntPtr.Size);
-
-			}
-			Marshal.Copy (array_ptr, ranges, 0, count);
+			int[] array = new int[count * 2];
+			Marshal.Copy(array_ptr, array, 0, count * 2);
 			GLib.Marshaller.Free (array_ptr);
-#endif
+			return array;
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_pango_layout_line_get_height(IntPtr raw, out int height);
+		static d_pango_layout_line_get_height pango_layout_line_get_height = FuncLoader.LoadFunction<d_pango_layout_line_get_height>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_line_get_height"));
+
+		public int Height
+		{
+			get
+			{
+				int height;
+				pango_layout_line_get_height(Handle, out height);
+				return height;
+			}
 		}
 	}
 }
-

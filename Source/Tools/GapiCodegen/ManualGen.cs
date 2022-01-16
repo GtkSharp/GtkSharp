@@ -68,7 +68,7 @@ namespace GtkSharp.Generation {
 		}
 
 		public override string GenerateGetSizeOf () {
-			return "(uint) Marshal.SizeOf(typeof(" + abi_type + "))";
+			return "(uint) " + GenerationInfo.GetSizeOfExpression(abi_type);
 		}
 	}
 }
