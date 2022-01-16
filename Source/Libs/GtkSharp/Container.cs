@@ -28,16 +28,12 @@ namespace Gtk
     public partial class Container : IEnumerable
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        delegate IntPtr d_gtk_container_class_find_child_property(IntPtr cclass, string property_name);
+        delegate IntPtr d_gtk_container_class_find_child_property(IntPtr cclass, IntPtr property_name);
         static d_gtk_container_class_find_child_property gtk_container_class_find_child_property = FuncLoader.LoadFunction<d_gtk_container_class_find_child_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_class_find_child_property"));
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        delegate void d_gtk_container_child_get_property(IntPtr container, IntPtr child, string property_name, ref GLib.Value value);
-        static d_gtk_container_child_get_property gtk_container_child_get_property = FuncLoader.LoadFunction<d_gtk_container_child_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_child_get_property"));
 
-        struct GTypeInstance
-        {
-            public IntPtr GTypeClass;
-        }
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        unsafe delegate void d_gtk_container_child_get_property(IntPtr container, IntPtr child, IntPtr property_name, GLib.Value* value);
+        static d_gtk_container_child_get_property gtk_container_child_get_property = FuncLoader.LoadFunction<d_gtk_container_child_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_child_get_property"));
 
         struct GParamSpec
         {
@@ -48,24 +44,33 @@ namespace Gtk
             public GLib.GType value_type;
             public GLib.GType owner_type;
 
-            IntPtr _nick;
-            IntPtr _blurb;
-            IntPtr qdata;
-            uint ref_count;
-            uint param_id;
+            public IntPtr _nick;
+            public IntPtr _blurb;
+            public IntPtr qdata;
+            public uint ref_count;
+            public uint param_id;
         };
 
         public GLib.Value ChildGetProperty(Gtk.Widget child, string property_name)
         {
-            var value = new GLib.Value();
-            var cclass = ((GTypeInstance)Marshal.PtrToStructure(Handle, typeof(GTypeInstance))).GTypeClass;
-            var propPtr = gtk_container_class_find_child_property(cclass, property_name);
-            var prop = (GParamSpec)Marshal.PtrToStructure(propPtr, typeof(GParamSpec));
-
-            value.Init(prop.value_type);
-            gtk_container_child_get_property(Handle, child.Handle, property_name, ref value);
-
-            return value;
+            IntPtr native_property_name = GLib.Marshaller.StringToPtrGStrdup(property_name);
+            try
+            {
+                var cclass = ((GTypeInstance)Marshal.PtrToStructure(Handle, typeof(GTypeInstance))).g_class;
+                var propPtr = gtk_container_class_find_child_property(cclass, native_property_name);
+                var prop = (GParamSpec)Marshal.PtrToStructure(propPtr, typeof(GParamSpec));
+                var value = new GLib.Value();
+                value.Init(prop.value_type);
+                unsafe
+                {
+                    gtk_container_child_get_property(Handle, child.Handle, native_property_name, &value);
+                }
+                return value;
+            }
+            finally
+            {
+                GLib.Marshaller.Free(native_property_name);
+            }
         }
 
         public IEnumerator GetEnumerator()
