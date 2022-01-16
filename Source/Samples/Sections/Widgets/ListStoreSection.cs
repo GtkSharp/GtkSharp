@@ -185,7 +185,7 @@ namespace Samples
             else
                 pulse++;
 
-            _model.SetValues(iter, (int)Column.Pulse, pulse);
+            _model.SetValue(iter, (int)Column.Pulse, pulse);
             _model.SetValue(iter, (int)Column.Active, true);
 
             return true;
