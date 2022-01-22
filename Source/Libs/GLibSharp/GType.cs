@@ -28,6 +28,7 @@ namespace GLib {
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Reflection;
+	using System.Runtime.CompilerServices;
 	using System.Runtime.InteropServices;
 	using System.Text;
 
@@ -238,7 +239,7 @@ namespace GLib {
 					break;
 			}
 
-			if (result == null) {
+			if (result == null && RuntimeFeature.IsDynamicCodeSupported) {
 				// Because of lazy loading of references, it's possible the type's assembly
 				// needs to be loaded.  We will look for it by name in the references of
 				// the currently loaded assemblies.  Hopefully a recursive traversal is
