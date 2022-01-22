@@ -13,6 +13,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core SDK'
+    inputs:
+      version: 6.0.101
+      includePreviewVersions: false
+
   - script: echo "##vso[build.updatebuildnumber]$(version)"
     displayName: 'Set Build Number'
 
