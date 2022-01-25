@@ -32,7 +32,7 @@ namespace Gtk
 		{
 			unsafe {
 				IntPtr* raw_ptr = (IntPtr*) (((long) gtype.GetClassPtr ()) + (long) class_abi.GetFieldOffset ("get_size"));
-				*raw_ptr = Marshal.GetFunctionPointerForDelegate ((Delegate) callback);
+				*raw_ptr = Marshal.GetFunctionPointerForDelegate (callback);
 			}
 		}
 
