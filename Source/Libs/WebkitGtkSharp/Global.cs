@@ -1,5 +1,7 @@
-namespace WebKit 
+namespace WebKit
 {
+
+	// https://webkitgtk.org/reference/webkit2gtk/stable/index.html
 
 	public partial class Global
 	{

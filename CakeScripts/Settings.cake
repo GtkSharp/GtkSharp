@@ -39,10 +39,15 @@ class Settings
             {
                 Deps = new[] { "GLibSharp", "GtkSharp", "GioSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
             },
-            new GAssembly("WebkitGtkSharp")
+            new GAssembly("JavaScriptCoreSharp")
             {
                 Deps = new[] { "GtkSharp","GLibSharp", "GioSharp", "AtkSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
-                ExtraArgs = "--abi-cs-usings=Webkit,Gtk,GLib,Gdk,Atk,Pango,Cairo"
+                ExtraArgs = "--abi-cs-usings=Gtk,GLib,Gdk,Atk,Pango,Cairo"
+            },
+            new GAssembly("WebkitGtkSharp")
+            {
+                Deps = new[] { "JavaScriptCoreSharp","GtkSharp","GLibSharp", "GioSharp", "AtkSharp", "CairoSharp", "PangoSharp", "GdkSharp" },
+                ExtraArgs = "--abi-cs-usings=Webkit,JavaScriptCore,Gtk,GLib,Gdk,Atk,Pango,Cairo"
             }
         };
     }

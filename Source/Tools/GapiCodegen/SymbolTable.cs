@@ -111,6 +111,7 @@ namespace GtkSharp.Generation {
 
 			// string types
 			AddType (new ConstStringGen ("const-gchar"));
+			AddType (new ConstStringGen ("const gchar* const"));
 			AddType (new ConstStringGen ("const-xmlChar"));
 			AddType (new ConstStringGen ("const-char"));
 			AddType (new ConstFilenameGen ("const-gfilename"));
@@ -211,6 +212,8 @@ namespace GtkSharp.Generation {
 		{
 			switch (type) {
 			case "const-gchar":
+			case "const gchar":
+			case "const gchar* const":
 			case "const-char":
 			case "const-xmlChar":
 			case "const-gfilename":
