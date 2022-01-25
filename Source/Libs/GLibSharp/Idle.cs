@@ -86,6 +86,11 @@ namespace GLib {
 			return p.ID;
 		}
 
+		public static uint Add (Priority priority, IdleHandler hndlr)
+		{
+			return Add ((int)priority, hndlr);
+		}
+
 		public static uint Add (IdleHandler hndlr)
 		{
 			return Add ((int)Priority.DefaultIdle, hndlr);
@@ -97,5 +102,3 @@ namespace GLib {
 		}
 	}
 }
-
-
