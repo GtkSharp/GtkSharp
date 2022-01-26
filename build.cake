@@ -17,33 +17,7 @@ var list = new List<GAssembly>();
 private void ParseVersion()
 {
     if (!string.IsNullOrEmpty(EnvironmentVariable("GITHUB_ACTIONS")))
-    {
-        var version = "3.24.24." + EnvironmentVariable("GITHUB_RUN_NUMBER");
-
-        var upstreamUrl = "GtkSharp/GtkSharp";
-        var repositoryUrl = EnvironmentVariable("GITHUB_REPOSITORY");
-        var branch = EnvironmentVariable("GITHUB_REF");
-
-        if (string.IsNullOrEmpty(repositoryUrl))
-            return;
-
-        if (repositoryUrl != upstreamUrl) // If we are building a PR
-        {
-            var split = repositoryUrl.Split('/');
-            version = version + "-" + split[0];
-        }
-        else if (repositoryUrl == upstreamUrl &&
-            !string.IsNullOrEmpty(branch) &&
-            branch != " refs/heads/master") // If we are building our repository
-        {
-            var branchName = branch.Substring(11);
-            version = version + "-" + branchName;
-        }
-
-        Settings.Version = version;
-
-        Console.WriteLine("Branch: " + branch);
-    }
+        Settings.Version = "3.24.24." + EnvironmentVariable("GITHUB_RUN_NUMBER");
 
     Console.WriteLine("Version: " + Settings.Version);
 }
