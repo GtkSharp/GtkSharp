@@ -140,8 +140,8 @@ Task("PackageTemplates")
     };
 
     DotNetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.csproj", settings);
-    DotNetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.FSharp.csproj", settings);
-    DotNetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.VBNet.csproj", settings);
+    DotNetPack("Source/Templates/GtkSharp.Template.FSharp/GtkSharp.Template.FSharp.csproj", settings);
+    DotNetPack("Source/Templates/GtkSharp.Template.VBNet/GtkSharp.Template.VBNet.csproj", settings);
 });
 
 // TASK TARGETS
