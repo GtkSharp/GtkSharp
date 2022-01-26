@@ -1,19 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <PackageProjectUrl>https://github.com/GtkSharp/GtkSharp</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/GtkSharp/GtkSharp</RepositoryUrl>
     <Description>GdkSharp is a C# wrapper for the Gdk library.</Description>
     <PackageTags>gdk;gdksharp;gdk-sharp;wrapper</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>..\..\..\BuildOutput\Debug</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>..\..\..\BuildOutput\Release</OutputPath>
-  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="..\Shared\*.cs">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\GLibSharp\GLibSharp.csproj">
       <Name>GLibSharp</Name>
@@ -28,9 +25,5 @@
       <Name>PangoSharp</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Shared\*.cs">
-      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-  </ItemGroup>
+
 </Project>

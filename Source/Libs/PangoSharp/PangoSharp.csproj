@@ -1,19 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <PackageProjectUrl>https://github.com/GtkSharp/GtkSharp</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/GtkSharp/GtkSharp</RepositoryUrl>
     <Description>PangoSharp is a C# wrapper for the Pango library.</Description>
     <PackageTags>pango;pangosharp;pango-sharp;wrapper</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>..\..\..\BuildOutput\Debug</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>..\..\..\BuildOutput\Release</OutputPath>
-  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Shared\*.cs">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\GLibSharp\GLibSharp.csproj">
       <Name>GLibSharp</Name>
@@ -22,9 +19,5 @@
       <Name>CairoSharp</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Shared\*.cs">
-      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-  </ItemGroup>
+
 </Project>
