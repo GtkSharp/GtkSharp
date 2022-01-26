@@ -2,6 +2,7 @@
 #load CakeScripts\Settings.cake
 #addin "Cake.FileHelpers&version=5.0.0"
 #addin "Cake.Incubator&version=7.0.0"
+#tool nuget:?package=NuGet.CommandLine&version=6.0.0
 
 // VARS
 
