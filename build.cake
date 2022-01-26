@@ -14,20 +14,20 @@ var configuration = Argument("Configuration", "Release");
 var msbuildsettings = new DotNetCoreMSBuildSettings();
 var list = new List<GAssembly>();
 
-private void ParseVersion()
-{
-    if (!string.IsNullOrEmpty(EnvironmentVariable("GITHUB_ACTIONS")))
-        Settings.Version = "3.24.24." + EnvironmentVariable("GITHUB_RUN_NUMBER");
-
-    Console.WriteLine("Version: " + Settings.Version);
-}
-
 // TASKS
 
 Task("Init")
     .Does(() =>
 {
-    ParseVersion();
+    if (!string.IsNullOrEmpty(EnvironmentVariable("GITHUB_ACTIONS")))
+    {
+        Settings.Version = "3.24.24." + EnvironmentVariable("GITHUB_RUN_NUMBER");
+
+        if (EnvironmentVariable("GITHUB_REF") != "refs/heads/master")
+            Settings.Version += "-develop";
+    }
+
+    Console.WriteLine("Version: " + Settings.Version);
 
     // Assign some common properties
     msbuildsettings = msbuildsettings.WithProperty("Version", Settings.Version);
