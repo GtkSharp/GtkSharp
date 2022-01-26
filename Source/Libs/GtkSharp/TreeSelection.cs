@@ -35,7 +35,7 @@ namespace Gtk {
 				return new TreePath [0];
 
 			GLib.List list = new GLib.List (list_ptr, typeof (Gtk.TreePath));
-			return (TreePath[]) GLib.Marshaller.ListToArray (list, typeof (Gtk.TreePath));
+			return GLib.Marshaller.ListToArray<TreePath> (list);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_tree_selection_get_selected2(IntPtr raw, IntPtr model, out Gtk.TreeIter iter);
