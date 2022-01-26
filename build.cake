@@ -11,7 +11,7 @@ Settings.BuildTarget = Argument("BuildTarget", "Default");
 Settings.Assembly = Argument("Assembly", "");
 var configuration = Argument("Configuration", "Release");
 
-var msbuildsettings = new DotNetCoreMSBuildSettings();
+var msbuildsettings = new DotNetMSBuildSettings();
 var list = new List<GAssembly>();
 
 // TASKS
@@ -46,19 +46,19 @@ Task("Prepare")
     .Does(() =>
 {
     // Build tools
-    DotNetCoreRestore("Source/Tools/Tools.sln");
-    DotNetCoreBuild("Source/Tools/Tools.sln", new DotNetCoreBuildSettings {
-        Verbosity = DotNetCoreVerbosity.Minimal,
+    DotNetRestore("Source/Tools/Tools.sln");
+    DotNetBuild("Source/Tools/Tools.sln", new DotNetBuildSettings {
+        Verbosity = DotNetVerbosity.Minimal,
         Configuration = configuration
     });
 
     // Generate code and prepare libs projects
     foreach(var gassembly in list)
         gassembly.Prepare();
-    DotNetCoreRestore("Source/GtkSharp.sln");
+    DotNetRestore("Source/GtkSharp.sln");
 
     // Addin
-    DotNetCoreRestore("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln");
+    DotNetRestore("Source/Addins/MonoDevelop.GtkSharp.Addin/MonoDevelop.GtkSharp.Addin.sln");
 });
 
 Task("Clean")
@@ -83,18 +83,18 @@ Task("Build")
     .IsDependentOn("Prepare")
     .Does(() =>
 {
-    var settings = new DotNetCoreBuildSettings
+    var settings = new DotNetBuildSettings
     {
         Configuration = configuration,
         MSBuildSettings = msbuildsettings
     };
 
     if (list.Count == Settings.AssemblyList.Count)
-        DotNetCoreBuild("Source/GtkSharp.sln", settings);
+        DotNetBuild("Source/GtkSharp.sln", settings);
     else
     {
         foreach(var gassembly in list)
-            DotNetCoreBuild(gassembly.Csproj, settings);
+            DotNetBuild(gassembly.Csproj, settings);
     }
 });
 
@@ -102,51 +102,46 @@ Task("RunSamples")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var settings = new DotNetCoreBuildSettings
+    var settings = new DotNetBuildSettings
     {
         Configuration = configuration,
         MSBuildSettings = msbuildsettings
     };
 
-    DotNetCoreBuild("Source/Samples/Samples.csproj", settings);
-    DotNetCoreRun("Source/Samples/Samples.csproj");
+    DotNetBuild("Source/Samples/Samples.csproj", settings);
+    DotNetRun("Source/Samples/Samples.csproj");
 });
 
 Task("PackageNuGet")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var settings = new DotNetCorePackSettings
+    var settings = new DotNetPackSettings
     {
         MSBuildSettings = msbuildsettings,
         Configuration = configuration,
         OutputDirectory = "BuildOutput/NugetPackages",
-        NoBuild = true,
-
+        NoBuild = true
     };
 
     foreach(var gassembly in list)
-        DotNetCorePack(gassembly.Csproj, settings);
+        DotNetPack(gassembly.Csproj, settings);
 });
 
 Task("PackageTemplates")
     .IsDependentOn("Init")
     .Does(() =>
 {
-    var settings = new NuGetPackSettings
+    var settings = new DotNetPackSettings
     {
-        OutputDirectory = "BuildOutput/NugetPackages",
-        Version = Settings.Version
+        MSBuildSettings = msbuildsettings,
+        Configuration = configuration,
+        OutputDirectory = "BuildOutput/NugetPackages"
     };
 
-    settings.BasePath = "Source/Templates/GtkSharp.Template.CSharp";
-    NuGetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.nuspec", settings);
-
-    settings.BasePath = "Source/Templates/GtkSharp.Template.FSharp";
-    NuGetPack("Source/Templates/GtkSharp.Template.FSharp/GtkSharp.Template.FSharp.nuspec", settings);
-
-    settings.BasePath = "Source/Templates/GtkSharp.Template.VBNet";
-    NuGetPack("Source/Templates/GtkSharp.Template.VBNet/GtkSharp.Template.VBNet.nuspec", settings);
+    DotNetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.csproj", settings);
+    DotNetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.FSharp.csproj", settings);
+    DotNetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.VBNet.csproj", settings);
 });
 
 // TASK TARGETS
