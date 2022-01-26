@@ -91,24 +91,24 @@ namespace Gtk {
 		public bool CreateFolders { get => fileChooser.CreateFolders; set => fileChooser.CreateFolders = value; }
 
 		public FileChooserNative (string title, Gtk.Window parent, Gtk.FileChooserAction action, string accept_label, string cancel_label) : base(FileChooserNativeCreate(title, parent, action, accept_label, cancel_label))
-                {
+		{
 			/*
-                        if (GetType () != typeof (FileChooserNative)) {
-                                var vals = new List<GLib.Value> ();
-                                var names = new List<string> ();
-                                names.Add ("title");
-                                vals.Add (new GLib.Value (title));
-                                names.Add ("parent");
-                                vals.Add (new GLib.Value (parent));
-                                names.Add ("action");
-                                vals.Add (new GLib.Value (action));
-                                names.Add ("accept_label");
-                                vals.Add (new GLib.Value (accept_label));
-                                names.Add ("cancel_label");
-                                vals.Add (new GLib.Value (cancel_label));
-                                CreateNativeObject (names.ToArray (), vals.ToArray ());
-                                return;
-                        }
+			if (GetType () != typeof (FileChooserNative)) {
+				var vals = new List<GLib.Value> ();
+				var names = new List<string> ();
+				names.Add ("title");
+				vals.Add (new GLib.Value (title));
+				names.Add ("parent");
+				vals.Add (new GLib.Value (parent));
+				names.Add ("action");
+				vals.Add (new GLib.Value (action));
+				names.Add ("accept_label");
+				vals.Add (new GLib.Value (accept_label));
+				names.Add ("cancel_label");
+				vals.Add (new GLib.Value (cancel_label));
+				CreateNativeObject (names.ToArray (), vals.ToArray ());
+				return;
+			}
 			*/
 			fileChooser = new FileChooserAdapter(Handle);
 		}
@@ -180,24 +180,18 @@ namespace Gtk {
 
 		static IntPtr FileChooserNativeCreate (string title, Gtk.Window parent, Gtk.FileChooserAction action, string accept_label, string cancel_label)
 		{
-                        IntPtr native_title = GLib.Marshaller.StringToPtrGStrdup (title);
-			IntPtr native_accept_label = IntPtr.Zero;
-			if (accept_label != null)
-	                        native_accept_label = GLib.Marshaller.StringToPtrGStrdup (accept_label);
-			IntPtr native_cancel_label = IntPtr.Zero;
-			if (cancel_label != null)
-	                        native_cancel_label = GLib.Marshaller.StringToPtrGStrdup (cancel_label);
+			IntPtr native_title = GLib.Marshaller.StringToPtrGStrdup(title);
+			IntPtr native_accept_label = GLib.Marshaller.StringToPtrGStrdup(accept_label);
+			IntPtr native_cancel_label = GLib.Marshaller.StringToPtrGStrdup(cancel_label);
 
-                        IntPtr raw = gtk_file_chooser_native_new(native_title, parent.Handle, (int) action, native_accept_label, native_cancel_label);
+			IntPtr raw = gtk_file_chooser_native_new(native_title, parent != null ? parent.Handle : IntPtr.Zero, (int) action, native_accept_label, native_cancel_label);
 
-                        /*GLib.Marshaller.Free (native_title);
-			if (accept_label != null)
-                        	GLib.Marshaller.Free (native_accept_label);
-			if (cancel_label != null)
-                        	GLib.Marshaller.Free (native_cancel_label);*/
+			GLib.Marshaller.Free(native_title);
+			GLib.Marshaller.Free(native_accept_label);
+			GLib.Marshaller.Free(native_cancel_label);
 
 			return raw;
-                }
+		}
 
 		public void AddChoice(string id, string label, string options, string option_labels)
 		{
@@ -320,4 +314,3 @@ namespace Gtk {
 		}
 	}
 }
-
