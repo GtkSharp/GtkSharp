@@ -36,7 +36,8 @@ private void ParseVersion()
             !string.IsNullOrEmpty(branch) &&
             branch != " refs/heads/master") // If we are building our repository
         {
-            var branchName = branch.Substring(11);
+            var split = branch.Substring(11).Split('/');
+            var branchName = split[0];
             version = version + "-" + branchName;
         }
 
