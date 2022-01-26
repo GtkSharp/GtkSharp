@@ -246,7 +246,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\t\tGLib.ExceptionManager.RaiseUnhandledException (e, " + (fatal ? "true" : "false") + ");");
 			if (fatal) {
 				sw.WriteLine ("\t\t\t\t// NOTREACHED: Above call does not return.");
-				sw.WriteLine ("\t\t\t\tthrow e;");
+				sw.WriteLine ("\t\t\t\tthrow;");
 			} else if (retval.MarshalType == "bool") {
 				sw.WriteLine ("\t\t\t\treturn false;");
 			}
