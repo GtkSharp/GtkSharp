@@ -17,18 +17,16 @@ Differences can be seen with the following table:
 
 ## Building from source
 
-Pre requirements for building from source are that you have .Net Core and msbuild installed on the system.
+Pre requirements for building from source are that you have .Net 6 installed on the system.
 
-To build the repository, first clone it:
+To build the repository, simply do:
 
 ```sh
 git clone https://github.com/GtkSharp/GtkSharp.git
 cd GtkSharp
+dotnet tool restore
+dotnet cake build.cake
 ```
-
-and then simply run either `.\build.ps1` or `./build.sh` depending your operating system. If you have [Cake](https://cakebuild.net/) installed as a .NET global tool just run `dotnet-cake`.
-
-If you wish to generate the nuget packages simply add the `--BuildTarget=PackageNuGet` as an argument when calling the build script.
 
 A breakdown on how the source is structured:
 
