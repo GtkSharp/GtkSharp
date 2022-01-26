@@ -239,7 +239,11 @@ namespace GLib {
 					break;
 			}
 
-			if (result == null && RuntimeFeature.IsDynamicCodeSupported) {
+			if (result == null
+#if NET6_0_OR_GREATER
+				&& RuntimeFeature.IsDynamicCodeSupported
+#endif
+				) {
 				// Because of lazy loading of references, it's possible the type's assembly
 				// needs to be loaded.  We will look for it by name in the references of
 				// the currently loaded assemblies.  Hopefully a recursive traversal is
