@@ -48,15 +48,7 @@ namespace GLib {
 			{
 				try {
 					IdleHandler idle_handler = (IdleHandler) real_handler;
-
 					bool cont = idle_handler ();
-					if (!cont)
-					{
-						lock (this)
-						{
-							Dispose();
-						}
-					}
 					return cont;
 				} catch (Exception e) {
 					ExceptionManager.RaiseUnhandledException (e, false);
@@ -80,7 +72,7 @@ namespace GLib {
 			{
 				var gch = GCHandle.Alloc(p);
 				var userData = GCHandle.ToIntPtr(gch);
-				p.ID = g_idle_add_full (priority, (IdleHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
+				p.ID = g_idle_add_full (priority, (IdleHandlerInternal) p.proxy_handler, userData, DestroyHelper.SourceProxyNotifyHandler);
 			}
 
 			return p.ID;

@@ -46,15 +46,7 @@ namespace GLib {
 			{
 				try {
 					TimeoutHandler timeout_handler = (TimeoutHandler) real_handler;
-
 					bool cont = timeout_handler ();
-					if (!cont)
-					{
-						lock (this)
-						{
-							Dispose();
-						}
-					}
 					return cont;
 				} catch (Exception e) {
 					ExceptionManager.RaiseUnhandledException (e, false);
@@ -76,7 +68,7 @@ namespace GLib {
 			{
 				var gch = GCHandle.Alloc(p);
 				var userData = GCHandle.ToIntPtr(gch);
-				p.ID = g_timeout_add_full (priority, interval, (TimeoutHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
+				p.ID = g_timeout_add_full (priority, interval, (TimeoutHandlerInternal) p.proxy_handler, userData, DestroyHelper.SourceProxyNotifyHandler);
 			}
 
 			return p.ID;
@@ -103,7 +95,7 @@ namespace GLib {
 			{
 				var gch = GCHandle.Alloc(p);
 				var userData = GCHandle.ToIntPtr(gch);
-				p.ID = g_timeout_add_seconds_full (priority, interval, (TimeoutHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
+				p.ID = g_timeout_add_seconds_full (priority, interval, (TimeoutHandlerInternal) p.proxy_handler, userData, DestroyHelper.SourceProxyNotifyHandler);
 			}
 
 			return p.ID;
