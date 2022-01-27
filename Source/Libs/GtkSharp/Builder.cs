@@ -28,6 +28,7 @@ namespace Gtk {
 	using System;
 	using System.IO;
 	using System.Reflection;
+	using System.Runtime.CompilerServices;
 	using System.Runtime.InteropServices;
 	using System.Text;
 
@@ -174,16 +175,19 @@ namespace Gtk {
 			AddFromStream (s);
 			TranslationDomain = translation_domain;
 		}
-		
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public Builder (string resource_name) : this (Assembly.GetCallingAssembly (), resource_name, null)
 		{
 		}
-		
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public Builder (string resource_name, string translation_domain)
 			: this (Assembly.GetCallingAssembly (), resource_name, translation_domain)
 		{
 		}
-		
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public Builder (Assembly assembly, string resource_name, string translation_domain) : this ()
 		{
 			if (GetType() != typeof (Builder))

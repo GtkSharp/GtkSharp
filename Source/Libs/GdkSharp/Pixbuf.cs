@@ -35,6 +35,7 @@
 namespace Gdk {
 
 	using System;
+	using System.Runtime.CompilerServices;
 	using System.Runtime.InteropServices;
 
 	public partial class Pixbuf {
@@ -94,14 +95,16 @@ namespace Gdk {
 				Raw = pl.PixbufHandle;
 			}
 		}
-		
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public Pixbuf (System.Reflection.Assembly assembly, string resource) : base (IntPtr.Zero)
 		{
 			using (PixbufLoader pl = new PixbufLoader (assembly == null ? System.Reflection.Assembly.GetCallingAssembly () : assembly, resource)) {
 				Raw = pl.PixbufHandle;
 			}
 		}
-				
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public Pixbuf (System.Reflection.Assembly assembly, string resource, int width, int height) : base (IntPtr.Zero)
 		{
 			using (PixbufLoader pl = new PixbufLoader (assembly == null ? System.Reflection.Assembly.GetCallingAssembly () : assembly, resource, width, height)) {
@@ -123,6 +126,7 @@ namespace Gdk {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		static public Pixbuf LoadFromResource (string resource)
 		{
 			return new Pixbuf (System.Reflection.Assembly.GetCallingAssembly (), resource);

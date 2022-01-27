@@ -24,6 +24,7 @@
 namespace Gdk {
 
 	using System;
+	using System.Runtime.CompilerServices;
 	using System.Runtime.InteropServices;
 
 	public partial class PixbufLoader {
@@ -96,6 +97,7 @@ namespace Gdk {
 			InitFromStream(stream);
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public PixbufLoader (System.Reflection.Assembly assembly, string resource) : this ()
 		{
 			InitFromAssemblyResource(assembly == null ? System.Reflection.Assembly.GetCallingAssembly () : assembly, resource);
@@ -116,7 +118,8 @@ namespace Gdk {
 				Close ();
 			}
 		}
-		
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public PixbufLoader (System.Reflection.Assembly assembly, string resource, int width, int height) : this ()
 		{
 			SetSize(width, height);
@@ -135,8 +138,7 @@ namespace Gdk {
 			} finally {
 				Close ();
 			}
-		}
-		
+		}		
 		
 		public PixbufLoader (byte[] buffer, int width, int height) : this()
 		{
@@ -144,11 +146,10 @@ namespace Gdk {
 			InitFromBuffer(buffer);
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		static public PixbufLoader LoadFromResource (string resource)
 		{
 			return new PixbufLoader (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
 	}
 }
-
-

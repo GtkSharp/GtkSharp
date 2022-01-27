@@ -23,6 +23,7 @@ namespace Gtk {
 
 	using System;
 	using System.Collections.Generic;
+	using System.Runtime.CompilerServices;
 	using System.Runtime.InteropServices;
 
 	public partial class Image {
@@ -83,6 +84,7 @@ namespace Gtk {
 			LoadFromStream (stream);
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public Image (System.Reflection.Assembly assembly, string resource) : this ()
 		{
 			if (assembly == null)
@@ -95,6 +97,7 @@ namespace Gtk {
 			LoadFromStream (s);
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		static public Image LoadFromResource (string resource)
 		{
 			return new Image (System.Reflection.Assembly.GetCallingAssembly (), resource);

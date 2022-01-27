@@ -21,6 +21,7 @@
 namespace Gdk {
 
 	using System;
+	using System.Runtime.CompilerServices;
 	using System.Runtime.InteropServices;
 
 	public partial class PixbufAnimation {
@@ -46,6 +47,7 @@ namespace Gdk {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public PixbufAnimation (System.Reflection.Assembly assembly, string resource) : base (IntPtr.Zero)
 		{
 			if (assembly == null)
@@ -56,6 +58,7 @@ namespace Gdk {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		static public PixbufAnimation LoadFromResource (string resource)
 		{
 			return new PixbufAnimation (System.Reflection.Assembly.GetCallingAssembly (), resource);
