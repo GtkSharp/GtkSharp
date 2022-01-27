@@ -3,11 +3,14 @@ namespace Gtk
 	using System;
 	using System.IO;
 	using System.Reflection;
+	using System.Runtime.CompilerServices;
 
 	public partial class CssProvider
 	{
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public bool LoadFromResource(string resource) => LoadFromResource(Assembly.GetCallingAssembly(), resource);
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public bool LoadFromResource(Assembly assembly, string resource)
 		{
 			if (assembly == null)

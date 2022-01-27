@@ -21,10 +21,12 @@
 namespace Gtk {
 
 	using System;
+	using System.Runtime.CompilerServices;
 	using System.Runtime.InteropServices;
 
 	public partial class UIManager {
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public uint AddUiFromResource (string resource)
 		{
 			if (resource == null)
