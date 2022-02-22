@@ -46,15 +46,7 @@ namespace GLib {
 			{
 				try {
 					TimeoutHandler timeout_handler = (TimeoutHandler) real_handler;
-
 					bool cont = timeout_handler ();
-					if (!cont)
-					{
-						lock (this)
-						{
-							Dispose();
-						}
-					}
 					return cont;
 				} catch (Exception e) {
 					ExceptionManager.RaiseUnhandledException (e, false);
@@ -68,14 +60,15 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_timeout_add_full(int priority, uint interval, TimeoutHandlerInternal d, IntPtr data, DestroyNotify notify);
 		static d_g_timeout_add_full g_timeout_add_full = FuncLoader.LoadFunction<d_g_timeout_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_timeout_add_full"));
-		public static uint Add (uint interval, TimeoutHandler hndlr)
+
+		public static uint Add (uint interval, TimeoutHandler hndlr, int priority)
 		{
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 			lock (p)
 			{
 				var gch = GCHandle.Alloc(p);
 				var userData = GCHandle.ToIntPtr(gch);
-				p.ID = g_timeout_add_full (0, interval, (TimeoutHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
+				p.ID = g_timeout_add_full (priority, interval, (TimeoutHandlerInternal) p.proxy_handler, userData, DestroyHelper.SourceProxyNotifyHandler);
 			}
 
 			return p.ID;
@@ -83,32 +76,39 @@ namespace GLib {
 
 		public static uint Add (uint interval, TimeoutHandler hndlr, Priority priority)
 		{
-			TimeoutProxy p = new TimeoutProxy (hndlr);
-			lock (p)
-			{
-				var gch = GCHandle.Alloc(p);
-				var userData = GCHandle.ToIntPtr(gch);
-				p.ID = g_timeout_add_full ((int)priority, interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero, null);
-			}
+			return Add (interval, hndlr, (int)priority);
+		}
 
-			return p.ID;
+		public static uint Add (uint interval, TimeoutHandler hndlr)
+		{
+			return Add (interval, hndlr, (int)Priority.Default);
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_timeout_add_seconds_full(int priority, uint interval, TimeoutHandlerInternal d, IntPtr data, DestroyNotify notify);
 		static d_g_timeout_add_seconds_full g_timeout_add_seconds_full = FuncLoader.LoadFunction<d_g_timeout_add_seconds_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_timeout_add_seconds_full"));
 
-		public static uint AddSeconds (uint interval, TimeoutHandler hndlr)
+		public static uint AddSeconds (uint interval, TimeoutHandler hndlr, int priority)
 		{
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 			lock (p)
 			{
 				var gch = GCHandle.Alloc(p);
 				var userData = GCHandle.ToIntPtr(gch);
-				p.ID = g_timeout_add_seconds_full (0, interval, (TimeoutHandlerInternal) p.proxy_handler, userData, DestroyHelper.NotifyHandler);
+				p.ID = g_timeout_add_seconds_full (priority, interval, (TimeoutHandlerInternal) p.proxy_handler, userData, DestroyHelper.SourceProxyNotifyHandler);
 			}
 
 			return p.ID;
+		}
+
+		public static uint AddSeconds (uint interval, TimeoutHandler hndlr, Priority priority)
+		{
+			return AddSeconds (interval, hndlr, (int)priority);
+		}
+
+		public static uint AddSeconds (uint interval, TimeoutHandler hndlr)
+		{
+			return AddSeconds (interval, hndlr, (int)Priority.Default);
 		}
 
 		public static void Remove (uint id)
@@ -117,5 +117,3 @@ namespace GLib {
 		}
 	}
 }
-
-

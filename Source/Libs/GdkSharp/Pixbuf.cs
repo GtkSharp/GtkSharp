@@ -35,6 +35,7 @@
 namespace Gdk {
 
 	using System;
+	using System.Runtime.CompilerServices;
 	using System.Runtime.InteropServices;
 
 	public partial class Pixbuf {
@@ -94,14 +95,16 @@ namespace Gdk {
 				Raw = pl.PixbufHandle;
 			}
 		}
-		
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public Pixbuf (System.Reflection.Assembly assembly, string resource) : base (IntPtr.Zero)
 		{
 			using (PixbufLoader pl = new PixbufLoader (assembly == null ? System.Reflection.Assembly.GetCallingAssembly () : assembly, resource)) {
 				Raw = pl.PixbufHandle;
 			}
 		}
-				
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public Pixbuf (System.Reflection.Assembly assembly, string resource, int width, int height) : base (IntPtr.Zero)
 		{
 			using (PixbufLoader pl = new PixbufLoader (assembly == null ? System.Reflection.Assembly.GetCallingAssembly () : assembly, resource, width, height)) {
@@ -123,6 +126,7 @@ namespace Gdk {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		static public Pixbuf LoadFromResource (string resource)
 		{
 			return new Pixbuf (System.Reflection.Assembly.GetCallingAssembly (), resource);
@@ -373,6 +377,44 @@ namespace Gdk {
 			if (!saved)
 				throw new GLib.GException (error);
 			return saved;
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate bool d_gdk_pixbuf_save_to_stream(IntPtr raw, IntPtr stream, IntPtr type, IntPtr cancellable, out IntPtr error, IntPtr dummy);
+		static d_gdk_pixbuf_save_to_stream gdk_pixbuf_save_to_stream = FuncLoader.LoadFunction<d_gdk_pixbuf_save_to_stream>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_save_to_stream"));
+
+		public unsafe bool SaveToStream(GLib.OutputStream stream, string type, GLib.Cancellable cancellable)
+		{
+			IntPtr error = IntPtr.Zero;
+			IntPtr native_type = GLib.Marshaller.StringToPtrGStrdup(type);
+			bool ret = gdk_pixbuf_save_to_stream(Handle, stream == null ? IntPtr.Zero : stream.Handle, native_type, cancellable == null ? IntPtr.Zero : cancellable.Handle, out error, IntPtr.Zero);
+			GLib.Marshaller.Free(native_type);
+
+			if (error != IntPtr.Zero)
+				throw new GLib.GException(error);
+
+			return ret;
+		}
+
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		delegate bool d_gdk_pixbuf_save_to_streamv(IntPtr raw, IntPtr stream, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, IntPtr cancellable, out IntPtr error);
+		static d_gdk_pixbuf_save_to_streamv gdk_pixbuf_save_to_streamv = FuncLoader.LoadFunction<d_gdk_pixbuf_save_to_streamv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_save_to_streamv"));
+
+		public unsafe bool SaveToStreamv(GLib.OutputStream stream, string type, string[] option_keys, string[] option_values, GLib.Cancellable cancellable)
+		{
+			IntPtr error = IntPtr.Zero;
+			IntPtr native_type = GLib.Marshaller.StringToPtrGStrdup(type);
+			IntPtr[] native_option_keys = NullTerm (option_keys);
+			IntPtr[] native_option_values = NullTerm (option_values);
+			bool ret = gdk_pixbuf_save_to_streamv(Handle, stream == null ? IntPtr.Zero : stream.Handle, native_type, native_option_keys, native_option_values, cancellable == null ? IntPtr.Zero : cancellable.Handle, out error);
+			GLib.Marshaller.Free (native_type);
+			ReleaseArray (native_option_keys);
+			ReleaseArray (native_option_values);
+
+			if (error != IntPtr.Zero)
+                throw new GLib.GException (error);
+
+			return ret;
 		}
 	}
 }

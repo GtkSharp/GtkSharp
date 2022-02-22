@@ -47,6 +47,27 @@ namespace GLib {
 				return release_gchandle;
 			}
 		}
+
+		static void ReleaseSourceProxy (IntPtr data)
+		{
+			if (data == IntPtr.Zero)
+				return;
+			GCHandle gch = (GCHandle)data;
+			if (gch.Target is SourceProxy proxy) {
+				lock (proxy)
+					proxy.Dispose ();
+			}
+			gch.Free();
+		}
+
+		static DestroyNotify release_sourceproxy;
+
+		public static DestroyNotify SourceProxyNotifyHandler {
+			get {
+				if (release_sourceproxy == null)
+					release_sourceproxy = new DestroyNotify (ReleaseSourceProxy);
+				return release_sourceproxy;
+			}
+		}
 	}
 }
-

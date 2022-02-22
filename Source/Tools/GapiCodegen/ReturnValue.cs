@@ -147,15 +147,22 @@ namespace GtkSharp.Generation {
 			if (ElementType != String.Empty) {
 				string args = (owned ? "true" : "false") + ", " + (elements_owned ? "true" : "false");
 				if (IGen.QualifiedName == "GLib.PtrArray")
-					return String.Format ("({0}[]) GLib.Marshaller.PtrArrayToArray ({1}, {2}, typeof({0}))", ElementType, var, args);
+					return String.Format ("GLib.Marshaller.PtrArrayToArray<{0}> ({1}, {2})", ElementType, var, args);
+				else if (IGen.QualifiedName == "GLib.List")
+					return String.Format ("GLib.Marshaller.ListPtrToArray<{0}, {1}> ({2}, {3})", ElementType, element_ctype == "gfilename*" ? "GLib.ListBase.FilenameString" : ElementType, var, args);
+				else if (IGen.QualifiedName == "GLib.SList" || IGen.QualifiedName == "System.IntPtr")
+					return String.Format ("GLib.Marshaller.SListPtrToArray<{0}, {1}> ({2}, {3})", ElementType, element_ctype == "gfilename*" ? "GLib.ListBase.FilenameString" : ElementType, var, args);
 				else
-					return String.Format ("({0}[]) GLib.Marshaller.ListPtrToArray ({1}, typeof({2}), {3}, typeof({4}))", ElementType, var, IGen.QualifiedName, args, element_ctype == "gfilename*" ? "GLib.ListBase.FilenameString" : ElementType);
+					throw new InvalidOperationException($"Unsupported element marshalling configuration for element type {IGen.QualifiedName}");
 			} else if (IGen is IOwnable)
 				return ((IOwnable)IGen).FromNative (var, owned);
 			else if (is_null_term)
 				return String.Format ("GLib.Marshaller.NullTermPtrToStringArray ({0}, {1})", var, owned ? "true" : "false");
 			else if (is_array)
-				return String.Format ("({0}) GLib.Marshaller.ArrayPtrToArray ({1}, typeof ({2}), (int){3}native_{4}, true)", CSType, var, IGen.QualifiedName, CountParameter.CSType == "int" ? String.Empty : "(" + CountParameter.CSType + ")", CountParameter.Name);
+				if (CSType == "byte[]" && IGen.QualifiedName == "byte")
+					return String.Format ("GLib.Marshaller.ArrayPtrToArray<{0}> ({1}, (int){2}native_{3}, true)", CSType, var, CountParameter.CSType == "int" ? String.Empty : "(" + CountParameter.CSType + ")", CountParameter.Name);
+				else
+					throw new InvalidOperationException($"Unsupported array marshalling configuration for types {IGen.QualifiedName} and {CSType}");
 			else
 				return IGen.FromNative (var);
 		}

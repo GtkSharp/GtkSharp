@@ -313,6 +313,21 @@ namespace GLib {
 			return result;
 		}
 
+		public static byte[] ArrayPtrToArray<TElement> (IntPtr array_ptr, int length, bool owned)
+		{
+			byte[] result = null;
+			if (typeof(TElement) == typeof (byte)) {
+				byte[] ret = new byte [length];
+				Marshal.Copy (array_ptr, ret, 0, length);
+				result = ret;
+			} else {
+				throw new InvalidOperationException ("Marshaling of " + typeof(TElement) + " arrays is not supported");
+			}
+			if (owned)
+				Free (array_ptr);
+			return result;
+		}
+
 		public static Array ListPtrToArray (IntPtr list_ptr, Type list_type, bool owned, bool elements_owned, Type elem_type)
 		{
 			Type array_type = elem_type == typeof (ListBase.FilenameString) ? typeof (string) : elem_type;
@@ -326,10 +341,31 @@ namespace GLib {
 				return ListToArray (list, array_type);
 		}
 
+		public static TElement[] ListPtrToArray<TElement, TListElement> (IntPtr list_ptr, bool owned, bool elements_owned)
+		{
+			using (GLib.List list = new GLib.List (list_ptr, typeof(TListElement), owned, elements_owned))
+				return ListToArray<TElement> (list);
+		}
+
+		public static TElement[] SListPtrToArray<TElement, TListElement> (IntPtr list_ptr, bool owned, bool elements_owned)
+		{
+			using (GLib.SList list = new GLib.SList (list_ptr, typeof(TListElement), owned, elements_owned))
+				return ListToArray<TElement> (list);
+		}
+
 		public static Array PtrArrayToArray (IntPtr list_ptr, bool owned, bool elements_owned, Type elem_type)
 		{
 			GLib.PtrArray array = new GLib.PtrArray (list_ptr, elem_type, owned, elements_owned);
 			Array ret = Array.CreateInstance (elem_type, array.Count);
+			array.CopyTo (ret, 0);
+			array.Dispose ();
+			return ret;
+		}
+
+		public static TElement[] PtrArrayToArray<TElement> (IntPtr list_ptr, bool owned, bool elements_owned)
+		{
+			GLib.PtrArray array = new GLib.PtrArray (list_ptr, typeof(TElement), owned, elements_owned);
+			TElement[] ret = new TElement[array.Count];
 			array.CopyTo (ret, 0);
 			array.Dispose ();
 			return ret;
@@ -342,6 +378,18 @@ namespace GLib {
 				list.CopyTo (result, 0);
 
 			if (type.IsSubclassOf (typeof (GLib.Opaque)))
+				list.elements_owned = false;
+
+			return result;
+		}
+
+		public static TElement[] ListToArray<TElement> (ListBase list)
+		{
+			TElement[] result = new TElement[list.Count];
+			if (list.Count > 0)
+				list.CopyTo (result, 0);
+
+			if (typeof(TElement).IsSubclassOf (typeof (GLib.Opaque)))
 				list.elements_owned = false;
 
 			return result;

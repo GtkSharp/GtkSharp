@@ -43,7 +43,7 @@ public class GAssembly
         {
             // Fixup API file
             var symfile = P.Combine(Dir, Name + "-symbols.xml");
-            Cake.DotNetCoreExecute("BuildOutput/Tools/GapiFixup.dll", 
+            Cake.DotNetExecute("BuildOutput/Tools/GapiFixup.dll", 
                 "--metadata=" + Metadata + " " + "--api=" + tempapi + 
                 (Cake.FileExists(symfile) ? " --symbols=" + symfile : string.Empty)
             );
@@ -60,7 +60,7 @@ public class GAssembly
             }
 
             // Generate code
-            Cake.DotNetCoreExecute("BuildOutput/Tools/GapiCodegen.dll", 
+            Cake.DotNetExecute("BuildOutput/Tools/GapiCodegen.dll", 
                 "--outdir=" + GDir + " " +
                 "--schema=Source/Libs/Shared/Gapi.xsd " +
                 extraargs + " " +
