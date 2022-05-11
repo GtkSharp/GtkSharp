@@ -1,0 +1,66 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- GtkSharp target from the original nuget package -->
+  <Import Project="..\targets\GtkSharp.targets" />
+
+  <!-- Register net6.0-gtk3.24 TFM -->
+  <ItemGroup>
+    <SupportedPlatform Include="gtk" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <_DefaultTargetPlatformVersion>@GTKSHARPVERSION@</_DefaultTargetPlatformVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetPlatformSupported>true</TargetPlatformSupported>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">$(_DefaultTargetPlatformVersion)</TargetPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SdkSupportedTargetPlatformVersion Include="@GTKSHARPVERSION@" />
+  </ItemGroup>
+
+  <!-- Register GtkSharp runtime -->
+  <ItemGroup>
+    <KnownFrameworkReference
+      Include="GtkSharp"
+      TargetFramework="net@GTKSHARPNETVERSION@"
+      RuntimeFrameworkName="GtkSharp"
+      DefaultRuntimeFrameworkVersion="**FromWorkload**"
+      LatestRuntimeFrameworkVersion="**FromWorkload**"
+      TargetingPackName="GtkSharp.Ref"
+      TargetingPackVersion="**FromWorkload**"
+      RuntimePackNamePatterns="GtkSharp.Runtime"
+      RuntimePackRuntimeIdentifiers="win-x64;win-x86;linux-x64;linux-x86;osx-x64"
+      Profile="GTK"
+    />
+  </ItemGroup>
+
+  <!-- Reference GtkSharp runtime -->
+  <ItemGroup Condition=" '$(DisableImplicitFrameworkReferences)' != 'true' ">
+    <FrameworkReference
+      Include="GtkSharp"
+      IsImplicitlyDefined="true"
+      Pack="false"
+      PrivateAssets="All"
+    />
+  </ItemGroup>
+
+  <!-- Project properties -->
+  <PropertyGroup>
+    <_IsGtkDefined>$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants.Trim())', '(^|;)GTK($|;)'))</_IsGtkDefined>
+    <DefineConstants Condition="!$(_IsGtkDefined)">GTK;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Must be self-contained. Framework-dependent builds cannot see our custom runtime -->
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('Windows')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64' ">win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('Windows')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X86' ">win-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('Linux')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64' ">linux-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('Linux')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X86' ">linux-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('OSX')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64' ">osx-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+</Project>
