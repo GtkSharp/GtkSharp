@@ -132,25 +132,18 @@ Task("PackageWorkload")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var buildSettings = new DotNetBuildSettings
-    {
-        Configuration = configuration,
-        MSBuildSettings = msbuildsettings
-    };
-
     var packSettings = new DotNetPackSettings
     {
         MSBuildSettings = msbuildsettings,
         Configuration = configuration,
         OutputDirectory = "BuildOutput/NugetPackages",
-        NoBuild = true
+        // Some of the nugets here depend on output generated during build.
+        NoBuild = false
     };
 
-    DotNetBuild("Source/Workload/GtkSharp.Ref/GtkSharp.Ref.csproj", buildSettings);
-    DotNetBuild("Source/Workload/GtkSharp.Runtime/GtkSharp.Runtime.csproj", buildSettings);
-    DotNetBuild("Source/Workload/GtkSharp.Sdk/GtkSharp.Sdk.csproj", buildSettings);
-    DotNetBuild("Source/Workload/GtkSharp.NET.Sdk.Gtk/GtkSharp.NET.Sdk.Gtk.csproj", buildSettings);
-
+    DotNetPack("Source/Workload/GtkSharp.Workload.Template.CSharp/GtkSharp.Workload.Template.CSharp.csproj", packSettings);
+    DotNetPack("Source/Workload/GtkSharp.Workload.Template.FSharp/GtkSharp.Workload.Template.FSharp.csproj", packSettings);
+    DotNetPack("Source/Workload/GtkSharp.Workload.Template.VBNet/GtkSharp.Workload.Template.VBNet.csproj", packSettings);
     DotNetPack("Source/Workload/GtkSharp.Ref/GtkSharp.Ref.csproj", packSettings);
     DotNetPack("Source/Workload/GtkSharp.Runtime/GtkSharp.Runtime.csproj", packSettings);
     DotNetPack("Source/Workload/GtkSharp.Sdk/GtkSharp.Sdk.csproj", packSettings);
