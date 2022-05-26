@@ -13,6 +13,7 @@ var configuration = Argument("Configuration", "Release");
 
 var msbuildsettings = new DotNetMSBuildSettings();
 var list = new List<GAssembly>();
+var supportedVersionBands = new List<string>() {"6.0.100", "6.0.200", "6.0.300"};
 
 // TASKS
 
@@ -147,7 +148,12 @@ Task("PackageWorkload")
     DotNetPack("Source/Workload/GtkSharp.Ref/GtkSharp.Ref.csproj", packSettings);
     DotNetPack("Source/Workload/GtkSharp.Runtime/GtkSharp.Runtime.csproj", packSettings);
     DotNetPack("Source/Workload/GtkSharp.Sdk/GtkSharp.Sdk.csproj", packSettings);
-    DotNetPack("Source/Workload/GtkSharp.NET.Sdk.Gtk/GtkSharp.NET.Sdk.Gtk.csproj", packSettings);
+
+    foreach (var band in supportedVersionBands)
+    {
+        packSettings.MSBuildSettings = packSettings.MSBuildSettings.WithProperty("_GtkSharpManifestVersionBand", band);
+        DotNetPack("Source/Workload/GtkSharp.NET.Sdk.Gtk/GtkSharp.NET.Sdk.Gtk.csproj", packSettings);
+    }
 });
 
 Task("PackageTemplates")
