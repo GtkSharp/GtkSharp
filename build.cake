@@ -1,5 +1,6 @@
 #load CakeScripts\GAssembly.cake
 #load CakeScripts\Settings.cake
+#load CakeScripts\TargetEnvironment.cake
 #addin "Cake.FileHelpers&version=5.0.0"
 #addin "Cake.Incubator&version=7.0.0"
 
@@ -170,6 +171,75 @@ Task("PackageTemplates")
     DotNetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.csproj", settings);
     DotNetPack("Source/Templates/GtkSharp.Template.FSharp/GtkSharp.Template.FSharp.csproj", settings);
     DotNetPack("Source/Templates/GtkSharp.Template.VBNet/GtkSharp.Template.VBNet.csproj", settings);
+});
+
+const string manifestName = "GtkSharp.NET.Sdk.Gtk";
+var manifestPack = $"{manifestName}.Manifest-{TargetEnvironment.DotNetCliFeatureBand}.{Settings.Version}.nupkg";
+var manifestPackPath = $"BuildOutput/NugetPackages/{manifestPack}";
+
+var packNames = new List<string>()
+{
+    "GtkSharp.Ref",
+    "GtkSharp.Runtime",
+    "GtkSharp.Sdk"
+};
+
+var templateLanguages = new List<string>()
+{
+    "CSharp",
+    "FSharp",
+    "VBNet"
+};
+
+Task("InstallWorkload")
+    .IsDependentOn("PackageWorkload")
+    .IsDependentOn("PackageTemplates")
+    .Does(() =>
+{
+    Console.WriteLine($"Installing workload for SDK version {TargetEnvironment.DotNetCliFeatureBand}, at {TargetEnvironment.DotNetInstallPath}");
+    Console.WriteLine($"Installing manifests to {TargetEnvironment.DotNetManifestPath}");
+    TargetEnvironment.InstallManifests(manifestName, manifestPackPath);
+    Console.WriteLine($"Installing packs to {TargetEnvironment.DotNetPacksPath}");
+    foreach (var name in packNames)
+    {
+        Console.WriteLine($"Installing {name}");
+        var pack = $"{name}.{Settings.Version}.nupkg";
+        var packPath = $"BuildOutput/NugetPackages/{pack}";
+        TargetEnvironment.InstallPack(name, Settings.Version, packPath);
+    }
+    Console.WriteLine($"Installing templates to {TargetEnvironment.DotNetTemplatePacksPath}");
+    foreach (var language in templateLanguages)
+    {
+        Console.WriteLine($"Installing {language} templates");
+        var pack = $"GtkSharp.Workload.Template.{language}.{Settings.Version}.nupkg";
+        var packPath = $"BuildOutput/NugetPackages/{pack}";
+        TargetEnvironment.InstallTemplatePack(pack, packPath);
+    }
+    Console.WriteLine($"Registering \"gtk\" installed workload...");
+    TargetEnvironment.RegisterInstalledWorkload("gtk");
+});
+
+Task("UninstallWorkload")
+    .Does(() =>
+{
+    Console.WriteLine($"Uninstalling workload for SDK version {TargetEnvironment.DotNetCliFeatureBand}, at {TargetEnvironment.DotNetInstallPath}");
+    Console.WriteLine($"Removing manifests from {TargetEnvironment.DotNetManifestPath}");
+    TargetEnvironment.UninstallManifests(manifestName);
+    Console.WriteLine($"Removing packs from {TargetEnvironment.DotNetPacksPath}");
+    foreach (var name in packNames)
+    {
+        Console.WriteLine($"Removing {name}");
+        TargetEnvironment.UninstallPack(name, Settings.Version);
+    }
+    Console.WriteLine($"Removing templates from {TargetEnvironment.DotNetTemplatePacksPath}");
+    foreach (var language in templateLanguages)
+    {
+        Console.WriteLine($"Removing {language} templates");
+        var pack = $"GtkSharp.Workload.Template.{language}.{Settings.Version}.nupkg";
+        TargetEnvironment.UninstallTemplatePack(pack);
+    }
+    Console.WriteLine($"Unregistering \"gtk\" installed workload...");
+    TargetEnvironment.UnregisterInstalledWorkload("gtk");
 });
 
 // TASK TARGETS
