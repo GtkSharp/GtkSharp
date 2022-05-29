@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.Build.NoTargets">
+
+  <Import Project="..\Shared\Common.targets" />
+
+  <PropertyGroup>
+    <Description>GtkSharp SDK. Enabled via the net6.0-gtk TFM.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="**\*.in.*" />
+    <None Update="@(None)" PackagePath="" CopyToOutputDirectory="PreserveNewest" Pack="true" />
+    <None 
+      Include="$(_GtkSharpSourceDirectory)Libs\GtkSharp\GtkSharp.targets" 
+      Link="targets\GtkSharp.targets"
+      CopyToOutputDirectory="PreserveNewest"
+      Pack="true"
+      PackagePath="targets"
+      Visible="false" 
+    />
+  </ItemGroup>
+
+  <Import Project="..\Shared\ReplaceText.targets" />
+
+  <Target Name="_ReplaceSdkText"
+      BeforeTargets="Build;AssignTargetPaths"
+      Inputs="$(MSBuildProjectFile);Sdk\Sdk.in.targets"
+      Outputs="$(IntermediateOutputPath)Sdk.targets">
+    
+    <ReplaceText
+        Input="Sdk\Sdk.in.targets"
+        Output="$(IntermediateOutputPath)Sdk.targets"
+        OldValue="@GTKSHARPVERSION@"
+        NewValue="$(_GtkSharpVersion)"
+    />
+
+    <ReplaceText
+        Input="$(IntermediateOutputPath)Sdk.targets"
+        Output="$(IntermediateOutputPath)Sdk.targets"
+        OldValue="@GTKSHARPNETVERSION@"
+        NewValue="$(_GtkSharpNetVersion)"
+    />
+
+    <ItemGroup>
+      <None
+          Include="$(IntermediateOutputPath)Sdk.targets"
+          Link="Sdk\Sdk.targets"
+          CopyToOutputDirectory="PreserveNewest"
+          Pack="true"
+          PackagePath="Sdk"
+          Visible="false"
+      />
+      <FileWrites Include="$(IntermediateOutputPath)Sdk.targets" />
+    </ItemGroup>
+  
+  </Target>
+
+
+</Project>
