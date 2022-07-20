@@ -74,13 +74,13 @@ namespace GLib {
 		}
 
 		public void Dispose ()
-        {
+		{
 			if (owned && handle != IntPtr.Zero)
 				g_key_file_free (handle);
 
 			handle = IntPtr.Zero;
 			GC.SuppressFinalize (this);
-        }
+		}
 
 		public KeyFile (IntPtr handle) : this (handle, false) {}
 
