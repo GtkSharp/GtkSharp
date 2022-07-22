@@ -25,6 +25,7 @@ namespace Gtk {
 
 	using System;
 	using System.Collections.Generic;
+	using System.Reflection;
 	using System.Runtime.InteropServices;
 
 	public partial class Widget {
@@ -195,6 +196,8 @@ namespace Gtk {
 
 		static void ClassInit (GLib.GType gtype, Type t)
 		{
+			InitCssName(gtype, t);
+
 			object[] attrs = t.GetCustomAttributes (typeof (BindingAttribute), true);
 			if (attrs.Length == 0) return;
 
@@ -227,6 +230,13 @@ namespace Gtk {
 				binding_args.Dispose ();
 			}
 			GLib.Marshaller.Free (native_signame);
+		}
+
+		static void InitCssName (GLib.GType gtype, Type t)
+		{
+			CssNameAttribute attr = t.GetCustomAttribute<CssNameAttribute>(true);
+			if (attr != null)
+				SetCssName (gtype, attr.Name);
 		}
 
 		public object StyleGetProperty (string property_name)
@@ -444,6 +454,30 @@ namespace Gtk {
 			destroyed = true;
 
 			InternalDestroyed -= NativeDestroyHandler;
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_gtk_widget_class_get_css_name(IntPtr widget_class);
+		static d_gtk_widget_class_get_css_name gtk_widget_class_get_css_name = FuncLoader.LoadFunction<d_gtk_widget_class_get_css_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_get_css_name"));
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_gtk_widget_class_set_css_name(IntPtr widget_class, IntPtr name);
+		static d_gtk_widget_class_set_css_name gtk_widget_class_set_css_name = FuncLoader.LoadFunction<d_gtk_widget_class_set_css_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_set_css_name"));
+
+		public static string GetCssName (GLib.GType widget_type)
+		{
+			IntPtr class_ptr = widget_type.GetClassPtr ();
+			IntPtr native_name = gtk_widget_class_get_css_name (class_ptr);
+			string name = GLib.Marshaller.Utf8PtrToString (native_name);
+			return name;
+		}
+
+		protected static void SetCssName (GLib.GType widget_type, string name)
+		{
+			IntPtr class_ptr = widget_type.GetClassPtr ();
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			gtk_widget_class_set_css_name (class_ptr, native_name);
+			GLib.Marshaller.Free (native_name);
 		}
 	}
 }
