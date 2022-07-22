@@ -19,6 +19,7 @@ namespace Gtk {
 
 	public partial class VBox {
 
+		[Obsolete]
 		public VBox () : this (false, 0) {}
 
 	}

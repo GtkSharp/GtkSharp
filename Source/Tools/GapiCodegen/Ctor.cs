@@ -30,12 +30,15 @@ namespace GtkSharp.Generation {
 	public class Ctor : MethodBase  {
 
 		private bool preferred;
+		private bool deprecated;
 		private string name;
-		private bool needs_chaining = false;
+		private bool needs_chaining;
 
 		public Ctor (XmlElement elem, ClassBase implementor) : base (elem, implementor)
 		{
 			preferred = elem.GetAttributeAsBoolean ("preferred");
+			deprecated = elem.GetAttributeAsBoolean("deprecated");
+
 			if (implementor is ObjectGen)
 				needs_chaining = true;
 
@@ -45,6 +48,12 @@ namespace GtkSharp.Generation {
 		public bool Preferred {
 			get { return preferred; }
 			set { preferred = value; }
+		}
+
+		public bool IsDeprecated {
+			get {
+				return deprecated;
+			}
 		}
 
 		public string StaticName {
@@ -101,6 +110,10 @@ namespace GtkSharp.Generation {
 			if (IsStatic)
 				GenerateStatic (gen_info);
 			else {
+
+				if (IsDeprecated)
+					sw.WriteLine("\t\t[Obsolete]");
+
 				sw.WriteLine("\t\t{0} {1}{2} ({3}) {4}", Protection, Safety, name, Signature.ToString(), needs_chaining ? ": base (IntPtr.Zero)" : "");
 				sw.WriteLine("\t\t{");
 

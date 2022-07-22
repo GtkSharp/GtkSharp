@@ -32,6 +32,7 @@ namespace Gtk
 		delegate void d_gtk_radio_action_set_group(IntPtr raw, IntPtr list);
 		static d_gtk_radio_action_set_group gtk_radio_action_set_group = FuncLoader.LoadFunction<d_gtk_radio_action_set_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_action_set_group"));
 
+		[Obsolete]
 		[GLib.Property ("group")]
 		public RadioAction[] Group {
 			get  {
