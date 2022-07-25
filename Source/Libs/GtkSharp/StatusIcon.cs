@@ -87,6 +87,7 @@ namespace Gtk {
 		delegate bool d_gtk_status_icon_get_geometry(IntPtr raw, out IntPtr screen, IntPtr area, out int orientation);
 		static d_gtk_status_icon_get_geometry gtk_status_icon_get_geometry = FuncLoader.LoadFunction<d_gtk_status_icon_get_geometry>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_status_icon_get_geometry"));
 
+		[Obsolete]
 		public bool GetGeometry(out Gdk.Screen screen, out Gdk.Rectangle area, out Gtk.Orientation orientation)
 		{
 			IntPtr native_screen;

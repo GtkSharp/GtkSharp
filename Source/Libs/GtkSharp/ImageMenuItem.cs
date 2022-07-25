@@ -28,6 +28,7 @@ namespace Gtk {
 		delegate IntPtr d_gtk_image_menu_item_new_with_mnemonic(IntPtr label);
 		static d_gtk_image_menu_item_new_with_mnemonic gtk_image_menu_item_new_with_mnemonic = FuncLoader.LoadFunction<d_gtk_image_menu_item_new_with_mnemonic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_menu_item_new_with_mnemonic"));
 
+		[Obsolete]
 		public ImageMenuItem (string label) : base (IntPtr.Zero)
 		{
 			if (GetType() != typeof (ImageMenuItem)) {
