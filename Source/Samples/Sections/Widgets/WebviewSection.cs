@@ -52,6 +52,7 @@ namespace Samples
 				Hexpand = true,
 			};
 
+			webView.Settings.EnableJavascript = true;
 			webView.LoadUri("https://github.com/GtkSharp/GtkSharp#readme");
 			webView.LoadChanged += (s, e) => {
 				ApplicationOutput.WriteLine(s, $"{e.LoadEvent}");
@@ -63,13 +64,15 @@ namespace Samples
 								return;
 
 							try {
-								var js_result = view.RunJavascriptFinish(res);
+								JavascriptResult js_result = view.RunJavascriptFinish(res);
 
+								if (!js_result.Equals(JavascriptResult.Zero)) { // this is always false
+			
+								}
 								if (js_result.JsValue != null) {
-									;
+									var r = js_result.JsValue;
 								}
 
-								var r = js_result.JsValue;
 							} catch (Exception exception) {
 								ApplicationOutput.WriteLine(s, $"{e.LoadEvent}:\t{nameof(webView.RunJavascriptFinish)} throws {exception.Message}:{exception.StackTrace}");
 							}
