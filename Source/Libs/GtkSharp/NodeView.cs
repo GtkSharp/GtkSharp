@@ -83,7 +83,7 @@ namespace Gtk {
 		}
 		
 		public Gdk.Rectangle GetCellArea (ITreeNode node, Gtk.TreeViewColumn column) {
-			return GetBackgroundArea (store.GetPath (node), column);
+			return GetCellArea (store.GetPath (node), column);
 		}
 		
 		public ITreeNode GetNodeAtPos (int x, int y) {
