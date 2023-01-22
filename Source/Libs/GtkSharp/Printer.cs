@@ -30,20 +30,13 @@ namespace Gtk {
 
 		public static void EnumeratePrinters (Gtk.PrinterFunc func, bool wait) 
 		{
-			GtkSharp.PrinterFuncWrapper func_wrapper;
-			IntPtr func_data;
-			GLib.DestroyNotify destroy;
-			if (func == null) {
-				func_wrapper = null;
-				func_data = IntPtr.Zero;
-				destroy = null;
-			} else {
-				func_wrapper = new GtkSharp.PrinterFuncWrapper (func);
-				func_data = (IntPtr) GCHandle.Alloc (func_wrapper);
-				destroy = GLib.DestroyHelper.NotifyHandler;
-			}
+			if (func == null)
+				return;
+
+			GtkSharp.PrinterFuncWrapper func_wrapper = new GtkSharp.PrinterFuncWrapper (func);
+			IntPtr func_data = (IntPtr) GCHandle.Alloc (func_wrapper);
+			GLib.DestroyNotify destroy = GLib.DestroyHelper.NotifyHandler;
 			gtk_enumerate_printers (func_wrapper.NativeDelegate, func_data, destroy, wait);
 		}
 	}
 }
-
