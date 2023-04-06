@@ -3,7 +3,9 @@
 //
 // Authors: Rachel Hestilow <hestilow@ximian.com>,
 //          Brad Taylor <brad@getcoded.net>
+//          Marcel Tiede
 //
+// Copyright (C) 2019 Marcel Tiede
 // Copyright (C) 2007 Brad Taylor
 // Copyright (C) 2002 Rachel Hestilow 
 //
@@ -35,6 +37,22 @@ namespace Gtk {
 			get { return Window; }
 			set { Window = value; }
 		}
+
+		struct TemplateData
+		{
+			public Dictionary<FieldInfo, string> FieldBindings;
+			public SignalConnector SignalConnector;
+			public bool ThrowOnUnknownChild;
+
+			public static TemplateData Create()
+			{
+				var res = new TemplateData();
+				res.FieldBindings = new Dictionary<FieldInfo, string>();
+				return res;
+			}
+		}
+
+		private static Dictionary<Type, TemplateData> Templates = new Dictionary<Type, TemplateData>();
 
 		public void AddAccelerator (string accel_signal, AccelGroup accel_group, AccelKey accel_key)
 		{
@@ -196,8 +214,13 @@ namespace Gtk {
 
 		static void ClassInit (GLib.GType gtype, Type t)
 		{
-			InitCssName(gtype, t);
+			InitBindings (gtype, t);
+			InitTemplateForType (gtype, t);
+			InitCssName (gtype, t);
+		}
 
+		static void InitBindings (GLib.GType gtype, Type t)
+		{
 			object[] attrs = t.GetCustomAttributes (typeof (BindingAttribute), true);
 			if (attrs.Length == 0) return;
 
@@ -232,11 +255,102 @@ namespace Gtk {
 			GLib.Marshaller.Free (native_signame);
 		}
 
+		static void InitTemplateForType (GLib.GType gtype, Type type)
+		{
+			var attr = type.GetCustomAttribute<TemplateAttribute> (true);
+			if (attr == null) return;
+
+			var data = TemplateData.Create ();
+			data.ThrowOnUnknownChild = attr.ThrowOnUnknownChild;
+			var resource_name = attr.Ui;
+			var resource_stream = type.Assembly.GetManifestResourceStream (resource_name);
+
+			if (resource_stream == null)
+				throw new Exception ("Template resource '" + resource_name + "' not found");
+
+			SetTemplateFromStream (gtype, resource_stream);
+			BindTemplateChildren (gtype, type, data.FieldBindings);
+			
+			data.SignalConnector = new SignalConnector (type);
+			data.SignalConnector.ConnectSignals (gtype);
+			Templates[type] = data;
+		}
+
+		delegate IntPtr d_gtk_widget_class_set_template(IntPtr class_ptr, IntPtr template_bytes);
+		static d_gtk_widget_class_set_template gtk_widget_class_set_template = FuncLoader.LoadFunction<d_gtk_widget_class_set_template>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_set_template"));
+
+		static void SetTemplateFromStream (GLib.GType gtype, System.IO.Stream resource)
+		{
+			var buffer = new byte[(int)resource.Length];
+			resource.Read (buffer, 0, buffer.Length);
+			resource.Dispose ();
+
+			var bytes = new GLib.Bytes (buffer);
+			gtk_widget_class_set_template (gtype.GetClassPtr (), bytes.Handle);
+			bytes.Dispose ();
+		}
+
+		delegate IntPtr d_gtk_widget_class_bind_template_child_full(IntPtr class_ptr, IntPtr name, bool internal_child, IntPtr struct_offset);
+		static d_gtk_widget_class_bind_template_child_full gtk_widget_class_bind_template_child_full = FuncLoader.LoadFunction<d_gtk_widget_class_bind_template_child_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_bind_template_child_full"));
+
+		static void BindTemplateChildren (GLib.GType gtype, Type type, Dictionary<FieldInfo, string> fields)
+		{
+			const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.Instance;
+
+			foreach (var field in type.GetFields (flags))
+			{
+				var attr = field.GetCustomAttribute<ChildAttribute> (true);
+
+				if (attr == null)
+					continue;
+
+				var name = attr.Name ?? field.Name;
+
+				var native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+				gtk_widget_class_bind_template_child_full (gtype.GetClassPtr (), native_name, attr.Internal, new IntPtr ((long)0));
+				GLib.Marshaller.Free (native_name);
+
+				fields[field] = name;
+			}
+		}
+
 		static void InitCssName (GLib.GType gtype, Type t)
 		{
 			CssNameAttribute attr = t.GetCustomAttribute<CssNameAttribute>(true);
 			if (attr != null)
 				SetCssName (gtype, attr.Name);
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_gtk_widget_init_template(IntPtr raw);
+		static d_gtk_widget_init_template gtk_widget_init_template = FuncLoader.LoadFunction<d_gtk_widget_init_template>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_init_template"));
+
+		void InitTemplateForInstance ()
+		{
+			var type = GetType ();
+			if (Templates.TryGetValue(type, out TemplateData data))
+			{
+				GLib.GType gtype = LookupGType (type);
+				data.SignalConnector.template_object_instance = this;
+				gtk_widget_init_template (Handle);
+				data.SignalConnector.template_object_instance = null;
+				foreach (KeyValuePair<FieldInfo, string> pair in data.FieldBindings)
+				{
+					FieldInfo field = pair.Key;
+					string name = pair.Value;
+					GLib.Object child = GetTemplateChild (gtype, name);
+					
+					if (child != null)
+					{
+						const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.Instance;
+						field.SetValue (this, child, flags, null, null);
+					}
+					else if (data.ThrowOnUnknownChild)
+					{
+						throw new Exception ("Unknown child in template for type '" + type + "'");
+					}
+				}
+			}
 		}
 
 		public object StyleGetProperty (string property_name)
@@ -396,6 +510,7 @@ namespace Gtk {
 		protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
 			base.CreateNativeObject (names, vals);
+			InitTemplateForInstance ();
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
