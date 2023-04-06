@@ -73,7 +73,7 @@ namespace Gdk {
 		{
 			IntPtr raw_ret = gdk_display_list_devices (Handle);
 			if (raw_ret == IntPtr.Zero)
-				return new Device [0];
+				return Array.Empty<Device> ();
 			GLib.List list = new GLib.List(raw_ret);
 			Device[] result = new Device [list.Count];
 			for (int i = 0; i < list.Count; i++)

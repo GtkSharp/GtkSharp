@@ -262,7 +262,7 @@ namespace Gdk {
 			get {
 				IntPtr list_ptr = gdk_pixbuf_get_formats ();
 				if (list_ptr == IntPtr.Zero)
-					return new PixbufFormat [0];
+					return Array.Empty<PixbufFormat> ();
 				GLib.SList list = new GLib.SList (list_ptr, typeof (PixbufFormat));
 				PixbufFormat[] result = new PixbufFormat [list.Count];
 				for (int i = 0; i < list.Count; i++)
@@ -310,7 +310,7 @@ namespace Gdk {
 
 		public unsafe byte[] SaveToBuffer (string type)
 		{
-			return SaveToBuffer (type, new string [0], new string [0]);
+			return SaveToBuffer (type, Array.Empty<string> (), Array.Empty<string> ());
 		}
 
 		public unsafe byte[] SaveToBuffer (string type, string[] option_keys, string[] option_values) 
@@ -339,7 +339,7 @@ namespace Gdk {
 
 		public unsafe void SaveToCallback (PixbufSaveFunc save_func, string type)
 		{
-			SaveToCallback (save_func, type, new string [0], new string [0]);
+			SaveToCallback (save_func, type, Array.Empty<string> (), Array.Empty<string> ());
 		}
 
 		public unsafe void SaveToCallback (PixbufSaveFunc save_func, string type, string[] option_keys, string[] option_values) 

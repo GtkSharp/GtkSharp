@@ -56,7 +56,7 @@ namespace Gdk {
 			get {
 				IntPtr raw_ret = gdk_window_get_children(Handle);
 				if (raw_ret == IntPtr.Zero)
-					return new Window [0];
+					return Array.Empty<Window> ();
 				GLib.List list = new GLib.List(raw_ret);
 				Window[] result = new Window [list.Count];
 				for (int i = 0; i < list.Count; i++)
