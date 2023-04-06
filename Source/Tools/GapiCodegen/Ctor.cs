@@ -77,7 +77,7 @@ namespace GtkSharp.Generation {
 		{
             sw.WriteLine("\t\t[UnmanagedFunctionPointer (CallingConvention.Cdecl)]");
             sw.WriteLine("\t\tdelegate IntPtr d_{0}({1});", CName, Parameters.ImportSignature);
-            sw.WriteLine("\t\tstatic d_{0} {0} = FuncLoader.LoadFunction<d_{0}>(FuncLoader.GetProcAddress(GLibrary.Load({1}), \"{0}\"));", CName, LibraryName);
+            sw.WriteLine("\t\tstatic readonly d_{0} {0} = FuncLoader.LoadFunction<d_{0}>(FuncLoader.GetProcAddress(GLibrary.Load({1}), \"{0}\"));", CName, LibraryName);
             sw.WriteLine();
 		}
 
