@@ -51,8 +51,6 @@ namespace Gtk
             public uint param_id;
         };
 
-        protected Container() : base() { }
-
         public GLib.Value ChildGetProperty(Gtk.Widget child, string property_name)
         {
             IntPtr native_property_name = GLib.Marshaller.StringToPtrGStrdup(property_name);

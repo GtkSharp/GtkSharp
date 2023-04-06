@@ -321,11 +321,6 @@ namespace Gtk {
 				SetCssName (gtype, attr.Name);
 		}
 
-		protected Widget () : base (IntPtr.Zero)
-		{
-			CreateNativeObject (Array.Empty<string> (), Array.Empty<GLib.Value> ());
-		}
-
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_widget_init_template(IntPtr raw);
 		static d_gtk_widget_init_template gtk_widget_init_template = FuncLoader.LoadFunction<d_gtk_widget_init_template>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_init_template"));
