@@ -32,7 +32,7 @@ namespace Gtk {
 			get {
 				IntPtr raw_ret = gtk_text_child_anchor_get_widgets (Handle);
 				if (raw_ret == IntPtr.Zero)
-					return new Widget [0];
+					return Array.Empty<Widget> ();
 				GLib.List list = new GLib.List(raw_ret);
 				Widget[] result = new Widget [list.Count];
 				for (int i = 0; i < list.Count; i++)
