@@ -75,7 +75,6 @@ namespace Gdk {
 			get { return GLib.Opaque.GetOpaque (Native.target, typeof (Atom), false) as Atom; }
 			set {
 				NativeStruct native = Native;
-				native.target = value.Handle;
 				native.target = value == null ? IntPtr.Zero : value.Handle;
 				Marshal.StructureToPtr (native, Handle, false);
 			}
