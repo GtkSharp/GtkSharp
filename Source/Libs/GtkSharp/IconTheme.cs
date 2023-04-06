@@ -93,9 +93,9 @@ namespace Gtk {
 					native_path = GLib.Marshaller.StringArrayToNullTermPointer (value);
 
 				if (IsWindowsPlatform)
-					gtk_icon_theme_set_search_path_utf8 (Handle, native_path, value.Length);
+					gtk_icon_theme_set_search_path_utf8 (Handle, native_path, value != null ? value.Length : 0);
 				else
-					gtk_icon_theme_set_search_path (Handle, native_path, value.Length);
+					gtk_icon_theme_set_search_path (Handle, native_path, value != null ? value.Length : 0);
 
 				GLib.Marshaller.Free (native_path);
 			}

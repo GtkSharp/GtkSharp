@@ -185,14 +185,12 @@ namespace GLib {
 
 		public uint AddWatch (int priority, IOCondition condition, IOFunc func) 
 		{
-			IOFuncWrapper func_wrapper = null;
-			IntPtr user_data = IntPtr.Zero;
-			DestroyNotify notify = null;
-			if (func != null) {
-				func_wrapper = new IOFuncWrapper (func);
-				user_data = (IntPtr) GCHandle.Alloc (func_wrapper);
-				notify = DestroyHelper.NotifyHandler;
-			}
+			if (func == null)
+				return 0;
+
+			IOFuncWrapper func_wrapper = new IOFuncWrapper (func);
+			IntPtr user_data = (IntPtr) GCHandle.Alloc (func_wrapper);
+			DestroyNotify notify = DestroyHelper.NotifyHandler;
 			return g_io_add_watch_full (Handle, priority, (int) condition, func_wrapper.NativeDelegate, user_data, notify);
 		}
 
