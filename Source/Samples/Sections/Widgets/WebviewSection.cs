@@ -10,6 +10,8 @@ using Atk;
 using Gdk;
 using Gtk;
 using WebKit;
+using IAsyncResult = GLib.IAsyncResult;
+using Object = GLib.Object;
 
 namespace Samples
 {
@@ -38,9 +40,51 @@ namespace Samples
 				Hexpand = true
 			};
 
-			webView.LoadHtml($"<span id='sometext'>This is a <b>{nameof(WebView)}</b> showing html text</span>");
+			var ucm = webView.UserContentManager;
 
+			if (false) {
+				var script = UserScript.New(
+					source: "function testFunc() { return 'Success' }",
+					UserContentInjectedFrames.AllFrames,
+					UserScriptInjectionTime.End, new string[0], new string [0]);
 
+				// this crashes:
+				ucm.AddScript(script);
+			}
+
+			void HandleJavaScriptResult(Object o, IAsyncResult res)
+			{
+				if (o is not WebView view) return;
+
+				try {
+					JavascriptResult js_result = view.RunJavascriptFinish(res);
+
+					if (js_result.JsValue != null) {
+						var r = js_result.JsValue;
+					}
+
+				} catch (Exception exception) {
+					ApplicationOutput.WriteLine($"{nameof(webView.RunJavascriptFinish)} throws:\n {exception.Message}");
+				}
+			}
+
+			webView.LoadHtml($"<!DOCTYPE html>" +
+			                 "<script>function testFunc() { return 'Success' }</script>" +
+			                 $"<html><span id='sometext'>This is a <b>{nameof(WebView)}</b> showing html text</span>" +
+			                 $"</html>");
+
+			webView.LoadChanged += (s, e) => {
+				ApplicationOutput.WriteLine(s, $"{e.LoadEvent}");
+
+				if (e.LoadEvent != LoadEvent.Finished)
+					return;
+
+				if (JavaScriptCore.Global.IsSupported) {
+					webView.RunJavascript("testFunc()", null, HandleJavaScriptResult);
+					// alert('Hello') : works, shows alert box
+					// document.getElementById(\"sometext\") : throws exception
+				}
+			};
 
 			return ($"{nameof(WebView)} show html text:", webView);
 		}
@@ -54,32 +98,7 @@ namespace Samples
 
 			webView.Settings.EnableJavascript = true;
 			webView.LoadUri("https://github.com/GtkSharp/GtkSharp#readme");
-			webView.LoadChanged += (s, e) => {
-				ApplicationOutput.WriteLine(s, $"{e.LoadEvent}");
 
-				if (JavaScriptCore.Global.IsSupported) {
-					webView.RunJavascript("window.document.getElementById('sometext')", null,
-						(o, res) => {
-							if (o is not WebView view)
-								return;
-
-							try {
-								JavascriptResult js_result = view.RunJavascriptFinish(res);
-
-								if (!js_result.Equals(JavascriptResult.Zero)) { // this is always false
-			
-								}
-								if (js_result.JsValue != null) {
-									var r = js_result.JsValue;
-								}
-
-							} catch (Exception exception) {
-								ApplicationOutput.WriteLine(s, $"{e.LoadEvent}:\t{nameof(webView.RunJavascriptFinish)} throws {exception.Message}:{exception.StackTrace}");
-							}
-						}
-					);
-				}
-			};
 			return ($"{nameof(WebView)} show uri:", webView);
 		}
 
