@@ -26,6 +26,7 @@ namespace Gtk {
 
 	public partial class UIManager {
 
+		[Obsolete]
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		public uint AddUiFromResource (string resource)
 		{
@@ -42,6 +43,7 @@ namespace Gtk {
 		delegate uint d_gtk_ui_manager_new_merge_id(IntPtr raw);
 		static d_gtk_ui_manager_new_merge_id gtk_ui_manager_new_merge_id = FuncLoader.LoadFunction<d_gtk_ui_manager_new_merge_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_new_merge_id"));
 
+		[Obsolete]
 		public uint NewMergeId ()
 		{
 			return gtk_ui_manager_new_merge_id (Handle);
@@ -50,10 +52,11 @@ namespace Gtk {
 		delegate IntPtr d_gtk_ui_manager_get_toplevels(IntPtr raw, int types);
 		static d_gtk_ui_manager_get_toplevels gtk_ui_manager_get_toplevels = FuncLoader.LoadFunction<d_gtk_ui_manager_get_toplevels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_toplevels"));
 
+		[Obsolete]
 		public Widget[] GetToplevels (Gtk.UIManagerItemType types) {
 			IntPtr raw_ret = gtk_ui_manager_get_toplevels (Handle, (int) types);
 			GLib.SList list = new GLib.SList (raw_ret);
- 			Widget[] result = new Widget [list.Count];
+			Widget[] result = new Widget [list.Count];
 			for (int i = 0; i < list.Count; i++)
 				result [i] = list [i] as Widget;
 
@@ -63,11 +66,12 @@ namespace Gtk {
 		delegate IntPtr d_gtk_ui_manager_get_action_groups(IntPtr raw);
 		static d_gtk_ui_manager_get_action_groups gtk_ui_manager_get_action_groups = FuncLoader.LoadFunction<d_gtk_ui_manager_get_action_groups>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_ui_manager_get_action_groups"));
 
+		[Obsolete]
 		public ActionGroup[] ActionGroups { 
 			get {
 				IntPtr raw_ret = gtk_ui_manager_get_action_groups (Handle);
 				GLib.List list = new GLib.List(raw_ret);
- 				ActionGroup[] result = new ActionGroup [list.Count];
+				ActionGroup[] result = new ActionGroup [list.Count];
 				for (int i = 0; i < list.Count; i++)
 					result [i] = list [i] as ActionGroup;
 

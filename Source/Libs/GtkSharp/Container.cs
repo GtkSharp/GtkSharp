@@ -80,7 +80,7 @@ namespace Gtk
 
         class ChildAccumulator
         {
-            public ArrayList Children = new ArrayList();
+            public System.Collections.Generic.List<Widget> Children = new System.Collections.Generic.List<Widget>();
 
             public void Add(Gtk.Widget widget)
             {
@@ -97,12 +97,12 @@ namespace Gtk
                 return acc.Children;
             }
         }
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate bool d_gtk_container_get_focus_chain(IntPtr raw, out IntPtr list_ptr);
-		static d_gtk_container_get_focus_chain gtk_container_get_focus_chain = FuncLoader.LoadFunction<d_gtk_container_get_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_get_focus_chain"));
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_container_set_focus_chain(IntPtr raw, IntPtr list_ptr);
-		static d_gtk_container_set_focus_chain gtk_container_set_focus_chain = FuncLoader.LoadFunction<d_gtk_container_set_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_set_focus_chain"));
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        delegate bool d_gtk_container_get_focus_chain(IntPtr raw, out IntPtr list_ptr);
+        static d_gtk_container_get_focus_chain gtk_container_get_focus_chain = FuncLoader.LoadFunction<d_gtk_container_get_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_get_focus_chain"));
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        delegate void d_gtk_container_set_focus_chain(IntPtr raw, IntPtr list_ptr);
+        static d_gtk_container_set_focus_chain gtk_container_set_focus_chain = FuncLoader.LoadFunction<d_gtk_container_set_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_set_focus_chain"));
 
         public Widget[] FocusChain
         {

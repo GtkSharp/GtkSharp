@@ -737,13 +737,13 @@ namespace Cairo {
 		[Obsolete("Use UserToDeviceDistance instead")]
 		public void TransformDistance (ref double dx, ref double dy)
 		{
-			UserToDevice (ref dx, ref dy);
+			UserToDeviceDistance (ref dx, ref dy);
 		}
 
 		[Obsolete("Use DeviceToUser instead")]
 		public void InverseTransformPoint (ref double x, ref double y)
 		{
-			UserToDevice (ref x, ref y);
+			DeviceToUser (ref x, ref y);
 		}
 
 		[Obsolete("Use DeviceToUserDistance instead")]

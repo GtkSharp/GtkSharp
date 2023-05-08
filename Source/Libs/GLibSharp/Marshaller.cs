@@ -48,15 +48,14 @@ namespace GLib {
 				g_free (ptrs [i]);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_g_filename_to_utf8(IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
+		delegate IntPtr d_g_filename_to_utf8(IntPtr mem, IntPtr len, IntPtr read, out IntPtr written, out IntPtr error);
 		static d_g_filename_to_utf8 g_filename_to_utf8 = FuncLoader.LoadFunction<d_g_filename_to_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_filename_to_utf8"));
 		
 		public static string FilenamePtrToString (IntPtr ptr) 
 		{
 			if (ptr == IntPtr.Zero) return null;
 			
-			IntPtr dummy, error;
-			IntPtr utf8 = g_filename_to_utf8 (ptr, -1, IntPtr.Zero, out dummy, out error);
+			IntPtr utf8 = g_filename_to_utf8 (ptr, (IntPtr)(-1), IntPtr.Zero, out _, out var error);
 
 			if (error != IntPtr.Zero)
 				throw new GLib.GException (error);
@@ -117,7 +116,7 @@ namespace GLib {
 			return ret;
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_g_filename_from_utf8(IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
+		delegate IntPtr d_g_filename_from_utf8(IntPtr mem, IntPtr len, IntPtr read, out IntPtr written, out IntPtr error);
 		static d_g_filename_from_utf8 g_filename_from_utf8 = FuncLoader.LoadFunction<d_g_filename_from_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_filename_from_utf8"));
 
 		public static IntPtr StringToFilenamePtr (string str) 
@@ -125,9 +124,8 @@ namespace GLib {
 			if (str == null)
 				return IntPtr.Zero;
 
-			IntPtr dummy, error;
 			IntPtr utf8 = StringToPtrGStrdup (str);
-			IntPtr result = g_filename_from_utf8 (utf8, -1, IntPtr.Zero, out dummy, out error);
+			IntPtr result = g_filename_from_utf8 (utf8, (IntPtr)(-1), IntPtr.Zero, out _, out var error);
 
 			g_free (utf8);
 			if (error != IntPtr.Zero)

@@ -41,7 +41,7 @@ namespace GLib {
 		KeepTranslations = 1 << 1,
 	}
 
-	public class KeyFile {
+	public class KeyFile : IDisposable {
 
 		IntPtr handle;
 		bool owned;
@@ -65,8 +65,21 @@ namespace GLib {
 		{
 			if (!owned)
 				return;
+
+			if (handle == IntPtr.Zero)
+				return;
+
 			FinalizerInfo info = new FinalizerInfo (Handle);
 			Timeout.Add (50, new TimeoutHandler (info.Handler));
+		}
+
+		public void Dispose ()
+		{
+			if (owned && handle != IntPtr.Zero)
+				g_key_file_free (handle);
+
+			handle = IntPtr.Zero;
+			GC.SuppressFinalize (this);
 		}
 
 		public KeyFile (IntPtr handle) : this (handle, false) {}
@@ -177,6 +190,30 @@ namespace GLib {
 			IntPtr native_group_name = Marshaller.StringToPtrGStrdup (group_name);
 			IntPtr native_key = Marshaller.StringToPtrGStrdup (key);
 			int ret = g_key_file_get_integer (Handle, native_group_name, native_key, out error);
+			Marshaller.Free (native_group_name);
+			Marshaller.Free (native_key);
+			if (error != IntPtr.Zero) throw new GException (error);
+			return ret;
+		}
+
+		public long GetInt64 (string group_name, string key)
+		{
+			IntPtr error;
+			IntPtr native_group_name = Marshaller.StringToPtrGStrdup (group_name);
+			IntPtr native_key = Marshaller.StringToPtrGStrdup (key);
+			long ret = g_key_file_get_int64 (Handle, native_group_name, native_key, out error);
+			Marshaller.Free (native_group_name);
+			Marshaller.Free (native_key);
+			if (error != IntPtr.Zero) throw new GException (error);
+			return ret;
+		}
+
+		public ulong GetUInt64 (string group_name, string key)
+		{
+			IntPtr error;
+			IntPtr native_group_name = Marshaller.StringToPtrGStrdup (group_name);
+			IntPtr native_key = Marshaller.StringToPtrGStrdup (key);
+			ulong ret = g_key_file_get_uint64 (Handle, native_group_name, native_key, out error);
 			Marshaller.Free (native_group_name);
 			Marshaller.Free (native_key);
 			if (error != IntPtr.Zero) throw new GException (error);
@@ -445,6 +482,24 @@ namespace GLib {
 			Marshaller.Free (native_key);
 		}
 
+		public void SetInt64 (string group_name, string key, long value)
+		{
+			IntPtr native_group_name = Marshaller.StringToPtrGStrdup (group_name);
+			IntPtr native_key = Marshaller.StringToPtrGStrdup (key);
+			g_key_file_set_int64 (Handle, native_group_name, native_key, value);
+			Marshaller.Free (native_group_name);
+			Marshaller.Free (native_key);
+		}
+
+		public void SetUInt64 (string group_name, string key, ulong value)
+		{
+			IntPtr native_group_name = Marshaller.StringToPtrGStrdup (group_name);
+			IntPtr native_key = Marshaller.StringToPtrGStrdup (key);
+			g_key_file_set_uint64 (Handle, native_group_name, native_key, value);
+			Marshaller.Free (native_group_name);
+			Marshaller.Free (native_key);
+		}
+
 		public void SetIntegerList (string group_name, string key, int[] list)
 		{
 			if (list == null)
@@ -540,125 +595,135 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_free(IntPtr raw);
-		static d_g_key_file_free g_key_file_free = FuncLoader.LoadFunction<d_g_key_file_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_free"));
+		static d_g_key_file_free g_key_file_free = FuncLoader.LoadFunction<d_g_key_file_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_free"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_get_boolean(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
-		static d_g_key_file_get_boolean g_key_file_get_boolean = FuncLoader.LoadFunction<d_g_key_file_get_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_boolean"));
+		static d_g_key_file_get_boolean g_key_file_get_boolean = FuncLoader.LoadFunction<d_g_key_file_get_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_boolean"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_boolean_list(IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
-		static d_g_key_file_get_boolean_list g_key_file_get_boolean_list = FuncLoader.LoadFunction<d_g_key_file_get_boolean_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_boolean_list"));
+		static d_g_key_file_get_boolean_list g_key_file_get_boolean_list = FuncLoader.LoadFunction<d_g_key_file_get_boolean_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_boolean_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_comment(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
-		static d_g_key_file_get_comment g_key_file_get_comment = FuncLoader.LoadFunction<d_g_key_file_get_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_comment"));
+		static d_g_key_file_get_comment g_key_file_get_comment = FuncLoader.LoadFunction<d_g_key_file_get_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_comment"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate double d_g_key_file_get_double(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
-		static d_g_key_file_get_double g_key_file_get_double = FuncLoader.LoadFunction<d_g_key_file_get_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_double"));
+		static d_g_key_file_get_double g_key_file_get_double = FuncLoader.LoadFunction<d_g_key_file_get_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_double"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_double_list(IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
-		static d_g_key_file_get_double_list g_key_file_get_double_list = FuncLoader.LoadFunction<d_g_key_file_get_double_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_double_list"));
+		static d_g_key_file_get_double_list g_key_file_get_double_list = FuncLoader.LoadFunction<d_g_key_file_get_double_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_double_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_groups(IntPtr raw, IntPtr dummy);
-		static d_g_key_file_get_groups g_key_file_get_groups = FuncLoader.LoadFunction<d_g_key_file_get_groups>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_groups"));
+		static d_g_key_file_get_groups g_key_file_get_groups = FuncLoader.LoadFunction<d_g_key_file_get_groups>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_groups"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_key_file_get_integer(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
-		static d_g_key_file_get_integer g_key_file_get_integer = FuncLoader.LoadFunction<d_g_key_file_get_integer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_integer"));
+		static d_g_key_file_get_integer g_key_file_get_integer = FuncLoader.LoadFunction<d_g_key_file_get_integer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_integer"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_integer_list(IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
-		static d_g_key_file_get_integer_list g_key_file_get_integer_list = FuncLoader.LoadFunction<d_g_key_file_get_integer_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_integer_list"));
+		static d_g_key_file_get_integer_list g_key_file_get_integer_list = FuncLoader.LoadFunction<d_g_key_file_get_integer_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_integer_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_keys(IntPtr raw, IntPtr group_name, IntPtr dummy, out IntPtr error);
-		static d_g_key_file_get_keys g_key_file_get_keys = FuncLoader.LoadFunction<d_g_key_file_get_keys>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_keys"));
+		static d_g_key_file_get_keys g_key_file_get_keys = FuncLoader.LoadFunction<d_g_key_file_get_keys>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_keys"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_locale_string(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, out IntPtr error);
-		static d_g_key_file_get_locale_string g_key_file_get_locale_string = FuncLoader.LoadFunction<d_g_key_file_get_locale_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_locale_string"));
+		static d_g_key_file_get_locale_string g_key_file_get_locale_string = FuncLoader.LoadFunction<d_g_key_file_get_locale_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_locale_string"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_locale_string_list(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr dummy, out IntPtr error);
-		static d_g_key_file_get_locale_string_list g_key_file_get_locale_string_list = FuncLoader.LoadFunction<d_g_key_file_get_locale_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_locale_string_list"));
+		static d_g_key_file_get_locale_string_list g_key_file_get_locale_string_list = FuncLoader.LoadFunction<d_g_key_file_get_locale_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_locale_string_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_start_group(IntPtr raw);
-		static d_g_key_file_get_start_group g_key_file_get_start_group = FuncLoader.LoadFunction<d_g_key_file_get_start_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_start_group"));
+		static d_g_key_file_get_start_group g_key_file_get_start_group = FuncLoader.LoadFunction<d_g_key_file_get_start_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_start_group"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_string(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
-		static d_g_key_file_get_string g_key_file_get_string = FuncLoader.LoadFunction<d_g_key_file_get_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_string"));
+		static d_g_key_file_get_string g_key_file_get_string = FuncLoader.LoadFunction<d_g_key_file_get_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_string"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_string_list(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr dummy, out IntPtr error);
-		static d_g_key_file_get_string_list g_key_file_get_string_list = FuncLoader.LoadFunction<d_g_key_file_get_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_string_list"));
+		static d_g_key_file_get_string_list g_key_file_get_string_list = FuncLoader.LoadFunction<d_g_key_file_get_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_string_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_get_value(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
-		static d_g_key_file_get_value g_key_file_get_value = FuncLoader.LoadFunction<d_g_key_file_get_value>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_get_value"));
+		static d_g_key_file_get_value g_key_file_get_value = FuncLoader.LoadFunction<d_g_key_file_get_value>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_value"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_has_group(IntPtr raw, IntPtr group_name);
-		static d_g_key_file_has_group g_key_file_has_group = FuncLoader.LoadFunction<d_g_key_file_has_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_has_group"));
+		static d_g_key_file_has_group g_key_file_has_group = FuncLoader.LoadFunction<d_g_key_file_has_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_has_group"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_has_key(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
-		static d_g_key_file_has_key g_key_file_has_key = FuncLoader.LoadFunction<d_g_key_file_has_key>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_has_key"));
+		static d_g_key_file_has_key g_key_file_has_key = FuncLoader.LoadFunction<d_g_key_file_has_key>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_has_key"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_load_from_data(IntPtr raw, byte[] data, UIntPtr length, int flags, out IntPtr error);
-		static d_g_key_file_load_from_data g_key_file_load_from_data = FuncLoader.LoadFunction<d_g_key_file_load_from_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_load_from_data"));
+		static d_g_key_file_load_from_data g_key_file_load_from_data = FuncLoader.LoadFunction<d_g_key_file_load_from_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_load_from_data"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_load_from_data_dirs(IntPtr raw, IntPtr file, out IntPtr full_path, int flags, out IntPtr error);
-		static d_g_key_file_load_from_data_dirs g_key_file_load_from_data_dirs = FuncLoader.LoadFunction<d_g_key_file_load_from_data_dirs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_load_from_data_dirs"));
+		static d_g_key_file_load_from_data_dirs g_key_file_load_from_data_dirs = FuncLoader.LoadFunction<d_g_key_file_load_from_data_dirs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_load_from_data_dirs"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_load_from_dirs(IntPtr raw, IntPtr file, IntPtr search_dirs, out IntPtr full_path, int flags, out IntPtr error);
-		static d_g_key_file_load_from_dirs g_key_file_load_from_dirs = FuncLoader.LoadFunction<d_g_key_file_load_from_dirs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_load_from_dirs"));
+		static d_g_key_file_load_from_dirs g_key_file_load_from_dirs = FuncLoader.LoadFunction<d_g_key_file_load_from_dirs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_load_from_dirs"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_load_from_file(IntPtr raw, IntPtr file, int flags, out IntPtr error);
-		static d_g_key_file_load_from_file g_key_file_load_from_file = FuncLoader.LoadFunction<d_g_key_file_load_from_file>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_load_from_file"));
+		static d_g_key_file_load_from_file g_key_file_load_from_file = FuncLoader.LoadFunction<d_g_key_file_load_from_file>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_load_from_file"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_new();
-		static d_g_key_file_new g_key_file_new = FuncLoader.LoadFunction<d_g_key_file_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_new"));
+		static d_g_key_file_new g_key_file_new = FuncLoader.LoadFunction<d_g_key_file_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_new"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_remove_comment(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
-		static d_g_key_file_remove_comment g_key_file_remove_comment = FuncLoader.LoadFunction<d_g_key_file_remove_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_remove_comment"));
+		static d_g_key_file_remove_comment g_key_file_remove_comment = FuncLoader.LoadFunction<d_g_key_file_remove_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_remove_comment"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_remove_group(IntPtr raw, IntPtr group_name, out IntPtr error);
-		static d_g_key_file_remove_group g_key_file_remove_group = FuncLoader.LoadFunction<d_g_key_file_remove_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_remove_group"));
+		static d_g_key_file_remove_group g_key_file_remove_group = FuncLoader.LoadFunction<d_g_key_file_remove_group>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_remove_group"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_remove_key(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
-		static d_g_key_file_remove_key g_key_file_remove_key = FuncLoader.LoadFunction<d_g_key_file_remove_key>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_remove_key"));
+		static d_g_key_file_remove_key g_key_file_remove_key = FuncLoader.LoadFunction<d_g_key_file_remove_key>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_remove_key"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_boolean(IntPtr raw, IntPtr group_name, IntPtr key, bool value);
-		static d_g_key_file_set_boolean g_key_file_set_boolean = FuncLoader.LoadFunction<d_g_key_file_set_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_boolean"));
+		static d_g_key_file_set_boolean g_key_file_set_boolean = FuncLoader.LoadFunction<d_g_key_file_set_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_boolean"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_boolean_list(IntPtr raw, IntPtr group_name, IntPtr key, bool[] list, UIntPtr n_list);
-		static d_g_key_file_set_boolean_list g_key_file_set_boolean_list = FuncLoader.LoadFunction<d_g_key_file_set_boolean_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_boolean_list"));
+		static d_g_key_file_set_boolean_list g_key_file_set_boolean_list = FuncLoader.LoadFunction<d_g_key_file_set_boolean_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_boolean_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_key_file_set_comment(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr comment, out IntPtr error);
-		static d_g_key_file_set_comment g_key_file_set_comment = FuncLoader.LoadFunction<d_g_key_file_set_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_comment"));
+		static d_g_key_file_set_comment g_key_file_set_comment = FuncLoader.LoadFunction<d_g_key_file_set_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_comment"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_double(IntPtr raw, IntPtr group_name, IntPtr key, double value);
-		static d_g_key_file_set_double g_key_file_set_double = FuncLoader.LoadFunction<d_g_key_file_set_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_double"));
+		static d_g_key_file_set_double g_key_file_set_double = FuncLoader.LoadFunction<d_g_key_file_set_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_double"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_double_list(IntPtr raw, IntPtr group_name, IntPtr key, double[] list, UIntPtr n_list);
-		static d_g_key_file_set_double_list g_key_file_set_double_list = FuncLoader.LoadFunction<d_g_key_file_set_double_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_double_list"));
+		static d_g_key_file_set_double_list g_key_file_set_double_list = FuncLoader.LoadFunction<d_g_key_file_set_double_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_double_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_integer(IntPtr raw, IntPtr group_name, IntPtr key, int value);
-		static d_g_key_file_set_integer g_key_file_set_integer = FuncLoader.LoadFunction<d_g_key_file_set_integer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_integer"));
+		static d_g_key_file_set_integer g_key_file_set_integer = FuncLoader.LoadFunction<d_g_key_file_set_integer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_integer"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_integer_list(IntPtr raw, IntPtr group_name, IntPtr key, int[] list, UIntPtr n_list);
-		static d_g_key_file_set_integer_list g_key_file_set_integer_list = FuncLoader.LoadFunction<d_g_key_file_set_integer_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_integer_list"));
+		static d_g_key_file_set_integer_list g_key_file_set_integer_list = FuncLoader.LoadFunction<d_g_key_file_set_integer_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_integer_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_list_separator(IntPtr raw, byte separator);
-		static d_g_key_file_set_list_separator g_key_file_set_list_separator = FuncLoader.LoadFunction<d_g_key_file_set_list_separator>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_list_separator"));
+		static d_g_key_file_set_list_separator g_key_file_set_list_separator = FuncLoader.LoadFunction<d_g_key_file_set_list_separator>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_list_separator"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_locale_string(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr value);
-		static d_g_key_file_set_locale_string g_key_file_set_locale_string = FuncLoader.LoadFunction<d_g_key_file_set_locale_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_locale_string"));
+		static d_g_key_file_set_locale_string g_key_file_set_locale_string = FuncLoader.LoadFunction<d_g_key_file_set_locale_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_locale_string"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_locale_string_list(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr locale, IntPtr list, UIntPtr length);
-		static d_g_key_file_set_locale_string_list g_key_file_set_locale_string_list = FuncLoader.LoadFunction<d_g_key_file_set_locale_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_locale_string_list"));
+		static d_g_key_file_set_locale_string_list g_key_file_set_locale_string_list = FuncLoader.LoadFunction<d_g_key_file_set_locale_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_locale_string_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_string(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr value);
-		static d_g_key_file_set_string g_key_file_set_string = FuncLoader.LoadFunction<d_g_key_file_set_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_string"));
+		static d_g_key_file_set_string g_key_file_set_string = FuncLoader.LoadFunction<d_g_key_file_set_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_string"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_string_list(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr list, UIntPtr n_list);
-		static d_g_key_file_set_string_list g_key_file_set_string_list = FuncLoader.LoadFunction<d_g_key_file_set_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_string_list"));
+		static d_g_key_file_set_string_list g_key_file_set_string_list = FuncLoader.LoadFunction<d_g_key_file_set_string_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_string_list"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_key_file_set_value(IntPtr raw, IntPtr group_name, IntPtr key, IntPtr value);
-		static d_g_key_file_set_value g_key_file_set_value = FuncLoader.LoadFunction<d_g_key_file_set_value>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_set_value"));
+		static d_g_key_file_set_value g_key_file_set_value = FuncLoader.LoadFunction<d_g_key_file_set_value>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_value"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_key_file_to_data(IntPtr raw, out UIntPtr length, IntPtr dummy);
-		static d_g_key_file_to_data g_key_file_to_data = FuncLoader.LoadFunction<d_g_key_file_to_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_key_file_to_data"));
-
+		static d_g_key_file_to_data g_key_file_to_data = FuncLoader.LoadFunction<d_g_key_file_to_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_to_data"));
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate long d_g_key_file_get_int64(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_get_int64 g_key_file_get_int64 = FuncLoader.LoadFunction<d_g_key_file_get_int64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_int64"));		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate ulong d_g_key_file_get_uint64(IntPtr raw, IntPtr group_name, IntPtr key, out IntPtr error);
+		static d_g_key_file_get_uint64 g_key_file_get_uint64 = FuncLoader.LoadFunction<d_g_key_file_get_uint64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_get_uint64"));		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_g_key_file_set_int64(IntPtr raw, IntPtr group_name, IntPtr key, long value);
+		static d_g_key_file_set_int64 g_key_file_set_int64 = FuncLoader.LoadFunction<d_g_key_file_set_int64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_int64"));		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_g_key_file_set_uint64(IntPtr raw, IntPtr group_name, IntPtr key, ulong value);
+		static d_g_key_file_set_uint64 g_key_file_set_uint64 = FuncLoader.LoadFunction<d_g_key_file_set_uint64>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_key_file_set_uint64"));
 	}
 }
-

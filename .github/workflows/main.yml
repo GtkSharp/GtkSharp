@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    permissions:
+      packages: write
     strategy:
       matrix:
         os: [ubuntu-20.04]
@@ -24,7 +26,11 @@ jobs:
           GITHUB_ACTIONS: true
       - uses: actions/upload-artifact@main
         with:
-          name: Nuget Packages
+          name: NuGet Packages
           path: |
             BuildOutput/NugetPackages/**/*.nupkg
           if-no-files-found: error
+      - name: Push NuGet to GitHub packages
+        run: dotnet nuget push BuildOutput/NugetPackages/**/*.nupkg --source https://nuget.pkg.github.com/$GITHUB_REPOSITORY_OWNER/index.json --api-key ${GITHUB_TOKEN}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

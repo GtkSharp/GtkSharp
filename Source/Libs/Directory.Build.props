@@ -1,9 +1,15 @@
 <Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..\'))" />
+
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net$(_GtkSharpNetVersion);netstandard2.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PackageProjectUrl>https://github.com/GtkSharp/GtkSharp</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/GtkSharp/GtkSharp</RepositoryUrl>
-    <OutputPath>..\..\..\BuildOutput\$(Configuration)</OutputPath>
+    <OutputPath>$(_GtkSharpBuildOutputDirectory)\$(Configuration)</OutputPath>
+    <!--  
+      Microsoft.DotNet.SharedFramework.Sdk requires our framework assemblies to be signed 
+      (to have a "public key token")
+    -->
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\GtkSharp.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 </Project>

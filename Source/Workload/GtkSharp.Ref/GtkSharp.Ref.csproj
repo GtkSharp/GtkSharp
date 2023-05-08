@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets">
+
+  <Import Project="..\Shared\Common.targets" />
+  <Import Project="..\Shared\Frameworks.targets" />
+
+  <PropertyGroup>
+    <Description>GtkSharp targeting pack</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(_GtkSharpBuildOutputDirectory)$(Configuration)\net$(_GtkSharpNetVersion)\*.dll" />
+    <None Update="@(None)" CopyToOutputDirectory="PreserveNewest" Visible="false" Link="ref\$(_GtkSharpFullTfm)\%(FileName)%(Extension)" />
+    <_PackageFiles Include="@(None)" PackagePath="ref\$(_GtkSharpFullTfm)" TargetPath="ref\$(_GtkSharpFullTfm)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(_GtkSharpSourceDirectory)Libs\**\*.csproj" />
+  </ItemGroup>
+
+</Project>

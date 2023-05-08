@@ -227,7 +227,7 @@ namespace GtkSharp.Generation {
 					p.IsCount = false;
 					if (i < elem.ChildNodes.Count - 1) {
 						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
-						if (next != null || next.Name == "parameter") {
+						if (next != null && next.Name == "parameter") {
 							Parameter a = new Parameter (next);
 							if (a.IsArray) {
 								p = new ArrayCountPair (next, parm, true);

@@ -25,6 +25,7 @@ namespace Gtk {
 
 		/// <summary> Sizes Property </summary>
 		/// <remarks> To be completed </remarks>
+		[Obsolete]
 		public Gtk.IconSize [] Sizes {
 			get {
 

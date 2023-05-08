@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.Build.NoTargets">
+
+  <Import Project="..\Shared\Templates.targets" />
+
+  <PropertyGroup>
+    <Title>GTK templates for CSharp</Title>
+    <Description>A set of C# templates for your .NET GTK Application. Installed with the GtkSharp .NET workload.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <_GtkSharpTemplateContent Include="content\**" />
+    <_GtkSharpTemplateContent Remove="**\*.in.*" />
+    <None Include="@(_GtkSharpTemplateContent)" 
+      CopyToOutputDirectory="PreserveNewest" 
+      Pack="true"
+      PackagePath="content"
+    />
+  </ItemGroup>
+
+  <Import Project="..\Shared\ReplaceText.targets" />
+
+  <Target Name="_ReplaceJsonText"
+      BeforeTargets="Build;AssignTargetPaths"
+      Inputs="$(MSBuildProjectFile);content\GtkSharp.Application.CSharp\.template.config\template.in.json"
+      Outputs="$(IntermediateOutputPath)template.json">
+    
+    <ReplaceText
+        Input="content\GtkSharp.Application.CSharp\.template.config\template.in.json"
+        Output="$(IntermediateOutputPath)template.json"
+        OldValue="@GTKSHARPNETVERSION@"
+        NewValue="$(_GtkSharpNetVersion)"
+    />
+
+    <ItemGroup>
+      <None
+          Include="$(IntermediateOutputPath)template.json"
+          Link="content\GtkSharp.Application.CSharp\.template.config\template.json"
+          CopyToOutputDirectory="PreserveNewest"
+          Pack="true"
+          PackagePath="content\GtkSharp.Application.CSharp\.template.config\template.json"
+      />
+      <FileWrites Include="$(IntermediateOutputPath)template.json" />
+    </ItemGroup>
+  
+  </Target>
+
+</Project>

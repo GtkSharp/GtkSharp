@@ -49,6 +49,7 @@ namespace Gtk {
 		delegate IntPtr d_gtk_radio_tool_button_new_from_stock(IntPtr group, IntPtr stock_id);
 		static d_gtk_radio_tool_button_new_from_stock gtk_radio_tool_button_new_from_stock = FuncLoader.LoadFunction<d_gtk_radio_tool_button_new_from_stock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_radio_tool_button_new_from_stock"));
 
+		[Obsolete]
 		public RadioToolButton (RadioToolButton[] group, string stock_id) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (RadioToolButton)) {
