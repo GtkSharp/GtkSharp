@@ -30,13 +30,22 @@ class FuncLoader
         public static extern IntPtr dlsym(IntPtr handle, string symbol);
     }
 
+    private class Unix
+    {
+        [DllImport("libc")]
+        public static extern IntPtr dlopen(string path, int flags);
+
+        [DllImport("libc")]
+        public static extern IntPtr dlsym(IntPtr handle, string symbol);
+    }
+
     [DllImport("libc")]
     private static extern int uname(IntPtr buf);
-    
+
     private const int RTLD_LAZY = 0x0001;
     private const int RTLD_GLOBAL = 0x0100;
 
-    public static bool IsWindows, IsOSX;
+    public static bool IsWindows, IsOSX, IsLinux;
 
     static FuncLoader()
     {
@@ -57,6 +66,8 @@ class FuncLoader
                     var buf = Marshal.AllocHGlobal(8192);
                     if (uname(buf) == 0 && Marshal.PtrToStringAnsi(buf) == "Darwin")
                         IsOSX = true;
+                    if (uname(buf) == 0 && Marshal.PtrToStringAnsi(buf) == "Linux")
+                        IsLinux = true;
 
                     Marshal.FreeHGlobal(buf);
                 }
@@ -74,7 +85,10 @@ class FuncLoader
         if (IsOSX)
             return OSX.dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
 
-        return Linux.dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
+        if (IsLinux)
+            return Linux.dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
+
+        return Unix.dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
     }
 
     public static IntPtr GetProcAddress(IntPtr library, string function)
@@ -85,8 +99,10 @@ class FuncLoader
             ret = Windows.GetProcAddress(library, function);
         else if (IsOSX)
             ret = OSX.dlsym(library, function);
-        else
+        else if (IsLinux)
             ret = Linux.dlsym(library, function);
+        else
+            ret = Unix.dlsym(library, function);
 
         return ret;
     }
