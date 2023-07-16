@@ -27,8 +27,8 @@ namespace GLib {
 
 	internal class ClosureInvokedArgs : EventArgs {
 
-		EventArgs args;
-		GLib.Object obj;
+        readonly EventArgs args;
+        readonly GLib.Object obj;
 
 		public ClosureInvokedArgs (GLib.Object obj, EventArgs args)
 		{
@@ -60,15 +60,15 @@ namespace GLib {
 
 	internal class SignalClosure : IDisposable {
 
-		IntPtr handle;
-		IntPtr raw_closure;
-		string name;
+        readonly IntPtr handle;
+        readonly IntPtr raw_closure;
+        readonly string name;
 		uint id = UInt32.MaxValue;
-		System.Type args_type;
+        readonly System.Type args_type;
 		Delegate custom_marshaler;
 		GCHandle gch;
 
-		static Hashtable closures = new Hashtable ();
+		static readonly Hashtable closures = new Hashtable ();
 
 		public SignalClosure (IntPtr obj, string signal_name, System.Type args_type)
 		{
@@ -202,25 +202,25 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_cclosure_new(Delegate cb, IntPtr user_data, ClosureNotify notify);
-		static d_g_cclosure_new g_cclosure_new = FuncLoader.LoadFunction<d_g_cclosure_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_cclosure_new"));
+		static readonly d_g_cclosure_new g_cclosure_new = FuncLoader.LoadFunction<d_g_cclosure_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_cclosure_new"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_closure_new_simple(int closure_size, IntPtr dummy);
-		static d_g_closure_new_simple g_closure_new_simple = FuncLoader.LoadFunction<d_g_closure_new_simple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_new_simple"));
+		static readonly d_g_closure_new_simple g_closure_new_simple = FuncLoader.LoadFunction<d_g_closure_new_simple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_new_simple"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_closure_set_marshal(IntPtr closure, ClosureMarshal marshaler);
-		static d_g_closure_set_marshal g_closure_set_marshal = FuncLoader.LoadFunction<d_g_closure_set_marshal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_set_marshal"));
+		static readonly d_g_closure_set_marshal g_closure_set_marshal = FuncLoader.LoadFunction<d_g_closure_set_marshal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_set_marshal"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_closure_add_finalize_notifier(IntPtr closure, IntPtr dummy, ClosureNotify notify);
-		static d_g_closure_add_finalize_notifier g_closure_add_finalize_notifier = FuncLoader.LoadFunction<d_g_closure_add_finalize_notifier>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_add_finalize_notifier"));
+		static readonly d_g_closure_add_finalize_notifier g_closure_add_finalize_notifier = FuncLoader.LoadFunction<d_g_closure_add_finalize_notifier>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_add_finalize_notifier"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_signal_connect_closure(IntPtr obj, IntPtr name, IntPtr closure, bool is_after);
-		static d_g_signal_connect_closure g_signal_connect_closure = FuncLoader.LoadFunction<d_g_signal_connect_closure>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_connect_closure"));
+		static readonly d_g_signal_connect_closure g_signal_connect_closure = FuncLoader.LoadFunction<d_g_signal_connect_closure>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_connect_closure"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_signal_handler_disconnect(IntPtr instance, uint handler);
-		static d_g_signal_handler_disconnect g_signal_handler_disconnect = FuncLoader.LoadFunction<d_g_signal_handler_disconnect>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_handler_disconnect"));
+		static readonly d_g_signal_handler_disconnect g_signal_handler_disconnect = FuncLoader.LoadFunction<d_g_signal_handler_disconnect>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_handler_disconnect"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_signal_handler_is_connected(IntPtr instance, uint handler);
-		static d_g_signal_handler_is_connected g_signal_handler_is_connected = FuncLoader.LoadFunction<d_g_signal_handler_is_connected>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_handler_is_connected"));
+		static readonly d_g_signal_handler_is_connected g_signal_handler_is_connected = FuncLoader.LoadFunction<d_g_signal_handler_is_connected>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_handler_is_connected"));
 	}
 }
 

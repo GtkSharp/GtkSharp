@@ -10,7 +10,7 @@ namespace Samples
 {
 	class PolarFixed : Container
 	{
-		IList<PolarFixedChild> children;
+        readonly IList<PolarFixedChild> children;
 
 		public PolarFixed()
 		{

@@ -30,8 +30,8 @@ namespace Gtk
 {
 	internal class SignalConnector
 	{
-		Type handler_type;
-		object handler;
+        readonly Type handler_type;
+        readonly object handler;
 		internal object template_object_instance;
 
 		public SignalConnector (object handler)
@@ -48,7 +48,7 @@ namespace Gtk
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_builder_connect_signals_full(IntPtr raw, GtkSharp.BuilderConnectFuncNative func, IntPtr user_data);
-		static d_gtk_builder_connect_signals_full gtk_builder_connect_signals_full = FuncLoader.LoadFunction<d_gtk_builder_connect_signals_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_builder_connect_signals_full"));
+		static readonly d_gtk_builder_connect_signals_full gtk_builder_connect_signals_full = FuncLoader.LoadFunction<d_gtk_builder_connect_signals_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_builder_connect_signals_full"));
 	
 		public void ConnectSignals(Builder builder) {
 			GtkSharp.BuilderConnectFuncWrapper func_wrapper = new GtkSharp.BuilderConnectFuncWrapper (new BuilderConnectFunc (ConnectFunc));
@@ -57,7 +57,7 @@ namespace Gtk
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_widget_class_set_connect_func(IntPtr class_ptr, GtkSharp.BuilderConnectFuncNative connect_func, IntPtr data);
-		static d_gtk_widget_class_set_connect_func gtk_widget_class_set_connect_func = FuncLoader.LoadFunction<d_gtk_widget_class_set_connect_func>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), nameof(gtk_widget_class_set_connect_func)));
+		static readonly d_gtk_widget_class_set_connect_func gtk_widget_class_set_connect_func = FuncLoader.LoadFunction<d_gtk_widget_class_set_connect_func>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), nameof(gtk_widget_class_set_connect_func)));
 
 		public void ConnectSignals(GLib.GType gtype)
 		{

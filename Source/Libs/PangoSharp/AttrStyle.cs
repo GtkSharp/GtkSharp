@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrStyle : Attribute {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_style_new(Pango.Style style);
-		static d_pango_attr_style_new pango_attr_style_new = FuncLoader.LoadFunction<d_pango_attr_style_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_style_new"));
+		static readonly d_pango_attr_style_new pango_attr_style_new = FuncLoader.LoadFunction<d_pango_attr_style_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_style_new"));
 
 		public AttrStyle (Pango.Style style) : this (pango_attr_style_new (style)) {}
 

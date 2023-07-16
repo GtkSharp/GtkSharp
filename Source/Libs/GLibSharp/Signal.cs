@@ -69,9 +69,9 @@ namespace GLib {
 
 		public class EmissionHookMarshaler {
 
-			EmissionHook handler;
-			EmissionHookNative cb;
-			IntPtr user_data;
+            readonly EmissionHook handler;
+            readonly EmissionHookNative cb;
+            readonly IntPtr user_data;
 			GCHandle gch;
 
 			public EmissionHookMarshaler (EmissionHook handler)
@@ -132,14 +132,14 @@ namespace GLib {
 			}
 		}
 
-		GLib.Object obj;
-		string name;
+        readonly GLib.Object obj;
+        readonly string name;
 		Type args_type;
 		SignalClosure before_closure;
 		SignalClosure after_closure;
 		Delegate after_handler;
 		Delegate before_handler;
-		Delegate marshaler;
+        readonly Delegate marshaler;
 
 		internal Signal (GLib.Object obj, string name, Delegate marshaler)
 		{
@@ -357,38 +357,38 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_cclosure_new(Delegate cb, IntPtr data, IntPtr notify);
-		static d_g_cclosure_new g_cclosure_new = FuncLoader.LoadFunction<d_g_cclosure_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_cclosure_new"));
+		static readonly d_g_cclosure_new g_cclosure_new = FuncLoader.LoadFunction<d_g_cclosure_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_cclosure_new"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_signal_get_invocation_hint(IntPtr instance);
-		static d_g_signal_get_invocation_hint g_signal_get_invocation_hint = FuncLoader.LoadFunction<d_g_signal_get_invocation_hint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_get_invocation_hint"));
+		static readonly d_g_signal_get_invocation_hint g_signal_get_invocation_hint = FuncLoader.LoadFunction<d_g_signal_get_invocation_hint>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_get_invocation_hint"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_signal_emitv(IntPtr instance_and_params, uint signal_id, uint gquark_detail, ref GLib.Value return_value);
-		static d_g_signal_emitv g_signal_emitv = FuncLoader.LoadFunction<d_g_signal_emitv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_emitv"));
+		static readonly d_g_signal_emitv g_signal_emitv = FuncLoader.LoadFunction<d_g_signal_emitv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_emitv"));
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_signal_emitv2(IntPtr instance_and_params, uint signal_id, uint gquark_detail, IntPtr return_value);
-		static d_g_signal_emitv2 g_signal_emitv2 = FuncLoader.LoadFunction<d_g_signal_emitv2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_emitv"));
+		static readonly d_g_signal_emitv2 g_signal_emitv2 = FuncLoader.LoadFunction<d_g_signal_emitv2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_emitv"));
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_signal_lookup(IntPtr name, IntPtr itype);
-		static d_g_signal_lookup g_signal_lookup = FuncLoader.LoadFunction<d_g_signal_lookup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_lookup"));
+		static readonly d_g_signal_lookup g_signal_lookup = FuncLoader.LoadFunction<d_g_signal_lookup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_lookup"));
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_signal_override_class_closure(uint id, IntPtr gtype, IntPtr closure);
-		static d_g_signal_override_class_closure g_signal_override_class_closure = FuncLoader.LoadFunction<d_g_signal_override_class_closure>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_override_class_closure"));
+		static readonly d_g_signal_override_class_closure g_signal_override_class_closure = FuncLoader.LoadFunction<d_g_signal_override_class_closure>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_override_class_closure"));
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_signal_query(uint signal_id, out Query query);
-		static d_g_signal_query g_signal_query = FuncLoader.LoadFunction<d_g_signal_query>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_query"));
+		static readonly d_g_signal_query g_signal_query = FuncLoader.LoadFunction<d_g_signal_query>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_query"));
 
 		//better not to expose g_quark_from_static_string () due to memory allocation issues
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_quark_from_string(IntPtr str);
-		static d_g_quark_from_string g_quark_from_string = FuncLoader.LoadFunction<d_g_quark_from_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_quark_from_string"));
+		static readonly d_g_quark_from_string g_quark_from_string = FuncLoader.LoadFunction<d_g_quark_from_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_quark_from_string"));
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate ulong d_g_signal_add_emission_hook(uint signal_id, uint gquark_detail, EmissionHookNative hook_func, IntPtr hook_data, IntPtr data_destroy);
-		static d_g_signal_add_emission_hook g_signal_add_emission_hook = FuncLoader.LoadFunction<d_g_signal_add_emission_hook>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_add_emission_hook"));
+		static readonly d_g_signal_add_emission_hook g_signal_add_emission_hook = FuncLoader.LoadFunction<d_g_signal_add_emission_hook>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_add_emission_hook"));
 
 	}
 }

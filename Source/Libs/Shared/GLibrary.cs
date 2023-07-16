@@ -9,10 +9,10 @@ class GLibrary
 	[DllImport("kernel32.dll", SetLastError = true)]
 	private static extern bool SetDllDirectory(string lpPathName);
 
-	private static Dictionary<Library, IntPtr> _libraries;
-	private static HashSet<Library> _librariesNotFound;
-	private static Dictionary<string, IntPtr> _customlibraries;
-	private static Dictionary<Library, string[]> _libraryDefinitions;
+	private static readonly Dictionary<Library, IntPtr> _libraries;
+	private static readonly HashSet<Library> _librariesNotFound;
+	private static readonly Dictionary<string, IntPtr> _customlibraries;
+	private static readonly Dictionary<Library, string[]> _libraryDefinitions;
 
 	static GLibrary()
 	{

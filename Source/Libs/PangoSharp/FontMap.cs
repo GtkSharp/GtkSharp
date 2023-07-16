@@ -26,7 +26,7 @@ namespace Pango {
 	public partial class FontMap {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_font_map_list_families2(IntPtr raw, out IntPtr families, out int n_families);
-		static d_pango_font_map_list_families2 pango_font_map_list_families2 = FuncLoader.LoadFunction<d_pango_font_map_list_families2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_map_list_families"));
+		static readonly d_pango_font_map_list_families2 pango_font_map_list_families2 = FuncLoader.LoadFunction<d_pango_font_map_list_families2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_map_list_families"));
 
 		public FontFamily [] Families {
 			get {
@@ -47,7 +47,7 @@ namespace Pango {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_font_map_list_families(IntPtr raw, IntPtr families, out int n_families);
-		static d_pango_font_map_list_families pango_font_map_list_families = FuncLoader.LoadFunction<d_pango_font_map_list_families>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_map_list_families"));
+		static readonly d_pango_font_map_list_families pango_font_map_list_families = FuncLoader.LoadFunction<d_pango_font_map_list_families>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_font_map_list_families"));
 
 		[Obsolete]
 		public int ListFamilies(Pango.FontFamily families) {

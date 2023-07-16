@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrShape : Attribute {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_shape_new(ref Pango.Rectangle ink_rect, ref Pango.Rectangle logical_rect);
-		static d_pango_attr_shape_new pango_attr_shape_new = FuncLoader.LoadFunction<d_pango_attr_shape_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_shape_new"));
+		static readonly d_pango_attr_shape_new pango_attr_shape_new = FuncLoader.LoadFunction<d_pango_attr_shape_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_shape_new"));
 
 		public AttrShape (Pango.Rectangle ink_rect, Pango.Rectangle logical_rect) : this (pango_attr_shape_new (ref ink_rect, ref logical_rect)) {}
 
@@ -34,9 +34,9 @@ namespace Pango {
 			Attribute.NativeStruct attr;
 			public Rectangle ink_rect;
 			public Rectangle logical_rect;
-			IntPtr data;
-			IntPtr copy_func;
-			IntPtr destroy_func;
+            readonly IntPtr data;
+            readonly IntPtr copy_func;
+            readonly IntPtr destroy_func;
 		}
 
 		public Pango.Rectangle InkRect {

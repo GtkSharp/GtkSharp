@@ -32,7 +32,7 @@ namespace Cairo {
 
 	static class CairoDebug
 	{
-		static System.Collections.Generic.Dictionary<IntPtr,string> traces;
+		static readonly System.Collections.Generic.Dictionary<IntPtr,string> traces;
 
 		public static readonly bool Enabled;
 

@@ -39,7 +39,7 @@ namespace GLib {
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_file_get_uri(IntPtr raw);
-		static d_g_file_get_uri g_file_get_uri = FuncLoader.LoadFunction<d_g_file_get_uri>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_file_get_uri"));
+		static readonly d_g_file_get_uri g_file_get_uri = FuncLoader.LoadFunction<d_g_file_get_uri>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_file_get_uri"));
 		
 		public System.Uri Uri {
 			get {

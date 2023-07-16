@@ -32,19 +32,19 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_file_chooser_native_new(IntPtr title, IntPtr parent, int action, IntPtr accept_label, IntPtr cancel_label);
-		static d_gtk_file_chooser_native_new gtk_file_chooser_native_new = FuncLoader.LoadFunction<d_gtk_file_chooser_native_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_new"));
+		static readonly d_gtk_file_chooser_native_new gtk_file_chooser_native_new = FuncLoader.LoadFunction<d_gtk_file_chooser_native_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_new"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate string d_gtk_file_chooser_native_get_accept_label(IntPtr self);
-		static d_gtk_file_chooser_native_get_accept_label gtk_file_chooser_native_get_accept_label = FuncLoader.LoadFunction<d_gtk_file_chooser_native_get_accept_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_get_accept_label"));
+		static readonly d_gtk_file_chooser_native_get_accept_label gtk_file_chooser_native_get_accept_label = FuncLoader.LoadFunction<d_gtk_file_chooser_native_get_accept_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_get_accept_label"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate string d_gtk_file_chooser_native_set_accept_label(IntPtr self, string accept_label);
-		static d_gtk_file_chooser_native_set_accept_label gtk_file_chooser_native_set_accept_label = FuncLoader.LoadFunction<d_gtk_file_chooser_native_set_accept_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_set_accept_label"));
+		static readonly d_gtk_file_chooser_native_set_accept_label gtk_file_chooser_native_set_accept_label = FuncLoader.LoadFunction<d_gtk_file_chooser_native_set_accept_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_set_accept_label"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate string d_gtk_file_chooser_native_get_cancel_label(IntPtr self);
-		static d_gtk_file_chooser_native_get_cancel_label gtk_file_chooser_native_get_cancel_label = FuncLoader.LoadFunction<d_gtk_file_chooser_native_get_cancel_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_get_cancel_label"));
+		static readonly d_gtk_file_chooser_native_get_cancel_label gtk_file_chooser_native_get_cancel_label = FuncLoader.LoadFunction<d_gtk_file_chooser_native_get_cancel_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_get_cancel_label"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate string d_gtk_file_chooser_native_set_cancel_label(IntPtr self, string cancel_label);
-		static d_gtk_file_chooser_native_set_cancel_label gtk_file_chooser_native_set_cancel_label = FuncLoader.LoadFunction<d_gtk_file_chooser_native_set_cancel_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_set_cancel_label"));
+		static readonly d_gtk_file_chooser_native_set_cancel_label gtk_file_chooser_native_set_cancel_label = FuncLoader.LoadFunction<d_gtk_file_chooser_native_set_cancel_label>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_native_set_cancel_label"));
 
 		public string CurrentFolder => fileChooser.CurrentFolder;
 

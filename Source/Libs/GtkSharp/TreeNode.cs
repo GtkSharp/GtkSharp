@@ -30,9 +30,9 @@ namespace Gtk {
 		// Only use interlocked operations
 		static int next_idx = 0;
 
-		int id;
+        readonly int id;
 		ITreeNode parent;
-		ArrayList children = new ArrayList ();
+        readonly ArrayList children = new ArrayList ();
 
 		public TreeNode ()
 		{

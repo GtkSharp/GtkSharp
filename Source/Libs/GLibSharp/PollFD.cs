@@ -25,7 +25,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_pollfd_get_type();
-		static d_g_pollfd_get_type g_pollfd_get_type = FuncLoader.LoadFunction<d_g_pollfd_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_pollfd_get_type"));
+		static readonly d_g_pollfd_get_type g_pollfd_get_type = FuncLoader.LoadFunction<d_g_pollfd_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_pollfd_get_type"));
 
 		public static GLib.GType GType { 
 			get {

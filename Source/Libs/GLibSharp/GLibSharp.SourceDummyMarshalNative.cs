@@ -12,9 +12,9 @@ namespace GLibSharp {
 
 	internal class SourceDummyMarshalInvoker {
 
-		SourceDummyMarshalNative native_cb;
-		IntPtr __data;
-		GLib.DestroyNotify __notify;
+        readonly SourceDummyMarshalNative native_cb;
+        readonly IntPtr __data;
+        readonly GLib.DestroyNotify __notify;
 
 		~SourceDummyMarshalInvoker ()
 		{
@@ -69,7 +69,7 @@ namespace GLibSharp {
 		}
 
 		internal SourceDummyMarshalNative NativeDelegate;
-		GLib.SourceDummyMarshal managed;
+        readonly GLib.SourceDummyMarshal managed;
 
 		public SourceDummyMarshalWrapper (GLib.SourceDummyMarshal managed)
 		{

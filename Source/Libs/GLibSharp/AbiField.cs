@@ -41,7 +41,7 @@ namespace GLib {
 		public uint Natural_size;
 		public AbiStruct container;
 		public OrderedDictionary Parent_fields; // field_name<string> -> AbiField<> dictionary.
-		List<List<string>> Union_fields;
+        readonly List<List<string>> Union_fields;
 
 		long End;
 		long Size;

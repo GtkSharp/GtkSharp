@@ -29,7 +29,7 @@ namespace Gtk {
 	public partial class Image {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_image_new_from_icon_set(IntPtr icon_set, int size);
-		static d_gtk_image_new_from_icon_set gtk_image_new_from_icon_set = FuncLoader.LoadFunction<d_gtk_image_new_from_icon_set>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_icon_set"));
+		static readonly d_gtk_image_new_from_icon_set gtk_image_new_from_icon_set = FuncLoader.LoadFunction<d_gtk_image_new_from_icon_set>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_icon_set"));
 
 		public Image (Gtk.IconSet icon_set, Gtk.IconSize size) : base (IntPtr.Zero)
 		{
@@ -47,7 +47,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_image_new_from_stock(IntPtr stock_id, int size);
-		static d_gtk_image_new_from_stock gtk_image_new_from_stock = FuncLoader.LoadFunction<d_gtk_image_new_from_stock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_stock"));
+		static readonly d_gtk_image_new_from_stock gtk_image_new_from_stock = FuncLoader.LoadFunction<d_gtk_image_new_from_stock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_stock"));
 
 		public Image (string stock_id, Gtk.IconSize size) : base (IntPtr.Zero)
 		{

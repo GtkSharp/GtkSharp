@@ -18,9 +18,9 @@ namespace Samples
     class CompositeWidget : Bin
     {
 #pragma warning disable CS0649, CS0169
-        [Child] Button btn1;
-        [Child] Button btn2;
-        [Child("label")] Entry entry;
+        [Child] readonly Button btn1;
+        [Child] readonly Button btn2;
+        [Child("label")] readonly Entry entry;
 #pragma warning restore CS0649, CS0169
 
         public CompositeWidget()

@@ -37,8 +37,8 @@ namespace Gtk {
 		[AttributeUsage (AttributeTargets.Field)]
 		public class ObjectAttribute : Attribute
 		{
-			private string name;
-			private bool specified;
+			private readonly string name;
+			private readonly bool specified;
 		
 			public ObjectAttribute (string name)
 			{
@@ -71,7 +71,7 @@ namespace Gtk {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_object_ref(IntPtr raw);
-		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
+		static readonly d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
 
 		public IntPtr GetRawOwnedObject(string name) {
 			IntPtr raw_ret = GetRawObject (name);

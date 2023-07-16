@@ -15,8 +15,8 @@ namespace Samples
 
         TreeView tree;
         TreeStore store;
-        Entry entry;
-        Gdk.Pixbuf icon = new Gdk.Pixbuf(typeof(ImageSection).Assembly, "Testpic", 32, 32);
+        readonly Entry entry;
+        readonly Gdk.Pixbuf icon = new Gdk.Pixbuf(typeof(ImageSection).Assembly, "Testpic", 32, 32);
 
         public TreeViewSection() : base(Orientation.Vertical, 3)
         {

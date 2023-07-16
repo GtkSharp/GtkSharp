@@ -51,7 +51,7 @@ namespace Cairo {
 	{
 		IntPtr handle = IntPtr.Zero;
 
-		static int native_glyph_size, c_compiler_long_size;
+		static readonly int native_glyph_size, c_compiler_long_size;
 
 		static unsafe Context ()
 		{

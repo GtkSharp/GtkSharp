@@ -30,10 +30,10 @@ namespace Gtk
 		[System.Serializable]
 		public class HandlerNotFoundException : SystemException
 		{
-			string handler_name;
-			string signal_name;
-			System.Reflection.EventInfo evnt;
-			Type delegate_type;
+        readonly string handler_name;
+        readonly string signal_name;
+        readonly System.Reflection.EventInfo evnt;
+        readonly Type delegate_type;
 		
 			public HandlerNotFoundException (string handler_name, string signal_name,
 							 System.Reflection.EventInfo evnt, Type delegate_type)

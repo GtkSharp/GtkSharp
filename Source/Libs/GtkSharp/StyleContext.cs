@@ -99,7 +99,7 @@ namespace Gtk {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		unsafe delegate void d_gtk_style_context_get_property(IntPtr raw, IntPtr property, int state, GLib.Value* value);
-		static d_gtk_style_context_get_property gtk_style_context_get_property = FuncLoader.LoadFunction<d_gtk_style_context_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_style_context_get_property"));
+		static readonly d_gtk_style_context_get_property gtk_style_context_get_property = FuncLoader.LoadFunction<d_gtk_style_context_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_style_context_get_property"));
 
 		public GLib.Value GetProperty(string property, Gtk.StateFlags state)
 		{

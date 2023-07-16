@@ -52,7 +52,7 @@ namespace Gtk {
 			}
 		}
 
-		private static Dictionary<Type, TemplateData> Templates = new Dictionary<Type, TemplateData>();
+		private static readonly Dictionary<Type, TemplateData> Templates = new Dictionary<Type, TemplateData>();
 
 		public void AddAccelerator (string accel_signal, AccelGroup accel_group, AccelKey accel_key)
 		{
@@ -68,20 +68,20 @@ namespace Gtk {
 		*/
 
 		struct GClosure {
-			long fields;
-			IntPtr marshaler;
-			IntPtr data;
-			IntPtr notifiers;
+            readonly long fields;
+            readonly IntPtr marshaler;
+            readonly IntPtr data;
+            readonly IntPtr notifiers;
 		}
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void ClosureMarshal (IntPtr closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data);
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_closure_new_simple(int closure_size, IntPtr dummy);
-		static d_g_closure_new_simple g_closure_new_simple = FuncLoader.LoadFunction<d_g_closure_new_simple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_new_simple"));
+		static readonly d_g_closure_new_simple g_closure_new_simple = FuncLoader.LoadFunction<d_g_closure_new_simple>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_new_simple"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_closure_set_marshal(IntPtr closure, ClosureMarshal marshaler);
-		static d_g_closure_set_marshal g_closure_set_marshal = FuncLoader.LoadFunction<d_g_closure_set_marshal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_set_marshal"));
+		static readonly d_g_closure_set_marshal g_closure_set_marshal = FuncLoader.LoadFunction<d_g_closure_set_marshal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_set_marshal"));
 
 		static IntPtr CreateClosure (ClosureMarshal marshaler) {
 			IntPtr raw_closure = g_closure_new_simple (Marshal.SizeOf<GClosure> (), IntPtr.Zero);
@@ -90,7 +90,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_signal_newv(IntPtr signal_name, IntPtr gtype, GLib.Signal.Flags signal_flags, IntPtr closure, IntPtr accumulator, IntPtr accu_data, IntPtr c_marshaller, IntPtr return_type, uint n_params, [MarshalAs (UnmanagedType.LPArray)] IntPtr[] param_types);
-		static d_g_signal_newv g_signal_newv = FuncLoader.LoadFunction<d_g_signal_newv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_newv"));
+		static readonly d_g_signal_newv g_signal_newv = FuncLoader.LoadFunction<d_g_signal_newv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_newv"));
 
 		static uint RegisterSignal (string signal_name, GLib.GType gtype, GLib.Signal.Flags signal_flags, GLib.GType return_type, GLib.GType[] param_types, ClosureMarshal marshaler)
 		{
@@ -143,8 +143,8 @@ namespace Gtk {
 		}
 
 		private class BindingInvoker {
-			System.Reflection.MethodInfo mi;
-			object[] parms;
+            readonly System.Reflection.MethodInfo mi;
+            readonly object[] parms;
 
 			public BindingInvoker (System.Reflection.MethodInfo mi, object[] parms)
 			{
@@ -190,10 +190,10 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_binding_set_by_class(IntPtr class_ptr);
-		static d_gtk_binding_set_by_class gtk_binding_set_by_class = FuncLoader.LoadFunction<d_gtk_binding_set_by_class>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_set_by_class"));
+		static readonly d_gtk_binding_set_by_class gtk_binding_set_by_class = FuncLoader.LoadFunction<d_gtk_binding_set_by_class>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_set_by_class"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_binding_entry_add_signall(IntPtr binding_set, uint keyval, Gdk.ModifierType modifiers, IntPtr signal_name, IntPtr binding_args);
-		static d_gtk_binding_entry_add_signall gtk_binding_entry_add_signall = FuncLoader.LoadFunction<d_gtk_binding_entry_add_signall>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_entry_add_signall"));
+		static readonly d_gtk_binding_entry_add_signall gtk_binding_entry_add_signall = FuncLoader.LoadFunction<d_gtk_binding_entry_add_signall>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_entry_add_signall"));
 
 		[StructLayout(LayoutKind.Sequential)]
 		struct GtkBindingArg {
@@ -277,7 +277,7 @@ namespace Gtk {
 		}
 
 		delegate IntPtr d_gtk_widget_class_set_template(IntPtr class_ptr, IntPtr template_bytes);
-		static d_gtk_widget_class_set_template gtk_widget_class_set_template = FuncLoader.LoadFunction<d_gtk_widget_class_set_template>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_set_template"));
+		static readonly d_gtk_widget_class_set_template gtk_widget_class_set_template = FuncLoader.LoadFunction<d_gtk_widget_class_set_template>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_set_template"));
 
 		static void SetTemplateFromStream (GLib.GType gtype, System.IO.Stream resource)
 		{
@@ -291,7 +291,7 @@ namespace Gtk {
 		}
 
 		delegate IntPtr d_gtk_widget_class_bind_template_child_full(IntPtr class_ptr, IntPtr name, bool internal_child, IntPtr struct_offset);
-		static d_gtk_widget_class_bind_template_child_full gtk_widget_class_bind_template_child_full = FuncLoader.LoadFunction<d_gtk_widget_class_bind_template_child_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_bind_template_child_full"));
+		static readonly d_gtk_widget_class_bind_template_child_full gtk_widget_class_bind_template_child_full = FuncLoader.LoadFunction<d_gtk_widget_class_bind_template_child_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_bind_template_child_full"));
 
 		static void BindTemplateChildren (GLib.GType gtype, Type type, Dictionary<FieldInfo, string> fields)
 		{
@@ -323,7 +323,7 @@ namespace Gtk {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_widget_init_template(IntPtr raw);
-		static d_gtk_widget_init_template gtk_widget_init_template = FuncLoader.LoadFunction<d_gtk_widget_init_template>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_init_template"));
+		static readonly d_gtk_widget_init_template gtk_widget_init_template = FuncLoader.LoadFunction<d_gtk_widget_init_template>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_init_template"));
 
 		void InitTemplateForInstance ()
 		{
@@ -367,10 +367,10 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_widget_class_find_style_property(IntPtr class_ptr, IntPtr property_name);
-		static d_gtk_widget_class_find_style_property gtk_widget_class_find_style_property = FuncLoader.LoadFunction<d_gtk_widget_class_find_style_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_find_style_property"));
+		static readonly d_gtk_widget_class_find_style_property gtk_widget_class_find_style_property = FuncLoader.LoadFunction<d_gtk_widget_class_find_style_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_find_style_property"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_widget_style_get_property(IntPtr inst, IntPtr property_name, ref GLib.Value value);
-		static d_gtk_widget_style_get_property gtk_widget_style_get_property = FuncLoader.LoadFunction<d_gtk_widget_style_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_style_get_property"));
+		static readonly d_gtk_widget_style_get_property gtk_widget_style_get_property = FuncLoader.LoadFunction<d_gtk_widget_style_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_style_get_property"));
 
 		internal GLib.Value StyleGetPropertyValue (string property_name)
 		{
@@ -389,7 +389,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_widget_list_mnemonic_labels(IntPtr raw);
-		static d_gtk_widget_list_mnemonic_labels gtk_widget_list_mnemonic_labels = FuncLoader.LoadFunction<d_gtk_widget_list_mnemonic_labels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_list_mnemonic_labels"));
+		static readonly d_gtk_widget_list_mnemonic_labels gtk_widget_list_mnemonic_labels = FuncLoader.LoadFunction<d_gtk_widget_list_mnemonic_labels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_list_mnemonic_labels"));
 
 		public Widget[] ListMnemonicLabels ()
 		{
@@ -515,7 +515,7 @@ namespace Gtk {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_object_ref(IntPtr raw);
-		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
+		static readonly d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
 
 		private bool destroyed;
 		protected override void Dispose (bool disposing)
@@ -554,7 +554,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_widget_destroy(IntPtr raw);
-		static d_gtk_widget_destroy gtk_widget_destroy = FuncLoader.LoadFunction<d_gtk_widget_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_destroy"));
+		static readonly d_gtk_widget_destroy gtk_widget_destroy = FuncLoader.LoadFunction<d_gtk_widget_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_destroy"));
 
 
 		public virtual void Destroy ()
@@ -573,11 +573,11 @@ namespace Gtk {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_widget_class_get_css_name(IntPtr widget_class);
-		static d_gtk_widget_class_get_css_name gtk_widget_class_get_css_name = FuncLoader.LoadFunction<d_gtk_widget_class_get_css_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_get_css_name"));
+		static readonly d_gtk_widget_class_get_css_name gtk_widget_class_get_css_name = FuncLoader.LoadFunction<d_gtk_widget_class_get_css_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_get_css_name"));
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_widget_class_set_css_name(IntPtr widget_class, IntPtr name);
-		static d_gtk_widget_class_set_css_name gtk_widget_class_set_css_name = FuncLoader.LoadFunction<d_gtk_widget_class_set_css_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_set_css_name"));
+		static readonly d_gtk_widget_class_set_css_name gtk_widget_class_set_css_name = FuncLoader.LoadFunction<d_gtk_widget_class_set_css_name>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_set_css_name"));
 
 		public static string GetCssName (GLib.GType widget_type)
 		{

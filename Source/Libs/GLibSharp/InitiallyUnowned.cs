@@ -28,7 +28,7 @@ namespace GLib {
 		protected InitiallyUnowned (IntPtr raw) : base (raw) {}
 
 		delegate IntPtr d_g_initially_unowned_get_type ();
-		static d_g_initially_unowned_get_type g_initially_unowned_get_type = FuncLoader.LoadFunction<d_g_initially_unowned_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_initially_unowned_get_type"));
+		static readonly d_g_initially_unowned_get_type g_initially_unowned_get_type = FuncLoader.LoadFunction<d_g_initially_unowned_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_initially_unowned_get_type"));
 
 		public new static GLib.GType GType {
 			get {
@@ -40,19 +40,19 @@ namespace GLib {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_ref_sink(IntPtr raw);
-		static d_g_object_ref_sink g_object_ref_sink = FuncLoader.LoadFunction<d_g_object_ref_sink>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref_sink"));
+		static readonly d_g_object_ref_sink g_object_ref_sink = FuncLoader.LoadFunction<d_g_object_ref_sink>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref_sink"));
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_object_is_floating(IntPtr raw);
-		static d_g_object_is_floating g_object_is_floating = FuncLoader.LoadFunction<d_g_object_is_floating>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_is_floating"));
+		static readonly d_g_object_is_floating g_object_is_floating = FuncLoader.LoadFunction<d_g_object_is_floating>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_is_floating"));
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_force_floating(IntPtr raw);
-		static d_g_object_force_floating g_object_force_floating = FuncLoader.LoadFunction<d_g_object_force_floating>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_force_floating"));
+		static readonly d_g_object_force_floating g_object_force_floating = FuncLoader.LoadFunction<d_g_object_force_floating>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_force_floating"));
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_unref(IntPtr raw);
-		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
+		static readonly d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
 		public bool IsFloating {
 			get {

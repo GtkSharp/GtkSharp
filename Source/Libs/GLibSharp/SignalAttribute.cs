@@ -28,7 +28,7 @@ namespace GLib {
 	[AttributeUsage (AttributeTargets.Event, Inherited=false)]
 	public sealed class SignalAttribute : Attribute 
 	{
-		private string cname;
+		private readonly string cname;
 
 		public SignalAttribute (string cname)
 		{

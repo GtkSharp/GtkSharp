@@ -25,10 +25,10 @@ namespace GLib {
 	
 	public class GString : GLib.IWrapper {
 
-		IntPtr handle;
+        readonly IntPtr handle;
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_string_free(IntPtr mem, bool free_segments);
-		static d_g_string_free g_string_free = FuncLoader.LoadFunction<d_g_string_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_free"));
+		static readonly d_g_string_free g_string_free = FuncLoader.LoadFunction<d_g_string_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_free"));
 
 		~GString ()
 		{
@@ -36,7 +36,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_string_new(IntPtr text);
-		static d_g_string_new g_string_new = FuncLoader.LoadFunction<d_g_string_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_new"));
+		static readonly d_g_string_new g_string_new = FuncLoader.LoadFunction<d_g_string_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_string_new"));
 
 		public GString (string text) 
 		{

@@ -28,7 +28,7 @@ namespace Gtk {
 				
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_text_view_new_with_buffer(IntPtr buffer);
-		static d_gtk_text_view_new_with_buffer gtk_text_view_new_with_buffer = FuncLoader.LoadFunction<d_gtk_text_view_new_with_buffer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_view_new_with_buffer"));
+		static readonly d_gtk_text_view_new_with_buffer gtk_text_view_new_with_buffer = FuncLoader.LoadFunction<d_gtk_text_view_new_with_buffer>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_view_new_with_buffer"));
 
 		public TextView (TextBuffer buffer) : base (IntPtr.Zero)
 		{

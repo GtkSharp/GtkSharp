@@ -26,9 +26,9 @@ namespace GLib {
 	
 	public class Argv {
 
-		IntPtr[] arg_ptrs;
-		IntPtr handle;
-		bool add_progname = false;
+        readonly IntPtr[] arg_ptrs;
+        readonly IntPtr handle;
+        readonly bool add_progname = false;
 
 		~Argv ()
 		{

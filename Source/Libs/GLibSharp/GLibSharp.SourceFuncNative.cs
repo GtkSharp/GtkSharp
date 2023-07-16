@@ -12,9 +12,9 @@ namespace GLibSharp {
 
 	internal class SourceFuncInvoker {
 
-		SourceFuncNative native_cb;
-		IntPtr __data;
-		GLib.DestroyNotify __notify;
+        readonly SourceFuncNative native_cb;
+        readonly IntPtr __data;
+        readonly GLib.DestroyNotify __notify;
 
 		~SourceFuncInvoker ()
 		{
@@ -72,7 +72,7 @@ namespace GLibSharp {
 		}
 
 		internal SourceFuncNative NativeDelegate;
-		GLib.SourceFunc managed;
+        readonly GLib.SourceFunc managed;
 
 		public SourceFuncWrapper (GLib.SourceFunc managed)
 		{

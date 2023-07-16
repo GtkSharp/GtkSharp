@@ -28,7 +28,7 @@ namespace Gdk {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gdk_pixbuf_animation_new_from_file(IntPtr filename, out IntPtr error);
-		static d_gdk_pixbuf_animation_new_from_file gdk_pixbuf_animation_new_from_file = FuncLoader.LoadFunction<d_gdk_pixbuf_animation_new_from_file>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), 
+		static readonly d_gdk_pixbuf_animation_new_from_file gdk_pixbuf_animation_new_from_file = FuncLoader.LoadFunction<d_gdk_pixbuf_animation_new_from_file>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), 
 			FuncLoader.IsWindows ? "gdk_pixbuf_animation_new_from_file_utf8" : "gdk_pixbuf_animation_new_from_file"));
 
 		public PixbufAnimation(string filename) : base(IntPtr.Zero)
