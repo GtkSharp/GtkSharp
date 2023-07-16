@@ -24,7 +24,7 @@ namespace Gtk {
 
 	public class NodeSelection {
 
-		private TreeSelection selection;
+		private readonly TreeSelection selection;
 		
 		public event EventHandler Changed;
 

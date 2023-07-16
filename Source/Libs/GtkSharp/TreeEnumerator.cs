@@ -26,8 +26,8 @@ namespace Gtk
 {
 	internal class TreeEnumerator : IEnumerator
 	{
-		private Gtk.TreeIter iter;
-		private Gtk.ITreeModel model;
+		private readonly Gtk.TreeIter iter;
+		private readonly Gtk.ITreeModel model;
 		private bool reset = true;
 		private bool changed = false;
 		

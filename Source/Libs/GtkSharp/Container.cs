@@ -29,11 +29,11 @@ namespace Gtk
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate IntPtr d_gtk_container_class_find_child_property(IntPtr cclass, IntPtr property_name);
-        static d_gtk_container_class_find_child_property gtk_container_class_find_child_property = FuncLoader.LoadFunction<d_gtk_container_class_find_child_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_class_find_child_property"));
+        static readonly d_gtk_container_class_find_child_property gtk_container_class_find_child_property = FuncLoader.LoadFunction<d_gtk_container_class_find_child_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_class_find_child_property"));
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         unsafe delegate void d_gtk_container_child_get_property(IntPtr container, IntPtr child, IntPtr property_name, GLib.Value* value);
-        static d_gtk_container_child_get_property gtk_container_child_get_property = FuncLoader.LoadFunction<d_gtk_container_child_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_child_get_property"));
+        static readonly d_gtk_container_child_get_property gtk_container_child_get_property = FuncLoader.LoadFunction<d_gtk_container_child_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_child_get_property"));
 
         struct GParamSpec
         {
@@ -99,10 +99,10 @@ namespace Gtk
         }
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate bool d_gtk_container_get_focus_chain(IntPtr raw, out IntPtr list_ptr);
-        static d_gtk_container_get_focus_chain gtk_container_get_focus_chain = FuncLoader.LoadFunction<d_gtk_container_get_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_get_focus_chain"));
+        static readonly d_gtk_container_get_focus_chain gtk_container_get_focus_chain = FuncLoader.LoadFunction<d_gtk_container_get_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_get_focus_chain"));
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void d_gtk_container_set_focus_chain(IntPtr raw, IntPtr list_ptr);
-        static d_gtk_container_set_focus_chain gtk_container_set_focus_chain = FuncLoader.LoadFunction<d_gtk_container_set_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_set_focus_chain"));
+        static readonly d_gtk_container_set_focus_chain gtk_container_set_focus_chain = FuncLoader.LoadFunction<d_gtk_container_set_focus_chain>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_container_set_focus_chain"));
 
         public Widget[] FocusChain
         {

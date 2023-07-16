@@ -29,7 +29,7 @@ namespace Gtk {
 	public partial class FileChooserDialog {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_file_chooser_dialog_new(IntPtr title, IntPtr parent, int action, IntPtr nil);
-		static d_gtk_file_chooser_dialog_new gtk_file_chooser_dialog_new = FuncLoader.LoadFunction<d_gtk_file_chooser_dialog_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_dialog_new"));
+		static readonly d_gtk_file_chooser_dialog_new gtk_file_chooser_dialog_new = FuncLoader.LoadFunction<d_gtk_file_chooser_dialog_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_file_chooser_dialog_new"));
 
 		public FileChooserDialog (string title, Window parent, FileChooserAction action, params object[] button_data) : base (IntPtr.Zero)
 		{

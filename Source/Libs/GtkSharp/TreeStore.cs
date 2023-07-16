@@ -28,10 +28,10 @@ namespace Gtk {
 	public partial class TreeStore {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_append(IntPtr raw, out TreeIter iter, ref TreeIter parent);
-		static d_gtk_tree_store_append gtk_tree_store_append = FuncLoader.LoadFunction<d_gtk_tree_store_append>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_append"));
+		static readonly d_gtk_tree_store_append gtk_tree_store_append = FuncLoader.LoadFunction<d_gtk_tree_store_append>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_append"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_append2(IntPtr raw, out TreeIter iter, IntPtr parent);
-		static d_gtk_tree_store_append2 gtk_tree_store_append2 = FuncLoader.LoadFunction<d_gtk_tree_store_append2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_append"));
+		static readonly d_gtk_tree_store_append2 gtk_tree_store_append2 = FuncLoader.LoadFunction<d_gtk_tree_store_append2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_append"));
 
 		public TreeIter AppendNode () 
 		{
@@ -48,10 +48,10 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_insert(IntPtr raw, out TreeIter iter, ref TreeIter parent, int position);
-		static d_gtk_tree_store_insert gtk_tree_store_insert = FuncLoader.LoadFunction<d_gtk_tree_store_insert>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert"));
+		static readonly d_gtk_tree_store_insert gtk_tree_store_insert = FuncLoader.LoadFunction<d_gtk_tree_store_insert>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_insert2(IntPtr raw, out TreeIter iter, IntPtr parent, int position);
-		static d_gtk_tree_store_insert2 gtk_tree_store_insert2 = FuncLoader.LoadFunction<d_gtk_tree_store_insert2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert"));
+		static readonly d_gtk_tree_store_insert2 gtk_tree_store_insert2 = FuncLoader.LoadFunction<d_gtk_tree_store_insert2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert"));
 
 		public TreeIter InsertNode (TreeIter parent, int position) 
 		{
@@ -68,10 +68,10 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_prepend(IntPtr raw, out TreeIter iter, ref TreeIter parent);
-		static d_gtk_tree_store_prepend gtk_tree_store_prepend = FuncLoader.LoadFunction<d_gtk_tree_store_prepend>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_prepend"));
+		static readonly d_gtk_tree_store_prepend gtk_tree_store_prepend = FuncLoader.LoadFunction<d_gtk_tree_store_prepend>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_prepend"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_prepend2(IntPtr raw, out TreeIter iter, IntPtr parent);
-		static d_gtk_tree_store_prepend2 gtk_tree_store_prepend2 = FuncLoader.LoadFunction<d_gtk_tree_store_prepend2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_prepend"));
+		static readonly d_gtk_tree_store_prepend2 gtk_tree_store_prepend2 = FuncLoader.LoadFunction<d_gtk_tree_store_prepend2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_prepend"));
 
 		public TreeIter PrependNode (TreeIter parent) 
 		{
@@ -88,10 +88,10 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_insert_before(IntPtr raw, out TreeIter iter, ref TreeIter parent, ref TreeIter sibling);
-		static d_gtk_tree_store_insert_before gtk_tree_store_insert_before = FuncLoader.LoadFunction<d_gtk_tree_store_insert_before>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_before"));
+		static readonly d_gtk_tree_store_insert_before gtk_tree_store_insert_before = FuncLoader.LoadFunction<d_gtk_tree_store_insert_before>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_before"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_insert_before2(IntPtr raw, out TreeIter iter, IntPtr parent, ref TreeIter sibling);
-		static d_gtk_tree_store_insert_before2 gtk_tree_store_insert_before2 = FuncLoader.LoadFunction<d_gtk_tree_store_insert_before2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_before"));
+		static readonly d_gtk_tree_store_insert_before2 gtk_tree_store_insert_before2 = FuncLoader.LoadFunction<d_gtk_tree_store_insert_before2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_before"));
 
 		public TreeIter InsertNodeBefore (TreeIter sibling) 
 		{
@@ -108,10 +108,10 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_insert_after(IntPtr raw, out TreeIter iter, ref TreeIter parent, ref TreeIter sibling);
-		static d_gtk_tree_store_insert_after gtk_tree_store_insert_after = FuncLoader.LoadFunction<d_gtk_tree_store_insert_after>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_after"));
+		static readonly d_gtk_tree_store_insert_after gtk_tree_store_insert_after = FuncLoader.LoadFunction<d_gtk_tree_store_insert_after>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_after"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_insert_after2(IntPtr raw, out TreeIter iter, IntPtr parent, ref TreeIter sibling);
-		static d_gtk_tree_store_insert_after2 gtk_tree_store_insert_after2 = FuncLoader.LoadFunction<d_gtk_tree_store_insert_after2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_after"));
+		static readonly d_gtk_tree_store_insert_after2 gtk_tree_store_insert_after2 = FuncLoader.LoadFunction<d_gtk_tree_store_insert_after2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_after"));
 
 		public TreeIter InsertNodeAfter (TreeIter sibling) 
 		{
@@ -128,7 +128,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_tree_model_iter_children2(IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
-		static d_gtk_tree_model_iter_children2 gtk_tree_model_iter_children2 = FuncLoader.LoadFunction<d_gtk_tree_model_iter_children2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_children"));
+		static readonly d_gtk_tree_model_iter_children2 gtk_tree_model_iter_children2 = FuncLoader.LoadFunction<d_gtk_tree_model_iter_children2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_children"));
 		public bool IterChildren (out Gtk.TreeIter iter) {
 			bool raw_ret = gtk_tree_model_iter_children2 (Handle, out iter, IntPtr.Zero);
 			bool ret = raw_ret;
@@ -142,7 +142,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_tree_model_iter_nth_child2(IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
-		static d_gtk_tree_model_iter_nth_child2 gtk_tree_model_iter_nth_child2 = FuncLoader.LoadFunction<d_gtk_tree_model_iter_nth_child2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_nth_child"));
+		static readonly d_gtk_tree_model_iter_nth_child2 gtk_tree_model_iter_nth_child2 = FuncLoader.LoadFunction<d_gtk_tree_model_iter_nth_child2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_iter_nth_child"));
 		public bool IterNthChild (out Gtk.TreeIter iter, int n) {
 			bool raw_ret = gtk_tree_model_iter_nth_child2 (Handle, out iter, IntPtr.Zero, n);
 			bool ret = raw_ret;
@@ -223,10 +223,10 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_insert_with_valuesv(IntPtr raw, out TreeIter iter, IntPtr parent, int position, int[] columns, GLib.Value[] values, int n_values);
-		static d_gtk_tree_store_insert_with_valuesv gtk_tree_store_insert_with_valuesv = FuncLoader.LoadFunction<d_gtk_tree_store_insert_with_valuesv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_with_valuesv"));
+		static readonly d_gtk_tree_store_insert_with_valuesv gtk_tree_store_insert_with_valuesv = FuncLoader.LoadFunction<d_gtk_tree_store_insert_with_valuesv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_with_valuesv"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_insert_with_valuesv2(IntPtr raw, out TreeIter iter, ref TreeIter parent, int position, int[] columns, GLib.Value[] values, int n_values);
-		static d_gtk_tree_store_insert_with_valuesv2 gtk_tree_store_insert_with_valuesv2 = FuncLoader.LoadFunction<d_gtk_tree_store_insert_with_valuesv2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_with_valuesv"));
+		static readonly d_gtk_tree_store_insert_with_valuesv2 gtk_tree_store_insert_with_valuesv2 = FuncLoader.LoadFunction<d_gtk_tree_store_insert_with_valuesv2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_insert_with_valuesv"));
 
 		public TreeIter InsertWithValues (int position, params object[] values)
 		{
@@ -265,7 +265,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_tree_store_set_valuesv(IntPtr raw, ref TreeIter iter, int[] columns, GLib.Value[] values, int n_values);
-		static d_gtk_tree_store_set_valuesv gtk_tree_store_set_valuesv = FuncLoader.LoadFunction<d_gtk_tree_store_set_valuesv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_set_valuesv"));
+		static readonly d_gtk_tree_store_set_valuesv gtk_tree_store_set_valuesv = FuncLoader.LoadFunction<d_gtk_tree_store_set_valuesv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_store_set_valuesv"));
 
 		public void SetValues (TreeIter iter, params object[] values)
 		{

@@ -27,7 +27,7 @@ namespace Gtk {
 				
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_menu_item_new_with_mnemonic(IntPtr label);
-		static d_gtk_menu_item_new_with_mnemonic gtk_menu_item_new_with_mnemonic = FuncLoader.LoadFunction<d_gtk_menu_item_new_with_mnemonic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_item_new_with_mnemonic"));
+		static readonly d_gtk_menu_item_new_with_mnemonic gtk_menu_item_new_with_mnemonic = FuncLoader.LoadFunction<d_gtk_menu_item_new_with_mnemonic>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_item_new_with_mnemonic"));
 
 		public MenuItem (string label) : base (IntPtr.Zero)
 		{

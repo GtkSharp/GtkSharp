@@ -28,7 +28,7 @@ namespace Gtk {
 		public NativeDialog (IntPtr raw) : base(raw) { }
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_native_dialog_show(IntPtr self);
-		static d_gtk_native_dialog_show gtk_native_dialog_show = FuncLoader.LoadFunction<d_gtk_native_dialog_show>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_show"));
+		static readonly d_gtk_native_dialog_show gtk_native_dialog_show = FuncLoader.LoadFunction<d_gtk_native_dialog_show>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_show"));
 
 		public void Show ()
 		{
@@ -36,7 +36,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_native_dialog_hide(IntPtr self);
-		static d_gtk_native_dialog_hide gtk_native_dialog_hide = FuncLoader.LoadFunction<d_gtk_native_dialog_hide>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_hide"));
+		static readonly d_gtk_native_dialog_hide gtk_native_dialog_hide = FuncLoader.LoadFunction<d_gtk_native_dialog_hide>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_hide"));
 
                 public void Hide ()
                 {
@@ -44,7 +44,7 @@ namespace Gtk {
                 }
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_native_dialog_destroy(IntPtr self);
-		static d_gtk_native_dialog_destroy gtk_native_dialog_destroy = FuncLoader.LoadFunction<d_gtk_native_dialog_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_destroy"));
+		static readonly d_gtk_native_dialog_destroy gtk_native_dialog_destroy = FuncLoader.LoadFunction<d_gtk_native_dialog_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_destroy"));
 
                 public void Destroy ()
                 {
@@ -52,7 +52,7 @@ namespace Gtk {
                 }
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_native_dialog_get_visible(IntPtr self);
-		static d_gtk_native_dialog_get_visible gtk_native_dialog_get_visible = FuncLoader.LoadFunction<d_gtk_native_dialog_get_visible>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_visible"));
+		static readonly d_gtk_native_dialog_get_visible gtk_native_dialog_get_visible = FuncLoader.LoadFunction<d_gtk_native_dialog_get_visible>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_visible"));
 
 		public bool Visible {
 			get {
@@ -61,10 +61,10 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_native_dialog_set_modal(IntPtr self, bool modal);
-		static d_gtk_native_dialog_set_modal gtk_native_dialog_set_modal = FuncLoader.LoadFunction<d_gtk_native_dialog_set_modal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_modal"));
+		static readonly d_gtk_native_dialog_set_modal gtk_native_dialog_set_modal = FuncLoader.LoadFunction<d_gtk_native_dialog_set_modal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_modal"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_native_dialog_get_modal(IntPtr self);
-		static d_gtk_native_dialog_get_modal gtk_native_dialog_get_modal = FuncLoader.LoadFunction<d_gtk_native_dialog_get_modal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_modal"));
+		static readonly d_gtk_native_dialog_get_modal gtk_native_dialog_get_modal = FuncLoader.LoadFunction<d_gtk_native_dialog_get_modal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_modal"));
 
 		public bool Modal {
 			set {
@@ -76,10 +76,10 @@ namespace Gtk {
                 }
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_native_dialog_set_title(IntPtr self, IntPtr title);
-		static d_gtk_native_dialog_set_title gtk_native_dialog_set_title = FuncLoader.LoadFunction<d_gtk_native_dialog_set_title>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_title"));
+		static readonly d_gtk_native_dialog_set_title gtk_native_dialog_set_title = FuncLoader.LoadFunction<d_gtk_native_dialog_set_title>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_title"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_native_dialog_get_title(IntPtr self);
-		static d_gtk_native_dialog_get_title gtk_native_dialog_get_title = FuncLoader.LoadFunction<d_gtk_native_dialog_get_title>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_title"));
+		static readonly d_gtk_native_dialog_get_title gtk_native_dialog_get_title = FuncLoader.LoadFunction<d_gtk_native_dialog_get_title>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_title"));
 
                 public string Title {
                         set {
@@ -94,13 +94,13 @@ namespace Gtk {
                 }
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_native_dialog_set_transient_for(IntPtr self, IntPtr parent);
-		static d_gtk_native_dialog_set_transient_for gtk_native_dialog_set_transient_for = FuncLoader.LoadFunction<d_gtk_native_dialog_set_transient_for>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_transient_for"));
+		static readonly d_gtk_native_dialog_set_transient_for gtk_native_dialog_set_transient_for = FuncLoader.LoadFunction<d_gtk_native_dialog_set_transient_for>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_set_transient_for"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_native_dialog_get_transient_for(IntPtr self);
-		static d_gtk_native_dialog_get_transient_for gtk_native_dialog_get_transient_for = FuncLoader.LoadFunction<d_gtk_native_dialog_get_transient_for>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_transient_for"));
+		static readonly d_gtk_native_dialog_get_transient_for gtk_native_dialog_get_transient_for = FuncLoader.LoadFunction<d_gtk_native_dialog_get_transient_for>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_get_transient_for"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_gtk_native_dialog_run(IntPtr self);
-		static d_gtk_native_dialog_run gtk_native_dialog_run = FuncLoader.LoadFunction<d_gtk_native_dialog_run>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_run"));
+		static readonly d_gtk_native_dialog_run gtk_native_dialog_run = FuncLoader.LoadFunction<d_gtk_native_dialog_run>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_native_dialog_run"));
 
 		public int Run ()
                 {

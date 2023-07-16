@@ -36,7 +36,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_menu_set_screen(IntPtr raw, IntPtr screen);
-		static d_gtk_menu_set_screen gtk_menu_set_screen = FuncLoader.LoadFunction<d_gtk_menu_set_screen>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_set_screen"));
+		static readonly d_gtk_menu_set_screen gtk_menu_set_screen = FuncLoader.LoadFunction<d_gtk_menu_set_screen>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_set_screen"));
 
 		public new Gdk.Screen Screen {
 			get {
@@ -48,7 +48,7 @@ namespace Gtk {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_menu_set_active(IntPtr raw, uint index_);
-		static d_gtk_menu_set_active gtk_menu_set_active = FuncLoader.LoadFunction<d_gtk_menu_set_active>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_set_active"));
+		static readonly d_gtk_menu_set_active gtk_menu_set_active = FuncLoader.LoadFunction<d_gtk_menu_set_active>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_set_active"));
 
 		public void SetActive (uint index_)
 		{

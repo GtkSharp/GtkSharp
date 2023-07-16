@@ -26,7 +26,7 @@ namespace Gtk {
 	public partial class VScale {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_vscale_new_with_range(double min, double max, double step);
-		static d_gtk_vscale_new_with_range gtk_vscale_new_with_range = FuncLoader.LoadFunction<d_gtk_vscale_new_with_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_vscale_new_with_range"));
+		static readonly d_gtk_vscale_new_with_range gtk_vscale_new_with_range = FuncLoader.LoadFunction<d_gtk_vscale_new_with_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_vscale_new_with_range"));
 
 		[Obsolete]
 		public VScale (double min, double max, double step) : base (IntPtr.Zero)

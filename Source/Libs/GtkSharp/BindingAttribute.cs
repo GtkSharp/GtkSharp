@@ -25,10 +25,10 @@ namespace Gtk {
 
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public sealed class BindingAttribute : Attribute {
-		Gdk.Key key;
+        readonly Gdk.Key key;
 		Gdk.ModifierType mod;
-		string handler;
-		object[] parms;
+        readonly string handler;
+        readonly object[] parms;
 
 		public BindingAttribute (Gdk.Key key, string handler, params object[] parms) : this (key, 0, handler, parms) {}
 

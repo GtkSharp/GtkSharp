@@ -24,7 +24,7 @@ namespace Gtk {
 	public partial class TargetList {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_target_list_new(Gtk.TargetEntry[] targets, uint n_targets);
-		static d_gtk_target_list_new gtk_target_list_new = FuncLoader.LoadFunction<d_gtk_target_list_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_target_list_new"));
+		static readonly d_gtk_target_list_new gtk_target_list_new = FuncLoader.LoadFunction<d_gtk_target_list_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_target_list_new"));
 
 		public TargetList() : base(gtk_target_list_new(null, 0)) {}
 

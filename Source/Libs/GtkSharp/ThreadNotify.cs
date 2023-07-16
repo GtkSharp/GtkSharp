@@ -40,8 +40,8 @@ namespace Gtk {
 	///   
 	public class ThreadNotify : IDisposable {
 		bool disposed;
-		ReadyEvent re;
-		GLib.IdleHandler idle;
+        readonly ReadyEvent re;
+        readonly GLib.IdleHandler idle;
 		bool notified;
 
 		/// <summary>
