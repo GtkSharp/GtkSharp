@@ -75,37 +75,37 @@ namespace GLib {
 		[StructLayout(LayoutKind.Sequential)]
 		public struct GHookList_seq_idAlign
 		{
-			sbyte f1;
-			private UIntPtr seq_id;
+            readonly sbyte f1;
+			private readonly UIntPtr seq_id;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct GHookList_hooksAlign
 		{
-			sbyte f1;
-			private IntPtr hooks;
+            readonly sbyte f1;
+			private readonly IntPtr hooks;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct GHookList_dummy3Align
 		{
-			sbyte f1;
-			private IntPtr dummy3;
+            readonly sbyte f1;
+			private readonly IntPtr dummy3;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct GHookList_finalize_hookAlign
 		{
-			sbyte f1;
-			private IntPtr finalize_hook;
+            readonly sbyte f1;
+			private readonly IntPtr finalize_hook;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct GHookList_dummyAlign
 		{
-			sbyte f1;
+            readonly sbyte f1;
 			[MarshalAs (UnmanagedType.ByValArray, SizeConst=2)]
-			private IntPtr[] dummy;
+			private readonly IntPtr[] dummy;
 		}
 		// End of the ABI representation.
 

@@ -12,7 +12,7 @@ namespace GLib {
 	public partial class TimeZone : GLib.Opaque {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_time_zone_get_type();
-		static d_g_time_zone_get_type g_time_zone_get_type = FuncLoader.LoadFunction<d_g_time_zone_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_get_type"));
+		static readonly d_g_time_zone_get_type g_time_zone_get_type = FuncLoader.LoadFunction<d_g_time_zone_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_get_type"));
 
 		public static GLib.GType GType { 
 			get {
@@ -23,7 +23,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_time_zone_adjust_time(IntPtr raw, int type, long time_);
-		static d_g_time_zone_adjust_time g_time_zone_adjust_time = FuncLoader.LoadFunction<d_g_time_zone_adjust_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_adjust_time"));
+		static readonly d_g_time_zone_adjust_time g_time_zone_adjust_time = FuncLoader.LoadFunction<d_g_time_zone_adjust_time>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_adjust_time"));
 
 		public int AdjustTime(int type, long time_) {
 			int raw_ret = g_time_zone_adjust_time(Handle, type, time_);
@@ -32,7 +32,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_time_zone_find_interval(IntPtr raw, int type, long time_);
-		static d_g_time_zone_find_interval g_time_zone_find_interval = FuncLoader.LoadFunction<d_g_time_zone_find_interval>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_find_interval"));
+		static readonly d_g_time_zone_find_interval g_time_zone_find_interval = FuncLoader.LoadFunction<d_g_time_zone_find_interval>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_find_interval"));
 
 		public int FindInterval(int type, long time_) {
 			int raw_ret = g_time_zone_find_interval(Handle, type, time_);
@@ -41,7 +41,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_time_zone_get_abbreviation(IntPtr raw, int interval);
-		static d_g_time_zone_get_abbreviation g_time_zone_get_abbreviation = FuncLoader.LoadFunction<d_g_time_zone_get_abbreviation>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_get_abbreviation"));
+		static readonly d_g_time_zone_get_abbreviation g_time_zone_get_abbreviation = FuncLoader.LoadFunction<d_g_time_zone_get_abbreviation>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_get_abbreviation"));
 
 		public string GetAbbreviation(int interval) {
 			IntPtr raw_ret = g_time_zone_get_abbreviation(Handle, interval);
@@ -50,7 +50,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_time_zone_get_offset(IntPtr raw, int interval);
-		static d_g_time_zone_get_offset g_time_zone_get_offset = FuncLoader.LoadFunction<d_g_time_zone_get_offset>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_get_offset"));
+		static readonly d_g_time_zone_get_offset g_time_zone_get_offset = FuncLoader.LoadFunction<d_g_time_zone_get_offset>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_get_offset"));
 
 		public int GetOffset(int interval) {
 			int raw_ret = g_time_zone_get_offset(Handle, interval);
@@ -59,7 +59,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_time_zone_is_dst(IntPtr raw, int interval);
-		static d_g_time_zone_is_dst g_time_zone_is_dst = FuncLoader.LoadFunction<d_g_time_zone_is_dst>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_is_dst"));
+		static readonly d_g_time_zone_is_dst g_time_zone_is_dst = FuncLoader.LoadFunction<d_g_time_zone_is_dst>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_is_dst"));
 
 		public bool IsDst(int interval) {
 			bool raw_ret = g_time_zone_is_dst(Handle, interval);
@@ -70,7 +70,7 @@ namespace GLib {
 		public TimeZone(IntPtr raw) : base(raw) {}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_time_zone_new(IntPtr identifier);
-		static d_g_time_zone_new g_time_zone_new = FuncLoader.LoadFunction<d_g_time_zone_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_new"));
+		static readonly d_g_time_zone_new g_time_zone_new = FuncLoader.LoadFunction<d_g_time_zone_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_new"));
 
 		public TimeZone (string identifier) 
 		{
@@ -80,7 +80,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_time_zone_new_local();
-		static d_g_time_zone_new_local g_time_zone_new_local = FuncLoader.LoadFunction<d_g_time_zone_new_local>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_new_local"));
+		static readonly d_g_time_zone_new_local g_time_zone_new_local = FuncLoader.LoadFunction<d_g_time_zone_new_local>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_new_local"));
 
 		public TimeZone () 
 		{
@@ -88,7 +88,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_time_zone_new_utc();
-		static d_g_time_zone_new_utc g_time_zone_new_utc = FuncLoader.LoadFunction<d_g_time_zone_new_utc>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_new_utc"));
+		static readonly d_g_time_zone_new_utc g_time_zone_new_utc = FuncLoader.LoadFunction<d_g_time_zone_new_utc>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_new_utc"));
 
 		public static TimeZone NewUtc()
 		{
@@ -97,7 +97,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_time_zone_ref(IntPtr raw);
-		static d_g_time_zone_ref g_time_zone_ref = FuncLoader.LoadFunction<d_g_time_zone_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_ref"));
+		static readonly d_g_time_zone_ref g_time_zone_ref = FuncLoader.LoadFunction<d_g_time_zone_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_ref"));
 
 		protected override void Ref (IntPtr raw)
 		{
@@ -108,7 +108,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_time_zone_unref(IntPtr raw);
-		static d_g_time_zone_unref g_time_zone_unref = FuncLoader.LoadFunction<d_g_time_zone_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_unref"));
+		static readonly d_g_time_zone_unref g_time_zone_unref = FuncLoader.LoadFunction<d_g_time_zone_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_zone_unref"));
 
 		protected override void Unref (IntPtr raw)
 		{
@@ -119,7 +119,7 @@ namespace GLib {
 		}
 
 		class FinalizerInfo {
-			IntPtr handle;
+            readonly IntPtr handle;
 
 			public FinalizerInfo (IntPtr handle)
 			{

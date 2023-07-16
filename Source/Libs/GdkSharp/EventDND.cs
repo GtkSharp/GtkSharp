@@ -31,8 +31,8 @@ namespace Gdk {
 		[StructLayout (LayoutKind.Sequential)]
 		struct NativeStruct {
 			EventType type;
-			IntPtr window;
-			sbyte send_event;
+            readonly IntPtr window;
+            readonly sbyte send_event;
 			public IntPtr context;
 			public uint time;
 			public short x_root;

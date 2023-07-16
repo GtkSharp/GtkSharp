@@ -23,12 +23,12 @@ namespace Pango {
 
 	public class ScriptIter : GLib.Opaque {
 
-		IntPtr native_text;
+        readonly IntPtr native_text;
 
 		public ScriptIter(IntPtr raw) : base(raw) {}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_script_iter_new(IntPtr text, int length);
-		static d_pango_script_iter_new pango_script_iter_new = FuncLoader.LoadFunction<d_pango_script_iter_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_script_iter_new"));
+		static readonly d_pango_script_iter_new pango_script_iter_new = FuncLoader.LoadFunction<d_pango_script_iter_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_script_iter_new"));
 
 		public ScriptIter (string text)
 		{
@@ -37,7 +37,7 @@ namespace Pango {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_script_iter_free(IntPtr raw);
-		static d_pango_script_iter_free pango_script_iter_free = FuncLoader.LoadFunction<d_pango_script_iter_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_script_iter_free"));
+		static readonly d_pango_script_iter_free pango_script_iter_free = FuncLoader.LoadFunction<d_pango_script_iter_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_script_iter_free"));
 
 		~ScriptIter ()
 		{
@@ -47,10 +47,10 @@ namespace Pango {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_script_iter_get_range(IntPtr raw, out IntPtr start, out IntPtr end, out Pango.Script script);
-		static d_pango_script_iter_get_range pango_script_iter_get_range = FuncLoader.LoadFunction<d_pango_script_iter_get_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_script_iter_get_range"));
+		static readonly d_pango_script_iter_get_range pango_script_iter_get_range = FuncLoader.LoadFunction<d_pango_script_iter_get_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_script_iter_get_range"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_utf8_pointer_to_offset(IntPtr str, IntPtr pos);
-        static d_g_utf8_pointer_to_offset g_utf8_pointer_to_offset = FuncLoader.LoadFunction<d_g_utf8_pointer_to_offset>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_utf8_pointer_to_offset"));
+        static readonly d_g_utf8_pointer_to_offset g_utf8_pointer_to_offset = FuncLoader.LoadFunction<d_g_utf8_pointer_to_offset>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_utf8_pointer_to_offset"));
 
 		public void GetRange (out int start, out int len, out Pango.Script script)
 		{
@@ -63,7 +63,7 @@ namespace Pango {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_pango_script_iter_next(IntPtr raw);
-		static d_pango_script_iter_next pango_script_iter_next = FuncLoader.LoadFunction<d_pango_script_iter_next>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_script_iter_next"));
+		static readonly d_pango_script_iter_next pango_script_iter_next = FuncLoader.LoadFunction<d_pango_script_iter_next>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_script_iter_next"));
 
 		public bool Next ()
 		{

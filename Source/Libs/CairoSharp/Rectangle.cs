@@ -32,10 +32,10 @@ namespace Cairo
 {
 	public struct Rectangle
 	{
-		double x;
-		double y;
-		double width;
-		double height;
+        readonly double x;
+        readonly double y;
+        readonly double width;
+        readonly double height;
 		
 		public Rectangle (double x, double y, double width, double height)
 		{

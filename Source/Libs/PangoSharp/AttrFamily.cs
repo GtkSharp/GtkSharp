@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrFamily : Attribute {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_family_new(IntPtr family);
-		static d_pango_attr_family_new pango_attr_family_new = FuncLoader.LoadFunction<d_pango_attr_family_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_family_new"));
+		static readonly d_pango_attr_family_new pango_attr_family_new = FuncLoader.LoadFunction<d_pango_attr_family_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_family_new"));
 
 		public AttrFamily (string family) : base (NewAttrFamily (family)) {}
 

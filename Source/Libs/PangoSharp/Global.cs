@@ -35,7 +35,7 @@ namespace Pango {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_pango_parse_markup(IntPtr markup, int length, uint accel_marker, out IntPtr attr_list_handle, out IntPtr text, out uint accel_char, IntPtr err);
-		static d_pango_parse_markup pango_parse_markup = FuncLoader.LoadFunction<d_pango_parse_markup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_parse_markup"));
+		static readonly d_pango_parse_markup pango_parse_markup = FuncLoader.LoadFunction<d_pango_parse_markup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_parse_markup"));
 
 		public static bool ParseMarkup (string markup, char accel_marker, out Pango.AttrList attrs, out string text, out char accel_char)
 		{

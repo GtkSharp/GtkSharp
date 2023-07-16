@@ -12,12 +12,12 @@ namespace Samples
     class MainWindow : Window
     {
         private HeaderBar _headerBar;
-        private TreeView _treeView;
-        private Box _boxContent;
+        private readonly TreeView _treeView;
+        private readonly Box _boxContent;
         private TreeStore _store;
         private Dictionary<string, (Type type, Widget widget)> _items;
-        private SourceView _textViewCode;
-        private Notebook _notebook;
+        private readonly SourceView _textViewCode;
+        private readonly Notebook _notebook;
 
         public MainWindow() : base(WindowType.Toplevel)
         {

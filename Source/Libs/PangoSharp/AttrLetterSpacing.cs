@@ -24,7 +24,7 @@ namespace Pango {
 	public class AttrLetterSpacing : Attribute {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_letter_spacing_new(int letter_spacing);
-		static d_pango_attr_letter_spacing_new pango_attr_letter_spacing_new = FuncLoader.LoadFunction<d_pango_attr_letter_spacing_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_letter_spacing_new"));
+		static readonly d_pango_attr_letter_spacing_new pango_attr_letter_spacing_new = FuncLoader.LoadFunction<d_pango_attr_letter_spacing_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_letter_spacing_new"));
 
 		public AttrLetterSpacing (int letter_spacing) : this (pango_attr_letter_spacing_new (letter_spacing)) {}
 

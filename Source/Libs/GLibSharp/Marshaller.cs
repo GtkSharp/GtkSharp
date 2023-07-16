@@ -32,7 +32,7 @@ namespace GLib {
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_free(IntPtr mem);
-		static d_g_free g_free = FuncLoader.LoadFunction<d_g_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_free"));
+		static readonly d_g_free g_free = FuncLoader.LoadFunction<d_g_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_free"));
 
 		public static void Free (IntPtr ptr)
 		{
@@ -49,7 +49,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_filename_to_utf8(IntPtr mem, IntPtr len, IntPtr read, out IntPtr written, out IntPtr error);
-		static d_g_filename_to_utf8 g_filename_to_utf8 = FuncLoader.LoadFunction<d_g_filename_to_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_filename_to_utf8"));
+		static readonly d_g_filename_to_utf8 g_filename_to_utf8 = FuncLoader.LoadFunction<d_g_filename_to_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_filename_to_utf8"));
 		
 		public static string FilenamePtrToString (IntPtr ptr) 
 		{
@@ -117,7 +117,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_filename_from_utf8(IntPtr mem, IntPtr len, IntPtr read, out IntPtr written, out IntPtr error);
-		static d_g_filename_from_utf8 g_filename_from_utf8 = FuncLoader.LoadFunction<d_g_filename_from_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_filename_from_utf8"));
+		static readonly d_g_filename_from_utf8 g_filename_from_utf8 = FuncLoader.LoadFunction<d_g_filename_from_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_filename_from_utf8"));
 
 		public static IntPtr StringToFilenamePtr (string str) 
 		{
@@ -177,7 +177,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_strfreev(IntPtr mem);
-		static d_g_strfreev g_strfreev = FuncLoader.LoadFunction<d_g_strfreev>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_strfreev"));
+		static readonly d_g_strfreev g_strfreev = FuncLoader.LoadFunction<d_g_strfreev>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_strfreev"));
 
 		public static void StrFreeV (IntPtr null_term_array)
 		{
@@ -222,15 +222,15 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_malloc(UIntPtr size);
-		static d_g_malloc g_malloc = FuncLoader.LoadFunction<d_g_malloc>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_malloc"));
+		static readonly d_g_malloc g_malloc = FuncLoader.LoadFunction<d_g_malloc>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_malloc"));
 
 		public static IntPtr Malloc (ulong size)
 		{
 			return g_malloc (new UIntPtr (size));
 		}
 
-		static System.DateTime local_epoch = new System.DateTime (1970, 1, 1, 0, 0, 0);
-		static int utc_offset = (int) (System.TimeZone.CurrentTimeZone.GetUtcOffset (System.DateTime.Now)).TotalSeconds;
+		static readonly System.DateTime local_epoch = new System.DateTime (1970, 1, 1, 0, 0, 0);
+		static readonly int utc_offset = (int) (System.TimeZone.CurrentTimeZone.GetUtcOffset (System.DateTime.Now)).TotalSeconds;
 
 		public static IntPtr DateTimeTotime_t (System.DateTime time)
 		{
@@ -243,10 +243,10 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_malloc0(UIntPtr size);
-		static d_g_malloc0 g_malloc0 = FuncLoader.LoadFunction<d_g_malloc0>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_malloc0"));
+		static readonly d_g_malloc0 g_malloc0 = FuncLoader.LoadFunction<d_g_malloc0>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_malloc0"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_unichar_to_utf8(uint c, IntPtr buf);
-		static d_g_unichar_to_utf8 g_unichar_to_utf8 = FuncLoader.LoadFunction<d_g_unichar_to_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_unichar_to_utf8"));
+		static readonly d_g_unichar_to_utf8 g_unichar_to_utf8 = FuncLoader.LoadFunction<d_g_unichar_to_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_unichar_to_utf8"));
 
 		public static char GUnicharToChar (uint ucs4_char)
 		{ 
@@ -271,7 +271,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_utf16_to_ucs4(ref ushort c, IntPtr len, IntPtr d1, IntPtr d2, IntPtr d3);
-		static d_g_utf16_to_ucs4 g_utf16_to_ucs4 = FuncLoader.LoadFunction<d_g_utf16_to_ucs4>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_utf16_to_ucs4"));
+		static readonly d_g_utf16_to_ucs4 g_utf16_to_ucs4 = FuncLoader.LoadFunction<d_g_utf16_to_ucs4>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_utf16_to_ucs4"));
 
 		public static uint CharToGUnichar (char c)
 		{

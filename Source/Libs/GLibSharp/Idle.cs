@@ -63,7 +63,7 @@ namespace GLib {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_idle_add_full(int priority, IdleHandlerInternal d, IntPtr data, DestroyNotify notify);
-		static d_g_idle_add_full g_idle_add_full = FuncLoader.LoadFunction<d_g_idle_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add_full"));
+		static readonly d_g_idle_add_full g_idle_add_full = FuncLoader.LoadFunction<d_g_idle_add_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_idle_add_full"));
 
 		public static uint Add (int priority, IdleHandler hndlr)
 		{

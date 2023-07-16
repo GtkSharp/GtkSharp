@@ -28,7 +28,7 @@ namespace Pango {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_line_get_x_ranges(IntPtr raw, int start_index, int end_index, out IntPtr ranges_handle, out int n_ranges);
-		static d_pango_layout_line_get_x_ranges pango_layout_line_get_x_ranges = FuncLoader.LoadFunction<d_pango_layout_line_get_x_ranges>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_line_get_x_ranges"));
+		static readonly d_pango_layout_line_get_x_ranges pango_layout_line_get_x_ranges = FuncLoader.LoadFunction<d_pango_layout_line_get_x_ranges>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_line_get_x_ranges"));
 
 		public int[] GetXRanges(int start_index, int end_index)
 		{
@@ -43,7 +43,7 @@ namespace Pango {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_line_get_height(IntPtr raw, out int height);
-		static d_pango_layout_line_get_height pango_layout_line_get_height = FuncLoader.LoadFunction<d_pango_layout_line_get_height>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_line_get_height"));
+		static readonly d_pango_layout_line_get_height pango_layout_line_get_height = FuncLoader.LoadFunction<d_pango_layout_line_get_height>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_line_get_height"));
 
 		public int Height
 		{

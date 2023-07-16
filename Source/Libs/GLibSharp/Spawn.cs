@@ -65,7 +65,7 @@ namespace GLib {
 
 	internal class SpawnChildSetupWrapper {
 
-		SpawnChildSetupFunc handler;
+        readonly SpawnChildSetupFunc handler;
 
 		public SpawnChildSetupWrapper (SpawnChildSetupFunc handler)
 		{
@@ -95,7 +95,7 @@ namespace GLib {
 		public const int IgnorePipe = Int32.MaxValue;
 		public const int RequestPipe = 0;
 
-		long pid;
+        readonly long pid;
 
 		private Process (int pid) 
 		{
@@ -103,7 +103,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_spawn_close_pid(int pid);
-		static d_g_spawn_close_pid g_spawn_close_pid = FuncLoader.LoadFunction<d_g_spawn_close_pid>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_close_pid"));
+		static readonly d_g_spawn_close_pid g_spawn_close_pid = FuncLoader.LoadFunction<d_g_spawn_close_pid>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_close_pid"));
 
 		public void Close ()
 		{
@@ -111,10 +111,10 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_async(IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, out IntPtr error);
-		static d_g_spawn_async g_spawn_async = FuncLoader.LoadFunction<d_g_spawn_async>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_async"));
+		static readonly d_g_spawn_async g_spawn_async = FuncLoader.LoadFunction<d_g_spawn_async>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_async"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_async_utf8(IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, out IntPtr error);
-		static d_g_spawn_async_utf8 g_spawn_async_utf8 = FuncLoader.LoadFunction<d_g_spawn_async_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_async_utf8"));
+		static readonly d_g_spawn_async_utf8 g_spawn_async_utf8 = FuncLoader.LoadFunction<d_g_spawn_async_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_async_utf8"));
 
 		public static bool SpawnAsync (string working_directory, string[] argv, string[] envp, SpawnFlags flags, SpawnChildSetupFunc child_setup, out Process child_process)
 		{
@@ -140,10 +140,10 @@ namespace GLib {
 		}  
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_async_with_pipes(IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, IntPtr stdin, IntPtr stdout, IntPtr stderr, out IntPtr error);
-		static d_g_spawn_async_with_pipes g_spawn_async_with_pipes = FuncLoader.LoadFunction<d_g_spawn_async_with_pipes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_async_with_pipes"));
+		static readonly d_g_spawn_async_with_pipes g_spawn_async_with_pipes = FuncLoader.LoadFunction<d_g_spawn_async_with_pipes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_async_with_pipes"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_async_with_pipes_utf8(IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, IntPtr stdin, IntPtr stdout, IntPtr stderr, out IntPtr error);
-		static d_g_spawn_async_with_pipes_utf8 g_spawn_async_with_pipes_utf8 = FuncLoader.LoadFunction<d_g_spawn_async_with_pipes_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_async_with_pipes_utf8"));
+		static readonly d_g_spawn_async_with_pipes_utf8 g_spawn_async_with_pipes_utf8 = FuncLoader.LoadFunction<d_g_spawn_async_with_pipes_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_async_with_pipes_utf8"));
 
 		public static bool SpawnAsyncWithPipes (string working_directory, string[] argv, string[] envp, SpawnFlags flags, SpawnChildSetupFunc child_setup, out Process child_process, ref int stdin, ref int stdout, ref int stderr)
 		{
@@ -184,10 +184,10 @@ namespace GLib {
 		}  
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_sync(IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
-		static d_g_spawn_sync g_spawn_sync = FuncLoader.LoadFunction<d_g_spawn_sync>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_sync"));
+		static readonly d_g_spawn_sync g_spawn_sync = FuncLoader.LoadFunction<d_g_spawn_sync>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_sync"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_sync_utf8(IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
-		static d_g_spawn_sync_utf8 g_spawn_sync_utf8 = FuncLoader.LoadFunction<d_g_spawn_sync_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_sync_utf8"));
+		static readonly d_g_spawn_sync_utf8 g_spawn_sync_utf8 = FuncLoader.LoadFunction<d_g_spawn_sync_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_sync_utf8"));
 
 		public static bool SpawnSync (string working_directory, string[] argv, string[] envp, SpawnFlags flags, SpawnChildSetupFunc child_setup, out string stdout, out string stderr, out int exit_status)
 		{
@@ -213,10 +213,10 @@ namespace GLib {
 		}  
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_command_line_async(IntPtr cmdline, out IntPtr error);
-		static d_g_spawn_command_line_async g_spawn_command_line_async = FuncLoader.LoadFunction<d_g_spawn_command_line_async>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_command_line_async"));
+		static readonly d_g_spawn_command_line_async g_spawn_command_line_async = FuncLoader.LoadFunction<d_g_spawn_command_line_async>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_command_line_async"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_command_line_async_utf8(IntPtr cmdline, out IntPtr error);
-		static d_g_spawn_command_line_async_utf8 g_spawn_command_line_async_utf8 = FuncLoader.LoadFunction<d_g_spawn_command_line_async_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_command_line_async_utf8"));
+		static readonly d_g_spawn_command_line_async_utf8 g_spawn_command_line_async_utf8 = FuncLoader.LoadFunction<d_g_spawn_command_line_async_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_command_line_async_utf8"));
 
 		public static bool SpawnCommandLineAsync (string command_line)
 		{
@@ -235,10 +235,10 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_command_line_sync(IntPtr cmdline, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
-		static d_g_spawn_command_line_sync g_spawn_command_line_sync = FuncLoader.LoadFunction<d_g_spawn_command_line_sync>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_command_line_sync"));
+		static readonly d_g_spawn_command_line_sync g_spawn_command_line_sync = FuncLoader.LoadFunction<d_g_spawn_command_line_sync>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_command_line_sync"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_command_line_sync_utf8(IntPtr cmdline, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
-		static d_g_spawn_command_line_sync_utf8 g_spawn_command_line_sync_utf8 = FuncLoader.LoadFunction<d_g_spawn_command_line_sync_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_command_line_sync_utf8"));
+		static readonly d_g_spawn_command_line_sync_utf8 g_spawn_command_line_sync_utf8 = FuncLoader.LoadFunction<d_g_spawn_command_line_sync_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_command_line_sync_utf8"));
 
 		public static bool SpawnCommandLineSync (string command_line, out string stdout, out string stderr, out int exit_status)
 		{

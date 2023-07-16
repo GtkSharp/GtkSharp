@@ -27,7 +27,7 @@ namespace Pango {
 	public partial class Layout {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_layout_get_lines(IntPtr raw);
-		static d_pango_layout_get_lines pango_layout_get_lines = FuncLoader.LoadFunction<d_pango_layout_get_lines>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_lines"));
+		static readonly d_pango_layout_get_lines pango_layout_get_lines = FuncLoader.LoadFunction<d_pango_layout_get_lines>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_lines"));
 
 		public LayoutLine[] Lines {
 			get {
@@ -44,7 +44,7 @@ namespace Pango {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_set_markup_with_accel(IntPtr raw, IntPtr markup, int length, uint accel_marker, out uint accel_char);
-		static d_pango_layout_set_markup_with_accel pango_layout_set_markup_with_accel = FuncLoader.LoadFunction<d_pango_layout_set_markup_with_accel>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_markup_with_accel"));
+		static readonly d_pango_layout_set_markup_with_accel pango_layout_set_markup_with_accel = FuncLoader.LoadFunction<d_pango_layout_set_markup_with_accel>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_markup_with_accel"));
 
 		public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char)
 		{
@@ -56,7 +56,7 @@ namespace Pango {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_layout_get_log_attrs_readonly(IntPtr raw, out int n_attrs);
-		static d_pango_layout_get_log_attrs_readonly pango_layout_get_log_attrs_readonly = FuncLoader.LoadFunction<d_pango_layout_get_log_attrs_readonly>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_log_attrs_readonly"));
+		static readonly d_pango_layout_get_log_attrs_readonly pango_layout_get_log_attrs_readonly = FuncLoader.LoadFunction<d_pango_layout_get_log_attrs_readonly>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_log_attrs_readonly"));
 
 		public LogAttr [] LogAttrs {
 			get {
@@ -74,7 +74,7 @@ namespace Pango {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_set_text(IntPtr raw, IntPtr text, int length);
-		static d_pango_layout_set_text pango_layout_set_text = FuncLoader.LoadFunction<d_pango_layout_set_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_text"));
+		static readonly d_pango_layout_set_text pango_layout_set_text = FuncLoader.LoadFunction<d_pango_layout_set_text>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_text"));
 
 		public void SetText (string text) 
 		{
@@ -84,7 +84,7 @@ namespace Pango {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_set_markup(IntPtr raw, IntPtr markup, int length);
-		static d_pango_layout_set_markup pango_layout_set_markup = FuncLoader.LoadFunction<d_pango_layout_set_markup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_markup"));
+		static readonly d_pango_layout_set_markup pango_layout_set_markup = FuncLoader.LoadFunction<d_pango_layout_set_markup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_markup"));
 
 		public void SetMarkup (string markup) 
 		{
@@ -95,7 +95,7 @@ namespace Pango {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_pango_layout_get_direction(IntPtr raw, int index);
-		static d_pango_layout_get_direction pango_layout_get_direction = FuncLoader.LoadFunction<d_pango_layout_get_direction>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_direction"));
+		static readonly d_pango_layout_get_direction pango_layout_get_direction = FuncLoader.LoadFunction<d_pango_layout_get_direction>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_direction"));
 
 		public Pango.Direction GetDirection(int index)
 		{
@@ -105,11 +105,11 @@ namespace Pango {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate float d_pango_layout_get_line_spacing(IntPtr raw);
-		static d_pango_layout_get_line_spacing pango_layout_get_line_spacing = FuncLoader.LoadFunction<d_pango_layout_get_line_spacing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_line_spacing"));
+		static readonly d_pango_layout_get_line_spacing pango_layout_get_line_spacing = FuncLoader.LoadFunction<d_pango_layout_get_line_spacing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_line_spacing"));
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_pango_layout_set_line_spacing(IntPtr raw, float factor);
-		static d_pango_layout_set_line_spacing pango_layout_set_line_spacing = FuncLoader.LoadFunction<d_pango_layout_set_line_spacing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_line_spacing"));
+		static readonly d_pango_layout_set_line_spacing pango_layout_set_line_spacing = FuncLoader.LoadFunction<d_pango_layout_set_line_spacing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_line_spacing"));
 
 		public float LineSpacing
 		{

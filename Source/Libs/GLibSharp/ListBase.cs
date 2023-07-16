@@ -191,7 +191,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_unref(IntPtr item);
-		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
+		static readonly d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
 		public void Empty ()
 		{
@@ -226,7 +226,7 @@ namespace GLib {
 		private class ListEnumerator : IEnumerator
 		{
 			private IntPtr current = IntPtr.Zero;
-			private ListBase list;
+			private readonly ListBase list;
 
 			public ListEnumerator (ListBase list)
 			{

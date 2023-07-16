@@ -27,7 +27,7 @@ namespace GLib {
 	public class SList : ListBase {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_slist_copy(IntPtr l);
-		static d_g_slist_copy g_slist_copy = FuncLoader.LoadFunction<d_g_slist_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_copy"));
+		static readonly d_g_slist_copy g_slist_copy = FuncLoader.LoadFunction<d_g_slist_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_copy"));
 		
 		public override object Clone ()
 		{
@@ -36,7 +36,7 @@ namespace GLib {
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_slist_length(IntPtr l);
-		static d_g_slist_length g_slist_length = FuncLoader.LoadFunction<d_g_slist_length>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_length"));
+		static readonly d_g_slist_length g_slist_length = FuncLoader.LoadFunction<d_g_slist_length>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_length"));
 		
 		internal override int Length (IntPtr list)
 		{
@@ -45,7 +45,7 @@ namespace GLib {
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_slist_free(IntPtr l);
-		static d_g_slist_free g_slist_free = FuncLoader.LoadFunction<d_g_slist_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_free"));
+		static readonly d_g_slist_free g_slist_free = FuncLoader.LoadFunction<d_g_slist_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_free"));
 
 		internal override void Free (IntPtr list)
 		{
@@ -54,7 +54,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_slist_append(IntPtr l, IntPtr raw);
-		static d_g_slist_append g_slist_append = FuncLoader.LoadFunction<d_g_slist_append>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_append"));
+		static readonly d_g_slist_append g_slist_append = FuncLoader.LoadFunction<d_g_slist_append>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_append"));
 
 		internal override IntPtr Append (IntPtr list, IntPtr raw)
 		{
@@ -62,7 +62,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_slist_prepend(IntPtr l, IntPtr raw);
-		static d_g_slist_prepend g_slist_prepend = FuncLoader.LoadFunction<d_g_slist_prepend>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_prepend"));
+		static readonly d_g_slist_prepend g_slist_prepend = FuncLoader.LoadFunction<d_g_slist_prepend>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_prepend"));
 
 		internal override IntPtr Prepend (IntPtr list, IntPtr raw)
 		{
@@ -71,7 +71,7 @@ namespace GLib {
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_slist_nth_data(IntPtr l, uint n);
-		static d_g_slist_nth_data g_slist_nth_data = FuncLoader.LoadFunction<d_g_slist_nth_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_nth_data"));
+		static readonly d_g_slist_nth_data g_slist_nth_data = FuncLoader.LoadFunction<d_g_slist_nth_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_nth_data"));
 
 		internal override IntPtr NthData (uint n)
 		{
