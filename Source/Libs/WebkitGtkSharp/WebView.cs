@@ -17,7 +17,7 @@ namespace WebKit
 				void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
 				{
 					var jsResult = webkit_web_view_run_javascript_finish(sourceObject, res, out var error);
-					WebKit.JavascriptResult ret = WebKit.JavascriptResult.New(jsResult);
+					WebKit.JavascriptResult ret =  new JavascriptResult(jsResult);
 
 					if (error != IntPtr.Zero) throw new GLib.GException(error);
 
