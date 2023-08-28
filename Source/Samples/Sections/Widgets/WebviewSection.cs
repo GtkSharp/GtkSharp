@@ -42,11 +42,11 @@ namespace Samples
 
 			var ucm = webView.UserContentManager;
 
-			if (false) {
-				var script = UserScript.New(
+			if (true) {
+				var script = new UserScript(
 					source: "function testFunc() { return 'Success' }",
 					UserContentInjectedFrames.AllFrames,
-					UserScriptInjectionTime.End, new string[0], new string [0]);
+					UserScriptInjectionTime.Start, null, null);
 
 				// this crashes:
 				ucm.AddScript(script);
