@@ -183,7 +183,7 @@ namespace GLib {
 		}
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		delegate void ClosureNotify (IntPtr data, IntPtr closure);
+		internal delegate void ClosureNotify (IntPtr data, IntPtr closure);
 
 		static void NotifyCallback (IntPtr data, IntPtr raw_closure)
 		{
