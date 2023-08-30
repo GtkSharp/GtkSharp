@@ -18,6 +18,18 @@ namespace WebKit
 			}
 		}
 		
+		static bool initialized = false;
+		static JavascriptResult()
+		{
+			GtkSharp.WebkitGtkSharp.ObjectManager.Initialize();
+			
+			if (initialized)
+				return;
+			
+			GLib.GType.Register (JavascriptResult.GType, typeof (JavascriptResult));
+
+			initialized = true;
+		}
 
 	}
 
