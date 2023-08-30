@@ -55,15 +55,45 @@ namespace Samples
 				Hexpand = true
 			};
 
+			webView.Settings.EnableDeveloperExtras = true;
+			var userContentManager = webView.UserContentManager;
+
+			var messageHandlerName = "gtksharp";
+
 			var script = new UserScript(
-				source: "function testFunc() { return 'Success' }",
+				source: $"function testFunc() {{\n" +
+				        $"window.webkit.messageHandlers.{messageHandlerName}.postMessage(\"postMessage\");\n" +
+				        $"return 'Success' }};\n",
 				UserContentInjectedFrames.AllFrames,
 				UserScriptInjectionTime.Start, null, null);
 
-			var userContentManager = webView.UserContentManager;
 			userContentManager.AddScript(script);
+			
+			var buttonClickPostMessage = $"var button = document.getElementById(\"clickMeButton\");\n" +
+			                  $"button.addEventListener(\"click\", " +
+			                  $"function() {{varmessageToPost = {{'ButtonId':'clickMeButton'}};\n" +
+			                  $"window.webkit.messageHandlers.{messageHandlerName}.postMessage(\"clickMeButton clicked\");\n}},false);";
+			
+			var script2 = new UserScript(
+				source: buttonClickPostMessage,
+				UserContentInjectedFrames.AllFrames,
+				UserScriptInjectionTime.End, null, null);
+			
+			
+			userContentManager.AddScript(script2);
+			
+			userContentManager.RegisterScriptMessageHandler(messageHandlerName);
 
-			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> with {nameof(UserScript)}");
+			userContentManager.ScriptMessageReceived += (o, args) => {
+				var value = args.JsResult?.JsValue;
+
+				if (value is { IsString: true } v)
+					ApplicationOutput.WriteLine($"{nameof(userContentManager.ScriptMessageReceived)}:\t{nameof(JavascriptResult.JsValue)}\t{v?.ToString()}");
+
+			};
+
+			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> with {nameof(UserScript)}" +
+			                 "<br/>Send message <input id=\"clickMeButton\" type=\"button\" value=\"Submit\" class=\"button\" onclick=\"\">");
 
 			webView.LoadChanged += (s, e) => {
 				ApplicationOutput.WriteLine(s, $"{e.LoadEvent}");
@@ -84,16 +114,16 @@ namespace Samples
 
 					if (js_result.JsValue is { } jsValue) {
 						if (jsValue.IsString) {
-							ApplicationOutput.WriteLine($"{nameof(webView.RunJavascriptFinish)} shows:\n {jsValue.ToString()}");
+							ApplicationOutput.WriteLine($"{nameof(webView.RunJavascriptFinish)}:\t{nameof(JavascriptResult.JsValue)}\t{jsValue.ToString()}");
 						}
 					}
 
 				} catch (Exception exception) {
-					ApplicationOutput.WriteLine($"{nameof(webView.RunJavascriptFinish)} throws:\n {exception.Message}");
+					ApplicationOutput.WriteLine($"{nameof(webView.RunJavascriptFinish)} throws:\n{exception.Message}");
 				}
 			}
 
-			return ($"{nameof(WebView)} wiht {nameof(UserScript)}:", webView);
+			return ($"{nameof(WebView)} with {nameof(UserScript)}:", webView);
 		}
 
 		public (string, Widget) ShowUri()
