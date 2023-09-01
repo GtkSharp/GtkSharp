@@ -1,3 +1,5 @@
+using JavaScript;
+
 namespace GtkSharp.WebkitGtkSharp
 {
 
@@ -10,7 +12,7 @@ namespace GtkSharp.WebkitGtkSharp
 
 			GLib.GType.Register(WebKit.JavascriptResult.GType, typeof(WebKit.JavascriptResult));
 
-			GLib.GType.Register(WebKit.JavaScriptValue.GType, typeof(WebKit.JavaScriptValue));
+			GLib.GType.Register(Value.GType, typeof(Value));
 
 		}
 
