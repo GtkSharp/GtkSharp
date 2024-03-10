@@ -33,7 +33,7 @@ namespace Gdk {
 		{
 			IntPtr raw_ret = gdk_list_visuals ();
 			if (raw_ret == IntPtr.Zero)
-				return new Visual [0];
+				return Array.Empty<Visual> ();
 			GLib.List list = new GLib.List(raw_ret);
 			Visual[] result = new Visual [list.Count];
 			for (int i = 0; i < list.Count; i++)

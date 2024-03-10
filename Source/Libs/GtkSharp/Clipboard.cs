@@ -83,7 +83,7 @@ namespace Gtk {
 			IntPtr raw_ret = gtk_clipboard_wait_for_rich_text (Handle, buffer == null ? IntPtr.Zero : buffer.Handle, out format_as_native, out length);
 			format = format_as_native == IntPtr.Zero ? null : (Gdk.Atom) GLib.Opaque.GetOpaque (format_as_native, typeof (Gdk.Atom), false);
 			if (raw_ret == IntPtr.Zero)
-				return new byte [0];
+				return Array.Empty<byte> ();
 			int sz = (int) (uint) length;
 			byte[] ret = new byte [sz];
 			Marshal.Copy (ret, 0, raw_ret, sz);

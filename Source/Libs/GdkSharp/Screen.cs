@@ -33,7 +33,7 @@ namespace Gdk {
 			get {
 				IntPtr raw_ret = gdk_screen_get_toplevel_windows (Handle);
 				if (raw_ret == IntPtr.Zero)
-					return new Window [0];
+					return Array.Empty<Window> ();
 				GLib.List list = new GLib.List(raw_ret);
 				Window[] result = new Window [list.Count];
 				for (int i = 0; i < list.Count; i++)
@@ -49,7 +49,7 @@ namespace Gdk {
 		{
 			IntPtr raw_ret = gdk_screen_list_visuals (Handle);
 			if (raw_ret == IntPtr.Zero)
-				return new Visual [0];
+				return Array.Empty<Visual> ();
 			GLib.List list = new GLib.List(raw_ret);
 			Visual[] result = new Visual [list.Count];
 			for (int i = 0; i < list.Count; i++)

@@ -20,6 +20,8 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+using GLib;
+
 namespace Gtk {
 
 	using System;
@@ -289,7 +291,7 @@ namespace Gtk {
 
 		public TreeStore (params GLib.GType[] types) : base (IntPtr.Zero)
 		{
-			CreateNativeObject (new string [0], new GLib.Value [0]);
+			CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 			ColumnTypes = types;
 		}
 
@@ -302,7 +304,7 @@ namespace Gtk {
 				i++;
 			}
 			
-			CreateNativeObject (new string [0], new GLib.Value [0]);
+			CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 			ColumnTypes = gtypes;
 		}
 

@@ -33,7 +33,7 @@ namespace Pango {
 			get {
 				IntPtr list_ptr = pango_layout_get_lines(Handle);
 				if (list_ptr == IntPtr.Zero)
-					return new LayoutLine [0];
+					return Array.Empty<LayoutLine> ();
 				GLib.SList list = new GLib.SList(list_ptr, typeof (IntPtr));
 				LayoutLine[] result = new LayoutLine [list.Count];
 				for (int i = 0; i < list.Count; i++)
@@ -63,7 +63,7 @@ namespace Pango {
 				int count;
 				IntPtr array_ptr = pango_layout_get_log_attrs_readonly (Handle, out count);
 				if (array_ptr == IntPtr.Zero || count == 0)
-					return new LogAttr [0];
+					return Array.Empty<LogAttr> ();
 				LogAttr[] result = new LogAttr [count];
 				int[] array = new int [count];
 				Marshal.Copy(array_ptr, array, 0, count);

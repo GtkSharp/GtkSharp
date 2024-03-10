@@ -20,6 +20,8 @@
 // Boston, MA 02111-1307, USA.
 
 
+using System.Linq;
+
 namespace GtkSharp.Generation {
 
 	using System;
@@ -119,10 +121,12 @@ namespace GtkSharp.Generation {
 
 				if (needs_chaining) {
 					sw.WriteLine ("\t\t\tif (GetType () != typeof (" + name + ")) {");
+					const string createNativeObjectEmpty = 
+						"\t\t\t\tCreateNativeObject (Array.Empty<string> (), Array.Empty<GLib.Value> ());\n" +
+					    "\t\t\t\treturn;";
 					
 					if (Parameters.Count == 0) {
-						sw.WriteLine ("\t\t\t\tCreateNativeObject (Array.Empty<string> (), Array.Empty<GLib.Value> ());");
-						sw.WriteLine ("\t\t\t\treturn;");
+						sw.WriteLine (createNativeObjectEmpty);
 					} else {
 						var names = new List<string> ();
 						var values = new List<string> ();
@@ -137,27 +141,41 @@ namespace GtkSharp.Generation {
 							}
 						}
 
-						//if (names.Count == Parameters.Count) {
-							sw.WriteLine ("\t\t\t\tvar vals = new List<GLib.Value> ();");
-							sw.WriteLine ("\t\t\t\tvar names = new List<string> ();");
-							for (int i = 0; i < names.Count; i++) {
-								Parameter p = Parameters [i];
-								string indent = "\t\t\t\t";
-								if (p.Generatable is ClassBase && !(p.Generatable is StructBase)) {
-									sw.WriteLine (indent + "if (" + p.Name + " != null) {");
-									indent += "\t";
-								}
-								sw.WriteLine (indent + "names.Add (\"" + names [i] + "\");");
-								sw.WriteLine (indent + "vals.Add (new GLib.Value (" + values[i] + "));");
+						if (names.Count != 0) {
+							//if (names.Count == Parameters.Count) {
+							Func<Parameter, bool> canbeNull = p => p.Generatable is ClassBase && !(p.Generatable is StructBase);
+							if (Parameters.Any (canbeNull)) {
+								sw.WriteLine ("\t\t\t\tvar vals = new List<GLib.Value> ();");
+								sw.WriteLine ("\t\t\t\tvar names = new List<string> ();");
+								for (int i = 0; i < names.Count; i++) {
+									Parameter p = Parameters[i];
+									string indent = "\t\t\t\t";
+									if (canbeNull (p)) {
+										sw.WriteLine (indent + "if (" + p.Name + " != null) {");
+										indent += "\t";
+									}
 
-								if (p.Generatable is ClassBase && !(p.Generatable is StructBase))
-									sw.WriteLine ("\t\t\t\t}");
+									sw.WriteLine (indent + "names.Add (\"" + names[i] + "\");");
+									sw.WriteLine (indent + "vals.Add (new GLib.Value (" + values[i] + "));");
+
+									if (canbeNull (p))
+										sw.WriteLine ("\t\t\t\t}");
+								}
+
+								sw.WriteLine ("\t\t\t\tCreateNativeObject (names.ToArray (), vals.ToArray ());");
+							} else {
+								sw.WriteLine ("\t\t\t\tCreateNativeObject (");
+								sw.WriteLine ($"\t\t\t\tnew[] {{{string.Join (", ", names.Select (n => $"\"{n}\""))}}},");
+								sw.WriteLine ($"\t\t\t\tnew[] {{{string.Join (", ", values.Select (val => $"new GLib.Value ({val})"))}}}");
+								sw.WriteLine ("\t\t\t\t);");
 							}
 
-							sw.WriteLine ("\t\t\t\tCreateNativeObject (names.ToArray (), vals.ToArray ());");
 							sw.WriteLine ("\t\t\t\treturn;");
-						//} else
-						//	sw.WriteLine ("\t\t\t\tthrow new InvalidOperationException (\"Can't override this constructor.\");");
+							//} else
+							//	sw.WriteLine ("\t\t\t\tthrow new InvalidOperationException (\"Can't override this constructor.\");");
+						} else {
+							sw.WriteLine (createNativeObjectEmpty);
+						}
 					}
 					
 					sw.WriteLine ("\t\t\t}");

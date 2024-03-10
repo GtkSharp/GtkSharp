@@ -19,6 +19,8 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+using Gdk;
+
 namespace Gtk {
 
 	using System;
@@ -41,7 +43,7 @@ namespace Gtk {
 			get {
 				IntPtr raw_ret = gtk_window_get_default_icon_list();
 				if (raw_ret == IntPtr.Zero)
-					return new Gdk.Pixbuf [0];
+					return Array.Empty<Pixbuf> ();
 				GLib.List list = new GLib.List(raw_ret);
 				Gdk.Pixbuf[] result = new Gdk.Pixbuf [list.Count];
 				for (int i = 0; i < list.Count; i++)
@@ -66,7 +68,7 @@ namespace Gtk {
 			get {
 				IntPtr raw_ret = gtk_window_get_icon_list(Handle);
 				if (raw_ret == IntPtr.Zero)
-					return new Gdk.Pixbuf [0];
+					return Array.Empty<Pixbuf> ();
 				GLib.List list = new GLib.List(raw_ret);
 				Gdk.Pixbuf[] result = new Gdk.Pixbuf [list.Count];
 				for (int i = 0; i < list.Count; i++)

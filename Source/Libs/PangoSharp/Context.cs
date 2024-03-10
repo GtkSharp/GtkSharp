@@ -34,7 +34,7 @@ namespace Pango {
 				IntPtr array_ptr;
 				pango_context_list_families2 (Handle, out array_ptr, out count);
 				if (array_ptr == IntPtr.Zero)
-					return new FontFamily [0];
+					return Array.Empty<FontFamily> ();
 				FontFamily [] result = new FontFamily [count];
 				for (int i = 0; i < count; i++) {
 					IntPtr fam_ptr = Marshal.ReadIntPtr (array_ptr, i * IntPtr.Size);

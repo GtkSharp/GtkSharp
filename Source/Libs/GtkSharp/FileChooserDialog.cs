@@ -21,6 +21,8 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+using GLib;
+
 namespace Gtk {
 
 	using System;
@@ -34,7 +36,7 @@ namespace Gtk {
 		public FileChooserDialog (string title, Window parent, FileChooserAction action, params object[] button_data) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (FileChooserDialog)) {
-				CreateNativeObject (new string[0], new GLib.Value[0]);
+				CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 				Title = title;
 				if (parent != null)
 					TransientFor = parent;
