@@ -20,6 +20,7 @@ class TargetEnvironment
 
     public static string DotNetCliPath { get; private set; }
     public static string DotNetCliFeatureBand { get; private set; }
+    public static string DotNetCliFeatureBandWithoutPreview { get; private set; }
 
     static TargetEnvironment()
     {
@@ -32,7 +33,26 @@ class TargetEnvironment
             }
             else if (OperatingSystem.IsLinux())
             {
-                DotNetInstallPath = "/usr/share/dotnet";
+                var userHomeDirectory = Environment.GetEnvironmentVariable("HOME");
+                if (userHomeDirectory != null)
+                {
+                    if (userHomeDirectory != "/root")
+                        DotNetInstallPath = P.Combine(userHomeDirectory, ".dotnet");  // default to user home directory
+                    if (!D.Exists(DotNetInstallPath))
+                        DotNetInstallPath = null;  // SDK not found in user home directory
+
+                    if (DotNetInstallPath == null)
+                    {
+                        DotNetInstallPath = "/usr/share/dotnet";  // assume Ubuntu 22.04 when installed from packages.microsoft.com
+                        if (!D.Exists(DotNetInstallPath))
+                            DotNetInstallPath = "/usr/share/dotnet";  // else try Ubuntu Jammy feed
+                        if (!D.Exists(DotNetInstallPath))
+                            DotNetInstallPath = null;  // SDK not found in both paths
+                    }
+                }
+                
+                if (DotNetInstallPath != null)
+                    Console.WriteLine($"DOTNET_ROOT environment variable wasn't set, using SDK in {DotNetInstallPath}. Setting DOTNET_ROOT is highly recommended.");
             }
             else if (OperatingSystem.IsMacOS())
             {
@@ -51,8 +71,33 @@ class TargetEnvironment
 
         proc.WaitForExit();
 
-        DotNetCliFeatureBand = proc.StandardOutput.ReadToEnd().Trim();
-        DotNetCliFeatureBand = DotNetCliFeatureBand.Substring(0, DotNetCliFeatureBand.Length - 2) + "00";
+        var dotnetVersion = proc.StandardOutput.ReadToEnd().Trim();
+        var prereleaseStart = dotnetVersion.IndexOf('-');
+
+        if (prereleaseStart != -1)
+        {
+            var firstDot = dotnetVersion.IndexOf('.', prereleaseStart);
+            var secondDot = dotnetVersion.IndexOf('.', firstDot + 1);
+            if (secondDot == -1)
+            {
+                secondDot = dotnetVersion.Length;
+            }
+            DotNetCliFeatureBandWithoutPreview = dotnetVersion.Substring(0, prereleaseStart);
+            var prereleaseKind = dotnetVersion.Substring(prereleaseStart + 1, firstDot - prereleaseStart - 1);
+            if (prereleaseKind == "servicing")
+            {
+                DotNetCliFeatureBand = dotnetVersion.Substring(0, prereleaseStart - 2) + "00";
+            }
+            else
+            {
+                DotNetCliFeatureBand = dotnetVersion.Substring(0, secondDot);
+            }
+        }
+        else
+        {
+            DotNetCliFeatureBand = dotnetVersion.Substring(0, dotnetVersion.Length - 2) + "00";
+            DotNetCliFeatureBandWithoutPreview = DotNetCliFeatureBand;
+        }
 
         DotNetInstalledWorkloadsMetadataPath = P.Combine(DotNetInstallPath, "metadata", "workloads", DotNetCliFeatureBand, "InstalledWorkloads");
         DotNetInstallerTypeMetadataPath = P.Combine(DotNetInstallPath, "metadata", "workloads", DotNetCliFeatureBand, "InstallerType");
@@ -125,7 +170,7 @@ class TargetEnvironment
 
     public static void InstallManifests(string manifestName, string manifestPackPath)
     {
-        var targetDirectory = P.Combine(DotNetManifestPath, manifestName);
+        var targetDirectory = P.Combine(DotNetManifestPath, manifestName.ToLowerInvariant());
         var tempDirectory = P.Combine(targetDirectory, "temp");
 
         // Delete existing installations to avoid conflict.
@@ -151,7 +196,7 @@ class TargetEnvironment
 
     public static void UninstallManifests(string manifestName)
     {
-        var targetDirectory = P.Combine(DotNetManifestPath, manifestName);
+        var targetDirectory = P.Combine(DotNetManifestPath, manifestName, manifestName.ToLowerInvariant());
         if (D.Exists(targetDirectory))
         {
             D.Delete(targetDirectory, true);

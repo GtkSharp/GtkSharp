@@ -1,11 +1,8 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Samples",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -16,36 +13,20 @@
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
         },
-        {
-            "name": ".NET Core Launch (web)",
+        {   // install VSCode Cake extension for source-level debugging of the cake script
+            "name": "Cake Build Script (InstallWorkload)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/<insert-target-framework-here>/<insert-project-name-here>.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}",
+            "program": "${env:HOME}/.nuget/packages/cake.tool/2.0.0/tools/net6.0/any/Cake.dll",
+            "args": [
+                "${workspaceRoot}/build.cake",
+                "--BuildTarget=InstallWorkload",
+                "--debug",
+                "--verbosity=diagnostic"
+            ],
+            "cwd": "${workspaceRoot}",
             "stopAtEntry": false,
-            "internalConsoleOptions": "openOnSessionStart",
-            "launchBrowser": {
-                "enabled": true,
-                "args": "${auto-detect-url}",
-                "windows": {
-                    "command": "cmd.exe",
-                    "args": "/C start ${auto-detect-url}"
-                },
-                "osx": {
-                    "command": "open"
-                },
-                "linux": {
-                    "command": "xdg-open"
-                }
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            }
+            "externalConsole": false
         },
         {
             "name": ".NET Core Attach",
