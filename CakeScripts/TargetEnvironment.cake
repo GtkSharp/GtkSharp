@@ -36,7 +36,16 @@ class TargetEnvironment
             }
             else if (OperatingSystem.IsMacOS())
             {
-                DotNetInstallPath = "/usr/local/share/dotnet";
+                string[] PotentialPath = {"/usr/local/share/dotnet", "/opt/local/share/dotnet", "/opt/homebrew/share/dotnet"};
+
+                foreach ( var Path in PotentialPath )
+                {
+                    if (D.Exists(Path))
+                    {
+                        DotNetInstallPath = Path;
+                        break;
+                    }
+                }
             }
         }
 
