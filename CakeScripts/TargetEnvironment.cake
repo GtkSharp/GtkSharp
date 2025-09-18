@@ -33,6 +33,8 @@ class TargetEnvironment
             else if (OperatingSystem.IsLinux())
             {
                 DotNetInstallPath = "/usr/share/dotnet";
+                if (!D.Exists(DotNetInstallPath)) 
+                    DotNetInstallPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dotnet");
             }
             else if (OperatingSystem.IsMacOS())
             {
@@ -41,6 +43,7 @@ class TargetEnvironment
         }
 
         DotNetCliPath = P.Combine(DotNetInstallPath, "dotnet");
+        System.Console.WriteLine("path "+DotNetInstallPath);
 
         var proc = Pr.Start(new PSI()
         {
