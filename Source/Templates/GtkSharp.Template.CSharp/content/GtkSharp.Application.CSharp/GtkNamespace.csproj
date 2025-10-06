@@ -2,7 +2,10 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>$(FrameworkParameter)</TargetFramework>
+    <TargetFramework Condition="'$(UseWorkload)' != 'true'">$(FrameworkParameter)</TargetFramework>
+    <TargetFramework Condition="'$(UseWorkload)' == 'true'">$(FrameworkParameter)-gtk</TargetFramework>
+    <RootNamespace>GtkNamespace</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GtkSharp" Version="3.24.24.*" />
+    <PackageReference Condition="'$(UseWorkload)' != 'true'" Include="GtkSharp" Version="3.24.24.*" />
+    <PackageReference Condition="'$(UseWorkload)' == 'true'" Include="GtkSharp" Version="$(GtkSharpVersion)" />
   </ItemGroup>
 
 </Project>

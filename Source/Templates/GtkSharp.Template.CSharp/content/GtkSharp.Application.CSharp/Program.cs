@@ -1,23 +1,21 @@
-using System;
 using Gtk;
 
-namespace GtkNamespace
+namespace GtkNamespace;
+
+class Program
 {
-    class Program
+    [STAThread]
+    static void Main(string[] args)
     {
-        [STAThread]
-        public static void Main(string[] args)
-        {
-            Application.Init();
+        Application.Init();
 
-            var app = new Application("org.GtkNamespace.GtkNamespace", GLib.ApplicationFlags.None);
-            app.Register(GLib.Cancellable.Current);
+        var app = new Application("org.GtkNamespace.GtkNamespace", GLib.ApplicationFlags.None);
+        app.Register(GLib.Cancellable.Current);
 
-            var win = new MainWindow();
-            app.AddWindow(win);
+        var win = new MainWindow();
+        app.AddWindow(win);
 
-            win.Show();
-            Application.Run();
-        }
+        win.Show();
+        Application.Run();
     }
 }

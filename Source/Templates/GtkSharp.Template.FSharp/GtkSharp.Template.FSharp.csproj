@@ -3,8 +3,17 @@
   <PropertyGroup>
     <Title>Gtk templates for FSharp</Title>
     <PackageId>GtkSharp.Template.FSharp</PackageId>
+    <PackageId Condition="'$(WorkloadBuild)' == 'true'">GtkSharp.Workload.Template.FSharp</PackageId>
     <Description>A set of F# templates for your .Net Gtk Application.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ReplacementFile
+      Include="content\GtkSharp.Application.FSharp\.template.config\template.in.json"
+      Destination="$(IntermediateOutputPath)cs-template.json"
+      Pack="true"
+      PackagePath="content\content\GtkSharp.Application.FSharp\.template.config\template.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="content/**/*" />

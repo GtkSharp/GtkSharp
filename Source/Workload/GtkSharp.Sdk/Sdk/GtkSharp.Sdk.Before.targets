@@ -1,0 +1,33 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Register net8.0-gtk3.24 TFM -->
+  <ItemGroup>
+    <SupportedPlatform Include="gtk" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetPlatformSupported>true</TargetPlatformSupported>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">$(_DefaultGtkTargetPlatformVersion)</TargetPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SdkSupportedTargetPlatformVersion Include="$(_DefaultGtkTargetPlatformVersion)" />
+  </ItemGroup>
+
+  <!-- Project properties -->
+  <PropertyGroup>
+    <_IsGtkDefined>$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants.Trim())', '(^|;)GTK($|;)'))</_IsGtkDefined>
+    <DefineConstants Condition="!$(_IsGtkDefined)">GTK;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Must be self-contained. Framework-dependent builds cannot see our custom runtime -->
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('Windows')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64' ">win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('Windows')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X86' ">win-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('Linux')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64' ">linux-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('Linux')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X86' ">linux-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOsPlatform('OSX')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64' ">osx-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+</Project>

@@ -1,35 +1,34 @@
-using System;
 using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
 
-namespace GtkNamespace
+namespace GtkNamespace;
+
+class MainWindow : Window
 {
-    class MainWindow : Window
+    [UI] private Label _label1 = null;
+    [UI] private Button _button1 = null;
+
+    private int _counter;
+
+    public MainWindow() : this(new Builder("MainWindow.glade")) { }
+
+    private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
     {
-        [UI] private Label _label1 = null;
-        [UI] private Button _button1 = null;
+        builder.Autoconnect(this);
 
-        private int _counter;
+        DeleteEvent += Window_DeleteEvent;
+        _button1.Clicked += Button1_Clicked;
+    }
 
-        public MainWindow() : this(new Builder("MainWindow.glade")) { }
+    private void Window_DeleteEvent(object sender, DeleteEventArgs a)
+    {
+        Application.Quit();
+    }
 
-        private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
-        {
-            builder.Autoconnect(this);
+    private void Button1_Clicked(object sender, EventArgs a)
+    {
+        _counter++;
 
-            DeleteEvent += Window_DeleteEvent;
-            _button1.Clicked += Button1_Clicked;
-        }
-
-        private void Window_DeleteEvent(object sender, DeleteEventArgs a)
-        {
-            Application.Quit();
-        }
-
-        private void Button1_Clicked(object sender, EventArgs a)
-        {
-            _counter++;
-            _label1.Text = "Hello World! This button has been clicked " + _counter + " time(s).";
-        }
+        _label1.Text = $"Hello World! This button has been clicked {_counter} time(s).";
     }
 }

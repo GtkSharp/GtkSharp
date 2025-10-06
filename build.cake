@@ -14,7 +14,13 @@ var configuration = Argument("Configuration", "Release");
 
 var msbuildsettings = new DotNetMSBuildSettings();
 var list = new List<GAssembly>();
-var supportedVersionBands = new List<string>() {"6.0.100", "6.0.200", "6.0.300", "6.0.400", "7.0.400", "8.0.100", "8.0.200"};
+var supportedVersionBands = new List<string>() {
+    "6.0.100", "6.0.200", "6.0.300", "6.0.400",
+    "7.0.400",
+    "8.0.100", "8.0.200",
+    "9.0.100",
+    "10.0.100-rc.1"
+};
 
 // TASKS
 
@@ -136,19 +142,18 @@ Task("PackageWorkload")
 {
     var packSettings = new DotNetPackSettings
     {
-        MSBuildSettings = msbuildsettings,
+        MSBuildSettings = msbuildsettings.WithProperty("WorkloadBuild", "true"),
         Configuration = configuration,
         OutputDirectory = "BuildOutput/NugetPackages",
         // Some of the nugets here depend on output generated during build.
         NoBuild = false
     };
 
-    DotNetPack("Source/Workload/GtkSharp.Workload.Template.CSharp/GtkSharp.Workload.Template.CSharp.csproj", packSettings);
-    DotNetPack("Source/Workload/GtkSharp.Workload.Template.FSharp/GtkSharp.Workload.Template.FSharp.csproj", packSettings);
-    DotNetPack("Source/Workload/GtkSharp.Workload.Template.VBNet/GtkSharp.Workload.Template.VBNet.csproj", packSettings);
-    DotNetPack("Source/Workload/GtkSharp.Ref/GtkSharp.Ref.csproj", packSettings);
-    DotNetPack("Source/Workload/GtkSharp.Runtime/GtkSharp.Runtime.csproj", packSettings);
     DotNetPack("Source/Workload/GtkSharp.Sdk/GtkSharp.Sdk.csproj", packSettings);
+
+    DotNetPack("Source/Templates/GtkSharp.Template.CSharp/GtkSharp.Template.CSharp.csproj", packSettings);
+    DotNetPack("Source/Templates/GtkSharp.Template.FSharp/GtkSharp.Template.FSharp.csproj", packSettings);
+    DotNetPack("Source/Templates/GtkSharp.Template.VBNet/GtkSharp.Template.VBNet.csproj", packSettings);
 
     foreach (var band in supportedVersionBands)
     {
@@ -179,8 +184,6 @@ var manifestPackPath = $"BuildOutput/NugetPackages/{manifestPack}";
 
 var packNames = new List<string>()
 {
-    "GtkSharp.Ref",
-    "GtkSharp.Runtime",
     "GtkSharp.Sdk"
 };
 

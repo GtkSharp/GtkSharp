@@ -1,7 +1,5 @@
 <Project Sdk="Microsoft.Build.NoTargets">
 
-  <Import Project="..\Shared\Common.targets" />
-
   <PropertyGroup>
     <PackageId>$(PackageId).Manifest-$(_GtkSharpManifestVersionBand)</PackageId>
     <Description>GtkSharp workload manifest</Description>
@@ -13,48 +11,22 @@
     <_GtkSharpManifestVersion>$(Version.Replace('$(_GtkSharpVersionMajorMinorPatch).', '$(_GtkSharpVersionMajorMinorPatch)-rev.'))</_GtkSharpManifestVersion>
   </PropertyGroup>
 
-  <Import Project="..\Shared\ReplaceText.targets" />
-
   <ItemGroup>
-    <None Update="WorkloadManifest.targets" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="data" />
+    <ReplacementValue Include="@VERSION@" Value="$(Version)" />
+    <ReplacementValue Include="@GTKSHARPMANIFESTVERSION@" Value="$(_GtkSharpManifestVersion)" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../GtkSharp.*/*.csproj" />
-    <!-- Exclude self -->
-    <ProjectReference Remove="../GtkSharp.NET.*/*.csproj" />
+    <ReplacementFile
+      Include="WorkloadManifest.in.json"
+      Destination="$(IntermediateOutputPath)WorkloadManifest.json"
+      Pack="true"
+      PackagePath="data\WorkloadManifest.json" />
+    <ReplacementFile
+      Include="WorkloadManifest.in.targets"
+      Destination="$(IntermediateOutputPath)WorkloadManifest.targets"
+      Pack="true"
+      PackagePath="data\WorkloadManifest.targets" />
   </ItemGroup>
-
-  <Target Name="_ReplaceJsonText"
-      BeforeTargets="Build;AssignTargetPaths"
-      Inputs="$(MSBuildProjectFile);WorkloadManifest.in.json"
-      Outputs="$(IntermediateOutputPath)WorkloadManifest.json">
-    
-    <ReplaceText
-        Input="WorkloadManifest.in.json"
-        Output="$(IntermediateOutputPath)WorkloadManifest.json"
-        OldValue="@VERSION@"
-        NewValue="$(Version)"
-    />
-
-    <ReplaceText
-        Input="$(IntermediateOutputPath)WorkloadManifest.json"
-        Output="$(IntermediateOutputPath)WorkloadManifest.json"
-        OldValue="@GTKSHARPMANIFESTVERSION@"
-        NewValue="$(_GtkSharpManifestVersion)"
-    />
-
-    <ItemGroup>
-      <None
-          Include="$(IntermediateOutputPath)WorkloadManifest.json"
-          Link="WorkloadManifest.json"
-          CopyToOutputDirectory="PreserveNewest"
-          Pack="true"
-          PackagePath="data"
-      />
-      <FileWrites Include="$(IntermediateOutputPath)WorkloadManifest.json" />
-    </ItemGroup>
-  
-  </Target>
 
 </Project>

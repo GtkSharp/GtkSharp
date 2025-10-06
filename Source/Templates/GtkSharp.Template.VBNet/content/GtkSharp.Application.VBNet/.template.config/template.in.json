@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "GtkSharp Contributors",
+  "classifications": [
+    "Gtk",
+    "GUI App"
+  ],
+  "name": "Gtk Application",
+  "identity": "GtkSharp.Application.VBNet",
+  "groupIdentity": "GtkSharp.Application",
+  "shortName": "gtkapp",
+  "tags": {
+    "language": "VB",
+    "type": "project"
+  },
+  "sourceName": "GtkNamespace",
+  "preferNameDirectory": true,
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net8.0",
+          "description": "Target net8.0",
+          "displayName": ".NET 8.0"
+        },
+        {
+          "choice": "net9.0",
+          "description": "Target net9.0",
+          "displayName": ".NET 9.0"
+        },
+        {
+          "choice": "net10.0",
+          "description": "Target net10.0",
+          "displayName": ".NET 10.0"
+        }
+      ],
+      "replaces": "$(FrameworkParameter)",
+      "defaultValue": "net8.0"
+    },
+    "skipRestore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "If specified, skips the automatic restore of the project on create.",
+      "defaultValue": "false"
+    },
+    "UseWorkload": {
+      "type": "generated",
+      "generator": "constant",
+      "parameters": {
+        "value": "UseWorkloadParameterValue"
+      }
+    },
+    "HostIdentifier": {
+      "type": "bind",
+      "binding": "HostIdentifier"
+    }
+  },
+  "postActions": [
+    {
+      "id": "restore",
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [
+        {
+          "text": "Run 'dotnet restore'"
+        }
+      ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    }
+  ],
+  "primaryOutputs": [
+    {
+      "path": "GtkNamespace.vbproj"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+<Project>
+
+  <UsingTask
+    TaskName="BulkReplaceText"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Input ParameterType="System.String" Required="true" />
+      <Output ParameterType="System.String" Required="true" />
+      <Values ParameterType="Microsoft.Build.Framework.ITaskItem[]" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        // Read the input file
+        var content = File.ReadAllText(Input);
+
+        // Apply all replacements
+        foreach (var item in Values)
+        {
+          var oldValue = item.ItemSpec;
+          var newValue = item.GetMetadata("Value");
+          content = content.Replace(oldValue, newValue);
+        }
+        
+        // Only write if content changed or file doesn't exist
+        if (!File.Exists(Output) || File.ReadAllText(Output) != content)
+        {
+          // Ensure the output directory exists
+          var dir = Path.GetDirectoryName(Output);
+          Directory.CreateDirectory(dir);
+
+          // Write the new content to the output file
+          File.WriteAllText(Output, content);
+        }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <Target
+    Name="ApplyReplacementFiles"
+    BeforeTargets="Build;AssignTargetPaths"
+    Condition="'@(ReplacementFile)' != ''">
+
+    <BulkReplaceText
+      Input="%(ReplacementFile.Identity)"
+      Output="%(ReplacementFile.Destination)"
+      Values="@(ReplacementValue)" />
+
+    <ItemGroup>
+      <Content Remove="@(ReplacementFile)" />
+      <None Remove="@(ReplacementFile)" />
+      <None Include="@(ReplacementFile->'%(Destination)')" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <FileWrites Include="%(ReplacementFile.Destination)" />
+    </ItemGroup>
+
+  </Target>
+
+</Project>

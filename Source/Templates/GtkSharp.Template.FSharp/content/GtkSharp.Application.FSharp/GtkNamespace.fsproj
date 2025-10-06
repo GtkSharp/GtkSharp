@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>$(FrameworkParameter)</TargetFramework>
+    <TargetFramework Condition="'$(UseWorkload)' != 'true'">$(FrameworkParameter)</TargetFramework>
+    <TargetFramework Condition="'$(UseWorkload)' == 'true'">$(FrameworkParameter)-gtk</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GtkSharp" Version="3.24.24.*" />
+    <PackageReference Condition="'$(UseWorkload)' != 'true'" Include="GtkSharp" Version="3.24.24.*" />
+    <PackageReference Condition="'$(UseWorkload)' == 'true'" Include="GtkSharp" Version="$(GtkSharpVersion)" />
   </ItemGroup>
 
 </Project>
