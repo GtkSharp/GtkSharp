@@ -9,13 +9,13 @@ jobs:
       packages: write
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-24.04]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
       - name: Restore dotnet tools
@@ -24,7 +24,7 @@ jobs:
         run: dotnet cake build.cake
         env:
           GITHUB_ACTIONS: true
-      - uses: actions/upload-artifact@main
+      - uses: actions/upload-artifact@v5
         with:
           name: NuGet Packages
           path: |
