@@ -46,8 +46,8 @@ namespace Gdk {
 				GLib.Marshaller.Free (key_ptr);
 				GLib.Marshaller.Free (keyval_ptr);
 			} else {
-				keys = new KeymapKey [0];
-				keyvals = new uint [0];
+				keys = Array.Empty<KeymapKey> ();
+				keyvals = Array.Empty<uint> ();
 			}
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -67,7 +67,7 @@ namespace Gdk {
 				GLib.Marshaller.Free (key_ptr);
 				return result;
 			} else
-				return new KeymapKey [0];
+				return Array.Empty<KeymapKey> ();
 		}
 	}
 }

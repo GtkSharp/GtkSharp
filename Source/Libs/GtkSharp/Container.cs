@@ -111,7 +111,7 @@ namespace Gtk
                 IntPtr list_ptr;
                 bool success = gtk_container_get_focus_chain(Handle, out list_ptr);
                 if (!success)
-                    return new Widget[0];
+                    return Array.Empty<Widget> ();
 
                 GLib.List list = new GLib.List(list_ptr);
                 Widget[] result = new Widget[list.Count];

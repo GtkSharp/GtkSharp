@@ -34,7 +34,7 @@ namespace Pango {
 			IntPtr list_handle = pango_glyph_item_apply_attrs (ref this, native_text, list.Handle);
 			GLib.Marshaller.Free (native_text);
 			if (list_handle == IntPtr.Zero)
-				return new GlyphItem [0];
+				return Array.Empty<GlyphItem> ();
 			GLib.SList item_list = new GLib.SList (list_handle, typeof (GlyphItem));
 			GlyphItem[] result = new GlyphItem [item_list.Count];
 			int i = 0;

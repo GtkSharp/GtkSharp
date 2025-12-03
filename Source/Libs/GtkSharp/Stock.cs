@@ -32,7 +32,7 @@ namespace Gtk {
 		{
 			IntPtr raw_ret = gtk_stock_list_ids ();
 			if (raw_ret == IntPtr.Zero)
-				return new string [0];
+				return Array.Empty<string> ();
 			GLib.SList list = new GLib.SList(raw_ret, typeof (string));
 			string[] result = new string [list.Count];
 			for (int i = 0; i < list.Count; i++)

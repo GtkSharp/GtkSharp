@@ -128,7 +128,7 @@ namespace Gtk {
 		{
 			IntPtr raw_ret = gtk_accel_groups_from_object(obj.Handle);
 			if (raw_ret == IntPtr.Zero)
-				return new AccelGroup [0];
+				return Array.Empty<AccelGroup> ();
 			GLib.SList list = new GLib.SList(raw_ret);
 			AccelGroup[] result = new AccelGroup [list.Count];
 			for (int i = 0; i < list.Count; i++)

@@ -155,7 +155,7 @@ namespace GLib {
 					return;
 				}
 
-				SignalArgs args = Activator.CreateInstance (closure.args_type, new object [0]) as SignalArgs;
+				SignalArgs args = Activator.CreateInstance (closure.args_type, Array.Empty<object> ()) as SignalArgs;
 				args.Args = new object [n_param_vals - 1];
 				GLib.Value[] vals = new GLib.Value [n_param_vals - 1];
 				for (int i = 1; i < n_param_vals; i++) {

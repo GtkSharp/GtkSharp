@@ -187,7 +187,7 @@ namespace GLib {
 		public static string[] NullTermPtrToStringArray (IntPtr null_term_array, bool owned)
 		{
 			if (null_term_array == IntPtr.Zero)
-				return new string [0];
+				return Array.Empty<string> ();
 
 			int count = 0;
 			var result = new List<string> ();
@@ -206,7 +206,7 @@ namespace GLib {
 		public static string[] PtrToStringArrayGFree (IntPtr string_array)
 		{
 			if (string_array == IntPtr.Zero)
-				return new string [0];
+				return Array.Empty<string> ();
 	
 			int count = 0;
 			while (Marshal.ReadIntPtr (string_array, count*IntPtr.Size) != IntPtr.Zero)

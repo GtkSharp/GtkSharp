@@ -32,7 +32,7 @@ namespace Gtk {
 		{
 			IntPtr list_ptr = gtk_tree_selection_get_selected_rows2 (Handle, IntPtr.Zero);
 			if (list_ptr == IntPtr.Zero)
-				return new TreePath [0];
+				return Array.Empty<TreePath> ();
 
 			GLib.List list = new GLib.List (list_ptr, typeof (Gtk.TreePath));
 			return GLib.Marshaller.ListToArray<TreePath> (list);

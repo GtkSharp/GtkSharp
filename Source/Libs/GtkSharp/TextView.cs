@@ -19,6 +19,8 @@
 // Boston, MA 02111-1307, USA.
 
 
+using GLib;
+
 namespace Gtk {
 
 	using System;
@@ -33,7 +35,7 @@ namespace Gtk {
 		public TextView (TextBuffer buffer) : base (IntPtr.Zero)
 		{
 			if (GetType() != typeof (TextView)) {
-				CreateNativeObject (new string [0], new GLib.Value [0]);
+				CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 				Buffer = buffer;
 				return;
 			}

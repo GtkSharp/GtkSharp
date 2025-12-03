@@ -18,6 +18,8 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+using GLib;
+
 namespace Gtk {
 		
 	using System;
@@ -32,7 +34,7 @@ namespace Gtk {
 		public MenuItem (string label) : base (IntPtr.Zero)
 		{
 			if (GetType() != typeof (MenuItem)) {
-				CreateNativeObject (new string [0], new GLib.Value [0]);
+				CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 				AccelLabel al = new AccelLabel ("");
 				al.TextWithMnemonic = label;
 				al.SetAlignment (0.0f, 0.5f);

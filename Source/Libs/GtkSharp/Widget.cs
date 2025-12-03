@@ -23,6 +23,8 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+using GLib;
+
 namespace Gtk {
 
 	using System;
@@ -133,7 +135,7 @@ namespace Gtk {
 				uint* raw_ptr = (uint*)(((long) gtype.GetClassPtr()) + (long) class_abi.GetFieldOffset("activate_signal"));
 
 				*raw_ptr = RegisterSignal ("activate_signal", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None,
-						new GLib.GType [0], ActivateMarshalCallback);
+						Array.Empty<GType> (), ActivateMarshalCallback);
 			}
 		}
 
@@ -395,7 +397,7 @@ namespace Gtk {
 		{
 			IntPtr raw_ret = gtk_widget_list_mnemonic_labels (Handle);
 			if (raw_ret == IntPtr.Zero)
-				return new Widget [0];
+				return Array.Empty<Widget> ();
 			GLib.List list = new GLib.List(raw_ret);
 			Widget[] result = new Widget [list.Count];
 			for (int i = 0; i < list.Count; i++)

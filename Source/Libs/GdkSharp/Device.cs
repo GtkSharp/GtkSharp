@@ -45,7 +45,7 @@ namespace Gdk {
 				gdk_device_free_history (coords_handle, count);
 				return result;
 			} else
-				return new TimeCoord [0];
+				return Array.Empty<TimeCoord> ();
 		}
 	}
 }

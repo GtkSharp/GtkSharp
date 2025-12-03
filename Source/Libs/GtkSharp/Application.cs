@@ -87,7 +87,7 @@ namespace Gtk {
 			// not interested in.
 
 			if (argc <= 1)
-				args = new string[0];
+				args = Array.Empty<string> ();
 			else {
 				progargs = argv.GetArgs (argc);
 				args = new string[argc - 1];

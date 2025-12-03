@@ -149,7 +149,7 @@ namespace Gtk {
 			UIntPtr length;
 			IntPtr raw_ret = gtk_text_buffer_serialize (Handle, content_buffer == null ? IntPtr.Zero : content_buffer.Handle, format == null ? IntPtr.Zero : format.Handle, ref start, ref end, out length);
 			if (raw_ret == IntPtr.Zero)
-				return new byte [0];
+				return Array.Empty<byte> ();
 			int sz = (int) (uint) length;
 			byte[] ret = new byte [sz];
 			Marshal.Copy (raw_ret, ret, 0, sz);

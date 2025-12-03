@@ -37,7 +37,7 @@ namespace Gtk {
 			IntPtr list_ptr = gtk_icon_theme_list_icons (Handle, native);
 			GLib.Marshaller.Free (native);
 			if (list_ptr == IntPtr.Zero)
-				return new string [0];
+				return Array.Empty<string> ();
 
 			GLib.List list = new GLib.List (list_ptr, typeof (string), true, true);
 			string[] result = new string [list.Count];
@@ -88,7 +88,7 @@ namespace Gtk {
 			set {
 				IntPtr[] native_path;
 				if (value == null)
-					native_path = new IntPtr [0];
+					native_path = Array.Empty<IntPtr> ();
 				else
 					native_path = GLib.Marshaller.StringArrayToNullTermPointer (value);
 

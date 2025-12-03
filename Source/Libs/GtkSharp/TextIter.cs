@@ -41,7 +41,7 @@ namespace Gtk {
 			get {
 				IntPtr raw_ret = gtk_text_iter_get_marks (ref this);
 				if (raw_ret == IntPtr.Zero)
-					return new TextMark [0];
+					return Array.Empty<TextMark> ();
 				GLib.SList list = new GLib.SList(raw_ret);
 				TextMark[] result = new TextMark [list.Count];
 				for (int i = 0; i < list.Count; i++)
@@ -57,7 +57,7 @@ namespace Gtk {
 			get {
 				IntPtr raw_ret = gtk_text_iter_get_tags (ref this);
 				if (raw_ret == IntPtr.Zero)
-					return new TextTag [0];
+					return Array.Empty<TextTag> ();
 				GLib.SList list = new GLib.SList(raw_ret);
 				TextTag[] result = new TextTag [list.Count];
 				for (int i = 0; i < list.Count; i++)
@@ -73,7 +73,7 @@ namespace Gtk {
 		{
 			IntPtr raw_ret = gtk_text_iter_get_toggled_tags (ref this, toggled_on);
 			if (raw_ret == IntPtr.Zero)
-				return new TextTag [0];
+				return Array.Empty<TextTag> ();
 			GLib.SList list = new GLib.SList(raw_ret);
 			TextTag[] result = new TextTag [list.Count];
 			for (int i = 0; i < list.Count; i++)

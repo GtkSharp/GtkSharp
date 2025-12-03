@@ -396,7 +396,7 @@ namespace GLib {
 
 					foreach (object attr in baseinfo.GetCustomAttributes (typeof (DefaultSignalHandlerAttribute), false)) {
 						DefaultSignalHandlerAttribute sigattr = attr as DefaultSignalHandlerAttribute;
-						MethodInfo connector = sigattr.Type.GetMethod (sigattr.ConnectionMethod, BindingFlags.Static | BindingFlags.NonPublic, null, new Type[] { typeof (GType) }, new ParameterModifier [0]);
+						MethodInfo connector = sigattr.Type.GetMethod (sigattr.ConnectionMethod, BindingFlags.Static | BindingFlags.NonPublic, null, new Type[] { typeof (GType) }, Array.Empty<ParameterModifier> ());
 						object[] parms = new object [1];
 						parms [0] = gtype;
 						connector.Invoke (null, parms);
@@ -550,7 +550,7 @@ namespace GLib {
 			if (!props.TryGetValue (param_spec, out prop))
 				return;
 
-			value.Val = prop.GetValue (obj, new object [0]);
+			value.Val = prop.GetValue (obj, Array.Empty<object> ());
 		}
 
 		static GetPropertyDelegate get_property_handler;
@@ -601,7 +601,7 @@ namespace GLib {
 			if (!props.TryGetValue (param_spec, out prop))
 				return;
 
-			prop.SetValue (obj, value.Val, new object [0]);
+			prop.SetValue (obj, value.Val, Array.Empty<object> ());
 		}
 
 		static SetPropertyDelegate set_property_handler;
@@ -648,7 +648,7 @@ namespace GLib {
 
 		protected Object ()
 		{
-			CreateNativeObject (new string [0], new GLib.Value [0]);
+			CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_object_new(IntPtr gtype, IntPtr dummy);

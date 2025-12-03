@@ -36,7 +36,7 @@ namespace Pango {
 			desc.Family = desc.Family; // change static string to allocated one
 			language = language_handle == IntPtr.Zero ? null : new Language (language_handle);
 			if (list_handle == IntPtr.Zero) {
-				extra_attrs = new Pango.Attribute [0];
+				extra_attrs = Array.Empty<Attribute> ();
 				return;
 			}
 			GLib.SList list = new GLib.SList (list_handle);
@@ -53,7 +53,7 @@ namespace Pango {
 			get {
 				IntPtr list_handle = pango_attr_iterator_get_attrs (Handle);
 				if (list_handle == IntPtr.Zero)
-					return new Pango.Attribute [0];
+					return Array.Empty<Attribute> ();
 				GLib.SList list = new GLib.SList (list_handle);
 				Pango.Attribute[] attrs = new Pango.Attribute [list.Count];
 				int i = 0;

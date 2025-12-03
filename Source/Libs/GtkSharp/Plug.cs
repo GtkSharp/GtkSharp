@@ -19,6 +19,8 @@
 // Boston, MA 02111-1307, USA.
 
 
+using GLib;
+
 namespace Gtk {
 
 	using System;
@@ -32,7 +34,7 @@ namespace Gtk {
 		public Plug (ulong socket_id) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Plug)) {
-				CreateNativeObject (new string [0], new GLib.Value [0]);
+				CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 				Construct (Convert.ToUInt32(socket_id));
 				return;
 			}
@@ -45,7 +47,7 @@ namespace Gtk {
 		public Plug (Gdk.Display display, ulong socket_id) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Plug)) {
-				CreateNativeObject (new string [0], new GLib.Value [0]);
+				CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 				ConstructForDisplay (display, Convert.ToUInt32(socket_id));
 				return;
 			}

@@ -18,6 +18,8 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+using GLib;
+
 namespace Gtk {
 
 	using System;
@@ -26,7 +28,7 @@ namespace Gtk {
 
 		protected TextMark () : base (IntPtr.Zero)
 		{
-			CreateNativeObject (new string [0], new GLib.Value [0]);
+			CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 		}
 	}
 }

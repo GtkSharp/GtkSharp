@@ -16,6 +16,8 @@
 // Boston, MA 02111-1307, USA.
 //
 
+using GLib;
+
 namespace Gtk {
 
 	using System;
@@ -29,7 +31,7 @@ namespace Gtk {
 		public Adjustment (double value, double lower, double upper, double step_increment, double page_increment, double page_size) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Adjustment)) {
-				CreateNativeObject (new string [0], new GLib.Value [0]);
+				CreateNativeObject (Array.Empty<string> (), Array.Empty<Value> ());
 				Value = value;
 				Lower = lower;
 				Upper = upper;

@@ -18,6 +18,8 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+using Gdk;
+
 namespace Gtk {
 
 	using System;
@@ -77,7 +79,7 @@ namespace Gtk {
 					GLib.Marshaller.Free (target_ptr);
 					return result;
 				} else
-					return new Gdk.Atom [0];
+					return Array.Empty<Atom> ();
 			}
 		}
 	}
