@@ -121,7 +121,7 @@ namespace GtkSharp.Generation {
                 var funcname = Elem.GetAttribute("gtype");
                 sw.WriteLine ("\t\t[UnmanagedFunctionPointer (CallingConvention.Cdecl)]");
                 sw.WriteLine ("\t\tdelegate IntPtr d_" + funcname + "();");
-				sw.WriteLine ("\t\tstatic d_" + funcname + " " + funcname + " = FuncLoader.LoadFunction<d_" + funcname + ">(FuncLoader.GetProcAddress(GLibrary.Load(" + LibraryName + "), \"" + funcname + "\"));");
+				sw.WriteLine ("\t\tstatic readonly d_" + funcname + " " + funcname + " = FuncLoader.LoadFunction<d_" + funcname + ">(FuncLoader.GetProcAddress(GLibrary.Load(" + LibraryName + "), \"" + funcname + "\"));");
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic static GLib.GType GType {");
 				sw.WriteLine ("\t\t\tget {");
