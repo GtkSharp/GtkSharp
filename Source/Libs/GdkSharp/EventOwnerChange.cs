@@ -1,11 +1,11 @@
-// Gdk.EventOwnerChange.cs - Custom OwnerChange event wrapper 
+// Gdk.EventOwnerChange.cs - Custom OwnerChange event wrapper
 //
 // Author:  Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2008-2009 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
-// modify it under the terms of version 2 of the Lesser GNU General 
+// modify it under the terms of version 2 of the Lesser GNU General
 // Public License as published by the Free Software Foundation.
 //
 // This program is distributed in the hope that it will be useful,
@@ -32,7 +32,7 @@ namespace Gdk {
 			public Gdk.EventType type;
 			public IntPtr window;
 			public sbyte send_event;
-			public uint owner;
+			public Gdk.Window owner;
 			public Gdk.OwnerChange reason;
 			public IntPtr selection;
 			public uint time;
@@ -43,7 +43,7 @@ namespace Gdk {
 			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof (NativeStruct)); }
 		}
 
-		public uint Owner {
+		public Gdk.Window Owner {
 			get { return Native.owner; }
 			set {
 				NativeStruct native = Native;
@@ -62,7 +62,7 @@ namespace Gdk {
 		}
 
 		public Gdk.Atom Selection {
-			get { 
+			get {
 				IntPtr sel = Native.selection;
 				return sel == IntPtr.Zero ? null : (Gdk.Atom) GLib.Opaque.GetOpaque (sel, typeof (Gdk.Atom), false);
 			}
