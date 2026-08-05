@@ -388,11 +388,76 @@ commit.
 
 ## 8. Metadata triage log (Phase 4)
 
-One row per `Warning: … matched no nodes` from a non-strict `GapiFixup` run, bucketed as
-**obsolete** (delete the rule), **moved** (rewrite the XPath), or **converter bug** (fix
-`GirToGapi`, not the metadata). An assembly gets `--strict` only once its section here is empty of
-unresolved rows.
+Rules are bucketed as **obsolete** (delete), **moved** (rewrite the XPath) or **converter bug**
+(fix GirToGapi, not the metadata). An assembly gets `StrictMetadata = true` in `Settings.cake`
+only once it reaches zero unmatched rules.
 
-| Assembly | Rule | Bucket | Resolution |
-|:---------|:-----|:-------|:-----------|
-| *not started* | | | |
+| Assembly | Rules | Unmatched | Survives | `--strict` |
+|:---------|------:|----------:|---------:|:-----------|
+| `GioSharp` | 188 | **0** | **100 %** | **on** |
+| `GrapheneSharp` | 1 | 0 | 100 % | **on** |
+| `GskSharp` | 1 | 0 | 100 % | **on** |
+| `AdwaitaSharp` | 1 | 0 | 100 % | **on** |
+| `PangoSharp` | 116 | 23 | 80 % | pending |
+| `GtkSourceSharp` | 72 | 23 | 68 % | pending |
+| `WebkitGtkSharp` | 5 | 1 | 80 % | pending |
+| `GtkSharp` | 1136 | 732 | 35 % | pending |
+| `GdkSharp` | 199 | 134 | 32 % | pending |
+
+### 8.1 GioSharp — done
+
+Started at 37 unmatched. **28 of those turned out to be a single converter bug**, not GTK 4
+churn: `GirDocument.SymbolPrefix` took only the first entry of `c:symbol-prefixes`, and Gio
+declares `"gio,g"` while every one of its functions is `g_content_type_*`, `g_io_modules_*` and so
+on. Nothing matched, so every namespace-level function fell into `Global` and the `GContent_`,
+`GIo_`, `GSimple_`, `GPollable_` classes never appeared. Trying each prefix, longest first,
+restored exactly the grouping `gapi2xml.pl` produced and took the count to 9.
+
+The remaining 9 were all **obsolete**, none needed rewriting:
+
+| Rule | Why it is obsolete |
+|:-----|:-------------------|
+| `remove-node struct[@cname='GPollable{In,Out}putStream']` | gapi2xml.pl emitted a stray `<struct>` beside each interface; GirToGapi does not |
+| `GSocket{In,Out}putStream` implements-hidden | Private to GIO, not introspectable, never reaches the api.xml |
+| `property[@type='GIoStream']` → `GIOStream` | Corrected gapi2xml.pl's mangling; the c:type is taken verbatim now and is already right |
+| `property[@type='GUnixFdList']` → `GUnixFDList` | Same |
+| `class[@cname='GList_'] hidden` | Only existed because `g_list_model_get_item` was read as a global function; GIR puts it on `GListModel` |
+| `ErrorFromWin32Error`, `RegistryBackendGetType` | Windows-only symbols, absent from a Linux-built gir — see the note below |
+
+> **Consequence of vendoring Linux gir:** Windows-only API (`g_io_error_from_win32_error`,
+> `g_registry_backend_get_type`, and the `GdkWin32`/`GioWin32` namespaces) is simply not in the
+> vendored files. Nothing in GtkSharp binds it today, but a future need would mean vendoring a
+> Windows-built gir alongside.
+
+## 9. Audit of Phases 1-3
+
+Re-checked against the plan's own checklists rather than assumed complete. Two real defects found.
+
+**`GLibSharp-api.xml` must not be regenerated.** Phase 3 regenerated every assembly's api.xml,
+including GLibSharp's. That was wrong. The checked-in file is a hand-maintained 1.6 KB stub of the
+handful of types codegen cannot infer (5 enums, 2 callbacks, 1 struct); `GObject` itself is
+hardcoded in [SymbolTable.cs:125](../Source/Tools/GapiCodegen/SymbolTable.cs#L125) as
+`ManualGen ("GObject", "GLib.Object", …)`. Replacing it with a 599 KB conversion of GLib +
+GObject introduced a `GObject` namespace that nothing implements — GtkSharp binds those types as
+`GLib.Object`, `GLib.Value` and so on — and changed type resolution for every dependent.
+
+`RegenerateApi()` now skips any assembly with no `.metadata`, mirroring `Prepare()`, which already
+generates nothing for those. The plan's own §3.1 comment said as much: the gir is listed there
+"for `--include` only".
+
+This was also the cause of the codegen crashes that Phase 3 stopped at. With the stub restored,
+**`Prepare` completes all eleven assemblies and exits 0** — 481 files for GioSharp, 782 for
+GtkSharp, 180 for GdkSharp, 158 for WebkitGtkSharp, 92 for GtkSourceSharp, 87 for GskSharp, 78 for
+PangoSharp, 64 for AdwaitaSharp, 22 for GrapheneSharp.
+
+**Stale README.** The component list still said "atk" and the package list still advertised
+`AtkSharp` while omitting the three new assemblies.
+
+Everything else checked out: no dangling `AtkSharp` reference outside gitignored `obj/` output;
+the workload packs use `Libs\**\*.csproj` globs and needed no edit, as plan §7.2 predicted; TFMs
+and `LangVersion` untouched.
+
+One documented divergence from plan §2.1: the converter is laid out in fewer files than sketched
+there — `TypeEmitters.cs` covers structs, enums, callbacks and aliases; `ObjectEmitter.cs` covers
+interfaces too; `CallableEmitter.cs` absorbs what the plan called `OwnershipMapper`; `GirTypeRef`
+lives beside `CTypeMapper`. Same coverage, fewer files.
