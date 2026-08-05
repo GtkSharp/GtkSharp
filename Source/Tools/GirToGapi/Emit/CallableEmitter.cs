@@ -215,25 +215,32 @@ namespace GtkSharp.GirConversion.Emit {
 			if ((string) girParam.Attribute ("transfer-ownership") == "full")
 				el.Add (new XAttribute ("owned", "true"));
 
-			// Emitted verbatim. The XSD says the value should be "notify", but the
-			// generator actually tests for GIR's own "notified"
-			// (ManagedCallString.cs:42, Parameters.cs:250) -- the schema is what
-			// is out of step, and it is corrected rather than obeyed here.
+			// Scope is emitted verbatim. The XSD says the value should be "notify",
+			// but the generator actually tests for GIR's own "notified"
+			// (ManagedCallString.cs:42, Parameters.cs:250) -- the schema is what is
+			// out of step, and it is corrected rather than obeyed here.
+			//
+			// A scope beyond "call" only means something alongside the indices of
+			// the user_data and destroy-notify parameters it belongs to. Without
+			// them MethodBody.cs guesses that they sit at i+1 and i+2, and where
+			// several callbacks share one user_data -- g_bus_own_name takes three
+			// against a single closure, and GIR annotates only the last -- that
+			// guess lands on the next callback and generates code that does not
+			// compile. Better to leave the parameter a plain delegate than to
+			// claim a lifetime the binding cannot honour.
 			var scope = (string) girParam.Attribute ("scope");
-			if (!string.IsNullOrEmpty (scope))
-				el.Add (new XAttribute ("scope", scope));
-
-			// Indices of the user_data and destroy-notify parameters that belong
-			// to this callback. Without them MethodBody.cs falls back to assuming
-			// they sit at i+1 and i+2, which is right often enough to be
-			// dangerous and throws outright when it is wrong.
 			var closure = (string) girParam.Attribute ("closure");
-			if (closure != null)
+			var destroy = (string) girParam.Attribute ("destroy");
+
+			if (scope == "call") {
+				el.Add (new XAttribute ("scope", scope));
+			} else if (!string.IsNullOrEmpty (scope) && closure != null) {
+				el.Add (new XAttribute ("scope", scope));
 				el.Add (new XAttribute ("closure", closure));
 
-			var destroy = (string) girParam.Attribute ("destroy");
-			if (destroy != null)
-				el.Add (new XAttribute ("destroy", destroy));
+				if (destroy != null)
+					el.Add (new XAttribute ("destroy", destroy));
+			}
 
 			// As with return types, only the null-terminated string-array shape is
 			// marshallable without a metadata-supplied length parameter. A bare
