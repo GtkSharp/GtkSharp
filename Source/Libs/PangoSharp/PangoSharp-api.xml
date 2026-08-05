@@ -382,14 +382,14 @@
     <callback name="AttrDataCopyFunc" cname="PangoAttrDataCopyFunc">
       <return-type type="gpointer" />
       <parameters>
-        <parameter type="gconstpointer" name="user_data" closure="0" />
+        <parameter type="gconstpointer" name="user_data" />
       </parameters>
     </callback>
     <callback name="AttrFilterFunc" cname="PangoAttrFilterFunc">
       <return-type type="gboolean" />
       <parameters>
         <parameter type="PangoAttribute*" name="attribute" />
-        <parameter type="gpointer" name="user_data" closure="1" />
+        <parameter type="gpointer" name="user_data" />
       </parameters>
     </callback>
     <callback name="FontsetForeachFunc" cname="PangoFontsetForeachFunc">
@@ -397,7 +397,7 @@
       <parameters>
         <parameter type="PangoFontset*" name="fontset" />
         <parameter type="PangoFont*" name="font" />
-        <parameter type="gpointer" name="user_data" closure="2" />
+        <parameter type="gpointer" name="user_data" />
       </parameters>
     </callback>
     <object name="Context" cname="PangoContext" parent="GObject">
@@ -955,7 +955,7 @@
       <virtual_method name="Foreach" cname="foreach">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoFontsetForeachFunc" name="func" scope="call" closure="1" />
+          <parameter type="PangoFontsetForeachFunc" name="func" scope="call" />
           <parameter type="gpointer" name="data" />
         </parameters>
       </virtual_method>
@@ -974,7 +974,7 @@
       <method name="Foreach" cname="pango_fontset_foreach">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoFontsetForeachFunc" name="func" scope="call" closure="1" />
+          <parameter type="PangoFontsetForeachFunc" name="func" scope="call" />
           <parameter type="gpointer" name="data" />
         </parameters>
       </method>
@@ -1725,7 +1725,7 @@
       <method name="Filter" cname="pango_attr_list_filter">
         <return-type type="PangoAttrList*" owned="true" />
         <parameters>
-          <parameter type="PangoAttrFilterFunc" name="func" scope="call" closure="1" />
+          <parameter type="PangoAttrFilterFunc" name="func" scope="call" />
           <parameter type="gpointer" name="data" />
         </parameters>
       </method>
@@ -1802,8 +1802,8 @@
           <parameter type="const-PangoRectangle*" name="ink_rect" />
           <parameter type="const-PangoRectangle*" name="logical_rect" />
           <parameter type="gpointer" name="data" />
-          <parameter type="PangoAttrDataCopyFunc" name="copy_func" scope="notified" destroy="4" />
-          <parameter type="GDestroyNotify" name="destroy_func" scope="async" />
+          <parameter type="PangoAttrDataCopyFunc" name="copy_func" />
+          <parameter type="GDestroyNotify" name="destroy_func" />
         </parameters>
       </method>
     </struct>
@@ -3335,7 +3335,7 @@
         <parameter type="cairo_t*" name="cr" />
         <parameter type="PangoAttrShape*" name="attr" />
         <parameter type="gboolean" name="do_path" />
-        <parameter type="gpointer" name="data" closure="3" />
+        <parameter type="gpointer" name="data" />
       </parameters>
     </callback>
     <interface name="Font" cname="PangoCairoFont">
@@ -3421,7 +3421,7 @@
           <parameter type="PangoContext*" name="context" />
           <parameter type="PangoCairoShapeRendererFunc" name="func" scope="notified" closure="2" destroy="3" />
           <parameter type="gpointer" name="data" />
-          <parameter type="GDestroyNotify" name="dnotify" scope="async" />
+          <parameter type="GDestroyNotify" name="dnotify" />
         </parameters>
       </method>
       <method name="CreateContext" cname="pango_cairo_create_context" shared="true">

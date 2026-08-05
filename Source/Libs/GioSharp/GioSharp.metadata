@@ -202,4 +202,36 @@
        introspectable, so they never reach the api.xml. -->
   <attr path="/api/namespace/object[@cname='GConverterOutputStream']/implements/interface[@cname='GPollableOutputStream']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GMemoryOutputStream']/implements/interface[@cname='GPollableOutputStream']" name="hidden">1</attr>
+
+  <!--
+    Gtk 4 collision cleanup. gapi2xml.pl emitted "variant" as the type of several
+    properties, which SymbolTable never knew, so codegen dropped them with a
+    warning and their collisions never surfaced. GirToGapi emits the real
+    GVariant*, so they resolve now and have to be dealt with properly.
+
+    Properties whose accessor already comes from a Get vfunc on the same
+    interface. The four GAction rules above are the same fix; only "state"
+    escaped, because that was one of the ones being dropped.
+  -->
+  <attr path="/api/namespace/interface[@cname='GAction']/property[@cname='state']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GDtlsConnection']/property[@cname='advertised-protocols']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GDtlsConnection']/property[@cname='negotiated-protocol']" name="hidden">1</attr>
+
+  <!--
+    Functions that emit a signal of the same name. GMenuModel already had this
+    treatment above; these follow it, spelled Emit* because the function raises
+    the signal rather than setting anything.
+  -->
+  <attr path="/api/namespace/interface[@cname='GListModel']/method[@cname='g_list_model_items_changed']" name="name">EmitItemsChanged</attr>
+  <attr path="/api/namespace/object[@cname='GDBusAuthObserver']/method[@cname='g_dbus_auth_observer_allow_mechanism']" name="name">EmitAllowMechanism</attr>
+  <attr path="/api/namespace/object[@cname='GDBusAuthObserver']/method[@cname='g_dbus_auth_observer_authorize_authenticated_peer']" name="name">EmitAuthorizeAuthenticatedPeer</attr>
+
+  <!-- A "closed" property and a "closed" signal cannot share a name in C#.
+       The signal wins; IsClosed() still reports the state. -->
+  <attr path="/api/namespace/object[@cname='GDBusConnection']/property[@cname='closed']" name="hidden">1</attr>
+
+  <!-- IDBusObject contributes a get-only ObjectPath, and this setter would be a
+       second, set-only property of the same name. The read/write GObjectPath
+       property covers setting it. -->
+  <attr path="/api/namespace/object[@cname='GDBusObjectSkeleton']/method[@cname='g_dbus_object_skeleton_set_object_path']" name="hidden">1</attr>
 </metadata>
