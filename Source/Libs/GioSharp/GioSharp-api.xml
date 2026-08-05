@@ -18002,14 +18002,14 @@
     <struct name="UnixCredentialsMessagePrivate" cname="GUnixCredentialsMessagePrivate" opaque="true" />
     <struct name="UnixFDListPrivate" cname="GUnixFDListPrivate" opaque="true" />
     <struct name="UnixSocketAddressPrivate" cname="GUnixSocketAddressPrivate" opaque="true" />
-    <class name="Global" cname="GGlobal">
-      <method name="ActionNameIsValid" cname="g_action_name_is_valid" shared="true">
+    <class name="Action" cname="GAction_">
+      <method name="NameIsValid" cname="g_action_name_is_valid" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="action_name" />
         </parameters>
       </method>
-      <method name="ActionParseDetailedName" cname="g_action_parse_detailed_name" shared="true">
+      <method name="ParseDetailedName" cname="g_action_parse_detailed_name" shared="true">
         <return-type type="gboolean" />
         <parameters throws="1">
           <parameter type="const-gchar*" name="detailed_name" />
@@ -18017,14 +18017,16 @@
           <parameter type="GVariant**" name="target_value" pass_as="out" owned="true" />
         </parameters>
       </method>
-      <method name="ActionPrintDetailedName" cname="g_action_print_detailed_name" shared="true">
+      <method name="PrintDetailedName" cname="g_action_print_detailed_name" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="action_name" />
           <parameter type="GVariant*" name="target_value" />
         </parameters>
       </method>
-      <method name="AppInfoCreateFromCommandline" cname="g_app_info_create_from_commandline" shared="true">
+    </class>
+    <class name="App" cname="GApp_">
+      <method name="InfoCreateFromCommandline" cname="g_app_info_create_from_commandline" shared="true">
         <return-type type="GAppInfo*" owned="true" />
         <parameters throws="1">
           <parameter type="const-char*" name="commandline" />
@@ -18032,23 +18034,23 @@
           <parameter type="GAppInfoCreateFlags" name="flags" />
         </parameters>
       </method>
-      <method name="AppInfoGetAll" cname="g_app_info_get_all" shared="true">
+      <method name="InfoGetAll" cname="g_app_info_get_all" shared="true">
         <return-type type="GList*" owned="true" />
       </method>
-      <method name="AppInfoGetAllForType" cname="g_app_info_get_all_for_type" shared="true">
+      <method name="InfoGetAllForType" cname="g_app_info_get_all_for_type" shared="true">
         <return-type type="GList*" owned="true" />
         <parameters>
           <parameter type="const-char*" name="content_type" />
         </parameters>
       </method>
-      <method name="AppInfoGetDefaultForType" cname="g_app_info_get_default_for_type" shared="true">
+      <method name="InfoGetDefaultForType" cname="g_app_info_get_default_for_type" shared="true">
         <return-type type="GAppInfo*" owned="true" />
         <parameters>
           <parameter type="const-char*" name="content_type" />
           <parameter type="gboolean" name="must_support_uris" />
         </parameters>
       </method>
-      <method name="AppInfoGetDefaultForTypeAsync" cname="g_app_info_get_default_for_type_async" shared="true">
+      <method name="InfoGetDefaultForTypeAsync" cname="g_app_info_get_default_for_type_async" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-char*" name="content_type" />
@@ -18058,19 +18060,19 @@
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
-      <method name="AppInfoGetDefaultForTypeFinish" cname="g_app_info_get_default_for_type_finish" shared="true">
+      <method name="InfoGetDefaultForTypeFinish" cname="g_app_info_get_default_for_type_finish" shared="true">
         <return-type type="GAppInfo*" owned="true" />
         <parameters throws="1">
           <parameter type="GAsyncResult*" name="result" />
         </parameters>
       </method>
-      <method name="AppInfoGetDefaultForUriScheme" cname="g_app_info_get_default_for_uri_scheme" shared="true">
+      <method name="InfoGetDefaultForUriScheme" cname="g_app_info_get_default_for_uri_scheme" shared="true">
         <return-type type="GAppInfo*" owned="true" />
         <parameters>
           <parameter type="const-char*" name="uri_scheme" />
         </parameters>
       </method>
-      <method name="AppInfoGetDefaultForUriSchemeAsync" cname="g_app_info_get_default_for_uri_scheme_async" shared="true">
+      <method name="InfoGetDefaultForUriSchemeAsync" cname="g_app_info_get_default_for_uri_scheme_async" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-char*" name="uri_scheme" />
@@ -18079,32 +18081,32 @@
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
-      <method name="AppInfoGetDefaultForUriSchemeFinish" cname="g_app_info_get_default_for_uri_scheme_finish" shared="true">
+      <method name="InfoGetDefaultForUriSchemeFinish" cname="g_app_info_get_default_for_uri_scheme_finish" shared="true">
         <return-type type="GAppInfo*" owned="true" />
         <parameters throws="1">
           <parameter type="GAsyncResult*" name="result" />
         </parameters>
       </method>
-      <method name="AppInfoGetFallbackForType" cname="g_app_info_get_fallback_for_type" shared="true">
+      <method name="InfoGetFallbackForType" cname="g_app_info_get_fallback_for_type" shared="true">
         <return-type type="GList*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="content_type" />
         </parameters>
       </method>
-      <method name="AppInfoGetRecommendedForType" cname="g_app_info_get_recommended_for_type" shared="true">
+      <method name="InfoGetRecommendedForType" cname="g_app_info_get_recommended_for_type" shared="true">
         <return-type type="GList*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="content_type" />
         </parameters>
       </method>
-      <method name="AppInfoLaunchDefaultForUri" cname="g_app_info_launch_default_for_uri" shared="true">
+      <method name="InfoLaunchDefaultForUri" cname="g_app_info_launch_default_for_uri" shared="true">
         <return-type type="gboolean" />
         <parameters throws="1">
           <parameter type="const-char*" name="uri" />
           <parameter type="GAppLaunchContext*" name="context" />
         </parameters>
       </method>
-      <method name="AppInfoLaunchDefaultForUriAsync" cname="g_app_info_launch_default_for_uri_async" shared="true">
+      <method name="InfoLaunchDefaultForUriAsync" cname="g_app_info_launch_default_for_uri_async" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-char*" name="uri" />
@@ -18114,31 +18116,21 @@
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
-      <method name="AppInfoLaunchDefaultForUriFinish" cname="g_app_info_launch_default_for_uri_finish" shared="true">
+      <method name="InfoLaunchDefaultForUriFinish" cname="g_app_info_launch_default_for_uri_finish" shared="true">
         <return-type type="gboolean" />
         <parameters throws="1">
           <parameter type="GAsyncResult*" name="result" />
         </parameters>
       </method>
-      <method name="AppInfoResetTypeAssociations" cname="g_app_info_reset_type_associations" shared="true">
+      <method name="InfoResetTypeAssociations" cname="g_app_info_reset_type_associations" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-char*" name="content_type" />
         </parameters>
       </method>
-      <method name="AsyncInitableNewvAsync" cname="g_async_initable_newv_async" shared="true" deprecated="1">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GType" name="object_type" />
-          <parameter type="guint" name="n_parameters" />
-          <parameter type="GParameter*" name="parameters" />
-          <parameter type="int" name="io_priority" />
-          <parameter type="GCancellable*" name="cancellable" />
-          <parameter type="GAsyncReadyCallback" name="callback" scope="async" closure="6" />
-          <parameter type="gpointer" name="user_data" />
-        </parameters>
-      </method>
-      <method name="BusGet" cname="g_bus_get" shared="true">
+    </class>
+    <class name="Bus" cname="GBus_">
+      <method name="Get" cname="g_bus_get" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="GBusType" name="bus_type" />
@@ -18147,20 +18139,20 @@
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
-      <method name="BusGetFinish" cname="g_bus_get_finish" shared="true">
+      <method name="GetFinish" cname="g_bus_get_finish" shared="true">
         <return-type type="GDBusConnection*" owned="true" />
         <parameters throws="1">
           <parameter type="GAsyncResult*" name="res" />
         </parameters>
       </method>
-      <method name="BusGetSync" cname="g_bus_get_sync" shared="true">
+      <method name="GetSync" cname="g_bus_get_sync" shared="true">
         <return-type type="GDBusConnection*" owned="true" />
         <parameters throws="1">
           <parameter type="GBusType" name="bus_type" />
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
       </method>
-      <method name="BusOwnName" cname="g_bus_own_name" shared="true">
+      <method name="OwnName" cname="g_bus_own_name" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="GBusType" name="bus_type" />
@@ -18173,7 +18165,7 @@
           <parameter type="GDestroyNotify" name="user_data_free_func" scope="async" />
         </parameters>
       </method>
-      <method name="BusOwnNameOnConnection" cname="g_bus_own_name_on_connection" shared="true">
+      <method name="OwnNameOnConnection" cname="g_bus_own_name_on_connection" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="GDBusConnection*" name="connection" />
@@ -18185,7 +18177,7 @@
           <parameter type="GDestroyNotify" name="user_data_free_func" scope="async" />
         </parameters>
       </method>
-      <method name="BusOwnNameOnConnectionWithClosures" cname="g_bus_own_name_on_connection_with_closures" shared="true">
+      <method name="OwnNameOnConnectionWithClosures" cname="g_bus_own_name_on_connection_with_closures" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="GDBusConnection*" name="connection" />
@@ -18195,7 +18187,7 @@
           <parameter type="GClosure*" name="name_lost_closure" />
         </parameters>
       </method>
-      <method name="BusOwnNameWithClosures" cname="g_bus_own_name_with_closures" shared="true">
+      <method name="OwnNameWithClosures" cname="g_bus_own_name_with_closures" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="GBusType" name="bus_type" />
@@ -18206,19 +18198,19 @@
           <parameter type="GClosure*" name="name_lost_closure" />
         </parameters>
       </method>
-      <method name="BusUnownName" cname="g_bus_unown_name" shared="true">
+      <method name="UnownName" cname="g_bus_unown_name" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="guint" name="owner_id" />
         </parameters>
       </method>
-      <method name="BusUnwatchName" cname="g_bus_unwatch_name" shared="true">
+      <method name="UnwatchName" cname="g_bus_unwatch_name" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="guint" name="watcher_id" />
         </parameters>
       </method>
-      <method name="BusWatchName" cname="g_bus_watch_name" shared="true">
+      <method name="WatchName" cname="g_bus_watch_name" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="GBusType" name="bus_type" />
@@ -18230,7 +18222,7 @@
           <parameter type="GDestroyNotify" name="user_data_free_func" scope="async" />
         </parameters>
       </method>
-      <method name="BusWatchNameOnConnection" cname="g_bus_watch_name_on_connection" shared="true">
+      <method name="WatchNameOnConnection" cname="g_bus_watch_name_on_connection" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="GDBusConnection*" name="connection" />
@@ -18242,7 +18234,7 @@
           <parameter type="GDestroyNotify" name="user_data_free_func" scope="async" />
         </parameters>
       </method>
-      <method name="BusWatchNameOnConnectionWithClosures" cname="g_bus_watch_name_on_connection_with_closures" shared="true">
+      <method name="WatchNameOnConnectionWithClosures" cname="g_bus_watch_name_on_connection_with_closures" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="GDBusConnection*" name="connection" />
@@ -18252,7 +18244,7 @@
           <parameter type="GClosure*" name="name_vanished_closure" />
         </parameters>
       </method>
-      <method name="BusWatchNameWithClosures" cname="g_bus_watch_name_with_closures" shared="true">
+      <method name="WatchNameWithClosures" cname="g_bus_watch_name_with_closures" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="GBusType" name="bus_type" />
@@ -18262,59 +18254,61 @@
           <parameter type="GClosure*" name="name_vanished_closure" />
         </parameters>
       </method>
-      <method name="ContentTypeCanBeExecutable" cname="g_content_type_can_be_executable" shared="true">
+    </class>
+    <class name="Content" cname="GContent_">
+      <method name="TypeCanBeExecutable" cname="g_content_type_can_be_executable" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="type" />
         </parameters>
       </method>
-      <method name="ContentTypeEquals" cname="g_content_type_equals" shared="true">
+      <method name="TypeEquals" cname="g_content_type_equals" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="type1" />
           <parameter type="const-gchar*" name="type2" />
         </parameters>
       </method>
-      <method name="ContentTypeFromMimeType" cname="g_content_type_from_mime_type" shared="true">
+      <method name="TypeFromMimeType" cname="g_content_type_from_mime_type" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="mime_type" />
         </parameters>
       </method>
-      <method name="ContentTypeGetDescription" cname="g_content_type_get_description" shared="true">
+      <method name="TypeGetDescription" cname="g_content_type_get_description" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="type" />
         </parameters>
       </method>
-      <method name="ContentTypeGetGenericIconName" cname="g_content_type_get_generic_icon_name" shared="true">
+      <method name="TypeGetGenericIconName" cname="g_content_type_get_generic_icon_name" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="type" />
         </parameters>
       </method>
-      <method name="ContentTypeGetIcon" cname="g_content_type_get_icon" shared="true">
+      <method name="TypeGetIcon" cname="g_content_type_get_icon" shared="true">
         <return-type type="GIcon*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="type" />
         </parameters>
       </method>
-      <method name="ContentTypeGetMimeDirs" cname="g_content_type_get_mime_dirs" shared="true">
+      <method name="TypeGetMimeDirs" cname="g_content_type_get_mime_dirs" shared="true">
         <return-type type="const-gchar*" />
       </method>
-      <method name="ContentTypeGetMimeType" cname="g_content_type_get_mime_type" shared="true">
+      <method name="TypeGetMimeType" cname="g_content_type_get_mime_type" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="type" />
         </parameters>
       </method>
-      <method name="ContentTypeGetSymbolicIcon" cname="g_content_type_get_symbolic_icon" shared="true">
+      <method name="TypeGetSymbolicIcon" cname="g_content_type_get_symbolic_icon" shared="true">
         <return-type type="GIcon*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="type" />
         </parameters>
       </method>
-      <method name="ContentTypeGuess" cname="g_content_type_guess" shared="true">
+      <method name="TypeGuess" cname="g_content_type_guess" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="filename" />
@@ -18323,55 +18317,57 @@
           <parameter type="gboolean*" name="result_uncertain" pass_as="out" owned="true" />
         </parameters>
       </method>
-      <method name="ContentTypeGuessForTree" cname="g_content_type_guess_for_tree" shared="true">
+      <method name="TypeGuessForTree" cname="g_content_type_guess_for_tree" shared="true">
         <return-type type="gchar**" owned="true" elements_owned="true" null_term_array="true" />
         <parameters>
           <parameter type="GFile*" name="root" />
         </parameters>
       </method>
-      <method name="ContentTypeIsA" cname="g_content_type_is_a" shared="true">
+      <method name="TypeIsA" cname="g_content_type_is_a" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="type" />
           <parameter type="const-gchar*" name="supertype" />
         </parameters>
       </method>
-      <method name="ContentTypeIsMimeType" cname="g_content_type_is_mime_type" shared="true">
+      <method name="TypeIsMimeType" cname="g_content_type_is_mime_type" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="type" />
           <parameter type="const-gchar*" name="mime_type" />
         </parameters>
       </method>
-      <method name="ContentTypeIsUnknown" cname="g_content_type_is_unknown" shared="true">
+      <method name="TypeIsUnknown" cname="g_content_type_is_unknown" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="type" />
         </parameters>
       </method>
-      <method name="ContentTypeSetMimeDirs" cname="g_content_type_set_mime_dirs" shared="true">
+      <method name="TypeSetMimeDirs" cname="g_content_type_set_mime_dirs" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="dirs" />
         </parameters>
       </method>
-      <method name="ContentTypesGetRegistered" cname="g_content_types_get_registered" shared="true">
+      <method name="TypesGetRegistered" cname="g_content_types_get_registered" shared="true">
         <return-type type="GList*" owned="true" />
       </method>
-      <method name="DbusAddressEscapeValue" cname="g_dbus_address_escape_value" shared="true">
+    </class>
+    <class name="Dbus" cname="GDbus_">
+      <method name="AddressEscapeValue" cname="g_dbus_address_escape_value" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="string" />
         </parameters>
       </method>
-      <method name="DbusAddressGetForBusSync" cname="g_dbus_address_get_for_bus_sync" shared="true">
+      <method name="AddressGetForBusSync" cname="g_dbus_address_get_for_bus_sync" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters throws="1">
           <parameter type="GBusType" name="bus_type" />
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
       </method>
-      <method name="DbusAddressGetStream" cname="g_dbus_address_get_stream" shared="true">
+      <method name="AddressGetStream" cname="g_dbus_address_get_stream" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="address" />
@@ -18380,14 +18376,14 @@
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
-      <method name="DbusAddressGetStreamFinish" cname="g_dbus_address_get_stream_finish" shared="true">
+      <method name="AddressGetStreamFinish" cname="g_dbus_address_get_stream_finish" shared="true">
         <return-type type="GIOStream*" owned="true" />
         <parameters throws="1">
           <parameter type="GAsyncResult*" name="res" />
           <parameter type="gchar**" name="out_guid" pass_as="out" owned="true" />
         </parameters>
       </method>
-      <method name="DbusAddressGetStreamSync" cname="g_dbus_address_get_stream_sync" shared="true">
+      <method name="AddressGetStreamSync" cname="g_dbus_address_get_stream_sync" shared="true">
         <return-type type="GIOStream*" owned="true" />
         <parameters throws="1">
           <parameter type="const-gchar*" name="address" />
@@ -18395,42 +18391,42 @@
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
       </method>
-      <method name="DbusAnnotationInfoLookup" cname="g_dbus_annotation_info_lookup" shared="true">
+      <method name="AnnotationInfoLookup" cname="g_dbus_annotation_info_lookup" shared="true">
         <return-type type="const-gchar*" />
         <parameters>
           <parameter type="GDBusAnnotationInfo**" name="annotations" />
           <parameter type="const-gchar*" name="name" />
         </parameters>
       </method>
-      <method name="DbusErrorEncodeGerror" cname="g_dbus_error_encode_gerror" shared="true">
+      <method name="ErrorEncodeGerror" cname="g_dbus_error_encode_gerror" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-GError*" name="error" />
         </parameters>
       </method>
-      <method name="DbusErrorGetRemoteError" cname="g_dbus_error_get_remote_error" shared="true">
+      <method name="ErrorGetRemoteError" cname="g_dbus_error_get_remote_error" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-GError*" name="error" />
         </parameters>
       </method>
-      <method name="DbusErrorIsRemoteError" cname="g_dbus_error_is_remote_error" shared="true">
+      <method name="ErrorIsRemoteError" cname="g_dbus_error_is_remote_error" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-GError*" name="error" />
         </parameters>
       </method>
-      <method name="DbusErrorNewForDbusError" cname="g_dbus_error_new_for_dbus_error" shared="true">
+      <method name="ErrorNewForDbusError" cname="g_dbus_error_new_for_dbus_error" shared="true">
         <return-type type="GError*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="dbus_error_name" />
           <parameter type="const-gchar*" name="dbus_error_message" />
         </parameters>
       </method>
-      <method name="DbusErrorQuark" cname="g_dbus_error_quark" shared="true">
+      <method name="ErrorQuark" cname="g_dbus_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
-      <method name="DbusErrorRegisterError" cname="g_dbus_error_register_error" shared="true">
+      <method name="ErrorRegisterError" cname="g_dbus_error_register_error" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GQuark" name="error_domain" />
@@ -18438,7 +18434,7 @@
           <parameter type="const-gchar*" name="dbus_error_name" />
         </parameters>
       </method>
-      <method name="DbusErrorRegisterErrorDomain" cname="g_dbus_error_register_error_domain" shared="true">
+      <method name="ErrorRegisterErrorDomain" cname="g_dbus_error_register_error_domain" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="error_domain_quark_name" />
@@ -18447,13 +18443,13 @@
           <parameter type="guint" name="num_entries" />
         </parameters>
       </method>
-      <method name="DbusErrorStripRemoteError" cname="g_dbus_error_strip_remote_error" shared="true">
+      <method name="ErrorStripRemoteError" cname="g_dbus_error_strip_remote_error" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GError*" name="error" />
         </parameters>
       </method>
-      <method name="DbusErrorUnregisterError" cname="g_dbus_error_unregister_error" shared="true">
+      <method name="ErrorUnregisterError" cname="g_dbus_error_unregister_error" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GQuark" name="error_domain" />
@@ -18461,142 +18457,146 @@
           <parameter type="const-gchar*" name="dbus_error_name" />
         </parameters>
       </method>
-      <method name="DbusEscapeObjectPath" cname="g_dbus_escape_object_path" shared="true">
+      <method name="EscapeObjectPath" cname="g_dbus_escape_object_path" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="s" />
         </parameters>
       </method>
-      <method name="DbusEscapeObjectPathBytestring" cname="g_dbus_escape_object_path_bytestring" shared="true">
+      <method name="EscapeObjectPathBytestring" cname="g_dbus_escape_object_path_bytestring" shared="true">
         <return-type type="gchar*" owned="true" />
         <parameters>
           <parameter type="const-guint8*" name="bytes" />
         </parameters>
       </method>
-      <method name="DbusGenerateGuid" cname="g_dbus_generate_guid" shared="true">
+      <method name="GenerateGuid" cname="g_dbus_generate_guid" shared="true">
         <return-type type="gchar*" owned="true" />
       </method>
-      <method name="DbusGvalueToGvariant" cname="g_dbus_gvalue_to_gvariant" shared="true">
+      <method name="GvalueToGvariant" cname="g_dbus_gvalue_to_gvariant" shared="true">
         <return-type type="GVariant*" owned="true" />
         <parameters>
           <parameter type="const-GValue*" name="gvalue" />
           <parameter type="const-GVariantType*" name="type" />
         </parameters>
       </method>
-      <method name="DbusGvariantToGvalue" cname="g_dbus_gvariant_to_gvalue" shared="true">
+      <method name="GvariantToGvalue" cname="g_dbus_gvariant_to_gvalue" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="GVariant*" name="value" />
           <parameter type="GValue*" name="out_gvalue" pass_as="out" />
         </parameters>
       </method>
-      <method name="DbusIsAddress" cname="g_dbus_is_address" shared="true">
+      <method name="IsAddress" cname="g_dbus_is_address" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="string" />
         </parameters>
       </method>
-      <method name="DbusIsErrorName" cname="g_dbus_is_error_name" shared="true">
+      <method name="IsErrorName" cname="g_dbus_is_error_name" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="string" />
         </parameters>
       </method>
-      <method name="DbusIsGuid" cname="g_dbus_is_guid" shared="true">
+      <method name="IsGuid" cname="g_dbus_is_guid" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="string" />
         </parameters>
       </method>
-      <method name="DbusIsInterfaceName" cname="g_dbus_is_interface_name" shared="true">
+      <method name="IsInterfaceName" cname="g_dbus_is_interface_name" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="string" />
         </parameters>
       </method>
-      <method name="DbusIsMemberName" cname="g_dbus_is_member_name" shared="true">
+      <method name="IsMemberName" cname="g_dbus_is_member_name" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="string" />
         </parameters>
       </method>
-      <method name="DbusIsName" cname="g_dbus_is_name" shared="true">
+      <method name="IsName" cname="g_dbus_is_name" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="string" />
         </parameters>
       </method>
-      <method name="DbusIsSupportedAddress" cname="g_dbus_is_supported_address" shared="true">
+      <method name="IsSupportedAddress" cname="g_dbus_is_supported_address" shared="true">
         <return-type type="gboolean" />
         <parameters throws="1">
           <parameter type="const-gchar*" name="string" />
         </parameters>
       </method>
-      <method name="DbusIsUniqueName" cname="g_dbus_is_unique_name" shared="true">
+      <method name="IsUniqueName" cname="g_dbus_is_unique_name" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="string" />
         </parameters>
       </method>
-      <method name="DbusUnescapeObjectPath" cname="g_dbus_unescape_object_path" shared="true">
+      <method name="UnescapeObjectPath" cname="g_dbus_unescape_object_path" shared="true">
         <return-type type="guint8*" />
         <parameters>
           <parameter type="const-gchar*" name="s" />
         </parameters>
       </method>
-      <method name="DtlsClientConnectionNew" cname="g_dtls_client_connection_new" shared="true">
+    </class>
+    <class name="Dtls" cname="GDtls_">
+      <method name="ClientConnectionNew" cname="g_dtls_client_connection_new" shared="true">
         <return-type type="GDatagramBased*" owned="true" />
         <parameters throws="1">
           <parameter type="GDatagramBased*" name="base_socket" />
           <parameter type="GSocketConnectable*" name="server_identity" />
         </parameters>
       </method>
-      <method name="DtlsServerConnectionNew" cname="g_dtls_server_connection_new" shared="true">
+      <method name="ServerConnectionNew" cname="g_dtls_server_connection_new" shared="true">
         <return-type type="GDatagramBased*" owned="true" />
         <parameters throws="1">
           <parameter type="GDatagramBased*" name="base_socket" />
           <parameter type="GTlsCertificate*" name="certificate" />
         </parameters>
       </method>
-      <method name="FileNewBuildFilenamev" cname="g_file_new_build_filenamev" shared="true">
+    </class>
+    <class name="File" cname="GFile_">
+      <method name="NewBuildFilenamev" cname="g_file_new_build_filenamev" shared="true">
         <return-type type="GFile*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="args" />
         </parameters>
       </method>
-      <method name="FileNewForCommandlineArg" cname="g_file_new_for_commandline_arg" shared="true">
+      <method name="NewForCommandlineArg" cname="g_file_new_for_commandline_arg" shared="true">
         <return-type type="GFile*" owned="true" />
         <parameters>
           <parameter type="const-char*" name="arg" />
         </parameters>
       </method>
-      <method name="FileNewForCommandlineArgAndCwd" cname="g_file_new_for_commandline_arg_and_cwd" shared="true">
+      <method name="NewForCommandlineArgAndCwd" cname="g_file_new_for_commandline_arg_and_cwd" shared="true">
         <return-type type="GFile*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="arg" />
           <parameter type="const-gchar*" name="cwd" />
         </parameters>
       </method>
-      <method name="FileNewForPath" cname="g_file_new_for_path" shared="true">
+      <method name="NewForPath" cname="g_file_new_for_path" shared="true">
         <return-type type="GFile*" owned="true" />
         <parameters>
           <parameter type="const-char*" name="path" />
         </parameters>
       </method>
-      <method name="FileNewForUri" cname="g_file_new_for_uri" shared="true">
+      <method name="NewForUri" cname="g_file_new_for_uri" shared="true">
         <return-type type="GFile*" owned="true" />
         <parameters>
           <parameter type="const-char*" name="uri" />
         </parameters>
       </method>
-      <method name="FileNewTmp" cname="g_file_new_tmp" shared="true">
+      <method name="NewTmp" cname="g_file_new_tmp" shared="true">
         <return-type type="GFile*" owned="true" />
         <parameters throws="1">
           <parameter type="const-char*" name="tmpl" />
           <parameter type="GFileIOStream**" name="iostream" pass_as="out" owned="true" />
         </parameters>
       </method>
-      <method name="FileNewTmpAsync" cname="g_file_new_tmp_async" shared="true">
+      <method name="NewTmpAsync" cname="g_file_new_tmp_async" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-char*" name="tmpl" />
@@ -18606,7 +18606,7 @@
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
-      <method name="FileNewTmpDirAsync" cname="g_file_new_tmp_dir_async" shared="true">
+      <method name="NewTmpDirAsync" cname="g_file_new_tmp_dir_async" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-char*" name="tmpl" />
@@ -18616,62 +18616,57 @@
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
-      <method name="FileNewTmpDirFinish" cname="g_file_new_tmp_dir_finish" shared="true">
+      <method name="NewTmpDirFinish" cname="g_file_new_tmp_dir_finish" shared="true">
         <return-type type="GFile*" owned="true" />
         <parameters throws="1">
           <parameter type="GAsyncResult*" name="result" />
         </parameters>
       </method>
-      <method name="FileNewTmpFinish" cname="g_file_new_tmp_finish" shared="true">
+      <method name="NewTmpFinish" cname="g_file_new_tmp_finish" shared="true">
         <return-type type="GFile*" owned="true" />
         <parameters throws="1">
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GFileIOStream**" name="iostream" pass_as="out" owned="true" />
         </parameters>
       </method>
-      <method name="FileParseName" cname="g_file_parse_name" shared="true">
+      <method name="ParseName" cname="g_file_parse_name" shared="true">
         <return-type type="GFile*" owned="true" />
         <parameters>
           <parameter type="const-char*" name="parse_name" />
         </parameters>
       </method>
-      <method name="IconDeserialize" cname="g_icon_deserialize" shared="true">
+    </class>
+    <class name="Icon" cname="GIcon_">
+      <method name="Deserialize" cname="g_icon_deserialize" shared="true">
         <return-type type="GIcon*" owned="true" />
         <parameters>
           <parameter type="GVariant*" name="value" />
         </parameters>
       </method>
-      <method name="IconNewForString" cname="g_icon_new_for_string" shared="true">
+      <method name="NewForString" cname="g_icon_new_for_string" shared="true">
         <return-type type="GIcon*" owned="true" />
         <parameters throws="1">
           <parameter type="const-gchar*" name="str" />
         </parameters>
       </method>
-      <method name="InitableNewv" cname="g_initable_newv" shared="true" deprecated="1">
-        <return-type type="gpointer" owned="true" />
-        <parameters throws="1">
-          <parameter type="GType" name="object_type" />
-          <parameter type="guint" name="n_parameters" />
-          <parameter type="GParameter*" name="parameters" />
-          <parameter type="GCancellable*" name="cancellable" />
-        </parameters>
-      </method>
-      <method name="IoErrorFromErrno" cname="g_io_error_from_errno" shared="true">
+    </class>
+    <class name="Io" cname="GIo_">
+      <method name="ErrorFromErrno" cname="g_io_error_from_errno" shared="true">
         <return-type type="GIOErrorEnum" />
         <parameters>
           <parameter type="gint" name="err_no" />
         </parameters>
       </method>
-      <method name="IoErrorFromFileError" cname="g_io_error_from_file_error" shared="true">
+      <method name="ErrorFromFileError" cname="g_io_error_from_file_error" shared="true">
         <return-type type="GIOErrorEnum" />
         <parameters>
           <parameter type="GFileError" name="file_error" />
         </parameters>
       </method>
-      <method name="IoErrorQuark" cname="g_io_error_quark" shared="true">
+      <method name="ErrorQuark" cname="g_io_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
-      <method name="IoExtensionPointImplement" cname="g_io_extension_point_implement" shared="true">
+      <method name="ExtensionPointImplement" cname="g_io_extension_point_implement" shared="true">
         <return-type type="GIOExtension*" />
         <parameters>
           <parameter type="const-char*" name="extension_point_name" />
@@ -18680,48 +18675,48 @@
           <parameter type="gint" name="priority" />
         </parameters>
       </method>
-      <method name="IoExtensionPointLookup" cname="g_io_extension_point_lookup" shared="true">
+      <method name="ExtensionPointLookup" cname="g_io_extension_point_lookup" shared="true">
         <return-type type="GIOExtensionPoint*" />
         <parameters>
           <parameter type="const-char*" name="name" />
         </parameters>
       </method>
-      <method name="IoExtensionPointRegister" cname="g_io_extension_point_register" shared="true">
+      <method name="ExtensionPointRegister" cname="g_io_extension_point_register" shared="true">
         <return-type type="GIOExtensionPoint*" />
         <parameters>
           <parameter type="const-char*" name="name" />
         </parameters>
       </method>
-      <method name="IoModulesLoadAllInDirectory" cname="g_io_modules_load_all_in_directory" shared="true">
+      <method name="ModulesLoadAllInDirectory" cname="g_io_modules_load_all_in_directory" shared="true">
         <return-type type="GList*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="dirname" />
         </parameters>
       </method>
-      <method name="IoModulesLoadAllInDirectoryWithScope" cname="g_io_modules_load_all_in_directory_with_scope" shared="true">
+      <method name="ModulesLoadAllInDirectoryWithScope" cname="g_io_modules_load_all_in_directory_with_scope" shared="true">
         <return-type type="GList*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="dirname" />
           <parameter type="GIOModuleScope*" name="scope" />
         </parameters>
       </method>
-      <method name="IoModulesScanAllInDirectory" cname="g_io_modules_scan_all_in_directory" shared="true">
+      <method name="ModulesScanAllInDirectory" cname="g_io_modules_scan_all_in_directory" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-char*" name="dirname" />
         </parameters>
       </method>
-      <method name="IoModulesScanAllInDirectoryWithScope" cname="g_io_modules_scan_all_in_directory_with_scope" shared="true">
+      <method name="ModulesScanAllInDirectoryWithScope" cname="g_io_modules_scan_all_in_directory_with_scope" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="const-gchar*" name="dirname" />
           <parameter type="GIOModuleScope*" name="scope" />
         </parameters>
       </method>
-      <method name="IoSchedulerCancelAllJobs" cname="g_io_scheduler_cancel_all_jobs" shared="true" deprecated="1">
+      <method name="SchedulerCancelAllJobs" cname="g_io_scheduler_cancel_all_jobs" shared="true" deprecated="1">
         <return-type type="void" />
       </method>
-      <method name="IoSchedulerPushJob" cname="g_io_scheduler_push_job" shared="true" deprecated="1">
+      <method name="SchedulerPushJob" cname="g_io_scheduler_push_job" shared="true" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GIOSchedulerJobFunc" name="job_func" scope="notified" closure="1" destroy="2" />
@@ -18731,36 +18726,23 @@
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
       </method>
-      <method name="KeyfileSettingsBackendNew" cname="g_keyfile_settings_backend_new" shared="true">
-        <return-type type="GSettingsBackend*" owned="true" />
-        <parameters>
-          <parameter type="const-gchar*" name="filename" />
-          <parameter type="const-gchar*" name="root_path" />
-          <parameter type="const-gchar*" name="root_group" />
-        </parameters>
-      </method>
-      <method name="MemoryMonitorDupDefault" cname="g_memory_monitor_dup_default" shared="true">
+    </class>
+    <class name="Memory" cname="GMemory_">
+      <method name="MonitorDupDefault" cname="g_memory_monitor_dup_default" shared="true">
         <return-type type="GMemoryMonitor*" owned="true" />
       </method>
-      <method name="MemorySettingsBackendNew" cname="g_memory_settings_backend_new" shared="true">
+      <method name="SettingsBackendNew" cname="g_memory_settings_backend_new" shared="true">
         <return-type type="GSettingsBackend*" owned="true" />
       </method>
-      <method name="NetworkMonitorGetDefault" cname="g_network_monitor_get_default" shared="true">
-        <return-type type="GNetworkMonitor*" />
-      </method>
-      <method name="NetworkingInit" cname="g_networking_init" shared="true">
-        <return-type type="void" />
-      </method>
-      <method name="NullSettingsBackendNew" cname="g_null_settings_backend_new" shared="true">
-        <return-type type="GSettingsBackend*" owned="true" />
-      </method>
-      <method name="PollableSourceNew" cname="g_pollable_source_new" shared="true">
+    </class>
+    <class name="Pollable" cname="GPollable_">
+      <method name="SourceNew" cname="g_pollable_source_new" shared="true">
         <return-type type="GSource*" owned="true" />
         <parameters>
           <parameter type="GObject*" name="pollable_stream" />
         </parameters>
       </method>
-      <method name="PollableSourceNewFull" cname="g_pollable_source_new_full" shared="true">
+      <method name="SourceNewFull" cname="g_pollable_source_new_full" shared="true">
         <return-type type="GSource*" owned="true" />
         <parameters>
           <parameter type="gpointer" name="pollable_stream" />
@@ -18768,7 +18750,7 @@
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
       </method>
-      <method name="PollableStreamRead" cname="g_pollable_stream_read" shared="true">
+      <method name="StreamRead" cname="g_pollable_stream_read" shared="true">
         <return-type type="gssize" />
         <parameters throws="1">
           <parameter type="GInputStream*" name="stream" />
@@ -18778,7 +18760,7 @@
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
       </method>
-      <method name="PollableStreamWrite" cname="g_pollable_stream_write" shared="true">
+      <method name="StreamWrite" cname="g_pollable_stream_write" shared="true">
         <return-type type="gssize" />
         <parameters throws="1">
           <parameter type="GOutputStream*" name="stream" />
@@ -18788,7 +18770,7 @@
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
       </method>
-      <method name="PollableStreamWriteAll" cname="g_pollable_stream_write_all" shared="true">
+      <method name="StreamWriteAll" cname="g_pollable_stream_write_all" shared="true">
         <return-type type="gboolean" />
         <parameters throws="1">
           <parameter type="GOutputStream*" name="stream" />
@@ -18799,38 +18781,38 @@
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
       </method>
-      <method name="PowerProfileMonitorDupDefault" cname="g_power_profile_monitor_dup_default" shared="true">
-        <return-type type="GPowerProfileMonitor*" owned="true" />
-      </method>
-      <method name="ProxyGetDefaultForProtocol" cname="g_proxy_get_default_for_protocol" shared="true">
+    </class>
+    <class name="Proxy" cname="GProxy_">
+      <method name="GetDefaultForProtocol" cname="g_proxy_get_default_for_protocol" shared="true">
         <return-type type="GProxy*" owned="true" />
         <parameters>
           <parameter type="const-gchar*" name="protocol" />
         </parameters>
       </method>
-      <method name="ProxyResolverGetDefault" cname="g_proxy_resolver_get_default" shared="true">
+      <method name="ResolverGetDefault" cname="g_proxy_resolver_get_default" shared="true">
         <return-type type="GProxyResolver*" />
       </method>
-      <method name="ResolverErrorQuark" cname="g_resolver_error_quark" shared="true">
+    </class>
+    <class name="Resource" cname="GResource_">
+      <method name="ErrorQuark" cname="g_resource_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
-      <method name="ResourceErrorQuark" cname="g_resource_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
-      <method name="ResourceLoad" cname="g_resource_load" shared="true">
+      <method name="Load" cname="g_resource_load" shared="true">
         <return-type type="GResource*" owned="true" />
         <parameters throws="1">
           <parameter type="const-gchar*" name="filename" />
         </parameters>
       </method>
-      <method name="ResourcesEnumerateChildren" cname="g_resources_enumerate_children" shared="true">
+    </class>
+    <class name="Resources" cname="GResources_">
+      <method name="EnumerateChildren" cname="g_resources_enumerate_children" shared="true">
         <return-type type="char**" owned="true" elements_owned="true" null_term_array="true" />
         <parameters throws="1">
           <parameter type="const-char*" name="path" />
           <parameter type="GResourceLookupFlags" name="lookup_flags" />
         </parameters>
       </method>
-      <method name="ResourcesGetInfo" cname="g_resources_get_info" shared="true">
+      <method name="GetInfo" cname="g_resources_get_info" shared="true">
         <return-type type="gboolean" />
         <parameters throws="1">
           <parameter type="const-char*" name="path" />
@@ -18839,42 +18821,41 @@
           <parameter type="guint32*" name="flags" pass_as="out" owned="true" />
         </parameters>
       </method>
-      <method name="ResourcesHasChildren" cname="g_resources_has_children" shared="true">
+      <method name="HasChildren" cname="g_resources_has_children" shared="true">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-char*" name="path" />
         </parameters>
       </method>
-      <method name="ResourcesLookupData" cname="g_resources_lookup_data" shared="true">
+      <method name="LookupData" cname="g_resources_lookup_data" shared="true">
         <return-type type="GBytes*" owned="true" />
         <parameters throws="1">
           <parameter type="const-char*" name="path" />
           <parameter type="GResourceLookupFlags" name="lookup_flags" />
         </parameters>
       </method>
-      <method name="ResourcesOpenStream" cname="g_resources_open_stream" shared="true">
+      <method name="OpenStream" cname="g_resources_open_stream" shared="true">
         <return-type type="GInputStream*" owned="true" />
         <parameters throws="1">
           <parameter type="const-char*" name="path" />
           <parameter type="GResourceLookupFlags" name="lookup_flags" />
         </parameters>
       </method>
-      <method name="ResourcesRegister" cname="g_resources_register" shared="true">
+      <method name="Register" cname="g_resources_register" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="GResource*" name="resource" />
         </parameters>
       </method>
-      <method name="ResourcesUnregister" cname="g_resources_unregister" shared="true">
+      <method name="Unregister" cname="g_resources_unregister" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="GResource*" name="resource" />
         </parameters>
       </method>
-      <method name="SettingsSchemaSourceGetDefault" cname="g_settings_schema_source_get_default" shared="true">
-        <return-type type="GSettingsSchemaSource*" />
-      </method>
-      <method name="SimpleAsyncReportErrorInIdle" cname="g_simple_async_report_error_in_idle" shared="true" deprecated="1">
+    </class>
+    <class name="Simple" cname="GSimple_">
+      <method name="AsyncReportErrorInIdle" cname="g_simple_async_report_error_in_idle" shared="true" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GObject*" name="object" />
@@ -18886,7 +18867,7 @@
           <parameter ellipsis="true" />
         </parameters>
       </method>
-      <method name="SimpleAsyncReportGerrorInIdle" cname="g_simple_async_report_gerror_in_idle" shared="true" deprecated="1">
+      <method name="AsyncReportGerrorInIdle" cname="g_simple_async_report_gerror_in_idle" shared="true" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GObject*" name="object" />
@@ -18895,7 +18876,7 @@
           <parameter type="const-GError*" name="error" />
         </parameters>
       </method>
-      <method name="SimpleAsyncReportTakeGerrorInIdle" cname="g_simple_async_report_take_gerror_in_idle" shared="true" deprecated="1">
+      <method name="AsyncReportTakeGerrorInIdle" cname="g_simple_async_report_take_gerror_in_idle" shared="true" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GObject*" name="object" />
@@ -18904,39 +18885,90 @@
           <parameter type="GError*" name="error" />
         </parameters>
       </method>
-      <method name="SrvTargetListSort" cname="g_srv_target_list_sort" shared="true">
-        <return-type type="GList*" owned="true" />
-        <parameters>
-          <parameter type="GList*" name="targets" />
-        </parameters>
-      </method>
-      <method name="TlsBackendGetDefault" cname="g_tls_backend_get_default" shared="true">
+    </class>
+    <class name="Tls" cname="GTls_">
+      <method name="BackendGetDefault" cname="g_tls_backend_get_default" shared="true">
         <return-type type="GTlsBackend*" />
       </method>
-      <method name="TlsChannelBindingErrorQuark" cname="g_tls_channel_binding_error_quark" shared="true">
+      <method name="ChannelBindingErrorQuark" cname="g_tls_channel_binding_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
-      <method name="TlsClientConnectionNew" cname="g_tls_client_connection_new" shared="true">
+      <method name="ClientConnectionNew" cname="g_tls_client_connection_new" shared="true">
         <return-type type="GIOStream*" owned="true" />
         <parameters throws="1">
           <parameter type="GIOStream*" name="base_io_stream" />
           <parameter type="GSocketConnectable*" name="server_identity" />
         </parameters>
       </method>
-      <method name="TlsErrorQuark" cname="g_tls_error_quark" shared="true">
+      <method name="ErrorQuark" cname="g_tls_error_quark" shared="true">
         <return-type type="GQuark" />
       </method>
-      <method name="TlsFileDatabaseNew" cname="g_tls_file_database_new" shared="true">
+      <method name="FileDatabaseNew" cname="g_tls_file_database_new" shared="true">
         <return-type type="GTlsDatabase*" owned="true" />
         <parameters throws="1">
           <parameter type="const-gchar*" name="anchors" />
         </parameters>
       </method>
-      <method name="TlsServerConnectionNew" cname="g_tls_server_connection_new" shared="true">
+      <method name="ServerConnectionNew" cname="g_tls_server_connection_new" shared="true">
         <return-type type="GIOStream*" owned="true" />
         <parameters throws="1">
           <parameter type="GIOStream*" name="base_io_stream" />
           <parameter type="GTlsCertificate*" name="certificate" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Global" cname="GGlobal">
+      <method name="AsyncInitableNewvAsync" cname="g_async_initable_newv_async" shared="true" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GType" name="object_type" />
+          <parameter type="guint" name="n_parameters" />
+          <parameter type="GParameter*" name="parameters" />
+          <parameter type="int" name="io_priority" />
+          <parameter type="GCancellable*" name="cancellable" />
+          <parameter type="GAsyncReadyCallback" name="callback" scope="async" closure="6" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="InitableNewv" cname="g_initable_newv" shared="true" deprecated="1">
+        <return-type type="gpointer" owned="true" />
+        <parameters throws="1">
+          <parameter type="GType" name="object_type" />
+          <parameter type="guint" name="n_parameters" />
+          <parameter type="GParameter*" name="parameters" />
+          <parameter type="GCancellable*" name="cancellable" />
+        </parameters>
+      </method>
+      <method name="KeyfileSettingsBackendNew" cname="g_keyfile_settings_backend_new" shared="true">
+        <return-type type="GSettingsBackend*" owned="true" />
+        <parameters>
+          <parameter type="const-gchar*" name="filename" />
+          <parameter type="const-gchar*" name="root_path" />
+          <parameter type="const-gchar*" name="root_group" />
+        </parameters>
+      </method>
+      <method name="NetworkMonitorGetDefault" cname="g_network_monitor_get_default" shared="true">
+        <return-type type="GNetworkMonitor*" />
+      </method>
+      <method name="NetworkingInit" cname="g_networking_init" shared="true">
+        <return-type type="void" />
+      </method>
+      <method name="NullSettingsBackendNew" cname="g_null_settings_backend_new" shared="true">
+        <return-type type="GSettingsBackend*" owned="true" />
+      </method>
+      <method name="PowerProfileMonitorDupDefault" cname="g_power_profile_monitor_dup_default" shared="true">
+        <return-type type="GPowerProfileMonitor*" owned="true" />
+      </method>
+      <method name="ResolverErrorQuark" cname="g_resolver_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="SettingsSchemaSourceGetDefault" cname="g_settings_schema_source_get_default" shared="true">
+        <return-type type="GSettingsSchemaSource*" />
+      </method>
+      <method name="SrvTargetListSort" cname="g_srv_target_list_sort" shared="true">
+        <return-type type="GList*" owned="true" />
+        <parameters>
+          <parameter type="GList*" name="targets" />
         </parameters>
       </method>
     </class>

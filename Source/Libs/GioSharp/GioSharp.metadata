@@ -29,7 +29,9 @@
   <attr path="/api/namespace/class[@cname='GContent_']/method[@name='GetRegistered']/return-type" name="elements_owned">true</attr>
   <attr path="/api/namespace/class[@cname='GIo_']" name="name">IOError</attr>
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='ErrorFromErrno']" name="name">FromErrno</attr>
-  <attr path="/api/namespace/class[@cname='GIo_']/method[@name='ErrorFromWin32Error']" name="name">FromWin32Error</attr>
+  <!-- g_io_error_from_win32_error is Windows-only and absent from the vendored
+       Linux-built gir. Same for g_registry_backend_get_type below. If Windows-only
+       GIO surface is ever needed, it has to come from a Windows gir. -->
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='ModulesLoadAllInDirectory']" name="name">LoadAllInDirectory</attr>
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='LoadAllInDirectory']/return-type" name="element_type">GIOModule*</attr>
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='LoadAllInDirectory']/return-type" name="elements_owned">true</attr>
@@ -37,8 +39,9 @@
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='ModulesScanAllInDirectory']" name="name">ScanAllInDirectory</attr>
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='SchedulerCancelAllJobs']" name="name">CancelAllJobs</attr>
   <attr path="/api/namespace/class[@name='Global']" name="name">GioGlobal</attr>
-  <attr path="/api/namespace/class[@cname='GGlobal']/method[@name='RegistryBackendGetType']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GList_']" name="hidden">1</attr>
+  <!-- The GList_ class only ever existed because gapi2xml.pl read
+       g_list_model_get_item as a global function. GIR puts it on GListModel,
+       where it belongs, so there is nothing left to hide. -->
   <attr path="/api/namespace/class[@cname='GSimple_']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GSimple_']/method[@name='AsyncReportGerrorInIdle']" name="name">ReportGerrorInIdle</attr>
   <attr path="/api/namespace/class[@cname='GSimple_']/method[@name='AsyncReportTakeGerrorInIdle']" name="name">ReportTakeGerrorInIdle</attr>
@@ -102,8 +105,8 @@
   <attr path="/api/namespace/interface[@cname='GTlsServerConnection']/property[@cname='authentication-mode']" name="hidden">1</attr>
   <attr path="/api/namespace/interface[@cname='GVolume']" name="consume_only">1</attr>
   <attr path="/api/namespace/interface[@cname='GVolume']/method[@name='GetMount']" name="name">GetMountInstance</attr>
-  <attr path="/api/namespace/object/property[@type='GIoStream']" name="type">GIOStream</attr>
-  <attr path="/api/namespace/object/property[@type='GUnixFdList']" name="type">GUnixFDList</attr>
+  <!-- These two corrected gapi2xml.pl's mangling of GIOStream and GUnixFDList.
+       GirToGapi takes the c:type verbatim and already spells them correctly. -->
   <attr path="/api/namespace/object[@cname='GApplication']/method[@cname='g_application_run']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GApplication']/signal[@cname='activate']" name="name">Activated</attr>
   <attr path="/api/namespace/object[@cname='GApplication']/signal[@cname='open']" name="name">Opened</attr>
@@ -191,12 +194,12 @@
   <move-node path="/api/namespace/class[@cname='GSimple_']/method[@name='ReportGerrorInIdle']">/api/namespace/object[@cname='GSimpleAsyncResult']</move-node>
   <move-node path="/api/namespace/class[@cname='GSimple_']/method[@name='ReportTakeGerrorInIdle']">/api/namespace/object[@cname='GSimpleAsyncResult']</move-node>
   <remove-node path="/api/namespace/interface[@cname='GTlsBackend']" />
-  <remove-node path="/api/namespace/struct[@cname='GPollableInputStream']" />
+  <!-- gapi2xml.pl emitted a stray <struct> alongside each of these interfaces;
+       GirToGapi does not, so there is nothing to remove. -->
   <attr path="/api/namespace/object[@cname='GMemoryInputStream']/implements/interface[@cname='GPollableInputStream']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GConverterInputStream']/implements/interface[@cname='GPollableInputStream']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GSocketInputStream']/implements/interface[@cname='GPollableInputStream']" name="hidden">1</attr>
-  <remove-node path="/api/namespace/struct[@cname='GPollableOutputStream']" />
+  <!-- GSocketInputStream and GSocketOutputStream are private to GIO and are not
+       introspectable, so they never reach the api.xml. -->
   <attr path="/api/namespace/object[@cname='GConverterOutputStream']/implements/interface[@cname='GPollableOutputStream']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GSocketOutputStream']/implements/interface[@cname='GPollableOutputStream']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GMemoryOutputStream']/implements/interface[@cname='GPollableOutputStream']" name="hidden">1</attr>
 </metadata>
