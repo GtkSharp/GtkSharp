@@ -24,12 +24,23 @@ namespace GtkSharp.GirConversion.Emit {
 		readonly GirDocument doc;
 		readonly TypeRegistry registry;
 		readonly ConversionLog log;
+		readonly string groupPrefix;
 
-		public ApiWriter (GirDocument doc, TypeRegistry registry, ConversionLog log)
+		/// <param name="groupPrefix">
+		/// Overrides the C prefix that namespace-level functions are grouped by.
+		/// Needed where several gir namespaces are merged into one gapi namespace:
+		/// pango_cairo_create_layout has to group as Pango's "cairo" class, the
+		/// way gapi2xml.pl saw it when Pango and PangoCairo were one namespace,
+		/// not as PangoCairo's "create" class. The resulting CairoHelper is public
+		/// API the samples use.
+		/// </param>
+		public ApiWriter (GirDocument doc, TypeRegistry registry, ConversionLog log,
+		                  string groupPrefix = null)
 		{
 			this.doc = doc;
 			this.registry = registry;
 			this.log = log;
+			this.groupPrefix = groupPrefix;
 		}
 
 		/// <summary>
@@ -127,7 +138,9 @@ namespace GtkSharp.GirConversion.Emit {
 				"register", "execute", "show", "parse", "paint", "string",
 			};
 
-			var prefixes = doc.SymbolPrefixes;
+			var prefixes = string.IsNullOrEmpty (groupPrefix)
+				? doc.SymbolPrefixes
+				: new[] { groupPrefix };
 
 			var functions = doc.Namespace.Elements (Ns.Core + "function")
 				.Where (f => f.Attribute (Ns.CIdentifier) != null)

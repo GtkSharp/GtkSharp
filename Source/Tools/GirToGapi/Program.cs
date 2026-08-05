@@ -25,6 +25,7 @@ namespace GtkSharp.GirConversion {
 			var girPaths = new List<string> ();
 			string outPath = null;
 			string assemblyName = null;
+			string groupPrefix = null;
 			var includes = new List<string> ();
 
 			foreach (var arg in args) {
@@ -36,6 +37,8 @@ namespace GtkSharp.GirConversion {
 					assemblyName = arg.Substring ("--assembly-name=".Length);
 				else if (arg.StartsWith ("--include="))
 					includes.Add (arg.Substring ("--include=".Length));
+				else if (arg.StartsWith ("--group-prefix="))
+					groupPrefix = arg.Substring ("--group-prefix=".Length);
 				else if (arg == "--help" || arg == "-h") {
 					Usage ();
 					return 0;
@@ -78,7 +81,7 @@ namespace GtkSharp.GirConversion {
 
 				var log = new ConversionLog ();
 				var api = ApiWriter.Document (
-					docs.Select (doc => new ApiWriter (doc, registry, log).Write ()));
+					docs.Select (doc => new ApiWriter (doc, registry, log, groupPrefix).Write ()));
 
 				var directory = Path.GetDirectoryName (Path.GetFullPath (outPath));
 				if (!string.IsNullOrEmpty (directory))
@@ -119,6 +122,10 @@ namespace GtkSharp.GirConversion {
 			Console.WriteLine ("  --assembly-name=  Assembly the api.xml belongs to; informational.");
 			Console.WriteLine ("  --include=        Additional .gir consulted for type resolution");
 			Console.WriteLine ("                    only. Repeatable, one per dependency.");
+			Console.WriteLine ("  --group-prefix=   C prefix used to group namespace-level functions");
+			Console.WriteLine ("                    into <class> elements. Defaults to the gir's own");
+			Console.WriteLine ("                    c:symbol-prefixes; override where several gir");
+			Console.WriteLine ("                    namespaces merge into one gapi namespace.");
 		}
 	}
 }
