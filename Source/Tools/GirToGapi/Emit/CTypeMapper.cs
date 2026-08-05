@@ -151,20 +151,25 @@ namespace GtkSharp.GirConversion.Emit {
 			if (lengthIndex != null)
 				result.LengthParamIndex = int.Parse (lengthIndex);
 
-			var ctype = (string) array.Attribute (Ns.CType);
-			if (!string.IsNullOrEmpty (ctype)) {
-				result.Type = Normalize (ctype);
-			} else {
-				var inner = array.Element (Ns.Core + "type");
-				var innerType = inner != null
-					? ResolveType (inner).Type
-					: "gpointer";
-				result.Type = innerType + "*";
+			var inner = array.Element (Ns.Core + "type");
+			var elementType = inner != null ? ResolveType (inner).Type : "gpointer";
+
+			if (result.FixedSize.HasValue) {
+				// A fixed-size array is spelled as the ELEMENT type plus array_len,
+				// not as a pointer: gapi2xml.pl wrote type="gpointer" array_len="12"
+				// for `gpointer padding[12]`. FieldBase.cs keys IsArray off array_len
+				// and, given the pointer spelling, emits a reference to a field it
+				// never declares.
+				result.Type = elementType;
+				return result;
 			}
 
-			var innerEl = array.Element (Ns.Core + "type");
-			if (innerEl != null)
-				result.ElementType = ResolveType (innerEl).Type;
+			var ctype = (string) array.Attribute (Ns.CType);
+			result.Type = !string.IsNullOrEmpty (ctype)
+				? Normalize (ctype)
+				: elementType + "*";
+
+			result.ElementType = elementType;
 
 			return result;
 		}

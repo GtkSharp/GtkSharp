@@ -142,8 +142,15 @@ namespace GtkSharp.GirConversion.Emit {
 				? doc.SymbolPrefixes
 				: new[] { groupPrefix };
 
+			// A namespace-level <function> carrying moved-to is a legacy alias for
+			// a method already declared on the type it moved to -- GIR lists
+			// graphene_box_empty both inside <record name="Box"> and again here as
+			// moved-to="Box.empty". Emitting both produces a second, spurious
+			// <class name="Box"> that collides with the boxed type of the same
+			// name. There are 411 of these across the vendored gir set.
 			var functions = doc.Namespace.Elements (Ns.Core + "function")
 				.Where (f => f.Attribute (Ns.CIdentifier) != null)
+				.Where (f => f.Attribute ("moved-to") == null)
 				.OrderBy (f => (string) f.Attribute (Ns.CIdentifier), System.StringComparer.Ordinal)
 				.ToList ();
 
