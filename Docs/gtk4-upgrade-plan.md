@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 complete**. Phase 5 in progress — 4 of 11 assemblies compile. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 complete**. Phase 5 in progress — 5 of 11 assemblies compile. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -745,7 +745,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **2** | `GirToGapi` converter | ✅ **complete** — 2026-08-05, gates 1 and 2 passed |
 | **3** | Assembly graph, native library map | ✅ **complete** — 2026-08-05 |
 | **4** | api.xml regeneration + metadata triage | ✅ **complete** — 2026-08-06, all nine assemblies at zero unmatched rules |
-| **5** | Hand-written layer port | 🔶 **in progress** — 4 of 11 assemblies compile |
+| **5** | Hand-written layer port | 🔶 **in progress** — 5 of 11 assemblies compile |
 | **6** | Samples port (37 sections) | ⬜ not started |
 | **7** | Templates and workload | ⬜ not started |
 | **8** | Native runtime, CI | ⬜ not started |
@@ -814,9 +814,10 @@ of GtkSharp's 732 unmatched rules were decidable mechanically.
 | `GLibSharp` | ✅ clean (hand-written, untouched) |
 | `CairoSharp` | ✅ clean (hand-written, untouched) |
 | `GrapheneSharp` | ✅ **clean** |
-| `GioSharp` | ✅ **clean** (204 → 84 → 44 → 0 errors) |
-| `PangoSharp` | 🔶 46 unique errors — next |
-| `GdkSharp`, `GskSharp`, `GtkSharp`, `AdwaitaSharp`, `GtkSourceSharp`, `WebkitGtkSharp` | ⬜ blocked behind `PangoSharp` |
+| `GioSharp` | ✅ **clean** |
+| `PangoSharp` | ✅ **clean** |
+| `GdkSharp` | 🔶 6 unique errors — next |
+| `GskSharp`, `GtkSharp`, `AdwaitaSharp`, `GtkSourceSharp`, `WebkitGtkSharp` | ⬜ blocked behind `GdkSharp` |
 
 Still untouched: the deletions and rewrites in §5.1 and §5.2 — `Container`,
 `Menu`, `Application.Run`, `Clipboard`, `Dialog.Run`, the TreeView stack and the
