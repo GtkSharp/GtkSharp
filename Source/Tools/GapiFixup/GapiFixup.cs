@@ -30,10 +30,17 @@ namespace GtkSharp.Parsing {
 
 	public class Fixup  {
 
+		// An unmatched rule is indistinguishable from a rule that worked unless
+		// somebody reads every warning. During a migration that rewrites the
+		// api.xml wholesale, that is exactly the failure that hides. --strict
+		// turns the warnings into a non-zero exit.
+		static int warnings = 0;
+		static bool strict = false;
+
 		public static int Main (string[] args)
 		{
 			if (args.Length < 2) {
-				Console.WriteLine ("Usage: gapi-fixup --metadata=<filename> --api=<filename> --symbols=<filename>");
+				Console.WriteLine ("Usage: gapi-fixup --metadata=<filename> --api=<filename> --symbols=<filename> [--strict]");
 				return 0;
 			}
 
@@ -43,6 +50,11 @@ namespace GtkSharp.Parsing {
 			XmlDocument symbol_doc = new XmlDocument ();
 
 			foreach (string arg in args) {
+
+				if (arg == "--strict") {
+					strict = true;
+					continue;
+				}
 
 				if (arg.StartsWith("--metadata=")) {
 
@@ -112,6 +124,7 @@ namespace GtkSharp.Parsing {
 					matched = true;
 				}
 				if (!matched)
+					warnings++;
 					Console.WriteLine ("Warning: <copy-node path=\"{0}\"/> matched no nodes", path);
 			}
 
@@ -126,6 +139,7 @@ namespace GtkSharp.Parsing {
 					matched = true;
 				}
 				if (!matched)
+					warnings++;
 					Console.WriteLine ("Warning: <remove-node path=\"{0}\"/> matched no nodes", path);
 			}
 
@@ -141,6 +155,7 @@ namespace GtkSharp.Parsing {
 					matched = true;
 				}
 				if (!matched)
+					warnings++;
 					Console.WriteLine ("Warning: <add-node path=\"{0}\"/> matched no nodes", path);
 			}
 			
@@ -164,6 +179,7 @@ namespace GtkSharp.Parsing {
 				}
 				
 				if (!matched)
+					warnings++;
 					Console.WriteLine ("Warning: <change-node-type path=\"{0}\"/> matched no nodes", path);
 			}
 
@@ -180,6 +196,7 @@ namespace GtkSharp.Parsing {
 					matched = true;
 				}
 				if (!matched)
+					warnings++;
 					Console.WriteLine ("Warning: <attr path=\"{0}\"/> matched no nodes", path);
 			}
 
@@ -201,6 +218,7 @@ namespace GtkSharp.Parsing {
 					matched = true;
 				}
 				if (!matched)
+					warnings++;
 					Console.WriteLine ("Warning: <move-node path=\"{0}\"/> matched no nodes", path);
 			}
 			
@@ -219,6 +237,7 @@ namespace GtkSharp.Parsing {
 				}
 				
 				if (!matched)
+					warnings++;
 					Console.WriteLine ("Warning: <remove-attr path=\"{0}\"/> matched no nodes", path);
 			}
 
@@ -236,6 +255,11 @@ namespace GtkSharp.Parsing {
 			}
 
 			api_doc.Save (api_filename);
+			if (strict && warnings > 0) {
+				Console.WriteLine ("gapi-fixup: {0} unmatched rule(s), failing due to --strict", warnings);
+				return 1;
+			}
+
 			return 0;
 		}
 	}
