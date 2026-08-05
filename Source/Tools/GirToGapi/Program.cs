@@ -12,6 +12,7 @@ namespace GtkSharp.GirConversion {
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Linq;
 	using System.Text;
 	using System.Xml;
 	using GtkSharp.GirConversion.Emit;
@@ -21,14 +22,14 @@ namespace GtkSharp.GirConversion {
 
 		public static int Main (string[] args)
 		{
-			string girPath = null;
+			var girPaths = new List<string> ();
 			string outPath = null;
 			string assemblyName = null;
 			var includes = new List<string> ();
 
 			foreach (var arg in args) {
 				if (arg.StartsWith ("--gir="))
-					girPath = arg.Substring ("--gir=".Length);
+					girPaths.Add (arg.Substring ("--gir=".Length));
 				else if (arg.StartsWith ("--out="))
 					outPath = arg.Substring ("--out=".Length);
 				else if (arg.StartsWith ("--assembly-name="))
@@ -45,23 +46,27 @@ namespace GtkSharp.GirConversion {
 				}
 			}
 
-			if (string.IsNullOrEmpty (girPath) || string.IsNullOrEmpty (outPath)) {
+			if (girPaths.Count == 0 || string.IsNullOrEmpty (outPath)) {
 				Usage ();
 				return 64;
 			}
 
-			if (!File.Exists (girPath)) {
-				Console.WriteLine ("gir-to-gapi: no such file: {0}", girPath);
-				return 1;
+			foreach (var girPath in girPaths) {
+				if (!File.Exists (girPath)) {
+					Console.WriteLine ("gir-to-gapi: no such file: {0}", girPath);
+					return 1;
+				}
 			}
 
 			try {
-				var doc = GirDocument.Load (girPath);
+				var docs = girPaths.Select (GirDocument.Load).ToList ();
 
 				// Included .gir files are needed so that cross-namespace type
 				// references resolve to a C type name. They are not emitted.
 				var registry = new TypeRegistry ();
-				registry.Add (doc);
+
+				foreach (var doc in docs)
+					registry.Add (doc);
 
 				foreach (var include in includes) {
 					if (!File.Exists (include)) {
@@ -72,7 +77,8 @@ namespace GtkSharp.GirConversion {
 				}
 
 				var log = new ConversionLog ();
-				var api = new ApiWriter (doc, registry, log).Write ();
+				var api = ApiWriter.Document (
+					docs.Select (doc => new ApiWriter (doc, registry, log).Write ()));
 
 				var directory = Path.GetDirectoryName (Path.GetFullPath (outPath));
 				if (!string.IsNullOrEmpty (directory))
@@ -91,7 +97,7 @@ namespace GtkSharp.GirConversion {
 				log.Report ();
 
 				Console.WriteLine ("gir-to-gapi: {0} -> {1}{2}",
-					girPath, outPath,
+					string.Join (" + ", girPaths.Select (Path.GetFileName)), outPath,
 					assemblyName == null ? string.Empty : " (" + assemblyName + ")");
 
 				return 0;
@@ -103,10 +109,12 @@ namespace GtkSharp.GirConversion {
 
 		static void Usage ()
 		{
-			Console.WriteLine ("Usage: gir-to-gapi --gir=<file.gir> --out=<file-api.xml>");
+			Console.WriteLine ("Usage: gir-to-gapi --gir=<file.gir>... --out=<file-api.xml>");
 			Console.WriteLine ("                   [--assembly-name=<name>] [--include=<file.gir>]...");
 			Console.WriteLine ();
-			Console.WriteLine ("  --gir=            GObject-Introspection file to convert.");
+			Console.WriteLine ("  --gir=            GObject-Introspection file to convert. Repeatable:");
+			Console.WriteLine ("                    each one becomes a <namespace> in the output, as");
+			Console.WriteLine ("                    GdkSharp needs for Gdk plus GdkPixbuf.");
 			Console.WriteLine ("  --out=            api.xml file to write.");
 			Console.WriteLine ("  --assembly-name=  Assembly the api.xml belongs to; informational.");
 			Console.WriteLine ("  --include=        Additional .gir consulted for type resolution");

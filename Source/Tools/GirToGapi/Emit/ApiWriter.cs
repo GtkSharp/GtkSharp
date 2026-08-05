@@ -32,7 +32,20 @@ namespace GtkSharp.GirConversion.Emit {
 			this.log = log;
 		}
 
-		public XDocument Write ()
+		/// <summary>
+		/// Wraps one or more converted namespaces in the api.xml root element.
+		/// More than one is normal: GdkSharp binds Gdk and GdkPixbuf together, so
+		/// its api.xml carries a namespace for each.
+		/// </summary>
+		public static XDocument Document (IEnumerable<XElement> namespaces)
+		{
+			return new XDocument (
+				new XElement ("api",
+					new XAttribute ("parser_version", ParserVersion),
+					namespaces));
+		}
+
+		public XElement Write ()
 		{
 			var types = new CTypeMapper (registry, doc.Name);
 			var callables = new CallableEmitter (types);
@@ -90,10 +103,7 @@ namespace GtkSharp.GirConversion.Emit {
 			if (constants > 0)
 				log.Skipped ("constant", doc.Name, constants + " namespace-level constants; gapi has no namespace-level slot for them");
 
-			return new XDocument (
-				new XElement ("api",
-					new XAttribute ("parser_version", ParserVersion),
-					ns));
+			return ns;
 		}
 
 		/// <summary>

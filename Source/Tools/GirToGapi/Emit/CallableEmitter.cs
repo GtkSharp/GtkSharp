@@ -42,15 +42,21 @@ namespace GtkSharp.GirConversion.Emit {
 			return el;
 		}
 
-		/// <summary>
-		/// &lt;constructor&gt;. gapi2xml.pl emitted no name attribute on these
-		/// and GapiCodegen derives the managed name from the cname, so nothing
-		/// is added here either.
-		/// </summary>
+		/// <summary>&lt;constructor&gt;.</summary>
+		/// <remarks>
+		/// gapi2xml.pl emitted no name attribute here and let GapiCodegen derive
+		/// one, but that derivation assumes the cname contains "new"
+		/// ([Ctor.cs:67](../../GapiCodegen/Ctor.cs)) and throws on anything else.
+		/// Graphene's constructors are `graphene_point_alloc` and friends, which
+		/// crash it. GIR knows the name, so pass it and the derivation is never
+		/// reached. For the ordinary `*_new_with_label` case this produces
+		/// exactly the string the old derivation did.
+		/// </remarks>
 		public XElement Constructor (XElement gir)
 		{
 			var el = new XElement ("constructor",
-				new XAttribute ("cname", (string) gir.Attribute (Ns.CIdentifier)));
+				new XAttribute ("cname", (string) gir.Attribute (Ns.CIdentifier)),
+				new XAttribute ("name", NameMangler.StudlyCaps ((string) gir.Attribute ("name"))));
 
 			AddDeprecated (el, gir);
 			AddBody (el, gir, skipInstance: true, includeEmptyParameters: false);
@@ -209,9 +215,25 @@ namespace GtkSharp.GirConversion.Emit {
 			if ((string) girParam.Attribute ("transfer-ownership") == "full")
 				el.Add (new XAttribute ("owned", "true"));
 
+			// Emitted verbatim. The XSD says the value should be "notify", but the
+			// generator actually tests for GIR's own "notified"
+			// (ManagedCallString.cs:42, Parameters.cs:250) -- the schema is what
+			// is out of step, and it is corrected rather than obeyed here.
 			var scope = (string) girParam.Attribute ("scope");
 			if (!string.IsNullOrEmpty (scope))
-				el.Add (new XAttribute ("scope", MapScope (scope)));
+				el.Add (new XAttribute ("scope", scope));
+
+			// Indices of the user_data and destroy-notify parameters that belong
+			// to this callback. Without them MethodBody.cs falls back to assuming
+			// they sit at i+1 and i+2, which is right often enough to be
+			// dangerous and throws outright when it is wrong.
+			var closure = (string) girParam.Attribute ("closure");
+			if (closure != null)
+				el.Add (new XAttribute ("closure", closure));
+
+			var destroy = (string) girParam.Attribute ("destroy");
+			if (destroy != null)
+				el.Add (new XAttribute ("destroy", destroy));
 
 			// As with return types, only the null-terminated string-array shape is
 			// marshallable without a metadata-supplied length parameter. A bare
@@ -234,12 +256,6 @@ namespace GtkSharp.GirConversion.Emit {
 
 			return t.Type == "gchar**" || t.Type == "char**"
 				|| t.Type == "const-gchar**" || t.Type == "const-char**";
-		}
-
-		/// <summary>GIR spells the notify scope "notified"; gapi spells it "notify".</summary>
-		static string MapScope (string girScope)
-		{
-			return girScope == "notified" ? "notify" : girScope;
 		}
 
 		static void AddDeprecated (XElement el, XElement gir)
