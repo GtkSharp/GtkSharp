@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 landed**. Phase 5 (hand-written layer) in progress.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 complete**. Phase 5 in progress — 4 of 11 assemblies compile. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -738,17 +738,115 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 
 ## 14. Progress
 
-### Phase 1 — completed 2026-08-05
+| Phase | Scope | State |
+|:------|:------|:------|
+| **V1–V5** | Blocking pre-flight verifications | ✅ **complete** — 2026-08-05 |
+| **1** | Branch, versioning, scaffolding | ✅ **complete** — 2026-08-05 |
+| **2** | `GirToGapi` converter | ✅ **complete** — 2026-08-05, gates 1 and 2 passed |
+| **3** | Assembly graph, native library map | ✅ **complete** — 2026-08-05 |
+| **4** | api.xml regeneration + metadata triage | ✅ **complete** — 2026-08-06, all nine assemblies at zero unmatched rules |
+| **5** | Hand-written layer port | 🔶 **in progress** — 4 of 11 assemblies compile |
+| **6** | Samples port (37 sections) | ⬜ not started |
+| **7** | Templates and workload | ⬜ not started |
+| **8** | Native runtime, CI | ⬜ not started |
+
+### Phase 1 — complete
 
 | Item | State |
 |:-----|:------|
-| §1.1 branch `gtk4` from `develop` | done (local; not pushed) |
-| §1.1 README branch note | done |
+| §1.1 branch `gtk4` from `develop`, README note | done (local; not pushed) |
 | §1.2 `build.cake` version defaults + CI branch check | done — `Init` prints `Version: 4.22.4.1` |
-| §1.3 SDK feature bands → `8.0.100`–`8.0.400` | done; `WorkloadManifest.in.json` needed no matching edit (no band references in it) |
-| §1.4 keep both TFMs and `LangVersion 9` | verified, no change |
-| §1.5 `Source/Gir/` | done — **populated**, not just created: 13 vendored `.gir` + provenance + `fetch-gir.py` |
-| §1.5 `Source/Tools/GirToGapi/`, `GrapheneSharp/`, `GskSharp/`, `AdwaitaSharp/` | created as placeholders (`.gitkeep`); contents are Phase 2/3 |
-| §1.5 `Docs/gir-gapi-coverage.md` | done — V1–V5 results |
+| §1.3 SDK feature bands → `8.0.100`–`8.0.400` | done; `WorkloadManifest.in.json` carries no band references |
+| §1.4 keep both TFMs and `LangVersion 9` | verified, unchanged |
+| §1.5 `Source/Gir/` | done — populated, not just created: 13 vendored `.gir` + provenance + `fetch-gir.py` |
+| §1.5 new assembly directories, `Docs/gir-gapi-coverage.md` | done |
 
-Nothing is committed; the tree is staged for commits 1–2 and part of 5 from §12.
+### Phase 2 — complete
+
+`Source/Tools/GirToGapi/` converts all ten assemblies' `.gir` into gapi api.xml,
+wired to a `RegenerateApi` target deliberately outside the `Default` chain so
+ordinary builds stay hermetic. `GapiFixup` gained `--strict`.
+
+**Gate 1** (convert a Gtk 3 gir, compare against the checked-in Gtk 3 api.xml,
+which is known `gapi2xml.pl` output): 99.79 % kind agreement, 96.37 % member
+coverage, 98.46 % name agreement, and padding slot counts matching exactly. Every
+difference is explained in `gir-gapi-coverage.md` §6. **Gate 2** (schema validity)
+passes. R1 and R2 are retired.
+
+### Phase 3 — complete
+
+`AtkSharp` deleted; `GrapheneSharp`, `GskSharp`, `AdwaitaSharp` added, with
+`Settings.cake`, the solution, `GtkSharp.csproj` and `Samples.csproj` following.
+Library map rewritten with the gvsbuild DLL names verified in V4.
+
+One deviation from §3.2, deliberately: `Library.Gdk` is kept and `Library.Gsk`
+added, both pointed at the Gtk 4 filenames, rather than dropping `Gdk` and
+redirecting through metadata. Runtime behaviour is identical — all three resolve
+`libgtk-4.so.1` — but no metadata redirect is needed and the hand-written files
+that call `GLibrary.Load(Library.Gdk)` keep compiling until Phase 5 reaches them.
+
+### Phase 4 — complete
+
+Every generating assembly reaches zero unmatched metadata rules with
+`StrictMetadata = true`; `Prepare` completes all eleven and exits 0.
+
+| Assembly | Rules left | Unmatched | Plan predicted survival |
+|:---------|-----------:|----------:|:------------------------|
+| `GioSharp` | 196 | 0 | ~90 % |
+| `PangoSharp` | 107 | 0 | ~90 % |
+| `GdkSharp` | 65 | 0 | ~25 % |
+| `GtkSharp` | 403 | 0 | ~30 % |
+| `GtkSourceSharp` | 48 | 0 | ~20 % |
+| `WebkitGtkSharp` | 4 | 0 | ~0 % |
+| `GrapheneSharp`, `GskSharp`, `AdwaitaSharp` | 1–7 | 0 | new |
+
+Two systematic causes accounted for more of the churn than Gtk 4 attrition did:
+function grouping (only the first `c:symbol-prefixes` entry was being tried, so
+every Gio global function fell into `Global`) and out-parameter directions, which
+GIR annotates natively — the rules that supplied them by hand are now redundant.
+`scripts/triage-metadata.py` and `scripts/retire-rules.py` carry the method; 705
+of GtkSharp's 732 unmatched rules were decidable mechanically.
+
+### Phase 5 — in progress
+
+| Assembly | Build state |
+|:---------|:------------|
+| `GLibSharp` | ✅ clean (hand-written, untouched) |
+| `CairoSharp` | ✅ clean (hand-written, untouched) |
+| `GrapheneSharp` | ✅ **clean** |
+| `GioSharp` | ✅ **clean** (204 → 84 → 44 → 0 errors) |
+| `PangoSharp` | 🔶 46 unique errors — next |
+| `GdkSharp`, `GskSharp`, `GtkSharp`, `AdwaitaSharp`, `GtkSourceSharp`, `WebkitGtkSharp` | ⬜ blocked behind `PangoSharp` |
+
+Still untouched: the deletions and rewrites in §5.1 and §5.2 — `Container`,
+`Menu`, `Application.Run`, `Clipboard`, `Dialog.Run`, the TreeView stack and the
+rest of the hand-written Gtk layer. That work has not started, and it is the bulk
+of Phase 5.
+
+Seven converter and codegen fixes came out of compiling the output rather than
+reading XML:
+
+| Fix | Why |
+|:----|:----|
+| Skip namespace-level `<function>` with `moved-to` | GIR lists `graphene_box_empty` both on the record and again as a namespace alias; emitting both produced a spurious `<class name="Box">` colliding with the boxed type. 411 such aliases across the vendored set. |
+| Fixed-size arrays as `type="X" array_len="N"` | Not `type="X*"`. `FieldBase` keys `IsArray` off `array_len`, so the pointer spelling made codegen reference a field it never declared. |
+| `scope` only with a usable `closure` index | `g_bus_own_name` takes three callbacks against one `user_data`, and GIR annotates only the last; `MethodBody`'s i+1/i+2 fallback then lands on the next callback. |
+| No `pass_as="out"` for caller-allocated array buffers | `g_input_stream_read`'s `void *buffer` is storage the caller supplies. Marking it out produced methods that never assign it. Struct out-parameters unaffected. |
+| Infer `throws` from a trailing `GError**` | GIR sets `throws` on methods but not callbacks. gapi keys its whole GError treatment off it, so the parameter stayed visible and collided with the `error` local codegen declares. |
+| `StructField` declaration vs `EqualityName` | Private array fields were declared StudlyCaps but referenced lower-cased by the generated `Equals`. Gtk 3 never had a private struct-level array; `graphene_quad_t` does. |
+| `Ctor` skips hidden parameters | It also indexed `Parameters` by the filtered names index, which only lined up while every parameter contributed a name. |
+
+**A recurring class of problem, worth expecting in Gdk and Gtk:** gapi2xml.pl
+emitted bogus type names — `variant` where the type is `GVariant*` — that
+`SymbolTable` never knew, so codegen dropped those members with a warning and
+their name collisions never surfaced. Gtk 3 built partly *because* of that;
+`GLib.IAction.State` was simply absent from the binding. GirToGapi emits the real
+type, so they resolve now and the collisions are real. The fix is the one the
+existing metadata already models: hide the property whose accessor comes from a
+vfunc, or rename the function that emits a same-named signal.
+
+### Phases 6–8 — not started
+
+Samples (37 sections), templates and workload, native runtime and CI. The V4
+decision (gvsbuild `2026.6.0`) and the corrected `GtkSharp.targets` paths in §8.1
+are settled but not yet applied.
