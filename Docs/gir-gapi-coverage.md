@@ -290,19 +290,21 @@ and name agreement of 98.46%, with every disagreement inside one known subsystem
 | Assembly | api.xml | Metadata rules | Unmatched | Survives | Plan predicted |
 |:---------|--------:|---------------:|----------:|---------:|:---------------|
 | `GLibSharp` | 599 KB | — | — | — | hand-written |
-| `GioSharp` | 874 KB | 189 | 37 | **80 %** | ~90 % |
+| `GioSharp` | 874 KB | 197 | 37 | **81 %** | ~90 % |
 | `GrapheneSharp` | 100 KB | new | — | — | new |
-| `PangoSharp` | 162 KB | 111 | 25 | **77 %** | ~90 % |
-| `GdkSharp` | 180 KB | 191 | 169 | **11 %** | ~25 % |
+| `PangoSharp` | 162 KB | 116 | 23 | **80 %** | ~90 % |
+| `GdkSharp` | 180 KB | 199 | 134 | **32 %** | ~25 % |
 | `GskSharp` | 98 KB | new | — | — | new |
-| `GtkSharp` | 1350 KB | 1112 | 732 | **34 %** | ~30 % |
+| `GtkSharp` | 1350 KB | 1136 | 732 | **35 %** | ~30 % |
 | `AdwaitaSharp` | 383 KB | new | — | — | new |
-| `GtkSourceSharp` | 202 KB | 71 | 23 | **67 %** | ~20 % |
-| `WebkitGtkSharp` | 252 KB | 4 | 1 | **75 %** | ~0 % |
+| `GtkSourceSharp` | 202 KB | 72 | 23 | **68 %** | ~20 % |
+| `WebkitGtkSharp` | 252 KB | 5 | 1 | **80 %** | ~0 % |
 
-`GdkSharp` is the one materially worse than predicted, which is no surprise: `GdkWindow` →
-`GdkSurface` plus the event restructure invalidates most of that file. `GtkSourceSharp` and
-`WebkitGtkSharp` came out far better than predicted.
+`GdkSharp` lands close to prediction once GdkPixbuf is bound alongside Gdk (Phase 3); measured on
+Gdk alone it was 11 %. `GtkSourceSharp` and `WebkitGtkSharp` came out far better than predicted.
+
+> These figures were re-measured after fixing a false-positive in `GapiFixup`'s warning output —
+> see §6a.3. An earlier run reported 0 % everywhere, which was the bug and not the data.
 
 **End-to-end proof** on `GioSharp`, the plan's designated smoke assembly: convert → `GapiFixup`
 with the existing metadata → `GapiCodegen` yields **467 files / 67 941 lines** of C# with no
@@ -346,6 +348,21 @@ Added per plan §2.6: counts unmatched rules, exits non-zero. Verified both ways
 GTK 3 file its metadata was written for, exit 1 with `gapi-fixup: 37 unmatched rule(s)` on the
 GTK 4 one. Wired to a per-assembly `StrictMetadata` switch on `GAssembly`, **off everywhere**
 until Phase 4 triages that assembly's rules.
+
+The first version of this change was wrong in a way worth recording, because it would have
+poisoned all of Phase 4. Each warning site looked like
+
+```csharp
+if (!matched)
+    Console.WriteLine ("Warning: ... matched no nodes", path);
+```
+
+— a brace-less `if`. Inserting `warnings++;` ahead of the `WriteLine` left the `WriteLine`
+unconditional, so **every** rule printed "matched no nodes" whether or not it matched. The
+`--strict` exit code stayed correct, because the counter was inside the guard, which is exactly
+why it passed its own verification. Triage counts read off the console were meaningless until the
+guard was braced. Sanity check to keep: running a metadata file against the api.xml it was
+written for must print nothing at all.
 
 ---
 
