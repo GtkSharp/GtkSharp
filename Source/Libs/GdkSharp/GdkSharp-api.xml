@@ -3458,8 +3458,8 @@
       <method name="DownloadBytesWithPlanes" cname="gdk_texture_downloader_download_bytes_with_planes">
         <return-type type="GBytes*" owned="true" />
         <parameters>
-          <parameter type="gsize" name="out_offsets" pass_as="out" />
-          <parameter type="gsize" name="out_strides" pass_as="out" />
+          <parameter type="gsize" name="out_offsets" />
+          <parameter type="gsize" name="out_strides" />
         </parameters>
       </method>
       <method name="DownloadInto" cname="gdk_texture_downloader_download_into">
@@ -4000,7 +4000,7 @@
     </callback>
     <callback name="PixbufSaveFunc" cname="GdkPixbufSaveFunc">
       <return-type type="gboolean" />
-      <parameters>
+      <parameters throws="1">
         <parameter type="const-gchar*" name="buf" />
         <parameter type="gsize" name="count" />
         <parameter type="GError**" name="error" pass_as="out" owned="true" />
@@ -4295,7 +4295,7 @@
       </method>
       <method name="Save" cname="gdk_pixbuf_save">
         <return-type type="gboolean" />
-        <parameters>
+        <parameters throws="1">
           <parameter type="const-char*" name="filename" />
           <parameter type="const-char*" name="type" />
           <parameter type="GError**" name="error" />
@@ -4304,7 +4304,7 @@
       </method>
       <method name="SaveToBuffer" cname="gdk_pixbuf_save_to_buffer">
         <return-type type="gboolean" />
-        <parameters>
+        <parameters throws="1">
           <parameter type="gchar**" name="buffer" pass_as="out" owned="true" />
           <parameter type="gsize*" name="buffer_size" pass_as="out" owned="true" />
           <parameter type="const-char*" name="type" />
@@ -4324,7 +4324,7 @@
       </method>
       <method name="SaveToCallback" cname="gdk_pixbuf_save_to_callback">
         <return-type type="gboolean" />
-        <parameters>
+        <parameters throws="1">
           <parameter type="GdkPixbufSaveFunc" name="save_func" scope="call" />
           <parameter type="gpointer" name="user_data" />
           <parameter type="const-char*" name="type" />
@@ -4344,7 +4344,7 @@
       </method>
       <method name="SaveToStream" cname="gdk_pixbuf_save_to_stream">
         <return-type type="gboolean" />
-        <parameters>
+        <parameters throws="1">
           <parameter type="GOutputStream*" name="stream" />
           <parameter type="const-char*" name="type" />
           <parameter type="GCancellable*" name="cancellable" />

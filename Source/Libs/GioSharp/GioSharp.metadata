@@ -124,6 +124,15 @@
   <attr path="/api/namespace/object[@cname='GFileInfo']/method[@cname='g_file_info_get_attribute_uint32']" name="name">GetAttributeUInt</attr>
   <attr path="/api/namespace/object[@cname='GFileInfo']/method[@cname='g_file_info_set_attribute_uint32']" name="name">SetAttributeUInt</attr>
   <attr path="/api/namespace/object[@cname='GInetAddress']/constructor[@cname='g_inet_address_new_from_bytes']/parameters/parameter[@name='bytes']" name="array">1</attr>
+  <!-- Same treatment as the rule above. A bare guint8* parameter is rendered
+       "out byte" by codegen, which never assigns it; marking it an array gives
+       the byte[] the function actually takes. GIR does say <array> here, but
+       GirToGapi does not emit array="true" on parameters - without a length it
+       makes Parameter.cs throw - so these stay a metadata decision, as they
+       were before. -->
+  <attr path="/api/namespace/object[@cname='GInetAddress']/constructor[@cname='g_inet_address_new_from_bytes_with_ipv6_info']/parameters/parameter[@name='bytes']" name="array">1</attr>
+  <attr path="/api/namespace/object[@cname='GDBusMessage']/constructor[@cname='g_dbus_message_new_from_blob']/parameters/parameter[@name='blob']" name="array">1</attr>
+  <attr path="/api/namespace/object[@cname='GTlsCertificate']/constructor[@cname='g_tls_certificate_new_from_pkcs12']/parameters/parameter[@name='data']" name="array">1</attr>
   <attr path="/api/namespace/object[@cname='GInputStream']/method[@cname='g_input_stream_read']/parameters/parameter[@name='buffer']" name="type">guchar*</attr>
   <attr path="/api/namespace/object[@cname='GInputStream']/method[@cname='g_input_stream_read']/parameters/parameter[@name='buffer']" name="array">1</attr>
   <attr path="/api/namespace/object[@cname='GInputStream']/method[@cname='g_input_stream_read_all']/parameters/parameter[@name='buffer']" name="type">guchar*</attr>
@@ -234,4 +243,10 @@
        second, set-only property of the same name. The read/write GObjectPath
        property covers setting it. -->
   <attr path="/api/namespace/object[@cname='GDBusObjectSkeleton']/method[@cname='g_dbus_object_skeleton_set_object_path']" name="hidden">1</attr>
+
+  <!-- g_application_local_command_line takes gchar*** and GIR marks it inout.
+       gapi has no marshalling for a triple pointer, and "ref string" makes
+       codegen cast a string to IntPtr. gapi2xml.pl carried no direction here at
+       all, which is why Gtk 3 compiled; drop it back to that. -->
+  <remove-attr path="/api/namespace/object[@cname='GApplication']/virtual_method[@cname='local_command_line']/parameters/parameter[@name='arguments']" name="pass_as" />
 </metadata>

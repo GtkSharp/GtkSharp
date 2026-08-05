@@ -663,7 +663,7 @@
     </callback>
     <callback name="DBusInterfaceGetPropertyFunc" cname="GDBusInterfaceGetPropertyFunc">
       <return-type type="GVariant*" owned="true" />
-      <parameters>
+      <parameters throws="1">
         <parameter type="GDBusConnection*" name="connection" />
         <parameter type="const-gchar*" name="sender" />
         <parameter type="const-gchar*" name="object_path" />
@@ -688,7 +688,7 @@
     </callback>
     <callback name="DBusInterfaceSetPropertyFunc" cname="GDBusInterfaceSetPropertyFunc">
       <return-type type="gboolean" />
-      <parameters>
+      <parameters throws="1">
         <parameter type="GDBusConnection*" name="connection" />
         <parameter type="const-gchar*" name="sender" />
         <parameter type="const-gchar*" name="object_path" />
@@ -2539,7 +2539,7 @@
         <return-type type="gboolean" />
         <parameters throws="1">
           <parameter type="GTlsChannelBindingType" name="type" />
-          <parameter type="GByteArray*" name="data" pass_as="out" />
+          <parameter type="GByteArray*" name="data" />
         </parameters>
       </method>
       <method name="GetCiphersuiteName" cname="g_dtls_connection_get_ciphersuite_name">
@@ -4620,7 +4620,7 @@
       <virtual_method name="ToTokens" cname="to_tokens">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GPtrArray*" name="tokens" pass_as="out" />
+          <parameter type="GPtrArray*" name="tokens" />
           <parameter type="gint*" name="out_version" pass_as="out" owned="true" />
         </parameters>
       </virtual_method>
@@ -4685,7 +4685,7 @@
       </method>
       <method name="New" cname="g_initable_new" shared="true">
         <return-type type="gpointer" owned="true" />
-        <parameters>
+        <parameters throws="1">
           <parameter type="GType" name="object_type" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -5271,7 +5271,7 @@
       <virtual_method name="ReadNonblocking" cname="read_nonblocking">
         <return-type type="gssize" />
         <parameters throws="1">
-          <parameter type="void*" name="buffer" pass_as="out" />
+          <parameter type="void*" name="buffer" />
           <parameter type="gsize" name="count" />
         </parameters>
       </virtual_method>
@@ -5290,7 +5290,7 @@
       <method name="ReadNonblocking" cname="g_pollable_input_stream_read_nonblocking">
         <return-type type="gssize" />
         <parameters throws="1">
-          <parameter type="void*" name="buffer" pass_as="out" />
+          <parameter type="void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
@@ -10729,7 +10729,7 @@
       <virtual_method name="ReadAsync" cname="read_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="void*" name="buffer" pass_as="out" />
+          <parameter type="void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -10822,7 +10822,7 @@
       <method name="Read" cname="g_input_stream_read">
         <return-type type="gssize" />
         <parameters throws="1">
-          <parameter type="void*" name="buffer" pass_as="out" />
+          <parameter type="void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
@@ -10830,7 +10830,7 @@
       <method name="ReadAll" cname="g_input_stream_read_all">
         <return-type type="gboolean" />
         <parameters throws="1">
-          <parameter type="void*" name="buffer" pass_as="out" />
+          <parameter type="void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="gsize*" name="bytes_read" pass_as="out" owned="true" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -10839,7 +10839,7 @@
       <method name="ReadAllAsync" cname="g_input_stream_read_all_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="void*" name="buffer" pass_as="out" />
+          <parameter type="void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -10857,7 +10857,7 @@
       <method name="ReadAsync" cname="g_input_stream_read_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="void*" name="buffer" pass_as="out" />
+          <parameter type="void*" name="buffer" />
           <parameter type="gsize" name="count" />
           <parameter type="int" name="io_priority" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -12173,7 +12173,7 @@
       </method>
       <method name="Printf" cname="g_output_stream_printf">
         <return-type type="gboolean" />
-        <parameters>
+        <parameters throws="1">
           <parameter type="gsize*" name="bytes_written" pass_as="out" owned="true" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -12211,7 +12211,7 @@
       </method>
       <method name="Vprintf" cname="g_output_stream_vprintf">
         <return-type type="gboolean" />
-        <parameters>
+        <parameters throws="1">
           <parameter type="gsize*" name="bytes_written" pass_as="out" owned="true" />
           <parameter type="GCancellable*" name="cancellable" />
           <parameter type="GError**" name="error" />
@@ -14221,7 +14221,7 @@
       <method name="Receive" cname="g_socket_receive">
         <return-type type="gssize" />
         <parameters throws="1">
-          <parameter type="gchar*" name="buffer" pass_as="out" />
+          <parameter type="gchar*" name="buffer" />
           <parameter type="gsize" name="size" />
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
@@ -14247,7 +14247,7 @@
         <return-type type="gssize" />
         <parameters throws="1">
           <parameter type="GSocketAddress**" name="address" pass_as="out" owned="true" />
-          <parameter type="gchar*" name="buffer" pass_as="out" />
+          <parameter type="gchar*" name="buffer" />
           <parameter type="gsize" name="size" />
           <parameter type="GCancellable*" name="cancellable" />
         </parameters>
@@ -14276,7 +14276,7 @@
       <method name="ReceiveWithBlocking" cname="g_socket_receive_with_blocking">
         <return-type type="gssize" />
         <parameters throws="1">
-          <parameter type="gchar*" name="buffer" pass_as="out" />
+          <parameter type="gchar*" name="buffer" />
           <parameter type="gsize" name="size" />
           <parameter type="gboolean" name="blocking" />
           <parameter type="GCancellable*" name="cancellable" />
@@ -15095,7 +15095,7 @@
       <property name="Argv" cname="argv" type="const-gchar**" writeable="true" construct-only="true" />
       <property name="Flags" cname="flags" type="GSubprocessFlags" writeable="true" construct-only="true" />
       <constructor cname="g_subprocess_new" name="New">
-        <parameters>
+        <parameters throws="1">
           <parameter type="GSubprocessFlags" name="flags" />
           <parameter type="GError**" name="error" />
           <parameter type="const-gchar*" name="argv0" />
@@ -15313,7 +15313,7 @@
       </method>
       <method name="Spawn" cname="g_subprocess_launcher_spawn">
         <return-type type="GSubprocess*" owned="true" />
-        <parameters>
+        <parameters throws="1">
           <parameter type="GError**" name="error" />
           <parameter type="const-gchar*" name="argv0" />
           <parameter ellipsis="true" />
@@ -15989,7 +15989,7 @@
         <return-type type="gboolean" />
         <parameters throws="1">
           <parameter type="GTlsChannelBindingType" name="type" />
-          <parameter type="GByteArray*" name="data" pass_as="out" />
+          <parameter type="GByteArray*" name="data" />
         </parameters>
       </method>
       <method name="GetCiphersuiteName" cname="g_tls_connection_get_ciphersuite_name">

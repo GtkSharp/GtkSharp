@@ -126,14 +126,25 @@ namespace GtkSharp.Generation {
 					} else {
 						var names = new List<string> ();
 						var values = new List<string> ();
+						// Parallel to names/values: the loop below used to index
+						// Parameters by the names index, which only lined up while
+						// every parameter contributed a name. Hidden ones never do.
+						var props = new List<Parameter> ();
 						for (int i = 0; i < Parameters.Count; i++) {
 							Parameter p = Parameters[i];
+							// user_data and destroy-notify parameters are generated
+							// as locals further down, so naming them here refers to
+							// something not yet declared.
+							if (Parameters.IsHidden (p))
+								continue;
 							if (container_type.GetPropertyRecursively (p.StudlyName) != null) {
 								names.Add (p.Name);
 								values.Add (p.Name);
+								props.Add (p);
 							} else if (p.PropertyName != String.Empty) {
 								names.Add (p.PropertyName);
 								values.Add (p.Name);
+								props.Add (p);
 							}
 						}
 
@@ -141,7 +152,7 @@ namespace GtkSharp.Generation {
 							sw.WriteLine ("\t\t\t\tvar vals = new List<GLib.Value> ();");
 							sw.WriteLine ("\t\t\t\tvar names = new List<string> ();");
 							for (int i = 0; i < names.Count; i++) {
-								Parameter p = Parameters [i];
+								Parameter p = props [i];
 								string indent = "\t\t\t\t";
 								if (p.Generatable is ClassBase && !(p.Generatable is StructBase)) {
 									sw.WriteLine (indent + "if (" + p.Name + " != null) {");
