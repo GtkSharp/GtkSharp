@@ -127,7 +127,7 @@ namespace GtkSharp.GirConversion.Emit {
 				"register", "execute", "show", "parse", "paint", "string",
 			};
 
-			var prefix = doc.SymbolPrefix + "_";
+			var prefixes = doc.SymbolPrefixes;
 
 			var functions = doc.Namespace.Elements (Ns.Core + "function")
 				.Where (f => f.Attribute (Ns.CIdentifier) != null)
@@ -135,18 +135,28 @@ namespace GtkSharp.GirConversion.Emit {
 				.ToList ();
 
 			var stemOf = new Dictionary<XElement, string> ();
+			var prefixOf = new Dictionary<XElement, string> ();
 			var stemCounts = new Dictionary<string, int> ();
 
 			foreach (var f in functions) {
 				var cname = (string) f.Attribute (Ns.CIdentifier);
-				var m = Regex.Match (cname, "^" + Regex.Escape (prefix) + @"([a-zA-Z]+)_\w+$");
 
-				if (!m.Success || notAClassName.Contains (m.Groups [1].Value))
-					continue;
+				foreach (var prefix in prefixes) {
+					var m = Regex.Match (cname,
+						"^" + Regex.Escape (prefix + "_") + @"([a-zA-Z]+)_\w+$");
 
-				var stem = m.Groups [1].Value;
-				stemOf [f] = stem;
-				stemCounts [stem] = stemCounts.TryGetValue (stem, out var n) ? n + 1 : 1;
+					if (!m.Success)
+						continue;
+
+					if (notAClassName.Contains (m.Groups [1].Value))
+						break;
+
+					var stem = m.Groups [1].Value;
+					stemOf [f] = stem;
+					prefixOf [f] = prefix;
+					stemCounts [stem] = stemCounts.TryGetValue (stem, out var n) ? n + 1 : 1;
+					break;
+				}
 			}
 
 			var groups = new Dictionary<string, XElement> ();
@@ -169,7 +179,8 @@ namespace GtkSharp.GirConversion.Emit {
 				if (!groups.TryGetValue (stem, out cls)) {
 					cls = new XElement ("class",
 						new XAttribute ("name", NameMangler.StudlyCaps (stem)),
-						new XAttribute ("cname", NameMangler.StudlyCaps (doc.SymbolPrefix + "_" + stem + "_")));
+						new XAttribute ("cname",
+							NameMangler.StudlyCaps (prefixOf [f] + "_" + stem + "_")));
 					groups [stem] = cls;
 				}
 

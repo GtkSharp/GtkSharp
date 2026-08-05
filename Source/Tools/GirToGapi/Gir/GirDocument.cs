@@ -53,15 +53,26 @@ namespace GtkSharp.GirConversion.Gir {
 		}
 
 		/// <summary>
-		/// C function prefix, e.g. "gtk". Used to group namespace-level
-		/// functions into gapi &lt;class&gt; elements.
+		/// C function prefixes, e.g. "gtk", or "gio" and "g" for Gio. Used to
+		/// group namespace-level functions into gapi &lt;class&gt; elements.
 		/// </summary>
-		public string SymbolPrefix {
+		/// <remarks>
+		/// More than one is common and the first is not always the one in use:
+		/// Gio declares "gio,g" but its functions are all g_content_type_*,
+		/// g_io_modules_*, and so on. Taking only the first left every Gio
+		/// function ungrouped. Longest first, so that a hypothetical gio_foo_bar
+		/// groups under "foo" rather than under "io".
+		/// </remarks>
+		public string[] SymbolPrefixes {
 			get {
 				var attr = Namespace.Attribute (Ns.CSymbolPrefixes);
-				if (attr != null)
-					return attr.Value.Split (',') [0];
-				return Name.ToLowerInvariant ();
+				var values = attr != null
+					? attr.Value.Split (',')
+					: new[] { Name.ToLowerInvariant () };
+
+				return values.Where (v => v.Length > 0)
+					.OrderByDescending (v => v.Length)
+					.ToArray ();
 			}
 		}
 
