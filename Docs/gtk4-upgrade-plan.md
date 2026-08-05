@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1 and 2 landed**. Phase 3 is clear to start.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 landed**. Phase 5 (hand-written layer) in progress.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
