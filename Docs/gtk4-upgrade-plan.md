@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** pre-flight verifications V1–V5 **complete and passed**; Phase 1 landed. Phase 2 is clear to start.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1 and 2 landed**. Phase 3 is clear to start.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -736,7 +736,9 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 - ~~**V4** — which Windows GTK4 bundle, and is there push access to `GtkSharp/Dependencies`?~~ **Answered:** gvsbuild `2026.6.0` release asset; no push access needed.
 - Should `develop` (GTK3) continue receiving fixes, or be archived at `3.24.24.x`?
 
-## 14. Phase 1 — completed 2026-08-05
+## 14. Progress
+
+### Phase 1 — completed 2026-08-05
 
 | Item | State |
 |:-----|:------|

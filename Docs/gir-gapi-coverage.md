@@ -1,6 +1,6 @@
 # GIR → gapi coverage
 
-**Status:** V1–V5 complete. **Go** for Phase 2.
+**Status:** V1–V5 complete; gates 1 and 2 passed; Phase 2 complete. **Go** for Phase 3.
 **Date:** 2026-08-05
 **Evidence base:** the vendored `.gir` set in [../Source/Gir/](../Source/Gir/) (Debian forky,
 gtk4 `4.22.4+ds-1`), plus `Gtk-3.0.gir` from [gtk-rs/gir-files](https://github.com/gtk-rs/gir-files)
@@ -243,26 +243,109 @@ declare `3`.
 
 ---
 
-## 6. Gate 1 — Gtk 3 round-trip diff (Phase 2, not yet run)
+## 6. Gate 1 — Gtk 3 round-trip diff ✅ PASSED
 
-Still the most valuable test available, and §3 above is a partial down payment on it. When
-running it, use a `Gtk-3.0.gir` from **Debian `libgtk-3-dev`** matching the GTK 3 version that
-produced the checked-in `GtkSharp-api.xml`, not the gtk-rs copy — the gtk-rs files are derived
-from the GNOME *nightly* SDK and post-processed by that repo's `fix.sh`/`reformat.sh`, which is
-fine for the structural experiment in §3 but not for a byte-level diff.
+Run with `Source/Tools/GirToGapi/scripts/gate1-diff.py`: convert a **GTK 3** gir with `GirToGapi`
+and compare against the checked-in `Source/Libs/GtkSharp/GtkSharp-api.xml`, which is known
+`gapi2xml.pl` output. A byte diff is meaningless here — element order, attribute order and
+whitespace all differ by construction — so the comparison is on what actually matters: which
+types exist, which members they carry, and what everything is called.
 
-Known diff classes to expect before starting, so they are not mistaken for converter bugs:
+```
+types:  converted 758   reference 770   in both 479
+kind agreement on shared types:          478/479   (99.79%)
+members on shared types:                 6693 matched, 252 missing, 534 added
+coverage of reference members:           96.37%
+name agreement on shared C identifiers:  4719/4793 (98.46%)
+```
 
-| Difference class | Cause | Action |
-|:-----------------|:------|:-------|
-| Many new `null_term_array="true"` | §1.3 — GIR default is true, old parser rarely detected it | Accept after spot-check |
-| Missing `<childprop>` | §1.2 — never in GIR | Accept (GTK 4 removed them) |
-| `GtkCellArea::apply_attributes` as `signal_vm` not `vm` | §3 — single heuristic false positive | Exception list or metadata |
-| Padding slot count | §1.1 — array-vs-scalar padding fields | **Must match exactly**; any difference is a converter bug |
+The input was the gtk-rs `Gtk-3.0.gir`, which is GNOME-nightly-derived and so a somewhat different
+GTK 3 revision from the one that produced the reference file. Part of the type delta is that
+version skew rather than converter behaviour.
 
-| Other difference | Count | Explanation | Action |
-|:-----------------|:------|:------------|:-------|
-| *to be filled at gate 1* | | | |
+### Every difference class, explained
+
+| Class | Count | Cause | Verdict |
+|:------|------:|:------|:--------|
+| Reference-only `struct` | 258 | Private C structs (`CacheEntry`, `Child`, `ClipboardRequest`, `CompareInfo`, …) that `gapi2xml.pl` scraped out of GTK's *internal* headers. Not introspectable, so GIR never mentions them. | **Improvement** — they were noise |
+| Reference-only `object` | 16 | Same cause: GTK-internal classes (`GtkActionHelper`, `GtkActionMuxer`, `GtkMenuSectionBox`, …) | **Improvement** |
+| Converted-only `object` | 62 | The a11y hierarchy (`GtkButtonAccessible`, `GtkCellAccessible`, …), which GIR exposes and the header scan missed | Harmless; moot in GTK 4 |
+| Converted-only `struct` | 209 | Mostly the class structs of the above, plus records GIR exposes | Harmless |
+| Name disagreements | 74 | **All** in namespace-level function grouping — `gtk_drag_begin` is `Drag.Begin` in the reference and `Global.DragBegin` here. See §6a.1. | Known deviation |
+| `GtkStock` object→alias | 1 | GIR types it as an alias; gapi2xml made it an object | Cosmetic; GTK 4 deleted it |
+| New `null_term_array="true"` | — | §1.3: GIR's default is true and the old parser rarely detected it | Contained — restricted to string arrays, see §6a.1 |
+| Missing `<childprop>` | 64 | §1.2: never in GIR | Accept; GTK 4 removed child properties |
+| Padding slot count | **0 differences** | §1.1 | **Exact match** — the ABI-critical case |
+
+Member coverage of 96.37%, with the shortfall concentrated in non-introspectable private types,
+and name agreement of 98.46%, with every disagreement inside one known subsystem, is a pass.
+**R2 is retired.**
+
+---
+
+## 6a. Phase 2 results — the converter
+
+`Source/Tools/GirToGapi/` converts all ten assemblies' `.gir` into gapi api.xml.
+
+| Assembly | api.xml | Metadata rules | Unmatched | Survives | Plan predicted |
+|:---------|--------:|---------------:|----------:|---------:|:---------------|
+| `GLibSharp` | 599 KB | — | — | — | hand-written |
+| `GioSharp` | 874 KB | 189 | 37 | **80 %** | ~90 % |
+| `GrapheneSharp` | 100 KB | new | — | — | new |
+| `PangoSharp` | 162 KB | 111 | 25 | **77 %** | ~90 % |
+| `GdkSharp` | 180 KB | 191 | 169 | **11 %** | ~25 % |
+| `GskSharp` | 98 KB | new | — | — | new |
+| `GtkSharp` | 1350 KB | 1112 | 732 | **34 %** | ~30 % |
+| `AdwaitaSharp` | 383 KB | new | — | — | new |
+| `GtkSourceSharp` | 202 KB | 71 | 23 | **67 %** | ~20 % |
+| `WebkitGtkSharp` | 252 KB | 4 | 1 | **75 %** | ~0 % |
+
+`GdkSharp` is the one materially worse than predicted, which is no surprise: `GdkWindow` →
+`GdkSurface` plus the event restructure invalidates most of that file. `GtkSourceSharp` and
+`WebkitGtkSharp` came out far better than predicted.
+
+**End-to-end proof** on `GioSharp`, the plan's designated smoke assembly: convert → `GapiFixup`
+with the existing metadata → `GapiCodegen` yields **467 files / 67 941 lines** of C# with no
+unhandled exception, against the GTK 3 baseline's 398 files / 50 403 lines. The generated code
+contains correct `class_abi.GetFieldOffset("startup")` vfunc wiring and a
+`[GLib.DefaultSignalHandler]` override — the `signal_vm` machinery from §3 working on real GTK 4
+data, not only in the parity experiment.
+
+`scripts/check-api.py` enforces the structural invariant GapiCodegen depends on: every
+`<method vm=>` resolves to a `<virtual_method>`, every `<method signal_vm=>` to a
+`<signal field_name=>`, the parent field comes first, and no slot name repeats. **2197 slots
+across all ten files, all holding.** A violation is a NullReferenceException inside the generator
+with no clue which type caused it, so this runs before codegen rather than after.
+
+### 6a.1 Deliberate deviations from `gapi2xml.pl`
+
+| Deviation | Why |
+|:----------|:----|
+| **Owner attribution follows GIR** rather than the C-prefix heuristic | `gtk_file_chooser_native_set_accept_label` becomes `FileChooserNative.SetAcceptLabel` here and was `FileChooser.NativeSetAcceptLabel` before. GIR is right. Affects ~3.5 % of members. |
+| **Global functions group differently** | The old rule silently *dropped* functions whose cname had no third token — `gtk_init` had no home at all. Everything reaches `Global` here instead of vanishing. Accounts for all 74 gate-1 name disagreements. |
+| **`element_type` is never emitted** | GapiCodegen handles it only on `GList`/`GSList`/`GPtrArray` returns and *throws* on anything else ([ReturnValue.cs:147-155](../Source/Tools/GapiCodegen/ReturnValue.cs#L147)). Emitting it for string arrays killed the generator mid-run. Left to metadata, as before — twelve hand-added occurrences in the whole tree. |
+| **`array="true"` is never emitted on parameters** | Same reason: with no metadata-supplied count parameter it makes `Parameter.cs` throw. |
+| **`null_term_array` restricted to string arrays** | `GLib.Marshaller.NullTermPtrToStringArray` is the only unaided null-terminated path. This also contains the §1.3 over-production. |
+| **Namespace-level `<constant>` skipped** | gapi has no namespace-level slot for them — `Gapi.xsd` puts `static-string` inside `<object>` only. 129 in Gio, 98 in Gtk, 2459 in Gdk; the Gdk ones are keysyms, which have always been generated separately. Logged, never silent. |
+| **`<function>` children of enums skipped** | `enumType` accepts only `<member>`. These are `*_error_quark`; GLibSharp binds error domains by hand. Logged. |
+
+### 6a.2 One schema change
+
+`Source/Libs/Shared/Gapi.xsd` gained a `throws` attribute on its three inline `parameters` complex
+types. It is read by [Parameters.cs:58](../Source/Tools/GapiCodegen/Parameters.cs#L58) and already
+appears in the checked-in api.xml files — the schema was simply behind. Without it every
+GError-taking method is a validation error, and GIR marks far more of them than gapi2xml.pl did.
+
+With that change the converted `GioSharp-api.xml` validates with **zero** schema errors beyond the
+two the GTK 3 baseline also produces (a hand-written `<warning>` note at
+`Source/Libs/GLibSharp/GLibSharp-api.xml:27`, unrelated to this work). **Gate 2 passes.**
+
+### 6a.3 `GapiFixup --strict`
+
+Added per plan §2.6: counts unmatched rules, exits non-zero. Verified both ways — exit 0 on the
+GTK 3 file its metadata was written for, exit 1 with `gapi-fixup: 37 unmatched rule(s)` on the
+GTK 4 one. Wired to a per-assembly `StrictMetadata` switch on `GAssembly`, **off everywhere**
+until Phase 4 triages that assembly's rules.
 
 ---
 
@@ -275,6 +358,9 @@ All three scripts are checked in, so every claim above is re-runnable:
 | [`Source/Gir/fetch-gir.py`](../Source/Gir/fetch-gir.py) | Re-fetches the vendored set: downloads each pinned `.deb`, verifies sha256, unpacks the `ar` container and `data.tar.xz` in pure Python (no `dpkg`, `ar`, or Linux host), extracts the `.gir`. Verified to reproduce the checked-in files byte-for-byte. |
 | [`Source/Tools/GirToGapi/scripts/signal-vm-parity.py`](../Source/Tools/GirToGapi/scripts/signal-vm-parity.py) | The §3 experiment: predicts `signal_vm` from a gir and scores it against an existing api.xml. **Re-run this at gate 1.** Usage: `python signal-vm-parity.py <gir> <api.xml>`. |
 | [`Source/Tools/GirToGapi/scripts/inspect-remote-zip.py`](../Source/Tools/GirToGapi/scripts/inspect-remote-zip.py) | Enumerates a remote zip via HTTP `Range` reads of its central directory — inspects the 300 MB gvsbuild bundle by fetching ~4 MB. Re-run when the bundle version moves, to re-check §4.1 and §4.2. |
+| [`Source/Tools/GirToGapi/scripts/name-parity.py`](../Source/Tools/GirToGapi/scripts/name-parity.py) | The R2 experiment: scores `StudlyCaps(gir @name)` against an existing api.xml's `@name`, per member kind. |
+| [`Source/Tools/GirToGapi/scripts/gate1-diff.py`](../Source/Tools/GirToGapi/scripts/gate1-diff.py) | Gate 1: type, member and name agreement between a converted api.xml and a reference one. |
+| [`Source/Tools/GirToGapi/scripts/check-api.py`](../Source/Tools/GirToGapi/scripts/check-api.py) | The class-struct invariants GapiCodegen assumes. **Run before every codegen**; a violation is an NRE inside the generator. |
 
 To pin a newer upstream, read the `Version`/`Filename`/`SHA256` fields out of
 `https://deb.debian.org/debian/dists/forky/main/binary-amd64/Packages.xz`, update `PACKAGES` in
