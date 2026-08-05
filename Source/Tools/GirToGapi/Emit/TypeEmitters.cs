@@ -123,6 +123,14 @@ namespace GtkSharp.GirConversion.Emit {
 			if (bits != null)
 				el.Add (new XAttribute ("bits", bits));
 
+			// A function-pointer field has no managed representation, but it still
+			// occupies a slot. ClassBase counts the ABI field first and only then
+			// skips the managed one on is_callback, so marking it keeps the struct
+			// layout right while suppressing a member declaration whose type would
+			// come out empty -- "private  _load;".
+			if (IsCallbackTyped (gir))
+				el.Add (new XAttribute ("is_callback", "1"));
+
 			var isPrivate = (string) gir.Attribute ("private") == "1";
 			el.Add (new XAttribute ("access", isPrivate ? "private" : "public"));
 
@@ -130,6 +138,20 @@ namespace GtkSharp.GirConversion.Emit {
 				el.Add (new XAttribute ("writeable", "true"));
 
 			return el;
+		}
+
+		/// <summary>Is this field a function pointer?</summary>
+		bool IsCallbackTyped (XElement gir)
+		{
+			if (gir.Element (Ns.Core + "callback") != null)
+				return true;
+
+			var type = gir.Element (Ns.Core + "type");
+			if (type == null)
+				return false;
+
+			var info = registry.Resolve ((string) type.Attribute ("name"), doc.Name);
+			return info != null && info.Kind == GirKind.Callback;
 		}
 
 		/// <summary>&lt;enumeration&gt; and &lt;bitfield&gt; both become &lt;enum&gt;.</summary>
