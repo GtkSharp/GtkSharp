@@ -2,6 +2,15 @@
 
 GtkSharp is a C# wrapper for Gtk and its related components. The component list includes the following libraries: glib, gio, cairo, pango, atk, gdk. This is a fork of https://github.com/mono/gtk-sharp and is maintained completely separately from that project.
 
+## Branches
+
+| Branch    | Gtk version | Package version line | Status                                                     |
+|:----------|:------------|:---------------------|:-----------------------------------------------------------|
+| `develop` | Gtk 3.24    | `3.24.24.x`          | Gtk 3 maintenance line.                                     |
+| `gtk4`    | Gtk 4.22.4  | `4.22.4.x`           | Gtk 4 upgrade, in progress — see [Docs/gtk4-upgrade-plan.md](Docs/gtk4-upgrade-plan.md). |
+
+The Gtk 4 line is a hard break: same assembly names and namespaces, no side-by-side install with the 3.24.x packages.
+
 Differences can be seen with the following table:
 
 |               | Target framework   | Target Gtk Version                                 | Extra notes                   |
