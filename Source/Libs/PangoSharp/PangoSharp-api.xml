@@ -382,14 +382,14 @@
     <callback name="AttrDataCopyFunc" cname="PangoAttrDataCopyFunc">
       <return-type type="gpointer" />
       <parameters>
-        <parameter type="gconstpointer" name="user_data" />
+        <parameter type="gconstpointer" name="user_data" closure="0" />
       </parameters>
     </callback>
     <callback name="AttrFilterFunc" cname="PangoAttrFilterFunc">
       <return-type type="gboolean" />
       <parameters>
         <parameter type="PangoAttribute*" name="attribute" />
-        <parameter type="gpointer" name="user_data" />
+        <parameter type="gpointer" name="user_data" closure="1" />
       </parameters>
     </callback>
     <callback name="FontsetForeachFunc" cname="PangoFontsetForeachFunc">
@@ -397,7 +397,7 @@
       <parameters>
         <parameter type="PangoFontset*" name="fontset" />
         <parameter type="PangoFont*" name="font" />
-        <parameter type="gpointer" name="user_data" />
+        <parameter type="gpointer" name="user_data" closure="2" />
       </parameters>
     </callback>
     <object name="Context" cname="PangoContext" parent="GObject">
@@ -955,7 +955,7 @@
       <virtual_method name="Foreach" cname="foreach">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoFontsetForeachFunc" name="func" scope="call" />
+          <parameter type="PangoFontsetForeachFunc" name="func" closure="1" scope="call" />
           <parameter type="gpointer" name="data" />
         </parameters>
       </virtual_method>
@@ -974,7 +974,7 @@
       <method name="Foreach" cname="pango_fontset_foreach">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoFontsetForeachFunc" name="func" scope="call" />
+          <parameter type="PangoFontsetForeachFunc" name="func" closure="1" scope="call" />
           <parameter type="gpointer" name="data" />
         </parameters>
       </method>
@@ -1725,7 +1725,7 @@
       <method name="Filter" cname="pango_attr_list_filter">
         <return-type type="PangoAttrList*" owned="true" />
         <parameters>
-          <parameter type="PangoAttrFilterFunc" name="func" scope="call" />
+          <parameter type="PangoAttrFilterFunc" name="func" closure="1" scope="call" />
           <parameter type="gpointer" name="data" />
         </parameters>
       </method>
@@ -1828,7 +1828,7 @@
       <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
       <field name="Value" cname="value" type="char*" access="public" writeable="true" />
     </struct>
-    <boxed name="Attribute" cname="PangoAttribute">
+    <boxed name="Attribute" cname="PangoAttribute" opaque="true">
       <field name="Klass" cname="klass" type="const-PangoAttrClass*" access="public" writeable="true" />
       <field name="StartIndex" cname="start_index" type="guint" access="public" writeable="true" />
       <field name="EndIndex" cname="end_index" type="guint" access="public" writeable="true" />
@@ -1881,7 +1881,7 @@
         <return-type type="GType" />
       </method>
     </boxed>
-    <boxed name="Color" cname="PangoColor">
+    <boxed name="Color" cname="PangoColor" opaque="true">
       <field name="Red" cname="red" type="guint16" access="public" writeable="true" />
       <field name="Green" cname="green" type="guint16" access="public" writeable="true" />
       <field name="Blue" cname="blue" type="guint16" access="public" writeable="true" />
@@ -2103,7 +2103,7 @@
         <return-type type="GType" />
       </method>
     </boxed>
-    <boxed name="FontMetrics" cname="PangoFontMetrics">
+    <boxed name="FontMetrics" cname="PangoFontMetrics" opaque="true">
       <field name="RefCount" cname="ref_count" type="guint" access="private" />
       <field name="Ascent" cname="ascent" type="int" access="private" />
       <field name="Descent" cname="descent" type="int" access="private" />
@@ -2161,7 +2161,7 @@
       <field name="Geometry" cname="geometry" type="PangoGlyphGeometry" access="public" writeable="true" />
       <field name="Attr" cname="attr" type="PangoGlyphVisAttr" access="public" writeable="true" />
     </struct>
-    <boxed name="GlyphItem" cname="PangoGlyphItem">
+    <boxed name="GlyphItem" cname="PangoGlyphItem" opaque="true">
       <field name="Item" cname="item" type="PangoItem*" access="public" writeable="true" />
       <field name="Glyphs" cname="glyphs" type="PangoGlyphString*" access="public" writeable="true" />
       <field name="YOffset" cname="y_offset" type="int" access="public" writeable="true" />
@@ -2206,7 +2206,7 @@
         <return-type type="GType" />
       </method>
     </boxed>
-    <boxed name="GlyphItemIter" cname="PangoGlyphItemIter">
+    <boxed name="GlyphItemIter" cname="PangoGlyphItemIter" opaque="true">
       <field name="GlyphItem" cname="glyph_item" type="PangoGlyphItem*" access="public" writeable="true" />
       <field name="Text" cname="text" type="const-gchar*" access="public" writeable="true" />
       <field name="StartGlyph" cname="start_glyph" type="int" access="public" writeable="true" />
@@ -2245,7 +2245,7 @@
         <return-type type="GType" />
       </method>
     </boxed>
-    <boxed name="GlyphString" cname="PangoGlyphString">
+    <boxed name="GlyphString" cname="PangoGlyphString" opaque="true">
       <field name="NumGlyphs" cname="num_glyphs" type="int" access="public" writeable="true" />
       <field name="Glyphs" cname="glyphs" type="PangoGlyphInfo*" access="public" writeable="true" />
       <field name="LogClusters" cname="log_clusters" type="int*" access="public" writeable="true" />
@@ -2335,7 +2335,7 @@
       <field name="IsClusterStart" cname="is_cluster_start" type="guint" bits="1" access="public" writeable="true" />
       <field name="IsColor" cname="is_color" type="guint" bits="1" access="public" writeable="true" />
     </struct>
-    <boxed name="Item" cname="PangoItem">
+    <boxed name="Item" cname="PangoItem" opaque="true">
       <field name="Offset" cname="offset" type="int" access="public" writeable="true" />
       <field name="Length" cname="length" type="int" access="public" writeable="true" />
       <field name="NumChars" cname="num_chars" type="int" access="public" writeable="true" />
@@ -2499,7 +2499,7 @@
         <return-type type="GType" />
       </method>
     </boxed>
-    <boxed name="LayoutLine" cname="PangoLayoutLine">
+    <boxed name="LayoutLine" cname="PangoLayoutLine" opaque="true">
       <field name="Layout" cname="layout" type="PangoLayout*" access="public" writeable="true" />
       <field name="StartIndex" cname="start_index" type="gint" access="public" writeable="true" />
       <field name="Length" cname="length" type="gint" access="public" writeable="true" />
@@ -2591,7 +2591,7 @@
       <field name="BreakRemovesPreceding" cname="break_removes_preceding" type="guint" bits="1" access="public" writeable="true" />
       <field name="Reserved" cname="reserved" type="guint" bits="17" access="public" writeable="true" />
     </struct>
-    <boxed name="Matrix" cname="PangoMatrix">
+    <boxed name="Matrix" cname="PangoMatrix" opaque="true">
       <field name="Xx" cname="xx" type="double" access="public" writeable="true" />
       <field name="Xy" cname="xy" type="double" access="public" writeable="true" />
       <field name="Yx" cname="yx" type="double" access="public" writeable="true" />
@@ -3335,7 +3335,7 @@
         <parameter type="cairo_t*" name="cr" />
         <parameter type="PangoAttrShape*" name="attr" />
         <parameter type="gboolean" name="do_path" />
-        <parameter type="gpointer" name="data" />
+        <parameter type="gpointer" name="data" closure="3" />
       </parameters>
     </callback>
     <interface name="Font" cname="PangoCairoFont">
@@ -3419,7 +3419,7 @@
         <return-type type="void" />
         <parameters>
           <parameter type="PangoContext*" name="context" />
-          <parameter type="PangoCairoShapeRendererFunc" name="func" scope="notified" closure="2" destroy="3" />
+          <parameter type="PangoCairoShapeRendererFunc" name="func" closure="2" destroy="3" scope="notified" />
           <parameter type="gpointer" name="data" />
           <parameter type="GDestroyNotify" name="dnotify" />
         </parameters>

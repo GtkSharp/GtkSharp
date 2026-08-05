@@ -115,4 +115,28 @@
   <attr path="/api/namespace/*[@cname='PangoScriptIter']" name="hidden">1</attr>
   <move-node path="/api/namespace/class[@name='Version']/method[@cname='pango_version_check']">/api/namespace/class[@name='Global']</move-node>
   <move-node path="/api/namespace/class[@name='Version']/method[@cname='pango_version_string']">/api/namespace/class[@name='Global']</move-node>
+
+  <!-- Boxed types default to opaque, which generates a class. These four are
+       plain value structs that Gtk 3 exposed by layout and the hand-written
+       partials declare as "partial struct", so they keep their fields. Same
+       mechanism GtkSharp.metadata uses for GtkBorder and GtkRequisition. -->
+  <attr path="/api/namespace/boxed[@cname='PangoColor']" name="opaque">false</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphItem']" name="opaque">false</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphItemIter']" name="opaque">false</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoMatrix']" name="opaque">false</attr>
+
+  <!-- Pango 1.50+ added getter functions for fields PangoLayoutLine used to
+       expose directly, so the field-derived property and the method-derived one
+       now want the same name. The methods win. Hiding a field still leaves it
+       counted in the ABI struct (ClassBase tallies fields before checking
+       hidden), so offsets are unaffected. -->
+  <attr path="/api/namespace/boxed[@cname='PangoLayoutLine']/field[@cname='layout']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoLayoutLine']/field[@cname='is_paragraph_start']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoLayoutLine']/field[@cname='resolved_dir']" name="hidden">1</attr>
+
+  <!-- Pango 1.44 added is-monospace and is-variable as GObject properties
+       alongside the existing pango_font_family_is_* functions. Both map to the
+       same C# name; the functions win, as they did in Gtk 3. -->
+  <attr path="/api/namespace/object[@cname='PangoFontFamily']/property[@cname='is-monospace']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='PangoFontFamily']/property[@cname='is-variable']" name="hidden">1</attr>
 </metadata>

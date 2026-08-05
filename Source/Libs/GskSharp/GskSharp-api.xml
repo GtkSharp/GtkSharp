@@ -166,7 +166,7 @@
         <parameter type="const-GskParseLocation*" name="start" />
         <parameter type="const-GskParseLocation*" name="end" />
         <parameter type="const-GError*" name="error" />
-        <parameter type="gpointer" name="user_data" />
+        <parameter type="gpointer" name="user_data" closure="3" />
       </parameters>
     </callback>
     <callback name="PathForeachFunc" cname="GskPathForeachFunc">
@@ -176,7 +176,7 @@
         <parameter type="const-graphene_point_t*" name="pts" />
         <parameter type="gsize" name="n_pts" />
         <parameter type="float" name="weight" />
-        <parameter type="gpointer" name="user_data" />
+        <parameter type="gpointer" name="user_data" closure="4" />
       </parameters>
     </callback>
     <callback name="PathIntersectionFunc" cname="GskPathIntersectionFunc">
@@ -187,7 +187,7 @@
         <parameter type="GskPath*" name="path2" />
         <parameter type="const-GskPathPoint*" name="point2" />
         <parameter type="GskPathIntersection" name="kind" />
-        <parameter type="gpointer" name="user_data" />
+        <parameter type="gpointer" name="user_data" closure="5" />
       </parameters>
     </callback>
     <callback name="RenderReplayFontFilter" cname="GskRenderReplayFontFilter">
@@ -195,7 +195,7 @@
       <parameters>
         <parameter type="GskRenderReplay*" name="replay" />
         <parameter type="PangoFont*" name="font" />
-        <parameter type="gpointer" name="user_data" />
+        <parameter type="gpointer" name="user_data" closure="2" />
       </parameters>
     </callback>
     <callback name="RenderReplayNodeFilter" cname="GskRenderReplayNodeFilter">
@@ -203,7 +203,7 @@
       <parameters>
         <parameter type="GskRenderReplay*" name="replay" />
         <parameter type="GskRenderNode*" name="node" />
-        <parameter type="gpointer" name="user_data" />
+        <parameter type="gpointer" name="user_data" closure="2" />
       </parameters>
     </callback>
     <callback name="RenderReplayTextureFilter" cname="GskRenderReplayTextureFilter">
@@ -211,7 +211,7 @@
       <parameters>
         <parameter type="GskRenderReplay*" name="replay" />
         <parameter type="GdkTexture*" name="texture" />
-        <parameter type="gpointer" name="user_data" />
+        <parameter type="gpointer" name="user_data" closure="2" />
       </parameters>
     </callback>
     <object name="BlendNode" cname="GskBlendNode" parent="GskRenderNode">
@@ -946,7 +946,7 @@
         <return-type type="GskRenderNode*" owned="true" />
         <parameters>
           <parameter type="GBytes*" name="bytes" />
-          <parameter type="GskParseErrorFunc" name="error_func" scope="call" />
+          <parameter type="GskParseErrorFunc" name="error_func" closure="2" scope="call" />
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
@@ -1294,7 +1294,7 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GskPathForeachFlags" name="flags" />
-          <parameter type="GskPathForeachFunc" name="func" scope="call" />
+          <parameter type="GskPathForeachFunc" name="func" closure="2" scope="call" />
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
@@ -1302,7 +1302,7 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GskPath*" name="path2" />
-          <parameter type="GskPathIntersectionFunc" name="func" scope="call" />
+          <parameter type="GskPathIntersectionFunc" name="func" closure="2" scope="call" />
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
@@ -1756,7 +1756,7 @@
       <method name="SetFontFilter" cname="gsk_render_replay_set_font_filter">
         <return-type type="void" />
         <parameters>
-          <parameter type="GskRenderReplayFontFilter" name="filter" scope="notified" closure="1" destroy="2" />
+          <parameter type="GskRenderReplayFontFilter" name="filter" closure="1" destroy="2" scope="notified" />
           <parameter type="gpointer" name="user_data" />
           <parameter type="GDestroyNotify" name="user_destroy" />
         </parameters>
@@ -1764,7 +1764,7 @@
       <method name="SetNodeFilter" cname="gsk_render_replay_set_node_filter">
         <return-type type="void" />
         <parameters>
-          <parameter type="GskRenderReplayNodeFilter" name="filter" scope="notified" closure="1" destroy="2" />
+          <parameter type="GskRenderReplayNodeFilter" name="filter" closure="1" destroy="2" scope="notified" />
           <parameter type="gpointer" name="user_data" />
           <parameter type="GDestroyNotify" name="user_destroy" />
         </parameters>
@@ -1772,7 +1772,7 @@
       <method name="SetTextureFilter" cname="gsk_render_replay_set_texture_filter">
         <return-type type="void" />
         <parameters>
-          <parameter type="GskRenderReplayTextureFilter" name="filter" scope="notified" closure="1" destroy="2" />
+          <parameter type="GskRenderReplayTextureFilter" name="filter" closure="1" destroy="2" scope="notified" />
           <parameter type="gpointer" name="user_data" />
           <parameter type="GDestroyNotify" name="user_destroy" />
         </parameters>
