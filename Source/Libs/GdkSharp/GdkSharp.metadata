@@ -74,5 +74,32 @@
   <attr path="/api/namespace/object[@cname='GdkPixbufAnimation']/constructor[@cname='gdk_pixbuf_animation_new_from_resource']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbufLoader']/method[@name='Write']/*/*[@name='buf']" name="array">1</attr>
   <attr path="/api/namespace/struct[@cname='GdkTimeCoord']/field[@cname='axes']" name="array_len">128</attr>
+
+  <!-- Functions that emit a signal of the same name, and one property that
+       duplicates a function. Same treatment as GioSharp's GListModel and
+       GMenuModel: the signal or property keeps the plain name, the function is
+       spelled Emit* because it raises the signal. -->
+  <attr path="/api/namespace/interface[@cname='GdkPaintable']/method[@cname='gdk_paintable_invalidate_contents']" name="name">EmitInvalidateContents</attr>
+  <attr path="/api/namespace/interface[@cname='GdkPaintable']/method[@cname='gdk_paintable_invalidate_size']" name="name">EmitInvalidateSize</attr>
+  <attr path="/api/namespace/object[@cname='GdkContentProvider']/method[@cname='gdk_content_provider_content_changed']" name="name">EmitContentChanged</attr>
+  <attr path="/api/namespace/object[@cname='GdkDevice']/property[@cname='has-bidi-layouts']" name="hidden">1</attr>
+
+  <!-- Value types the hand-written layer extends with operators and helpers.
+       Boxed defaults to opaque, which would generate a class; these need the
+       struct form so the "partial struct" halves match. Gtk 3 reached the same
+       shape by other means - GdkRGBA was a plain <struct> and GdkRectangle an
+       alias to cairo_rectangle_int_t. -->
+  <attr path="/api/namespace/boxed[@cname='GdkRGBA']" name="opaque">false</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkRectangle']" name="opaque">false</attr>
+
+  <!-- A GList-typed GObject property: codegen casts the GLib.Value straight to
+       GLib.List, which does not compile. SetIconList covers the functionality. -->
+  <attr path="/api/namespace/interface[@cname='GdkToplevel']/property[@cname='icon-list']" name="hidden">1</attr>
+
+  <!-- Null-terminated string-array fields. The generated setter marshals the
+       whole array with StringToPtrGStrdup, which expects one string. They
+       describe a loader that is already registered, so read-only is right. -->
+  <attr path="/api/namespace/*[@cname='GdkPixbufFormat']/field[@cname='mime_types']" name="writeable">false</attr>
+  <attr path="/api/namespace/*[@cname='GdkPixbufFormat']/field[@cname='extensions']" name="writeable">false</attr>
 </metadata>
 

@@ -202,6 +202,19 @@ namespace GtkSharp.Generation {
 
 			visible = Access != "private";
 
+			// A function-pointer field. ClassBase skips these outright, but a
+			// struct's fields are its layout, so the slot has to stay - as an
+			// opaque pointer, since a callback type has no marshalled field form
+			// and would otherwise be emitted with an empty type ("private  _load;").
+			if (elem.GetAttributeAsBoolean ("is_callback")) {
+				visible = false;
+				// Named the way EqualityName names it, or the generated Equals
+				// refers to a field that does not exist.
+				sw.WriteLine (indent + "private IntPtr {0};",
+					Access == "public" ? StudlyName : Name);
+				return;
+			}
+
 			SymbolTable table = SymbolTable.Table;
 
 			string wrapped = table.GetCSType (CType);
