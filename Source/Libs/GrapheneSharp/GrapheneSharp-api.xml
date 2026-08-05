@@ -1,0 +1,2430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<api parser_version="3">
+  <namespace name="Graphene" library="libgraphene-1.0.so.0">
+    <enum name="EulerOrder" cname="graphene_euler_order_t" type="enum">
+      <member cname="GRAPHENE_EULER_ORDER_DEFAULT" name="Default" value="-1" />
+      <member cname="GRAPHENE_EULER_ORDER_XYZ" name="Xyz" value="0" />
+      <member cname="GRAPHENE_EULER_ORDER_YZX" name="Yzx" value="1" />
+      <member cname="GRAPHENE_EULER_ORDER_ZXY" name="Zxy" value="2" />
+      <member cname="GRAPHENE_EULER_ORDER_XZY" name="Xzy" value="3" />
+      <member cname="GRAPHENE_EULER_ORDER_YXZ" name="Yxz" value="4" />
+      <member cname="GRAPHENE_EULER_ORDER_ZYX" name="Zyx" value="5" />
+      <member cname="GRAPHENE_EULER_ORDER_SXYZ" name="Sxyz" value="6" />
+      <member cname="GRAPHENE_EULER_ORDER_SXYX" name="Sxyx" value="7" />
+      <member cname="GRAPHENE_EULER_ORDER_SXZY" name="Sxzy" value="8" />
+      <member cname="GRAPHENE_EULER_ORDER_SXZX" name="Sxzx" value="9" />
+      <member cname="GRAPHENE_EULER_ORDER_SYZX" name="Syzx" value="10" />
+      <member cname="GRAPHENE_EULER_ORDER_SYZY" name="Syzy" value="11" />
+      <member cname="GRAPHENE_EULER_ORDER_SYXZ" name="Syxz" value="12" />
+      <member cname="GRAPHENE_EULER_ORDER_SYXY" name="Syxy" value="13" />
+      <member cname="GRAPHENE_EULER_ORDER_SZXY" name="Szxy" value="14" />
+      <member cname="GRAPHENE_EULER_ORDER_SZXZ" name="Szxz" value="15" />
+      <member cname="GRAPHENE_EULER_ORDER_SZYX" name="Szyx" value="16" />
+      <member cname="GRAPHENE_EULER_ORDER_SZYZ" name="Szyz" value="17" />
+      <member cname="GRAPHENE_EULER_ORDER_RZYX" name="Rzyx" value="18" />
+      <member cname="GRAPHENE_EULER_ORDER_RXYX" name="Rxyx" value="19" />
+      <member cname="GRAPHENE_EULER_ORDER_RYZX" name="Ryzx" value="20" />
+      <member cname="GRAPHENE_EULER_ORDER_RXZX" name="Rxzx" value="21" />
+      <member cname="GRAPHENE_EULER_ORDER_RXZY" name="Rxzy" value="22" />
+      <member cname="GRAPHENE_EULER_ORDER_RYZY" name="Ryzy" value="23" />
+      <member cname="GRAPHENE_EULER_ORDER_RZXY" name="Rzxy" value="24" />
+      <member cname="GRAPHENE_EULER_ORDER_RYXY" name="Ryxy" value="25" />
+      <member cname="GRAPHENE_EULER_ORDER_RYXZ" name="Ryxz" value="26" />
+      <member cname="GRAPHENE_EULER_ORDER_RZXZ" name="Rzxz" value="27" />
+      <member cname="GRAPHENE_EULER_ORDER_RXYZ" name="Rxyz" value="28" />
+      <member cname="GRAPHENE_EULER_ORDER_RZYZ" name="Rzyz" value="29" />
+    </enum>
+    <enum name="RayIntersectionKind" cname="graphene_ray_intersection_kind_t" type="enum">
+      <member cname="GRAPHENE_RAY_INTERSECTION_KIND_NONE" name="None" value="0" />
+      <member cname="GRAPHENE_RAY_INTERSECTION_KIND_ENTER" name="Enter" value="1" />
+      <member cname="GRAPHENE_RAY_INTERSECTION_KIND_LEAVE" name="Leave" value="2" />
+    </enum>
+    <boxed name="Box" cname="graphene_box_t">
+      <field name="Min" cname="min" type="graphene_vec3_t" access="private" />
+      <field name="Max" cname="max" type="graphene_vec3_t" access="private" />
+      <constructor cname="graphene_box_alloc" name="Alloc" />
+      <method name="ContainsBox" cname="graphene_box_contains_box">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_box_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="ContainsPoint" cname="graphene_box_contains_point">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="point" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_box_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_box_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Expand" cname="graphene_box_expand">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="point" />
+          <parameter type="graphene_box_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ExpandScalar" cname="graphene_box_expand_scalar">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="scalar" />
+          <parameter type="graphene_box_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ExpandVec3" cname="graphene_box_expand_vec3">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="vec" />
+          <parameter type="graphene_box_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_box_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetBoundingSphere" cname="graphene_box_get_bounding_sphere">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_sphere_t*" name="sphere" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetCenter" cname="graphene_box_get_center">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point3d_t*" name="center" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetDepth" cname="graphene_box_get_depth">
+        <return-type type="float" />
+      </method>
+      <method name="GetHeight" cname="graphene_box_get_height">
+        <return-type type="float" />
+      </method>
+      <method name="GetMax" cname="graphene_box_get_max">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point3d_t*" name="max" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetMin" cname="graphene_box_get_min">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point3d_t*" name="min" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetSize" cname="graphene_box_get_size">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="size" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetVertices" cname="graphene_box_get_vertices">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="vertices" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetWidth" cname="graphene_box_get_width">
+        <return-type type="float" />
+      </method>
+      <method name="Init" cname="graphene_box_init">
+        <return-type type="graphene_box_t*" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="min" />
+          <parameter type="const-graphene_point3d_t*" name="max" />
+        </parameters>
+      </method>
+      <method name="InitFromBox" cname="graphene_box_init_from_box">
+        <return-type type="graphene_box_t*" />
+        <parameters>
+          <parameter type="const-graphene_box_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromPoints" cname="graphene_box_init_from_points">
+        <return-type type="graphene_box_t*" />
+        <parameters>
+          <parameter type="unsigned-int" name="n_points" />
+          <parameter type="const-graphene_point3d_t*" name="points" />
+        </parameters>
+      </method>
+      <method name="InitFromVec3" cname="graphene_box_init_from_vec3">
+        <return-type type="graphene_box_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="min" />
+          <parameter type="const-graphene_vec3_t*" name="max" />
+        </parameters>
+      </method>
+      <method name="InitFromVectors" cname="graphene_box_init_from_vectors">
+        <return-type type="graphene_box_t*" />
+        <parameters>
+          <parameter type="unsigned-int" name="n_vectors" />
+          <parameter type="const-graphene_vec3_t*" name="vectors" />
+        </parameters>
+      </method>
+      <method name="Intersection" cname="graphene_box_intersection">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_box_t*" name="b" />
+          <parameter type="graphene_box_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Union" cname="graphene_box_union">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_box_t*" name="b" />
+          <parameter type="graphene_box_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Empty" cname="graphene_box_empty" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="Infinite" cname="graphene_box_infinite" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="MinusOne" cname="graphene_box_minus_one" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="One" cname="graphene_box_one" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="OneMinusOne" cname="graphene_box_one_minus_one" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="Zero" cname="graphene_box_zero" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="GetType" cname="graphene_box_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Euler" cname="graphene_euler_t">
+      <field name="Angles" cname="angles" type="graphene_vec3_t" access="private" />
+      <field name="Order" cname="order" type="graphene_euler_order_t" access="private" />
+      <constructor cname="graphene_euler_alloc" name="Alloc" />
+      <method name="Equal" cname="graphene_euler_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_euler_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_euler_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetAlpha" cname="graphene_euler_get_alpha">
+        <return-type type="float" />
+      </method>
+      <method name="GetBeta" cname="graphene_euler_get_beta">
+        <return-type type="float" />
+      </method>
+      <method name="GetGamma" cname="graphene_euler_get_gamma">
+        <return-type type="float" />
+      </method>
+      <method name="GetOrder" cname="graphene_euler_get_order">
+        <return-type type="graphene_euler_order_t" />
+      </method>
+      <method name="GetX" cname="graphene_euler_get_x">
+        <return-type type="float" />
+      </method>
+      <method name="GetY" cname="graphene_euler_get_y">
+        <return-type type="float" />
+      </method>
+      <method name="GetZ" cname="graphene_euler_get_z">
+        <return-type type="float" />
+      </method>
+      <method name="Init" cname="graphene_euler_init">
+        <return-type type="graphene_euler_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+          <parameter type="float" name="z" />
+        </parameters>
+      </method>
+      <method name="InitFromEuler" cname="graphene_euler_init_from_euler">
+        <return-type type="graphene_euler_t*" />
+        <parameters>
+          <parameter type="const-graphene_euler_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromMatrix" cname="graphene_euler_init_from_matrix">
+        <return-type type="graphene_euler_t*" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="m" />
+          <parameter type="graphene_euler_order_t" name="order" />
+        </parameters>
+      </method>
+      <method name="InitFromQuaternion" cname="graphene_euler_init_from_quaternion">
+        <return-type type="graphene_euler_t*" />
+        <parameters>
+          <parameter type="const-graphene_quaternion_t*" name="q" />
+          <parameter type="graphene_euler_order_t" name="order" />
+        </parameters>
+      </method>
+      <method name="InitFromRadians" cname="graphene_euler_init_from_radians">
+        <return-type type="graphene_euler_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+          <parameter type="float" name="z" />
+          <parameter type="graphene_euler_order_t" name="order" />
+        </parameters>
+      </method>
+      <method name="InitFromVec3" cname="graphene_euler_init_from_vec3">
+        <return-type type="graphene_euler_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="v" />
+          <parameter type="graphene_euler_order_t" name="order" />
+        </parameters>
+      </method>
+      <method name="InitWithOrder" cname="graphene_euler_init_with_order">
+        <return-type type="graphene_euler_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+          <parameter type="float" name="z" />
+          <parameter type="graphene_euler_order_t" name="order" />
+        </parameters>
+      </method>
+      <method name="Reorder" cname="graphene_euler_reorder">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_euler_order_t" name="order" />
+          <parameter type="graphene_euler_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToMatrix" cname="graphene_euler_to_matrix">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_matrix_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToQuaternion" cname="graphene_euler_to_quaternion">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_quaternion_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToVec3" cname="graphene_euler_to_vec3">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="graphene_euler_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Frustum" cname="graphene_frustum_t">
+      <field name="Planes" cname="planes" type="graphene_plane_t*" array_len="6" access="private" />
+      <constructor cname="graphene_frustum_alloc" name="Alloc" />
+      <method name="ContainsPoint" cname="graphene_frustum_contains_point">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="point" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_frustum_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_frustum_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_frustum_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetPlanes" cname="graphene_frustum_get_planes">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_plane_t*" name="planes" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Init" cname="graphene_frustum_init">
+        <return-type type="graphene_frustum_t*" />
+        <parameters>
+          <parameter type="const-graphene_plane_t*" name="p0" />
+          <parameter type="const-graphene_plane_t*" name="p1" />
+          <parameter type="const-graphene_plane_t*" name="p2" />
+          <parameter type="const-graphene_plane_t*" name="p3" />
+          <parameter type="const-graphene_plane_t*" name="p4" />
+          <parameter type="const-graphene_plane_t*" name="p5" />
+        </parameters>
+      </method>
+      <method name="InitFromFrustum" cname="graphene_frustum_init_from_frustum">
+        <return-type type="graphene_frustum_t*" />
+        <parameters>
+          <parameter type="const-graphene_frustum_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromMatrix" cname="graphene_frustum_init_from_matrix">
+        <return-type type="graphene_frustum_t*" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="matrix" />
+        </parameters>
+      </method>
+      <method name="IntersectsBox" cname="graphene_frustum_intersects_box">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_box_t*" name="box" />
+        </parameters>
+      </method>
+      <method name="IntersectsSphere" cname="graphene_frustum_intersects_sphere">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_sphere_t*" name="sphere" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="graphene_frustum_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Matrix" cname="graphene_matrix_t">
+      <field name="Value" cname="value" type="graphene_simd4x4f_t" access="private" />
+      <constructor cname="graphene_matrix_alloc" name="Alloc" />
+      <method name="Decompose" cname="graphene_matrix_decompose">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="translate" pass_as="out" />
+          <parameter type="graphene_vec3_t*" name="scale" pass_as="out" />
+          <parameter type="graphene_quaternion_t*" name="rotate" pass_as="out" />
+          <parameter type="graphene_vec3_t*" name="shear" pass_as="out" />
+          <parameter type="graphene_vec4_t*" name="perspective" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Determinant" cname="graphene_matrix_determinant">
+        <return-type type="float" />
+      </method>
+      <method name="Equal" cname="graphene_matrix_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="EqualFast" cname="graphene_matrix_equal_fast">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_matrix_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetRow" cname="graphene_matrix_get_row">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="unsigned-int" name="index_" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetValue" cname="graphene_matrix_get_value">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="unsigned-int" name="row" />
+          <parameter type="unsigned-int" name="col" />
+        </parameters>
+      </method>
+      <method name="GetXScale" cname="graphene_matrix_get_x_scale">
+        <return-type type="float" />
+      </method>
+      <method name="GetXTranslation" cname="graphene_matrix_get_x_translation">
+        <return-type type="float" />
+      </method>
+      <method name="GetYScale" cname="graphene_matrix_get_y_scale">
+        <return-type type="float" />
+      </method>
+      <method name="GetYTranslation" cname="graphene_matrix_get_y_translation">
+        <return-type type="float" />
+      </method>
+      <method name="GetZScale" cname="graphene_matrix_get_z_scale">
+        <return-type type="float" />
+      </method>
+      <method name="GetZTranslation" cname="graphene_matrix_get_z_translation">
+        <return-type type="float" />
+      </method>
+      <method name="InitFrom2d" cname="graphene_matrix_init_from_2d">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="double" name="xx" />
+          <parameter type="double" name="yx" />
+          <parameter type="double" name="xy" />
+          <parameter type="double" name="yy" />
+          <parameter type="double" name="x_0" />
+          <parameter type="double" name="y_0" />
+        </parameters>
+      </method>
+      <method name="InitFromFloat" cname="graphene_matrix_init_from_float">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="const-float*" name="v" />
+        </parameters>
+      </method>
+      <method name="InitFromMatrix" cname="graphene_matrix_init_from_matrix">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromVec4" cname="graphene_matrix_init_from_vec4">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="v0" />
+          <parameter type="const-graphene_vec4_t*" name="v1" />
+          <parameter type="const-graphene_vec4_t*" name="v2" />
+          <parameter type="const-graphene_vec4_t*" name="v3" />
+        </parameters>
+      </method>
+      <method name="InitFrustum" cname="graphene_matrix_init_frustum">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="float" name="left" />
+          <parameter type="float" name="right" />
+          <parameter type="float" name="bottom" />
+          <parameter type="float" name="top" />
+          <parameter type="float" name="z_near" />
+          <parameter type="float" name="z_far" />
+        </parameters>
+      </method>
+      <method name="InitIdentity" cname="graphene_matrix_init_identity">
+        <return-type type="graphene_matrix_t*" />
+      </method>
+      <method name="InitLookAt" cname="graphene_matrix_init_look_at">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="eye" />
+          <parameter type="const-graphene_vec3_t*" name="center" />
+          <parameter type="const-graphene_vec3_t*" name="up" />
+        </parameters>
+      </method>
+      <method name="InitOrtho" cname="graphene_matrix_init_ortho">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="float" name="left" />
+          <parameter type="float" name="right" />
+          <parameter type="float" name="top" />
+          <parameter type="float" name="bottom" />
+          <parameter type="float" name="z_near" />
+          <parameter type="float" name="z_far" />
+        </parameters>
+      </method>
+      <method name="InitPerspective" cname="graphene_matrix_init_perspective">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="float" name="fovy" />
+          <parameter type="float" name="aspect" />
+          <parameter type="float" name="z_near" />
+          <parameter type="float" name="z_far" />
+        </parameters>
+      </method>
+      <method name="InitRotate" cname="graphene_matrix_init_rotate">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="float" name="angle" />
+          <parameter type="const-graphene_vec3_t*" name="axis" />
+        </parameters>
+      </method>
+      <method name="InitScale" cname="graphene_matrix_init_scale">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+          <parameter type="float" name="z" />
+        </parameters>
+      </method>
+      <method name="InitSkew" cname="graphene_matrix_init_skew">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="float" name="x_skew" />
+          <parameter type="float" name="y_skew" />
+        </parameters>
+      </method>
+      <method name="InitTranslate" cname="graphene_matrix_init_translate">
+        <return-type type="graphene_matrix_t*" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="p" />
+        </parameters>
+      </method>
+      <method name="Interpolate" cname="graphene_matrix_interpolate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="b" />
+          <parameter type="double" name="factor" />
+          <parameter type="graphene_matrix_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Inverse" cname="graphene_matrix_inverse">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="graphene_matrix_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Is2d" cname="graphene_matrix_is_2d">
+        <return-type type="bool" />
+      </method>
+      <method name="IsBackfaceVisible" cname="graphene_matrix_is_backface_visible">
+        <return-type type="bool" />
+      </method>
+      <method name="IsIdentity" cname="graphene_matrix_is_identity">
+        <return-type type="bool" />
+      </method>
+      <method name="IsSingular" cname="graphene_matrix_is_singular">
+        <return-type type="bool" />
+      </method>
+      <method name="Multiply" cname="graphene_matrix_multiply">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="b" />
+          <parameter type="graphene_matrix_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Near" cname="graphene_matrix_near">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="b" />
+          <parameter type="float" name="epsilon" />
+        </parameters>
+      </method>
+      <method name="Normalize" cname="graphene_matrix_normalize">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_matrix_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Perspective" cname="graphene_matrix_perspective">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="depth" />
+          <parameter type="graphene_matrix_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Print" cname="graphene_matrix_print">
+        <return-type type="void" />
+      </method>
+      <method name="ProjectPoint" cname="graphene_matrix_project_point">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="p" />
+          <parameter type="graphene_point_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ProjectRect" cname="graphene_matrix_project_rect">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="r" />
+          <parameter type="graphene_quad_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ProjectRectBounds" cname="graphene_matrix_project_rect_bounds">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="r" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Rotate" cname="graphene_matrix_rotate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="angle" />
+          <parameter type="const-graphene_vec3_t*" name="axis" />
+        </parameters>
+      </method>
+      <method name="RotateEuler" cname="graphene_matrix_rotate_euler">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_euler_t*" name="e" />
+        </parameters>
+      </method>
+      <method name="RotateQuaternion" cname="graphene_matrix_rotate_quaternion">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_quaternion_t*" name="q" />
+        </parameters>
+      </method>
+      <method name="RotateX" cname="graphene_matrix_rotate_x">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="angle" />
+        </parameters>
+      </method>
+      <method name="RotateY" cname="graphene_matrix_rotate_y">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="angle" />
+        </parameters>
+      </method>
+      <method name="RotateZ" cname="graphene_matrix_rotate_z">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="angle" />
+        </parameters>
+      </method>
+      <method name="Scale" cname="graphene_matrix_scale">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor_x" />
+          <parameter type="float" name="factor_y" />
+          <parameter type="float" name="factor_z" />
+        </parameters>
+      </method>
+      <method name="SkewXy" cname="graphene_matrix_skew_xy">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor" />
+        </parameters>
+      </method>
+      <method name="SkewXz" cname="graphene_matrix_skew_xz">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor" />
+        </parameters>
+      </method>
+      <method name="SkewYz" cname="graphene_matrix_skew_yz">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor" />
+        </parameters>
+      </method>
+      <method name="To2d" cname="graphene_matrix_to_2d">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="double*" name="xx" pass_as="out" owned="true" />
+          <parameter type="double*" name="yx" pass_as="out" owned="true" />
+          <parameter type="double*" name="xy" pass_as="out" owned="true" />
+          <parameter type="double*" name="yy" pass_as="out" owned="true" />
+          <parameter type="double*" name="x_0" pass_as="out" owned="true" />
+          <parameter type="double*" name="y_0" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="ToFloat" cname="graphene_matrix_to_float">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="v" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformBounds" cname="graphene_matrix_transform_bounds">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="r" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformBox" cname="graphene_matrix_transform_box">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_box_t*" name="b" />
+          <parameter type="graphene_box_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformPoint" cname="graphene_matrix_transform_point">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="p" />
+          <parameter type="graphene_point_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformPoint3d" cname="graphene_matrix_transform_point3d">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="p" />
+          <parameter type="graphene_point3d_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformRay" cname="graphene_matrix_transform_ray">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_ray_t*" name="r" />
+          <parameter type="graphene_ray_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformRect" cname="graphene_matrix_transform_rect">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="r" />
+          <parameter type="graphene_quad_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformSphere" cname="graphene_matrix_transform_sphere">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_sphere_t*" name="s" />
+          <parameter type="graphene_sphere_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformVec3" cname="graphene_matrix_transform_vec3">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="v" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformVec4" cname="graphene_matrix_transform_vec4">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="v" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Translate" cname="graphene_matrix_translate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="pos" />
+        </parameters>
+      </method>
+      <method name="Transpose" cname="graphene_matrix_transpose">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_matrix_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="UnprojectPoint3d" cname="graphene_matrix_unproject_point3d">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="modelview" />
+          <parameter type="const-graphene_point3d_t*" name="point" />
+          <parameter type="graphene_point3d_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="UntransformBounds" cname="graphene_matrix_untransform_bounds">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="r" />
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="UntransformPoint" cname="graphene_matrix_untransform_point">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="p" />
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="graphene_point_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="graphene_matrix_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Plane" cname="graphene_plane_t">
+      <field name="Normal" cname="normal" type="graphene_vec3_t" access="private" />
+      <field name="Constant" cname="constant" type="float" access="private" />
+      <constructor cname="graphene_plane_alloc" name="Alloc" />
+      <method name="Distance" cname="graphene_plane_distance">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="point" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_plane_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_plane_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_plane_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetConstant" cname="graphene_plane_get_constant">
+        <return-type type="float" />
+      </method>
+      <method name="GetNormal" cname="graphene_plane_get_normal">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="normal" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Init" cname="graphene_plane_init">
+        <return-type type="graphene_plane_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="normal" />
+          <parameter type="float" name="constant" />
+        </parameters>
+      </method>
+      <method name="InitFromPlane" cname="graphene_plane_init_from_plane">
+        <return-type type="graphene_plane_t*" />
+        <parameters>
+          <parameter type="const-graphene_plane_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromPoint" cname="graphene_plane_init_from_point">
+        <return-type type="graphene_plane_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="normal" />
+          <parameter type="const-graphene_point3d_t*" name="point" />
+        </parameters>
+      </method>
+      <method name="InitFromPoints" cname="graphene_plane_init_from_points">
+        <return-type type="graphene_plane_t*" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="a" />
+          <parameter type="const-graphene_point3d_t*" name="b" />
+          <parameter type="const-graphene_point3d_t*" name="c" />
+        </parameters>
+      </method>
+      <method name="InitFromVec4" cname="graphene_plane_init_from_vec4">
+        <return-type type="graphene_plane_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="Negate" cname="graphene_plane_negate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_plane_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Normalize" cname="graphene_plane_normalize">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_plane_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Transform" cname="graphene_plane_transform">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="matrix" />
+          <parameter type="const-graphene_matrix_t*" name="normal_matrix" />
+          <parameter type="graphene_plane_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="graphene_plane_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Point" cname="graphene_point_t">
+      <field name="X" cname="x" type="float" access="public" writeable="true" />
+      <field name="Y" cname="y" type="float" access="public" writeable="true" />
+      <constructor cname="graphene_point_alloc" name="Alloc" />
+      <method name="Distance" cname="graphene_point_distance">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="b" />
+          <parameter type="float*" name="d_x" pass_as="out" owned="true" />
+          <parameter type="float*" name="d_y" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_point_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_point_free">
+        <return-type type="void" />
+      </method>
+      <method name="Init" cname="graphene_point_init">
+        <return-type type="graphene_point_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+        </parameters>
+      </method>
+      <method name="InitFromPoint" cname="graphene_point_init_from_point">
+        <return-type type="graphene_point_t*" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromVec2" cname="graphene_point_init_from_vec2">
+        <return-type type="graphene_point_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="Interpolate" cname="graphene_point_interpolate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="b" />
+          <parameter type="double" name="factor" />
+          <parameter type="graphene_point_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Near" cname="graphene_point_near">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="b" />
+          <parameter type="float" name="epsilon" />
+        </parameters>
+      </method>
+      <method name="ToVec2" cname="graphene_point_to_vec2">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec2_t*" name="v" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Zero" cname="graphene_point_zero" shared="true">
+        <return-type type="const-graphene_point_t*" />
+      </method>
+      <method name="GetType" cname="graphene_point_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Point3D" cname="graphene_point3d_t">
+      <field name="X" cname="x" type="float" access="public" writeable="true" />
+      <field name="Y" cname="y" type="float" access="public" writeable="true" />
+      <field name="Z" cname="z" type="float" access="public" writeable="true" />
+      <constructor cname="graphene_point3d_alloc" name="Alloc" />
+      <method name="Cross" cname="graphene_point3d_cross">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="b" />
+          <parameter type="graphene_point3d_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Distance" cname="graphene_point3d_distance">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="b" />
+          <parameter type="graphene_vec3_t*" name="delta" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Dot" cname="graphene_point3d_dot">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_point3d_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_point3d_free">
+        <return-type type="void" />
+      </method>
+      <method name="Init" cname="graphene_point3d_init">
+        <return-type type="graphene_point3d_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+          <parameter type="float" name="z" />
+        </parameters>
+      </method>
+      <method name="InitFromPoint" cname="graphene_point3d_init_from_point">
+        <return-type type="graphene_point3d_t*" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromVec3" cname="graphene_point3d_init_from_vec3">
+        <return-type type="graphene_point3d_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="v" />
+        </parameters>
+      </method>
+      <method name="Interpolate" cname="graphene_point3d_interpolate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="b" />
+          <parameter type="double" name="factor" />
+          <parameter type="graphene_point3d_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Length" cname="graphene_point3d_length">
+        <return-type type="float" />
+      </method>
+      <method name="Near" cname="graphene_point3d_near">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="b" />
+          <parameter type="float" name="epsilon" />
+        </parameters>
+      </method>
+      <method name="Normalize" cname="graphene_point3d_normalize">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point3d_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="NormalizeViewport" cname="graphene_point3d_normalize_viewport">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="viewport" />
+          <parameter type="float" name="z_near" />
+          <parameter type="float" name="z_far" />
+          <parameter type="graphene_point3d_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Scale" cname="graphene_point3d_scale">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor" />
+          <parameter type="graphene_point3d_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToVec3" cname="graphene_point3d_to_vec3">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="v" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Zero" cname="graphene_point3d_zero" shared="true">
+        <return-type type="const-graphene_point3d_t*" />
+      </method>
+      <method name="GetType" cname="graphene_point3d_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Quad" cname="graphene_quad_t">
+      <field name="Points" cname="points" type="graphene_point_t*" array_len="4" access="private" />
+      <constructor cname="graphene_quad_alloc" name="Alloc" />
+      <method name="Bounds" cname="graphene_quad_bounds">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_rect_t*" name="r" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Contains" cname="graphene_quad_contains">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="p" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_quad_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetPoint" cname="graphene_quad_get_point">
+        <return-type type="const-graphene_point_t*" />
+        <parameters>
+          <parameter type="unsigned-int" name="index_" />
+        </parameters>
+      </method>
+      <method name="Init" cname="graphene_quad_init">
+        <return-type type="graphene_quad_t*" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="p1" />
+          <parameter type="const-graphene_point_t*" name="p2" />
+          <parameter type="const-graphene_point_t*" name="p3" />
+          <parameter type="const-graphene_point_t*" name="p4" />
+        </parameters>
+      </method>
+      <method name="InitFromPoints" cname="graphene_quad_init_from_points">
+        <return-type type="graphene_quad_t*" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="points" />
+        </parameters>
+      </method>
+      <method name="InitFromRect" cname="graphene_quad_init_from_rect">
+        <return-type type="graphene_quad_t*" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="r" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="graphene_quad_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Quaternion" cname="graphene_quaternion_t">
+      <field name="X" cname="x" type="float" access="private" />
+      <field name="Y" cname="y" type="float" access="private" />
+      <field name="Z" cname="z" type="float" access="private" />
+      <field name="W" cname="w" type="float" access="private" />
+      <constructor cname="graphene_quaternion_alloc" name="Alloc" />
+      <method name="Add" cname="graphene_quaternion_add">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_quaternion_t*" name="b" />
+          <parameter type="graphene_quaternion_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Dot" cname="graphene_quaternion_dot">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_quaternion_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_quaternion_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_quaternion_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_quaternion_free">
+        <return-type type="void" />
+      </method>
+      <method name="Init" cname="graphene_quaternion_init">
+        <return-type type="graphene_quaternion_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+          <parameter type="float" name="z" />
+          <parameter type="float" name="w" />
+        </parameters>
+      </method>
+      <method name="InitFromAngleVec3" cname="graphene_quaternion_init_from_angle_vec3">
+        <return-type type="graphene_quaternion_t*" />
+        <parameters>
+          <parameter type="float" name="angle" />
+          <parameter type="const-graphene_vec3_t*" name="axis" />
+        </parameters>
+      </method>
+      <method name="InitFromAngles" cname="graphene_quaternion_init_from_angles">
+        <return-type type="graphene_quaternion_t*" />
+        <parameters>
+          <parameter type="float" name="deg_x" />
+          <parameter type="float" name="deg_y" />
+          <parameter type="float" name="deg_z" />
+        </parameters>
+      </method>
+      <method name="InitFromEuler" cname="graphene_quaternion_init_from_euler">
+        <return-type type="graphene_quaternion_t*" />
+        <parameters>
+          <parameter type="const-graphene_euler_t*" name="e" />
+        </parameters>
+      </method>
+      <method name="InitFromMatrix" cname="graphene_quaternion_init_from_matrix">
+        <return-type type="graphene_quaternion_t*" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="m" />
+        </parameters>
+      </method>
+      <method name="InitFromQuaternion" cname="graphene_quaternion_init_from_quaternion">
+        <return-type type="graphene_quaternion_t*" />
+        <parameters>
+          <parameter type="const-graphene_quaternion_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromRadians" cname="graphene_quaternion_init_from_radians">
+        <return-type type="graphene_quaternion_t*" />
+        <parameters>
+          <parameter type="float" name="rad_x" />
+          <parameter type="float" name="rad_y" />
+          <parameter type="float" name="rad_z" />
+        </parameters>
+      </method>
+      <method name="InitFromVec4" cname="graphene_quaternion_init_from_vec4">
+        <return-type type="graphene_quaternion_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitIdentity" cname="graphene_quaternion_init_identity">
+        <return-type type="graphene_quaternion_t*" />
+      </method>
+      <method name="Invert" cname="graphene_quaternion_invert">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_quaternion_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Multiply" cname="graphene_quaternion_multiply">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_quaternion_t*" name="b" />
+          <parameter type="graphene_quaternion_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Normalize" cname="graphene_quaternion_normalize">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_quaternion_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Scale" cname="graphene_quaternion_scale">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor" />
+          <parameter type="graphene_quaternion_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Slerp" cname="graphene_quaternion_slerp">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_quaternion_t*" name="b" />
+          <parameter type="float" name="factor" />
+          <parameter type="graphene_quaternion_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToAngleVec3" cname="graphene_quaternion_to_angle_vec3">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="angle" pass_as="out" owned="true" />
+          <parameter type="graphene_vec3_t*" name="axis" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToAngles" cname="graphene_quaternion_to_angles">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="deg_x" pass_as="out" owned="true" />
+          <parameter type="float*" name="deg_y" pass_as="out" owned="true" />
+          <parameter type="float*" name="deg_z" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="ToMatrix" cname="graphene_quaternion_to_matrix">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_matrix_t*" name="m" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToRadians" cname="graphene_quaternion_to_radians">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="rad_x" pass_as="out" owned="true" />
+          <parameter type="float*" name="rad_y" pass_as="out" owned="true" />
+          <parameter type="float*" name="rad_z" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="ToVec4" cname="graphene_quaternion_to_vec4">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="graphene_quaternion_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Ray" cname="graphene_ray_t">
+      <field name="Origin" cname="origin" type="graphene_vec3_t" access="private" />
+      <field name="Direction" cname="direction" type="graphene_vec3_t" access="private" />
+      <constructor cname="graphene_ray_alloc" name="Alloc" />
+      <method name="Equal" cname="graphene_ray_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_ray_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_ray_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetClosestPointToPoint" cname="graphene_ray_get_closest_point_to_point">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="p" />
+          <parameter type="graphene_point3d_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetDirection" cname="graphene_ray_get_direction">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="direction" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetDistanceToPlane" cname="graphene_ray_get_distance_to_plane">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_plane_t*" name="p" />
+        </parameters>
+      </method>
+      <method name="GetDistanceToPoint" cname="graphene_ray_get_distance_to_point">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="p" />
+        </parameters>
+      </method>
+      <method name="GetOrigin" cname="graphene_ray_get_origin">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point3d_t*" name="origin" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetPositionAt" cname="graphene_ray_get_position_at">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="t" />
+          <parameter type="graphene_point3d_t*" name="position" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Init" cname="graphene_ray_init">
+        <return-type type="graphene_ray_t*" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="origin" />
+          <parameter type="const-graphene_vec3_t*" name="direction" />
+        </parameters>
+      </method>
+      <method name="InitFromRay" cname="graphene_ray_init_from_ray">
+        <return-type type="graphene_ray_t*" />
+        <parameters>
+          <parameter type="const-graphene_ray_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromVec3" cname="graphene_ray_init_from_vec3">
+        <return-type type="graphene_ray_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="origin" />
+          <parameter type="const-graphene_vec3_t*" name="direction" />
+        </parameters>
+      </method>
+      <method name="IntersectBox" cname="graphene_ray_intersect_box">
+        <return-type type="graphene_ray_intersection_kind_t" />
+        <parameters>
+          <parameter type="const-graphene_box_t*" name="b" />
+          <parameter type="float*" name="t_out" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="IntersectSphere" cname="graphene_ray_intersect_sphere">
+        <return-type type="graphene_ray_intersection_kind_t" />
+        <parameters>
+          <parameter type="const-graphene_sphere_t*" name="s" />
+          <parameter type="float*" name="t_out" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="IntersectTriangle" cname="graphene_ray_intersect_triangle">
+        <return-type type="graphene_ray_intersection_kind_t" />
+        <parameters>
+          <parameter type="const-graphene_triangle_t*" name="t" />
+          <parameter type="float*" name="t_out" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="IntersectsBox" cname="graphene_ray_intersects_box">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_box_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="IntersectsSphere" cname="graphene_ray_intersects_sphere">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_sphere_t*" name="s" />
+        </parameters>
+      </method>
+      <method name="IntersectsTriangle" cname="graphene_ray_intersects_triangle">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_triangle_t*" name="t" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="graphene_ray_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Rect" cname="graphene_rect_t">
+      <field name="Origin" cname="origin" type="graphene_point_t" access="public" writeable="true" />
+      <field name="Size" cname="size" type="graphene_size_t" access="public" writeable="true" />
+      <method name="ContainsPoint" cname="graphene_rect_contains_point">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="p" />
+        </parameters>
+      </method>
+      <method name="ContainsRect" cname="graphene_rect_contains_rect">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_rect_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Expand" cname="graphene_rect_expand">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="p" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_rect_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetArea" cname="graphene_rect_get_area">
+        <return-type type="float" />
+      </method>
+      <method name="GetBottomLeft" cname="graphene_rect_get_bottom_left">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point_t*" name="p" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetBottomRight" cname="graphene_rect_get_bottom_right">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point_t*" name="p" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetCenter" cname="graphene_rect_get_center">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point_t*" name="p" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetHeight" cname="graphene_rect_get_height">
+        <return-type type="float" />
+      </method>
+      <method name="GetTopLeft" cname="graphene_rect_get_top_left">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point_t*" name="p" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetTopRight" cname="graphene_rect_get_top_right">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point_t*" name="p" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetVertices" cname="graphene_rect_get_vertices">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec2_t*" name="vertices" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetWidth" cname="graphene_rect_get_width">
+        <return-type type="float" />
+      </method>
+      <method name="GetX" cname="graphene_rect_get_x">
+        <return-type type="float" />
+      </method>
+      <method name="GetY" cname="graphene_rect_get_y">
+        <return-type type="float" />
+      </method>
+      <method name="Init" cname="graphene_rect_init">
+        <return-type type="graphene_rect_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+          <parameter type="float" name="width" />
+          <parameter type="float" name="height" />
+        </parameters>
+      </method>
+      <method name="InitFromRect" cname="graphene_rect_init_from_rect">
+        <return-type type="graphene_rect_t*" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="Inset" cname="graphene_rect_inset">
+        <return-type type="graphene_rect_t*" />
+        <parameters>
+          <parameter type="float" name="d_x" />
+          <parameter type="float" name="d_y" />
+        </parameters>
+      </method>
+      <method name="InsetR" cname="graphene_rect_inset_r">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="d_x" />
+          <parameter type="float" name="d_y" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Interpolate" cname="graphene_rect_interpolate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="b" />
+          <parameter type="double" name="factor" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Intersection" cname="graphene_rect_intersection">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="b" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Normalize" cname="graphene_rect_normalize">
+        <return-type type="graphene_rect_t*" />
+      </method>
+      <method name="NormalizeR" cname="graphene_rect_normalize_r">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Offset" cname="graphene_rect_offset">
+        <return-type type="graphene_rect_t*" />
+        <parameters>
+          <parameter type="float" name="d_x" />
+          <parameter type="float" name="d_y" />
+        </parameters>
+      </method>
+      <method name="OffsetR" cname="graphene_rect_offset_r">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="d_x" />
+          <parameter type="float" name="d_y" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Round" cname="graphene_rect_round" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="RoundExtents" cname="graphene_rect_round_extents">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="RoundToPixel" cname="graphene_rect_round_to_pixel" deprecated="1">
+        <return-type type="graphene_rect_t*" />
+      </method>
+      <method name="Scale" cname="graphene_rect_scale">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="s_h" />
+          <parameter type="float" name="s_v" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Union" cname="graphene_rect_union">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="b" />
+          <parameter type="graphene_rect_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Alloc" cname="graphene_rect_alloc" shared="true">
+        <return-type type="graphene_rect_t*" owned="true" />
+      </method>
+      <method name="Zero" cname="graphene_rect_zero" shared="true">
+        <return-type type="const-graphene_rect_t*" />
+      </method>
+      <method name="GetType" cname="graphene_rect_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <struct name="Simd4F" cname="graphene_simd4f_t">
+      <field name="X" cname="x" type="float" access="private" />
+      <field name="Y" cname="y" type="float" access="private" />
+      <field name="Z" cname="z" type="float" access="private" />
+      <field name="W" cname="w" type="float" access="private" />
+    </struct>
+    <struct name="Simd4X4F" cname="graphene_simd4x4f_t">
+      <field name="X" cname="x" type="graphene_simd4f_t" access="private" />
+      <field name="Y" cname="y" type="graphene_simd4f_t" access="private" />
+      <field name="Z" cname="z" type="graphene_simd4f_t" access="private" />
+      <field name="W" cname="w" type="graphene_simd4f_t" access="private" />
+    </struct>
+    <boxed name="Size" cname="graphene_size_t">
+      <field name="Width" cname="width" type="float" access="public" writeable="true" />
+      <field name="Height" cname="height" type="float" access="public" writeable="true" />
+      <constructor cname="graphene_size_alloc" name="Alloc" />
+      <method name="Equal" cname="graphene_size_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_size_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_size_free">
+        <return-type type="void" />
+      </method>
+      <method name="Init" cname="graphene_size_init">
+        <return-type type="graphene_size_t*" />
+        <parameters>
+          <parameter type="float" name="width" />
+          <parameter type="float" name="height" />
+        </parameters>
+      </method>
+      <method name="InitFromSize" cname="graphene_size_init_from_size">
+        <return-type type="graphene_size_t*" />
+        <parameters>
+          <parameter type="const-graphene_size_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="Interpolate" cname="graphene_size_interpolate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_size_t*" name="b" />
+          <parameter type="double" name="factor" />
+          <parameter type="graphene_size_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Scale" cname="graphene_size_scale">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor" />
+          <parameter type="graphene_size_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Zero" cname="graphene_size_zero" shared="true">
+        <return-type type="const-graphene_size_t*" />
+      </method>
+      <method name="GetType" cname="graphene_size_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Sphere" cname="graphene_sphere_t">
+      <field name="Center" cname="center" type="graphene_vec3_t" access="private" />
+      <field name="Radius" cname="radius" type="float" access="private" />
+      <constructor cname="graphene_sphere_alloc" name="Alloc" />
+      <method name="ContainsPoint" cname="graphene_sphere_contains_point">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="point" />
+        </parameters>
+      </method>
+      <method name="Distance" cname="graphene_sphere_distance">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="point" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_sphere_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_sphere_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_sphere_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetBoundingBox" cname="graphene_sphere_get_bounding_box">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_box_t*" name="box" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetCenter" cname="graphene_sphere_get_center">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point3d_t*" name="center" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetRadius" cname="graphene_sphere_get_radius">
+        <return-type type="float" />
+      </method>
+      <method name="Init" cname="graphene_sphere_init">
+        <return-type type="graphene_sphere_t*" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="center" />
+          <parameter type="float" name="radius" />
+        </parameters>
+      </method>
+      <method name="InitFromPoints" cname="graphene_sphere_init_from_points">
+        <return-type type="graphene_sphere_t*" />
+        <parameters>
+          <parameter type="unsigned-int" name="n_points" />
+          <parameter type="const-graphene_point3d_t*" name="points" />
+          <parameter type="const-graphene_point3d_t*" name="center" />
+        </parameters>
+      </method>
+      <method name="InitFromVectors" cname="graphene_sphere_init_from_vectors">
+        <return-type type="graphene_sphere_t*" />
+        <parameters>
+          <parameter type="unsigned-int" name="n_vectors" />
+          <parameter type="const-graphene_vec3_t*" name="vectors" />
+          <parameter type="const-graphene_point3d_t*" name="center" />
+        </parameters>
+      </method>
+      <method name="IsEmpty" cname="graphene_sphere_is_empty">
+        <return-type type="bool" />
+      </method>
+      <method name="Translate" cname="graphene_sphere_translate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="point" />
+          <parameter type="graphene_sphere_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="graphene_sphere_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Triangle" cname="graphene_triangle_t">
+      <field name="A" cname="a" type="graphene_vec3_t" access="private" />
+      <field name="B" cname="b" type="graphene_vec3_t" access="private" />
+      <field name="C" cname="c" type="graphene_vec3_t" access="private" />
+      <constructor cname="graphene_triangle_alloc" name="Alloc" />
+      <method name="ContainsPoint" cname="graphene_triangle_contains_point">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="p" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_triangle_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_triangle_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_triangle_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetArea" cname="graphene_triangle_get_area">
+        <return-type type="float" />
+      </method>
+      <method name="GetBarycoords" cname="graphene_triangle_get_barycoords">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="p" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetBoundingBox" cname="graphene_triangle_get_bounding_box">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_box_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetMidpoint" cname="graphene_triangle_get_midpoint">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point3d_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetNormal" cname="graphene_triangle_get_normal">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetPlane" cname="graphene_triangle_get_plane">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_plane_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetPoints" cname="graphene_triangle_get_points">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_point3d_t*" name="a" pass_as="out" />
+          <parameter type="graphene_point3d_t*" name="b" pass_as="out" />
+          <parameter type="graphene_point3d_t*" name="c" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetUv" cname="graphene_triangle_get_uv">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="p" />
+          <parameter type="const-graphene_vec2_t*" name="uv_a" />
+          <parameter type="const-graphene_vec2_t*" name="uv_b" />
+          <parameter type="const-graphene_vec2_t*" name="uv_c" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetVertices" cname="graphene_triangle_get_vertices">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="a" pass_as="out" />
+          <parameter type="graphene_vec3_t*" name="b" pass_as="out" />
+          <parameter type="graphene_vec3_t*" name="c" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="InitFromFloat" cname="graphene_triangle_init_from_float">
+        <return-type type="graphene_triangle_t*" />
+        <parameters>
+          <parameter type="const-float*" name="a" />
+          <parameter type="const-float*" name="b" />
+          <parameter type="const-float*" name="c" />
+        </parameters>
+      </method>
+      <method name="InitFromPoint3d" cname="graphene_triangle_init_from_point3d">
+        <return-type type="graphene_triangle_t*" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="a" />
+          <parameter type="const-graphene_point3d_t*" name="b" />
+          <parameter type="const-graphene_point3d_t*" name="c" />
+        </parameters>
+      </method>
+      <method name="InitFromVec3" cname="graphene_triangle_init_from_vec3">
+        <return-type type="graphene_triangle_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="a" />
+          <parameter type="const-graphene_vec3_t*" name="b" />
+          <parameter type="const-graphene_vec3_t*" name="c" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="graphene_triangle_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Vec2" cname="graphene_vec2_t">
+      <field name="Value" cname="value" type="graphene_simd4f_t" access="private" />
+      <constructor cname="graphene_vec2_alloc" name="Alloc" />
+      <method name="Add" cname="graphene_vec2_add">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="b" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Divide" cname="graphene_vec2_divide">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="b" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Dot" cname="graphene_vec2_dot">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_vec2_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="v2" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_vec2_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetX" cname="graphene_vec2_get_x">
+        <return-type type="float" />
+      </method>
+      <method name="GetY" cname="graphene_vec2_get_y">
+        <return-type type="float" />
+      </method>
+      <method name="Init" cname="graphene_vec2_init">
+        <return-type type="graphene_vec2_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+        </parameters>
+      </method>
+      <method name="InitFromFloat" cname="graphene_vec2_init_from_float">
+        <return-type type="graphene_vec2_t*" />
+        <parameters>
+          <parameter type="const-float*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromVec2" cname="graphene_vec2_init_from_vec2">
+        <return-type type="graphene_vec2_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="Interpolate" cname="graphene_vec2_interpolate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="v2" />
+          <parameter type="double" name="factor" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Length" cname="graphene_vec2_length">
+        <return-type type="float" />
+      </method>
+      <method name="Max" cname="graphene_vec2_max">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="b" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Min" cname="graphene_vec2_min">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="b" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Multiply" cname="graphene_vec2_multiply">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="b" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Near" cname="graphene_vec2_near">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="v2" />
+          <parameter type="float" name="epsilon" />
+        </parameters>
+      </method>
+      <method name="Negate" cname="graphene_vec2_negate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Normalize" cname="graphene_vec2_normalize">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Scale" cname="graphene_vec2_scale">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Subtract" cname="graphene_vec2_subtract">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="b" />
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToFloat" cname="graphene_vec2_to_float">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="dest" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="One" cname="graphene_vec2_one" shared="true">
+        <return-type type="const-graphene_vec2_t*" />
+      </method>
+      <method name="XAxis" cname="graphene_vec2_x_axis" shared="true">
+        <return-type type="const-graphene_vec2_t*" />
+      </method>
+      <method name="YAxis" cname="graphene_vec2_y_axis" shared="true">
+        <return-type type="const-graphene_vec2_t*" />
+      </method>
+      <method name="Zero" cname="graphene_vec2_zero" shared="true">
+        <return-type type="const-graphene_vec2_t*" />
+      </method>
+      <method name="GetType" cname="graphene_vec2_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Vec3" cname="graphene_vec3_t">
+      <field name="Value" cname="value" type="graphene_simd4f_t" access="private" />
+      <constructor cname="graphene_vec3_alloc" name="Alloc" />
+      <method name="Add" cname="graphene_vec3_add">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="b" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Cross" cname="graphene_vec3_cross">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="b" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Divide" cname="graphene_vec3_divide">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="b" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Dot" cname="graphene_vec3_dot">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_vec3_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="v2" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_vec3_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetX" cname="graphene_vec3_get_x">
+        <return-type type="float" />
+      </method>
+      <method name="GetXy" cname="graphene_vec3_get_xy">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetXy0" cname="graphene_vec3_get_xy0">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetXyz0" cname="graphene_vec3_get_xyz0">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetXyz1" cname="graphene_vec3_get_xyz1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetXyzw" cname="graphene_vec3_get_xyzw">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="w" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetY" cname="graphene_vec3_get_y">
+        <return-type type="float" />
+      </method>
+      <method name="GetZ" cname="graphene_vec3_get_z">
+        <return-type type="float" />
+      </method>
+      <method name="Init" cname="graphene_vec3_init">
+        <return-type type="graphene_vec3_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+          <parameter type="float" name="z" />
+        </parameters>
+      </method>
+      <method name="InitFromFloat" cname="graphene_vec3_init_from_float">
+        <return-type type="graphene_vec3_t*" />
+        <parameters>
+          <parameter type="const-float*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromVec3" cname="graphene_vec3_init_from_vec3">
+        <return-type type="graphene_vec3_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="Interpolate" cname="graphene_vec3_interpolate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="v2" />
+          <parameter type="double" name="factor" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Length" cname="graphene_vec3_length">
+        <return-type type="float" />
+      </method>
+      <method name="Max" cname="graphene_vec3_max">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="b" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Min" cname="graphene_vec3_min">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="b" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Multiply" cname="graphene_vec3_multiply">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="b" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Near" cname="graphene_vec3_near">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="v2" />
+          <parameter type="float" name="epsilon" />
+        </parameters>
+      </method>
+      <method name="Negate" cname="graphene_vec3_negate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Normalize" cname="graphene_vec3_normalize">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Scale" cname="graphene_vec3_scale">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Subtract" cname="graphene_vec3_subtract">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="b" />
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToFloat" cname="graphene_vec3_to_float">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="dest" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="One" cname="graphene_vec3_one" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="XAxis" cname="graphene_vec3_x_axis" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="YAxis" cname="graphene_vec3_y_axis" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="ZAxis" cname="graphene_vec3_z_axis" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="Zero" cname="graphene_vec3_zero" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="GetType" cname="graphene_vec3_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Vec4" cname="graphene_vec4_t">
+      <field name="Value" cname="value" type="graphene_simd4f_t" access="private" />
+      <constructor cname="graphene_vec4_alloc" name="Alloc" />
+      <method name="Add" cname="graphene_vec4_add">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="b" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Divide" cname="graphene_vec4_divide">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="b" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Dot" cname="graphene_vec4_dot">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="b" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="graphene_vec4_equal">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="v2" />
+        </parameters>
+      </method>
+      <method name="Free" cname="graphene_vec4_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetW" cname="graphene_vec4_get_w">
+        <return-type type="float" />
+      </method>
+      <method name="GetX" cname="graphene_vec4_get_x">
+        <return-type type="float" />
+      </method>
+      <method name="GetXy" cname="graphene_vec4_get_xy">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec2_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetXyz" cname="graphene_vec4_get_xyz">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec3_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetY" cname="graphene_vec4_get_y">
+        <return-type type="float" />
+      </method>
+      <method name="GetZ" cname="graphene_vec4_get_z">
+        <return-type type="float" />
+      </method>
+      <method name="Init" cname="graphene_vec4_init">
+        <return-type type="graphene_vec4_t*" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+          <parameter type="float" name="z" />
+          <parameter type="float" name="w" />
+        </parameters>
+      </method>
+      <method name="InitFromFloat" cname="graphene_vec4_init_from_float">
+        <return-type type="graphene_vec4_t*" />
+        <parameters>
+          <parameter type="const-float*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromVec2" cname="graphene_vec4_init_from_vec2">
+        <return-type type="graphene_vec4_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec2_t*" name="src" />
+          <parameter type="float" name="z" />
+          <parameter type="float" name="w" />
+        </parameters>
+      </method>
+      <method name="InitFromVec3" cname="graphene_vec4_init_from_vec3">
+        <return-type type="graphene_vec4_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec3_t*" name="src" />
+          <parameter type="float" name="w" />
+        </parameters>
+      </method>
+      <method name="InitFromVec4" cname="graphene_vec4_init_from_vec4">
+        <return-type type="graphene_vec4_t*" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="src" />
+        </parameters>
+      </method>
+      <method name="Interpolate" cname="graphene_vec4_interpolate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="v2" />
+          <parameter type="double" name="factor" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Length" cname="graphene_vec4_length">
+        <return-type type="float" />
+      </method>
+      <method name="Max" cname="graphene_vec4_max">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="b" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Min" cname="graphene_vec4_min">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="b" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Multiply" cname="graphene_vec4_multiply">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="b" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Near" cname="graphene_vec4_near">
+        <return-type type="bool" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="v2" />
+          <parameter type="float" name="epsilon" />
+        </parameters>
+      </method>
+      <method name="Negate" cname="graphene_vec4_negate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Normalize" cname="graphene_vec4_normalize">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Scale" cname="graphene_vec4_scale">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="factor" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Subtract" cname="graphene_vec4_subtract">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_vec4_t*" name="b" />
+          <parameter type="graphene_vec4_t*" name="res" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToFloat" cname="graphene_vec4_to_float">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="dest" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="One" cname="graphene_vec4_one" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="WAxis" cname="graphene_vec4_w_axis" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="XAxis" cname="graphene_vec4_x_axis" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="YAxis" cname="graphene_vec4_y_axis" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="ZAxis" cname="graphene_vec4_z_axis" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="Zero" cname="graphene_vec4_zero" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="GetType" cname="graphene_vec4_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <class name="Box" cname="GrapheneBox_">
+      <method name="Empty" cname="graphene_box_empty" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="Infinite" cname="graphene_box_infinite" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="MinusOne" cname="graphene_box_minus_one" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="One" cname="graphene_box_one" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="OneMinusOne" cname="graphene_box_one_minus_one" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+      <method name="Zero" cname="graphene_box_zero" shared="true">
+        <return-type type="const-graphene_box_t*" />
+      </method>
+    </class>
+    <class name="Rect" cname="GrapheneRect_">
+      <method name="Alloc" cname="graphene_rect_alloc" shared="true">
+        <return-type type="graphene_rect_t*" owned="true" />
+      </method>
+      <method name="Zero" cname="graphene_rect_zero" shared="true">
+        <return-type type="const-graphene_rect_t*" />
+      </method>
+    </class>
+    <class name="Global" cname="GrapheneGlobal">
+      <method name="Point3dZero" cname="graphene_point3d_zero" shared="true">
+        <return-type type="const-graphene_point3d_t*" />
+      </method>
+      <method name="PointZero" cname="graphene_point_zero" shared="true">
+        <return-type type="const-graphene_point_t*" />
+      </method>
+      <method name="SizeZero" cname="graphene_size_zero" shared="true">
+        <return-type type="const-graphene_size_t*" />
+      </method>
+      <method name="Vec2One" cname="graphene_vec2_one" shared="true">
+        <return-type type="const-graphene_vec2_t*" />
+      </method>
+      <method name="Vec2XAxis" cname="graphene_vec2_x_axis" shared="true">
+        <return-type type="const-graphene_vec2_t*" />
+      </method>
+      <method name="Vec2YAxis" cname="graphene_vec2_y_axis" shared="true">
+        <return-type type="const-graphene_vec2_t*" />
+      </method>
+      <method name="Vec2Zero" cname="graphene_vec2_zero" shared="true">
+        <return-type type="const-graphene_vec2_t*" />
+      </method>
+      <method name="Vec3One" cname="graphene_vec3_one" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="Vec3XAxis" cname="graphene_vec3_x_axis" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="Vec3YAxis" cname="graphene_vec3_y_axis" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="Vec3ZAxis" cname="graphene_vec3_z_axis" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="Vec3Zero" cname="graphene_vec3_zero" shared="true">
+        <return-type type="const-graphene_vec3_t*" />
+      </method>
+      <method name="Vec4One" cname="graphene_vec4_one" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="Vec4WAxis" cname="graphene_vec4_w_axis" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="Vec4XAxis" cname="graphene_vec4_x_axis" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="Vec4YAxis" cname="graphene_vec4_y_axis" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="Vec4ZAxis" cname="graphene_vec4_z_axis" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="Vec4Zero" cname="graphene_vec4_zero" shared="true">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+    </class>
+  </namespace>
+</api>

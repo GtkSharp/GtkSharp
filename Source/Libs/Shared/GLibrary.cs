@@ -20,18 +20,29 @@ class GLibrary
 		_librariesNotFound = new HashSet<Library>();
 		_libraries = new Dictionary<Library, IntPtr>();
 		_libraryDefinitions = new Dictionary<Library, string[]>();
-		_libraryDefinitions[Library.GLib] = new[] {"libglib-2.0-0.dll", "libglib-2.0.so.0", "libglib-2.0.0.dylib", "glib-2.dll"};
-		_libraryDefinitions[Library.GObject] = new[] {"libgobject-2.0-0.dll", "libgobject-2.0.so.0", "libgobject-2.0.0.dylib", "gobject-2.dll"};
-		_libraryDefinitions[Library.Cairo] = new[] {"libcairo-2.dll", "libcairo.so.2", "libcairo.2.dylib", "cairo.dll"};
-		_libraryDefinitions[Library.Gio] = new[] {"libgio-2.0-0.dll", "libgio-2.0.so.0", "libgio-2.0.0.dylib", "gio-2.dll"};
-		_libraryDefinitions[Library.Atk] = new[] {"libatk-1.0-0.dll", "libatk-1.0.so.0", "libatk-1.0.0.dylib", "atk-1.dll"};
-		_libraryDefinitions[Library.Pango] = new[] {"libpango-1.0-0.dll", "libpango-1.0.so.0", "libpango-1.0.0.dylib", "pango-1.dll"};
-		_libraryDefinitions[Library.Gdk] = new[] {"libgdk-3-0.dll", "libgdk-3.so.0", "libgdk-3.0.dylib", "gdk-3.dll"};
-		_libraryDefinitions[Library.GdkPixbuf] = new[] {"libgdk_pixbuf-2.0-0.dll", "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0.dylib", "gdk_pixbuf-2.dll"};
-		_libraryDefinitions[Library.Gtk] = new[] {"libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-3.0.dylib", "gtk-3.dll"};
-		_libraryDefinitions[Library.PangoCairo] = new[] {"libpangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib", "pangocairo-1.dll"};
-		_libraryDefinitions[Library.GtkSource] = new[] {"libgtksourceview-4-0.dll", "libgtksourceview-4.so.0", "libgtksourceview-4.0.dylib", "gtksourceview-4.dll"};
-        _libraryDefinitions[Library.Webkit] = new[] { "libwebkit2gtk-4.0.dll", "libwebkit2gtk-4.0.so.37", "libwebkit2gtk-4.0.dylib", "libwebkit2gtk-4.0.0.dll" };
+		// Index 0 is the Windows fast path and must match the bundle GtkSharp.targets
+		// installs, which is gvsbuild's. gvsbuild builds with MSVC and emits no "lib"
+		// prefix, so the prefixed spellings follow as later candidates for MSYS2 and
+		// hand-installed runtimes -- the fallback loop below tries every entry.
+		_libraryDefinitions[Library.GLib] = new[] {"glib-2.0-0.dll", "libglib-2.0.so.0", "libglib-2.0.0.dylib", "libglib-2.0-0.dll"};
+		_libraryDefinitions[Library.GObject] = new[] {"gobject-2.0-0.dll", "libgobject-2.0.so.0", "libgobject-2.0.0.dylib", "libgobject-2.0-0.dll"};
+		_libraryDefinitions[Library.Cairo] = new[] {"cairo-2.dll", "libcairo.so.2", "libcairo.2.dylib", "libcairo-2.dll"};
+		_libraryDefinitions[Library.Gio] = new[] {"gio-2.0-0.dll", "libgio-2.0.so.0", "libgio-2.0.0.dylib", "libgio-2.0-0.dll"};
+		_libraryDefinitions[Library.Pango] = new[] {"pango-1.0-0.dll", "libpango-1.0.so.0", "libpango-1.0.0.dylib", "libpango-1.0-0.dll"};
+		_libraryDefinitions[Library.PangoCairo] = new[] {"pangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib", "libpangocairo-1.0-0.dll"};
+		_libraryDefinitions[Library.Graphene] = new[] {"graphene-1.0-0.dll", "libgraphene-1.0.so.0", "libgraphene-1.0.0.dylib", "libgraphene-1.0-0.dll"};
+		_libraryDefinitions[Library.GdkPixbuf] = new[] {"gdk_pixbuf-2.0-0.dll", "libgdk_pixbuf-2.0.so.0", "libgdk_pixbuf-2.0.dylib", "libgdk_pixbuf-2.0-0.dll"};
+		// Gtk 4 ships ONE library: gdk_*, gsk_* and gtk_* all resolve out of it.
+		// Gdk-4.0.gir and Gsk-4.0.gir both declare shared-library="libgtk-4.so.1",
+		// and there is no libgdk-4 or libgsk-4 to find.
+		_libraryDefinitions[Library.Gdk] = new[] {"gtk-4-1.dll", "libgtk-4.so.1", "libgtk-4.1.dylib", "libgtk-4-1.dll"};
+		_libraryDefinitions[Library.Gsk] = new[] {"gtk-4-1.dll", "libgtk-4.so.1", "libgtk-4.1.dylib", "libgtk-4-1.dll"};
+		_libraryDefinitions[Library.Gtk] = new[] {"gtk-4-1.dll", "libgtk-4.so.1", "libgtk-4.1.dylib", "libgtk-4-1.dll"};
+		_libraryDefinitions[Library.GtkSource] = new[] {"gtksourceview-5-0.dll", "libgtksourceview-5.so.0", "libgtksourceview-5.0.dylib", "libgtksourceview-5-0.dll"};
+		_libraryDefinitions[Library.Adwaita] = new[] {"adwaita-1-0.dll", "libadwaita-1.so.0", "libadwaita-1.0.dylib", "libadwaita-1-0.dll"};
+		// WebKitGTK 6.0 has no Windows build -- neither gvsbuild nor MSYS2 ships one --
+		// so callers must gate on GLibrary.IsSupported(Library.Webkit).
+		_libraryDefinitions[Library.Webkit] = new[] {"libwebkitgtk-6.0.so.4", "libwebkitgtk-6.0.so.4", "libwebkitgtk-6.0.dylib", "libwebkitgtk-6.0-4.dll"};
 	}
 
 	public static IntPtr Load(Library library)
@@ -65,7 +76,10 @@ class GLibrary
 			ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][0]);
 
 			if (ret == IntPtr.Zero) {
-				SetDllDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Gtk", "3.24.24"));
+				// The gvsbuild bundle is not flat: everything lives under bin/,
+				// unlike the Gtk 3 zip this replaced. Must stay in step with
+				// GtkDir in GtkSharp.targets.
+				SetDllDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Gtk", "4.22.4", "bin"));
 				ret = FuncLoader.LoadLibrary(_libraryDefinitions[library][0]);
 			}
 		} else if (FuncLoader.IsOSX) {

@@ -79,6 +79,8 @@
         <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
         <xs:attribute name="noequals" type="xs:boolean" use="optional"/>
         <xs:attribute name="nohash" type="xs:boolean" use="optional"/>
+        <!-- structType has always allowed this; boxedType was simply missed. -->
+        <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="callbackType">
@@ -316,6 +318,13 @@
         <xs:attribute name="printf_format" type="xs:boolean" use="optional"/>
         <xs:attribute name="printf_format_args" type="xs:boolean" use="optional"/>
         <xs:attribute name="scope" type="scopeType" use="optional"/>
+        <!--
+            For a callback parameter: the positions of its user_data and
+            destroy-notify parameters. Read by Parameter.cs; without them
+            MethodBody.cs guesses i+1 and i+2.
+        -->
+        <xs:attribute name="closure" type="xs:nonNegativeInteger" use="optional"/>
+        <xs:attribute name="destroy" type="xs:nonNegativeInteger" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="constructor-parameterType">
@@ -358,11 +367,19 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <!--
+        These are GObject-Introspection's scope values. The generator tests for
+        "notified" (ManagedCallString.cs, Parameters.cs); "notify" is kept only
+        because older hand-edited api.xml files may still use it. "forever"
+        marks a callback that is never released.
+    -->
     <xs:simpleType name="scopeType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="call"/>
             <xs:enumeration value="async"/>
             <xs:enumeration value="notify"/>
+            <xs:enumeration value="notified"/>
+            <xs:enumeration value="forever"/>
         </xs:restriction>
     </xs:simpleType>
 

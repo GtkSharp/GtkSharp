@@ -1,0 +1,2252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<api parser_version="3">
+  <namespace name="Gsk" library="libgtk-4.so.1">
+    <enum name="BlendMode" cname="GskBlendMode" gtype="gsk_blend_mode_get_type" type="enum">
+      <member cname="GSK_BLEND_MODE_DEFAULT" name="Default" value="0" />
+      <member cname="GSK_BLEND_MODE_MULTIPLY" name="Multiply" value="1" />
+      <member cname="GSK_BLEND_MODE_SCREEN" name="Screen" value="2" />
+      <member cname="GSK_BLEND_MODE_OVERLAY" name="Overlay" value="3" />
+      <member cname="GSK_BLEND_MODE_DARKEN" name="Darken" value="4" />
+      <member cname="GSK_BLEND_MODE_LIGHTEN" name="Lighten" value="5" />
+      <member cname="GSK_BLEND_MODE_COLOR_DODGE" name="ColorDodge" value="6" />
+      <member cname="GSK_BLEND_MODE_COLOR_BURN" name="ColorBurn" value="7" />
+      <member cname="GSK_BLEND_MODE_HARD_LIGHT" name="HardLight" value="8" />
+      <member cname="GSK_BLEND_MODE_SOFT_LIGHT" name="SoftLight" value="9" />
+      <member cname="GSK_BLEND_MODE_DIFFERENCE" name="Difference" value="10" />
+      <member cname="GSK_BLEND_MODE_EXCLUSION" name="Exclusion" value="11" />
+      <member cname="GSK_BLEND_MODE_COLOR" name="Color" value="12" />
+      <member cname="GSK_BLEND_MODE_HUE" name="Hue" value="13" />
+      <member cname="GSK_BLEND_MODE_SATURATION" name="Saturation" value="14" />
+      <member cname="GSK_BLEND_MODE_LUMINOSITY" name="Luminosity" value="15" />
+    </enum>
+    <enum name="Corner" cname="GskCorner" gtype="gsk_corner_get_type" type="enum">
+      <member cname="GSK_CORNER_TOP_LEFT" name="TopLeft" value="0" />
+      <member cname="GSK_CORNER_TOP_RIGHT" name="TopRight" value="1" />
+      <member cname="GSK_CORNER_BOTTOM_RIGHT" name="BottomRight" value="2" />
+      <member cname="GSK_CORNER_BOTTOM_LEFT" name="BottomLeft" value="3" />
+    </enum>
+    <enum name="FillRule" cname="GskFillRule" gtype="gsk_fill_rule_get_type" type="enum">
+      <member cname="GSK_FILL_RULE_WINDING" name="Winding" value="0" />
+      <member cname="GSK_FILL_RULE_EVEN_ODD" name="EvenOdd" value="1" />
+    </enum>
+    <enum name="GLUniformType" cname="GskGLUniformType" gtype="gsk_gl_uniform_type_get_type" type="enum" deprecated="1">
+      <member cname="GSK_GL_UNIFORM_TYPE_NONE" name="None" value="0" />
+      <member cname="GSK_GL_UNIFORM_TYPE_FLOAT" name="Float" value="1" />
+      <member cname="GSK_GL_UNIFORM_TYPE_INT" name="Int" value="2" />
+      <member cname="GSK_GL_UNIFORM_TYPE_UINT" name="Uint" value="3" />
+      <member cname="GSK_GL_UNIFORM_TYPE_BOOL" name="Bool" value="4" />
+      <member cname="GSK_GL_UNIFORM_TYPE_VEC2" name="Vec2" value="5" />
+      <member cname="GSK_GL_UNIFORM_TYPE_VEC3" name="Vec3" value="6" />
+      <member cname="GSK_GL_UNIFORM_TYPE_VEC4" name="Vec4" value="7" />
+    </enum>
+    <enum name="LineCap" cname="GskLineCap" gtype="gsk_line_cap_get_type" type="enum">
+      <member cname="GSK_LINE_CAP_BUTT" name="Butt" value="0" />
+      <member cname="GSK_LINE_CAP_ROUND" name="Round" value="1" />
+      <member cname="GSK_LINE_CAP_SQUARE" name="Square" value="2" />
+    </enum>
+    <enum name="LineJoin" cname="GskLineJoin" gtype="gsk_line_join_get_type" type="enum">
+      <member cname="GSK_LINE_JOIN_MITER" name="Miter" value="0" />
+      <member cname="GSK_LINE_JOIN_ROUND" name="Round" value="1" />
+      <member cname="GSK_LINE_JOIN_BEVEL" name="Bevel" value="2" />
+    </enum>
+    <enum name="MaskMode" cname="GskMaskMode" gtype="gsk_mask_mode_get_type" type="enum">
+      <member cname="GSK_MASK_MODE_ALPHA" name="Alpha" value="0" />
+      <member cname="GSK_MASK_MODE_INVERTED_ALPHA" name="InvertedAlpha" value="1" />
+      <member cname="GSK_MASK_MODE_LUMINANCE" name="Luminance" value="2" />
+      <member cname="GSK_MASK_MODE_INVERTED_LUMINANCE" name="InvertedLuminance" value="3" />
+    </enum>
+    <enum name="PathDirection" cname="GskPathDirection" gtype="gsk_path_direction_get_type" type="enum">
+      <member cname="GSK_PATH_FROM_START" name="FromStart" value="0" />
+      <member cname="GSK_PATH_TO_START" name="ToStart" value="1" />
+      <member cname="GSK_PATH_TO_END" name="ToEnd" value="2" />
+      <member cname="GSK_PATH_FROM_END" name="FromEnd" value="3" />
+    </enum>
+    <enum name="PathIntersection" cname="GskPathIntersection" gtype="gsk_path_intersection_get_type" type="enum">
+      <member cname="GSK_PATH_INTERSECTION_NONE" name="None" value="0" />
+      <member cname="GSK_PATH_INTERSECTION_NORMAL" name="Normal" value="1" />
+      <member cname="GSK_PATH_INTERSECTION_START" name="Start" value="2" />
+      <member cname="GSK_PATH_INTERSECTION_END" name="End" value="3" />
+    </enum>
+    <enum name="PathOperation" cname="GskPathOperation" gtype="gsk_path_operation_get_type" type="enum">
+      <member cname="GSK_PATH_MOVE" name="Move" value="0" />
+      <member cname="GSK_PATH_CLOSE" name="Close" value="1" />
+      <member cname="GSK_PATH_LINE" name="Line" value="2" />
+      <member cname="GSK_PATH_QUAD" name="Quad" value="3" />
+      <member cname="GSK_PATH_CUBIC" name="Cubic" value="4" />
+      <member cname="GSK_PATH_CONIC" name="Conic" value="5" />
+    </enum>
+    <enum name="PorterDuff" cname="GskPorterDuff" gtype="gsk_porter_duff_get_type" type="enum">
+      <member cname="GSK_PORTER_DUFF_SOURCE" name="Source" value="0" />
+      <member cname="GSK_PORTER_DUFF_DEST" name="Dest" value="1" />
+      <member cname="GSK_PORTER_DUFF_SOURCE_OVER_DEST" name="SourceOverDest" value="2" />
+      <member cname="GSK_PORTER_DUFF_DEST_OVER_SOURCE" name="DestOverSource" value="3" />
+      <member cname="GSK_PORTER_DUFF_SOURCE_IN_DEST" name="SourceInDest" value="4" />
+      <member cname="GSK_PORTER_DUFF_DEST_IN_SOURCE" name="DestInSource" value="5" />
+      <member cname="GSK_PORTER_DUFF_SOURCE_OUT_DEST" name="SourceOutDest" value="6" />
+      <member cname="GSK_PORTER_DUFF_DEST_OUT_SOURCE" name="DestOutSource" value="7" />
+      <member cname="GSK_PORTER_DUFF_SOURCE_ATOP_DEST" name="SourceAtopDest" value="8" />
+      <member cname="GSK_PORTER_DUFF_DEST_ATOP_SOURCE" name="DestAtopSource" value="9" />
+      <member cname="GSK_PORTER_DUFF_XOR" name="Xor" value="10" />
+      <member cname="GSK_PORTER_DUFF_CLEAR" name="Clear" value="11" />
+    </enum>
+    <enum name="RenderNodeType" cname="GskRenderNodeType" gtype="gsk_render_node_type_get_type" type="enum">
+      <member cname="GSK_NOT_A_RENDER_NODE" name="NotARenderNode" value="0" />
+      <member cname="GSK_CONTAINER_NODE" name="ContainerNode" value="1" />
+      <member cname="GSK_CAIRO_NODE" name="CairoNode" value="2" />
+      <member cname="GSK_COLOR_NODE" name="ColorNode" value="3" />
+      <member cname="GSK_LINEAR_GRADIENT_NODE" name="LinearGradientNode" value="4" />
+      <member cname="GSK_REPEATING_LINEAR_GRADIENT_NODE" name="RepeatingLinearGradientNode" value="5" />
+      <member cname="GSK_RADIAL_GRADIENT_NODE" name="RadialGradientNode" value="6" />
+      <member cname="GSK_REPEATING_RADIAL_GRADIENT_NODE" name="RepeatingRadialGradientNode" value="7" />
+      <member cname="GSK_CONIC_GRADIENT_NODE" name="ConicGradientNode" value="8" />
+      <member cname="GSK_BORDER_NODE" name="BorderNode" value="9" />
+      <member cname="GSK_TEXTURE_NODE" name="TextureNode" value="10" />
+      <member cname="GSK_INSET_SHADOW_NODE" name="InsetShadowNode" value="11" />
+      <member cname="GSK_OUTSET_SHADOW_NODE" name="OutsetShadowNode" value="12" />
+      <member cname="GSK_TRANSFORM_NODE" name="TransformNode" value="13" />
+      <member cname="GSK_OPACITY_NODE" name="OpacityNode" value="14" />
+      <member cname="GSK_COLOR_MATRIX_NODE" name="ColorMatrixNode" value="15" />
+      <member cname="GSK_REPEAT_NODE" name="RepeatNode" value="16" />
+      <member cname="GSK_CLIP_NODE" name="ClipNode" value="17" />
+      <member cname="GSK_ROUNDED_CLIP_NODE" name="RoundedClipNode" value="18" />
+      <member cname="GSK_SHADOW_NODE" name="ShadowNode" value="19" />
+      <member cname="GSK_BLEND_NODE" name="BlendNode" value="20" />
+      <member cname="GSK_CROSS_FADE_NODE" name="CrossFadeNode" value="21" />
+      <member cname="GSK_TEXT_NODE" name="TextNode" value="22" />
+      <member cname="GSK_BLUR_NODE" name="BlurNode" value="23" />
+      <member cname="GSK_DEBUG_NODE" name="DebugNode" value="24" />
+      <member cname="GSK_GL_SHADER_NODE" name="GlShaderNode" value="25" />
+      <member cname="GSK_TEXTURE_SCALE_NODE" name="TextureScaleNode" value="26" />
+      <member cname="GSK_MASK_NODE" name="MaskNode" value="27" />
+      <member cname="GSK_FILL_NODE" name="FillNode" value="28" />
+      <member cname="GSK_STROKE_NODE" name="StrokeNode" value="29" />
+      <member cname="GSK_SUBSURFACE_NODE" name="SubsurfaceNode" value="30" />
+      <member cname="GSK_COMPONENT_TRANSFER_NODE" name="ComponentTransferNode" value="31" />
+      <member cname="GSK_COPY_NODE" name="CopyNode" value="32" />
+      <member cname="GSK_PASTE_NODE" name="PasteNode" value="33" />
+      <member cname="GSK_COMPOSITE_NODE" name="CompositeNode" value="34" />
+      <member cname="GSK_ISOLATION_NODE" name="IsolationNode" value="35" />
+      <member cname="GSK_DISPLACEMENT_NODE" name="DisplacementNode" value="36" />
+      <member cname="GSK_ARITHMETIC_NODE" name="ArithmeticNode" value="37" />
+    </enum>
+    <enum name="ScalingFilter" cname="GskScalingFilter" gtype="gsk_scaling_filter_get_type" type="enum">
+      <member cname="GSK_SCALING_FILTER_LINEAR" name="Linear" value="0" />
+      <member cname="GSK_SCALING_FILTER_NEAREST" name="Nearest" value="1" />
+      <member cname="GSK_SCALING_FILTER_TRILINEAR" name="Trilinear" value="2" />
+    </enum>
+    <enum name="SerializationError" cname="GskSerializationError" gtype="gsk_serialization_error_get_type" type="enum">
+      <member cname="GSK_SERIALIZATION_UNSUPPORTED_FORMAT" name="UnsupportedFormat" value="0" />
+      <member cname="GSK_SERIALIZATION_UNSUPPORTED_VERSION" name="UnsupportedVersion" value="1" />
+      <member cname="GSK_SERIALIZATION_INVALID_DATA" name="InvalidData" value="2" />
+    </enum>
+    <enum name="TransformCategory" cname="GskTransformCategory" gtype="gsk_transform_category_get_type" type="enum">
+      <member cname="GSK_TRANSFORM_CATEGORY_UNKNOWN" name="Unknown" value="0" />
+      <member cname="GSK_TRANSFORM_CATEGORY_ANY" name="Any" value="1" />
+      <member cname="GSK_TRANSFORM_CATEGORY_3D" name="ThreeD" value="2" />
+      <member cname="GSK_TRANSFORM_CATEGORY_2D" name="TwoD" value="3" />
+      <member cname="GSK_TRANSFORM_CATEGORY_2D_AFFINE" name="TwoDAffine" value="4" />
+      <member cname="GSK_TRANSFORM_CATEGORY_2D_TRANSLATE" name="TwoDTranslate" value="5" />
+      <member cname="GSK_TRANSFORM_CATEGORY_IDENTITY" name="Identity" value="6" />
+    </enum>
+    <enum name="Isolation" cname="GskIsolation" gtype="gsk_isolation_get_type" type="flags">
+      <member cname="GSK_ISOLATION_NONE" name="None" value="0" />
+      <member cname="GSK_ISOLATION_BACKGROUND" name="Background" value="1" />
+      <member cname="GSK_ISOLATION_COPY_PASTE" name="CopyPaste" value="2" />
+      <member cname="GSK_ISOLATION_ALL" name="All" value="-1" />
+    </enum>
+    <enum name="PathForeachFlags" cname="GskPathForeachFlags" gtype="gsk_path_foreach_flags_get_type" type="flags">
+      <member cname="GSK_PATH_FOREACH_ALLOW_ONLY_LINES" name="OnlyLines" value="0" />
+      <member cname="GSK_PATH_FOREACH_ALLOW_QUAD" name="Quad" value="1" />
+      <member cname="GSK_PATH_FOREACH_ALLOW_CUBIC" name="Cubic" value="2" />
+      <member cname="GSK_PATH_FOREACH_ALLOW_CONIC" name="Conic" value="4" />
+    </enum>
+    <callback name="ParseErrorFunc" cname="GskParseErrorFunc">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="const-GskParseLocation*" name="start" />
+        <parameter type="const-GskParseLocation*" name="end" />
+        <parameter type="const-GError*" name="error" />
+        <parameter type="gpointer" name="user_data" closure="3" />
+      </parameters>
+    </callback>
+    <callback name="PathForeachFunc" cname="GskPathForeachFunc">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="GskPathOperation" name="op" />
+        <parameter type="const-graphene_point_t*" name="pts" />
+        <parameter type="gsize" name="n_pts" />
+        <parameter type="float" name="weight" />
+        <parameter type="gpointer" name="user_data" closure="4" />
+      </parameters>
+    </callback>
+    <callback name="PathIntersectionFunc" cname="GskPathIntersectionFunc">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="GskPath*" name="path1" />
+        <parameter type="const-GskPathPoint*" name="point1" />
+        <parameter type="GskPath*" name="path2" />
+        <parameter type="const-GskPathPoint*" name="point2" />
+        <parameter type="GskPathIntersection" name="kind" />
+        <parameter type="gpointer" name="user_data" closure="5" />
+      </parameters>
+    </callback>
+    <callback name="RenderReplayFontFilter" cname="GskRenderReplayFontFilter">
+      <return-type type="PangoFont*" owned="true" />
+      <parameters>
+        <parameter type="GskRenderReplay*" name="replay" />
+        <parameter type="PangoFont*" name="font" />
+        <parameter type="gpointer" name="user_data" closure="2" />
+      </parameters>
+    </callback>
+    <callback name="RenderReplayNodeFilter" cname="GskRenderReplayNodeFilter">
+      <return-type type="GskRenderNode*" owned="true" />
+      <parameters>
+        <parameter type="GskRenderReplay*" name="replay" />
+        <parameter type="GskRenderNode*" name="node" />
+        <parameter type="gpointer" name="user_data" closure="2" />
+      </parameters>
+    </callback>
+    <callback name="RenderReplayTextureFilter" cname="GskRenderReplayTextureFilter">
+      <return-type type="GdkTexture*" owned="true" />
+      <parameters>
+        <parameter type="GskRenderReplay*" name="replay" />
+        <parameter type="GdkTexture*" name="texture" />
+        <parameter type="gpointer" name="user_data" closure="2" />
+      </parameters>
+    </callback>
+    <object name="BlendNode" cname="GskBlendNode" parent="GskRenderNode">
+      <constructor cname="gsk_blend_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="bottom" />
+          <parameter type="GskRenderNode*" name="top" />
+          <parameter type="GskBlendMode" name="blend_mode" />
+        </parameters>
+      </constructor>
+      <method name="GetBlendMode" cname="gsk_blend_node_get_blend_mode">
+        <return-type type="GskBlendMode" />
+      </method>
+      <method name="GetBottomChild" cname="gsk_blend_node_get_bottom_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetTopChild" cname="gsk_blend_node_get_top_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetType" cname="gsk_blend_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="BlurNode" cname="GskBlurNode" parent="GskRenderNode">
+      <constructor cname="gsk_blur_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="float" name="radius" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_blur_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetRadius" cname="gsk_blur_node_get_radius">
+        <return-type type="float" />
+      </method>
+      <method name="GetType" cname="gsk_blur_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="BorderNode" cname="GskBorderNode" parent="GskRenderNode">
+      <constructor cname="gsk_border_node_new" name="New">
+        <parameters>
+          <parameter type="const-GskRoundedRect*" name="outline" />
+          <parameter type="const-float*" name="border_width" />
+          <parameter type="const-GdkRGBA*" name="border_color" />
+        </parameters>
+      </constructor>
+      <method name="GetColors" cname="gsk_border_node_get_colors">
+        <return-type type="const-GdkRGBA*" />
+      </method>
+      <method name="GetOutline" cname="gsk_border_node_get_outline">
+        <return-type type="const-GskRoundedRect*" />
+      </method>
+      <method name="GetWidths" cname="gsk_border_node_get_widths">
+        <return-type type="const-float*" />
+      </method>
+      <method name="GetType" cname="gsk_border_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="BroadwayRenderer" cname="GskBroadwayRenderer" parent="GskRenderer">
+      <class_struct cname="GskBroadwayRendererClass" />
+      <constructor cname="gsk_broadway_renderer_new" name="New" deprecated="1" />
+      <method name="GetType" cname="gsk_broadway_renderer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="CairoNode" cname="GskCairoNode" parent="GskRenderNode">
+      <constructor cname="gsk_cairo_node_new" name="New">
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+        </parameters>
+      </constructor>
+      <method name="GetDrawContext" cname="gsk_cairo_node_get_draw_context">
+        <return-type type="cairo_t*" owned="true" />
+      </method>
+      <method name="GetSurface" cname="gsk_cairo_node_get_surface">
+        <return-type type="cairo_surface_t*" />
+      </method>
+      <method name="GetType" cname="gsk_cairo_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="CairoRenderer" cname="GskCairoRenderer" parent="GskRenderer">
+      <class_struct cname="GskCairoRendererClass" />
+      <constructor cname="gsk_cairo_renderer_new" name="New" />
+      <method name="GetType" cname="gsk_cairo_renderer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ClipNode" cname="GskClipNode" parent="GskRenderNode">
+      <constructor cname="gsk_clip_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="const-graphene_rect_t*" name="clip" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_clip_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetClip" cname="gsk_clip_node_get_clip">
+        <return-type type="const-graphene_rect_t*" />
+      </method>
+      <method name="GetType" cname="gsk_clip_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ColorMatrixNode" cname="GskColorMatrixNode" parent="GskRenderNode">
+      <constructor cname="gsk_color_matrix_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="const-graphene_matrix_t*" name="color_matrix" />
+          <parameter type="const-graphene_vec4_t*" name="color_offset" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_color_matrix_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetColorMatrix" cname="gsk_color_matrix_node_get_color_matrix">
+        <return-type type="const-graphene_matrix_t*" />
+      </method>
+      <method name="GetColorOffset" cname="gsk_color_matrix_node_get_color_offset">
+        <return-type type="const-graphene_vec4_t*" />
+      </method>
+      <method name="GetType" cname="gsk_color_matrix_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ColorNode" cname="GskColorNode" parent="GskRenderNode">
+      <constructor cname="gsk_color_node_new" name="New">
+        <parameters>
+          <parameter type="const-GdkRGBA*" name="rgba" />
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+        </parameters>
+      </constructor>
+      <method name="GetColor" cname="gsk_color_node_get_color">
+        <return-type type="const-GdkRGBA*" />
+      </method>
+      <method name="GetType" cname="gsk_color_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ComponentTransferNode" cname="GskComponentTransferNode" parent="GskRenderNode">
+      <constructor cname="gsk_component_transfer_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="const-GskComponentTransfer*" name="r" />
+          <parameter type="const-GskComponentTransfer*" name="g" />
+          <parameter type="const-GskComponentTransfer*" name="b" />
+          <parameter type="const-GskComponentTransfer*" name="a" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_component_transfer_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetTransfer" cname="gsk_component_transfer_node_get_transfer">
+        <return-type type="const-GskComponentTransfer*" />
+        <parameters>
+          <parameter type="GdkColorChannel" name="component" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_component_transfer_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="CompositeNode" cname="GskCompositeNode" parent="GskRenderNode">
+      <constructor cname="gsk_composite_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="GskRenderNode*" name="mask" />
+          <parameter type="GskPorterDuff" name="op" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_composite_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetMask" cname="gsk_composite_node_get_mask">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetOperator" cname="gsk_composite_node_get_operator">
+        <return-type type="GskPorterDuff" />
+      </method>
+      <method name="GetType" cname="gsk_composite_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ConicGradientNode" cname="GskConicGradientNode" parent="GskRenderNode">
+      <constructor cname="gsk_conic_gradient_node_new" name="New">
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="const-graphene_point_t*" name="center" />
+          <parameter type="float" name="rotation" />
+          <parameter type="const-GskColorStop*" name="color_stops" />
+          <parameter type="gsize" name="n_color_stops" />
+        </parameters>
+      </constructor>
+      <method name="GetAngle" cname="gsk_conic_gradient_node_get_angle">
+        <return-type type="float" />
+      </method>
+      <method name="GetCenter" cname="gsk_conic_gradient_node_get_center">
+        <return-type type="const-graphene_point_t*" />
+      </method>
+      <method name="GetColorStops" cname="gsk_conic_gradient_node_get_color_stops">
+        <return-type type="const-GskColorStop*" />
+        <parameters>
+          <parameter type="gsize*" name="n_stops" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetNColorStops" cname="gsk_conic_gradient_node_get_n_color_stops">
+        <return-type type="gsize" />
+      </method>
+      <method name="GetRotation" cname="gsk_conic_gradient_node_get_rotation">
+        <return-type type="float" />
+      </method>
+      <method name="GetType" cname="gsk_conic_gradient_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ContainerNode" cname="GskContainerNode" parent="GskRenderNode">
+      <constructor cname="gsk_container_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode**" name="children" />
+          <parameter type="guint" name="n_children" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_container_node_get_child">
+        <return-type type="GskRenderNode*" />
+        <parameters>
+          <parameter type="guint" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetNChildren" cname="gsk_container_node_get_n_children">
+        <return-type type="guint" />
+      </method>
+      <method name="GetType" cname="gsk_container_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="CopyNode" cname="GskCopyNode" parent="GskRenderNode">
+      <constructor cname="gsk_copy_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_copy_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetType" cname="gsk_copy_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="CrossFadeNode" cname="GskCrossFadeNode" parent="GskRenderNode">
+      <constructor cname="gsk_cross_fade_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="start" />
+          <parameter type="GskRenderNode*" name="end" />
+          <parameter type="float" name="progress" />
+        </parameters>
+      </constructor>
+      <method name="GetEndChild" cname="gsk_cross_fade_node_get_end_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetProgress" cname="gsk_cross_fade_node_get_progress">
+        <return-type type="float" />
+      </method>
+      <method name="GetStartChild" cname="gsk_cross_fade_node_get_start_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetType" cname="gsk_cross_fade_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="DebugNode" cname="GskDebugNode" parent="GskRenderNode">
+      <constructor cname="gsk_debug_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="char*" name="message" owned="true" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_debug_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetMessage" cname="gsk_debug_node_get_message">
+        <return-type type="const-char*" />
+      </method>
+      <method name="GetType" cname="gsk_debug_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="FillNode" cname="GskFillNode" parent="GskRenderNode">
+      <constructor cname="gsk_fill_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="GskPath*" name="path" />
+          <parameter type="GskFillRule" name="fill_rule" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_fill_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetFillRule" cname="gsk_fill_node_get_fill_rule">
+        <return-type type="GskFillRule" />
+      </method>
+      <method name="GetPath" cname="gsk_fill_node_get_path">
+        <return-type type="GskPath*" />
+      </method>
+      <method name="GetType" cname="gsk_fill_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="GLRenderer" cname="GskGLRenderer" parent="GskRenderer">
+      <class_struct cname="GskGLRendererClass" />
+      <constructor cname="gsk_gl_renderer_new" name="New" />
+      <method name="GetType" cname="gsk_gl_renderer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="GLShader" cname="GskGLShader" parent="GObject">
+      <class_struct cname="GskGLShaderClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <property name="Resource" cname="resource" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Source" cname="source" type="GBytes*" readable="true" writeable="true" construct-only="true" />
+      <constructor cname="gsk_gl_shader_new_from_bytes" name="NewFromBytes" deprecated="1">
+        <parameters>
+          <parameter type="GBytes*" name="sourcecode" />
+        </parameters>
+      </constructor>
+      <constructor cname="gsk_gl_shader_new_from_resource" name="NewFromResource" deprecated="1">
+        <parameters>
+          <parameter type="const-char*" name="resource_path" />
+        </parameters>
+      </constructor>
+      <method name="Compile" cname="gsk_gl_shader_compile" deprecated="1">
+        <return-type type="gboolean" />
+        <parameters throws="1">
+          <parameter type="GskRenderer*" name="renderer" />
+        </parameters>
+      </method>
+      <method name="FindUniformByName" cname="gsk_gl_shader_find_uniform_by_name" deprecated="1">
+        <return-type type="int" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+        </parameters>
+      </method>
+      <method name="FormatArgs" cname="gsk_gl_shader_format_args" deprecated="1">
+        <return-type type="GBytes*" owned="true" />
+        <parameters>
+          <parameter ellipsis="true" />
+        </parameters>
+      </method>
+      <method name="FormatArgsVa" cname="gsk_gl_shader_format_args_va" deprecated="1">
+        <return-type type="GBytes*" owned="true" />
+        <parameters>
+          <parameter type="va_list" name="uniforms" />
+        </parameters>
+      </method>
+      <method name="GetArgBool" cname="gsk_gl_shader_get_arg_bool" deprecated="1">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GBytes*" name="args" />
+          <parameter type="int" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetArgFloat" cname="gsk_gl_shader_get_arg_float" deprecated="1">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="GBytes*" name="args" />
+          <parameter type="int" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetArgInt" cname="gsk_gl_shader_get_arg_int" deprecated="1">
+        <return-type type="gint32" />
+        <parameters>
+          <parameter type="GBytes*" name="args" />
+          <parameter type="int" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetArgUint" cname="gsk_gl_shader_get_arg_uint" deprecated="1">
+        <return-type type="guint32" />
+        <parameters>
+          <parameter type="GBytes*" name="args" />
+          <parameter type="int" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetArgVec2" cname="gsk_gl_shader_get_arg_vec2" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GBytes*" name="args" />
+          <parameter type="int" name="idx" />
+          <parameter type="graphene_vec2_t*" name="out_value" />
+        </parameters>
+      </method>
+      <method name="GetArgVec3" cname="gsk_gl_shader_get_arg_vec3" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GBytes*" name="args" />
+          <parameter type="int" name="idx" />
+          <parameter type="graphene_vec3_t*" name="out_value" />
+        </parameters>
+      </method>
+      <method name="GetArgVec4" cname="gsk_gl_shader_get_arg_vec4" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GBytes*" name="args" />
+          <parameter type="int" name="idx" />
+          <parameter type="graphene_vec4_t*" name="out_value" />
+        </parameters>
+      </method>
+      <method name="GetArgsSize" cname="gsk_gl_shader_get_args_size" deprecated="1">
+        <return-type type="gsize" />
+      </method>
+      <method name="GetNTextures" cname="gsk_gl_shader_get_n_textures" deprecated="1">
+        <return-type type="int" />
+      </method>
+      <method name="GetNUniforms" cname="gsk_gl_shader_get_n_uniforms" deprecated="1">
+        <return-type type="int" />
+      </method>
+      <method name="GetResource" cname="gsk_gl_shader_get_resource" deprecated="1">
+        <return-type type="const-char*" />
+      </method>
+      <method name="GetSource" cname="gsk_gl_shader_get_source" deprecated="1">
+        <return-type type="GBytes*" />
+      </method>
+      <method name="GetUniformName" cname="gsk_gl_shader_get_uniform_name" deprecated="1">
+        <return-type type="const-char*" />
+        <parameters>
+          <parameter type="int" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetUniformOffset" cname="gsk_gl_shader_get_uniform_offset" deprecated="1">
+        <return-type type="int" />
+        <parameters>
+          <parameter type="int" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetUniformType" cname="gsk_gl_shader_get_uniform_type" deprecated="1">
+        <return-type type="GskGLUniformType" />
+        <parameters>
+          <parameter type="int" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_gl_shader_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="GLShaderNode" cname="GskGLShaderNode" parent="GskRenderNode">
+      <constructor cname="gsk_gl_shader_node_new" name="New" deprecated="1">
+        <parameters>
+          <parameter type="GskGLShader*" name="shader" />
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="GBytes*" name="args" />
+          <parameter type="GskRenderNode**" name="children" />
+          <parameter type="guint" name="n_children" />
+        </parameters>
+      </constructor>
+      <method name="GetArgs" cname="gsk_gl_shader_node_get_args" deprecated="1">
+        <return-type type="GBytes*" />
+      </method>
+      <method name="GetChild" cname="gsk_gl_shader_node_get_child" deprecated="1">
+        <return-type type="GskRenderNode*" />
+        <parameters>
+          <parameter type="guint" name="idx" />
+        </parameters>
+      </method>
+      <method name="GetNChildren" cname="gsk_gl_shader_node_get_n_children" deprecated="1">
+        <return-type type="guint" />
+      </method>
+      <method name="GetShader" cname="gsk_gl_shader_node_get_shader">
+        <return-type type="GskGLShader*" />
+      </method>
+      <method name="GetType" cname="gsk_gl_shader_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="InsetShadowNode" cname="GskInsetShadowNode" parent="GskRenderNode">
+      <constructor cname="gsk_inset_shadow_node_new" name="New">
+        <parameters>
+          <parameter type="const-GskRoundedRect*" name="outline" />
+          <parameter type="const-GdkRGBA*" name="color" />
+          <parameter type="float" name="dx" />
+          <parameter type="float" name="dy" />
+          <parameter type="float" name="spread" />
+          <parameter type="float" name="blur_radius" />
+        </parameters>
+      </constructor>
+      <method name="GetBlurRadius" cname="gsk_inset_shadow_node_get_blur_radius">
+        <return-type type="float" />
+      </method>
+      <method name="GetColor" cname="gsk_inset_shadow_node_get_color">
+        <return-type type="const-GdkRGBA*" />
+      </method>
+      <method name="GetDx" cname="gsk_inset_shadow_node_get_dx">
+        <return-type type="float" />
+      </method>
+      <method name="GetDy" cname="gsk_inset_shadow_node_get_dy">
+        <return-type type="float" />
+      </method>
+      <method name="GetOutline" cname="gsk_inset_shadow_node_get_outline">
+        <return-type type="const-GskRoundedRect*" />
+      </method>
+      <method name="GetSpread" cname="gsk_inset_shadow_node_get_spread">
+        <return-type type="float" />
+      </method>
+      <method name="GetType" cname="gsk_inset_shadow_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="IsolationNode" cname="GskIsolationNode" parent="GskRenderNode">
+      <constructor cname="gsk_isolation_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="GskIsolation" name="isolations" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_isolation_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetIsolations" cname="gsk_isolation_node_get_isolations">
+        <return-type type="GskIsolation" />
+      </method>
+      <method name="GetType" cname="gsk_isolation_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="LinearGradientNode" cname="GskLinearGradientNode" parent="GskRenderNode">
+      <constructor cname="gsk_linear_gradient_node_new" name="New">
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="const-graphene_point_t*" name="start" />
+          <parameter type="const-graphene_point_t*" name="end" />
+          <parameter type="const-GskColorStop*" name="color_stops" />
+          <parameter type="gsize" name="n_color_stops" />
+        </parameters>
+      </constructor>
+      <method name="GetColorStops" cname="gsk_linear_gradient_node_get_color_stops">
+        <return-type type="const-GskColorStop*" />
+        <parameters>
+          <parameter type="gsize*" name="n_stops" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetEnd" cname="gsk_linear_gradient_node_get_end">
+        <return-type type="const-graphene_point_t*" />
+      </method>
+      <method name="GetNColorStops" cname="gsk_linear_gradient_node_get_n_color_stops">
+        <return-type type="gsize" />
+      </method>
+      <method name="GetStart" cname="gsk_linear_gradient_node_get_start">
+        <return-type type="const-graphene_point_t*" />
+      </method>
+      <method name="GetType" cname="gsk_linear_gradient_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="MaskNode" cname="GskMaskNode" parent="GskRenderNode">
+      <constructor cname="gsk_mask_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="source" />
+          <parameter type="GskRenderNode*" name="mask" />
+          <parameter type="GskMaskMode" name="mask_mode" />
+        </parameters>
+      </constructor>
+      <method name="GetMask" cname="gsk_mask_node_get_mask">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetMaskMode" cname="gsk_mask_node_get_mask_mode">
+        <return-type type="GskMaskMode" />
+      </method>
+      <method name="GetSource" cname="gsk_mask_node_get_source">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetType" cname="gsk_mask_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="NglRenderer" cname="GskNglRenderer" parent="GskRenderer">
+      <constructor cname="gsk_ngl_renderer_new" name="New" deprecated="1" />
+      <method name="GetType" cname="gsk_ngl_renderer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="OpacityNode" cname="GskOpacityNode" parent="GskRenderNode">
+      <constructor cname="gsk_opacity_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="float" name="opacity" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_opacity_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetOpacity" cname="gsk_opacity_node_get_opacity">
+        <return-type type="float" />
+      </method>
+      <method name="GetType" cname="gsk_opacity_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="OutsetShadowNode" cname="GskOutsetShadowNode" parent="GskRenderNode">
+      <constructor cname="gsk_outset_shadow_node_new" name="New">
+        <parameters>
+          <parameter type="const-GskRoundedRect*" name="outline" />
+          <parameter type="const-GdkRGBA*" name="color" />
+          <parameter type="float" name="dx" />
+          <parameter type="float" name="dy" />
+          <parameter type="float" name="spread" />
+          <parameter type="float" name="blur_radius" />
+        </parameters>
+      </constructor>
+      <method name="GetBlurRadius" cname="gsk_outset_shadow_node_get_blur_radius">
+        <return-type type="float" />
+      </method>
+      <method name="GetColor" cname="gsk_outset_shadow_node_get_color">
+        <return-type type="const-GdkRGBA*" />
+      </method>
+      <method name="GetDx" cname="gsk_outset_shadow_node_get_dx">
+        <return-type type="float" />
+      </method>
+      <method name="GetDy" cname="gsk_outset_shadow_node_get_dy">
+        <return-type type="float" />
+      </method>
+      <method name="GetOutline" cname="gsk_outset_shadow_node_get_outline">
+        <return-type type="const-GskRoundedRect*" />
+      </method>
+      <method name="GetSpread" cname="gsk_outset_shadow_node_get_spread">
+        <return-type type="float" />
+      </method>
+      <method name="GetType" cname="gsk_outset_shadow_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="PasteNode" cname="GskPasteNode" parent="GskRenderNode">
+      <constructor cname="gsk_paste_node_new" name="New">
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="gsize" name="depth" />
+        </parameters>
+      </constructor>
+      <method name="GetDepth" cname="gsk_paste_node_get_depth">
+        <return-type type="gsize" />
+      </method>
+      <method name="GetType" cname="gsk_paste_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="RadialGradientNode" cname="GskRadialGradientNode" parent="GskRenderNode">
+      <constructor cname="gsk_radial_gradient_node_new" name="New">
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="const-graphene_point_t*" name="center" />
+          <parameter type="float" name="hradius" />
+          <parameter type="float" name="vradius" />
+          <parameter type="float" name="start" />
+          <parameter type="float" name="end" />
+          <parameter type="const-GskColorStop*" name="color_stops" />
+          <parameter type="gsize" name="n_color_stops" />
+        </parameters>
+      </constructor>
+      <method name="GetCenter" cname="gsk_radial_gradient_node_get_center">
+        <return-type type="const-graphene_point_t*" />
+      </method>
+      <method name="GetColorStops" cname="gsk_radial_gradient_node_get_color_stops">
+        <return-type type="const-GskColorStop*" />
+        <parameters>
+          <parameter type="gsize*" name="n_stops" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetEnd" cname="gsk_radial_gradient_node_get_end">
+        <return-type type="float" />
+      </method>
+      <method name="GetHradius" cname="gsk_radial_gradient_node_get_hradius">
+        <return-type type="float" />
+      </method>
+      <method name="GetNColorStops" cname="gsk_radial_gradient_node_get_n_color_stops">
+        <return-type type="gsize" />
+      </method>
+      <method name="GetStart" cname="gsk_radial_gradient_node_get_start">
+        <return-type type="float" />
+      </method>
+      <method name="GetVradius" cname="gsk_radial_gradient_node_get_vradius">
+        <return-type type="float" />
+      </method>
+      <method name="GetType" cname="gsk_radial_gradient_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="RenderNode" cname="GskRenderNode">
+      <method name="Draw" cname="gsk_render_node_draw">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+        </parameters>
+      </method>
+      <method name="GetBounds" cname="gsk_render_node_get_bounds">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_rect_t*" name="bounds" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetChildren" cname="gsk_render_node_get_children">
+        <return-type type="GskRenderNode**" />
+        <parameters>
+          <parameter type="gsize*" name="n_children" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetNodeType" cname="gsk_render_node_get_node_type">
+        <return-type type="GskRenderNodeType" />
+      </method>
+      <method name="GetOpaqueRect" cname="gsk_render_node_get_opaque_rect">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="graphene_rect_t*" name="out_opaque" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Ref" cname="gsk_render_node_ref">
+        <return-type type="GskRenderNode*" owned="true" />
+      </method>
+      <method name="Serialize" cname="gsk_render_node_serialize">
+        <return-type type="GBytes*" owned="true" />
+      </method>
+      <method name="Unref" cname="gsk_render_node_unref">
+        <return-type type="void" />
+      </method>
+      <method name="WriteToFile" cname="gsk_render_node_write_to_file">
+        <return-type type="gboolean" />
+        <parameters throws="1">
+          <parameter type="const-char*" name="filename" />
+        </parameters>
+      </method>
+      <method name="Deserialize" cname="gsk_render_node_deserialize" shared="true">
+        <return-type type="GskRenderNode*" owned="true" />
+        <parameters>
+          <parameter type="GBytes*" name="bytes" />
+          <parameter type="GskParseErrorFunc" name="error_func" scope="call" closure="2" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_render_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="Renderer" cname="GskRenderer" parent="GObject">
+      <class_struct cname="GskRendererClass" />
+      <property name="Realized" cname="realized" type="gboolean" readable="true" />
+      <property name="Surface" cname="surface" type="GdkSurface*" readable="true" />
+      <constructor cname="gsk_renderer_new_for_surface" name="NewForSurface">
+        <parameters>
+          <parameter type="GdkSurface*" name="surface" />
+        </parameters>
+      </constructor>
+      <method name="GetSurface" cname="gsk_renderer_get_surface">
+        <return-type type="GdkSurface*" />
+      </method>
+      <method name="IsRealized" cname="gsk_renderer_is_realized">
+        <return-type type="gboolean" />
+      </method>
+      <method name="Realize" cname="gsk_renderer_realize">
+        <return-type type="gboolean" />
+        <parameters throws="1">
+          <parameter type="GdkSurface*" name="surface" />
+        </parameters>
+      </method>
+      <method name="RealizeForDisplay" cname="gsk_renderer_realize_for_display">
+        <return-type type="gboolean" />
+        <parameters throws="1">
+          <parameter type="GdkDisplay*" name="display" />
+        </parameters>
+      </method>
+      <method name="Render" cname="gsk_renderer_render">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskRenderNode*" name="root" />
+          <parameter type="const-cairo_region_t*" name="region" />
+        </parameters>
+      </method>
+      <method name="RenderTexture" cname="gsk_renderer_render_texture">
+        <return-type type="GdkTexture*" owned="true" />
+        <parameters>
+          <parameter type="GskRenderNode*" name="root" />
+          <parameter type="const-graphene_rect_t*" name="viewport" />
+        </parameters>
+      </method>
+      <method name="Unrealize" cname="gsk_renderer_unrealize">
+        <return-type type="void" />
+      </method>
+      <method name="GetType" cname="gsk_renderer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="RepeatNode" cname="GskRepeatNode" parent="GskRenderNode">
+      <constructor cname="gsk_repeat_node_new" name="New">
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="const-graphene_rect_t*" name="child_bounds" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_repeat_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetChildBounds" cname="gsk_repeat_node_get_child_bounds">
+        <return-type type="const-graphene_rect_t*" />
+      </method>
+      <method name="GetType" cname="gsk_repeat_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="RepeatingLinearGradientNode" cname="GskRepeatingLinearGradientNode" parent="GskRenderNode">
+      <constructor cname="gsk_repeating_linear_gradient_node_new" name="New">
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="const-graphene_point_t*" name="start" />
+          <parameter type="const-graphene_point_t*" name="end" />
+          <parameter type="const-GskColorStop*" name="color_stops" />
+          <parameter type="gsize" name="n_color_stops" />
+        </parameters>
+      </constructor>
+      <method name="GetType" cname="gsk_repeating_linear_gradient_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="RepeatingRadialGradientNode" cname="GskRepeatingRadialGradientNode" parent="GskRenderNode">
+      <constructor cname="gsk_repeating_radial_gradient_node_new" name="New">
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="const-graphene_point_t*" name="center" />
+          <parameter type="float" name="hradius" />
+          <parameter type="float" name="vradius" />
+          <parameter type="float" name="start" />
+          <parameter type="float" name="end" />
+          <parameter type="const-GskColorStop*" name="color_stops" />
+          <parameter type="gsize" name="n_color_stops" />
+        </parameters>
+      </constructor>
+      <method name="GetType" cname="gsk_repeating_radial_gradient_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="RoundedClipNode" cname="GskRoundedClipNode" parent="GskRenderNode">
+      <constructor cname="gsk_rounded_clip_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="const-GskRoundedRect*" name="clip" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_rounded_clip_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetClip" cname="gsk_rounded_clip_node_get_clip">
+        <return-type type="const-GskRoundedRect*" />
+      </method>
+      <method name="GetType" cname="gsk_rounded_clip_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="ShadowNode" cname="GskShadowNode" parent="GskRenderNode">
+      <constructor cname="gsk_shadow_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="const-GskShadow*" name="shadows" />
+          <parameter type="gsize" name="n_shadows" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_shadow_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetNShadows" cname="gsk_shadow_node_get_n_shadows">
+        <return-type type="gsize" />
+      </method>
+      <method name="GetShadow" cname="gsk_shadow_node_get_shadow">
+        <return-type type="const-GskShadow*" />
+        <parameters>
+          <parameter type="gsize" name="i" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_shadow_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="StrokeNode" cname="GskStrokeNode" parent="GskRenderNode">
+      <constructor cname="gsk_stroke_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="GskPath*" name="path" />
+          <parameter type="const-GskStroke*" name="stroke" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_stroke_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetPath" cname="gsk_stroke_node_get_path">
+        <return-type type="GskPath*" />
+      </method>
+      <method name="GetStroke" cname="gsk_stroke_node_get_stroke">
+        <return-type type="const-GskStroke*" />
+      </method>
+      <method name="GetType" cname="gsk_stroke_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="SubsurfaceNode" cname="GskSubsurfaceNode" parent="GskRenderNode">
+      <constructor cname="gsk_subsurface_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="gpointer" name="subsurface" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_subsurface_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetSubsurface" cname="gsk_subsurface_node_get_subsurface" shared="true">
+        <return-type type="gpointer" />
+        <parameters>
+          <parameter type="const-GskRenderNode*" name="node" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_subsurface_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="TextNode" cname="GskTextNode" parent="GskRenderNode">
+      <constructor cname="gsk_text_node_new" name="New">
+        <parameters>
+          <parameter type="PangoFont*" name="font" />
+          <parameter type="PangoGlyphString*" name="glyphs" />
+          <parameter type="const-GdkRGBA*" name="color" />
+          <parameter type="const-graphene_point_t*" name="offset" />
+        </parameters>
+      </constructor>
+      <method name="GetColor" cname="gsk_text_node_get_color">
+        <return-type type="const-GdkRGBA*" />
+      </method>
+      <method name="GetFont" cname="gsk_text_node_get_font">
+        <return-type type="PangoFont*" />
+      </method>
+      <method name="GetGlyphs" cname="gsk_text_node_get_glyphs">
+        <return-type type="const-PangoGlyphInfo*" />
+        <parameters>
+          <parameter type="guint*" name="n_glyphs" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetNumGlyphs" cname="gsk_text_node_get_num_glyphs">
+        <return-type type="guint" />
+      </method>
+      <method name="GetOffset" cname="gsk_text_node_get_offset">
+        <return-type type="const-graphene_point_t*" />
+      </method>
+      <method name="HasColorGlyphs" cname="gsk_text_node_has_color_glyphs">
+        <return-type type="gboolean" />
+      </method>
+      <method name="GetType" cname="gsk_text_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="TextureNode" cname="GskTextureNode" parent="GskRenderNode">
+      <constructor cname="gsk_texture_node_new" name="New">
+        <parameters>
+          <parameter type="GdkTexture*" name="texture" />
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+        </parameters>
+      </constructor>
+      <method name="GetTexture" cname="gsk_texture_node_get_texture">
+        <return-type type="GdkTexture*" />
+      </method>
+      <method name="GetType" cname="gsk_texture_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="TextureScaleNode" cname="GskTextureScaleNode" parent="GskRenderNode">
+      <constructor cname="gsk_texture_scale_node_new" name="New">
+        <parameters>
+          <parameter type="GdkTexture*" name="texture" />
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="GskScalingFilter" name="filter" />
+        </parameters>
+      </constructor>
+      <method name="GetFilter" cname="gsk_texture_scale_node_get_filter">
+        <return-type type="GskScalingFilter" />
+      </method>
+      <method name="GetTexture" cname="gsk_texture_scale_node_get_texture">
+        <return-type type="GdkTexture*" />
+      </method>
+      <method name="GetType" cname="gsk_texture_scale_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="TransformNode" cname="GskTransformNode" parent="GskRenderNode">
+      <constructor cname="gsk_transform_node_new" name="New">
+        <parameters>
+          <parameter type="GskRenderNode*" name="child" />
+          <parameter type="GskTransform*" name="transform" />
+        </parameters>
+      </constructor>
+      <method name="GetChild" cname="gsk_transform_node_get_child">
+        <return-type type="GskRenderNode*" />
+      </method>
+      <method name="GetTransform" cname="gsk_transform_node_get_transform">
+        <return-type type="GskTransform*" />
+      </method>
+      <method name="GetType" cname="gsk_transform_node_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="VulkanRenderer" cname="GskVulkanRenderer" parent="GskRenderer">
+      <class_struct cname="GskVulkanRendererClass" />
+      <constructor cname="gsk_vulkan_renderer_new" name="New" />
+      <method name="GetType" cname="gsk_vulkan_renderer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <struct name="ColorStop" cname="GskColorStop">
+      <field name="Offset" cname="offset" type="float" access="public" writeable="true" />
+      <field name="Color" cname="color" type="GdkRGBA" access="public" writeable="true" />
+    </struct>
+    <boxed name="ComponentTransfer" cname="GskComponentTransfer" opaque="true">
+      <constructor cname="gsk_component_transfer_new_discrete" name="NewDiscrete">
+        <parameters>
+          <parameter type="guint" name="n" />
+          <parameter type="float*" name="values" />
+        </parameters>
+      </constructor>
+      <constructor cname="gsk_component_transfer_new_gamma" name="NewGamma">
+        <parameters>
+          <parameter type="float" name="amp" />
+          <parameter type="float" name="exp" />
+          <parameter type="float" name="ofs" />
+        </parameters>
+      </constructor>
+      <constructor cname="gsk_component_transfer_new_identity" name="NewIdentity" />
+      <constructor cname="gsk_component_transfer_new_levels" name="NewLevels">
+        <parameters>
+          <parameter type="float" name="n" />
+        </parameters>
+      </constructor>
+      <constructor cname="gsk_component_transfer_new_linear" name="NewLinear">
+        <parameters>
+          <parameter type="float" name="m" />
+          <parameter type="float" name="b" />
+        </parameters>
+      </constructor>
+      <constructor cname="gsk_component_transfer_new_table" name="NewTable">
+        <parameters>
+          <parameter type="guint" name="n" />
+          <parameter type="float*" name="values" />
+        </parameters>
+      </constructor>
+      <method name="Copy" cname="gsk_component_transfer_copy">
+        <return-type type="GskComponentTransfer*" owned="true" />
+      </method>
+      <method name="Free" cname="gsk_component_transfer_free">
+        <return-type type="void" />
+      </method>
+      <method name="Equal" cname="gsk_component_transfer_equal" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gconstpointer" name="self" />
+          <parameter type="gconstpointer" name="other" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_component_transfer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <struct name="ParseLocation" cname="GskParseLocation">
+      <field name="Bytes" cname="bytes" type="gsize" access="public" writeable="true" />
+      <field name="Chars" cname="chars" type="gsize" access="public" writeable="true" />
+      <field name="Lines" cname="lines" type="gsize" access="public" writeable="true" />
+      <field name="LineBytes" cname="line_bytes" type="gsize" access="public" writeable="true" />
+      <field name="LineChars" cname="line_chars" type="gsize" access="public" writeable="true" />
+    </struct>
+    <boxed name="Path" cname="GskPath" opaque="true">
+      <method name="Equal" cname="gsk_path_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-GskPath*" name="path2" />
+        </parameters>
+      </method>
+      <method name="Foreach" cname="gsk_path_foreach">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GskPathForeachFlags" name="flags" />
+          <parameter type="GskPathForeachFunc" name="func" scope="call" closure="2" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="ForeachIntersection" cname="gsk_path_foreach_intersection">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GskPath*" name="path2" />
+          <parameter type="GskPathIntersectionFunc" name="func" scope="call" closure="2" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="GetBounds" cname="gsk_path_get_bounds">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="graphene_rect_t*" name="bounds" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetClosestPoint" cname="gsk_path_get_closest_point">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="point" />
+          <parameter type="float" name="threshold" />
+          <parameter type="GskPathPoint*" name="result" pass_as="out" />
+          <parameter type="float*" name="distance" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetEndPoint" cname="gsk_path_get_end_point">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GskPathPoint*" name="result" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetNext" cname="gsk_path_get_next">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GskPathPoint*" name="point" pass_as="ref" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetPrevious" cname="gsk_path_get_previous">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GskPathPoint*" name="point" pass_as="ref" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetStartPoint" cname="gsk_path_get_start_point">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GskPathPoint*" name="result" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetStrokeBounds" cname="gsk_path_get_stroke_bounds">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-GskStroke*" name="stroke" />
+          <parameter type="graphene_rect_t*" name="bounds" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetTightBounds" cname="gsk_path_get_tight_bounds">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="graphene_rect_t*" name="bounds" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="InFill" cname="gsk_path_in_fill">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="point" />
+          <parameter type="GskFillRule" name="fill_rule" />
+        </parameters>
+      </method>
+      <method name="IsClosed" cname="gsk_path_is_closed">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsEmpty" cname="gsk_path_is_empty">
+        <return-type type="gboolean" />
+      </method>
+      <method name="Print" cname="gsk_path_print">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GString*" name="string" />
+        </parameters>
+      </method>
+      <method name="Ref" cname="gsk_path_ref">
+        <return-type type="GskPath*" owned="true" />
+      </method>
+      <method name="ToCairo" cname="gsk_path_to_cairo">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+        </parameters>
+      </method>
+      <method name="ToString" cname="gsk_path_to_string">
+        <return-type type="char*" owned="true" />
+      </method>
+      <method name="Unref" cname="gsk_path_unref">
+        <return-type type="void" />
+      </method>
+      <method name="Parse" cname="gsk_path_parse" shared="true">
+        <return-type type="GskPath*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="string" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_path_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="PathBuilder" cname="GskPathBuilder" opaque="true">
+      <constructor cname="gsk_path_builder_new" name="New" />
+      <method name="AddCairoPath" cname="gsk_path_builder_add_cairo_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-cairo_path_t*" name="path" />
+        </parameters>
+      </method>
+      <method name="AddCircle" cname="gsk_path_builder_add_circle">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="center" />
+          <parameter type="float" name="radius" />
+        </parameters>
+      </method>
+      <method name="AddLayout" cname="gsk_path_builder_add_layout">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoLayout*" name="layout" />
+        </parameters>
+      </method>
+      <method name="AddPath" cname="gsk_path_builder_add_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskPath*" name="path" />
+        </parameters>
+      </method>
+      <method name="AddRect" cname="gsk_path_builder_add_rect">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="rect" />
+        </parameters>
+      </method>
+      <method name="AddReversePath" cname="gsk_path_builder_add_reverse_path">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskPath*" name="path" />
+        </parameters>
+      </method>
+      <method name="AddRoundedRect" cname="gsk_path_builder_add_rounded_rect">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-GskRoundedRect*" name="rect" />
+        </parameters>
+      </method>
+      <method name="AddSegment" cname="gsk_path_builder_add_segment">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskPath*" name="path" />
+          <parameter type="const-GskPathPoint*" name="start" />
+          <parameter type="const-GskPathPoint*" name="end" />
+        </parameters>
+      </method>
+      <method name="ArcTo" cname="gsk_path_builder_arc_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+        </parameters>
+      </method>
+      <method name="Close" cname="gsk_path_builder_close">
+        <return-type type="void" />
+      </method>
+      <method name="ConicTo" cname="gsk_path_builder_conic_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+          <parameter type="float" name="weight" />
+        </parameters>
+      </method>
+      <method name="CubicTo" cname="gsk_path_builder_cubic_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+          <parameter type="float" name="x3" />
+          <parameter type="float" name="y3" />
+        </parameters>
+      </method>
+      <method name="FreeToPath" cname="gsk_path_builder_free_to_path">
+        <return-type type="GskPath*" owned="true" />
+      </method>
+      <method name="GetCurrentPoint" cname="gsk_path_builder_get_current_point">
+        <return-type type="const-graphene_point_t*" />
+      </method>
+      <method name="HtmlArcTo" cname="gsk_path_builder_html_arc_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+          <parameter type="float" name="radius" />
+        </parameters>
+      </method>
+      <method name="LineTo" cname="gsk_path_builder_line_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+        </parameters>
+      </method>
+      <method name="MoveTo" cname="gsk_path_builder_move_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+        </parameters>
+      </method>
+      <method name="QuadTo" cname="gsk_path_builder_quad_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+        </parameters>
+      </method>
+      <method name="Ref" cname="gsk_path_builder_ref">
+        <return-type type="GskPathBuilder*" />
+      </method>
+      <method name="RelArcTo" cname="gsk_path_builder_rel_arc_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+        </parameters>
+      </method>
+      <method name="RelConicTo" cname="gsk_path_builder_rel_conic_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+          <parameter type="float" name="weight" />
+        </parameters>
+      </method>
+      <method name="RelCubicTo" cname="gsk_path_builder_rel_cubic_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+          <parameter type="float" name="x3" />
+          <parameter type="float" name="y3" />
+        </parameters>
+      </method>
+      <method name="RelHtmlArcTo" cname="gsk_path_builder_rel_html_arc_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+          <parameter type="float" name="radius" />
+        </parameters>
+      </method>
+      <method name="RelLineTo" cname="gsk_path_builder_rel_line_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+        </parameters>
+      </method>
+      <method name="RelMoveTo" cname="gsk_path_builder_rel_move_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+        </parameters>
+      </method>
+      <method name="RelQuadTo" cname="gsk_path_builder_rel_quad_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="x1" />
+          <parameter type="float" name="y1" />
+          <parameter type="float" name="x2" />
+          <parameter type="float" name="y2" />
+        </parameters>
+      </method>
+      <method name="RelSvgArcTo" cname="gsk_path_builder_rel_svg_arc_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="rx" />
+          <parameter type="float" name="ry" />
+          <parameter type="float" name="x_axis_rotation" />
+          <parameter type="gboolean" name="large_arc" />
+          <parameter type="gboolean" name="positive_sweep" />
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+        </parameters>
+      </method>
+      <method name="SvgArcTo" cname="gsk_path_builder_svg_arc_to">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="rx" />
+          <parameter type="float" name="ry" />
+          <parameter type="float" name="x_axis_rotation" />
+          <parameter type="gboolean" name="large_arc" />
+          <parameter type="gboolean" name="positive_sweep" />
+          <parameter type="float" name="x" />
+          <parameter type="float" name="y" />
+        </parameters>
+      </method>
+      <method name="ToPath" cname="gsk_path_builder_to_path">
+        <return-type type="GskPath*" owned="true" />
+      </method>
+      <method name="Unref" cname="gsk_path_builder_unref">
+        <return-type type="void" />
+      </method>
+      <method name="GetType" cname="gsk_path_builder_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="PathMeasure" cname="GskPathMeasure" opaque="true">
+      <constructor cname="gsk_path_measure_new" name="New">
+        <parameters>
+          <parameter type="GskPath*" name="path" />
+        </parameters>
+      </constructor>
+      <constructor cname="gsk_path_measure_new_with_tolerance" name="NewWithTolerance">
+        <parameters>
+          <parameter type="GskPath*" name="path" />
+          <parameter type="float" name="tolerance" />
+        </parameters>
+      </constructor>
+      <method name="GetLength" cname="gsk_path_measure_get_length">
+        <return-type type="float" />
+      </method>
+      <method name="GetPath" cname="gsk_path_measure_get_path">
+        <return-type type="GskPath*" />
+      </method>
+      <method name="GetPoint" cname="gsk_path_measure_get_point">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="float" name="distance" />
+          <parameter type="GskPathPoint*" name="result" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetTolerance" cname="gsk_path_measure_get_tolerance">
+        <return-type type="float" />
+      </method>
+      <method name="Ref" cname="gsk_path_measure_ref">
+        <return-type type="GskPathMeasure*" owned="true" />
+      </method>
+      <method name="Unref" cname="gsk_path_measure_unref">
+        <return-type type="void" />
+      </method>
+      <method name="GetType" cname="gsk_path_measure_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="PathPoint" cname="GskPathPoint" opaque="true">
+      <method name="Compare" cname="gsk_path_point_compare">
+        <return-type type="int" />
+        <parameters>
+          <parameter type="const-GskPathPoint*" name="point2" />
+        </parameters>
+      </method>
+      <method name="Copy" cname="gsk_path_point_copy">
+        <return-type type="GskPathPoint*" owned="true" />
+      </method>
+      <method name="Equal" cname="gsk_path_point_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-GskPathPoint*" name="point2" />
+        </parameters>
+      </method>
+      <method name="Free" cname="gsk_path_point_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetCurvature" cname="gsk_path_point_get_curvature">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="GskPath*" name="path" />
+          <parameter type="GskPathDirection" name="direction" />
+          <parameter type="graphene_point_t*" name="center" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetDistance" cname="gsk_path_point_get_distance">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="GskPathMeasure*" name="measure" />
+        </parameters>
+      </method>
+      <method name="GetPosition" cname="gsk_path_point_get_position">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskPath*" name="path" />
+          <parameter type="graphene_point_t*" name="position" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetRotation" cname="gsk_path_point_get_rotation">
+        <return-type type="float" />
+        <parameters>
+          <parameter type="GskPath*" name="path" />
+          <parameter type="GskPathDirection" name="direction" />
+        </parameters>
+      </method>
+      <method name="GetTangent" cname="gsk_path_point_get_tangent">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskPath*" name="path" />
+          <parameter type="GskPathDirection" name="direction" />
+          <parameter type="graphene_vec2_t*" name="tangent" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_path_point_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="RenderReplay" cname="GskRenderReplay" opaque="true">
+      <constructor cname="gsk_render_replay_new" name="New" />
+      <method name="Default" cname="gsk_render_replay_default">
+        <return-type type="GskRenderNode*" owned="true" />
+        <parameters>
+          <parameter type="GskRenderNode*" name="node" />
+        </parameters>
+      </method>
+      <method name="FilterFont" cname="gsk_render_replay_filter_font">
+        <return-type type="PangoFont*" owned="true" />
+        <parameters>
+          <parameter type="PangoFont*" name="font" />
+        </parameters>
+      </method>
+      <method name="FilterNode" cname="gsk_render_replay_filter_node">
+        <return-type type="GskRenderNode*" owned="true" />
+        <parameters>
+          <parameter type="GskRenderNode*" name="node" />
+        </parameters>
+      </method>
+      <method name="FilterTexture" cname="gsk_render_replay_filter_texture">
+        <return-type type="GdkTexture*" owned="true" />
+        <parameters>
+          <parameter type="GdkTexture*" name="texture" />
+        </parameters>
+      </method>
+      <method name="Free" cname="gsk_render_replay_free">
+        <return-type type="void" />
+      </method>
+      <method name="SetFontFilter" cname="gsk_render_replay_set_font_filter">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskRenderReplayFontFilter" name="filter" scope="notified" closure="1" destroy="2" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="user_destroy" scope="async" />
+        </parameters>
+      </method>
+      <method name="SetNodeFilter" cname="gsk_render_replay_set_node_filter">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskRenderReplayNodeFilter" name="filter" scope="notified" closure="1" destroy="2" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="user_destroy" scope="async" />
+        </parameters>
+      </method>
+      <method name="SetTextureFilter" cname="gsk_render_replay_set_texture_filter">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskRenderReplayTextureFilter" name="filter" scope="notified" closure="1" destroy="2" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="user_destroy" scope="async" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_render_replay_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <struct name="RoundedRect" cname="GskRoundedRect">
+      <field name="Bounds" cname="bounds" type="graphene_rect_t" access="public" writeable="true" />
+      <field name="Corner" cname="corner" type="graphene_size_t*" array_len="4" access="public" writeable="true" />
+      <method name="ContainsPoint" cname="gsk_rounded_rect_contains_point">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="point" />
+        </parameters>
+      </method>
+      <method name="ContainsRect" cname="gsk_rounded_rect_contains_rect">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="rect" />
+        </parameters>
+      </method>
+      <method name="Init" cname="gsk_rounded_rect_init">
+        <return-type type="GskRoundedRect*" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="const-graphene_size_t*" name="top_left" />
+          <parameter type="const-graphene_size_t*" name="top_right" />
+          <parameter type="const-graphene_size_t*" name="bottom_right" />
+          <parameter type="const-graphene_size_t*" name="bottom_left" />
+        </parameters>
+      </method>
+      <method name="InitCopy" cname="gsk_rounded_rect_init_copy">
+        <return-type type="GskRoundedRect*" />
+        <parameters>
+          <parameter type="const-GskRoundedRect*" name="src" />
+        </parameters>
+      </method>
+      <method name="InitFromRect" cname="gsk_rounded_rect_init_from_rect">
+        <return-type type="GskRoundedRect*" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="bounds" />
+          <parameter type="float" name="radius" />
+        </parameters>
+      </method>
+      <method name="IntersectsRect" cname="gsk_rounded_rect_intersects_rect">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="rect" />
+        </parameters>
+      </method>
+      <method name="IsRectilinear" cname="gsk_rounded_rect_is_rectilinear">
+        <return-type type="gboolean" />
+      </method>
+      <method name="Normalize" cname="gsk_rounded_rect_normalize">
+        <return-type type="GskRoundedRect*" />
+      </method>
+      <method name="Offset" cname="gsk_rounded_rect_offset">
+        <return-type type="GskRoundedRect*" />
+        <parameters>
+          <parameter type="float" name="dx" />
+          <parameter type="float" name="dy" />
+        </parameters>
+      </method>
+      <method name="Shrink" cname="gsk_rounded_rect_shrink">
+        <return-type type="GskRoundedRect*" />
+        <parameters>
+          <parameter type="float" name="top" />
+          <parameter type="float" name="right" />
+          <parameter type="float" name="bottom" />
+          <parameter type="float" name="left" />
+        </parameters>
+      </method>
+    </struct>
+    <boxed name="ShaderArgsBuilder" cname="GskShaderArgsBuilder" opaque="true" deprecated="1">
+      <constructor cname="gsk_shader_args_builder_new" name="New" deprecated="1">
+        <parameters>
+          <parameter type="GskGLShader*" name="shader" />
+          <parameter type="GBytes*" name="initial_values" />
+        </parameters>
+      </constructor>
+      <method name="FreeToArgs" cname="gsk_shader_args_builder_free_to_args" deprecated="1">
+        <return-type type="GBytes*" owned="true" />
+      </method>
+      <method name="Ref" cname="gsk_shader_args_builder_ref" deprecated="1">
+        <return-type type="GskShaderArgsBuilder*" owned="true" />
+      </method>
+      <method name="SetBool" cname="gsk_shader_args_builder_set_bool" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="int" name="idx" />
+          <parameter type="gboolean" name="value" />
+        </parameters>
+      </method>
+      <method name="SetFloat" cname="gsk_shader_args_builder_set_float">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="int" name="idx" />
+          <parameter type="float" name="value" />
+        </parameters>
+      </method>
+      <method name="SetInt" cname="gsk_shader_args_builder_set_int" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="int" name="idx" />
+          <parameter type="gint32" name="value" />
+        </parameters>
+      </method>
+      <method name="SetUint" cname="gsk_shader_args_builder_set_uint" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="int" name="idx" />
+          <parameter type="guint32" name="value" />
+        </parameters>
+      </method>
+      <method name="SetVec2" cname="gsk_shader_args_builder_set_vec2" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="int" name="idx" />
+          <parameter type="const-graphene_vec2_t*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetVec3" cname="gsk_shader_args_builder_set_vec3" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="int" name="idx" />
+          <parameter type="const-graphene_vec3_t*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetVec4" cname="gsk_shader_args_builder_set_vec4" deprecated="1">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="int" name="idx" />
+          <parameter type="const-graphene_vec4_t*" name="value" />
+        </parameters>
+      </method>
+      <method name="ToArgs" cname="gsk_shader_args_builder_to_args" deprecated="1">
+        <return-type type="GBytes*" owned="true" />
+      </method>
+      <method name="Unref" cname="gsk_shader_args_builder_unref" deprecated="1">
+        <return-type type="void" />
+      </method>
+      <method name="GetType" cname="gsk_shader_args_builder_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <struct name="Shadow" cname="GskShadow">
+      <field name="Color" cname="color" type="GdkRGBA" access="public" writeable="true" />
+      <field name="Dx" cname="dx" type="float" access="public" writeable="true" />
+      <field name="Dy" cname="dy" type="float" access="public" writeable="true" />
+      <field name="Radius" cname="radius" type="float" access="public" writeable="true" />
+    </struct>
+    <boxed name="Stroke" cname="GskStroke" opaque="true">
+      <constructor cname="gsk_stroke_new" name="New">
+        <parameters>
+          <parameter type="float" name="line_width" />
+        </parameters>
+      </constructor>
+      <method name="Copy" cname="gsk_stroke_copy">
+        <return-type type="GskStroke*" owned="true" />
+      </method>
+      <method name="Free" cname="gsk_stroke_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetDash" cname="gsk_stroke_get_dash">
+        <return-type type="const-float*" />
+        <parameters>
+          <parameter type="gsize*" name="n_dash" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetDashOffset" cname="gsk_stroke_get_dash_offset">
+        <return-type type="float" />
+      </method>
+      <method name="GetLineCap" cname="gsk_stroke_get_line_cap">
+        <return-type type="GskLineCap" />
+      </method>
+      <method name="GetLineJoin" cname="gsk_stroke_get_line_join">
+        <return-type type="GskLineJoin" />
+      </method>
+      <method name="GetLineWidth" cname="gsk_stroke_get_line_width">
+        <return-type type="float" />
+      </method>
+      <method name="GetMiterLimit" cname="gsk_stroke_get_miter_limit">
+        <return-type type="float" />
+      </method>
+      <method name="SetDash" cname="gsk_stroke_set_dash">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-float*" name="dash" />
+          <parameter type="gsize" name="n_dash" />
+        </parameters>
+      </method>
+      <method name="SetDashOffset" cname="gsk_stroke_set_dash_offset">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="offset" />
+        </parameters>
+      </method>
+      <method name="SetLineCap" cname="gsk_stroke_set_line_cap">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskLineCap" name="line_cap" />
+        </parameters>
+      </method>
+      <method name="SetLineJoin" cname="gsk_stroke_set_line_join">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GskLineJoin" name="line_join" />
+        </parameters>
+      </method>
+      <method name="SetLineWidth" cname="gsk_stroke_set_line_width">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="line_width" />
+        </parameters>
+      </method>
+      <method name="SetMiterLimit" cname="gsk_stroke_set_miter_limit">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float" name="limit" />
+        </parameters>
+      </method>
+      <method name="ToCairo" cname="gsk_stroke_to_cairo">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+        </parameters>
+      </method>
+      <method name="Equal" cname="gsk_stroke_equal" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gconstpointer" name="stroke1" />
+          <parameter type="gconstpointer" name="stroke2" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_stroke_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <boxed name="Transform" cname="GskTransform" opaque="true">
+      <constructor cname="gsk_transform_new" name="New" />
+      <method name="Equal" cname="gsk_transform_equal">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GskTransform*" name="second" />
+        </parameters>
+      </method>
+      <method name="GetCategory" cname="gsk_transform_get_category">
+        <return-type type="GskTransformCategory" />
+      </method>
+      <method name="Invert" cname="gsk_transform_invert">
+        <return-type type="GskTransform*" owned="true" />
+      </method>
+      <method name="Matrix" cname="gsk_transform_matrix">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="const-graphene_matrix_t*" name="matrix" />
+        </parameters>
+      </method>
+      <method name="Matrix2d" cname="gsk_transform_matrix_2d">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="float" name="xx" />
+          <parameter type="float" name="yx" />
+          <parameter type="float" name="xy" />
+          <parameter type="float" name="yy" />
+          <parameter type="float" name="dx" />
+          <parameter type="float" name="dy" />
+        </parameters>
+      </method>
+      <method name="Perspective" cname="gsk_transform_perspective">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="float" name="depth" />
+        </parameters>
+      </method>
+      <method name="Print" cname="gsk_transform_print">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GString*" name="string" />
+        </parameters>
+      </method>
+      <method name="Ref" cname="gsk_transform_ref">
+        <return-type type="GskTransform*" />
+      </method>
+      <method name="Rotate" cname="gsk_transform_rotate">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="float" name="angle" />
+        </parameters>
+      </method>
+      <method name="Rotate3d" cname="gsk_transform_rotate_3d">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="float" name="angle" />
+          <parameter type="const-graphene_vec3_t*" name="axis" />
+        </parameters>
+      </method>
+      <method name="Scale" cname="gsk_transform_scale">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="float" name="factor_x" />
+          <parameter type="float" name="factor_y" />
+        </parameters>
+      </method>
+      <method name="Scale3d" cname="gsk_transform_scale_3d">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="float" name="factor_x" />
+          <parameter type="float" name="factor_y" />
+          <parameter type="float" name="factor_z" />
+        </parameters>
+      </method>
+      <method name="Skew" cname="gsk_transform_skew">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="float" name="skew_x" />
+          <parameter type="float" name="skew_y" />
+        </parameters>
+      </method>
+      <method name="To2d" cname="gsk_transform_to_2d">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="out_xx" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_yx" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_xy" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_yy" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_dx" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_dy" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="To2dComponents" cname="gsk_transform_to_2d_components">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="out_skew_x" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_skew_y" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_scale_x" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_scale_y" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_angle" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_dx" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_dy" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="ToAffine" cname="gsk_transform_to_affine">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="out_scale_x" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_scale_y" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_dx" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_dy" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="ToMatrix" cname="gsk_transform_to_matrix">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="graphene_matrix_t*" name="out_matrix" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="ToString" cname="gsk_transform_to_string">
+        <return-type type="char*" owned="true" />
+      </method>
+      <method name="ToTranslate" cname="gsk_transform_to_translate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="float*" name="out_dx" pass_as="out" owned="true" />
+          <parameter type="float*" name="out_dy" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="Transform" cname="gsk_transform_transform">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="GskTransform*" name="other" />
+        </parameters>
+      </method>
+      <method name="TransformBounds" cname="gsk_transform_transform_bounds">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_rect_t*" name="rect" />
+          <parameter type="graphene_rect_t*" name="out_rect" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="TransformPoint" cname="gsk_transform_transform_point">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="point" />
+          <parameter type="graphene_point_t*" name="out_point" pass_as="out" />
+        </parameters>
+      </method>
+      <method name="Translate" cname="gsk_transform_translate">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="const-graphene_point_t*" name="point" />
+        </parameters>
+      </method>
+      <method name="Translate3d" cname="gsk_transform_translate_3d">
+        <return-type type="GskTransform*" owned="true" />
+        <parameters>
+          <parameter type="const-graphene_point3d_t*" name="point" />
+        </parameters>
+      </method>
+      <method name="Unref" cname="gsk_transform_unref">
+        <return-type type="void" />
+      </method>
+      <method name="Parse" cname="gsk_transform_parse" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="string" />
+          <parameter type="GskTransform**" name="out_transform" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gsk_transform_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
+    <class name="Value" cname="GskValue_">
+      <method name="DupRenderNode" cname="gsk_value_dup_render_node" shared="true">
+        <return-type type="GskRenderNode*" owned="true" />
+        <parameters>
+          <parameter type="const-GValue*" name="value" />
+        </parameters>
+      </method>
+      <method name="GetRenderNode" cname="gsk_value_get_render_node" shared="true">
+        <return-type type="GskRenderNode*" />
+        <parameters>
+          <parameter type="const-GValue*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetRenderNode" cname="gsk_value_set_render_node" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GValue*" name="value" />
+          <parameter type="GskRenderNode*" name="node" />
+        </parameters>
+      </method>
+      <method name="TakeRenderNode" cname="gsk_value_take_render_node" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GValue*" name="value" />
+          <parameter type="GskRenderNode*" name="node" owned="true" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Global" cname="GskGlobal">
+      <method name="ComponentTransferEqual" cname="gsk_component_transfer_equal" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gconstpointer" name="self" />
+          <parameter type="gconstpointer" name="other" />
+        </parameters>
+      </method>
+      <method name="PathParse" cname="gsk_path_parse" shared="true">
+        <return-type type="GskPath*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="string" />
+        </parameters>
+      </method>
+      <method name="SerializationErrorQuark" cname="gsk_serialization_error_quark" shared="true">
+        <return-type type="GQuark" />
+      </method>
+      <method name="StrokeEqual" cname="gsk_stroke_equal" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gconstpointer" name="stroke1" />
+          <parameter type="gconstpointer" name="stroke2" />
+        </parameters>
+      </method>
+      <method name="TransformParse" cname="gsk_transform_parse" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="string" />
+          <parameter type="GskTransform**" name="out_transform" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+    </class>
+  </namespace>
+</api>

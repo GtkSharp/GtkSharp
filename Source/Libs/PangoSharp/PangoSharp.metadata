@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <metadata>
+  <!-- Two namespaces: Pango and PangoCairo. They share a C# namespace but not a
+       native library, so set the library before renaming - the rename would
+       otherwise invalidate the selector. -->
+  <attr path="/api/namespace[@name='Pango']" name="library">Library.Pango</attr>
+  <attr path="/api/namespace[@name='PangoCairo']" name="library">Library.PangoCairo</attr>
+  <attr path="/api/namespace[@name='PangoCairo']" name="name">Pango</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Change']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Filter']/*/*[@name='func']" name="scope">call</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='GetIterator']/return-type" name="owned">true</attr>

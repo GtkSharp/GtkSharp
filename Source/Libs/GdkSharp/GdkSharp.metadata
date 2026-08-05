@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <metadata>
+  <!-- Two namespaces: Gdk and GdkPixbuf, both surfacing as Gdk in C#, as they
+       always have. Set the library before renaming; the rename invalidates the
+       selector. Note Library.Gdk resolves to libgtk-4 - see Shared/Library.cs. -->
+  <attr path="/api/namespace[@name='Gdk']" name="library">Library.Gdk</attr>
+  <attr path="/api/namespace[@name='GdkPixbuf']" name="library">Library.GdkPixbuf</attr>
+  <attr path="/api/namespace[@name='GdkPixbuf']" name="name">Gdk</attr>
   <attr path="/api/namespace/boxed[@cname='GdkColor']" name="nohash">true</attr>
   <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Copy']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Free']" name="hidden">1</attr>

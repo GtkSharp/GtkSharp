@@ -123,9 +123,10 @@ namespace GtkSharp.Parsing {
 					}
 					matched = true;
 				}
-				if (!matched)
+				if (!matched) {
 					warnings++;
 					Console.WriteLine ("Warning: <copy-node path=\"{0}\"/> matched no nodes", path);
+				}
 			}
 
 			XPathNodeIterator rmv_iter = meta_nav.Select ("/metadata/remove-node");
@@ -138,9 +139,10 @@ namespace GtkSharp.Parsing {
 					api_node.ParentNode.RemoveChild (api_node);
 					matched = true;
 				}
-				if (!matched)
+				if (!matched) {
 					warnings++;
 					Console.WriteLine ("Warning: <remove-node path=\"{0}\"/> matched no nodes", path);
+				}
 			}
 
 			XPathNodeIterator add_iter = meta_nav.Select ("/metadata/add-node");
@@ -154,9 +156,10 @@ namespace GtkSharp.Parsing {
 						api_node.AppendChild (api_doc.ImportNode (child, true));
 					matched = true;
 				}
-				if (!matched)
+				if (!matched) {
 					warnings++;
 					Console.WriteLine ("Warning: <add-node path=\"{0}\"/> matched no nodes", path);
+				}
 			}
 			
 			XPathNodeIterator change_node_type_iter = meta_nav.Select ("/metadata/change-node-type");
@@ -178,9 +181,10 @@ namespace GtkSharp.Parsing {
 					matched = true;
 				}
 				
-				if (!matched)
+				if (!matched) {
 					warnings++;
 					Console.WriteLine ("Warning: <change-node-type path=\"{0}\"/> matched no nodes", path);
+				}
 			}
 
 
@@ -195,9 +199,10 @@ namespace GtkSharp.Parsing {
 					node.SetAttribute (attr_name, attr_iter.Current.Value);
 					matched = true;
 				}
-				if (!matched)
+				if (!matched) {
 					warnings++;
 					Console.WriteLine ("Warning: <attr path=\"{0}\"/> matched no nodes", path);
+				}
 			}
 
 			XPathNodeIterator move_iter = meta_nav.Select ("/metadata/move-node");
@@ -217,9 +222,10 @@ namespace GtkSharp.Parsing {
 					}
 					matched = true;
 				}
-				if (!matched)
+				if (!matched) {
 					warnings++;
 					Console.WriteLine ("Warning: <move-node path=\"{0}\"/> matched no nodes", path);
+				}
 			}
 			
 			XPathNodeIterator remove_attr_iter = meta_nav.Select ("/metadata/remove-attr");
@@ -236,9 +242,10 @@ namespace GtkSharp.Parsing {
 					matched = true;
 				}
 				
-				if (!matched)
+				if (!matched) {
 					warnings++;
 					Console.WriteLine ("Warning: <remove-attr path=\"{0}\"/> matched no nodes", path);
+				}
 			}
 
 			if (symbol_doc != null) {

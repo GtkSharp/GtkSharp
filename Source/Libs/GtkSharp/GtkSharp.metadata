@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <metadata>
+  <attr path="/api/namespace" name="library">Library.Gtk</attr>
   <attr path="/api/namespace/struct[@cname='GtkAccelKey']/field[@cname='accel_key']" name="type">GdkKey</attr>
   <attr path="/api/namespace/struct[@cname='GtkAccelKey']/field[@cname='accel_key']" name="name">Key</attr>
   <attr path="/api/namespace/struct[@cname='GtkAccelKey']/field[@cname='accel_mods']" name="type">GdkModifierType</attr>
@@ -142,7 +143,8 @@
   <attr path="/api/namespace/interface[@cname='GtkFileChooser']/method[@name='GetFilenames']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/interface[@cname='GtkFileChooser']/method[@name='GetFilenames']/return-type" name="element_type">gfilename*</attr>
   <attr path="/api/namespace/interface[@cname='GtkFileChooser']/method[@name='GetFilenames']/return-type" name="elements_owned">true</attr>
-  <attr path="/api/namespace/interface[@cname='GtkFileChooser']/method[@name='GetFiles']/return-type" name="element_type">GFile*</attr>
+  <!-- Gtk 4: gtk_file_chooser_get_files returns a GListModel, not a GList, so
+       an element_type here is meaningless and makes ReturnValue.FromNative throw. -->
   <attr path="/api/namespace/interface[@cname='GtkFileChooser']/method[@name='GetPreviewFilename']/return-type" name="type">gfilename*</attr>
   <attr path="/api/namespace/interface[@cname='GtkFileChooser']/method/parameters/*[@name='filename']" name="type">const-gfilename*</attr>
   <attr path="/api/namespace/interface[@cname='GtkFileChooser']/method/parameters/*[@name='folder']" name="type">const-gfilename*</attr>
