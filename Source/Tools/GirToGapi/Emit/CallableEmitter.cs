@@ -253,15 +253,32 @@ namespace GtkSharp.GirConversion.Emit {
 			var closure = (string) girParam.Attribute ("closure");
 			var destroy = (string) girParam.Attribute ("destroy");
 
-			if (scope == "call") {
-				el.Add (new XAttribute ("scope", scope));
-			} else if (!string.IsNullOrEmpty (scope) && closure != null) {
-				el.Add (new XAttribute ("scope", scope));
+			// The closure index is emitted whenever GIR supplies one, whatever the
+			// scope. Parameters.IsHidden keys off it to drop the user_data
+			// parameter, and every generator that touches the callable consults
+			// the same list -- but only if the index is there. Emitting the scope
+			// while withholding the index hides user_data by one code path's
+			// heuristics and not another's, which is how PangoFontset.for_each
+			// ended up calling OnForeach with two arguments against a
+			// one-argument declaration.
+			//
+			// A scope past "call" still needs the index to mean anything:
+			// g_bus_own_name takes three callbacks against a single user_data and
+			// GIR annotates only the last, so for the others MethodBody would fall
+			// back to guessing i+1 and i+2 and land on the next callback.
+			if (closure != null) {
 				el.Add (new XAttribute ("closure", closure));
 
+				// Only meaningful alongside a closure. g_memory_output_stream_new
+				// carries a destroy index with no user_data at all, and on its own
+				// it just hides the parameter from the signature while the call
+				// site still names it.
 				if (destroy != null)
 					el.Add (new XAttribute ("destroy", destroy));
 			}
+
+			if (scope == "call" || (!string.IsNullOrEmpty (scope) && closure != null))
+				el.Add (new XAttribute ("scope", scope));
 
 			// As with return types, only the null-terminated string-array shape is
 			// marshallable without a metadata-supplied length parameter. A bare

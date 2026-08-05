@@ -44,10 +44,20 @@ namespace GtkSharp.GirConversion.Emit {
 
 			var fields = gir.Elements (Ns.Core + "field").ToList ();
 
-			// "disguised" is GIR's word for a struct whose definition is not
-			// public; "opaque" was added later for the same idea. Either way the
-			// layout is unusable, and so is an empty one.
-			var opaque = (string) gir.Attribute ("disguised") == "1"
+			// A boxed type is opaque by default and metadata turns that off for the
+			// handful that should expose their layout -- GtkSharp.metadata does
+			// exactly that for GtkBorder and GtkRequisition. Opacity decides class
+			// versus struct in the generated code, and the hand-written partials
+			// are written against the class form, so deriving it from whether GIR
+			// happens to list fields flips types that have always been classes.
+			// Gtk 3's PangoItem is opaque and still carries its four fields, so the
+			// two are independent.
+			//
+			// For a plain struct there is no such convention: it is opaque only
+			// when the layout is genuinely unusable. "disguised" is GIR's older
+			// word for that, "opaque" the newer one.
+			var opaque = isBoxed
+				|| (string) gir.Attribute ("disguised") == "1"
 				|| (string) gir.Attribute ("opaque") == "1"
 				|| fields.Count == 0;
 
@@ -61,12 +71,12 @@ namespace GtkSharp.GirConversion.Emit {
 			if ((string) gir.Attribute ("deprecated") == "1")
 				el.Add (new XAttribute ("deprecated", "1"));
 
-			if (!opaque) {
-				foreach (var f in fields) {
-					var field = Field (f);
-					if (field != null)
-						el.Add (field);
-				}
+			// Fields are emitted either way: metadata that clears opaque needs them
+			// present to have anything to expose.
+			foreach (var f in fields) {
+				var field = Field (f);
+				if (field != null)
+					el.Add (field);
 			}
 
 			foreach (var c in gir.Elements (Ns.Core + "constructor"))
