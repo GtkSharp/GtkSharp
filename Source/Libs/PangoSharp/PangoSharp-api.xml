@@ -3526,41 +3526,41 @@
         <return-type type="GType" />
       </method>
     </interface>
-    <class name="Context" cname="PangoCairoContext_">
-      <method name="GetFontOptions" cname="pango_cairo_context_get_font_options" shared="true">
+    <class name="Cairo" cname="PangoCairo_">
+      <method name="ContextGetFontOptions" cname="pango_cairo_context_get_font_options" shared="true">
         <return-type type="const-cairo_font_options_t*" />
         <parameters>
           <parameter type="PangoContext*" name="context" />
         </parameters>
       </method>
-      <method name="GetResolution" cname="pango_cairo_context_get_resolution" shared="true">
+      <method name="ContextGetResolution" cname="pango_cairo_context_get_resolution" shared="true">
         <return-type type="double" />
         <parameters>
           <parameter type="PangoContext*" name="context" />
         </parameters>
       </method>
-      <method name="GetShapeRenderer" cname="pango_cairo_context_get_shape_renderer" shared="true">
+      <method name="ContextGetShapeRenderer" cname="pango_cairo_context_get_shape_renderer" shared="true">
         <return-type type="PangoCairoShapeRendererFunc" />
         <parameters>
           <parameter type="PangoContext*" name="context" />
           <parameter type="gpointer*" name="data" />
         </parameters>
       </method>
-      <method name="SetFontOptions" cname="pango_cairo_context_set_font_options" shared="true">
+      <method name="ContextSetFontOptions" cname="pango_cairo_context_set_font_options" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="PangoContext*" name="context" />
           <parameter type="const-cairo_font_options_t*" name="options" />
         </parameters>
       </method>
-      <method name="SetResolution" cname="pango_cairo_context_set_resolution" shared="true">
+      <method name="ContextSetResolution" cname="pango_cairo_context_set_resolution" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="PangoContext*" name="context" />
           <parameter type="double" name="dpi" />
         </parameters>
       </method>
-      <method name="SetShapeRenderer" cname="pango_cairo_context_set_shape_renderer" shared="true">
+      <method name="ContextSetShapeRenderer" cname="pango_cairo_context_set_shape_renderer" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="PangoContext*" name="context" />
@@ -3569,76 +3569,18 @@
           <parameter type="GDestroyNotify" name="dnotify" scope="async" />
         </parameters>
       </method>
-    </class>
-    <class name="Create" cname="PangoCairoCreate_">
-      <method name="Context" cname="pango_cairo_create_context" shared="true">
+      <method name="CreateContext" cname="pango_cairo_create_context" shared="true">
         <return-type type="PangoContext*" owned="true" />
         <parameters>
           <parameter type="cairo_t*" name="cr" />
         </parameters>
       </method>
-      <method name="Layout" cname="pango_cairo_create_layout" shared="true">
+      <method name="CreateLayout" cname="pango_cairo_create_layout" shared="true">
         <return-type type="PangoLayout*" owned="true" />
         <parameters>
           <parameter type="cairo_t*" name="cr" />
         </parameters>
       </method>
-    </class>
-    <class name="Font" cname="PangoCairoFont_">
-      <method name="MapGetDefault" cname="pango_cairo_font_map_get_default" shared="true">
-        <return-type type="PangoFontMap*" />
-      </method>
-      <method name="MapNew" cname="pango_cairo_font_map_new" shared="true">
-        <return-type type="PangoFontMap*" owned="true" />
-      </method>
-      <method name="MapNewForFontType" cname="pango_cairo_font_map_new_for_font_type" shared="true">
-        <return-type type="PangoFontMap*" owned="true" />
-        <parameters>
-          <parameter type="cairo_font_type_t" name="fonttype" />
-        </parameters>
-      </method>
-    </class>
-    <class name="Layout" cname="PangoCairoLayout_">
-      <method name="LinePath" cname="pango_cairo_layout_line_path" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoLayoutLine*" name="line" />
-        </parameters>
-      </method>
-      <method name="Path" cname="pango_cairo_layout_path" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoLayout*" name="layout" />
-        </parameters>
-      </method>
-      <method name="PathForComponents" cname="pango_cairo_layout_path_for_components" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoLayout*" name="layout" />
-          <parameter type="PangoRenderComponent" name="components" />
-        </parameters>
-      </method>
-    </class>
-    <class name="Update" cname="PangoCairoUpdate_">
-      <method name="Context" cname="pango_cairo_update_context" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoContext*" name="context" />
-        </parameters>
-      </method>
-      <method name="Layout" cname="pango_cairo_update_layout" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoLayout*" name="layout" />
-        </parameters>
-      </method>
-    </class>
-    <class name="Global" cname="PangoCairoGlobal">
       <method name="ErrorUnderlinePath" cname="pango_cairo_error_underline_path" shared="true">
         <return-type type="void" />
         <parameters>
@@ -3649,12 +3591,46 @@
           <parameter type="double" name="height" />
         </parameters>
       </method>
+      <method name="FontMapGetDefault" cname="pango_cairo_font_map_get_default" shared="true">
+        <return-type type="PangoFontMap*" />
+      </method>
+      <method name="FontMapNew" cname="pango_cairo_font_map_new" shared="true">
+        <return-type type="PangoFontMap*" owned="true" />
+      </method>
+      <method name="FontMapNewForFontType" cname="pango_cairo_font_map_new_for_font_type" shared="true">
+        <return-type type="PangoFontMap*" owned="true" />
+        <parameters>
+          <parameter type="cairo_font_type_t" name="fonttype" />
+        </parameters>
+      </method>
       <method name="GlyphStringPath" cname="pango_cairo_glyph_string_path" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="cairo_t*" name="cr" />
           <parameter type="PangoFont*" name="font" />
           <parameter type="PangoGlyphString*" name="glyphs" />
+        </parameters>
+      </method>
+      <method name="LayoutLinePath" cname="pango_cairo_layout_line_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoLayoutLine*" name="line" />
+        </parameters>
+      </method>
+      <method name="LayoutPath" cname="pango_cairo_layout_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoLayout*" name="layout" />
+        </parameters>
+      </method>
+      <method name="LayoutPathForComponents" cname="pango_cairo_layout_path_for_components" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoLayout*" name="layout" />
+          <parameter type="PangoRenderComponent" name="components" />
         </parameters>
       </method>
       <method name="ShowErrorUnderline" cname="pango_cairo_show_error_underline" shared="true">
@@ -3695,6 +3671,20 @@
         <parameters>
           <parameter type="cairo_t*" name="cr" />
           <parameter type="PangoLayoutLine*" name="line" />
+        </parameters>
+      </method>
+      <method name="UpdateContext" cname="pango_cairo_update_context" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="UpdateLayout" cname="pango_cairo_update_layout" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoLayout*" name="layout" />
         </parameters>
       </method>
     </class>

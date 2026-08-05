@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <metadata>
+  <!-- The FT2, Win32 and CoreText backends live in their own gir files
+       (PangoFT2-1.0, PangoWin32-1.0, PangoCoreText-1.0) which are not vendored,
+       so none of those types reach the api.xml and the rules that hid them have
+       been removed. gapi2xml.pl saw them only because it parsed every Pango
+       header on the machine. -->
   <!-- Two namespaces: Pango and PangoCairo. They share a C# namespace but not a
        native library, so set the library before renaming - the rename would
        otherwise invalidate the selector. -->
@@ -38,7 +43,6 @@
   <attr path="/api/namespace/boxed[@cname='PangoTabArray']/constructor[@cname='pango_tab_array_new_with_positions']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoTabArray']/method[@name='Free']" name="deprecated">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoTabArray']/method[@name='GetTabs']" name="hidden">1</attr>
-  <attr path="/api/namespace/callback[@cname='PangoFT2SubstituteFunc']" name="hidden">1</attr>
   <attr path="/api/namespace/class/method[@cname='pango_version_check']" name="name">VersionCheck</attr>
   <attr path="/api/namespace/class/method[@cname='pango_version_string']" name="name">VersionString</attr>
   <attr path="/api/namespace/class[@cname='PangoAttr_']" name="hidden">1</attr>
@@ -62,8 +66,6 @@
   <attr path="/api/namespace/class[@name='Version']" name="hidden">1</attr>
   <attr path="/api/namespace/interface[@cname='PangoCairoFont']" name="hidden">1</attr>
   <attr path="/api/namespace/interface[@cname='PangoCairoFontMap']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='PangoCairoCoreTextFont']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='PangoCairoCoreTextFontMap']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoContext']/method[@name='ListFamilies']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoFont']/method[@name='Describe']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='PangoFont']/method[@name='DescriptionsFree']" name="hidden">1</attr>
@@ -71,7 +73,6 @@
   <attr path="/api/namespace/object[@cname='PangoFontFamily']/method[@name='ListFaces']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoFontMap']/method[@name='ListFamilies']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoFontset']/method[@name='Foreach']/*/*[@name='func']" name="scope">call</attr>
-  <attr path="/api/namespace/object[@cname='PangoFT2FontMap']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='GetCursorPos']/*/*[@type='PangoRectangle*']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='GetExtents']/*/*[@type='PangoRectangle*']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='GetIter']/return-type" name="owned">true</attr>
@@ -88,22 +89,22 @@
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='SetMarkup']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='SetMarkupWithAccel']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='SetText']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoAttribute']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoAttribute']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrClass']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrColor']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrFloat']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrFontDesc']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrInt']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoAttrIterator']/method[@name='Destroy']" name="deprecated">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoAttrIterator']/method[@name='GetAttrs']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoAttrIterator']/method[@name='GetFont']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoAttrIterator']/method[@name='Destroy']" name="deprecated">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoAttrIterator']/method[@name='GetAttrs']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoAttrIterator']/method[@name='GetFont']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrLanguage']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrShape']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrSize']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrString']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoCoverage']/method[@name='Ref']" name="deprecated">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoCoverage']/method[@name='ToBytes']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoCoverage']/method[@name='Unref']" name="deprecated">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoCoverage']/method[@name='Ref']" name="deprecated">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoCoverage']/method[@name='ToBytes']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoCoverage']/method[@name='Unref']" name="deprecated">1</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/field" name="writeable">false</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/field[@name='Runs']" name="access">private</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/method[@name='GetExtents']/*/*[@type='PangoRectangle*']" name="pass_as">ref</attr>
@@ -111,12 +112,7 @@
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/method[@name='GetXRanges']" name="hidden">1</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/method[@name='Ref']" name="deprecated">1</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/method[@name='Unref']" name="deprecated">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoScriptIter']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoWin32FontCache']" name="hidden">1</attr>
-  <attr path="/api/namespace/*[@cname='PangoWin32Family']" name="parent">PangoFontFamily</attr>
-  <attr path="/api/namespace/*[@cname='PangoWin32Face']" name="parent">PangoFontFace</attr>
-  <attr path="/api/namespace/*[@cname='PangoCoreTextFamily']" name="parent">PangoFontFamily</attr>
-  <attr path="/api/namespace/*[@cname='PangoCoreTextFace']" name="parent">PangoFontFace</attr>
+  <attr path="/api/namespace/*[@cname='PangoScriptIter']" name="hidden">1</attr>
   <move-node path="/api/namespace/class[@name='Version']/method[@cname='pango_version_check']">/api/namespace/class[@name='Global']</move-node>
   <move-node path="/api/namespace/class[@name='Version']/method[@cname='pango_version_string']">/api/namespace/class[@name='Global']</move-node>
 </metadata>

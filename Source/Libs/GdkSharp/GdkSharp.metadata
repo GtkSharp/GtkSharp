@@ -1,53 +1,26 @@
 <?xml version="1.0"?>
 <metadata>
+  <!-- Gtk 4 deleted most of what this file used to describe: GdkScreen,
+       GdkWindow (now GdkSurface), GdkColor, GdkDeviceManager, GdkKeymap and the
+       whole GdkEvent* struct hierarchy, which is now opaque event objects. Also
+       gone: gdk_notify_startup_complete, GDK_MODIFIER_MASK, and the Rectangle
+       alias. 131 rules were retired wholesale; what remains is what still
+       applies. -->
   <!-- Two namespaces: Gdk and GdkPixbuf, both surfacing as Gdk in C#, as they
        always have. Set the library before renaming; the rename invalidates the
        selector. Note Library.Gdk resolves to libgtk-4 - see Shared/Library.cs. -->
   <attr path="/api/namespace[@name='Gdk']" name="library">Library.Gdk</attr>
   <attr path="/api/namespace[@name='GdkPixbuf']" name="library">Library.GdkPixbuf</attr>
   <attr path="/api/namespace[@name='GdkPixbuf']" name="name">Gdk</attr>
-  <attr path="/api/namespace/boxed[@cname='GdkColor']" name="nohash">true</attr>
-  <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Copy']" name="hidden">1</attr>
-  <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Free']" name="hidden">1</attr>
-  <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Hash']" name="hidden">1</attr>
-  <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Parse']/return-type" name="type">gboolean</attr>
-  <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Parse']/*/*[@type='GdkColor*']" name="pass_as">ref</attr>
-  <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='ToString']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GdkPixbufFormat']/method[@cname='gdk_pixbuf_format_is_disabled']" name="name">GetDisabled</attr> 
   <attr path="/api/namespace/boxed[@cname='GdkPixbufFormat']/method[@name='GetExtensions']/return-type" name="null_term_array">1</attr> 
   <attr path="/api/namespace/boxed[@cname='GdkPixbufFormat']/method[@name='GetMimeTypes']/return-type" name="null_term_array">1</attr> 
   <attr path="/api/namespace/callback[@cname='GdkPixbufDestroyNotify']/*/*[@type='guchar*']" name="array">1</attr>
   <attr path="/api/namespace/class[@cname='GdkCairo_']" name="name">CairoHelper</attr>
-  <attr path="/api/namespace/class[@cname='GdkCairo_']/method[@name='Create']/return-type" name="owned">true</attr>
-  <attr path="/api/namespace/class[@cname='GdkCairo_']/method[@name='GetClipRectangle']/parameters/parameter[@name='rect']" name="pass_as">out</attr>
-  <attr path="/api/namespace/class[@cname='GdkDrag_']/method[@name='Begin']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkDrag_']/method[@name='FindWindowForScreen']/*/*[@name='dest_window']" name="pass_as">out</attr>
-  <attr path="/api/namespace/class[@cname='GdkEvent_']" name="name">EventHelper</attr>
   <attr path="/api/namespace/class[@cname='GdkKeyval_']/method[@name='Name']/return-type" name="type">const-gchar*</attr>
-  <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='AddOptionEntriesLibgtkOnly']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='InitCheck']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='ListVisuals']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='ParseArgs']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='TextPropertyToUtf8ListForDisplay']" name="hidden">1</attr>
   <move-node path="/api/namespace/class[@cname='GdkNotify_']/method">/api/namespace/class[@cname='GdkGlobal']</move-node>
-  <attr path="/api/namespace/class[@cname='GdkNotify_']" name="hidden">1</attr>
-  <attr path="/api/namespace/class/method[@cname='gdk_notify_startup_complete']" name="name">NotifyStartupComplete</attr>
   <attr path="/api/namespace/class[@cname='GdkPango_']" name="name">PangoHelper</attr>
-  <attr path="/api/namespace/class[@cname='GdkProperty_']/method[@name='Get']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkProperty_']/method[@name='Change']/*/*[@name='data']" name="array">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkQuery_']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkSelection_']/method[@name='PropertyGet']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_idle']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_idle_full']" name="name">AddIdle</attr>
-  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_timeout']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_timeout_full']" name="name">AddTimeout</attr>
-  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_timeout_seconds']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_timeout_seconds_full']" name="name">AddTimeoutSeconds</attr>
-  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_set_lock_functions']" name="hidden">1</attr>
   <add-node path="/api/namespace/enum[@cname='GdkModifierType']"><member name="None" value="0" /></add-node>
-  <attr path="/api/namespace/enum[@cname='GdkModifierType']/member[@name='ModifierMask']" name="value">ReleaseMask | 0x1fff</attr>
-  <attr path="/api/namespace/enum[@cname='GdkWindowWindowClass']/member[@name='Output']" name="name">InputOutput</attr>
-  <attr path="/api/namespace/enum[@cname='GdkWindowWindowClass']/member[@name='Only']" name="name">InputOnly</attr>
   <attr path="/api/namespace/enum[@cname='GdkSeatCapabilities']/member[@name='AllPointing']" name="value">Pointer | Touch | TabletStylus</attr>
   <attr path="/api/namespace/enum[@cname='GdkSeatCapabilities']/member[@name='All']" name="value">AllPointing | Keyboard</attr>
   <attr path="/api/namespace/enum[@cname='GdkAnchorHints']/member[@name='Flip']" name="value">FlipX | FlipY</attr>
@@ -62,44 +35,17 @@
   <attr path="/api/namespace/enum[@cname='GdkAxisFlags']/member[@name='Distance']" name="value">AxisUse.Distance</attr>
   <attr path="/api/namespace/enum[@cname='GdkAxisFlags']/member[@name='Rotation']" name="value">AxisUse.Rotation</attr>
   <attr path="/api/namespace/enum[@cname='GdkAxisFlags']/member[@name='Slider']" name="value">AxisUse.Slider</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@name='GetAxis']/*/*[@name='axes']" name="array">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@name='FreeHistory']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@name='GetHistory']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@name='ListAxes']/return-type" name="element_type">GdkAtom*</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@name='ListAxes']/return-type" name="owned">true</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@name='ListAxes']/return-type" name="elements_owned">false</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@name='ListSlaveDevices']/return-type" name="element_type">GdkDevice*</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@name='ListSlaveDevices']/return-type" name="owned">true</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@name='ListSlaveDevices']/return-type" name="elements_owned">false</attr>
-  <attr path="/api/namespace/object[@cname='GdkDevice']/method[@cname='gdk_device_get_n_axes']" name="name">GetNumAxes</attr>
   <attr path="/api/namespace/object[@cname='GdkDevice']/property[@cname='n-axes']" name="name">NumAxes</attr>
-  <attr path="/api/namespace/object[@cname='GdkDeviceManager']/method[@name='ListDevices']/return-type" name="element_type">GdkDevice*</attr>
-  <attr path="/api/namespace/object[@cname='GdkDeviceManager']/method[@name='ListDevices']/return-type" name="owned">true</attr>
-  <attr path="/api/namespace/object[@cname='GdkDeviceManager']/method[@name='ListDevices']/return-type" name="elements_owned">false</attr>
-  <attr path="/api/namespace/object[@cname='GdkDeviceManager']/virtual_method[@name='ListDevices']/return-type" name="element_type">GdkDevice*</attr>
-  <attr path="/api/namespace/object[@cname='GdkDeviceManager']/virtual_method[@name='ListDevices']/return-type" name="owned">true</attr>
-  <attr path="/api/namespace/object[@cname='GdkDeviceManager']/virtual_method[@name='ListDevices']/return-type" name="elements_owned">false</attr>
-  <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='GetPointer']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='ListDevices']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='ListSeats']/return-type" name="element_type">GdkSeat*</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='ListSeats']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='ListSeats']/return-type" name="elements_owned">false</attr>
-  <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='SupportsComposite']" name="name">GetSupportsComposite</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='SupportsInputShapes']" name="name">GetSupportsInputShapes</attr>
-  <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='SupportsShapes']" name="name">GetSupportsShapes</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplayManager']/method[@name='ListDisplays']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkDragContext']/method[@name='ListTargets']/return-type" name="element_type">GdkAtom*</attr>
-  <attr path="/api/namespace/object[@cname='GdkKeymap']/method[@name='GetEntriesForKeycode']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkKeymap']/method[@name='GetEntriesForKeyval']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkMonitor']/method[@name='GetGeometry']/*/*[@type='GdkRectangle*']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkMonitor']/method[@name='GetWorkarea']/*/*[@type='GdkRectangle*']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_data']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_file']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_file_utf8']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_file_at_scale']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_file_at_scale_utf8']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_file_at_size']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_file_at_size_utf8']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_inline']/*/*[@name='data']" name="array">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_resource']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_resource_at_scale']" name="hidden">1</attr>
@@ -112,7 +58,6 @@
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='GetPixels']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='Save']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='Savev']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='SavevUtf8']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='SaveToBuffer']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='SaveToBufferv']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='SaveToCallback']" name="hidden">1</attr>
@@ -126,81 +71,8 @@
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/property" name="writeable">true</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/property" name="construct-only">true</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbufAnimation']/constructor[@cname='gdk_pixbuf_animation_new_from_file']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbufAnimation']/constructor[@cname='gdk_pixbuf_animation_new_from_file_utf8']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbufAnimation']/constructor[@cname='gdk_pixbuf_animation_new_from_resource']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbufLoader']/method[@name='Write']/*/*[@name='buf']" name="array">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetFontOptions']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetMonitorGeometry']/*/*[@type='GdkRectangle*']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetMonitorWorkarea']/*/*[@type='GdkRectangle*']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetToplevelWindows']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='Height']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='HeightMm']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='ListVisuals']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='SetFontOptions']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='Width']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='WidthMm']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetWindowStack']/return-type" name="element_type">GdkWindow*</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetWindowStack']/return-type" name="owned">true</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetWindowStack']/return-type" name="elements_owned">true</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/virtual_method[@name='GetWindowStack']/return-type" name="element_type">GdkWindow*</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/virtual_method[@name='GetWindowStack']/return-type" name="owned">true</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/virtual_method[@name='GetWindowStack']/return-type" name="elements_owned">true</attr>
-  <remove-node path="/api/namespace/object[@cname='GdkScreen']/class_struct/signal[@vm='size_changed']" />
-  <remove-node path="/api/namespace/object[@cname='GdkScreen']/class_struct/signal[@vm='composited_changed']" />
-  <remove-node path="/api/namespace/object[@cname='GdkScreen']/class_struct/signal[@vm='monitors_changed']" />
-  <add-node path="/api/namespace/object[@cname='GdkScreen']/class_struct"><method signal_vm="size_changed" /></add-node>
-  <add-node path="/api/namespace/object[@cname='GdkScreen']/class_struct"><method signal_vm="composited_changed" /></add-node>
-  <add-node path="/api/namespace/object[@cname='GdkScreen']/class_struct"><method signal_vm="monitors_changed" /></add-node>
-  <attr path="/api/namespace/object[@cname='GdkSeat']/method[@name='GetSlaves']/return-type" name="element_type">GdkDevice*</attr>
-  <attr path="/api/namespace/object[@cname='GdkSeat']/method[@name='GetSlaves']/return-type" name="owned">true</attr>
-  <attr path="/api/namespace/object[@cname='GdkSeat']/method[@name='GetSlaves']/return-type" name="elements_owned">false</attr>
-  <attr path="/api/namespace/object[@cname='GdkSeat']/virtual_method[@name='GetSlaves']/return-type" name="element_type">GdkDevice*</attr>
-  <attr path="/api/namespace/object[@cname='GdkSeat']/virtual_method[@name='GetSlaves']/return-type" name="owned">true</attr>
-  <attr path="/api/namespace/object[@cname='GdkSeat']/virtual_method[@name='GetSlaves']/return-type" name="elements_owned">false</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='AddFilter']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='Destroy']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='FreezeToplevelUpdatesLibgtkOnly']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetChildren']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetFrameExtents']/*/*[@name='rect']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetOrigin']/*/*[@type='gint*']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetPointer']/*/*[@type='gint*']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetPointer']/*/*[@type='GdkModifierType*']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetBackgroundPattern']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='InvalidateMaybeRecurse']/*/*[@name='child_func']" name="scope">call</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='PeekChildren']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='RemoveFilter']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='SetBackgroundPattern']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='SetIconList']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='ThawToplevelUpdatesLibgtkOnly']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetUserData']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@cname='gdk_window_set_user_data']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkAtom']/method[@name='Name']" name="name">GetName</attr>
-  <attr path="/api/namespace/struct[@cname='GdkAtom']/method[@name='InternStaticString']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkColorInfo']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkDeviceKey']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventAny']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventButton']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventConfigure']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventCrossing']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventDND']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventExpose']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventFocus']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventGrabBroken']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventKey']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventMotion']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventOwnerChange']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventProperty']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventProximity']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventScroll']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventSelection']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventSetting']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventVisibility']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkEventWindowState']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='GdkSeatDefault']" name="parent">GdkSeat</attr>
   <attr path="/api/namespace/struct[@cname='GdkTimeCoord']/field[@cname='axes']" name="array_len">128</attr>
-  <remove-node path="/api/namespace/object[@cname='GdkCursor']/method[@name='Ref']" />
-  <remove-node path="/api/namespace/object[@cname='GdkCursor']/method[@name='Unref']" />
-  <remove-node path="/api/namespace/alias[@name='Rectangle']" />
-  <remove-node path="/api/namespace/class[@cname='GdkRectangle_']" />
 </metadata>
 
