@@ -156,7 +156,19 @@ namespace GtkSharp.GirConversion.Emit {
 
 			var parameters = new XElement ("parameters");
 
-			if ((string) gir.Attribute ("throws") == "1")
+			// GIR sets throws on methods but not on callbacks, even when the
+			// callback takes a trailing GError**. gapi keys the whole GError
+			// treatment off this attribute -- Parameters.IsHidden only hides a
+			// GError** when Throws is set -- so without it the parameter stays
+			// visible and collides with the "error" local codegen declares for it.
+			// Infer it from the parameter list rather than trusting the attribute.
+			var throws = (string) gir.Attribute ("throws") == "1"
+				|| list.Any (p => {
+					var t = types.Resolve (p);
+					return t != null && t.Type == "GError**";
+				});
+
+			if (throws)
 				parameters.Add (new XAttribute ("throws", "1"));
 
 			foreach (var p in list)
@@ -206,8 +218,17 @@ namespace GtkSharp.GirConversion.Emit {
 				new XAttribute ("type", t == null ? "gpointer" : t.Type),
 				new XAttribute ("name", (string) girParam.Attribute ("name") ?? "arg"));
 
+			// direction="out" with caller-allocates="1" on an array is a buffer the
+			// caller supplies for the callee to fill -- g_input_stream_read's
+			// `void *buffer` -- not a C# out parameter. Marking it out makes
+			// codegen emit a method that never assigns it. gapi2xml.pl left these
+			// bare too. A caller-allocated *struct* is still a genuine out
+			// parameter, so the exemption is limited to arrays.
 			var direction = (string) girParam.Attribute ("direction");
-			if (direction == "out")
+			var callerAllocatedBuffer = (string) girParam.Attribute ("caller-allocates") == "1"
+				&& t != null && t.IsArray;
+
+			if (direction == "out" && !callerAllocatedBuffer)
 				el.Add (new XAttribute ("pass_as", "out"));
 			else if (direction == "inout")
 				el.Add (new XAttribute ("pass_as", "ref"));
