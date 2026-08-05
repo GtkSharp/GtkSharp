@@ -20924,8 +20924,8 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-GskRoundedRect*" name="outline" />
-          <parameter type="const-float*" name="border_width" />
-          <parameter type="const-GdkRGBA*" name="border_color" />
+          <parameter type="float" name="border_width" />
+          <parameter type="GdkRGBA" name="border_color" />
         </parameters>
       </method>
       <method name="AppendCairo" cname="gtk_snapshot_append_cairo">
@@ -28001,7 +28001,7 @@
       </method>
     </boxed>
     <boxed name="BitsetIter" cname="GtkBitsetIter">
-      <field name="PrivateData" cname="private_data" type="gpointer*" array_len="10" access="private" />
+      <field name="PrivateData" cname="private_data" type="gpointer" array_len="10" access="private" />
       <method name="GetValue" cname="gtk_bitset_iter_get_value">
         <return-type type="guint" />
       </method>
@@ -28091,7 +28091,7 @@
       </method>
     </struct>
     <struct name="BuildableParser" cname="GtkBuildableParser">
-      <field name="Padding" cname="padding" type="gpointer*" array_len="4" access="private" />
+      <field name="Padding" cname="padding" type="gpointer" array_len="4" access="private" />
     </struct>
     <struct name="ButtonPrivate" cname="GtkButtonPrivate" opaque="true" />
     <struct name="CellAreaContextPrivate" cname="GtkCellAreaContextPrivate" opaque="true" />
@@ -29180,56 +29180,6 @@
         </parameters>
       </method>
     </class>
-    <class name="Accessible" cname="GtkAccessible_">
-      <method name="PropertyInitValue" cname="gtk_accessible_property_init_value" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GtkAccessibleProperty" name="property" />
-          <parameter type="GValue*" name="value" />
-        </parameters>
-      </method>
-      <method name="RelationInitValue" cname="gtk_accessible_relation_init_value" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GtkAccessibleRelation" name="relation" />
-          <parameter type="GValue*" name="value" />
-        </parameters>
-      </method>
-      <method name="StateInitValue" cname="gtk_accessible_state_init_value" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GtkAccessibleState" name="state" />
-          <parameter type="GValue*" name="value" />
-        </parameters>
-      </method>
-    </class>
-    <class name="Bitset" cname="GtkBitset_">
-      <method name="IterInitAt" cname="gtk_bitset_iter_init_at" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GtkBitsetIter*" name="iter" pass_as="out" />
-          <parameter type="const-GtkBitset*" name="set" />
-          <parameter type="guint" name="target" />
-          <parameter type="guint*" name="value" pass_as="out" owned="true" />
-        </parameters>
-      </method>
-      <method name="IterInitFirst" cname="gtk_bitset_iter_init_first" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GtkBitsetIter*" name="iter" pass_as="out" />
-          <parameter type="const-GtkBitset*" name="set" />
-          <parameter type="guint*" name="value" pass_as="out" owned="true" />
-        </parameters>
-      </method>
-      <method name="IterInitLast" cname="gtk_bitset_iter_init_last" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GtkBitsetIter*" name="iter" pass_as="out" />
-          <parameter type="const-GtkBitset*" name="set" />
-          <parameter type="guint*" name="value" pass_as="out" owned="true" />
-        </parameters>
-      </method>
-    </class>
     <class name="Css" cname="GtkCss_">
       <method name="ParserErrorQuark" cname="gtk_css_parser_error_quark" shared="true">
         <return-type type="GQuark" />
@@ -29252,48 +29202,7 @@
         <return-type type="void" />
       </method>
     </class>
-    <class name="Editable" cname="GtkEditable_">
-      <method name="DelegateGetProperty" cname="gtk_editable_delegate_get_property" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GObject*" name="object" />
-          <parameter type="guint" name="prop_id" />
-          <parameter type="GValue*" name="value" />
-          <parameter type="GParamSpec*" name="pspec" />
-        </parameters>
-      </method>
-      <method name="DelegateSetProperty" cname="gtk_editable_delegate_set_property" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GObject*" name="object" />
-          <parameter type="guint" name="prop_id" />
-          <parameter type="const-GValue*" name="value" />
-          <parameter type="GParamSpec*" name="pspec" />
-        </parameters>
-      </method>
-      <method name="InstallProperties" cname="gtk_editable_install_properties" shared="true">
-        <return-type type="guint" />
-        <parameters>
-          <parameter type="GObjectClass*" name="object_class" />
-          <parameter type="guint" name="first_prop" />
-        </parameters>
-      </method>
-    </class>
-    <class name="Paper" cname="GtkPaper_">
-      <method name="SizeGetDefault" cname="gtk_paper_size_get_default" shared="true">
-        <return-type type="const-char*" />
-      </method>
-      <method name="SizeGetPaperSizes" cname="gtk_paper_size_get_paper_sizes" shared="true">
-        <return-type type="GList*" owned="true" />
-        <parameters>
-          <parameter type="gboolean" name="include_custom" />
-        </parameters>
-      </method>
-    </class>
     <class name="Print" cname="GtkPrint_">
-      <method name="ErrorQuark" cname="gtk_print_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
       <method name="RunPageSetupDialog" cname="gtk_print_run_page_setup_dialog" shared="true">
         <return-type type="GtkPageSetup*" owned="true" />
         <parameters>
@@ -29445,35 +29354,6 @@
         </parameters>
       </method>
     </class>
-    <class name="Svg" cname="GtkSvg_">
-      <method name="ErrorGetAttribute" cname="gtk_svg_error_get_attribute" shared="true">
-        <return-type type="const-char*" />
-        <parameters>
-          <parameter type="const-GError*" name="error" />
-        </parameters>
-      </method>
-      <method name="ErrorGetElement" cname="gtk_svg_error_get_element" shared="true">
-        <return-type type="const-char*" />
-        <parameters>
-          <parameter type="const-GError*" name="error" />
-        </parameters>
-      </method>
-      <method name="ErrorGetEnd" cname="gtk_svg_error_get_end" shared="true">
-        <return-type type="const-GtkSvgLocation*" />
-        <parameters>
-          <parameter type="const-GError*" name="error" />
-        </parameters>
-      </method>
-      <method name="ErrorGetStart" cname="gtk_svg_error_get_start" shared="true">
-        <return-type type="const-GtkSvgLocation*" />
-        <parameters>
-          <parameter type="const-GError*" name="error" />
-        </parameters>
-      </method>
-      <method name="ErrorQuark" cname="gtk_svg_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
-    </class>
     <class name="Test" cname="GtkTest_">
       <method name="AccessibleAssertionMessageRole" cname="gtk_test_accessible_assertion_message_role" shared="true">
         <return-type type="void" />
@@ -29580,29 +29460,6 @@
           <parameter type="GtkTreePath**" name="path" pass_as="out" owned="true" />
         </parameters>
       </method>
-      <method name="RowReferenceDeleted" cname="gtk_tree_row_reference_deleted" shared="true" deprecated="1">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GObject*" name="proxy" />
-          <parameter type="GtkTreePath*" name="path" />
-        </parameters>
-      </method>
-      <method name="RowReferenceInserted" cname="gtk_tree_row_reference_inserted" shared="true" deprecated="1">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GObject*" name="proxy" />
-          <parameter type="GtkTreePath*" name="path" />
-        </parameters>
-      </method>
-      <method name="RowReferenceReordered" cname="gtk_tree_row_reference_reordered" shared="true" deprecated="1">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GObject*" name="proxy" />
-          <parameter type="GtkTreePath*" name="path" />
-          <parameter type="GtkTreeIter*" name="iter" />
-          <parameter type="int*" name="new_order" />
-        </parameters>
-      </method>
     </class>
     <class name="Value" cname="GtkValue_">
       <method name="DupExpression" cname="gtk_value_dup_expression" shared="true">
@@ -29633,9 +29490,6 @@
       </method>
     </class>
     <class name="Global" cname="GtkGlobal">
-      <method name="BuilderErrorQuark" cname="gtk_builder_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
       <method name="CheckVersion" cname="gtk_check_version" shared="true">
         <return-type type="const-char*" />
         <parameters>
@@ -29643,12 +29497,6 @@
           <parameter type="guint" name="required_minor" />
           <parameter type="guint" name="required_micro" />
         </parameters>
-      </method>
-      <method name="ConstraintVflParserErrorQuark" cname="gtk_constraint_vfl_parser_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
-      <method name="DialogErrorQuark" cname="gtk_dialog_error_quark" shared="true">
-        <return-type type="GQuark" />
       </method>
       <method name="DistributeNaturalAllocation" cname="gtk_distribute_natural_allocation" shared="true">
         <return-type type="int" />
@@ -29666,9 +29514,6 @@
           <parameter type="GDestroyNotify" name="destroy" scope="async" />
           <parameter type="gboolean" name="wait" />
         </parameters>
-      </method>
-      <method name="FileChooserErrorQuark" cname="gtk_file_chooser_error_quark" shared="true">
-        <return-type type="GQuark" />
       </method>
       <method name="GetBinaryAge" cname="gtk_get_binary_age" shared="true">
         <return-type type="guint" />
@@ -29705,9 +29550,6 @@
           <parameter type="float*" name="b" pass_as="out" owned="true" />
         </parameters>
       </method>
-      <method name="IconThemeErrorQuark" cname="gtk_icon_theme_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
       <method name="Init" cname="gtk_init" shared="true">
         <return-type type="void" />
       </method>
@@ -29717,18 +29559,6 @@
       <method name="IsInitialized" cname="gtk_is_initialized" shared="true">
         <return-type type="gboolean" />
       </method>
-      <method name="NativeGetForSurface" cname="gtk_native_get_for_surface" shared="true">
-        <return-type type="GtkNative*" />
-        <parameters>
-          <parameter type="GdkSurface*" name="surface" />
-        </parameters>
-      </method>
-      <method name="OrderingFromCmpfunc" cname="gtk_ordering_from_cmpfunc" shared="true">
-        <return-type type="GtkOrdering" />
-        <parameters>
-          <parameter type="int" name="cmpfunc_result" />
-        </parameters>
-      </method>
       <method name="ParamSpecExpression" cname="gtk_param_spec_expression" shared="true">
         <return-type type="GParamSpec*" owned="true" />
         <parameters>
@@ -29737,9 +29567,6 @@
           <parameter type="const-char*" name="blurb" />
           <parameter type="GParamFlags" name="flags" />
         </parameters>
-      </method>
-      <method name="RecentManagerErrorQuark" cname="gtk_recent_manager_error_quark" shared="true">
-        <return-type type="GQuark" />
       </method>
       <method name="RgbToHsv" cname="gtk_rgb_to_hsv" shared="true">
         <return-type type="void" />

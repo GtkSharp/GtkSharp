@@ -5,4 +5,11 @@
   <!-- GirToGapi emits the raw shared-library name; GapiCodegen pastes this value
        verbatim into GLibrary.Load(...), so it has to be a C# expression. -->
   <attr path="/api/namespace" name="library">Library.Graphene</attr>
+
+  <!-- StructBase emits a "public static T Zero" sentinel for every struct, which
+       collides with graphene_*_zero(). The two mean the same thing - a default
+       instance is already all-zero - so the binding keeps the generated field
+       and hides the function. Matched across all types rather than listed one
+       by one: every graphene type with a zero() has the same collision. -->
+  <attr path="/api/namespace/*/method[@name='Zero']" name="hidden">1</attr>
 </metadata>

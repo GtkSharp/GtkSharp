@@ -256,18 +256,18 @@
       <constructor cname="gsk_border_node_new" name="New">
         <parameters>
           <parameter type="const-GskRoundedRect*" name="outline" />
-          <parameter type="const-float*" name="border_width" />
-          <parameter type="const-GdkRGBA*" name="border_color" />
+          <parameter type="float" name="border_width" />
+          <parameter type="GdkRGBA" name="border_color" />
         </parameters>
       </constructor>
       <method name="GetColors" cname="gsk_border_node_get_colors">
-        <return-type type="const-GdkRGBA*" />
+        <return-type type="GdkRGBA" />
       </method>
       <method name="GetOutline" cname="gsk_border_node_get_outline">
         <return-type type="const-GskRoundedRect*" />
       </method>
       <method name="GetWidths" cname="gsk_border_node_get_widths">
-        <return-type type="const-float*" />
+        <return-type type="float" />
       </method>
       <method name="GetType" cname="gsk_border_node_get_type" shared="true">
         <return-type type="GType" />
@@ -1783,7 +1783,7 @@
     </boxed>
     <struct name="RoundedRect" cname="GskRoundedRect">
       <field name="Bounds" cname="bounds" type="graphene_rect_t" access="public" writeable="true" />
-      <field name="Corner" cname="corner" type="graphene_size_t*" array_len="4" access="public" writeable="true" />
+      <field name="Corner" cname="corner" type="graphene_size_t" array_len="4" access="public" writeable="true" />
       <method name="ContainsPoint" cname="gsk_rounded_rect_contains_point">
         <return-type type="gboolean" />
         <parameters>
@@ -2213,38 +2213,6 @@
         <parameters>
           <parameter type="GValue*" name="value" />
           <parameter type="GskRenderNode*" name="node" owned="true" />
-        </parameters>
-      </method>
-    </class>
-    <class name="Global" cname="GskGlobal">
-      <method name="ComponentTransferEqual" cname="gsk_component_transfer_equal" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="gconstpointer" name="self" />
-          <parameter type="gconstpointer" name="other" />
-        </parameters>
-      </method>
-      <method name="PathParse" cname="gsk_path_parse" shared="true">
-        <return-type type="GskPath*" owned="true" />
-        <parameters>
-          <parameter type="const-char*" name="string" />
-        </parameters>
-      </method>
-      <method name="SerializationErrorQuark" cname="gsk_serialization_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
-      <method name="StrokeEqual" cname="gsk_stroke_equal" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="gconstpointer" name="stroke1" />
-          <parameter type="gconstpointer" name="stroke2" />
-        </parameters>
-      </method>
-      <method name="TransformParse" cname="gsk_transform_parse" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="const-char*" name="string" />
-          <parameter type="GskTransform**" name="out_transform" pass_as="out" owned="true" />
         </parameters>
       </method>
     </class>

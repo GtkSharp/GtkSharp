@@ -3458,8 +3458,8 @@
       <method name="DownloadBytesWithPlanes" cname="gdk_texture_downloader_download_bytes_with_planes">
         <return-type type="GBytes*" owned="true" />
         <parameters>
-          <parameter type="gsize*" name="out_offsets" pass_as="out" />
-          <parameter type="gsize*" name="out_strides" pass_as="out" />
+          <parameter type="gsize" name="out_offsets" pass_as="out" />
+          <parameter type="gsize" name="out_strides" pass_as="out" />
         </parameters>
       </method>
       <method name="DownloadInto" cname="gdk_texture_downloader_download_into">
@@ -3506,7 +3506,7 @@
     <struct name="TimeCoord" cname="GdkTimeCoord">
       <field name="Time" cname="time" type="guint32" access="public" writeable="true" />
       <field name="Flags" cname="flags" type="GdkAxisFlags" access="public" writeable="true" />
-      <field name="Axes" cname="axes" type="double*" array_len="12" access="public" writeable="true" />
+      <field name="Axes" cname="axes" type="double" array_len="12" access="public" writeable="true" />
     </struct>
     <boxed name="ToplevelLayout" cname="GdkToplevelLayout" opaque="true">
       <constructor cname="gdk_toplevel_layout_new" name="New" />
@@ -3653,26 +3653,6 @@
         </parameters>
       </method>
     </class>
-    <class name="Color" cname="GdkColor_">
-      <method name="StateGetOklab" cname="gdk_color_state_get_oklab" shared="true">
-        <return-type type="GdkColorState*" owned="true" />
-      </method>
-      <method name="StateGetOklch" cname="gdk_color_state_get_oklch" shared="true">
-        <return-type type="GdkColorState*" owned="true" />
-      </method>
-      <method name="StateGetRec2100Linear" cname="gdk_color_state_get_rec2100_linear" shared="true">
-        <return-type type="GdkColorState*" owned="true" />
-      </method>
-      <method name="StateGetRec2100Pq" cname="gdk_color_state_get_rec2100_pq" shared="true">
-        <return-type type="GdkColorState*" owned="true" />
-      </method>
-      <method name="StateGetSrgb" cname="gdk_color_state_get_srgb" shared="true">
-        <return-type type="GdkColorState*" owned="true" />
-      </method>
-      <method name="StateGetSrgbLinear" cname="gdk_color_state_get_srgb_linear" shared="true">
-        <return-type type="GdkColorState*" owned="true" />
-      </method>
-    </class>
     <class name="Content" cname="GdkContent_">
       <method name="DeserializeAsync" cname="gdk_content_deserialize_async" shared="true">
         <return-type type="void" />
@@ -3691,12 +3671,6 @@
         <parameters throws="1">
           <parameter type="GAsyncResult*" name="result" />
           <parameter type="GValue*" name="value" pass_as="out" />
-        </parameters>
-      </method>
-      <method name="FormatsParse" cname="gdk_content_formats_parse" shared="true">
-        <return-type type="GdkContentFormats*" owned="true" />
-        <parameters>
-          <parameter type="const-char*" name="string" />
         </parameters>
       </method>
       <method name="RegisterDeserializer" cname="gdk_content_register_deserializer" shared="true">
@@ -3858,29 +3832,10 @@
       </method>
     </class>
     <class name="Global" cname="GdkGlobal">
-      <method name="DmabufErrorQuark" cname="gdk_dmabuf_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
-      <method name="DragActionIsUnique" cname="gdk_drag_action_is_unique" shared="true">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="GdkDragAction" name="action" />
-        </parameters>
-      </method>
-      <method name="GlErrorQuark" cname="gdk_gl_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
       <method name="InternMimeType" cname="gdk_intern_mime_type" shared="true">
         <return-type type="const-char*" />
         <parameters>
           <parameter type="const-char*" name="string" />
-        </parameters>
-      </method>
-      <method name="PaintableNewEmpty" cname="gdk_paintable_new_empty" shared="true">
-        <return-type type="GdkPaintable*" owned="true" />
-        <parameters>
-          <parameter type="int" name="intrinsic_width" />
-          <parameter type="int" name="intrinsic_height" />
         </parameters>
       </method>
       <method name="SetAllowedBackends" cname="gdk_set_allowed_backends" shared="true">
@@ -3889,17 +3844,11 @@
           <parameter type="const-char*" name="backends" />
         </parameters>
       </method>
-      <method name="TextureErrorQuark" cname="gdk_texture_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
       <method name="UnicodeToKeyval" cname="gdk_unicode_to_keyval" shared="true">
         <return-type type="guint" />
         <parameters>
           <parameter type="guint32" name="wc" />
         </parameters>
-      </method>
-      <method name="VulkanErrorQuark" cname="gdk_vulkan_error_quark" shared="true">
-        <return-type type="GQuark" />
       </method>
     </class>
   </namespace>
@@ -4883,10 +4832,5 @@
       <field name="Mask" cname="mask" type="char*" access="public" writeable="true" />
       <field name="Relevance" cname="relevance" type="int" access="public" writeable="true" />
     </struct>
-    <class name="Global" cname="GdkGlobal">
-      <method name="PixbufErrorQuark" cname="gdk_pixbuf_error_quark" shared="true">
-        <return-type type="GQuark" />
-      </method>
-    </class>
   </namespace>
 </api>

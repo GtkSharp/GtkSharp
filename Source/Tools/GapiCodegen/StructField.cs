@@ -228,7 +228,12 @@ namespace GtkSharp.Generation {
 
 			if (IsArray && !IsNullTermArray) {
 				sw.WriteLine (indent + "[MarshalAs (UnmanagedType.ByValArray, SizeConst=" + ArrayLength + ")]");
-				sw.WriteLine (indent + "{0} {1} {2};", Access, cstype, studly_name);
+				// Must agree with EqualityName above, which lower-cases private
+				// fields. Declaring StudlyName unconditionally left the generated
+				// Equals referring to a field that does not exist -- only visible
+				// once a struct had a private fixed-size array, which Gtk 3 never
+				// produced but graphene_quad_t does.
+				sw.WriteLine (indent + "{0} {1} {2};", Access, cstype, Access == "public" ? studly_name : name);
 			} else if (IsArray && IsNullTermArray) {
 				sw.WriteLine (indent + "private {0} {1};", "IntPtr", studly_name+ "Ptr");
 				if ((Readable || Writable) && Access == "public") {
