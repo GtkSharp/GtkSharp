@@ -19,41 +19,51 @@ namespace Samples
         private SourceView _textViewCode;
         private Notebook _notebook;
 
-        public MainWindow() : base(WindowType.Toplevel)
+        public MainWindow() : base()
         {
-            // Setup GUI
-            WindowPosition = WindowPosition.Center;
-            DefaultSize = new Gdk.Size(800, 600);
+            // Setup GUI. Gtk 4 has no WindowType -- a GtkWindow is always a
+            // toplevel -- and no WindowPosition, because positioning windows is
+            // the compositor's business, not the application's.
+            Title = "GtkSharp Sample Application";
+            SetDefaultSize(800, 600);
 
             _headerBar = new HeaderBar();
-            _headerBar.ShowCloseButton = true;
-            _headerBar.Title = "GtkSharp Sample Application";
+            _headerBar.ShowTitleButtons = true;
 
+            // A button shows an icon by setting IconName; Gtk 3 needed a child
+            // Image widget and AlwaysShowImage to defeat the theme's setting.
             var btnClickMe = new Button();
-            btnClickMe.AlwaysShowImage = true;
-            btnClickMe.Image = Image.NewFromIconName("document-new-symbolic", IconSize.Button);
+            btnClickMe.IconName = "document-new-symbolic";
             _headerBar.PackStart(btnClickMe);
 
             Titlebar = _headerBar;
 
-            var hpanned = new HPaned();
+            var hpanned = new Paned(Orientation.Horizontal);
             hpanned.Position = 200;
 
             _treeView = new TreeView();
             _treeView.HeadersVisible = false;
-            hpanned.Pack1(_treeView, false, true);
+            // Pack1/Pack2 became StartChild/EndChild, with the resize and
+            // shrink flags now properties of the paned itself.
+            hpanned.StartChild = _treeView;
+            hpanned.ResizeStartChild = false;
+            hpanned.ShrinkStartChild = true;
 
             _notebook = new Notebook();
 
             var scroll1 = new ScrolledWindow();
-            var vpanned = new VPaned();
+            var vpanned = new Paned(Orientation.Vertical);
             vpanned.Position = 300;
             _boxContent = new Box(Orientation.Vertical, 0);
-            _boxContent.Margin = 8;
-            vpanned.Pack1(_boxContent, true, true);
-            vpanned.Pack2(ApplicationOutput.Widget, false, true);
+            SetAllMargins(_boxContent, 8);
+            vpanned.StartChild = _boxContent;
+            vpanned.ResizeStartChild = true;
+            vpanned.ShrinkStartChild = true;
+            vpanned.EndChild = ApplicationOutput.Widget;
+            vpanned.ResizeEndChild = false;
+            vpanned.ShrinkEndChild = true;
             scroll1.Child = vpanned;
-            _notebook.AppendPage(scroll1, new Label { Text = "Data", Expand = true });
+            _notebook.AppendPage(scroll1, new Label { Text = "Data" });
 
             var scroll2 = new ScrolledWindow();
 
@@ -61,11 +71,13 @@ namespace Samples
             _textViewCode.ShowLineNumbers = true;
             _textViewCode.Buffer.Language = new LanguageManager().GetLanguage("c-sharp");
 
-            _textViewCode.Margin = 3;
+            SetAllMargins(_textViewCode, 3);
             scroll2.Child = _textViewCode;
-            _notebook.AppendPage(scroll2, new Label { Text = "Code", Expand = true });
+            _notebook.AppendPage(scroll2, new Label { Text = "Code" });
 
-            hpanned.Pack2(_notebook, true, true);
+            hpanned.EndChild = _notebook;
+            hpanned.ResizeEndChild = true;
+            hpanned.ShrinkEndChild = true;
 
             Child = hpanned;
 
@@ -74,7 +86,23 @@ namespace Samples
 
             // Connect events
             _treeView.Selection.Changed += Selection_Changed;
-            Destroyed += (sender, e) => Application.Quit();
+
+            // Gtk 4 removed GtkWidget::destroy. CloseRequest is the signal a
+            // window gets when the user asks to close it; returning false lets
+            // the default handler proceed with the close.
+            CloseRequest += (sender, e) => {
+                Application.Quit();
+                e.RetVal = false;
+            };
+        }
+
+        // Gtk 4 has no single Margin property; the four edges are separate.
+        static void SetAllMargins(Widget widget, int margin)
+        {
+            widget.MarginTop = margin;
+            widget.MarginBottom = margin;
+            widget.MarginStart = margin;
+            widget.MarginEnd = margin;
         }
 
         private void Selection_Changed(object sender, System.EventArgs e)
@@ -83,8 +111,10 @@ namespace Samples
             {
                 var s = _store.GetValue(iter, 0).ToString();
 
-                while (_boxContent.Children.Length > 0)
-                    _boxContent.Remove(_boxContent.Children[0]);
+                // Gtk 4 has no Children array; a widget's children are a
+                // sibling list reached from FirstChild.
+                while (_boxContent.FirstChild != null)
+                    _boxContent.Remove(_boxContent.FirstChild);
                 _notebook.CurrentPage = 0;
                 _notebook.ShowTabs = false;
 
@@ -101,7 +131,6 @@ namespace Samples
 
                     item.widget.Vexpand = true;
                     _boxContent.Append(item.widget);
-                    _boxContent.ShowAll();
                 }
 
             }

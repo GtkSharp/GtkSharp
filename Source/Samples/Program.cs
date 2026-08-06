@@ -26,7 +26,10 @@ namespace Samples
             menu.AppendItem(new GLib.MenuItem("Help", "app.help"));
             menu.AppendItem(new GLib.MenuItem("About", "app.about"));
             menu.AppendItem(new GLib.MenuItem("Quit", "app.quit"));
-            App.AppMenu = menu;
+            // Gtk 4 removed the app menu (gtk_application_set_app_menu); the
+            // desktop shell no longer shows one. A menubar is the closest
+            // remaining application-level menu.
+            App.Menubar = menu;
 
             var helpAction = new GLib.SimpleAction("help", null);
             helpAction.Activated += HelpActivated;
@@ -40,7 +43,9 @@ namespace Samples
             quitAction.Activated += QuitActivated;
             App.AddAction(quitAction);
 
-            Win.ShowAll();
+            // Gtk 4 has no ShowAll: widgets are visible by default, so a
+            // window only needs to be presented.
+            Win.Present();
             Application.Run();
         }
 
@@ -62,8 +67,11 @@ namespace Samples
                 Website = "https://www.github.com/GtkSharp/GtkSharp",
                 WebsiteLabel = "GtkSharp Website"
             };
-            dialog.Run();
-            dialog.Hide();
+            // Gtk 4 removed gtk_dialog_run, which spun a nested main loop.
+            // GtkAboutDialog is no longer a GtkDialog either -- it derives
+            // straight from GtkWindow -- so it has no response to wait for:
+            // it is presented, and the user closes it.
+            dialog.Present();
         }
 
         private static void QuitActivated(object sender, System.EventArgs e)

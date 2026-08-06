@@ -431,79 +431,11 @@ namespace Gtk {
 
 		// Path: gtk_widget_path is gone; Gtk 4 has no widget paths.
 
-		static IDictionary<IntPtr, Delegate> destroy_handlers;
-		static IDictionary<IntPtr, Delegate> DestroyHandlers {
-			get {
-				if (destroy_handlers == null)
-					destroy_handlers = new Dictionary<IntPtr, Delegate> ();
-				return destroy_handlers;
-			}
-		}
-
-		private static void OverrideDestroyed (GLib.GType gtype)
-		{
-			// Do Nothing.  We don't want to hook into the native vtable.
-			// We will manually invoke the VM on signal invocation. The signal
-			// always raises before the default handler because this signal
-			// is RUN_CLEANUP.
-		}
-
-		[GLib.DefaultSignalHandler(Type=typeof(Gtk.Widget), ConnectionMethod="OverrideDestroyed")]
-		protected virtual void OnDestroyed ()
-		{
-			if (DestroyHandlers.ContainsKey (Handle)) {
-				System.EventHandler handler = (System.EventHandler) DestroyHandlers [Handle];
-				handler (this, System.EventArgs.Empty);
-				DestroyHandlers.Remove (Handle);
-			}
-		}
-
-		[GLib.Signal("destroy")]
-		public event EventHandler Destroyed {
-			add {
-				Delegate delegate_handler;
-				DestroyHandlers.TryGetValue (Handle, out delegate_handler);
-				var handler = delegate_handler as EventHandler;
-				DestroyHandlers [Handle] = Delegate.Combine (handler, value);
-			}
-			remove {
-				Delegate delegate_handler;
-				DestroyHandlers.TryGetValue (Handle, out delegate_handler);
-				var handler = delegate_handler as EventHandler;
-				handler = (EventHandler) Delegate.Remove (handler, value);
-				if (handler != null)
-					DestroyHandlers [Handle] = handler;
-				else
-					DestroyHandlers.Remove (Handle);
-			}
-		}
-
-		event EventHandler InternalDestroyed {
-			add {
-				AddSignalHandler ("destroy", value);
-			}
-			remove {
-				RemoveSignalHandler ("destroy", value);
-			}
-		}
-
-		static void NativeDestroy (object o, EventArgs args)
-		{
-			Gtk.Widget widget = o as Gtk.Widget;
-			if (widget == null)
-				return;
-
-			widget.OnDestroyed ();
-		}
-		
-		static EventHandler native_destroy_handler;
-		static EventHandler NativeDestroyHandler {
-			get {
-				if (native_destroy_handler == null)
-					native_destroy_handler = new EventHandler (NativeDestroy);
-				return native_destroy_handler;
-			}
-		}
+		// Gtk 4 removed the GtkWidget::destroy signal outright, so the Destroyed
+		// event that used to surface it cannot ever fire. It is removed rather
+		// than left in place: a handler that silently never runs reads as a
+		// window that ignores being closed, which is far harder to diagnose than
+		// a compile error. Gtk.Window.CloseRequest is the Gtk 4 replacement.
 
 		protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
@@ -528,33 +460,34 @@ namespace Gtk {
 				//Freeing our toggle ref expects a normal ref to exist, and therefore does not check if the object still exists.
 				//Take a ref here and let our toggle ref unref it.
 				g_object_ref (Handle);
-				gtk_widget_destroy (Handle);
+				gtk_window_destroy (Handle);
 				destroyed = true;
 			}
-
-			InternalDestroyed -= NativeDestroyHandler;
 
 			base.Dispose (disposing);
 		}
 
-		protected override IntPtr Raw {
-			get {
-				return base.Raw;
-			}
-			set {
-				if (Handle == value)
-					return;
+		// The Raw override that used to live here existed only to subscribe to
+		// the destroy signal; with that signal gone it forwarded to base and
+		// nothing else.
 
-				base.Raw = value;
-
-				if (value != IntPtr.Zero)
-					InternalDestroyed += NativeDestroyHandler;
-			}
-		}
+		// Gtk 4 removed gtk_widget_destroy. A toplevel is torn down with
+		// gtk_window_destroy; every other widget is destroyed by being
+		// unparented, which drops the parent's reference. Loading the old
+		// symbol yielded a null delegate -- FuncLoader.LoadFunction returns
+		// default(T) when the export is missing -- so this path threw a
+		// NullReferenceException for every widget it ran on.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_widget_destroy(IntPtr raw);
-		static d_gtk_widget_destroy gtk_widget_destroy = FuncLoader.LoadFunction<d_gtk_widget_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_destroy"));
+		delegate void d_gtk_window_destroy(IntPtr raw);
+		static d_gtk_window_destroy gtk_window_destroy = FuncLoader.LoadFunction<d_gtk_window_destroy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_destroy"));
 
+		static void DestroyNative (Widget widget)
+		{
+			if (widget is Gtk.Window)
+				gtk_window_destroy (widget.Handle);
+			else if (widget.Parent != null)
+				widget.Unparent ();
+		}
 
 		public virtual void Destroy ()
 		{
@@ -564,10 +497,8 @@ namespace Gtk {
 			if (destroyed)
 				return;
 
-			gtk_widget_destroy (Handle);
+			DestroyNative (this);
 			destroyed = true;
-
-			InternalDestroyed -= NativeDestroyHandler;
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
