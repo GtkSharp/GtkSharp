@@ -954,7 +954,21 @@ visible. It opened at **127 errors** — the real size of Phase 6, always there,
 with the earlier counts of 29, 14 and 6 measuring only what Roslyn binds before
 it gives up. Now at **51**.
 
-**Two more dead Gtk 3 code paths were found in the library, both silent.**
+**`Gtk.Application` could not start a Gtk 4 application at all.** Five of the
+eight symbols it loaded do not exist in Gtk 4 — `gtk_main`, `gtk_main_quit`,
+`gtk_events_pending`, `gtk_main_iteration` and `gtk_main_iteration_do`, all
+removed because a Gtk 4 application drives a GLib main loop through
+`GApplication` rather than a Gtk-owned one. `FuncLoader.LoadFunction` returns
+`default(T)` for a missing export, so `Application.Run()` was a null delegate
+and threw immediately. These now drive a `GLib.MainLoop` directly, which is what
+`gtk_main` did anyway, so the existing API keeps working.
+
+`gtk_init` and `gtk_init_check` survive but became **niladic** — Gtk 4 parses no
+command-line options. They were still declared `(ref int argc, ref IntPtr argv)`,
+passing two arguments to a function that takes none and then trying to recover
+options that were never consumed.
+
+**More dead Gtk 3 code paths were found in the library, all silent.**
 
 `Widget.Dispose` and `Widget.Destroy` called `gtk_widget_destroy`, which Gtk 4
 removed — the GIR has no such symbol. `FuncLoader.LoadFunction` returns
