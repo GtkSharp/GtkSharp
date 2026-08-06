@@ -19,7 +19,7 @@ namespace Samples.Sections.Widgets
 
 			ScrolledWindow sw = new ScrolledWindow
 			{
-				ShadowType = ShadowType.EtchedIn
+				HasFrame = true
 			};
 			sw.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
 
@@ -36,7 +36,7 @@ namespace Samples.Sections.Widgets
 
 			AddColumns(numbers_model);
 
-			sw.Add(_treeView);
+			sw.Child = _treeView;
 
 			/* some buttons */
 			Box hbox = new Box(Orientation.Horizontal, 4)

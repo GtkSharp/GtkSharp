@@ -32,11 +32,8 @@ namespace Samples
             _tree = new TreeView(_model);
             AddColumn();
 
-            var treeScroll = new ScrolledWindow
-            {
-                Expand = true
-            };
-            treeScroll.Add(_tree);
+            var treeScroll = new ScrolledWindow();
+            treeScroll.Child = _tree;
 
             treeScroll.Vexpand = true;
             Append(treeScroll);

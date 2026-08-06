@@ -23,20 +23,28 @@ namespace Samples
             base.OnClicked();
 
             Gdk.Display display = Gdk.Display.Default;
-            int monitorsCount = display.NMonitors;
+
+            // Gtk 4 exposes the monitors as a GListModel rather than an indexed
+            // count, so the list can notify when one is plugged or unplugged
+            // instead of having to be polled.
+            var monitors = display.Monitors;
+            uint monitorsCount = monitors.NItems;
             ApplicationOutput.WriteLine($"Monitors count: {monitorsCount}");
-            for (int i = 0; i < monitorsCount; i++)
+            for (uint i = 0; i < monitorsCount; i++)
             {
-                Gdk.Monitor monitor = display.GetMonitor(i);
+                Gdk.Monitor monitor = (Gdk.Monitor) monitors.GetObject(i);
                 ApplicationOutput.WriteLine($"Monitor {i}:");
-                ApplicationOutput.WriteLine($"\tIsPrimary: {monitor.IsPrimary}");
+                // IsPrimary is gone: Gtk 4 has no notion of a primary monitor,
+                // because Wayland has no such concept to report.
+                ApplicationOutput.WriteLine($"\tConnector: {monitor.Connector}");
                 ApplicationOutput.WriteLine($"\tManufacturer: {monitor.Manufacturer}");
                 ApplicationOutput.WriteLine($"\tModel: {monitor.Model}");
                 ApplicationOutput.WriteLine($"\tRefreshRate: {monitor.RefreshRate}");
                 ApplicationOutput.WriteLine($"\tScaleFactor: {monitor.ScaleFactor}");
                 ApplicationOutput.WriteLine($"\tWidthMm x HeightMm: {monitor.WidthMm} x {monitor.HeightMm}");
                 ApplicationOutput.WriteLine($"\tGeometry: {monitor.Geometry}");
-                ApplicationOutput.WriteLine($"\tWorkarea: {monitor.Workarea}");
+                // Workarea is gone too -- the area left free by panels and docks
+                // is not something a Wayland client can be told.
             }
         }
     }

@@ -25,8 +25,15 @@ namespace Samples
             var seat = Display.DefaultSeat;
             ApplicationOutput.WriteLine($"Default seat: {seat}");
 
-            seat.Pointer.GetPosition(null, out int x, out int y);
-            ApplicationOutput.WriteLine($"Position: ({x}, {y})");
+            // Gtk 4 removed gdk_device_get_position: a client cannot ask for
+            // the pointer's location in root coordinates, because under Wayland
+            // there are none. The position is only knowable relative to a
+            // surface the client owns, which is what this reports.
+            var surface = seat.Pointer.GetSurfaceAtPosition(out double x, out double y);
+            if (surface != null)
+                ApplicationOutput.WriteLine($"Position within {surface}: ({x}, {y})");
+            else
+                ApplicationOutput.WriteLine("Pointer is not over a surface of this application");
         }
     }
 }

@@ -53,7 +53,9 @@ my-label-init.x {
     background: LightBlue;
 }
 ");
-            StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, StyleProviderPriority.Application);
+            // Gtk 4 removed GdkScreen; style providers are registered per
+            // GdkDisplay instead.
+            StyleContext.AddProviderForDisplay(Gdk.Display.Default, css, StyleProviderPriority.Application);
 
             string name;
 
@@ -75,11 +77,11 @@ my-label-init.x {
             var label5 = new MyLabelWithInit { Text = "Inherited Label with class initializer and css class, css name: " + name };
             label5.StyleContext.AddClass("x");
 
-            box.PackStart(label1, false, false, 0);
-            box.PackStart(label2, false, false, 0);
-            box.PackStart(label3, false, false, 0);
-            box.PackStart(label4, false, false, 0);
-            box.PackStart(label5, false, false, 0);
+            box.Append(label1);
+            box.Append(label2);
+            box.Append(label3);
+            box.Append(label4);
+            box.Append(label5);
         }
     }
 }

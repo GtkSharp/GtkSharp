@@ -99,7 +99,7 @@ namespace Samples
 			if (width <= 0 || height <= 0)
 				return;
 
-			var bounds = new Graphene.Rect();
+			var bounds = Graphene.Rect.Alloc();
 			bounds.Init(0, 0, width, height);
 
 			using (var cr = snapshot.AppendCairo(bounds)) {

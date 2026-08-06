@@ -31,14 +31,14 @@ namespace Samples
 			// have experienced. Sometimes EventsPending starts return 'true' for all iterations,
 			// causing the loop to never end.
 
+			// Gdk.Threads.Enter/Leave are gone: Gtk 4 removed the global GDK
+			// lock, and the main loop may only be touched from the thread that
+			// runs it -- which is where this already was.
 			int n = 1000;
-			Gdk.Threads.Enter ();
 
 			while (Gtk.Application.EventsPending () && --n > 0) {
 				Gtk.Application.RunIteration (false);
 			}
-
-			Gdk.Threads.Leave ();
 		}
 
 		protected override void OnClicked ()

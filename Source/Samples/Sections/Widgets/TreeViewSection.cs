@@ -23,8 +23,8 @@ namespace Samples
             CreateTreeView();
 
             var treeScroll = new ScrolledWindow();
-            treeScroll.Expand = true;
-            treeScroll.Add(tree);
+            treeScroll.Vexpand = true;
+            treeScroll.Child = tree;
 
             var boxEdit = new Box(Orientation.Horizontal, 3);
 
