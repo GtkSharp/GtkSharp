@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Samples: declaration surface cleared, which opened the method-body phase Roslyn had been skipping: 127 errors, the true size of the port; now at 11, all in WebviewSection; several silent Gtk 3 code paths found and fixed in the library along the way, including one that prevented any application from starting. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, though the samples have not yet been run. Porting them exposed seven silent library defects, including one that prevented any Gtk 4 application from starting. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -949,81 +949,52 @@ Samples are the acceptance test: the repository has no test project (CLAUDE.md
 > 16 `.Add(`, 17 `Container` references, plus `VBox`/`HBox` and `ShowAll`
 > awaiting the body phase.
 
-**The declaration surface is clear**, and the body phase it was hiding is now
-visible. It opened at **127 errors** — the real size of Phase 6, always there,
-with the earlier counts of 29, 14 and 6 measuring only what Roslyn binds before
-it gives up. Now at **11**, all of them in `WebviewSection`.
+**Phase 6 compiles.** `dotnet cake build.cake --BuildTarget=Build` reports **0
+errors** across all eleven assemblies and `Source/Samples`.
 
-**`Gtk.Application` could not start a Gtk 4 application at all.** Five of the
-eight symbols it loaded do not exist in Gtk 4 — `gtk_main`, `gtk_main_quit`,
-`gtk_events_pending`, `gtk_main_iteration` and `gtk_main_iteration_do`, all
-removed because a Gtk 4 application drives a GLib main loop through
-`GApplication` rather than a Gtk-owned one. `FuncLoader.LoadFunction` returns
-`default(T)` for a missing export, so `Application.Run()` was a null delegate
-and threw immediately. These now drive a `GLib.MainLoop` directly, which is what
-`gtk_main` did anyway, so the existing API keeps working.
+The body phase opened at **127 errors** once the declaration surface was clear —
+the real size of the port, always there, with the earlier counts of 29, 14 and 6
+measuring only what Roslyn binds before it gives up.
 
-`gtk_init` and `gtk_init_check` survive but became **niladic** — Gtk 4 parses no
-command-line options. They were still declared `(ref int argc, ref IntPtr argv)`,
-passing two arguments to a function that takes none and then trying to recover
-options that were never consumed.
+> **Compiling is not the acceptance test.** The samples have not been *run*: that
+> needs the Gtk 4 runtime and is Phase 8's headless smoke run. Everything below
+> is verified by the compiler only.
 
-**More dead Gtk 3 code paths were found in the library, all silent.**
+#### Library defects found by porting the samples
 
-`Widget.Dispose` and `Widget.Destroy` called `gtk_widget_destroy`, which Gtk 4
-removed — the GIR has no such symbol. `FuncLoader.LoadFunction` returns
-`default(T)` when an export is missing, so the delegate was null and **disposing
-any window threw a NullReferenceException**. A toplevel is now torn down with
-`gtk_window_destroy`, and any other widget by being unparented.
+Every one of these was silent — nothing in a build log would have shown them,
+and they are exactly what the plan expected Phase 6 to surface.
 
-`Widget.Destroyed` surfaced `GtkWidget::destroy`, a signal Gtk 4 removed
-outright, so it could never fire. It is deleted rather than left in place: a
-handler that silently never runs reads as a window that ignores being closed.
-`Gtk.Window.CloseRequest` is the replacement, and `MainWindow` uses it.
+| Defect | Consequence |
+|:-------|:------------|
+| `Application` loaded `gtk_main`, `gtk_main_quit`, `gtk_events_pending`, `gtk_main_iteration`, `gtk_main_iteration_do` — all removed in Gtk 4 | `FuncLoader.LoadFunction` returns `default(T)` for a missing export, so `Application.Run()` was a null delegate: **no Gtk 4 application could start**. Now drives a `GLib.MainLoop`, which is what `gtk_main` did anyway. |
+| `gtk_init`/`gtk_init_check` became niladic in Gtk 4 | Declared `(ref int argc, ref IntPtr argv)`, passing two arguments to a function taking none, then trying to recover options never consumed. |
+| `Widget.Dispose`/`Destroy` called `gtk_widget_destroy` | Also removed; disposing any window threw `NullReferenceException`. Now `gtk_window_destroy` for toplevels, unparenting otherwise. |
+| `Widget.Destroyed` surfaced `GtkWidget::destroy` | Signal removed in Gtk 4, so it could never fire. Deleted, so users get a compile error instead of a window that ignores being closed. |
+| `CellRenderer.GetSize.cs` wrote to `class_abi.GetFieldOffset("get_size")` | No such field in `GtkCellRendererClass`; the lookup returns null and throws for any subclass overriding `OnGetSize`. |
+| `Widget.InitTemplateForType` always called `ConnectSignals` | That throws under Gtk 4, so **every** `[Template]` widget failed. Now called only when the template declares a `<signal>`. |
+| `JSCValue` unresolvable, so codegen silently dropped every member naming it | The finish half of the async javascript calls vanished, leaving `evaluate_javascript` startable but never collectable. Mapped to `gpointer`. |
 
-| Done | Change |
-|:-----|:-------|
-| `Gtk.EventArgs` shadowing (13) | Handler signatures qualified as `System.EventArgs`. Codegen emits `System.EventHandler` explicitly, so `Gtk.EventArgs` — the args type for signals carrying a `Gdk.Event` — was never the right one. |
-| `using Atk;` (2) | Gtk 4 has no separate Atk binding; accessibility moved into Gtk as `GtkAccessible`. Both usings were unused. |
-| `OnPressed` → `OnClicked` (4) | Gtk 4 removed `GtkButton::pressed`; buttons are gesture-driven and `clicked` survives. |
-| `DrawingAreaSection` | `Drawn` → the `DrawFunc` property. The draw function gets width and height directly, and does not own the `cairo_t` — the Gtk 3 `cr.Dispose()` calls would be a double free. |
-| `ApplicationOutput` | No `size-allocate` in Gtk 4; scrolling moved to where text is appended, via a `TextMark` so it survives until layout runs. |
-| `CompositeWidget` | `GtkBin` gone: template rooted at `GtkBox`, `.glade` → `.ui`, `<packing>` dropped. |
-| `PolarFixed` | Rewritten as a custom-layout `Widget`: `OnMeasure` + `OnSizeAllocate`, children attached via `Widget.Parent` and positioned with a `Gsk.Transform`. |
-| `ImageDrawn` | `OnDrawn` → `OnSnapshot`, drawing through `Snapshot.AppendCairo` so the pixbuf code survives unchanged. |
-| `CustomCellRenderer` | `OnGetSize` → the height-for-width pair; `OnRender` → `OnSnapshot` with `snapshot.RenderBackground`/`RenderFrame`. |
+#### What the samples needed
 
-**A dead Gtk 3 shim was removed from the library:** `CellRenderer.GetSize.cs`
-wrote a function pointer at `class_abi.GetFieldOffset("get_size")`, and
-`GtkCellRendererClass` has no such field in Gtk 4 — the lookup returns null and
-throws. Any `CellRenderer` subclass overriding `OnGetSize` would have crashed at
-class-init. Nothing else referenced it.
+`PackStart` was the largest single pattern at 38 calls, and
+`ContainerChildPropertiesSection` the largest single file at 33 errors — its
+premise, GtkContainer child properties, was replaced by *three* separate
+mechanisms, so it now demonstrates all three rather than being deleted.
 
-Remaining 127, dominated by one pattern:
+Several changes record capabilities Gtk 4 dropped rather than renamed:
+`Monitor.IsPrimary` and `Workarea` (Wayland has no primary monitor and cannot
+report the area panels leave free), `gdk_device_get_position` (no root
+coordinates exist), `Gdk.Threads` (the global GDK lock is gone), the app menu,
+`gtk_dialog_run` (nested main loops are not allowed), and `StyleContext.GetPadding`.
 
-`Box.PackStart` is done — every call became `Append`, with the old `expand`
-packing flag becoming the child's own `Hexpand`/`Vexpand`. The `PackStart` calls
-that remain are `GtkHeaderBar`'s and `GtkCellLayout`'s, both of which Gtk 4
-keeps.
+`ImageDrawn`, `CustomCellRenderer` and `Gtk.Snapshot` drawing exercise the
+render-node hierarchy bound earlier; `DrawingAreaSection`'s Gtk 3 code called
+`cr.Dispose()`, which under Gtk 4 would be a double free.
 
-`ContainerChildPropertiesSection` was the largest single file at 33 errors, and
-its whole premise — GtkContainer child properties — is gone. Rather than delete
-it, it now demonstrates the **three separate mechanisms** Gtk 4 replaced them
-with, which is more instructive than the original: `Box` has none at all
-(expansion is a property of the child, ordering a method on the box), `Grid`
-keeps attach data queryable through `QueryChild`, and `Stack` gives each child a
-real `GtkStackPage` GObject.
-
-| Remaining cause | Count | Gtk 4 replacement |
-|:------|------:|:------------------|
-| `VBox`/`HBox`/`HPaned`/`VPaned`/`VScale` | 7 | The base class plus an `Orientation` |
-| `Container.Add`/`Children` | 5 | `Append`/`SetChild`, `FirstChild`/`NextSibling` |
-| `Gtk.Stock` | 3 | Icon names from the standard naming spec |
-| `Dialog.Run` | 3 | Dialogs are async in Gtk 4; `Response` signal |
-| `ShowAll`, `WindowType`, `WindowPosition`, `Screen`, `Threads` | 9 | Removed outright |
-| `Button.Image`/`AlwaysShowImage`, `HeaderBar.Title`/`ShowCloseButton` | 8 | Property renames and removals |
-| `JavascriptResult`, `RunJavascript*` | 7 | WebKit API changed shape |
-| long tail | ~47 | one-off property and enum renames |
+Two pre-existing sample bugs surfaced: `ColorButtonSection` wrote `Blue = 255`
+into a 0..1 component, and called `Parse` on the button's own `Rgba`, filling in
+a copy and changing nothing.
 
 ### Phases 7–8 — not started
 
