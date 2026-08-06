@@ -2,6 +2,12 @@
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..\'))" />
 
   <PropertyGroup>
+    <!-- The binding necessarily references its own deprecated types: a
+         deprecated class still has properties, its methods still take and
+         return it, and the hand-written layer wraps the same APIs. Warning
+         about that here produces noise no consumer can act on and buries the
+         [Obsolete] warnings aimed at them. Consumer code still warns. -->
+    <NoWarn>$(NoWarn);CS0612;CS0618</NoWarn>
     <TargetFrameworks>net$(_GtkSharpNetVersion);netstandard2.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>$(_GtkSharpBuildOutputDirectory)\$(Configuration)</OutputPath>

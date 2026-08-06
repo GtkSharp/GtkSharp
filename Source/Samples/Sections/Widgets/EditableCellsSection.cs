@@ -1,294 +1,115 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using Gtk;
 
 namespace Samples.Sections.Widgets
 {
-	[Section(ContentType = typeof(EditableCellsSection), Category = Category.Widgets)]
-	class EditableCellsSection : Box
-	{
-		private readonly TreeView _treeView;
-		private readonly ListStore _itemsModel;
-		private readonly Dictionary<CellRenderer, int> _cellColumnsRender;
-		private List<Item> _articles;
+    // Editable cells were awkward under Gtk 3: a CellRendererText had to be told
+    // it was editable, and the edit arrived as an "edited" signal carrying a
+    // path string that had to be resolved back to a row.
+    //
+    // Gtk 4 puts real widgets in the rows, so a cell that can be edited is just
+    // an Entry or a SpinButton, and it writes straight back to the row object.
+    // That is the whole of the difference, and it is why this file is half the
+    // length of the version it replaces.
+    [Section(ContentType = typeof(EditableCellsSection), Category = Category.Widgets)]
+    public class EditableCellsSection : Box
+    {
+        private readonly GLib.ListStore _model;
+        private readonly SingleSelection _selection;
 
-		public EditableCellsSection() : base(Orientation.Vertical, 3)
-		{
-			_cellColumnsRender = new Dictionary<CellRenderer, int>();
-			ListStore numbers_model;
+        public EditableCellsSection() : base(Orientation.Vertical, 3)
+        {
+            _model = new GLib.ListStore((GLib.GType) typeof(Article));
+            foreach (var article in Initial)
+                _model.Append(article.Handle);
 
-			ScrolledWindow sw = new ScrolledWindow
-			{
-				HasFrame = true
-			};
-			sw.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
+            _selection = new SingleSelection(_model);
 
-			sw.Vexpand = true;
-			this.Append(sw);
+            var view = new ColumnView(_selection);
+            view.AppendColumn(NumberColumn());
+            view.AppendColumn(ProductColumn());
 
-			/* create models */
-			_itemsModel = CreateItemsModel();
-			numbers_model = CreateNumbersModel();
+            var scroller = new ScrolledWindow { HasFrame = true, Vexpand = true, Child = view };
+            scroller.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
+            Append(scroller);
 
-			/* create tree view */
-			_treeView = new TreeView(_itemsModel);
-			_treeView.Selection.Mode = SelectionMode.Single;
+            var buttons = new Box(Orientation.Horizontal, 4) { Homogeneous = true };
 
-			AddColumns(numbers_model);
+            var add = new Button("Add item");
+            add.Clicked += (o, e) => _model.Append(new Article { Number = 1, Product = "New article" }.Handle);
+            add.Hexpand = true;
+            buttons.Append(add);
 
-			sw.Child = _treeView;
+            var remove = new Button("Remove item");
+            remove.Clicked += (o, e) => {
+                if (_selection.Selected != uint.MaxValue)
+                    _model.Remove(_selection.Selected);
+            };
+            remove.Hexpand = true;
+            buttons.Append(remove);
 
-			/* some buttons */
-			Box hbox = new Box(Orientation.Horizontal, 4)
-			{
-				Homogeneous = true
-			};
-			this.Append(hbox);
+            Append(buttons);
+        }
 
-			Button button = new Button("Add item");
-			button.Clicked += AddItem;
-			button.Hexpand = true;
-			hbox.Append(button);
+        public class Article : GLib.Object
+        {
+            public Article() : base() { }
+            public Article(IntPtr raw) : base(raw) { }
 
-			button = new Button("Remove item");
-			button.Clicked += RemoveItem;
-			button.Hexpand = true;
-			hbox.Append(button);
-		}
+            public int Number { get; set; }
+            public string Product { get; set; }
+        }
 
-		private class Item
-		{
-			public int Number;
-			public string Product;
-			public int Yummy;
-		}
+        /// <summary>An editable number, as a spin button living in the row.</summary>
+        private ColumnViewColumn NumberColumn()
+        {
+            var factory = new SignalListItemFactory();
 
-		private enum ColumnItem
-		{
-			Number,
-			Product,
-			Yummy,
-			Num
-		};
+            factory.Setup += (o, args) => {
+                var listItem = (ListItem) args.Object;
+                listItem.Child = new SpinButton(new Adjustment(1, 0, 1000, 1, 10, 0), 1, 0);
+            };
 
-		private enum ColumnNumber
-		{
-			Text,
-			Num
-		};
+            factory.Bind += (o, args) => {
+                var listItem = (ListItem) args.Object;
+                var article = (Article) GLib.Object.GetObject(listItem.Item);
+                var spin = (SpinButton) listItem.Child;
 
-		private ListStore CreateItemsModel()
-		{
-			ListStore model;
-			TreeIter iter;
+                spin.Value = article.Number;
+                spin.ValueChanged += (s, e) => article.Number = (int) spin.Value;
+            };
 
-			/* create array */
-			_articles = new List<Item>();
+            return new ColumnViewColumn("Number", factory);
+        }
 
-			AddItems();
+        /// <summary>An editable product name, as an entry living in the row.</summary>
+        private ColumnViewColumn ProductColumn()
+        {
+            var factory = new SignalListItemFactory();
 
-			/* create list store */
-			model = new ListStore(typeof(int), typeof(string), typeof(int), typeof(bool));
+            factory.Setup += (o, args) => {
+                var listItem = (ListItem) args.Object;
+                listItem.Child = new Entry { Hexpand = true };
+            };
 
-			/* add items */
-			for (int i = 0; i < _articles.Count; i++)
-			{
-				iter = model.Append();
-				model.SetValue(iter, (int)ColumnItem.Number, _articles[i].Number);
-				model.SetValue(iter, (int)ColumnItem.Product, _articles[i].Product);
-				model.SetValue(iter, (int)ColumnItem.Yummy, _articles[i].Yummy);
-			}
+            factory.Bind += (o, args) => {
+                var listItem = (ListItem) args.Object;
+                var article = (Article) GLib.Object.GetObject(listItem.Item);
+                var entry = (Entry) listItem.Child;
 
-			return model;
-		}
+                entry.Text = article.Product ?? string.Empty;
+                entry.Changed += (s, e) => article.Product = entry.Text;
+            };
 
-		private static ListStore CreateNumbersModel()
-		{
-			ListStore model;
-			TreeIter iter;
+            return new ColumnViewColumn("Product", factory) { Expand = true };
+        }
 
-			/* create list store */
-			model = new ListStore(typeof(string), typeof(int));
-
-			/* add numbers */
-			for (int i = 0; i < 10; i++)
-			{
-				iter = model.Append();
-				model.SetValue(iter, (int)ColumnNumber.Text, i.ToString());
-			}
-
-			return model;
-		}
-
-		private void AddItems()
-		{
-			Item foo = new Item
-			{
-				Number = 3,
-				Product = "bottles of coke",
-				Yummy = 20
-			};
-			_articles.Add(foo);
-
-			foo = new Item
-			{
-				Number = 5,
-				Product = "packages of noodles",
-				Yummy = 50
-			};
-			_articles.Add(foo);
-
-			foo = new Item
-			{
-				Number = 2,
-				Product = "packages of chocolate chip cookies",
-				Yummy = 90
-			};
-			_articles.Add(foo);
-
-			foo = new Item
-			{
-				Number = 1,
-				Product = "can vanilla ice cream",
-				Yummy = 60
-			};
-			_articles.Add(foo);
-
-			foo = new Item
-			{
-				Number = 6,
-				Product = "eggs",
-				Yummy = 10
-			};
-			_articles.Add(foo);
-		}
-
-		private void AddColumns(ITreeModel numbersModel)
-		{
-			/* number column */
-			CellRendererCombo rendererCombo = new CellRendererCombo
-			{
-				Model = numbersModel,
-				TextColumn = (int)ColumnNumber.Text,
-				HasEntry = false,
-				Editable = true
-			};
-			rendererCombo.Edited += CellEdited;
-			rendererCombo.EditingStarted += EditingStarted;
-			_cellColumnsRender.Add(rendererCombo, (int)ColumnItem.Number);
-
-			_treeView.InsertColumn(-1, "Number", rendererCombo, "text", (int)ColumnItem.Number);
-
-			/* product column */
-			CellRendererText rendererText = new CellRendererText
-			{
-				Editable = true
-			};
-			rendererText.Edited += CellEdited;
-			_cellColumnsRender.Add(rendererText, (int)ColumnItem.Product);
-
-			_treeView.InsertColumn(-1, "Product", rendererText, "text", (int)ColumnItem.Product);
-
-			/* yummy column */
-			CellRendererProgress rendererProgress = new CellRendererProgress();
-			_cellColumnsRender.Add(rendererProgress, (int)ColumnItem.Yummy);
-
-			_treeView.InsertColumn(-1, "Yummy", rendererProgress, "value", (int)ColumnItem.Yummy);
-		}
-
-		private void AddItem(object sender, System.EventArgs e)
-		{
-			TreeIter iter;
-
-			if (_articles == null)
-			{
-				return;
-			}
-
-			Item foo = new Item
-			{
-				Number = 0,
-				Product = "Description here",
-				Yummy = 50
-			};
-			_articles.Add(foo);
-
-			/* Insert a new row below the current one */
-			_treeView.GetCursor(out TreePath path, out _);
-			if (path != null)
-			{
-				_ = _itemsModel.GetIter(out TreeIter current, path);
-				iter = _itemsModel.InsertAfter(current);
-			}
-			else
-			{
-				iter = _itemsModel.Insert(-1);
-			}
-
-			/* Set the data for the new row */
-			_itemsModel.SetValue(iter, (int)ColumnItem.Number, foo.Number);
-			_itemsModel.SetValue(iter, (int)ColumnItem.Product, foo.Product);
-			_itemsModel.SetValue(iter, (int)ColumnItem.Yummy, foo.Yummy);
-
-			/* Move focus to the new row */
-			path = _itemsModel.GetPath(iter);
-			TreeViewColumn column = _treeView.GetColumn(0);
-			_treeView.SetCursor(path, column, false);
-		}
-
-		private void RemoveItem(object sender, System.EventArgs e)
-		{
-			TreeSelection selection = _treeView.Selection;
-
-			if (selection.GetSelected(out TreeIter iter))
-			{
-				TreePath path = _itemsModel.GetPath(iter);
-				int i = path.Indices[0];
-				_itemsModel.Remove(ref iter);
-				_articles.RemoveAt(i);
-			}
-		}
-
-		private void CellEdited(object data, EditedArgs args)
-		{
-			TreePath path = new TreePath(args.Path);
-			int column = _cellColumnsRender[(CellRenderer)data];
-			_itemsModel.GetIter(out TreeIter iter, path);
-
-			switch (column)
-			{
-				case (int)ColumnItem.Number:
-					{
-						int i = path.Indices[0];
-						_articles[i].Number = int.Parse(args.NewText);
-
-						_itemsModel.SetValue(iter, column, _articles[i].Number);
-					}
-					break;
-
-				case (int)ColumnItem.Product:
-					{
-						string oldText = (string)_itemsModel.GetValue(iter, column);
-						int i = path.Indices[0];
-						_articles[i].Product = args.NewText;
-
-						_itemsModel.SetValue(iter, column, _articles[i].Product);
-					}
-					break;
-			}
-		}
-
-		private void EditingStarted(object o, EditingStartedArgs args)
-		{
-			((ComboBox)args.Editable).RowSeparatorFunc += SeparatorRow;
-		}
-
-		private bool SeparatorRow(ITreeModel model, TreeIter iter)
-		{
-			TreePath path = model.GetPath(iter);
-			int idx = path.Indices[0];
-
-			return idx == 5;
-		}
-	}
+        private static readonly Article[] Initial = {
+            new Article { Number = 3, Product = "bottles of coke" },
+            new Article { Number = 5, Product = "packages of noodles" },
+            new Article { Number = 2, Product = "packages of chocolate chip cookies" },
+            new Article { Number = 1, Product = "can vanilla ice cream" },
+            new Article { Number = 6, Product = "eggs" },
+        };
+    }
 }

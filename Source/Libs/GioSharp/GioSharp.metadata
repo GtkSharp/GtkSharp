@@ -249,4 +249,21 @@
        codegen cast a string to IntPtr. gapi2xml.pl carried no direction here at
        all, which is why Gtk 3 compiled; drop it back to that. -->
   <remove-attr path="/api/namespace/object[@cname='GApplication']/virtual_method[@cname='local_command_line']/parameters/parameter[@name='arguments']" name="pass_as" />
+
+  <!--
+    GListModel::items-changed and GMenuModel::items-changed are different
+    signals with the same name in the same namespace, and different parameter
+    types: guint on the list model, gint on the menu model. GapiCodegen names
+    the args class after the signal (Signal.EventArgsName = Name + "Args"), so
+    one class had to serve both, and whichever won was wrong for the other.
+
+    GMenuModel lost, which meant GLib.ItemsChangedArgs cast the list model's
+    guint positions to int and threw InvalidCastException inside the signal
+    marshaller, which is fatal because an exception there aborts the process. Every
+    ColumnView and ListView goes through GListModel, so the common case was the
+    broken one.
+
+    The menu model's signal is renamed instead, giving it its own args class.
+  -->
+  <attr path="/api/namespace/object[@cname='GMenuModel']/signal[@cname='items-changed']" name="name">MenuItemsChanged</attr>
 </metadata>

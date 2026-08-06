@@ -6,174 +6,142 @@ using Gtk;
 
 namespace Samples
 {
-    [Section(ContentType = typeof(TreeView), Category = Category.Widgets)]
-    class TreeViewSection : Box
+    // The Gtk 3 version of this sample used GtkTreeView over a GtkTreeStore,
+    // both deprecated in Gtk 4.10. The replacement changes the shape rather than
+    // the names: rows are GObjects in a GListModel, columns are factories that
+    // build real widgets, and selection is a model rather than a helper object.
+    //
+    // What is demonstrated is the same: add, edit and remove rows, and watch the
+    // model report every change.
+    [Section(ContentType = typeof(ColumnView), Category = Category.Widgets)]
+    public class TreeViewSection : Box
     {
-        const int ColumnIndex = 0;
-        const int ColumnName = 1;
-        const int ColumnIcon = 2;
-
-        TreeView tree;
-        TreeStore store;
-        Entry entry;
-        Gdk.Pixbuf icon = new Gdk.Pixbuf(typeof(ImageSection).Assembly, "Testpic", 32, 32);
+        private readonly GLib.ListStore _model;
+        private readonly SingleSelection _selection;
+        private readonly Entry _entry;
+        private readonly Gdk.Texture _icon;
+        private int _nextIndex = 1;
 
         public TreeViewSection() : base(Orientation.Vertical, 3)
         {
-            CreateTreeView();
+            _icon = new Gdk.Texture(new Gdk.Pixbuf(typeof(ImageSection).Assembly, "Testpic", 32, 32));
 
-            var treeScroll = new ScrolledWindow();
-            treeScroll.Vexpand = true;
-            treeScroll.Child = tree;
+            _model = new GLib.ListStore((GLib.GType) typeof(Item));
+            _selection = new SingleSelection(_model);
 
-            var boxEdit = new Box(Orientation.Horizontal, 3);
+            // GListModel reports every insertion, removal and replacement
+            // through one signal, where GtkTreeModel had five.
+            _model.ItemsChanged += (o, args) =>
+                ApplicationOutput.WriteLine(this,
+                    $"ItemsChanged: position {args.Position}, removed {args.Removed}, added {args.Added}");
 
-            var btn1 = new Button() { Label = "Add" };
-            btn1.Clicked += OnAddClicked;
+            for (int i = 0; i < 3; i++)
+                Add($"Item {_nextIndex}");
 
-            var btn2 = new Button() { Label = "Edit" };
-            btn2.Clicked += OnEditClicked;
+            var view = new ColumnView(_selection);
+            view.AppendColumn(IconColumn());
+            view.AppendColumn(TextColumn("Index", item => item.Index.ToString()));
+            view.AppendColumn(TextColumn("Name", item => item.Name));
 
-            var btn3 = new Button() { Label = "Remove" };
-            btn3.Clicked += OnRemoveClicked;
+            _entry = new Entry { Hexpand = true, PlaceholderText = "Name for add / edit" };
 
-            entry = new Entry();
+            var buttons = new Box(Orientation.Horizontal, 3);
+            buttons.Append(_entry);
+            buttons.Append(ActionButton("Add", OnAdd));
+            buttons.Append(ActionButton("Edit", OnEdit));
+            buttons.Append(ActionButton("Remove", OnRemove));
 
-            entry.Hexpand = true;
-            boxEdit.Append(entry);
-            boxEdit.Append(btn1);
-            boxEdit.Append(btn2);
-            boxEdit.Append(btn3);
-
-            Append(boxEdit);
-            treeScroll.Vexpand = true;
-            Append(treeScroll);
+            Append(buttons);
+            Append(new ScrolledWindow { Child = view, Vexpand = true });
         }
 
-        void CreateTreeView()
+        public class Item : GLib.Object
         {
-            store = new TreeStore(typeof(int), typeof(string), typeof(Gdk.Pixbuf));
-            store.RowInserted += OnStoreRowInserted;
-            store.RowDeleted += OnStoreRowDeleted;
-            store.RowChanged += OnStoreRowChanged;
-            store.RowsReordered += OnStoreRowsReordered;
-            store.RowHasChildToggled += OnStoreRowHasChildToggled;
+            public Item() : base() { }
+            public Item(IntPtr raw) : base(raw) { }
 
-            tree = new TreeView();
-
-            var col = tree.AppendColumn("Index", new CellRendererText(), "text", ColumnIndex);
-            col.Resizable = true;
-            col.SortColumnId = 0;
-            col = tree.AppendColumn("Name", new CellRendererText(), "text", ColumnName);
-            col.Resizable = true;
-            col.Expand = true;
-            col.SortColumnId = 1;
-
-            col = tree.AppendColumn("Icon", new CellRendererPixbuf(), "pixbuf", ColumnIcon);
-            col.Resizable = true;
-            col.Expand = true;
-            col.Alignment = .5f;
-
-            FillTreeView();
-
-            tree.Model = store;
-            tree.Selection.Changed += OnTreeSelectionChanged;
+            public int Index { get; set; }
+            public string Name { get; set; }
         }
 
-        void FillTreeView()
+        private Button ActionButton(string label, Action action)
         {
-            int idx = 0;
-
-            TreeIter it = store.InsertWithValues(-1, idx++, "Adam", null);
-            store.InsertWithValues(it, -1, idx++, "Adam child 1", null);
-            store.InsertWithValues(it, -1, idx++, "Adam child 2", icon);
-            store.InsertWithValues(it, -1, idx++, "Adam child 3", null);
-
-            store.InsertWithValues(-1, idx++, "Eve", null);
-            store.InsertWithValues(-1, idx++, "Zack", null);
-            store.InsertWithValues(-1, idx++, "John", icon);
-
-            it = store.InsertWithValues(-1, idx++, "Amy", null);
-            store.InsertWithValues(it, -1, idx++, "Amy child 1", null);
-            store.InsertWithValues(it, -1, idx++, "Amy child 2", null);
-
-            store.InsertWithValues(-1, idx++, "William", null);
-            store.InsertWithValues(-1, idx++, "Evelyn", icon);
-            store.InsertWithValues(-1, idx++, "Wyatt", null);
+            var button = new Button { Label = label };
+            button.Clicked += (o, e) => action();
+            return button;
         }
 
-        private void OnTreeSelectionChanged(object sender, System.EventArgs e)
+        private void Add(string name)
         {
-            if (!tree.Selection.GetSelected(out TreeIter it))
+            _model.Append(new Item { Index = _nextIndex++, Name = name }.Handle);
+        }
+
+        private void OnAdd()
+        {
+            Add(string.IsNullOrWhiteSpace(_entry.Text) ? $"Item {_nextIndex}" : _entry.Text);
+        }
+
+        private void OnEdit()
+        {
+            var selected = Selected();
+            if (selected == null)
                 return;
 
-            TreePath path = store.GetPath(it);
+            selected.Name = string.IsNullOrWhiteSpace(_entry.Text) ? selected.Name : _entry.Text;
 
-            var name = (string)store.GetValue(it, ColumnName);
-            entry.Text = name;
-
-            ApplicationOutput.WriteLine(sender, $"SelectionChanged, path {path}, name {name}");
+            // The model does not watch its items, so a change to one has to be
+            // announced. Re-inserting is the plain way to say "this row differs".
+            uint position = _selection.Selected;
+            _model.Remove(position);
+            _model.Insert(position, selected.Handle);
+            _selection.Selected = position;
         }
 
-        private void OnStoreRowInserted(object sender, RowInsertedArgs args)
+        private void OnRemove()
         {
-            var name = (string)store.GetValue(args.Iter, ColumnName);
-            ApplicationOutput.WriteLine(sender, $"RowInserted, path {args.Path}, name {name}");
-        }
-
-        private void OnStoreRowDeleted(object sender, RowDeletedArgs args)
-        {
-            ApplicationOutput.WriteLine(sender, $"RowDeleted, path {args.Path}");
-        }
-
-        private void OnStoreRowChanged(object sender, RowChangedArgs args)
-        {
-            var name = (string)store.GetValue(args.Iter, ColumnName);
-            ApplicationOutput.WriteLine(sender, $"RowChanged, path {args.Path}, name {name}");
-        }
-
-        private void OnStoreRowsReordered(object sender, RowsReorderedArgs args)
-        {
-            ApplicationOutput.WriteLine(sender, $"RowsReordered, path {args.Path}");
-        }
-
-        private void OnStoreRowHasChildToggled(object sender, RowHasChildToggledArgs args)
-        {
-            var name = (string)store.GetValue(args.Iter, ColumnName);
-            ApplicationOutput.WriteLine(sender, $"RowHasChildToggled, path {args.Path}, name {name}");
-        }
-
-        private void OnAddClicked(object sender, System.EventArgs e)
-        {
-            if (!tree.Selection.GetSelected(out TreeIter it))
+            if (Selected() == null)
                 return;
 
-            string txt = entry.Text.Trim();
-            if (string.IsNullOrEmpty(txt))
-                return;
-
-            int idx = Environment.TickCount % 100;
-            store.InsertWithValues(it, -1, idx, txt, null);
+            _model.Remove(_selection.Selected);
         }
 
-        private void OnEditClicked(object sender, System.EventArgs e)
+        private Item Selected()
         {
-            if (!tree.Selection.GetSelected(out TreeIter it))
-                return;
+            // GTK_INVALID_LIST_POSITION is uint.MaxValue.
+            if (_selection.Selected == uint.MaxValue)
+                return null;
 
-            string txt = entry.Text.Trim();
-            if (string.IsNullOrEmpty(txt))
-                return;
-
-            store.SetValue(it, ColumnName, txt);
+            return GLib.Object.GetObject(_selection.SelectedItem) as Item;
         }
 
-        private void OnRemoveClicked(object sender, System.EventArgs e)
+        private ColumnViewColumn IconColumn()
         {
-            if (!tree.Selection.GetSelected(out TreeIter it))
-                return;
+            var factory = new SignalListItemFactory();
 
-            store.Remove(ref it);
+            factory.Setup += (o, args) => {
+                var listItem = (ListItem) args.Object;
+                listItem.Child = new Image((Gdk.IPaintable) _icon) { PixelSize = 32 };
+            };
+
+            return new ColumnViewColumn("Icon", factory);
+        }
+
+        private ColumnViewColumn TextColumn(string title, Func<Item, string> text)
+        {
+            var factory = new SignalListItemFactory();
+
+            factory.Setup += (o, args) => {
+                var listItem = (ListItem) args.Object;
+                listItem.Child = new Label { Halign = Align.Start };
+            };
+
+            factory.Bind += (o, args) => {
+                var listItem = (ListItem) args.Object;
+                var item = (Item) GLib.Object.GetObject(listItem.Item);
+                ((Label) listItem.Child).Text = text(item);
+            };
+
+            return new ColumnViewColumn(title, factory) { Expand = true };
         }
     }
 }

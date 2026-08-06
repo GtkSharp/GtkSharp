@@ -1,192 +1,109 @@
-﻿using System.Collections.Generic;
+using System;
 using Gtk;
 
 namespace Samples
 {
-	[Section(ContentType = typeof(ListStore), Category = Category.Widgets)]
-	class ListStoreSection : Box
-	{
-		private readonly TreeView _tree;
-		private ListStore _model;
-        private readonly List<Bug> _data = new List<Bug>
-        {
-              new Bug ( false, 60482, "Normal",      "scrollable notebooks and hidden tabs" ),
-              new Bug ( false, 60620, "Critical",    "gdk_window_clear_area (gdkwindow-win32.c) is not thread-safe" ),
-              new Bug ( false, 50214, "Major",       "Xft support does not clean up correctly" ),
-              new Bug ( true,  52877, "Major",       "GtkFileSelection needs a refresh method. " ),
-              new Bug ( false, 56070, "Normal",      "Can't click button after setting in sensitive" ),
-              new Bug ( true,  56355, "Normal",      "GtkLabel - Not all changes propagate correctly" ),
-              new Bug ( false, 50055, "Normal",      "Rework width/height computations for TreeView" ),
-              new Bug ( false, 58278, "Normal",      "gtk_dialog_set_response_sensitive () doesn't work" ),
-              new Bug ( false, 55767, "Normal",      "Getters for all setters" ),
-              new Bug ( false, 56925, "Normal",      "Gtkcalender size" ),
-              new Bug ( false, 56221, "Normal",      "Selectable label needs right-click copy menu" ),
-              new Bug ( true,  50939, "Normal",      "Add shift clicking to GtkTextView" ),
-              new Bug ( false, 6112,  "Enhancement", "netscape-like collapsable toolbars" ),
-              new Bug ( false, 1,     "Normal",      "First bug :=)" ),
-        };
+    // Gtk 4.10 deprecated GtkTreeView, GtkListStore and the whole cell-renderer
+    // stack. The replacement is a different shape rather than a renamed one:
+    //
+    //   GtkListStore    ->  any GListModel; here a GListStore of GObjects
+    //   TreeModelColumn ->  ordinary properties on that GObject
+    //   GtkCellRenderer ->  a factory that builds real widgets per row
+    //   GtkTreeSelection -> a selection model wrapping the list model
+    //
+    // Rows must be GObjects, so the data type below derives from GLib.Object.
+    [Section(ContentType = typeof(ColumnView), Category = Category.Widgets)]
+    public class ListStoreSection : Box
+    {
+        private readonly GLib.ListStore _model;
 
         public ListStoreSection() : base(Orientation.Vertical, 3)
         {
-            CreateModel();
-            _tree = new TreeView(_model);
-            AddColumn();
+            _model = new GLib.ListStore((GLib.GType) typeof(Bug));
+            foreach (var bug in Bugs)
+                _model.Append(bug.Handle);
 
-            var treeScroll = new ScrolledWindow();
-            treeScroll.Child = _tree;
+            var view = new ColumnView(new SingleSelection(_model));
+            view.AppendColumn(FixedColumn());
+            view.AppendColumn(TextColumn("Number", bug => bug.Number.ToString()));
+            view.AppendColumn(TextColumn("Severity", bug => bug.Severity));
+            view.AppendColumn(TextColumn("Description", bug => bug.Description));
 
-            treeScroll.Vexpand = true;
-            Append(treeScroll);
-
-            GLib.Timeout.Add(100, SpinerTimeout);
+            var scroller = new ScrolledWindow { Child = view, Vexpand = true };
+            Append(scroller);
         }
 
-		private enum Column
+        /// <summary>A row. Gtk 4 list models hold GObjects, not struct tuples.</summary>
+        public class Bug : GLib.Object
         {
-            Fixed,
-            Number,
-            Severity,
-            Description,
-            Pulse,
-            Icon,
-            Active,
-            Sensitive,
-            Num
+            public Bug() : base() { }
+            public Bug(IntPtr raw) : base(raw) { }
+
+            public bool IsFixed { get; set; }
+            public int Number { get; set; }
+            public string Severity { get; set; }
+            public string Description { get; set; }
+        }
+
+        /// <summary>
+        /// A column of check buttons. Under Gtk 3 this was a
+        /// CellRendererToggle; now the factory puts a real GtkCheckButton in
+        /// each row, which is why it can be interacted with directly.
+        /// </summary>
+        private ColumnViewColumn FixedColumn()
+        {
+            var factory = new SignalListItemFactory();
+
+            factory.Setup += (o, args) => {
+                var item = (ListItem) args.Object;
+                item.Child = new CheckButton();
+            };
+
+            factory.Bind += (o, args) => {
+                var item = (ListItem) args.Object;
+                var bug = (Bug) GLib.Object.GetObject(item.Item);
+                var check = (CheckButton) item.Child;
+
+                check.Active = bug.IsFixed;
+                check.Toggled += (s, e) => bug.IsFixed = check.Active;
+            };
+
+            return new ColumnViewColumn("Fixed", factory);
+        }
+
+        private ColumnViewColumn TextColumn(string title, Func<Bug, string> text)
+        {
+            var factory = new SignalListItemFactory();
+
+            factory.Setup += (o, args) => {
+                var item = (ListItem) args.Object;
+                item.Child = new Label { Halign = Align.Start };
+            };
+
+            factory.Bind += (o, args) => {
+                var item = (ListItem) args.Object;
+                var bug = (Bug) GLib.Object.GetObject(item.Item);
+                ((Label) item.Child).Text = text(bug);
+            };
+
+            return new ColumnViewColumn(title, factory) { Expand = true };
+        }
+
+        private static readonly Bug[] Bugs = {
+            new Bug { IsFixed = false, Number = 60482, Severity = "Normal",      Description = "scrollable notebooks and hidden tabs" },
+            new Bug { IsFixed = false, Number = 60620, Severity = "Critical",    Description = "gdk_window_clear_area (gdkwindow-win32.c) is not thread-safe" },
+            new Bug { IsFixed = false, Number = 50214, Severity = "Major",       Description = "Xft support does not clean up correctly" },
+            new Bug { IsFixed = true,  Number = 52877, Severity = "Major",       Description = "GtkFileSelection needs a refresh method." },
+            new Bug { IsFixed = false, Number = 56070, Severity = "Normal",      Description = "Can't click button after setting it insensitive" },
+            new Bug { IsFixed = true,  Number = 56355, Severity = "Normal",      Description = "GtkLabel - Not all changes propagate correctly" },
+            new Bug { IsFixed = false, Number = 50055, Severity = "Normal",      Description = "Rework width/height computations for TreeView" },
+            new Bug { IsFixed = false, Number = 58278, Severity = "Normal",      Description = "gtk_dialog_set_response_sensitive () doesn't work" },
+            new Bug { IsFixed = false, Number = 55767, Severity = "Normal",      Description = "Getters for all setters" },
+            new Bug { IsFixed = false, Number = 56925, Severity = "Normal",      Description = "Gtkcalender size" },
+            new Bug { IsFixed = false, Number = 56221, Severity = "Normal",      Description = "Selectable label needs right-click copy menu" },
+            new Bug { IsFixed = true,  Number = 50939, Severity = "Normal",      Description = "Add shift clicking to GtkTextView" },
+            new Bug { IsFixed = false, Number = 6112,  Severity = "Enhancement", Description = "netscape-like collapsable toolbars" },
+            new Bug { IsFixed = false, Number = 1,     Severity = "Normal",      Description = "First bug :=)" },
         };
-
-        private readonly struct Bug
-		{
-            public bool Fixed { get; }
-            public int Number { get; }
-            public string Severity { get; }
-            public string Description { get; }
-
-            public Bug(bool isFixed, int number, string severity, string description)
-			{
-                Fixed = isFixed;
-                Number = number;
-                Severity = severity;
-                Description = description;
-			}
-        }
-
-        private void CreateModel()
-        {
-            /* create list store */
-            _model = new ListStore(typeof(bool), typeof(int), typeof(string), typeof(string), typeof(int), typeof(string), typeof(bool), typeof(bool));
-
-            /* add data to the list store */
-            for (int i = 0; i < _data.Count; i++)
-            {
-                string iconName;
-                bool sensitive;
-
-                if (i == 1 || i == 3)
-                    iconName = "battery-caution-charging-symbolic";
-                else
-                    iconName = null;
-                if (i == 3)
-                    sensitive = false;
-                else
-                    sensitive = true;
-                TreeIter iter = _model.Append();
-                _model.SetValue(iter, (int)Column.Fixed, _data[i].Fixed);
-                _model.SetValue(iter, (int)Column.Number, _data[i].Number);
-                _model.SetValue(iter, (int)Column.Severity, _data[i].Severity);
-                _model.SetValue(iter, (int)Column.Description, _data[i].Description);
-                _model.SetValue(iter, (int)Column.Pulse, 5);
-                _model.SetValue(iter, (int)Column.Icon, iconName);
-                _model.SetValue(iter, (int)Column.Active, false);
-                _model.SetValue(iter, (int)Column.Sensitive, sensitive);
-            }
-        }
-
-        private void AddColumn()
-        {
-            CellRenderer renderer;
-            TreeViewColumn column;
-
-            /* column for fixed toggles */
-            var rendererToggle = new CellRendererToggle();
-            rendererToggle.Toggled += RendererToggle_Toggled;
-            column = new TreeViewColumn("Fixed?", rendererToggle, "active", Column.Fixed, null)
-            {
-                /* set this column to a fixed sizing (of 50 pixels) */
-                FixedWidth = 50
-            };
-            _tree.AppendColumn(column);
-
-            /* column for bug numbers */
-            renderer = new CellRendererText();
-            column = new TreeViewColumn("Bug number", renderer, "text", Column.Number, null);
-            column.SortColumnId = (int)Column.Number;
-            _tree.AppendColumn(column);
-
-            /* column for severities */
-            renderer = new CellRendererText();
-            column = new TreeViewColumn("Severity", renderer, "text", Column.Severity, null)
-            {
-                SortColumnId = (int)Column.Severity
-            };
-            _tree.AppendColumn(column);
-
-            /* column for description */
-            renderer = new CellRendererText();
-            column = new TreeViewColumn("Description", renderer, "text", Column.Description, null)
-            {
-                SortColumnId = (int)Column.Description
-            };
-            _tree.AppendColumn(column);
-
-            /* column for spinner */
-            renderer = new CellRendererSpinner();
-            column = new TreeViewColumn("Spinning", renderer, "pulse", Column.Pulse, "active", Column.Active, null)
-            {
-                SortColumnId = (int)Column.Pulse
-            };
-            _tree.AppendColumn(column);
-
-            /* column for symbolic icon */
-            renderer = new CellRendererPixbuf();
-            column = new TreeViewColumn("Symbolic icon", renderer, "icon-name", Column.Icon, "sensitive", Column.Sensitive, null);
-            column.SortColumnId = (int)Column.Icon;
-            _tree.AppendColumn(column);
-        }
-
-        private void RendererToggle_Toggled(object o, ToggledArgs args)
-        {
-            TreePath path = new TreePath(args.Path);
-
-            /* get toggled iter */
-            TreeIter iter;
-            _model.GetIter(out iter, path);
-            bool isFixed = (bool)_model.GetValue(iter, (int)Column.Fixed);
-
-            /* do something with the value */
-            isFixed ^= true;
-
-            /* set new value */
-            _model.SetValue(iter, (int)Column.Fixed, isFixed);
-        }
-
-        private bool SpinerTimeout()
-        {
-            if (_model == null)
-            {
-                return false;
-            }
-
-			_model.GetIterFirst(out TreeIter iter);
-            int pulse = (int)_model.GetValue(iter, (int)Column.Pulse);
-            if (pulse == int.MaxValue)
-                pulse = 0;
-            else
-                pulse++;
-
-            _model.SetValue(iter, (int)Column.Pulse, pulse);
-            _model.SetValue(iter, (int)Column.Active, true);
-
-            return true;
-        }
-	}
+    }
 }
