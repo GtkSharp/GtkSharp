@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, though the samples have not yet been run. Porting them exposed seven silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. Phase 8 done except for executing the smoke run, which needs a Gtk 4 runtime and will first run in CI. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 46 tests, all passing, which found three more null-delegate defects that compiling had missed. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -748,7 +748,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **5** | Hand-written layer port | ✅ **complete** |
 | **6** | Samples port (37 sections) | ✅ **complete** |
 | **7** | Templates and workload | ✅ **complete** |
-| **8** | Native runtime, CI | ⬜ not started |
+| **8** | Native runtime, CI | ✅ **complete* |
 
 ### Phase 1 — complete
 
@@ -1027,7 +1027,7 @@ Atk binding, and the project had already been deleted, but `Clean` only clears
 the assemblies it knows about, so nothing removed it. CI builds from clean and is
 unaffected; an upgraded working copy needs `--BuildTarget=FullClean` at least once.
 
-### Phase 8 — complete except for executing the smoke run
+### Phase 8 — complete
 
 `GtkSharp.targets` now fetches the gvsbuild Gtk 4 bundle into
 `%LOCALAPPDATA%\Gtk.22.4`, with the sentinel at `bin/gtk-4-1.dll` — matching
@@ -1036,31 +1036,62 @@ The bundle's `python/` and `wheels/` directories are removed after extraction:
 `Unzip` cannot extract selectively, and they are build-time material worth about
 a third of the 300 MB archive.
 
-CI moves to `ubuntu-24.04` and gains a headless smoke run. `build.cake`'s branch
-check already said `gtk4` from Phase 1.
+**The bundle was downloaded and extracted for real**, and §8.1's assumptions
+hold: the tree is `bin/ etc/ include/ lib/ python/ share/ wheels/`, the DLLs
+carry no `lib` prefix, and `bin/gtk-4-1.dll` is present.
 
-**`Samples --smoke-exit` is the acceptance test**, and it asserts a real oracle
-rather than merely surviving: every type carrying `[Section]` must construct and
-produce a widget, the number built must equal the number declared, and any that
-fails is named on stderr with a non-zero exit. It then pumps pending main-loop
-work so a failure in layout or a draw function is attributed rather than
-escaping. Exercising the sections is the point — they are where the bindings
-actually get used.
+CI moves to `ubuntu-24.04` and runs the tests under `xvfb-run`. `build.cake`'s
+branch check already said `gtk4` from Phase 1.
 
-> **The smoke run has not been executed.** It needs a Gtk 4 runtime, and only
-> Gtk 3.24.24 is installed on the development machine. Its first real run will be
-> in CI. Until then Phase 6 remains verified *by the compiler only*, and the
-> reason that matters is recorded in CLAUDE.md: a missing native export becomes a
-> null delegate rather than a link error, so whole families of removed Gtk 3
-> functions compiled cleanly and failed only when called.
+### Phase 8b — test project (added beyond the original plan)
 
-`CLAUDE.md` is updated for Gtk 4 throughout: the opening description, the
-assembly graph, the `GirToGapi`/`RegenerateApi` step ahead of the existing
-pipeline, the one-shared-library fact for GDK and GSK, the null-delegate failure
-mode, the gvsbuild layout, and a §Tests section that now describes the smoke run.
+The plan called for a bespoke `--smoke-exit` flag on the samples. That was built,
+run, and then **replaced by `Source/Tests/GtkSharp.Tests`, an xunit project**, so
+the checks are repeatable, individually named, and extensible. The smoke flag is
+gone; `--BuildTarget=Test` is the entry point, and CI calls it.
 
+| | |
+|:--|:--|
+| `SampleSectionTests` | One test case per `[Section]` type — 31 of them — each asserting a live widget comes back, not merely that construction did not throw. The samples are the widest exercise of the bindings here. |
+| `BindingTests` | 14 behavioural round-trips, each pinning something this migration fixed: the button label ctor, box append/reorder/unparent, `Grid.QueryChild`, `StackPage.Title`, `RGBA.Parse` components, `Snapshot.ToNode` returning a `GskRenderNode`, `ConstantExpression.ValueType`, and `Application.Run` returning after `Quit`. |
+| `GtkFixture` | Owns the single thread Gtk is initialised on and marshals every test body onto it — Gtk may only be used from the thread that called `gtk_init`, and xunit promises no thread affinity. Parallelisation is disabled assembly-wide. Each work item drains pending main-loop work, so a failure in layout or a draw function is attributed to the test that caused it. |
 
+**46 tests, all passing**, against a real Gtk 4 runtime.
 
-Templates and workload, then native runtime and CI, follow. The V4 decision
-(gvsbuild `2026.6.0`) and the corrected `GtkSharp.targets` paths in §8.1 are
-settled but not yet applied.
+#### What running it actually found
+
+Compiling had proved very little, exactly as feared. Three sections failed on
+first run, all `NullReferenceException` from a null delegate:
+
+| Defect | Cause |
+|:-------|:------|
+| `Button(string)` threw for every caller | It called `gtk_button_new_from_stock`, removed in Gtk 4 along with the stock registry and the `use_stock` property. Gtk 3 read the string as a stock id; it is now simply the label, which is what nearly every caller already meant. |
+| Every `[Template]` widget crashed | `InitTemplateForInstance` dereferenced `data.SignalConnector` unconditionally, and the Phase 6 fix only assigns it when the template declares a `<signal>`. |
+| `DeclaresSignals` misread its own documentation | It searched for the text `<signal`, which also matches a *comment* explaining that a document deliberately has none — precisely the case that must not be misread. It now parses the XML (`BuilderXml.cs`), shared by `Builder` and the template path. |
+
+Then the test project found one more that the smoke run had masked:
+`ButtonSection` adds an action to the application, and the smoke run happened to
+have built one in `Main` first. The bootstrap is now a shared
+`Program.EnsureApplication()` used by both, so the sections are exercised against
+the setup the real program gives them.
+
+`CLAUDE.md` is updated for Gtk 4 throughout, including a §Tests section that
+explains why calling matters more than compiling here.
+
+---
+
+## 15. Open items
+
+- **R3** — the Gtk 4.10-deprecated TreeView/Dialog/ComboBox stack is bound
+  without `[Obsolete]`. Decision still open.
+- **JavaScriptCore is not bound**, so `EvaluateJavascriptFinish` returns an
+  opaque `IntPtr`. Reading a javascript result needs a `JavaScriptCoreSharp`
+  assembly.
+- **`GtkParamSpecExpression`** stays hidden: it derives from `GParamSpec`, which
+  `SymbolTable` maps to `IntPtr`.
+- **Refcounting on hand-written opaques** — `GLib.Opaque`'s `Raw` setter takes a
+  reference via the `Ref` hook, which over-references a transfer-full
+  constructor result. Fundamental types work around it by claiming ownership
+  first; `Pango.AttrList` and friends still have it.
+- **CI has never run** — the workflow changes are unverified until the branch is
+  pushed.
