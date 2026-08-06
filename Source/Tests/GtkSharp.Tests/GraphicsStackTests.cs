@@ -107,7 +107,7 @@ namespace GtkSharp.Tests
             Assert.Equal(40, rect.Height, 3);
         }
 
-        [Fact(Skip = "Known defect: caller-allocates out-parameters of non-struct types corrupt the stack. gsk_render_node_get_bounds and graphene_rect_union take a pointer to caller-provided storage, but codegen passes an uninitialised 8-byte out IntPtr for a 16-byte struct. See Docs/testing.md.")]
+        [Fact]
         public void Graphene_rect_union_covers_both_rectangles()
         {
             var a = Graphene.Rect.Alloc();
@@ -174,7 +174,7 @@ namespace GtkSharp.Tests
 
         // ------------------------------------------------------------------ Gsk
 
-        [Fact(Skip = "Known defect: caller-allocates out-parameters of non-struct types corrupt the stack. gsk_render_node_get_bounds and graphene_rect_union take a pointer to caller-provided storage, but codegen passes an uninitialised 8-byte out IntPtr for a 16-byte struct. See Docs/testing.md.")]
+        [Fact]
         public void Gsk_colour_node_keeps_the_bounds_it_was_given()
         {
             // GskRenderNode is a GLib fundamental type bound on GLib.Opaque, so
