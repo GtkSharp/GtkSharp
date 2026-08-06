@@ -104,9 +104,12 @@ namespace GtkSharp.Tests
                 {
                     Assert.NotEqual(IntPtr.Zero, window.Handle);
 
-                    // Gtk 4 tears a toplevel down with gtk_window_destroy;
-                    // leaving them open would leak across the whole run.
-                    window.Destroy();
+                    // Dispose rather than Destroy, deliberately: Destroy leaves
+                    // the wrapper's toggle ref registered against an object that
+                    // has been torn down, and the queued unref later crashes in
+                    // ToggleRef.Free. See "Open: Widget.Destroy" in
+                    // Docs/testing.md.
+                    window.Dispose();
                 }
             });
         }
@@ -137,7 +140,7 @@ namespace GtkSharp.Tests
                 Assert.Single(opened);
                 Assert.IsType<FileChooserDialog>(opened[0]);
 
-                opened[0].Destroy();
+                opened[0].Dispose();
             });
         }
 
@@ -165,7 +168,7 @@ namespace GtkSharp.Tests
                 Assert.Equal("GtkSharp Sample Application", dialog.ProgramName);
                 Assert.Equal("1.0.0.0", dialog.Version);
 
-                dialog.Destroy();
+                dialog.Dispose();
             });
         }
 
@@ -196,7 +199,7 @@ namespace GtkSharp.Tests
 
                 Assert.Equal((int) ResponseType.Cancel, seen);
 
-                dialog.Destroy();
+                dialog.Dispose();
             });
         }
     }
