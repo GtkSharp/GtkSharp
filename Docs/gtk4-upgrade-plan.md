@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 complete**. Phase 5 in progress — 6 of 11 assemblies compile. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 complete**. Phase 5 in progress — 7 of 11 assemblies compile. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -745,7 +745,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **2** | `GirToGapi` converter | ✅ **complete** — 2026-08-05, gates 1 and 2 passed |
 | **3** | Assembly graph, native library map | ✅ **complete** — 2026-08-05 |
 | **4** | api.xml regeneration + metadata triage | ✅ **complete** — 2026-08-06, all nine assemblies at zero unmatched rules |
-| **5** | Hand-written layer port | 🔶 **in progress** — 6 of 11 assemblies compile |
+| **5** | Hand-written layer port | 🔶 **in progress** — 7 of 11 assemblies compile |
 | **6** | Samples port (37 sections) | ⬜ not started |
 | **7** | Templates and workload | ⬜ not started |
 | **8** | Native runtime, CI | ⬜ not started |
@@ -811,14 +811,14 @@ of GtkSharp's 732 unmatched rules were decidable mechanically.
 
 | Assembly | Build state |
 |:---------|:------------|
-| `GLibSharp` | ✅ clean (hand-written, untouched) |
-| `CairoSharp` | ✅ clean (hand-written, untouched) |
+| `GLibSharp`, `CairoSharp` | ✅ clean (hand-written, untouched) |
 | `GrapheneSharp` | ✅ **clean** |
 | `GioSharp` | ✅ **clean** |
 | `PangoSharp` | ✅ **clean** |
 | `GdkSharp` | ✅ **clean** — 28 hand-written files deleted |
-| `GskSharp` | 🔶 12 unique errors — next |
-| `GtkSharp`, `AdwaitaSharp`, `GtkSourceSharp`, `WebkitGtkSharp` | ⬜ blocked behind `GskSharp` |
+| `GskSharp` | ✅ **clean** — `RenderNode` hierarchy deferred, see below |
+| `GtkSharp` | 🔶 6 unique errors — next |
+| `AdwaitaSharp`, `GtkSourceSharp`, `WebkitGtkSharp` | ⬜ blocked behind `GtkSharp` |
 
 **GdkSharp is where the §5.1 deletions began.** Gone: `Window` (→ `Surface`),
 `WindowAttr`, `Screen`, `Color`, `Property`, `Keymap`, `Atom`, `Selection`,
@@ -826,17 +826,33 @@ of GtkSharp's 732 unmatched rules were decidable mechanically.
 (17 files), plus `Device.cs` and `Display.cs`, which held nothing but removed
 API. `Global.cs` shrank to a single member.
 
-Two findings worth carrying forward:
+### Open: GLib fundamental types are not bound
 
-- **`GdkEvent` is a GLib *fundamental* type**, not a GObject descendant
-  (`glib:fundamental="1"`), and so is every event subclass. `ObjectGen` assumes
-  GObject and emits `Handle`, `CreateNativeObject` and a `base(IntPtr)` chain-up.
-  A small hand-written `Gdk.Event` supplies that surface over a plain handle.
-  Constructing an event from managed code throws rather than pretending to work,
-  since GDK delivers events to controllers and never accepts them.
-- **`Gdk.Point` and `Gdk.Size` lost their generated halves.** Gtk 4 removed
-  `GdkPoint`, so the fields those `partial struct`s relied on had to move into
-  the hand-written files.
+Gtk 4 uses GLib *fundamental* types — `glib:fundamental="1"`, GTypeInstance with
+their own ref/unref rather than GObject descendants — for two whole hierarchies:
+`GdkEvent` and its ~20 event subclasses, and `GskRenderNode` and its 36 node
+subclasses. `ObjectGen` has no notion of them: it emits `Handle`,
+`CreateNativeObject`, a `base(IntPtr)` chain-up and
+`GLib.Object.GetObject(raw) as T`, all of which assume GObject.
+
+Current state:
+
+- **`GdkEvent`** is carried by a small hand-written base supplying that surface
+  over a plain handle. Constructing an event from managed code throws, since GDK
+  delivers events to controllers and never accepts them.
+- **`GskRenderNode` and its 36 subclasses are hidden.** The same trick does not
+  work there because the generated code casts through `GLib.Object.GetObject`,
+  which will not compile unless `RenderNode` derives from `GLib.Object` — and
+  making it do so would put `g_object_ref`/`unref` on handles whose lifetime
+  belongs to `gsk_render_node_ref`/`unref`. A binding that mismanages refcounts
+  is worse than one that is missing. Cost: three GtkSharp members that reference
+  `GskRenderNode` go with them; `Gsk.Renderer`, `Transform` and `RoundedRect` are
+  unaffected.
+
+Doing this properly means teaching `ObjectGen` about fundamental types: per-type
+`GetObject` factories and ref/unref hooks. That is the largest single piece of
+work left in Phase 5 after the Gtk layer itself, and it blocks custom widget
+drawing via `GtkSnapshot`, which §6.3 needs for the DrawingArea samples.
 
 Still untouched: the deletions and rewrites in §5.1 and §5.2 — `Container`,
 `Menu`, `Application.Run`, `Clipboard`, `Dialog.Run`, the TreeView stack and the
