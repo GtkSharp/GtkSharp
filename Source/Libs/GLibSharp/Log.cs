@@ -126,7 +126,9 @@ namespace GLib {
 		delegate void d_g_logv(IntPtr log_domain, LogLevelFlags flags, IntPtr message);
 		static d_g_logv g_logv = FuncLoader.LoadFunction<d_g_logv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_logv"));
 		
-		public void WriteLog (string logDomain, LogLevelFlags flags, string format, params object [] args)
+		// Every other member of this class is static and this one touches no
+		// instance state, so writing a log line meant constructing a Log first.
+		public static void WriteLog (string logDomain, LogLevelFlags flags, string format, params object [] args)
 		{
 			IntPtr ndom = Marshaller.StringToPtrGStrdup (logDomain);
 			IntPtr nmessage = Marshaller.StringToPtrGStrdup (String.Format (format, args));
