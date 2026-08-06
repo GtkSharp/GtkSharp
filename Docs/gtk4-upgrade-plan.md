@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–7 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, though the samples have not yet been run. Porting them exposed seven silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. Phase 8 (native runtime, CI, headless smoke run) is next. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, though the samples have not yet been run. Porting them exposed seven silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. Phase 8 done except for executing the smoke run, which needs a Gtk 4 runtime and will first run in CI. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -740,12 +740,12 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 
 | Phase | Scope | State |
 |:------|:------|:------|
-| **V1–V5** | Blocking pre-flight verifications | ✅ **complete** — 2026-08-05 |
-| **1** | Branch, versioning, scaffolding | ✅ **complete** — 2026-08-05 |
-| **2** | `GirToGapi` converter | ✅ **complete** — 2026-08-05, gates 1 and 2 passed |
-| **3** | Assembly graph, native library map | ✅ **complete** — 2026-08-05 |
-| **4** | api.xml regeneration + metadata triage | ✅ **complete** — 2026-08-06, all nine assemblies at zero unmatched rules |
-| **5** | Hand-written layer port | ✅ **complete** — all 11 assemblies build clean |
+| **V1–V5** | Blocking pre-flight verifications | ✅ **complete** |
+| **1** | Branch, versioning, scaffolding | ✅ **complete** |
+| **2** | `GirToGapi` converter | ✅ **complete** |
+| **3** | Assembly graph, native library map | ✅ **complete** |
+| **4** | api.xml regeneration + metadata triage | ✅ **complete** |
+| **5** | Hand-written layer port | ✅ **complete** |
 | **6** | Samples port (37 sections) | ✅ **complete** |
 | **7** | Templates and workload | ✅ **complete** |
 | **8** | Native runtime, CI | ⬜ not started |
@@ -1027,7 +1027,37 @@ Atk binding, and the project had already been deleted, but `Clean` only clears
 the assemblies it knows about, so nothing removed it. CI builds from clean and is
 unaffected; an upgraded working copy needs `--BuildTarget=FullClean` at least once.
 
-### Phase 8 — not started
+### Phase 8 — complete except for executing the smoke run
+
+`GtkSharp.targets` now fetches the gvsbuild Gtk 4 bundle into
+`%LOCALAPPDATA%\Gtk.22.4`, with the sentinel at `bin/gtk-4-1.dll` — matching
+both `GLibrary`'s `SetDllDirectory` and `_libraryDefinitions[Library.Gtk][0]`.
+The bundle's `python/` and `wheels/` directories are removed after extraction:
+`Unzip` cannot extract selectively, and they are build-time material worth about
+a third of the 300 MB archive.
+
+CI moves to `ubuntu-24.04` and gains a headless smoke run. `build.cake`'s branch
+check already said `gtk4` from Phase 1.
+
+**`Samples --smoke-exit` is the acceptance test**, and it asserts a real oracle
+rather than merely surviving: every type carrying `[Section]` must construct and
+produce a widget, the number built must equal the number declared, and any that
+fails is named on stderr with a non-zero exit. It then pumps pending main-loop
+work so a failure in layout or a draw function is attributed rather than
+escaping. Exercising the sections is the point — they are where the bindings
+actually get used.
+
+> **The smoke run has not been executed.** It needs a Gtk 4 runtime, and only
+> Gtk 3.24.24 is installed on the development machine. Its first real run will be
+> in CI. Until then Phase 6 remains verified *by the compiler only*, and the
+> reason that matters is recorded in CLAUDE.md: a missing native export becomes a
+> null delegate rather than a link error, so whole families of removed Gtk 3
+> functions compiled cleanly and failed only when called.
+
+`CLAUDE.md` is updated for Gtk 4 throughout: the opening description, the
+assembly graph, the `GirToGapi`/`RegenerateApi` step ahead of the existing
+pipeline, the one-shared-library fact for GDK and GSK, the null-delegate failure
+mode, the gvsbuild layout, and a §Tests section that now describes the smoke run.
 
 
 
