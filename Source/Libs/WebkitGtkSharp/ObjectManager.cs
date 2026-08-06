@@ -1,5 +1,3 @@
-using JavaScript;
-
 namespace GtkSharp.WebkitGtkSharp
 {
 
@@ -11,9 +9,14 @@ namespace GtkSharp.WebkitGtkSharp
 		{
 
 			// WebKitJavascriptResult was removed in WebKitGTK 6.0; script results
-			// come back as a JSCValue now.
-
-			GLib.GType.Register(Value.GType, typeof(Value));
+			// come back as a JSCValue.
+			//
+			// This used to register a hand-written JavaScript.Value against that
+			// GType. JavaScriptCoreSharp now binds JSCValue properly and
+			// registers JavaScriptCore.Value for it, so registering a second
+			// managed type for the same GType only decided which of the two a
+			// signal argument would arrive as -- and the signal marshaller then
+			// handed back the wrong one.
 
 		}
 

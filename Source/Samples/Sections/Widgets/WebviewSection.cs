@@ -84,12 +84,11 @@ namespace Samples
 			userContentManager.RegisterScriptMessageHandler(messageHandlerName, null);
 
 			userContentManager.ScriptMessageReceived += (o, args) => {
-				// WebKit 6 delivers a JSCValue rather than a WebKitJavascriptResult.
-				// The signal declares it as a gpointer, so it arrives as an IntPtr
-				// and is wrapped back into the bound type to be read.
-				var value = GLib.Object.GetObject(args.Value) as JavaScriptCore.Value;
+				// WebKit 6 delivers a JSCValue rather than a WebKitJavascriptResult,
+				// and JavaScriptCoreSharp binds it, so the signal hands over a
+				// typed value that can simply be read.
 				ApplicationOutput.WriteLine(
-					$"{nameof(userContentManager.ScriptMessageReceived)}:\t{value?.ToJson(0)}");
+					$"{nameof(userContentManager.ScriptMessageReceived)}:\t{args.Value?.ToJson(0)}");
 			};
 
 			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> with {nameof(UserScript)}" +
