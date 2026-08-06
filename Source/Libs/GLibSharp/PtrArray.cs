@@ -87,7 +87,9 @@ namespace GLib {
 		static d_g_ptr_array_free g_ptr_array_free = FuncLoader.LoadFunction<d_g_ptr_array_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_ptr_array_free"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_unref(IntPtr item);
-		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_object_unref"));
+		// g_object_unref is in GObject, not GLib -- looked up here it was another
+		// null delegate, so disposing an owning array of GObjects threw.
+		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
 		void Dispose (bool disposing)
 		{
