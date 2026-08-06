@@ -37,11 +37,16 @@ namespace Gtk {
 				GLib.Thread.Init ();
 		}
 		
+		// Gtk 4 changed both of these to take no arguments: it no longer parses
+		// or strips command-line options, so there is no argc/argv to hand it or
+		// to read back. Declaring them with the Gtk 3 signature passed two extra
+		// arguments to a niladic function, and left do_init trying to recover
+		// options that were never consumed.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_init(ref int argc, ref IntPtr argv);
+		delegate void d_gtk_init();
 		static d_gtk_init gtk_init = FuncLoader.LoadFunction<d_gtk_init>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_init"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate bool d_gtk_init_check(ref int argc, ref IntPtr argv);
+		delegate bool d_gtk_init_check();
 		static d_gtk_init_check gtk_init_check = FuncLoader.LoadFunction<d_gtk_init_check>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_init_check"));
 
 		static void SetPrgname ()
@@ -54,99 +59,76 @@ namespace Gtk {
 		public static void Init ()
 		{
 			SetPrgname ();
-			IntPtr argv = new IntPtr(0);
-			int argc = 0;
-
-			gtk_init (ref argc, ref argv);
+			gtk_init ();
 
 			SynchronizationContext.SetSynchronizationContext (new GLib.GLibSynchronizationContext ());
 		}
 
-		static bool do_init (string progname, ref string[] args, bool check)
-		{
-			SetPrgname ();
-			bool res = false;
-			string[] progargs = new string[args.Length + 1];
-
-			progargs[0] = progname;
-			args.CopyTo (progargs, 1);
-
-			GLib.Argv argv = new GLib.Argv (progargs);
-			IntPtr buf = argv.Handle;
-			int argc = progargs.Length;
-
-			if (check)
-				res = gtk_init_check (ref argc, ref buf);
-			else
-				gtk_init (ref argc, ref buf);
-
-			if (buf != argv.Handle)
-				throw new Exception ("init returned new argv handle");
-
-			// copy back the resulting argv, minus argv[0], which we're
-			// not interested in.
-
-			if (argc <= 1)
-				args = new string[0];
-			else {
-				progargs = argv.GetArgs (argc);
-				args = new string[argc - 1];
-				Array.Copy (progargs, 1, args, 0, argc - 1);
-			}
-
-			return res;
-		}
-
+		// args is left untouched: Gtk 4 consumes no arguments. The parameter is
+		// kept by reference so existing callers still compile.
 		public static void Init (string progname, ref string[] args)
 		{
-			do_init (progname, ref args, false);
+			GLib.Global.ProgramName = progname;
+			gtk_init ();
+
+			SynchronizationContext.SetSynchronizationContext (new GLib.GLibSynchronizationContext ());
 		}
 
 		public static bool InitCheck (string progname, ref string[] args)
 		{
-			return do_init (progname, ref args, true);
+			GLib.Global.ProgramName = progname;
+			bool res = gtk_init_check ();
+
+			if (res)
+				SynchronizationContext.SetSynchronizationContext (new GLib.GLibSynchronizationContext ());
+
+			return res;
 		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_main();
-		static d_gtk_main gtk_main = FuncLoader.LoadFunction<d_gtk_main>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main"));
+		// Gtk 4 removed the whole gtk_main family -- gtk_main, gtk_main_quit,
+		// gtk_events_pending, gtk_main_iteration and gtk_main_iteration_do are
+		// all gone, because a Gtk 4 application drives a GLib main loop through
+		// GApplication rather than a Gtk-owned one. Loading those symbols
+		// produced null delegates -- FuncLoader.LoadFunction returns default(T)
+		// for a missing export -- so Application.Run threw a
+		// NullReferenceException and no Gtk 4 application could start.
+		//
+		// These now drive a GLib main loop directly, which is what gtk_main did
+		// anyway, and keeps the existing API working.
+
+		static GLib.MainLoop main_loop;
+
+		static GLib.MainLoop MainLoop {
+			get {
+				if (main_loop == null)
+					main_loop = new GLib.MainLoop ();
+				return main_loop;
+			}
+		}
 
 		public static void Run ()
 		{
-			gtk_main ();
+			MainLoop.Run ();
 		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate bool d_gtk_events_pending();
-		static d_gtk_events_pending gtk_events_pending = FuncLoader.LoadFunction<d_gtk_events_pending>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_events_pending"));
-
 
 		public static bool EventsPending ()
 		{
-			return gtk_events_pending ();
+			return GLib.MainContext.Pending ();
 		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_main_iteration();
-		static d_gtk_main_iteration gtk_main_iteration = FuncLoader.LoadFunction<d_gtk_main_iteration>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main_iteration"));
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate bool d_gtk_main_iteration_do(bool blocking);
-		static d_gtk_main_iteration_do gtk_main_iteration_do = FuncLoader.LoadFunction<d_gtk_main_iteration_do>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main_iteration_do"));
 
 		public static void RunIteration ()
 		{
-			gtk_main_iteration ();
+			GLib.MainContext.Iteration ();
 		}
 
 		public static bool RunIteration (bool blocking)
 		{
-			return gtk_main_iteration_do (blocking);
+			return GLib.MainContext.Iteration (blocking);
 		}
-		
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_main_quit();
-		static d_gtk_main_quit gtk_main_quit = FuncLoader.LoadFunction<d_gtk_main_quit>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_main_quit"));
 
 		public static void Quit ()
 		{
-			gtk_main_quit ();
+			if (main_loop != null && main_loop.IsRunning)
+				main_loop.Quit ();
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
