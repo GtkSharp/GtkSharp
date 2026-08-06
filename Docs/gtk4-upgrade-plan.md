@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 (the eight open items, all now decided — see §15) is in progress.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -1184,26 +1184,30 @@ name, which Gtk 4 cannot do, and now reads the typed getters that remain; and
 `LinkButtonSection` passed a caption to `gtk_link_button_new`, whose argument is
 the URI, so Gtk refused to follow it.
 
-## 15. Open items
+## 15. Phase 9 — decisions taken on the open items
 
-- **Caller-allocates out-parameters corrupt the stack** for reference-typed
-  values: `graphene_rect_union`, `gsk_render_node_get_bounds` and around 154
-  other parameters take a pointer to caller-provided storage, and codegen passes
-  an uninitialised 8-byte `out IntPtr` for a 16-byte struct. Found by the tests;
-  two are `Skip`ped pointing at it. `Gdk.Rectangle` is unaffected only because
-  `GdkSharp-symbols.xml` overrides it to a struct, which is also why the fix
-  cannot be a blanket converter rule. See `Docs/testing.md`.
+All eight open items were put to the maintainer and decided. Recorded here
+before any of it is built, so the reasoning survives the diff.
 
-- **R3** — the Gtk 4.10-deprecated TreeView/Dialog/ComboBox stack is bound
-  without `[Obsolete]`. Decision still open.
-- **JavaScriptCore is not bound**, so `EvaluateJavascriptFinish` returns an
-  opaque `IntPtr`. Reading a javascript result needs a `JavaScriptCoreSharp`
-  assembly.
-- **`GtkParamSpecExpression`** stays hidden: it derives from `GParamSpec`, which
-  `SymbolTable` maps to `IntPtr`.
-- **Refcounting on hand-written opaques** — `GLib.Opaque`'s `Raw` setter takes a
-  reference via the `Ref` hook, which over-references a transfer-full
-  constructor result. Fundamental types work around it by claiming ownership
-  first; `Pango.AttrList` and friends still have it.
-- **CI has never run** — the workflow changes are unverified until the branch is
-  pushed.
+| # | Item | Decision | Consequence |
+|:--|:-----|:---------|:------------|
+| 1 | Caller-allocates out-parameters corrupt the stack (~154) | **Fix in GapiCodegen** | Allocate the caller's storage when an out-parameter is reference-typed, keeping the `out X` signature. Fixes the class, not instances. |
+| 2 | `GLib.Opaque` over-references transfer-full ctor results | **Fix `GLib.Opaque` itself** | Constructors claim ownership before assigning `Raw`, as fundamental types already do. Changes lifetime behaviour repo-wide, so it wants tests pinning refcounts. |
+| 3 | R3 — Gtk 4.10-deprecated TreeView/Dialog/ComboBox stack | **Mark `[Obsolete]`** | Emitted from the `deprecated="1"` already in the api.xml. Consumers porting from Gtk 3 get a warning. |
+| 4 | Samples use the deprecated stack heavily | **Port to ColumnView/ListView** | `TreeViewSection`, `ListStoreSection` and `EditableCellsSection` are rewritten onto the Gtk 4 replacements rather than suppressing warnings. Substantial, and it removes the only worked TreeView examples — chosen deliberately over keeping them. |
+| 5 | JavaScriptCore unbound; js results are opaque `IntPtr` | **Add a `JavaScriptCoreSharp` assembly** | A twelfth assembly. Cannot be exercised locally: gvsbuild ships no WebKit at all, so it is build-verified here and first runs under CI. |
+| 6 | Its `.gir` has to come from somewhere | **Fetch from Debian forky** | Same provenance path as the other 13, via `fetch-gir.py`, with the sha256 recorded in `Source/Gir/README.md`. |
+| 7 | `GtkParamSpecExpression` hidden | **Bind it, rooted at `GLib.Opaque`** | Ignores its `GParamSpec` inheritance. The declared hierarchy is therefore not the C one; taken knowingly, because `GParamSpec` is not bound as a type anywhere. |
+| 8 | CI has never run | **Push the branch** | Publishes the work and triggers the NuGet step on the configured registry. Done last, so CI sees the finished state. |
+
+Order of work follows the dependencies: the codegen fix and the `GLib.Opaque`
+fix change generated output and lifetimes, so they come before anything that
+builds on them; `[Obsolete]` precedes the samples rewrite that reacts to it; the
+push comes last.
+
+## 16. Remaining after Phase 9
+
+Everything in §15 is scheduled. This section is rewritten as each lands; what
+stays here at the end is what was knowingly left.
+
+- Nothing yet — Phase 9 has not started.
