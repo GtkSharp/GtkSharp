@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them. **Phase 10 complete — gate 7 passed**: the suite now runs on Linux (Debian trixie, Gtk 4.18.6, real WebKit), 226 of 227 passing with one documented skip, which found three more defects that Windows structurally could not show — including one where a single class missing from an older installed library disabled an entire assembly (§16). **Phase 11 complete**: 403 tests, hand-written coverage 30.5% → 43.6%, four further defects fixed — among them `GLib.PtrArray`, which had never worked at all because its symbols were looked up in the wrong library (§17).
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them. **Phase 10 complete — gate 7 passed**: the suite now runs on Linux (Debian trixie, Gtk 4.18.6, real WebKit), 226 of 227 passing with one documented skip, which found three more defects that Windows structurally could not show — including one where a single class missing from an older installed library disabled an entire assembly (§16). **Phase 11 complete**: 403 tests, hand-written coverage 30.5% → 43.6%, four further defects fixed — among them `GLib.PtrArray`, which had never worked at all because its symbols were looked up in the wrong library (§17). **Phase 12 complete**: 484 tests, 50.3%, six more defects — including `Cairo.Context.FontMatrix`, whose `out`-on-a-class ABI corrupted the stack and killed the test host outright (§18).
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -752,6 +752,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **9** | Open items from §15 | ✅ **complete** |
 | **10** | First run on Linux (gate 7) | ✅ **complete** — 227 tests, 226 pass, 1 skip |
 | **11** | Hand-written layer test sweep | ✅ **complete** — 403 tests; hand-written coverage 30.5% → 43.6%; four more defects fixed |
+| **12** | Second sweep: the files with no coverage | ✅ **complete** — 484 tests; 43.6% → 50.3%; six more defects fixed, one of them a process-killing ABI |
 
 ### Phase 1 — complete
 
@@ -1337,3 +1338,73 @@ Still untouched and worth the next pass, largest first: `Gtk/NodeStore.cs` (384
 lines, none reached), `GLib/IOChannel.cs` (286, none), `Gtk/SignalConnector.cs`
 (178, none), `GLib/Spawn.cs` (168, none), and the remaining 548 uncovered lines
 of `Cairo/Context.cs`.
+
+---
+
+## 18. Phase 12 — the files with no coverage at all
+
+Phase 11 left a ranked queue of hand-written files, and the top of it was four
+files nothing had ever executed: `NodeStore.cs` (384 lines), `IOChannel.cs`
+(286), `SignalConnector.cs` (178) and `Spawn.cs` (168), plus the 548 lines of
+`Cairo/Context.cs` the first pass did not reach and PangoSharp at 14.5%.
+
+Eighty-one more tests (484 total; 483 passing on Linux, 481 on Windows with
+three WebKit skips) took the hand-written figure from 43.6% to **50.3%**. Six
+more defects came out of it.
+
+**`Cairo.Context.FontMatrix` corrupted the stack.** `Cairo.Matrix` is a class,
+so it already marshals as `cairo_matrix_t*`; declaring the parameter `out` made
+it `cairo_matrix_t**`, and Cairo wrote 48 bytes of doubles through the address
+of an 8-byte reference slot. Three getters had it, while the setters directly
+beside them — same type, same file — were right. The same shape as the
+caller-allocates defect from Phase 5.
+
+This one carries a lesson about the test harness itself: **a crash is quieter
+than a failure.** An `AccessViolationException` takes the test host down rather
+than failing a test, so the run reports whatever finished first, prints
+"Passed!", and stops. Before the fix the class reported nine passing tests of
+twenty-one, and the whole suite 68 of 484. When a run's *total* is lower than it
+should be, that is the thing to chase — the pass count will look fine.
+
+**Three more symbols loaded from the wrong library.** An audit of every
+`g_`-prefixed lookup against the library that exports it found `PtrArray` also
+loading `g_object_unref` from GLib, and all five `g_spawn_*_utf8` entry points —
+the ones `GLib.Spawn` uses on Windows only — loaded from GObject. Every spawn on
+Windows called a null delegate while Linux, which takes the plain names beside
+them, worked. A defect on exactly one platform is the signature of this mistake.
+
+**`Pango.AttrIterator` could not return its attributes.** It built its
+`GLib.SList` with no element type, so `DataMarshal` treated each item as a
+GObject — which a `PangoAttribute` is not — returned null, and unboxing to
+`IntPtr` threw. Reading attributes back off an iterator is the only way to get
+them out of an `AttrList`, and it failed every time.
+
+**`Pango.FontDescription` compared by handle.** Two descriptions built from the
+same string are equal by every measure Pango offers, but were unequal here and
+hashed differently, so one could not find the other in a dictionary. Now
+overridden onto Pango's own `Equal` and `Hash`.
+
+**`GLib.IOChannel.LineTerminator` never read the pointer.** The getter allocated
+a byte buffer and decoded it without copying from what GLib returned, so it
+reported that many NULs whatever the terminator had been set to.
+
+**`GLib.Process` exposed no pid.** `SpawnAsync` exists to hand back a handle on
+the child and returned an object you could learn nothing from. It has a `Pid`
+property now.
+
+Two things were found and deliberately *not* changed. `Gtk.SignalConnector`'s
+entry points throw `NotSupportedException` because Gtk 4 replaced
+`gtk_builder_connect_signals_full` with `GtkBuilderScope`, which this binding
+does not implement; its `ConnectFunc` is therefore unreachable from anywhere and
+stays only as the shape of what an implementation would need. And
+`pango_parse_markup` is `hidden="1"` in the api.xml, so the markup parser has no
+bound entry point — the test reaches it through `Gtk.Label` instead.
+
+One observation, unexplained: a single run under coverage instrumentation
+aborted at 315 of 484. Four subsequent instrumented runs completed cleanly. That
+is consistent with the `GLib.Opaque` over-referencing already listed as open,
+which is GC-timing sensitive and so shifts under instrumentation, but it has not
+been reproduced and is not diagnosed.
+
+Remaining, largest first: `GLib/Value.cs` (314 uncovered), `Gtk/TreeStore.cs`
+(244), `GLib/Object.cs` (200), `GLib/Source.cs` (206), `Cairo/Surface.cs` (142).

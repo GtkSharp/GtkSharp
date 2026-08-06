@@ -111,6 +111,10 @@ investigate — not something to relax.
 | `MarshallingTests` | The layer under everything else: `GLib.Value` at each numeric width, strings and arrays through unmanaged memory, `GLib.List` and `PtrArray` as collections. |
 | `TreeModelTests` | `ListStore`, `TreeStore`, `TreeModelFilter`, `TreeModelSort`, `TreePath` — deprecated in Gtk 4, still shipped, still what a ported application arrives holding. |
 | `PixbufAndLogTests` | Image encode/decode round-trips (PNG is lossless, so the comparison is exact), sub-pixbuf aliasing, and the callback plumbing in `GLib.Log` and the idle/timeout sources. |
+| `NodeStoreTests` | `NodeStore` is a managed `GtkTreeModel` implementation rather than a binding of one, so every column read and change notification is code Gtk calls back into. Asserted through a real `NodeView`, including that a column value follows the node's property rather than being copied in at `AddNode` time. |
+| `IOChannelAndSpawnTests` | `GLib.IOChannel` and `GLib.Spawn`, both with oracles outside the library: a file the test wrote, and a child process whose output the test chose. |
+| `PangoTests` | The hand-rolled `Pango.Attribute` hierarchy, attribute iteration, layout measurement and wrapping, tab arrays, font descriptions and metrics. |
+| `CairoTextAndPathTests` | The rest of `Cairo.Context`: text measurement and drawing, path copying and flattening, groups, masks, clip extents, PNG round-trips. |
 
 ### Guards against vacuous passes
 
@@ -393,6 +397,68 @@ without reading the property — it exists to be an out-parameter for
 native list only when the wrapper owns it, so on the single-argument constructor
 most callers reach for, it does nothing at all.
 
+## Fixed: three more symbols loaded from the wrong library
+
+`GLib.PtrArray`'s seven `g_ptr_array_*` lookups were the first of these. An audit
+of every `g_`-prefixed symbol in the tree against the library that exports it
+found three more:
+
+- `PtrArray` also loads `g_object_unref` from GLib, so disposing an owning array
+  of GObjects threw.
+- All five `g_spawn_*_utf8` entry points — the ones `GLib.Spawn` uses **on
+  Windows only** — were loaded from GObject. GLib exports them, so every spawn
+  on Windows called a null delegate, while Linux, which takes the plain names
+  beside them, worked. A defect on one platform only is the signature of this
+  mistake, because the two code paths were written at different times.
+
+The audit is worth re-running after touching any `FuncLoader` lookup:
+
+```python
+GOBJECT = ('g_type_','g_object_','g_signal_','g_param_','g_value_','g_closure_',
+           'g_enum_','g_flags_','g_boxed_','g_binding_','g_cclosure_')
+pat = re.compile(r'GLibrary\.Load\(Library\.(\w+)\),\s*"([a-z0-9_]+)"')
+# a g_ symbol not in GOBJECT belongs to GLib, unless it is a Gio one
+```
+
+**Check which library exports the symbol, not which binding the type belongs
+to.** `GLib.KeyFile` and `GLib.PtrArray` are both in `GLibSharp`, and only one of
+them is a GObject.
+
+## Fixed: a stack-corrupting ABI in Cairo's matrix getters
+
+Reading `Context.FontMatrix` crashed the process outright. `Cairo.Matrix` is a
+**class**, so it already marshals as `cairo_matrix_t*`; declaring the parameter
+`out` made it `cairo_matrix_t**`, and Cairo wrote 48 bytes of doubles through the
+address of an 8-byte reference slot. Three getters had it —
+`cairo_get_font_matrix`, `cairo_scaled_font_get_ctm`,
+`cairo_scaled_font_get_font_matrix` — while the setters directly beside them,
+taking the same type, were already right.
+
+Same shape as the caller-allocates defect above: a function that writes into
+storage **the caller** provides, bound as though it returned something.
+
+**Why it survived: a crash is quieter than a failure.** An
+`AccessViolationException` takes down the test host rather than failing a test,
+so the run reports whatever finished first and stops. Before the fix, the class
+reported *nine passing tests of twenty-one* and the whole suite reported 68 of
+484 — both with a "Passed!" line. When a run's total is lower than it should be,
+that is the thing to chase, not the pass count.
+
+## Fixed: Pango's attribute iterator and font-description equality
+
+`AttrIterator` built its `GLib.SList` without an element type, in both `Attrs`
+and `GetFont`. With none, `ListBase.DataMarshal` falls through to treating each
+item as a GObject — which a `PangoAttribute` is not — and returns `null`, so
+unboxing to `IntPtr` threw. Reading the attributes back off an iterator, the only
+way to get them out of an `AttrList`, failed every time.
+
+`Pango.FontDescription` inherited `GLib.Opaque`'s equality, which compares
+handles. Two descriptions built from the same string are equal by every measure
+Pango offers — `Equal` says so, `Hash` agrees — but were unequal here and hashed
+differently, so one could not be used to find the other in a dictionary. It now
+overrides `Equals`/`GetHashCode` onto Pango's own two functions rather than
+reimplementing the comparison: which fields count is Pango's business.
+
 ## Open: boxed types with no allocator cannot be constructed
 
 `Gsk.RoundedRect` has no `_alloc` function in C, so the binding generates no
@@ -451,21 +517,25 @@ EOF
 Ranked by *uncovered lines*, that list is a work queue. Every defect found in
 §"Fixed" below came off it.
 
-At 403 tests:
+At 484 tests:
 
 | | line rate |
 |:--|--:|
-| **hand-written (Generated and Samples excluded)** | **43.6%** |
-| overall, including generated | 9.5% |
-| `Samples` | 73.8% |
-| `GLibSharp` hand-written | 54.6% |
-| `CairoSharp` hand-written | 44.2% |
+| **hand-written (Generated and Samples excluded)** | **50.3%** |
+| overall, including generated | 10.4% |
+| `GLibSharp` hand-written | 58.8% |
+| `CairoSharp` hand-written | 52.3% |
 | `GioSharp` hand-written | 52.1% |
-| `GtkSharp` hand-written | 21.9% |
+| `PangoSharp` hand-written | 42.2% |
+| `GdkSharp` hand-written | 40.4% |
+| `GtkSharp` hand-written | 32.7% |
 
-Files still worth attention, largest first: `Gtk/NodeStore.cs` (384 lines, none
-reached), `GLib/IOChannel.cs` (286, none), `Gtk/SignalConnector.cs` (178, none),
-`GLib/Spawn.cs` (168, none), `Cairo/Context.cs` (548 of 836 still uncovered).
+`Gtk/SignalConnector.cs` will not move: `ConnectSignals` throws
+`NotSupportedException` because Gtk 4 replaced
+`gtk_builder_connect_signals_full` with `GtkBuilderScope`, which this binding
+does not implement. Its `ConnectFunc` — the reflection that did the wiring — is
+now unreachable from anywhere, and stays only as the shape of what a
+`GtkBuilderScope` implementation would need.
 
 `SectionBrowsingTests` is what a manual tester does: it drives `MainWindow`'s
 selection handler for every row rather than constructing sections directly, so it
