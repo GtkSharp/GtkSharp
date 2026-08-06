@@ -225,42 +225,49 @@ constructor result, so the ordering matters:
 a regression here: it disposes a borrowed wrapper and then keeps using the owner,
 which touches freed memory if the reference counting is wrong.
 
-## Open: `Widget.Destroy` corrupts memory
+## Fixed: a stale wrapper unreffing a reused address
 
-`Destroy()` tears down the native object but leaves the managed wrapper's toggle
-ref registered against it. Nothing fails at that moment. It fails later, when the
-wrapper is garbage collected and the queued unref runs on a main-loop timeout:
+Kept here because the shape is easy to reintroduce.
+
+`GLib.Object` keeps a map from **native address** to `ToggleRef`, and native
+addresses are reused. `Widget.Destroy` tears the object down behind the
+wrapper's back — the wrapper survives, still holding that address, and is not
+disposed. When it is finalized later, `Dispose(false)` looked the address up and
+queued an unref on whatever it found. By then the entry could belong to a
+different object entirely, so the unref corrupted *that* object's bookkeeping
+and crashed later inside `ToggleRef.Free`, on a main-loop timeout, with nothing
+left to say which object caused it:
 
 ```
 Fatal error. System.AccessViolationException: Attempted to read or write protected memory.
    at GLib.ToggleRef.Free()
    at GLib.ToggleRef.PerformQueuedUnrefs()
-   at GLib.Timeout+TimeoutProxy.Handler()
 ```
 
-`Dispose()` does not have the problem — it takes a reference before destroying,
-with a comment saying exactly why: *"Freeing our toggle ref expects a normal ref
-to exist, and therefore does not check if the object still exists."*
+The fix is one ownership check in `GLib.Object.Dispose`: act on the registration
+only when it is still ours.
 
-**Localised by experiment, not by reading.** Excluding `ChildWindowTests`, the
-only tests that destroy toplevels, makes an instrumented run complete; switching
-those calls from `Destroy()` to `Dispose()` makes the full suite complete. It
-appears only under coverage instrumentation because that shifts GC timing —
-which makes it latent, not absent.
+```csharp
+if (ReferenceEquals (tref.Target, this))
+    Objects.Remove (Handle);
+else
+    tref = null;          // address was reused; not ours to touch
+```
 
-**Three fixes were tried and none worked**, so the cause is not yet understood:
+**Three earlier attempts failed** — taking the compensating reference in
+`Destroy`, releasing the wrapper from `Destroy`, and both together — because all
+of them treated the window as the victim. It was not: the wrapper at fault is
+whichever one happened to hold a reused address, typically a child freed along
+with its window. Each was reverted rather than left in.
 
-1. taking the compensating reference in `Destroy`, as `Dispose` does;
-2. releasing the wrapper from `Destroy` by calling `Dispose`;
-3. both together.
+The fix was confirmed by removing it again: with the guard, 161 tests pass under
+instrumentation; without it, the run aborts. `A_window_destroyed_and_finalized_does_not_disturb_later_objects`
+pins it, and asserts the *later* object still works rather than merely that
+nothing crashed.
 
-All were reverted rather than left in — an unverified change to object lifetime
-is worse than a documented bug. The stack says `PerformQueuedUnrefs`, meaning the
-wrapper was *collected* rather than disposed, so the object at fault may be a
-child widget freed along with its window rather than the window itself.
-
-Until this is understood, **`ChildWindowTests` uses `Dispose()`**, and calling
-`Widget.Destroy()` on a toplevel should be considered unsafe.
+Why it only showed under coverage: instrumentation shifts GC timing, so
+finalizers run at different moments relative to allocation. The bug was always
+there.
 
 ## Measuring coverage
 

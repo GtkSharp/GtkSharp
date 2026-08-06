@@ -1218,12 +1218,5 @@ push comes last.
 - **`GtkParamSpecExpression`'s declared hierarchy is not the C one** — it is a
   `GParamSpec` there and a bare `GLib.Opaque` here, with no `ref_func`.
 - **CI has not been observed running.**
-- **`Widget.Destroy` on a toplevel corrupts memory.** It leaves the wrapper's
-  toggle ref registered against a torn-down object; the crash arrives later, when
-  the wrapper is collected and the queued unref runs. Localised by experiment:
-  excluding the tests that destroy toplevels, or switching them to `Dispose()`,
-  makes an instrumented run complete. Three candidate fixes were tried and all
-  failed, so it is documented rather than half-fixed — `ChildWindowTests` uses
-  `Dispose()` and `Destroy()` should be considered unsafe on a toplevel. Coverage
-  now measures cleanly. See `Docs/testing.md`. The workflow moved to ubuntu-24.04 and
+ The workflow moved to ubuntu-24.04 and
   gained the test step, but no run has been seen from this side.
