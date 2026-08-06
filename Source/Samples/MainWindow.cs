@@ -60,7 +60,14 @@ namespace Samples
             vpanned.StartChild = _boxContent;
             vpanned.ResizeStartChild = true;
             vpanned.ShrinkStartChild = true;
-            vpanned.EndChild = ApplicationOutput.Widget;
+            // ApplicationOutput is a singleton, so a second MainWindow would be
+            // handed a widget that still belongs to the first one. Gtk 4 refuses
+            // to re-parent in place -- gtk_paned_set_end_child asserts the child
+            // has no parent -- so it has to be detached first.
+            var output = ApplicationOutput.Widget;
+            if (output.Parent != null)
+                output.Unparent();
+            vpanned.EndChild = output;
             vpanned.ResizeEndChild = false;
             vpanned.ShrinkEndChild = true;
             scroll1.Child = vpanned;
