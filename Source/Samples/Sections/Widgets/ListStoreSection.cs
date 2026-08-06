@@ -12,7 +12,7 @@ namespace Samples
     //   GtkTreeSelection -> a selection model wrapping the list model
     //
     // Rows must be GObjects, so the data type below derives from GLib.Object.
-    [Section(ContentType = typeof(ColumnView), Category = Category.Widgets)]
+    [Section(ContentType = typeof(GLib.ListStore), Category = Category.Widgets)]
     public class ListStoreSection : Box
     {
         private readonly GLib.ListStore _model;
