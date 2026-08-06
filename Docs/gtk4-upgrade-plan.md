@@ -747,7 +747,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **4** | api.xml regeneration + metadata triage | ✅ **complete** — 2026-08-06, all nine assemblies at zero unmatched rules |
 | **5** | Hand-written layer port | ✅ **complete** — all 11 assemblies build clean |
 | **6** | Samples port (37 sections) | ✅ **complete** |
-| **7** | Templates and workload | ⬜ not started |
+| **7** | Templates and workload | ✅ **complete** |
 | **8** | Native runtime, CI | ⬜ not started |
 
 ### Phase 1 — complete
