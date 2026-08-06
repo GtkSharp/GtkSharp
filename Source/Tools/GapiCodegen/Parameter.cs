@@ -201,8 +201,13 @@ namespace GtkSharp.Generation {
 		public virtual string NativeSignature {
 			get {
 				string sig = MarshalType + " " + Name;
-				if (PassAs != String.Empty)
+
+				// A caller-allocated out parameter is a plain pointer to memory
+				// this side owns, so the import takes it by value; only the
+				// managed-facing signature keeps the "out".
+				if (PassAs != String.Empty && !IsCallerAllocatedOut)
 					sig = PassAs + " " + sig;
+
 				return sig;
 			}
 		}
@@ -278,9 +283,51 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		/// <summary>
+		/// An out parameter whose storage the *caller* provides, wrapped by a
+		/// reference type.
+		/// </summary>
+		/// <remarks>
+		/// C writes the result into memory the caller owns -- graphene_rect_union's
+		/// `res`, gsk_render_node_get_bounds' `bounds`. Passing "out IntPtr" gives
+		/// the callee an 8-byte slot to write a 16-byte struct into, which is
+		/// stack corruption, and the pointer read back afterwards is garbage.
+		///
+		/// Value types are unaffected, because a managed struct already provides
+		/// real storage: Gdk.Rectangle out parameters work, and GdkRectangle is a
+		/// struct only because GdkSharp-symbols.xml overrides it. That is why this
+		/// is keyed off the api.xml attribute rather than off the type.
+		/// </remarks>
+		public bool IsCallerAllocatedOut {
+			get {
+				// StructBase covers <boxed>; OpaqueGen covers <boxed opaque="true">,
+				// which is what most of these are. Both emit abi_info, which is
+				// where the size comes from. Primitive out parameters -- ulong,
+				// IntPtr -- are excluded by the IntPtr marshal-type test, and are
+				// correct as ordinary out parameters.
+				return PassAs == "out"
+					&& elem.GetAttributeAsBoolean ("caller_allocates")
+					&& (Generatable is StructBase || Generatable is OpaqueGen)
+					&& MarshalType == "IntPtr";
+			}
+		}
+
 		public virtual string[] Prepare {
 			get {
 				IGeneratable gen = Generatable;
+
+				if (IsCallerAllocatedOut) {
+					// abi_info.Size is the type's own computed C size, which is
+					// exactly what the callee is going to write. The buffer is
+					// g_malloc'd and released by the type's own free function,
+					// which pairs correctly because GLib's slice allocator has
+					// been an alias for g_malloc since 2.76.
+					return new string [] {
+						"IntPtr native_" + CallName + " = GLib.Marshaller.Malloc ((ulong) " +
+							CSType + ".abi_info.Size);"
+					};
+				}
+
 				if (gen is IManualMarshaler) {
 					string result = "IntPtr native_" + CallName;
 					if (PassAs != "out")
@@ -305,6 +352,9 @@ namespace GtkSharp.Generation {
 				IGeneratable gen = Generatable;
 				if (gen is CallbackGen)
 					return SymbolTable.Table.CallByName (CType, CallName + "_wrapper");
+				else if (IsCallerAllocatedOut)
+					// By value: the pointer *is* the storage, so it is not an out.
+					return "native_" + CallName;
 				else if (PassAs != String.Empty) {
 					call_parm = PassAs + " ";
 					if (CSType != MarshalType)
@@ -324,6 +374,16 @@ namespace GtkSharp.Generation {
 		public virtual string[] Finish {
 			get {
 				IGeneratable gen = Generatable;
+
+				if (IsCallerAllocatedOut) {
+					// Owned: the buffer was allocated here, so the wrapper frees
+					// it through the type's own free function.
+					string wrap = gen is IOwnable
+						? (gen as IOwnable).FromNative ("native_" + CallName, true)
+						: gen.FromNative ("native_" + CallName);
+					return new string [] { CallName + " = " + wrap + ";" };
+				}
+
 				if (gen is IManualMarshaler) {
 					string[] result = new string [PassAs == "ref" ? 2 : 1];
 					int i = 0;
