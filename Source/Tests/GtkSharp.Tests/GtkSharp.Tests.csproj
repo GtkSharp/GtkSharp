@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Test host only, so unlike the wrapper assemblies this is not
+         multi-targeted and is neither packed nor signed. -->
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <SignAssembly>false</SignAssembly>
+    <OutputPath>..\..\..\BuildOutput\Tests</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libs\GLibSharp\GLibSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GioSharp\GioSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\CairoSharp\CairoSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\PangoSharp\PangoSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GrapheneSharp\GrapheneSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GdkSharp\GdkSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GskSharp\GskSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GtkSharp\GtkSharp.csproj" />
+    <!-- The samples are the widest exercise of the bindings this repository
+         has, so the section-construction tests drive them directly. -->
+    <ProjectReference Include="..\..\Samples\Samples.csproj" />
+  </ItemGroup>
+
+</Project>
