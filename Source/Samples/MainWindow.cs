@@ -9,7 +9,8 @@ using System.IO;
 
 namespace Samples
 {
-    class MainWindow : Window
+    // Public so the test project can construct it, as the real program does.
+    public class MainWindow : Window
     {
         private HeaderBar _headerBar;
         private TreeView _treeView;

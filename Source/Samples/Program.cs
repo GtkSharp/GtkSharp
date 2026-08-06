@@ -22,7 +22,16 @@ namespace Samples
             if (App == null)
             {
                 App = new Application("org.Samples.Samples", GLib.ApplicationFlags.None);
-                App.Register(GLib.Cancellable.Current);
+
+                // Registration needs a session bus, and there is not always one
+                // -- notably on Windows. The result used to be discarded, which
+                // matters because an unregistered GApplication silently refuses
+                // AddWindow: the window still works, but the application never
+                // tracks it. Saying so beats wondering why Windows is empty.
+                if (!App.Register(GLib.Cancellable.Current))
+                    Console.Error.WriteLine(
+                        "warning: could not register the application (no session bus?); " +
+                        "application-level window tracking and actions will not work.");
             }
 
             return App;
