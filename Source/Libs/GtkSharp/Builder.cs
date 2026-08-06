@@ -129,7 +129,15 @@ namespace Gtk {
 		public void Autoconnect (object handler, bool throwOnUnknownObject)
 		{
 			BindFields (handler, handler.GetType (), throwOnUnknownObject);
-			new SignalConnector (handler).ConnectSignals (this);
+
+			// Autoconnect does two independent jobs: binding [Object] fields,
+			// which works, and connecting signals, which needs GtkBuilderScope
+			// in Gtk 4 and throws. Only documents that declare a <signal> need
+			// the second, so binding stays usable for the rest -- while a
+			// document that does ask for handlers still fails loudly instead of
+			// silently ignoring every click.
+			if (declares_signals)
+				new SignalConnector (handler).ConnectSignals (this);
 		}
 
 		public void Autoconnect (Type handler_class)
@@ -140,7 +148,9 @@ namespace Gtk {
 		public void Autoconnect (Type handler_class, bool throwOnUnknownObject)
 		{
 			BindFields (null, handler_class, throwOnUnknownObject);
-			new SignalConnector (handler_class).ConnectSignals (this);
+
+			if (declares_signals)
+				new SignalConnector (handler_class).ConnectSignals (this);
 		}
 		
 		void AddFromStream (Stream stream)
@@ -157,8 +167,16 @@ namespace Gtk {
 			}
 
 			var text = Encoding.UTF8.GetString (buffer, offset, size - offset);
+
+			// Remembered so Autoconnect only reaches for signal connection when
+			// the document actually asks for it; see below.
+			if (text.IndexOf ("<signal", StringComparison.Ordinal) >= 0)
+				declares_signals = true;
+
 			AddFromString (text);
 		}
+
+		bool declares_signals;
 		
 		void BindFields (object target, Type type, bool throwOnUnknownObject)
 		{
