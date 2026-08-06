@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 48 tests, all passing, which found five more defects that compiling had missed. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 49 tests, all passing and with no GLib diagnostics left, which found eight more defects that compiling had missed — including a wrong ABI on all 724 `throws` methods. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -1056,7 +1056,7 @@ gone; `--BuildTarget=Test` is the entry point, and CI calls it.
 | `BindingTests` | 14 behavioural round-trips, each pinning something this migration fixed: the button label ctor, box append/reorder/unparent, `Grid.QueryChild`, `StackPage.Title`, `RGBA.Parse` components, `Snapshot.ToNode` returning a `GskRenderNode`, `ConstantExpression.ValueType`, and `Application.Run` returning after `Quit`. |
 | `GtkFixture` | Owns the single thread Gtk is initialised on and marshals every test body onto it — Gtk may only be used from the thread that called `gtk_init`, and xunit promises no thread affinity. Parallelisation is disabled assembly-wide. Each work item drains pending main-loop work, so a failure in layout or a draw function is attributed to the test that caused it. |
 
-**48 tests, all passing**, against a real Gtk 4 runtime.
+**49 tests, all passing**, against a real Gtk 4 runtime, with **no GLib CRITICAL or WARNING output left**.
 
 `MainWindowTests` closes the one gap between the tests and the smoke run they
 replaced: the smoke run also built `MainWindow`, added it to the application and
@@ -1097,6 +1097,45 @@ the setup the real program gives them.
 explains why calling matters more than compiling here.
 
 ---
+
+### The biggest defect the tests found: every `throws` method had the wrong ABI
+
+The GLib diagnostics the test run printed were not noise. Chasing
+`gdk_pixbuf_loader_write: assertion 'error == NULL || *error == NULL' failed`
+led to a bug affecting **724 methods across seven assemblies** — every method
+marked `throws="1"`.
+
+GapiCodegen decides whether a call needs a `GError` by looking for a trailing
+`GError**` **parameter**: `Parameters.cs` turns it into an `ErrorParameter`, and
+`MethodBody.ThrowsException` walks the parameter list looking for its `CType`.
+The `throws` attribute only tells codegen to *hide* that parameter — it never
+adds one. `gapi2xml.pl` emitted both, because the C header it parsed had the
+argument written out; GIR states it as a flag on the callable instead.
+
+`GirToGapi` emitted the attribute and not the parameter. So every generated
+P/Invoke declared **one argument fewer than the C function takes**, and the
+callee read whatever happened to be in the argument register. Two consequences,
+neither of which a compiler could see:
+
+- GLib's `g_return_if_fail (error == NULL || *error == NULL)` fired against
+  garbage.
+- **No `GException` was ever raised.** Failures returned `false` and looked like
+  success.
+
+A second, narrower case: a method whose *only* C argument is the `GError**` has
+no `<parameters>` element in GIR at all, and the emitter returned early before
+reaching the throws check. `gdk_pixbuf_loader_close` and its kind were left
+without an error argument even after the first fix.
+
+Both are fixed in `CallableEmitter.AddBody`, all api.xml regenerated, and the
+behaviour is pinned by a test that asserts a failing call raises `GException`
+with a message.
+
+Two smaller fixes came from the same run: `ApplicationOutput.Widget` is a
+singleton, so a second `MainWindow` was handed a widget that still belonged to
+the first, and Gtk 4 refuses to re-parent in place — it is now detached first.
+And `Program.EnsureApplication` no longer discards the result of
+`Application.Register`.
 
 ## 15. Open items
 
