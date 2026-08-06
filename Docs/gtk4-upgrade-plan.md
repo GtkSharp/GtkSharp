@@ -1217,7 +1217,12 @@ push comes last.
   in Phase 9 were rewritten; the warnings are the honest record of the rest.
 - **`GtkParamSpecExpression`'s declared hierarchy is not the C one** — it is a
   `GParamSpec` there and a bare `GLib.Opaque` here, with no `ref_func`.
-- **CI has not been observed running.**
+- **CI has not been observed running.** The workflow now runs inside a
+  `debian:forky` container rather than bare `ubuntu-24.04`, because the runner's
+  Gtk 4.14 is eight minor versions behind the 4.22.4 the bindings are generated
+  from — and a symbol the binding declares but the library lacks is a null
+  delegate, not a link error, so that skew would have hidden exactly the class of
+  bug the suite exists to find while still reporting green.
 - **Boxed types with no C allocator cannot be constructed** — `new Gsk.RoundedRect()`
   yields a null handle through the inherited `GLib.Opaque()` constructor, and the
   `Init*` methods write through it. A fix would generate an allocating
