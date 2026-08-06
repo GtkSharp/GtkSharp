@@ -72,8 +72,8 @@ namespace Cairo {
 		public Matrix FontMatrix {
 			get {
 				CheckDisposed ();
-				Matrix m;
-				NativeMethods.cairo_scaled_font_get_font_matrix (handle, out m);
+				Matrix m = new Matrix ();
+				NativeMethods.cairo_scaled_font_get_font_matrix (handle, m);
 				return m;
 			}
 		}

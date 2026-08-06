@@ -301,7 +301,12 @@ namespace Cairo
 		internal static d_cairo_get_font_face cairo_get_font_face = FuncLoader.LoadFunction<d_cairo_get_font_face>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_get_font_face"));
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate void d_cairo_get_font_matrix(IntPtr cr, out Matrix matrix);
+		// Matrix is a class, so it already marshals as cairo_matrix_t*. Declaring
+		// it "out" made the parameter a cairo_matrix_t** -- Cairo then wrote
+		// forty-eight bytes of doubles through the address of an eight-byte
+		// reference slot, corrupting the stack. The three getters that read a
+		// matrix out all had it; the setters beside them did not.
+		internal delegate void d_cairo_get_font_matrix(IntPtr cr, Matrix matrix);
 		internal static d_cairo_get_font_matrix cairo_get_font_matrix = FuncLoader.LoadFunction<d_cairo_get_font_matrix>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_get_font_matrix"));
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -832,13 +837,13 @@ namespace Cairo
 		internal delegate void d_cairo_scaled_font_extents(IntPtr scaled_font, out FontExtents extents);
 		internal static d_cairo_scaled_font_extents cairo_scaled_font_extents = FuncLoader.LoadFunction<d_cairo_scaled_font_extents>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_scaled_font_extents"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate void d_cairo_scaled_font_get_ctm(IntPtr scaled_font, out Matrix matrix);
+		internal delegate void d_cairo_scaled_font_get_ctm(IntPtr scaled_font, Matrix matrix);
 		internal static d_cairo_scaled_font_get_ctm cairo_scaled_font_get_ctm = FuncLoader.LoadFunction<d_cairo_scaled_font_get_ctm>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_scaled_font_get_ctm"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate IntPtr d_cairo_scaled_font_get_font_face(IntPtr scaled_font);
 		internal static d_cairo_scaled_font_get_font_face cairo_scaled_font_get_font_face = FuncLoader.LoadFunction<d_cairo_scaled_font_get_font_face>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_scaled_font_get_font_face"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate void d_cairo_scaled_font_get_font_matrix(IntPtr scaled_font, out Matrix matrix);
+		internal delegate void d_cairo_scaled_font_get_font_matrix(IntPtr scaled_font, Matrix matrix);
 		internal static d_cairo_scaled_font_get_font_matrix cairo_scaled_font_get_font_matrix = FuncLoader.LoadFunction<d_cairo_scaled_font_get_font_matrix>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_scaled_font_get_font_matrix"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate IntPtr d_cairo_scaled_font_get_font_options(IntPtr scaled_font);
