@@ -411,11 +411,7 @@ namespace Gtk {
 		}
 		*/
 
-		public void Path (out string path, out string path_reversed)
-		{
-			uint len;
-			Path (out len, out path, out path_reversed);
-		}
+		// Path: gtk_widget_path is gone; Gtk 4 has no widget paths.
 
 		static IDictionary<IntPtr, Delegate> destroy_handlers;
 		static IDictionary<IntPtr, Delegate> DestroyHandlers {
@@ -438,8 +434,8 @@ namespace Gtk {
 		protected virtual void OnDestroyed ()
 		{
 			if (DestroyHandlers.ContainsKey (Handle)) {
-				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
-				handler (this, EventArgs.Empty);
+				System.EventHandler handler = (System.EventHandler) DestroyHandlers [Handle];
+				handler (this, System.EventArgs.Empty);
 				DestroyHandlers.Remove (Handle);
 			}
 		}
@@ -507,7 +503,8 @@ namespace Gtk {
 			if (Handle == IntPtr.Zero)
 				return;
 
-			if (disposing && !destroyed && IsToplevel)
+			// Gtk 4 dropped gtk_widget_is_toplevel; a toplevel is a GtkWindow.
+			if (disposing && !destroyed && this is Gtk.Window)
 			{
 				//If this is a TopLevel widget, then we do not hold a ref, only a toggle ref.
 				//Freeing our toggle ref expects a normal ref to exist, and therefore does not check if the object still exists.

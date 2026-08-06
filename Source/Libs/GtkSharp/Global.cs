@@ -20,9 +20,12 @@ namespace Gtk {
 
 	public partial class Global {
 
-		public static bool ShowUri (string uri)
+		// Gtk 4's gtk_show_uri takes a parent window and a timestamp, and returns
+		// void: it launches asynchronously and reports nothing back. Gtk 4.10 adds
+		// GtkUriLauncher, which does report completion.
+		public static void ShowUri (string uri)
 		{
-			return ShowUri (null, uri);
+			ShowUri (null, uri, 0);
 		}
 
 		// Screen-based helpers are gone with GdkScreen.

@@ -42,10 +42,7 @@ namespace Gtk {
 			Render.Check (this, cr, x, y, width, height);
 		}
 
-		public void RenderExtension (Cairo.Context cr, double x, double y, double width, double height, Gtk.PositionType gap_side)
-		{
-			Render.Extension (this, cr, x, y, width, height, gap_side);
-		}
+		// RenderExtension/RenderFrameGap/RenderSlider: gtk_render_extension, gtk_render_frame_gap and gtk_render_slider are gone in Gtk 4.
 
 		public void RenderExpander (Cairo.Context cr, double x, double y, double width, double height)
 		{
@@ -62,10 +59,6 @@ namespace Gtk {
 			Render.Frame (this, cr, x, y, width, height);
 		}
 
-		public void RenderFrameGap (Cairo.Context cr, double x, double y, double width, double height, Gtk.PositionType gap_side, double xy0_gap, double xy1_gap)
-		{
-			Render.FrameGap (this, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
-		}
 
 		public void RenderHandle (Cairo.Context cr, double x, double y, double width, double height)
 		{
@@ -89,10 +82,6 @@ namespace Gtk {
 			Render.Option (this, cr, x, y, width, height);
 		}
 
-		public void RenderSlider (Cairo.Context cr, double x, double y, double width, double height, Gtk.Orientation orientation)
-		{
-			Render.Slider (this, cr, x, y, width, height, orientation);
-		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		unsafe delegate void d_gtk_style_context_get_property(IntPtr raw, IntPtr property, int state, GLib.Value* value);

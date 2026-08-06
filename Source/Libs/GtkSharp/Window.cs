@@ -26,10 +26,7 @@ namespace Gtk {
 
 	public partial class Window {
 
-		public Window (String title) : this (WindowType.Toplevel)
-		{
-			this.Title = title;
-		}
+		// Window(string title): GtkWindowType is gone; Gtk 4 has only toplevels.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_window_get_default_icon_list();
 		static d_gtk_window_get_default_icon_list gtk_window_get_default_icon_list = FuncLoader.LoadFunction<d_gtk_window_get_default_icon_list>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_window_get_default_icon_list"));

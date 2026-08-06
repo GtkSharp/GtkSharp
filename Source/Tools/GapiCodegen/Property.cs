@@ -73,15 +73,23 @@ namespace GtkSharp.Generation {
 			return "[GLib.Property (" + qpname + ")]";
 		}
 
+		// True only while generating the GInterfaceAdapter, which holds the
+		// wrapped object in a field called "implementor". An interface property
+		// is also emitted into every implementing class (ObjectGen.cs:232), and
+		// there the object IS the implementor, so the plain accessor is right --
+		// keying off "container_type is InterfaceGen" alone put a reference to a
+		// non-existent field into every implementor.
+		bool emittingAdapter;
+
 		protected virtual string RawGetter (string qpname) {
-            if (container_type is InterfaceGen)
-                return "implementor.GetProperty (" + qpname + ")";
+			if (emittingAdapter)
+				return "implementor.GetProperty (" + qpname + ")";
 			return "GetProperty (" + qpname + ")";
 		}
 
 		protected virtual string RawSetter (string qpname) {
-            if (container_type is InterfaceGen)
-                return "implementor.SetProperty(" + qpname + ", val)";
+			if (emittingAdapter)
+				return "implementor.SetProperty(" + qpname + ", val)";
 			return "SetProperty(" + qpname + ", val)";
 		}
 
@@ -106,6 +114,8 @@ namespace GtkSharp.Generation {
 
 		public void Generate (GenerationInfo gen_info, string indent, ClassBase implementor)
 		{
+			emittingAdapter = container_type is InterfaceGen && implementor == null;
+
 			SymbolTable table = SymbolTable.Table;
 			StreamWriter sw = gen_info.Writer;
 

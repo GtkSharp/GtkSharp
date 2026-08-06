@@ -51,14 +51,12 @@ namespace Gtk {
 
 		void LoadFromStream (System.IO.Stream stream)
 		{
+			// Gtk 4's GtkImage has no animation and no stock support: animated
+			// content is a GdkPaintable now, and stock items are gone entirely.
 			try {
-				Gdk.PixbufAnimation anim = new Gdk.PixbufAnimation (stream);
-				if (anim.IsStaticImage)
-					Pixbuf = anim.StaticImage;
-				else
-					PixbufAnimation = anim;
+				Pixbuf = new Gdk.Pixbuf (stream);
 			} catch {
-				Stock = Gtk.Stock.MissingImage;
+				IconName = "image-missing";
 			}
 		}
 
@@ -86,12 +84,7 @@ namespace Gtk {
 			return new Image (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
 
-		[Obsolete ("Use the Animation property instead")]
-		public Gdk.PixbufAnimation FromAnimation {
-			set {
-				gtk_image_set_from_animation(Handle, value == null ? IntPtr.Zero : value.Handle);
-			}
-		}
+		// FromAnimation: gtk_image_set_from_animation is gone; Gtk 4 animates through GdkPaintable.
 
 		[Obsolete ("Use the File property instead")]
 		public string FromFile {

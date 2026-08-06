@@ -628,4 +628,25 @@
   <!-- The "drop" signal and the Drop property from gtk_drop_target_get_drop
        collide; the signal is renamed, as with ApplyTag/TagApplied in Gtk 3. -->
   <attr path="/api/namespace/object[@cname='GtkDropTarget']/signal[@cname='drop']" name="name">Dropped</attr>
+
+  <!--
+    The GtkExpression hierarchy is not bound.
+
+    Expressions are GLib fundamental types, like GskRenderNode and GdkEvent, and
+    ObjectGen assumes GObject: it emits "GLib.Object.GetObject(raw) as
+    Gtk.Expression", Handle, Raw and a base(IntPtr) chain-up, none of which
+    exist. See the note in GskSharp.metadata for why deriving them from
+    GLib.Object is not an acceptable workaround.
+
+    Cost: 44 api.xml members mention GtkExpression and go with it, chiefly the
+    expression-based list-item factories and property bindings. Everything else
+    in GtkSharp is unaffected.
+  -->
+  <attr path="/api/namespace/object[@cname='GtkCClosureExpression']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkClosureExpression']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkConstantExpression']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkExpression']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkObjectExpression']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkPropertyExpression']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkTryExpression']" name="hidden">1</attr>
 </metadata>

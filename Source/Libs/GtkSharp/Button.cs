@@ -45,10 +45,7 @@ namespace Gtk {
 			GLib.Marshaller.Free (native);
 		}
 
-		public Button (Widget widget) : this ()
-		{
-			Add (widget);
-		}
+		// Button(Widget): GtkContainer is gone; set Child instead.
 	}
 }
 

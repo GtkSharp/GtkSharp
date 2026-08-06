@@ -73,13 +73,7 @@ namespace Gtk {
 			}
 		}
 
-		// SearchPath: gtk_icon_theme_get/set_search_path are introspected in Gtk 4.
-
-		[Obsolete ("Replaced by SearchPath property.")]
-		public void SetSearchPath (string[] path)
-		{
-			SearchPath = path;
-		}
+		// SetSearchPath: superseded by the generated SearchPath property.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_icon_theme_get_icon_sizes(IntPtr raw, IntPtr icon_name);
 		static d_gtk_icon_theme_get_icon_sizes gtk_icon_theme_get_icon_sizes = FuncLoader.LoadFunction<d_gtk_icon_theme_get_icon_sizes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_get_icon_sizes"));

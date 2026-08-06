@@ -26,16 +26,16 @@ namespace Gtk {
 
 		private TreeSelection selection;
 		
-		public event EventHandler Changed;
+		public event System.EventHandler Changed;
 
 		internal NodeSelection (TreeSelection selection)
 		{
 			this.selection = selection;
 
-			selection.Changed += new EventHandler (ChangedHandler); 
+			selection.Changed += new System.EventHandler (ChangedHandler); 
 		}
 
-		private void ChangedHandler (object o, EventArgs args)
+		private void ChangedHandler (object o, System.EventArgs args)
 		{
 			if (Changed != null)
 				Changed (this, args); 

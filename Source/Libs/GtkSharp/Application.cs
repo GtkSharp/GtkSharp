@@ -160,18 +160,18 @@ namespace Gtk {
 		}
 
 		internal class InvokeCB {
-			EventHandler d;
+			System.EventHandler d;
 			object sender;
-			EventArgs args;
+			System.EventArgs args;
 			
-			internal InvokeCB (EventHandler d)
+			internal InvokeCB (System.EventHandler d)
 			{
 				this.d = d;
-				args = EventArgs.Empty;
+				args = System.EventArgs.Empty;
 				sender = this;
 			}
 			
-			internal InvokeCB (EventHandler d, object sender, EventArgs args)
+			internal InvokeCB (System.EventHandler d, object sender, System.EventArgs args)
 			{
 				this.d = d;
 				this.args = args;
@@ -185,14 +185,16 @@ namespace Gtk {
 			}
 		}
 		
-		public static void Invoke (EventHandler d)
+		// System.EventHandler, qualified: Gtk 4 introduces a Gtk.EventHandler
+		// that would otherwise win name resolution inside namespace Gtk.
+		public static void Invoke (System.EventHandler d)
 		{
 			InvokeCB icb = new InvokeCB (d);
 			
 			GLib.Timeout.Add (0, new GLib.TimeoutHandler (icb.Invoke));
 		}
 
-		public static void Invoke (object sender, EventArgs args, EventHandler d)
+		public static void Invoke (object sender, System.EventArgs args, System.EventHandler d)
 		{
 			InvokeCB icb = new InvokeCB (d, sender, args);
 			

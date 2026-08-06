@@ -250,6 +250,12 @@ namespace GtkSharp.Generation {
 				|| cstype == "sbyte"
 				|| cstype == "float"
 				|| cstype == "double";
+			// sizeof on a pointer-sized type is only legal in an unsafe context,
+			// and these expressions land in ordinary signal-marshalling code.
+			// The static Size property is the same value without that constraint.
+			if (cstype == "IntPtr" || cstype == "UIntPtr")
+				return cstype + ".Size";
+
 			if (isBlittable)
 				return "sizeof( " + cstype + " )";
 
