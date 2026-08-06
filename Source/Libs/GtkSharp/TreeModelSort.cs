@@ -57,36 +57,53 @@ namespace Gtk {
 				return TreeIter.Zero;
 		}
 
+		// GtkTreeModel has no set operation: writing a row is the store's
+		// job, not the view's. These used to throw NotImplementedException,
+		// which reads as "unfinished" rather than "ask the child model".
+		const string SetValueMessage =
+			"A TreeModelSort presents another model's rows and cannot write to them. "
+			+ "Convert the iter with ConvertIterToChildIter and set the value on the child model.";
+
 		public void SetValue (Gtk.TreeIter iter, int column, bool value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, double value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, int value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, string value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, float value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, uint value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 		
 		public void SetValue (Gtk.TreeIter iter, int column, object value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public Gtk.TreeIter AppendValues (params object[] values) {
-			return AppendValues ((Array) values);
+			// This read "return AppendValues ((Array) values);". There is no
+			// AppendValues (Array) overload, so the cast bound straight back to
+			// this method with the array wrapped in a fresh object[] -- infinite
+			// recursion, and a stack overflow that takes the process down rather
+			// than raising anything catchable.
+			//
+			// A sort model has no rows of its own; it presents the child
+			// model's. So there is nothing for this to do but say so.
+			throw new NotSupportedException (
+				"A TreeModelSort presents another model's rows and has none of its own. " +
+				"Append to the child model instead: it will appear here in sort order.");
 		}
 
 		public object GetValue (Gtk.TreeIter iter, int column) {

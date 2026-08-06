@@ -47,32 +47,39 @@ namespace Gtk {
 			return ret;
 		}
 
+		// GtkTreeModel has no set operation: writing a row is the store's
+		// job, not the view's. These used to throw NotImplementedException,
+		// which reads as "unfinished" rather than "ask the child model".
+		const string SetValueMessage =
+			"A TreeModelFilter presents another model's rows and cannot write to them. "
+			+ "Convert the iter with ConvertIterToChildIter and set the value on the child model.";
+
 		public void SetValue (Gtk.TreeIter iter, int column, bool value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, double value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, int value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, string value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, float value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public void SetValue (Gtk.TreeIter iter, int column, uint value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 		
 		public void SetValue (Gtk.TreeIter iter, int column, object value) {
-			throw new NotImplementedException ();
+			throw new NotSupportedException (SetValueMessage);
 		}
 
 		public object GetValue (Gtk.TreeIter iter, int column) {
