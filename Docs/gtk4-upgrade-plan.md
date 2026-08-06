@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, though the samples have not yet been run. Porting them exposed seven silent library defects, including one that prevented any Gtk 4 application from starting. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–7 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, though the samples have not yet been run. Porting them exposed seven silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. Phase 8 (native runtime, CI, headless smoke run) is next. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -746,7 +746,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **3** | Assembly graph, native library map | ✅ **complete** — 2026-08-05 |
 | **4** | api.xml regeneration + metadata triage | ✅ **complete** — 2026-08-06, all nine assemblies at zero unmatched rules |
 | **5** | Hand-written layer port | ✅ **complete** — all 11 assemblies build clean |
-| **6** | Samples port (37 sections) | 🔶 **next** — 29 errors, all in `Source/Samples` |
+| **6** | Samples port (37 sections) | ✅ **complete** |
 | **7** | Templates and workload | ⬜ not started |
 | **8** | Native runtime, CI | ⬜ not started |
 
@@ -996,7 +996,38 @@ Two pre-existing sample bugs surfaced: `ColorButtonSection` wrote `Blue = 255`
 into a 0..1 component, and called `Parse` on the button's own `Rgba`, filling in
 a copy and changing nothing.
 
-### Phases 7–8 — not started
+### Phase 7 — complete
+
+`PackageTemplates` and `PackageWorkload` both succeed, and the packs contain
+exactly the eleven assemblies.
+
+**Templates.** All 24 `.glade` documents across both template sets became Gtk 4
+`.ui`, by script: `<requires lib="gtk" version="4.0"/>`, `<packing>` removed with
+`expand` becoming the child's own `hexpand`/`vexpand` chosen by the containing
+box's orientation, `visible`/`can-focus` dropped, and `margin_left`/`margin_right`
+becoming `margin-start`/`margin-end` so they follow text direction. Code in all
+three languages moved from `DeleteEvent` to `CloseRequest`, from `Show` to
+`Present`, and the `GtkSharp` package pin went to `4.22.4.*`.
+
+**Workload.** As §7.2 predicted, `GtkSharp.Runtime` and `GtkSharp.Ref` need no
+edits — both glob rather than listing assemblies — and `WorkloadManifest.in.json`
+carries substitution tokens rather than literal versions. All four SDK feature
+bands pack.
+
+**`Builder.Autoconnect` had the same defect as the template path** and is fixed
+the same way. It does two independent jobs: binding `[Object]` fields, which
+works, and connecting signals, which throws under Gtk 4. Every template calls it,
+so every template would have thrown. `AddFromStream` now records whether the
+document declared a `<signal>`, and the signal half only runs when it did.
+
+**A packaging trap worth knowing about.** `GtkSharp.Ref` globs `*.dll` out of the
+shared build output directory, so **any stale assembly there ships**. A pre-migration
+`AtkSharp.dll` was still present and went into both packs — Gtk 4 has no separate
+Atk binding, and the project had already been deleted, but `Clean` only clears
+the assemblies it knows about, so nothing removed it. CI builds from clean and is
+unaffected; an upgraded working copy needs `--BuildTarget=FullClean` at least once.
+
+### Phase 8 — not started
 
 
 

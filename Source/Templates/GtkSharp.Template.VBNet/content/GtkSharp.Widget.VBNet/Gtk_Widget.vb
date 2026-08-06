@@ -13,7 +13,7 @@ Namespace GtkNamespace
         End Sub
         
         Public Sub New ()
-            Me.New (new Builder("Gtk_Widget.glade"))
+            Me.New (new Builder("Gtk_Widget.ui"))
         End Sub
         
     End Class

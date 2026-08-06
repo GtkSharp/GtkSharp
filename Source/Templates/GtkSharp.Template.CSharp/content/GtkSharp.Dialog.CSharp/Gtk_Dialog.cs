@@ -6,7 +6,7 @@ namespace GtkNamespace
 {
     class Gtk_Dialog : Dialog
     {
-        public Gtk_Dialog() : this(new Builder("Gtk_Dialog.glade")) { }
+        public Gtk_Dialog() : this(new Builder("Gtk_Dialog.ui")) { }
 
         private Gtk_Dialog(Builder builder) : base(builder.GetRawOwnedObject("Gtk_Dialog"))
         {

@@ -1,4 +1,4 @@
-﻿namespace GtkNamespace
+namespace GtkNamespace
 module Program =
 
     open Gtk
@@ -13,6 +13,6 @@ module Program =
         let win = new MainWindow()
         app.AddWindow(win)
 
-        win.Show()
+        win.Present()
         Application.Run()
         0
