@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Samples: declaration surface cleared, which opened the method-body phase Roslyn had been skipping: 127 errors, the true size of the port; now at 51; two silent Gtk 3 code paths found and fixed in the library along the way. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Samples: declaration surface cleared, which opened the method-body phase Roslyn had been skipping: 127 errors, the true size of the port; now at 11, all in WebviewSection; several silent Gtk 3 code paths found and fixed in the library along the way, including one that prevented any application from starting. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -952,7 +952,7 @@ Samples are the acceptance test: the repository has no test project (CLAUDE.md
 **The declaration surface is clear**, and the body phase it was hiding is now
 visible. It opened at **127 errors** — the real size of Phase 6, always there,
 with the earlier counts of 29, 14 and 6 measuring only what Roslyn binds before
-it gives up. Now at **51**.
+it gives up. Now at **11**, all of them in `WebviewSection`.
 
 **`Gtk.Application` could not start a Gtk 4 application at all.** Five of the
 eight symbols it loaded do not exist in Gtk 4 — `gtk_main`, `gtk_main_quit`,
