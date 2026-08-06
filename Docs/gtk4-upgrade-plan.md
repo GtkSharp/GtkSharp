@@ -1186,6 +1186,14 @@ the URI, so Gtk refused to follow it.
 
 ## 15. Open items
 
+- **Caller-allocates out-parameters corrupt the stack** for reference-typed
+  values: `graphene_rect_union`, `gsk_render_node_get_bounds` and around 154
+  other parameters take a pointer to caller-provided storage, and codegen passes
+  an uninitialised 8-byte `out IntPtr` for a 16-byte struct. Found by the tests;
+  two are `Skip`ped pointing at it. `Gdk.Rectangle` is unaffected only because
+  `GdkSharp-symbols.xml` overrides it to a struct, which is also why the fix
+  cannot be a blanket converter rule. See `Docs/testing.md`.
+
 - **R3** — the Gtk 4.10-deprecated TreeView/Dialog/ComboBox stack is bound
   without `[Obsolete]`. Decision still open.
 - **JavaScriptCore is not bound**, so `EvaluateJavascriptFinish` returns an
