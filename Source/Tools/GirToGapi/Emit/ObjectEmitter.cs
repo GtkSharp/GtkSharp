@@ -68,6 +68,13 @@ namespace GtkSharp.GirConversion.Emit {
 					virtualMethods [n] = vm;
 			}
 
+			// An interface with no glib:type-struct has a private interface
+			// struct, so nothing outside the library can implement it -- only
+			// consume it. Without this InterfaceGen still emits an adapter with
+			// an "iface" field whose type it never resolved: "static  iface;".
+			if (isInterface && !gtypeStructs.ContainsKey (girName))
+				el.Add (new XAttribute ("consume_only", "true"));
+
 			var emittedVirtualMethods = new List<XElement> ();
 			var usedAsSignalSlot = new HashSet<string> ();
 
