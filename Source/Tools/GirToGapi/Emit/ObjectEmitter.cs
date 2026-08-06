@@ -43,6 +43,13 @@ namespace GtkSharp.GirConversion.Emit {
 				new XAttribute ("name", girName),
 				new XAttribute ("cname", cname));
 
+			// Gtk 4.10 deprecated whole hierarchies -- TreeView, Dialog,
+			// ComboBox and 47 other classes -- and the flag sits on the type,
+			// not only on its members. Without this the type itself carried no
+			// [Obsolete] and nothing warned a caller that the entire API is
+			// superseded.
+			CallableEmitter.AddDeprecated (el, gir);
+
 			if (!isInterface) {
 				var parent = (string) gir.Attribute ("parent");
 				if (!string.IsNullOrEmpty (parent)) {

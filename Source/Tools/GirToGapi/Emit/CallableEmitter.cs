@@ -336,7 +336,12 @@ namespace GtkSharp.GirConversion.Emit {
 				|| t.Type == "const-gchar**" || t.Type == "const-char**";
 		}
 
-		static void AddDeprecated (XElement el, XElement gir)
+		/// <summary>
+		/// Copies GIR's deprecation flag across. GapiCodegen turns it into
+		/// [Obsolete], which is the only warning a consumer porting from Gtk 3
+		/// gets that an API is on its way out.
+		/// </summary>
+		public static void AddDeprecated (XElement el, XElement gir)
 		{
 			if ((string) gir.Attribute ("deprecated") == "1")
 				el.Add (new XAttribute ("deprecated", "1"));
