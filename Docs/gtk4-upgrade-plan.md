@@ -1237,4 +1237,17 @@ No code changed. Two tests now pin the invariant, including one that disposes a
 borrowed second wrapper and then keeps using the first — the failure mode a
 refcounting mistake actually produces.
 
-Still to do: items 3–8.
+**3. `[Obsolete]` on the deprecated stack — done.** GIR marks 50 Gtk classes
+deprecated, `TreeView`, `Dialog` and `ComboBox` among them at 4.10, and the flag
+sits on the *type* as well as its members. `ObjectEmitter` never copied it, so
+974 members carried `[Obsolete]` while the types they belong to did not. It does
+now.
+
+Generated files also gained `#pragma warning disable CS0612, CS0618`. The
+binding necessarily references its own deprecated types — a deprecated class
+still has properties, and methods still take and return it — and warning about
+that produced 1230 warnings a consumer cannot act on, which would bury the ones
+aimed at them. Library warnings fell from 1439 to 10; consumer code still warns,
+which is the point.
+
+Still to do: items 4–8.
