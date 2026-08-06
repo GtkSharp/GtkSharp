@@ -227,6 +227,27 @@ namespace GtkSharp.Tests
         }
 
         [Fact]
+        public void A_failing_call_raises_GException_rather_than_corrupting_the_stack()
+        {
+            // Every method marked throws="1" takes a trailing GError**, and the
+            // generated P/Invoke used to omit it -- so the callee read whatever
+            // was in the argument register. GLib noticed
+            // ("assertion 'error == NULL || *error == NULL' failed") but no
+            // exception was ever raised, and failures looked like success.
+            //
+            // Closing a loader that was fed nothing is a deterministic failure,
+            // so it pins both halves: the error reaches managed code, and it
+            // arrives as a GException carrying a message.
+            var e = Assert.Throws<GLib.GException>(() => Run(() =>
+            {
+                var loader = new Gdk.PixbufLoader();
+                loader.Close();
+            }));
+
+            Assert.False(string.IsNullOrEmpty(e.Message));
+        }
+
+        [Fact]
         public void Application_Run_returns_once_Quit_is_called()
         {
             // Gtk 4 removed gtk_main and gtk_main_quit, so Application.Run was a
