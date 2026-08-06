@@ -5,4 +5,76 @@
   <!-- GirToGapi emits the raw shared-library name; GapiCodegen pastes this value
        verbatim into GLibrary.Load(...), so it has to be a C# expression. -->
   <attr path="/api/namespace" name="library">Library.Gsk</attr>
+
+  <!-- gsk_transform_transform sits on GskTransform, so the derived name matches
+       its own type and C# rejects it (CS0542). Property.cs already guards
+       against this for properties - GtkLabel:label and GtkEditable:editable hit
+       it too - but Method.cs does not, and this is the only method in the whole
+       tree that does. Renamed rather than patching the generator for one case.
+       The C function is gsk_transform_transform: it applies another transform's
+       operations to this one. -->
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_transform']" name="name">TransformWith</attr>
+
+  <!--
+    The GskRenderNode hierarchy is not bound yet.
+
+    Render nodes are GLib *fundamental* types (glib:fundamental="1"), not GObject
+    descendants, and GapiCodegen has no notion of that: it emits
+    "GLib.Object.GetObject(raw) as Gsk.RenderNode", which will not compile unless
+    RenderNode derives from GLib.Object. Making it do so would compile, and would
+    then call g_object_ref/unref on handles whose lifetime is managed by
+    gsk_render_node_ref/unref. A binding that mismanages refcounts is worse than
+    one that is missing.
+
+    Binding these properly means teaching ObjectGen about fundamental
+    types: per-type GetObject factories and ref/unref hooks. Gdk's event hierarchy has
+    the same shape and is currently carried by a hand-written Gdk.Event base.
+
+    Cost of leaving them out: three members of GtkSharp reference GskRenderNode
+    and are dropped with them. Gsk's Renderer, Transform, RoundedRect and the
+    rest are unaffected.
+  -->
+  <attr path="/api/namespace/object[@cname='GskBlendNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskBlurNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskBorderNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskCairoNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskClipNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskColorMatrixNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskColorNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskComponentTransferNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskCompositeNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskConicGradientNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskContainerNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskCopyNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskCrossFadeNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskDebugNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskFillNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskGLShaderNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskInsetShadowNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskIsolationNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskLinearGradientNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskMaskNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskOpacityNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskOutsetShadowNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskPasteNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskRadialGradientNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskRenderNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskRepeatNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskRepeatingLinearGradientNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskRepeatingRadialGradientNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskRoundedClipNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskShadowNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskStrokeNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskSubsurfaceNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskTextNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskTextureNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskTextureScaleNode']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GskTransformNode']" name="hidden">1</attr>
+
+  <!-- GskPathPoint is an opaque boxed type, and gapi has no marshalling for one
+       passed by reference: codegen emits "(IntPtr) point", a cast that does not
+       exist. Dropping the direction makes these plain in-parameters, which is
+       what the C functions do with the value they are handed. -->
+  <remove-attr path="/api/namespace/*[@cname='GskPath']/method[@cname='gsk_path_get_next']/parameters/parameter[@name='point']" name="pass_as" />
+  <remove-attr path="/api/namespace/*[@cname='GskPath']/method[@cname='gsk_path_get_previous']/parameters/parameter[@name='point']" name="pass_as" />
 </metadata>
