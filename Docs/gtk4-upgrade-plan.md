@@ -817,8 +817,16 @@ of GtkSharp's 732 unmatched rules were decidable mechanically.
 | `PangoSharp` | ✅ **clean** |
 | `GdkSharp` | ✅ **clean** — 28 hand-written files deleted |
 | `GskSharp` | ✅ **clean** — `RenderNode` hierarchy deferred, see below |
-| `GtkSharp` | 🔶 6 unique errors — next |
+| `GtkSharp` | 🔶 in progress — generated side compiles; hand-written layer is next |
 | `AdwaitaSharp`, `GtkSourceSharp`, `WebkitGtkSharp` | ⬜ blocked behind `GtkSharp` |
+
+**GtkSharp status.** The generated side is down to a handful of issues; the
+remaining 185 errors are overwhelmingly the 117-file hand-written layer, which
+had never been compiled against Gtk 4 until now. The distribution matches the
+§5.1 delete list almost exactly — `NativeDialog`, `Clipboard`, `ColorSelection`,
+`Accel`, `StatusIcon`, `Menu`, `Container.Forall`, `SelectionData` account for
+most of it, and all of them bind types Gtk 4 removed. `FileChooserNative`,
+`TextTag` and `MediaStream` are the generated-side remainder.
 
 **GdkSharp is where the §5.1 deletions began.** Gone: `Window` (→ `Surface`),
 `WindowAttr`, `Screen`, `Color`, `Property`, `Keymap`, `Atom`, `Selection`,
