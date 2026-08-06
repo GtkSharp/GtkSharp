@@ -250,8 +250,19 @@ namespace GtkSharp.GirConversion.Emit {
 			var callerAllocatedBuffer = (string) girParam.Attribute ("caller-allocates") == "1"
 				&& t != null && t.IsArray;
 
-			if (direction == "out" && !callerAllocatedBuffer)
+			if (direction == "out" && !callerAllocatedBuffer) {
 				el.Add (new XAttribute ("pass_as", "out"));
+
+				// Whether the caller supplies the storage is not recoverable from
+				// anything else in the api.xml, and it decides how the argument
+				// must be passed. A callee-allocated out parameter hands back a
+				// pointer, so "out IntPtr" is right; a caller-allocated one wants
+				// a pointer to storage the caller owns, and passing "out IntPtr"
+				// there gives the callee an 8-byte slot to write a whole struct
+				// into. Codegen keys off this attribute; see Parameter.cs.
+				if ((string) girParam.Attribute ("caller-allocates") == "1")
+					el.Add (new XAttribute ("caller_allocates", "1"));
+			}
 			else if (direction == "inout")
 				el.Add (new XAttribute ("pass_as", "ref"));
 
