@@ -14,6 +14,12 @@ namespace Samples
         [STAThread]
         public static void Main(string[] args)
         {
+            if (Array.IndexOf(args, "--smoke-exit") >= 0)
+            {
+                Environment.Exit(SmokeRun());
+                return;
+            }
+
             Application.Init();
 
             App = new Application("org.Samples.Samples", GLib.ApplicationFlags.None);
@@ -47,6 +53,71 @@ namespace Samples
             // window only needs to be presented.
             Win.Present();
             Application.Run();
+        }
+
+        /// <summary>
+        /// Non-interactive run for CI. This repository has no test project, so
+        /// this is the only end-to-end verification available.
+        /// </summary>
+        /// <remarks>
+        /// It asserts a real oracle rather than just failing on an unhandled
+        /// exception: every type carrying [Section] must construct and produce a
+        /// widget, and the number that do must equal the number declared. A
+        /// section that throws, or that quietly returns nothing, fails the run
+        /// and is named. Exercising the sections is what makes this worth
+        /// running -- they are where the bindings actually get used.
+        /// </remarks>
+        private static int SmokeRun()
+        {
+            Application.Init();
+
+            App = new Application("org.Samples.Samples", GLib.ApplicationFlags.None);
+            App.Register(GLib.Cancellable.Current);
+
+            Win = new MainWindow();
+            App.AddWindow(Win);
+            Win.Present();
+
+            var declared = new System.Collections.Generic.List<Type>();
+            foreach (var type in typeof(SectionAttribute).Assembly.GetTypes())
+                foreach (var attribute in type.GetCustomAttributes(true))
+                    if (attribute is SectionAttribute)
+                        declared.Add(type);
+
+            if (declared.Count == 0)
+            {
+                Console.Error.WriteLine("smoke: no [Section] types found; the sample app is empty");
+                return 1;
+            }
+
+            int built = 0;
+            var failures = new System.Collections.Generic.List<string>();
+
+            foreach (var type in declared)
+            {
+                try
+                {
+                    if (Activator.CreateInstance(type) is Widget widget && widget.Handle != IntPtr.Zero)
+                        built++;
+                    else
+                        failures.Add(type.Name + ": produced no widget");
+                }
+                catch (Exception e)
+                {
+                    failures.Add(type.Name + ": " + e.GetType().Name + ": " + e.Message);
+                }
+            }
+
+            // Let anything the sections queued actually run, so a crash in
+            // layout or a draw function is attributed here rather than escaping.
+            for (int i = 0; i < 100 && Application.EventsPending(); i++)
+                Application.RunIteration(false);
+
+            Console.WriteLine($"smoke: {built}/{declared.Count} sections constructed");
+            foreach (var failure in failures)
+                Console.Error.WriteLine("smoke: FAILED " + failure);
+
+            return built == declared.Count ? 0 : 1;
         }
 
         private static void HelpActivated(object sender, System.EventArgs e)
