@@ -54,6 +54,13 @@ PACKAGES = {
         "pool/main/g/gtksourceview5/libgtksourceview-5-dev_5.20.0-1_amd64.deb",
         "c80a34f41772757f53bbdc9a9217e5a141c54fc68202de8ed9f10581155f377e",
         ["GtkSource-5.gir"]),
+    # JavaScriptCore ships separately from WebKit even though both come from
+    # the webkit2gtk source package: the WebKit dev package contains only
+    # WebKit-6.0.gir and WebKitWebProcessExtension-6.0.gir.
+    "libjavascriptcoregtk-6.0-dev": (
+        "pool/main/w/webkit2gtk/libjavascriptcoregtk-6.0-dev_2.52.5-1_amd64.deb",
+        "65c34b2f699c3696faf88b36b0345f32daa433be5c9665beedef9cded6bf73aa",
+        ["JavaScriptCore-6.0.gir"]),
     "libwebkitgtk-6.0-dev": (
         "pool/main/w/webkit2gtk/libwebkitgtk-6.0-dev_2.52.5-1_amd64.deb",
         "0166e15d8b1a43b08ab8acffe489e669c07a9148c4ba2486cbc2e33b2dbafbdf",

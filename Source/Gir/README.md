@@ -30,6 +30,7 @@ download.
 | `Gdk-4.0.gir`, `Gsk-4.0.gir`, `Gtk-4.0.gir` | `libgtk-4-dev` | `4.22.4+ds-1` | `fcf670a37d326bc89f4f9322341c6a00dd4d9ac351fa47b921ab08c5abfde604` |
 | `Adw-1.gir` | `libadwaita-1-dev` | `1.9.2-1` | `b7e5a2d6497409de330c0b2fa13caa4a44b045d5280fc9cfc802f0d8bff51356` |
 | `GtkSource-5.gir` | `libgtksourceview-5-dev` | `5.20.0-1` | `c80a34f41772757f53bbdc9a9217e5a141c54fc68202de8ed9f10581155f377e` |
+| `JavaScriptCore-6.0.gir` | `libjavascriptcoregtk-6.0-dev` | `2.52.5-1` | `65c34b2f699c3696faf88b36b0345f32daa433be5c9665beedef9cded6bf73aa` |
 | `WebKit-6.0.gir` | `libwebkitgtk-6.0-dev` | `2.52.5-1` | `0166e15d8b1a43b08ab8acffe489e669c07a9148c4ba2486cbc2e33b2dbafbdf` |
 
 Within each `.deb` the files come from `usr/share/gir-1.0/`, except `GLib-2.0.gir`, which Debian
