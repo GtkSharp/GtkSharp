@@ -93,6 +93,7 @@ investigate — not something to relax.
 | `SampleSectionTests` | Constructs every `[Section]` type — one case each — asserting a live widget comes back. The samples are the widest exercise of the bindings in the repository. |
 | `ChildWindowTests` | Presses every button a section contains and requires any window that opens to be a live toplevel that can be closed. Plus targeted About/file-chooser dialog tests. |
 | `MainWindowTests` | Builds the sample's main window and asserts the Gtk 4 layout the port produced. |
+| `SectionBrowsingTests` | Selects every row in the section tree, the way someone clicking through the application would — the closest thing here to a manual pass over the whole app. |
 | `BindingTests` | Behavioural round-trips pinning individual fixes. |
 | `SignalTests` | The machinery everything else rests on: connect/disconnect, sender identity, `notify::`, signal argument values, enum and flags marshalling, interface dispatch through a generated adapter, and a managed subclass's vfunc override actually being reached by Gtk. |
 | `WidgetTests` | State round-trips across the widgets applications use — label, check button, progress bar, scale, spin button, notebook, stack, paned, revealer, CSS classes. Cheap individually; the value is breadth, since a codegen change touches every property at once. |
@@ -284,15 +285,25 @@ At 160 tests the figures are:
 
 | | line rate |
 |:--|--:|
-| overall | 7.4% |
-| `Samples` | 70.5% |
+| overall | 7.6% |
+| `Samples` | 73.7% |
 | `GLibSharp` | 35.9% |
 | `CairoSharp` | 25.0% |
 | `GtkSourceSharp` | 13.7% |
 | `GrapheneSharp` | 9.2% |
-| `GtkSharp` | 7.8% |
+| `GtkSharp` | 8.0% |
 | `GioSharp` | 2.0% |
 | `AdwaitaSharp` | 0.0% |
+
+`SectionBrowsingTests` is what a manual tester does: it drives `MainWindow`'s
+selection handler for every row rather than constructing sections directly, so it
+covers resolving a label back to a type, lazy instantiation on first selection,
+clearing the previous section out of the content pane, mounting the new one, and
+loading that section's source into the code view. Two bugs surfaced the first time
+it ran, both of which a manual tester would have hit and the isolated tests could
+not: a section that threw because the application had not been created, and two
+sections declaring the same `ContentType`, which collided in the app's
+label-to-type map and left one of them unreachable from the tree.
 
 **These numbers mean less than they appear to.** `GtkSharp` alone generates tens
 of thousands of lines of property getters and P/Invoke declarations, uniform by
