@@ -1218,5 +1218,10 @@ push comes last.
 - **`GtkParamSpecExpression`'s declared hierarchy is not the C one** — it is a
   `GParamSpec` there and a bare `GLib.Opaque` here, with no `ref_func`.
 - **CI has not been observed running.**
+- **Boxed types with no C allocator cannot be constructed** — `new Gsk.RoundedRect()`
+  yields a null handle through the inherited `GLib.Opaque()` constructor, and the
+  `Init*` methods write through it. A fix would generate an allocating
+  constructor sized from `abi_info`, as the caller-allocates fix does. One test
+  is `Skip`ped pointing at it. See `Docs/testing.md`.
  The workflow moved to ubuntu-24.04 and
   gained the test step, but no run has been seen from this side.

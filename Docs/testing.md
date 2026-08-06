@@ -102,6 +102,8 @@ investigate — not something to relax.
 | `GraphicsStackTests` | Cairo, Pango, Graphene, Gdk and Gsk, several asserting rendered pixels. |
 | `GLibTests` | `GLibSharp` is entirely hand-written, so nothing else covers it: `Value`, `GType`, `Bytes`, idle and timeout dispatch, `Variant`, marshalling, and `Opaque` ownership. |
 | `OptionalLibraryTests` | WebKit and JavaScriptCore, skipped where the library is absent. |
+| `AdwaitaTests` | libadwaita, which had **zero** coverage: it built and packed and no line of it had ever run. |
+| `DeeperStackTests` | Gio variants, streams, cancellables and files; Gdk colours, rectangles, pixbufs and textures; Pango layout and wrapping; Gsk nodes and transforms. |
 
 ### Guards against vacuous passes
 
@@ -270,6 +272,27 @@ Why it only showed under coverage: instrumentation shifts GC timing, so
 finalizers run at different moments relative to allocation. The bug was always
 there.
 
+## Open: boxed types with no allocator cannot be constructed
+
+`Gsk.RoundedRect` has no `_alloc` function in C, so the binding generates no
+allocator either. `new Gsk.RoundedRect()` therefore resolves to the inherited
+`GLib.Opaque()` constructor, which leaves the handle at `IntPtr.Zero` — and the
+`Init*` methods, whose whole job is to write through that pointer, then write to
+null:
+
+```csharp
+var rounded = new Gsk.RoundedRect();   // handle is IntPtr.Zero
+rounded.InitFromRect(bounds, 5);       // writes through it -> AccessViolation
+```
+
+The type is unusable from managed code, and nothing says so until the process
+dies. The shape is the same as the caller-allocates bug: a boxed type whose
+storage the caller is expected to provide, with no way provided to provide it.
+
+A fix would generate an allocating constructor for boxed types that carry
+`abi_info`, sizing the buffer from `abi_info.Size` exactly as the caller-allocates
+fix does. `A_rounded_rect_keeps_its_bounds` is `Skip`ped, pointing here.
+
 ## Measuring coverage
 
 Coverage is measured, not chased:
@@ -285,15 +308,15 @@ At 160 tests the figures are:
 
 | | line rate |
 |:--|--:|
-| overall | 7.6% |
+| overall | 8.1% |
 | `Samples` | 73.7% |
-| `GLibSharp` | 35.9% |
+| `GLibSharp` | 38.0% |
 | `CairoSharp` | 25.0% |
 | `GtkSourceSharp` | 13.7% |
 | `GrapheneSharp` | 9.2% |
 | `GtkSharp` | 8.0% |
-| `GioSharp` | 2.0% |
-| `AdwaitaSharp` | 0.0% |
+| `GioSharp` | 2.5% |
+| `AdwaitaSharp` | 4.3% |
 
 `SectionBrowsingTests` is what a manual tester does: it drives `MainWindow`'s
 selection handler for every row rather than constructing sections directly, so it
