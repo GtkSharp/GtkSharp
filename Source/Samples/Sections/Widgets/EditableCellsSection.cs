@@ -23,7 +23,8 @@ namespace Samples.Sections.Widgets
 			};
 			sw.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
 
-			this.PackStart(sw, true, true, 0);
+			sw.Vexpand = true;
+			this.Append(sw);
 
 			/* create models */
 			_itemsModel = CreateItemsModel();
@@ -42,15 +43,17 @@ namespace Samples.Sections.Widgets
 			{
 				Homogeneous = true
 			};
-			this.PackStart(hbox, false, false, 0);
+			this.Append(hbox);
 
 			Button button = new Button("Add item");
 			button.Clicked += AddItem;
-			hbox.PackStart(button, true, true, 0);
+			button.Hexpand = true;
+			hbox.Append(button);
 
 			button = new Button("Remove item");
 			button.Clicked += RemoveItem;
-			hbox.PackStart(button, true, true, 0);
+			button.Hexpand = true;
+			hbox.Append(button);
 		}
 
 		private class Item

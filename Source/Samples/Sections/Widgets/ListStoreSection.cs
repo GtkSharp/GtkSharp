@@ -38,7 +38,8 @@ namespace Samples
             };
             treeScroll.Add(_tree);
 
-            PackStart(treeScroll, true, true, 0);
+            treeScroll.Vexpand = true;
+            Append(treeScroll);
 
             GLib.Timeout.Add(100, SpinerTimeout);
         }

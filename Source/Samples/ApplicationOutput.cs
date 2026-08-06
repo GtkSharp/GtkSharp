@@ -13,20 +13,24 @@ namespace Samples
 
         static ApplicationOutput()
         {
-            var vbox = new VBox();
+            var vbox = new Box(Orientation.Vertical, 0);
 
             var labelTitle = new Label
             {
                 Text = "Application Output:",
-                Margin = 4,
+                MarginTop = 4,
+                MarginBottom = 4,
+                MarginStart = 4,
+                MarginEnd = 4,
                 Xalign = 0f
             };
-            vbox.PackStart(labelTitle, false, true, 0);
+            vbox.Append(labelTitle);
 
             _scrolledWindow = new ScrolledWindow();
             _textView = new TextView();
             _scrolledWindow.Child = _textView;
-            vbox.PackStart(_scrolledWindow, true, true, 0);
+            _scrolledWindow.Vexpand = true;
+            vbox.Append(_scrolledWindow);
 
             Widget = vbox;
         }

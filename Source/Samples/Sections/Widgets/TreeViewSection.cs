@@ -39,13 +39,15 @@ namespace Samples
 
             entry = new Entry();
 
-            boxEdit.PackStart(entry, true, true, 0);
-            boxEdit.PackStart(btn1, false, true, 0);
-            boxEdit.PackStart(btn2, false, true, 0);
-            boxEdit.PackStart(btn3, false, true, 0);
+            entry.Hexpand = true;
+            boxEdit.Append(entry);
+            boxEdit.Append(btn1);
+            boxEdit.Append(btn2);
+            boxEdit.Append(btn3);
 
-            PackStart(boxEdit, false, true, 0);
-            PackStart(treeScroll, true, true, 0);
+            Append(boxEdit);
+            treeScroll.Vexpand = true;
+            Append(treeScroll);
         }
 
         void CreateTreeView()

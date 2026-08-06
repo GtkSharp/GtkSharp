@@ -99,7 +99,8 @@ namespace Samples
                         using (var reader = new StreamReader(stream))
                             _textViewCode.Buffer.Text = reader.ReadToEnd();
 
-                    _boxContent.PackStart(item.widget, true, true, 0);
+                    item.widget.Vexpand = true;
+                    _boxContent.Append(item.widget);
                     _boxContent.ShowAll();
                 }
 
