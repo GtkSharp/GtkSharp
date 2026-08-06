@@ -242,7 +242,7 @@ namespace GtkSharp.Generation {
 			*  thrown in the managed function have to be considered fatal meaning that an exception is to be thrown and the function call cannot not return
 			*/
 			bool fatal = (retval.MarshalType != "void" && retval.MarshalType != "bool") || call.HasOutParam;
-			sw.WriteLine ("\t\t\t} catch (Exception e) {");
+			sw.WriteLine ("\t\t\t} catch (System.Exception e) {");
 			sw.WriteLine ("\t\t\t\tGLib.ExceptionManager.RaiseUnhandledException (e, " + (fatal ? "true" : "false") + ");");
 			if (fatal) {
 				sw.WriteLine ("\t\t\t\t// NOTREACHED: Above call does not return.");

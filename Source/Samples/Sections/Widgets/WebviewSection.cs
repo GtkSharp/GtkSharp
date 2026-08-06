@@ -85,12 +85,11 @@ namespace Samples
 
 			userContentManager.ScriptMessageReceived += (o, args) => {
 				// WebKit 6 delivers a JSCValue rather than a WebKitJavascriptResult.
-				// JavaScriptCore has its own gir and is not one of the bound
-				// assemblies, so the value arrives as an opaque handle and cannot
-				// be decoded here; that the message was delivered at all is what
-				// this demonstrates.
+				// The signal declares it as a gpointer, so it arrives as an IntPtr
+				// and is wrapped back into the bound type to be read.
+				var value = GLib.Object.GetObject(args.Value) as JavaScriptCore.Value;
 				ApplicationOutput.WriteLine(
-					$"{nameof(userContentManager.ScriptMessageReceived)}:\tvalue handle {args.Value}");
+					$"{nameof(userContentManager.ScriptMessageReceived)}:\t{value?.ToJson(0)}");
 			};
 
 			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> with {nameof(UserScript)}" +
@@ -115,13 +114,12 @@ namespace Samples
 
 				try {
 					// WebKitJavascriptResult is gone: the finish call returns the
-					// JSCValue itself. Unbound, so it is an opaque handle here --
-					// a non-zero handle means the script ran and produced a value,
-					// and a failure still arrives as an exception.
-					IntPtr js_value = view.EvaluateJavascriptFinish(res);
+					// JSCValue itself, which JavaScriptCoreSharp now binds, so
+					// the result can be read rather than merely counted.
+					JavaScriptCore.Value js_value = view.EvaluateJavascriptFinish(res);
 
 					ApplicationOutput.WriteLine(
-						$"{nameof(view.EvaluateJavascriptFinish)}:\tvalue handle {js_value}");
+						$"{nameof(view.EvaluateJavascriptFinish)}:\tstring={js_value.IsString}\t{js_value.ToJson(0)}");
 
 				} catch (Exception exception) {
 					ApplicationOutput.WriteLine($"{nameof(view.EvaluateJavascriptFinish)} throws:\n{exception.Message}");

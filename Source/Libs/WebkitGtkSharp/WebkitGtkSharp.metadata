@@ -24,20 +24,6 @@
   <attr path="/api/namespace/object[@cname='WebKitWebInspector']/signal[@cname='attach']" name="name">Attached</attr>
   <attr path="/api/namespace/object[@cname='WebKitWebInspector']/signal[@cname='detach']" name="name">Detached</attr>
 
-  <!--
-    JSCValue belongs to JavaScriptCore, which has its own gir and is not one of
-    the bound assemblies. Codegen cannot resolve the type, so it silently drops
-    every member mentioning it, including the finish half of the async
-    javascript calls, which leaves evaluate_javascript startable but never
-    collectable.
-
-    Mapping it to gpointer binds those members with the value as an opaque
-    handle: the call completes and errors surface, but reading the result needs
-    a JavaScriptCore binding that does not exist yet.
-  -->
-  <attr path="/api/namespace/object[@cname='WebKitWebView']/method[@cname='webkit_web_view_evaluate_javascript_finish']/return-type" name="type">gpointer</attr>
-  <attr path="/api/namespace/object[@cname='WebKitWebView']/method[@cname='webkit_web_view_call_async_javascript_function_finish']/return-type" name="type">gpointer</attr>
-
   <!-- Properties duplicating a same-named method; the method wins. -->
   <attr path="/api/namespace/object[@cname='WebKitNetworkSession']/property[@cname='is-ephemeral']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='WebKitWebsiteDataManager']/property[@cname='is-ephemeral']" name="hidden">1</attr>

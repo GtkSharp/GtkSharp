@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="utf-8"?>
+<api parser_version="3">
+  <namespace name="JavaScriptCore" library="libjavascriptcoregtk-6.0.so.1">
+    <enum name="CheckSyntaxMode" cname="JSCCheckSyntaxMode" type="enum">
+      <member cname="JSC_CHECK_SYNTAX_MODE_SCRIPT" name="Script" value="0" />
+      <member cname="JSC_CHECK_SYNTAX_MODE_MODULE" name="Module" value="1" />
+    </enum>
+    <enum name="CheckSyntaxResult" cname="JSCCheckSyntaxResult" type="enum">
+      <member cname="JSC_CHECK_SYNTAX_RESULT_SUCCESS" name="Success" value="0" />
+      <member cname="JSC_CHECK_SYNTAX_RESULT_RECOVERABLE_ERROR" name="RecoverableError" value="1" />
+      <member cname="JSC_CHECK_SYNTAX_RESULT_IRRECOVERABLE_ERROR" name="IrrecoverableError" value="2" />
+      <member cname="JSC_CHECK_SYNTAX_RESULT_UNTERMINATED_LITERAL_ERROR" name="UnterminatedLiteralError" value="3" />
+      <member cname="JSC_CHECK_SYNTAX_RESULT_OUT_OF_MEMORY_ERROR" name="OutOfMemoryError" value="4" />
+      <member cname="JSC_CHECK_SYNTAX_RESULT_STACK_OVERFLOW_ERROR" name="StackOverflowError" value="5" />
+    </enum>
+    <enum name="OptionType" cname="JSCOptionType" type="enum">
+      <member cname="JSC_OPTION_BOOLEAN" name="Boolean" value="0" />
+      <member cname="JSC_OPTION_INT" name="Int" value="1" />
+      <member cname="JSC_OPTION_UINT" name="Uint" value="2" />
+      <member cname="JSC_OPTION_SIZE" name="Size" value="3" />
+      <member cname="JSC_OPTION_DOUBLE" name="Double" value="4" />
+      <member cname="JSC_OPTION_STRING" name="String" value="5" />
+      <member cname="JSC_OPTION_RANGE_STRING" name="RangeString" value="6" />
+    </enum>
+    <enum name="TypedArrayType" cname="JSCTypedArrayType" type="enum">
+      <member cname="JSC_TYPED_ARRAY_NONE" name="None" value="0" />
+      <member cname="JSC_TYPED_ARRAY_INT8" name="Int8" value="1" />
+      <member cname="JSC_TYPED_ARRAY_INT16" name="Int16" value="2" />
+      <member cname="JSC_TYPED_ARRAY_INT32" name="Int32" value="3" />
+      <member cname="JSC_TYPED_ARRAY_INT64" name="Int64" value="4" />
+      <member cname="JSC_TYPED_ARRAY_UINT8" name="Uint8" value="5" />
+      <member cname="JSC_TYPED_ARRAY_UINT8_CLAMPED" name="Uint8Clamped" value="6" />
+      <member cname="JSC_TYPED_ARRAY_UINT16" name="Uint16" value="7" />
+      <member cname="JSC_TYPED_ARRAY_UINT32" name="Uint32" value="8" />
+      <member cname="JSC_TYPED_ARRAY_UINT64" name="Uint64" value="9" />
+      <member cname="JSC_TYPED_ARRAY_FLOAT32" name="Float32" value="10" />
+      <member cname="JSC_TYPED_ARRAY_FLOAT64" name="Float64" value="11" />
+    </enum>
+    <enum name="ValuePropertyFlags" cname="JSCValuePropertyFlags" type="flags">
+      <member cname="JSC_VALUE_PROPERTY_CONFIGURABLE" name="Configurable" value="1" />
+      <member cname="JSC_VALUE_PROPERTY_ENUMERABLE" name="Enumerable" value="2" />
+      <member cname="JSC_VALUE_PROPERTY_WRITABLE" name="Writable" value="4" />
+    </enum>
+    <callback name="ClassDeletePropertyFunction" cname="JSCClassDeletePropertyFunction">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="JSCClass*" name="jsc_class" />
+        <parameter type="JSCContext*" name="context" />
+        <parameter type="gpointer" name="instance" />
+        <parameter type="const-char*" name="name" />
+      </parameters>
+    </callback>
+    <callback name="ClassEnumeratePropertiesFunction" cname="JSCClassEnumeratePropertiesFunction">
+      <return-type type="gchar**" owned="true" elements_owned="true" null_term_array="true" />
+      <parameters>
+        <parameter type="JSCClass*" name="jsc_class" />
+        <parameter type="JSCContext*" name="context" />
+        <parameter type="gpointer" name="instance" />
+      </parameters>
+    </callback>
+    <callback name="ClassGetPropertyFunction" cname="JSCClassGetPropertyFunction">
+      <return-type type="JSCValue*" owned="true" />
+      <parameters>
+        <parameter type="JSCClass*" name="jsc_class" />
+        <parameter type="JSCContext*" name="context" />
+        <parameter type="gpointer" name="instance" />
+        <parameter type="const-char*" name="name" />
+      </parameters>
+    </callback>
+    <callback name="ClassHasPropertyFunction" cname="JSCClassHasPropertyFunction">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="JSCClass*" name="jsc_class" />
+        <parameter type="JSCContext*" name="context" />
+        <parameter type="gpointer" name="instance" />
+        <parameter type="const-char*" name="name" />
+      </parameters>
+    </callback>
+    <callback name="ClassSetPropertyFunction" cname="JSCClassSetPropertyFunction">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="JSCClass*" name="jsc_class" />
+        <parameter type="JSCContext*" name="context" />
+        <parameter type="gpointer" name="instance" />
+        <parameter type="const-char*" name="name" />
+        <parameter type="JSCValue*" name="value" />
+      </parameters>
+    </callback>
+    <callback name="ExceptionHandler" cname="JSCExceptionHandler">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="JSCContext*" name="context" />
+        <parameter type="JSCException*" name="exception" />
+        <parameter type="gpointer" name="user_data" closure="2" />
+      </parameters>
+    </callback>
+    <callback name="Executor" cname="JSCExecutor">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="JSCValue*" name="resolve" />
+        <parameter type="JSCValue*" name="reject" />
+        <parameter type="gpointer" name="user_data" closure="2" />
+      </parameters>
+    </callback>
+    <callback name="OptionsFunc" cname="JSCOptionsFunc">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="const-char*" name="option" />
+        <parameter type="JSCOptionType" name="type" />
+        <parameter type="const-char*" name="description" />
+        <parameter type="gpointer" name="user_data" closure="3" />
+      </parameters>
+    </callback>
+    <object name="Class" cname="JSCClass" parent="GObject">
+      <class_struct cname="JSCClassClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <property name="Context" cname="context" type="JSCContext*" writeable="true" construct-only="true" />
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
+      <property name="Parent" cname="parent" type="JSCClass*" readable="true" writeable="true" construct-only="true" />
+      <method name="AddConstructor" cname="jsc_class_add_constructor">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="GCallback" name="callback" closure="2" destroy="3" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+          <parameter type="GType" name="return_type" />
+          <parameter type="guint" name="n_params" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </method>
+      <method name="AddConstructorVariadic" cname="jsc_class_add_constructor_variadic">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="GCallback" name="callback" closure="2" destroy="3" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+          <parameter type="GType" name="return_type" />
+        </parameters>
+      </method>
+      <method name="AddConstructorv" cname="jsc_class_add_constructorv">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="GCallback" name="callback" closure="2" destroy="3" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+          <parameter type="GType" name="return_type" />
+          <parameter type="guint" name="n_parameters" />
+          <parameter type="GType*" name="parameter_types" />
+        </parameters>
+      </method>
+      <method name="AddMethod" cname="jsc_class_add_method">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="GCallback" name="callback" closure="2" destroy="3" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+          <parameter type="GType" name="return_type" />
+          <parameter type="guint" name="n_params" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </method>
+      <method name="AddMethodVariadic" cname="jsc_class_add_method_variadic">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="GCallback" name="callback" closure="2" destroy="3" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+          <parameter type="GType" name="return_type" />
+        </parameters>
+      </method>
+      <method name="AddMethodv" cname="jsc_class_add_methodv">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="GCallback" name="callback" closure="2" destroy="3" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+          <parameter type="GType" name="return_type" />
+          <parameter type="guint" name="n_parameters" />
+          <parameter type="GType*" name="parameter_types" />
+        </parameters>
+      </method>
+      <method name="AddProperty" cname="jsc_class_add_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="GType" name="property_type" />
+          <parameter type="GCallback" name="getter" />
+          <parameter type="GCallback" name="setter" closure="4" destroy="5" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+        </parameters>
+      </method>
+      <method name="GetName" cname="jsc_class_get_name">
+        <return-type type="const-char*" />
+      </method>
+      <method name="GetParent" cname="jsc_class_get_parent">
+        <return-type type="JSCClass*" />
+      </method>
+      <method name="GetType" cname="jsc_class_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="Context" cname="JSCContext" parent="GObject">
+      <class_struct cname="JSCContextClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <property name="VirtualMachine" cname="virtual-machine" type="JSCVirtualMachine*" readable="true" writeable="true" construct-only="true" />
+      <constructor cname="jsc_context_new" name="New" />
+      <constructor cname="jsc_context_new_with_virtual_machine" name="NewWithVirtualMachine">
+        <parameters>
+          <parameter type="JSCVirtualMachine*" name="vm" />
+        </parameters>
+      </constructor>
+      <method name="CheckSyntax" cname="jsc_context_check_syntax">
+        <return-type type="JSCCheckSyntaxResult" />
+        <parameters>
+          <parameter type="const-char*" name="code" />
+          <parameter type="gssize" name="length" />
+          <parameter type="JSCCheckSyntaxMode" name="mode" />
+          <parameter type="const-char*" name="uri" />
+          <parameter type="unsigned" name="line_number" />
+          <parameter type="JSCException**" name="exception" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="ClearException" cname="jsc_context_clear_exception">
+        <return-type type="void" />
+      </method>
+      <method name="Evaluate" cname="jsc_context_evaluate">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="code" />
+          <parameter type="gssize" name="length" />
+        </parameters>
+      </method>
+      <method name="EvaluateInObject" cname="jsc_context_evaluate_in_object">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="code" />
+          <parameter type="gssize" name="length" />
+          <parameter type="gpointer" name="object_instance" />
+          <parameter type="JSCClass*" name="object_class" />
+          <parameter type="const-char*" name="uri" />
+          <parameter type="guint" name="line_number" />
+          <parameter type="JSCValue**" name="object" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="EvaluateWithSourceUri" cname="jsc_context_evaluate_with_source_uri">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="code" />
+          <parameter type="gssize" name="length" />
+          <parameter type="const-char*" name="uri" />
+          <parameter type="guint" name="line_number" />
+        </parameters>
+      </method>
+      <method name="GetException" cname="jsc_context_get_exception">
+        <return-type type="JSCException*" />
+      </method>
+      <method name="GetGlobalObject" cname="jsc_context_get_global_object">
+        <return-type type="JSCValue*" owned="true" />
+      </method>
+      <method name="GetValue" cname="jsc_context_get_value">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+        </parameters>
+      </method>
+      <method name="GetVirtualMachine" cname="jsc_context_get_virtual_machine">
+        <return-type type="JSCVirtualMachine*" />
+      </method>
+      <method name="PopExceptionHandler" cname="jsc_context_pop_exception_handler">
+        <return-type type="void" />
+      </method>
+      <method name="PushExceptionHandler" cname="jsc_context_push_exception_handler">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="JSCExceptionHandler" name="handler" closure="1" destroy="2" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+        </parameters>
+      </method>
+      <method name="RegisterClass" cname="jsc_context_register_class">
+        <return-type type="JSCClass*" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="JSCClass*" name="parent_class" />
+          <parameter type="JSCClassVTable*" name="vtable" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+        </parameters>
+      </method>
+      <method name="SetValue" cname="jsc_context_set_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="JSCValue*" name="value" />
+        </parameters>
+      </method>
+      <method name="Throw" cname="jsc_context_throw">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="error_message" />
+        </parameters>
+      </method>
+      <method name="ThrowException" cname="jsc_context_throw_exception">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="JSCException*" name="exception" />
+        </parameters>
+      </method>
+      <method name="ThrowPrintf" cname="jsc_context_throw_printf">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="format" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </method>
+      <method name="ThrowWithName" cname="jsc_context_throw_with_name">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="error_name" />
+          <parameter type="const-char*" name="error_message" />
+        </parameters>
+      </method>
+      <method name="ThrowWithNamePrintf" cname="jsc_context_throw_with_name_printf">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="error_name" />
+          <parameter type="const-char*" name="format" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </method>
+      <method name="GetCurrent" cname="jsc_context_get_current" shared="true">
+        <return-type type="JSCContext*" />
+      </method>
+      <method name="GetType" cname="jsc_context_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="Exception" cname="JSCException" parent="GObject">
+      <class_struct cname="JSCExceptionClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <constructor cname="jsc_exception_new" name="New">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="message" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_exception_new_printf" name="NewPrintf">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="format" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_exception_new_vprintf" name="NewVprintf">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="format" />
+          <parameter type="va_list" name="args" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_exception_new_with_name" name="NewWithName">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="name" />
+          <parameter type="const-char*" name="message" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_exception_new_with_name_printf" name="NewWithNamePrintf">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="name" />
+          <parameter type="const-char*" name="format" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_exception_new_with_name_vprintf" name="NewWithNameVprintf">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="name" />
+          <parameter type="const-char*" name="format" />
+          <parameter type="va_list" name="args" />
+        </parameters>
+      </constructor>
+      <method name="GetBacktraceString" cname="jsc_exception_get_backtrace_string">
+        <return-type type="const-char*" />
+      </method>
+      <method name="GetColumnNumber" cname="jsc_exception_get_column_number">
+        <return-type type="guint" />
+      </method>
+      <method name="GetLineNumber" cname="jsc_exception_get_line_number">
+        <return-type type="guint" />
+      </method>
+      <method name="GetMessage" cname="jsc_exception_get_message">
+        <return-type type="const-char*" />
+      </method>
+      <method name="GetName" cname="jsc_exception_get_name">
+        <return-type type="const-char*" />
+      </method>
+      <method name="GetSourceUri" cname="jsc_exception_get_source_uri">
+        <return-type type="const-char*" />
+      </method>
+      <method name="Report" cname="jsc_exception_report">
+        <return-type type="char*" owned="true" />
+      </method>
+      <method name="ToString" cname="jsc_exception_to_string">
+        <return-type type="char*" owned="true" />
+      </method>
+      <method name="GetType" cname="jsc_exception_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="Value" cname="JSCValue" parent="GObject">
+      <class_struct cname="JSCValueClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <property name="Context" cname="context" type="JSCContext*" readable="true" writeable="true" construct-only="true" />
+      <constructor cname="jsc_value_new_array" name="NewArray">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="GType" name="first_item_type" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_array_buffer" name="NewArrayBuffer">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="gpointer" name="data" />
+          <parameter type="gsize" name="size" />
+          <parameter type="GDestroyNotify" name="destroy_notify" closure="4" scope="async" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_array_from_garray" name="NewArrayFromGarray">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="GPtrArray*" name="array" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_array_from_strv" name="NewArrayFromStrv">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="strv" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_boolean" name="NewBoolean">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="gboolean" name="value" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_from_json" name="NewFromJson">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="json" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_function" name="NewFunction">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="name" />
+          <parameter type="GCallback" name="callback" closure="3" destroy="4" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+          <parameter type="GType" name="return_type" />
+          <parameter type="guint" name="n_params" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_function_variadic" name="NewFunctionVariadic">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="name" />
+          <parameter type="GCallback" name="callback" closure="3" destroy="4" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+          <parameter type="GType" name="return_type" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_functionv" name="NewFunctionv">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="name" />
+          <parameter type="GCallback" name="callback" closure="3" destroy="4" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+          <parameter type="GType" name="return_type" />
+          <parameter type="guint" name="n_parameters" />
+          <parameter type="GType*" name="parameter_types" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_null" name="NewNull">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_number" name="NewNumber">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="double" name="number" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_object" name="NewObject">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="gpointer" name="instance" owned="true" />
+          <parameter type="JSCClass*" name="jsc_class" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_promise" name="NewPromise">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="JSCExecutor" name="executor" closure="2" scope="call" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_string" name="NewString">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="const-char*" name="string" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_string_from_bytes" name="NewStringFromBytes">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="GBytes*" name="bytes" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_typed_array" name="NewTypedArray">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+          <parameter type="JSCTypedArrayType" name="type" />
+          <parameter type="gsize" name="length" />
+        </parameters>
+      </constructor>
+      <constructor cname="jsc_value_new_undefined" name="NewUndefined">
+        <parameters>
+          <parameter type="JSCContext*" name="context" />
+        </parameters>
+      </constructor>
+      <method name="ArrayBufferGetData" cname="jsc_value_array_buffer_get_data">
+        <return-type type="gpointer" />
+        <parameters>
+          <parameter type="gsize*" name="size" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="ArrayBufferGetSize" cname="jsc_value_array_buffer_get_size">
+        <return-type type="gsize" />
+      </method>
+      <method name="ConstructorCall" cname="jsc_value_constructor_call">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="GType" name="first_parameter_type" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </method>
+      <method name="ConstructorCallv" cname="jsc_value_constructor_callv">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="guint" name="n_parameters" />
+          <parameter type="JSCValue**" name="parameters" />
+        </parameters>
+      </method>
+      <method name="FunctionCall" cname="jsc_value_function_call">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="GType" name="first_parameter_type" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </method>
+      <method name="FunctionCallv" cname="jsc_value_function_callv">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="guint" name="n_parameters" />
+          <parameter type="JSCValue**" name="parameters" />
+        </parameters>
+      </method>
+      <method name="GetContext" cname="jsc_value_get_context">
+        <return-type type="JSCContext*" />
+      </method>
+      <method name="IsArray" cname="jsc_value_is_array">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsArrayBuffer" cname="jsc_value_is_array_buffer">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsBoolean" cname="jsc_value_is_boolean">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsConstructor" cname="jsc_value_is_constructor">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsFunction" cname="jsc_value_is_function">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsNull" cname="jsc_value_is_null">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsNumber" cname="jsc_value_is_number">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsObject" cname="jsc_value_is_object">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsString" cname="jsc_value_is_string">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsTypedArray" cname="jsc_value_is_typed_array">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsUndefined" cname="jsc_value_is_undefined">
+        <return-type type="gboolean" />
+      </method>
+      <method name="NewTypedArrayWithBuffer" cname="jsc_value_new_typed_array_with_buffer">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="JSCTypedArrayType" name="type" />
+          <parameter type="gsize" name="offset" />
+          <parameter type="gssize" name="length" />
+        </parameters>
+      </method>
+      <method name="ObjectDefinePropertyAccessor" cname="jsc_value_object_define_property_accessor">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="property_name" />
+          <parameter type="JSCValuePropertyFlags" name="flags" />
+          <parameter type="GType" name="property_type" />
+          <parameter type="GCallback" name="getter" closure="5" scope="async" />
+          <parameter type="GCallback" name="setter" closure="5" destroy="6" scope="notified" />
+          <parameter type="gpointer" name="user_data" />
+          <parameter type="GDestroyNotify" name="destroy_notify" />
+        </parameters>
+      </method>
+      <method name="ObjectDefinePropertyData" cname="jsc_value_object_define_property_data">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="property_name" />
+          <parameter type="JSCValuePropertyFlags" name="flags" />
+          <parameter type="JSCValue*" name="property_value" />
+        </parameters>
+      </method>
+      <method name="ObjectDeleteProperty" cname="jsc_value_object_delete_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+        </parameters>
+      </method>
+      <method name="ObjectEnumerateProperties" cname="jsc_value_object_enumerate_properties">
+        <return-type type="gchar**" owned="true" elements_owned="true" null_term_array="true" />
+      </method>
+      <method name="ObjectGetProperty" cname="jsc_value_object_get_property">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+        </parameters>
+      </method>
+      <method name="ObjectGetPropertyAtIndex" cname="jsc_value_object_get_property_at_index">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="guint" name="index" />
+        </parameters>
+      </method>
+      <method name="ObjectHasProperty" cname="jsc_value_object_has_property">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+        </parameters>
+      </method>
+      <method name="ObjectInvokeMethod" cname="jsc_value_object_invoke_method">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="GType" name="first_parameter_type" />
+          <parameter ellipsis="true" />
+        </parameters>
+      </method>
+      <method name="ObjectInvokeMethodv" cname="jsc_value_object_invoke_methodv">
+        <return-type type="JSCValue*" owned="true" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="guint" name="n_parameters" />
+          <parameter type="JSCValue**" name="parameters" />
+        </parameters>
+      </method>
+      <method name="ObjectIsInstanceOf" cname="jsc_value_object_is_instance_of">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+        </parameters>
+      </method>
+      <method name="ObjectSetProperty" cname="jsc_value_object_set_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="name" />
+          <parameter type="JSCValue*" name="property" />
+        </parameters>
+      </method>
+      <method name="ObjectSetPropertyAtIndex" cname="jsc_value_object_set_property_at_index">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="guint" name="index" />
+          <parameter type="JSCValue*" name="property" />
+        </parameters>
+      </method>
+      <method name="ToBoolean" cname="jsc_value_to_boolean">
+        <return-type type="gboolean" />
+      </method>
+      <method name="ToDouble" cname="jsc_value_to_double">
+        <return-type type="double" />
+      </method>
+      <method name="ToInt32" cname="jsc_value_to_int32">
+        <return-type type="gint32" />
+      </method>
+      <method name="ToJson" cname="jsc_value_to_json">
+        <return-type type="char*" owned="true" />
+        <parameters>
+          <parameter type="guint" name="indent" />
+        </parameters>
+      </method>
+      <method name="ToString" cname="jsc_value_to_string">
+        <return-type type="char*" owned="true" />
+      </method>
+      <method name="ToStringAsBytes" cname="jsc_value_to_string_as_bytes">
+        <return-type type="GBytes*" owned="true" />
+      </method>
+      <method name="TypedArrayGetBuffer" cname="jsc_value_typed_array_get_buffer">
+        <return-type type="JSCValue*" owned="true" />
+      </method>
+      <method name="TypedArrayGetData" cname="jsc_value_typed_array_get_data">
+        <return-type type="gpointer" />
+        <parameters>
+          <parameter type="gsize*" name="length" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="TypedArrayGetLength" cname="jsc_value_typed_array_get_length">
+        <return-type type="gsize" />
+      </method>
+      <method name="TypedArrayGetOffset" cname="jsc_value_typed_array_get_offset">
+        <return-type type="gsize" />
+      </method>
+      <method name="TypedArrayGetSize" cname="jsc_value_typed_array_get_size">
+        <return-type type="gsize" />
+      </method>
+      <method name="TypedArrayGetType" cname="jsc_value_typed_array_get_type">
+        <return-type type="JSCTypedArrayType" />
+      </method>
+      <method name="GetType" cname="jsc_value_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="VirtualMachine" cname="JSCVirtualMachine" parent="GObject">
+      <class_struct cname="JSCVirtualMachineClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <constructor cname="jsc_virtual_machine_new" name="New" />
+      <method name="GetType" cname="jsc_virtual_machine_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <object name="WeakValue" cname="JSCWeakValue" parent="GObject">
+      <class_struct cname="JSCWeakValueClass">
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+      </class_struct>
+      <property name="Value" cname="value" type="JSCValue*" writeable="true" construct-only="true" />
+      <signal name="Cleared" cname="cleared" when="LAST">
+        <return-type type="void" />
+        <parameters />
+      </signal>
+      <constructor cname="jsc_weak_value_new" name="New">
+        <parameters>
+          <parameter type="JSCValue*" name="value" />
+        </parameters>
+      </constructor>
+      <method name="GetValue" cname="jsc_weak_value_get_value">
+        <return-type type="JSCValue*" owned="true" />
+      </method>
+      <method name="GetType" cname="jsc_weak_value_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
+    <struct name="ClassVTable" cname="JSCClassVTable">
+      <field name="GetProperty" cname="get_property" type="JSCClassGetPropertyFunction" is_callback="1" access="public" writeable="true" />
+      <field name="SetProperty" cname="set_property" type="JSCClassSetPropertyFunction" is_callback="1" access="public" writeable="true" />
+      <field name="HasProperty" cname="has_property" type="JSCClassHasPropertyFunction" is_callback="1" access="public" writeable="true" />
+      <field name="DeleteProperty" cname="delete_property" type="JSCClassDeletePropertyFunction" is_callback="1" access="public" writeable="true" />
+      <field name="EnumerateProperties" cname="enumerate_properties" type="JSCClassEnumeratePropertiesFunction" is_callback="1" access="public" writeable="true" />
+    </struct>
+    <class name="Options" cname="JscOptions_">
+      <method name="Foreach" cname="jsc_options_foreach" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="JSCOptionsFunc" name="function" closure="1" scope="call" />
+          <parameter type="gpointer" name="user_data" />
+        </parameters>
+      </method>
+      <method name="GetBoolean" cname="jsc_options_get_boolean" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="gboolean*" name="value" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetDouble" cname="jsc_options_get_double" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="gdouble*" name="value" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetInt" cname="jsc_options_get_int" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="gint*" name="value" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetOptionGroup" cname="jsc_options_get_option_group" shared="true">
+        <return-type type="GOptionGroup*" owned="true" />
+      </method>
+      <method name="GetRangeString" cname="jsc_options_get_range_string" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="char**" name="value" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetSize" cname="jsc_options_get_size" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="gsize*" name="value" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetString" cname="jsc_options_get_string" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="char**" name="value" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="GetUint" cname="jsc_options_get_uint" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="guint*" name="value" pass_as="out" owned="true" />
+        </parameters>
+      </method>
+      <method name="SetBoolean" cname="jsc_options_set_boolean" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="gboolean" name="value" />
+        </parameters>
+      </method>
+      <method name="SetDouble" cname="jsc_options_set_double" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="gdouble" name="value" />
+        </parameters>
+      </method>
+      <method name="SetInt" cname="jsc_options_set_int" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="gint" name="value" />
+        </parameters>
+      </method>
+      <method name="SetRangeString" cname="jsc_options_set_range_string" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="const-char*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetSize" cname="jsc_options_set_size" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="gsize" name="value" />
+        </parameters>
+      </method>
+      <method name="SetString" cname="jsc_options_set_string" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="const-char*" name="value" />
+        </parameters>
+      </method>
+      <method name="SetUint" cname="jsc_options_set_uint" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-char*" name="option" />
+          <parameter type="guint" name="value" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Global" cname="JSCGlobal">
+      <method name="GetMajorVersion" cname="jsc_get_major_version" shared="true">
+        <return-type type="guint" />
+      </method>
+      <method name="GetMicroVersion" cname="jsc_get_micro_version" shared="true">
+        <return-type type="guint" />
+      </method>
+      <method name="GetMinorVersion" cname="jsc_get_minor_version" shared="true">
+        <return-type type="guint" />
+      </method>
+    </class>
+  </namespace>
+</api>
