@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 complete**. Phase 5 in progress — 7 of 11 assemblies compile. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 complete**. Phase 5 in progress — 8 of 11 assemblies compile. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -745,7 +745,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **2** | `GirToGapi` converter | ✅ **complete** — 2026-08-05, gates 1 and 2 passed |
 | **3** | Assembly graph, native library map | ✅ **complete** — 2026-08-05 |
 | **4** | api.xml regeneration + metadata triage | ✅ **complete** — 2026-08-06, all nine assemblies at zero unmatched rules |
-| **5** | Hand-written layer port | 🔶 **in progress** — 7 of 11 assemblies compile |
+| **5** | Hand-written layer port | 🔶 **in progress** — 8 of 11 assemblies compile |
 | **6** | Samples port (37 sections) | ⬜ not started |
 | **7** | Templates and workload | ⬜ not started |
 | **8** | Native runtime, CI | ⬜ not started |
@@ -812,44 +812,46 @@ of GtkSharp's 732 unmatched rules were decidable mechanically.
 | Assembly | Build state |
 |:---------|:------------|
 | `GLibSharp`, `CairoSharp` | ✅ clean (hand-written, untouched) |
-| `GrapheneSharp` | ✅ **clean** |
-| `GioSharp` | ✅ **clean** |
-| `PangoSharp` | ✅ **clean** |
+| `GrapheneSharp`, `GioSharp`, `PangoSharp` | ✅ **clean** |
 | `GdkSharp` | ✅ **clean** — 28 hand-written files deleted |
-| `GskSharp` | ✅ **clean** — `RenderNode` hierarchy deferred, see below |
-| `GtkSharp` | 🔶 in progress — generated side compiles; hand-written layer is next |
-| `AdwaitaSharp`, `GtkSourceSharp`, `WebkitGtkSharp` | ⬜ blocked behind `GtkSharp` |
+| `GskSharp` | ✅ **clean** — `RenderNode` hierarchy deferred |
+| `GtkSharp` | ✅ **clean** — 46 hand-written files deleted, `Expression` hierarchy deferred |
+| `AdwaitaSharp` | 🔶 2 unique errors — next |
+| `GtkSourceSharp` | 🔶 26 unique errors |
+| `WebkitGtkSharp` | 🔶 30 unique errors |
 
-**GtkSharp status.** 46 of the 117 hand-written files are gone — the §5.1 delete
-list in full, plus the menu, action, stock, selection and target families,
-`Key`, `Calendar`, `NativeDialog` and `FileChooserNative`. `Gtk.Container` is
-among them: that is R7, the single most user-visible break, and no shim was
-added.
+**GtkSharp is the big one and it is done.** 46 of 117 hand-written files removed —
+the §5.1 list in full plus the menu, action, stock, selection and target
+families. `Gtk.Container` is gone with no shim: R7 discharged as the plan
+intended. What survived needed porting rather than deleting — `Widget`,
+`Application`, `TextBuffer`, `StyleContext`, `Image`, `Global`, `Notebook`,
+`IconTheme`, `CssProvider`, `NodeView`, `NodeSelection`.
 
-Remaining: 122 unique errors, now in the deeper hand-written layer —
-`NodeStore`/`NodeView`/`NodeSelection` (built on `ITreeModel`), `Application`,
-`Button` and others that call `Container.Add` or the Gtk 3 `EventArgs` shapes.
+`ChildAttribute.cs` was deleted in error and restored: it is GtkSharp's `[Child]`
+template-binding attribute, nothing to do with `GtkContainer` child properties.
 
-Three findings from this pass:
+Four codegen fixes came out of this, all pre-existing bugs Gtk 3 never reached:
 
-- **`GtkText` is bound as `Gtk.TextWidget`.** It implements `GtkEditable`, whose
-  `Text` member cannot live on a C# class also called `Text`. Renaming the member
-  breaks the interface contract, and codegen emits no explicit interface
-  implementations; hiding the type cascades, since other widgets take a `GtkText`
-  in their signatures. `Gtk.Entry`, which wraps it and is what most code uses, is
-  unaffected.
-- **`ICellLayout.SetAttributes` became an extension method.** It was declared on
-  the hand-written interface, which left every implementor owing an
-  implementation; Gtk 4's gir marks more types as implementing `GtkCellLayout`.
-  It is written purely in terms of other interface members, so an extension
-  serves all of them and works on `netstandard2.0`, where default interface
-  members do not.
-- **Automatic signal connection is not supported.** Gtk 4 removed
-  `gtk_builder_connect_signals_full`, `gtk_widget_class_set_connect_func` and
-  `GtkBuilderConnectFunc` in favour of `GtkBuilderScope`, which is not bound.
-  `SignalConnector.ConnectSignals` throws rather than silently doing nothing — a
-  template whose handlers were never wired reads as a UI that ignores every
-  click, which is far harder to diagnose than an exception naming the cause.
+| Fix | Why |
+|:----|:----|
+| Interface properties stop emitting `implementor.` into implementing classes | `Property.RawGetter` keyed off "this property belongs to an interface" — equally true when it is emitted into an implementor (`ObjectGen.cs:232`), which has no such field. Every implementor of an interface with properties referenced a name that does not exist. |
+| `sizeof(IntPtr)` → `IntPtr.Size` | `sizeof` on a pointer-sized type needs an unsafe context, and these expressions land in ordinary signal-marshalling code. |
+| Enum GType helper classes are public | A signal in another assembly carrying the enum needs its GType; `internal` put `Gdk.DragActionGType` beyond GtkSharp's reach. |
+| The `Property` name-vs-type guard also checks the implementor | Kept, though the case that motivated it (`Gtk.Text`) is solved by renaming the type. |
+
+Two naming consequences. `GtkText` is bound as **`Gtk.TextWidget`**: `GtkEditable`'s
+`Text` member cannot live on a class called `Text`, renaming the member breaks the
+interface contract, and hiding the type cascades into every widget that takes a
+`GtkText`. And Gtk 4 introduces `Gtk.EventArgs`/`Gtk.EventHandler`, which shadow
+the `System` ones inside `namespace Gtk`, so the hand-written layer now qualifies
+them explicitly.
+
+**Automatic signal connection is unsupported.** Gtk 4 removed
+`gtk_builder_connect_signals_full`, `gtk_widget_class_set_connect_func` and
+`GtkBuilderConnectFunc` in favour of `GtkBuilderScope`, which is not bound.
+`SignalConnector.ConnectSignals` throws rather than silently doing nothing — a
+template whose handlers were never wired reads as a UI that ignores every click,
+much harder to diagnose than an exception naming the cause.
 
 Still untouched: the deletions and rewrites in §5.1 and §5.2 — `Container`,
 `Menu`, `Application.Run`, `Clipboard`, `Dialog.Run`, the TreeView stack and the
