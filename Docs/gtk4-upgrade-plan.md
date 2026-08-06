@@ -1250,4 +1250,34 @@ that produced 1230 warnings a consumer cannot act on, which would bury the ones
 aimed at them. Library warnings fell from 1439 to 10; consumer code still warns,
 which is the point.
 
-Still to do: items 4–8.
+**4. Samples ported to ColumnView — done for the three chosen sections.**
+`ListStoreSection`, `TreeViewSection` and `EditableCellsSection` are rewritten
+onto `GLib.ListStore` + `SingleSelection` + `ColumnView`. Rows are managed
+`GLib.Object` subclasses, since a Gtk 4 list model holds GObjects rather than
+struct tuples, and columns are `SignalListItemFactory` pairs that build real
+widgets. Editable cells are simply an `Entry` or `SpinButton` in the row, which
+is why `EditableCellsSection` is now a third of its former length.
+
+Samples deprecation warnings fell 290 → **114**. The remainder is deliberate:
+`ComboBoxSection`, `CellRendererSection`, `EntrySection` and others demonstrate
+APIs that are deprecated but still bound, and were not in the three sections
+chosen for rewriting. They are left visible rather than suppressed, because the
+warning is the honest record of what still uses the old stack.
+
+Library warnings are suppressed at the project level instead
+(`Source/Libs/Directory.Build.props`), for the same reason the generated files
+are: the binding necessarily references its own deprecated types, including from
+the hand-written layer — `NodeStore`, `NodeView` and `TreeModelAdapter` wrap
+that stack by definition.
+
+**A binding bug surfaced doing this, and it was fatal.** `GListModel::items-changed`
+and `GMenuModel::items-changed` are different signals sharing a name in one
+namespace, with different parameter types — `guint` against `gint`. GapiCodegen
+names the args class after the signal, so one class served both, and the menu
+model won: `GLib.ItemsChangedArgs` cast the list model's `guint` position to
+`int` and threw `InvalidCastException` **inside the signal marshaller**, which
+aborts the process. Every `ColumnView` and `ListView` goes through `GListModel`,
+so the common case was the broken one. The menu model's signal is renamed, giving
+it its own args class.
+
+Still to do: items 5–8.
