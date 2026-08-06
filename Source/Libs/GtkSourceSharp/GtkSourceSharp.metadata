@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <metadata>
+  <!-- These rules said "notify", the spelling Gapi.xsd used; MethodBody actually
+       tests for GIR's "notified". The mismatch was harmless while nothing was
+       hidden, but now that closure and destroy indices are emitted the parameter
+       is hidden without the branch that declares its local ever running. -->
   <!-- GtkSourceView 4 -> 5 is a breaking rewrite. Two groups of rules are gone:
        types private to the library that gapi2xml.pl only saw because it parsed
        internal headers (the engines, the completion model and container, the
@@ -39,9 +43,9 @@
   <attr path="/api/namespace/boxed[@cname='GtkSourceEncoding']/method[@cname='gtk_source_encoding_get_default_candidates']/return-type" name="element_type">GtkSourceEncoding*</attr>
   <attr path="/api/namespace/boxed[@cname='GtkSourceEncoding']/method[@cname='gtk_source_encoding_get_default_candidates']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/boxed[@cname='GtkSourceEncoding']/method[@cname='gtk_source_encoding_get_default_candidates']/return-type" name="elements_owned">false</attr>
-  <attr path="/api/namespace/object[@cname='GtkSourceFileLoader']/method[@cname='gtk_source_file_loader_load_async']/parameters/parameter[@name='progress_callback']" name="scope">notify</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceFileLoader']/method[@cname='gtk_source_file_loader_load_async']/parameters/parameter[@name='progress_callback']" name="scope">notified</attr>
   <attr path="/api/namespace/object[@cname='GtkSourceFileLoader']/method[@cname='gtk_source_file_loader_load_async']/parameters/parameter[@name='callback']" name="scope">async</attr>
-  <attr path="/api/namespace/object[@cname='GtkSourceFileSaver']/method[@cname='gtk_source_file_saver_save_async']/parameters/parameter[@name='progress_callback']" name="scope">notify</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceFileSaver']/method[@cname='gtk_source_file_saver_save_async']/parameters/parameter[@name='progress_callback']" name="scope">notified</attr>
   <attr path="/api/namespace/object[@cname='GtkSourceFileSaver']/method[@cname='gtk_source_file_saver_save_async']/parameters/parameter[@name='callback']" name="scope">async</attr>
   <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@cname='gtk_source_search_context_backward_async']/parameters/parameter[@name='callback']" name="scope">async</attr>
   <attr path="/api/namespace/object[@cname='GtkSourceSearchContext']/method[@cname='gtk_source_search_context_forward_async']/parameters/parameter[@name='callback']" name="scope">async</attr>
@@ -62,4 +66,17 @@
 
   <!-- Hide a few internal/private datatypes -->
 
+
+  <!-- GtkSharp hides GtkBuildable and every implements entry naming it
+       (GtkSharp.metadata:47 and :93). An implements entry pointing at a hidden
+       interface makes codegen drop the whole implementing type, so downstream
+       assemblies need the same rule. -->
+  <attr path="/api/namespace/object/implements/interface[@cname='GtkBuildable']" name="hidden">1</attr>
+
+  <!-- Functions that perform the action, with a signal that reports or requests
+       it: the signal is renamed to a past participle, the convention GtkSharp
+       has used since ApplyTag/TagApplied. -->
+  <attr path="/api/namespace/object[@cname='GtkSourceCompletion']/signal[@cname='show']" name="name">Shown</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceView']/signal[@cname='push-snippet']" name="name">SnippetPushed</attr>
+  <attr path="/api/namespace/object[@cname='GtkSourceVimIMContext']/signal[@cname='execute-command']" name="name">CommandExecuted</attr>
 </metadata>

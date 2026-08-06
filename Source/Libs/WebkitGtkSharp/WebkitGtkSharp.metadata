@@ -6,5 +6,30 @@
     <!-- WebKitGTK 6.0 dropped WebKitJavascriptResult; script results come back
          as a JSCValue now. -->
     <attr path="/api/namespace/boxed[@cname='WebKitUserScript']" name="opaque">true</attr>
+
+  <!-- GtkSharp hides GtkBuildable and every implements entry naming it
+       (GtkSharp.metadata:47 and :93). An implements entry pointing at a hidden
+       interface makes codegen drop the whole implementing type, so downstream
+       assemblies need the same rule. -->
+  <attr path="/api/namespace/object/implements/interface[@cname='GtkBuildable']" name="hidden">1</attr>
+
+  <!-- webkit_notification_clicked exists to emit ::clicked, so the function is
+       renamed. -->
+  <attr path="/api/namespace/object[@cname='WebKitNotification']/method[@cname='webkit_notification_clicked']" name="name">EmitClicked</attr>
+
+  <!-- These functions perform the action and the signal reports it, so the
+       signal is renamed instead. -->
+  <attr path="/api/namespace/object[@cname='WebKitOptionMenu']/signal[@cname='close']" name="name">Closed</attr>
+  <attr path="/api/namespace/object[@cname='WebKitWebContext']/signal[@cname='initialize-notification-permissions']" name="name">NotificationPermissionsInitialized</attr>
+  <attr path="/api/namespace/object[@cname='WebKitWebInspector']/signal[@cname='attach']" name="name">Attached</attr>
+  <attr path="/api/namespace/object[@cname='WebKitWebInspector']/signal[@cname='detach']" name="name">Detached</attr>
+
+  <!-- Properties duplicating a same-named method; the method wins. -->
+  <attr path="/api/namespace/object[@cname='WebKitNetworkSession']/property[@cname='is-ephemeral']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='WebKitWebsiteDataManager']/property[@cname='is-ephemeral']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='WebKitWebView']/property[@cname='is-controlled-by-automation']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='WebKitWebView']/property[@cname='is-immersive-mode-enabled']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='WebKitWebView']/property[@cname='is-loading']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='WebKitWebView']/property[@cname='is-playing-audio']" name="hidden">1</attr>
 </metadata>
 

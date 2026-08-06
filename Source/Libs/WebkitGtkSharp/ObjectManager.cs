@@ -10,7 +10,8 @@ namespace GtkSharp.WebkitGtkSharp
 		static partial void InitializeExtras()
 		{
 
-			GLib.GType.Register(WebKit.JavascriptResult.GType, typeof(WebKit.JavascriptResult));
+			// WebKitJavascriptResult was removed in WebKitGTK 6.0; script results
+			// come back as a JSCValue now.
 
 			GLib.GType.Register(Value.GType, typeof(Value));
 

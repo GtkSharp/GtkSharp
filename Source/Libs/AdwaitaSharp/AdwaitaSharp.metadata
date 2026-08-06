@@ -5,4 +5,20 @@
   <!-- GirToGapi emits the raw shared-library name; GapiCodegen pastes this value
        verbatim into GLibrary.Load(...), so it has to be a C# expression. -->
   <attr path="/api/namespace" name="library">Library.Adwaita</attr>
+
+  <!-- GtkSharp hides GtkBuildable and every implements entry pointing at it
+       (GtkSharp.metadata:47 and :93). Libadwaita widgets implement it too, and
+       an implements entry naming a hidden interface makes codegen drop the whole
+       type - that is what took AdwSidebarSection out. 66 Adw types are affected. -->
+  <attr path="/api/namespace/object/implements/interface[@cname='GtkBuildable']" name="hidden">1</attr>
+
+  <!-- adw_message_dialog_response exists to emit ::response, so the function is
+       the one renamed - same as GioSharp's GListModel and GdkSharp's
+       GdkPaintable. -->
+  <attr path="/api/namespace/object[@cname='AdwMessageDialog']/method[@cname='adw_message_dialog_response']" name="name">EmitResponse</attr>
+
+  <!-- adw_tab_view_close_page performs the close and ::close-page is emitted to
+       ask whether it should happen, so here the signal is renamed, following
+       ApplyTag/TagApplied. -->
+  <attr path="/api/namespace/object[@cname='AdwTabView']/signal[@cname='close-page']" name="name">ClosePageRequested</attr>
 </metadata>
