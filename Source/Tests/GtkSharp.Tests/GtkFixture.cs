@@ -123,16 +123,18 @@ namespace GtkSharp.Tests
     [Collection(GtkCollection.Name)]
     public abstract class GtkTestBase
     {
-        protected GtkTestBase(GtkFixture gtk)
+        protected GtkTestBase(GtkFixture fixture)
         {
-            Gtk = gtk;
+            // Deliberately not called "Gtk": that would shadow the Gtk namespace
+            // inside every derived test.
+            Fixture = fixture;
         }
 
-        protected GtkFixture Gtk { get; }
+        protected GtkFixture Fixture { get; }
 
         /// <summary>Runs a test body on the Gtk thread.</summary>
-        protected void Run(Action body) => Gtk.Invoke(body);
+        protected void Run(Action body) => Fixture.Invoke(body);
 
-        protected T Run<T>(Func<T> body) => Gtk.Invoke(body);
+        protected T Run<T>(Func<T> body) => Fixture.Invoke(body);
     }
 }
