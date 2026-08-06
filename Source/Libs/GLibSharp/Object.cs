@@ -62,7 +62,18 @@ namespace GLib {
 			ToggleRef tref;
 			lock (Objects) {
 				if (Objects.TryGetValue (Handle, out tref)) {
-					Objects.Remove (Handle);
+					// The map is keyed by native address, and addresses are
+					// reused. A wrapper whose object was torn down behind its
+					// back -- Widget.Destroy does exactly that -- still holds
+					// that address, and by the time it is finalized the entry
+					// may belong to a different object entirely. Unreffing that
+					// one corrupts its bookkeeping and eventually crashes inside
+					// ToggleRef.Free, far from here and with nothing left to say
+					// why. Only act on a registration that is still ours.
+					if (ReferenceEquals (tref.Target, this))
+						Objects.Remove (Handle);
+					else
+						tref = null;
 				}
 			}
 
