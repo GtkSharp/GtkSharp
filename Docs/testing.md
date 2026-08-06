@@ -225,31 +225,42 @@ constructor result, so the ordering matters:
 a regression here: it disposes a borrowed wrapper and then keeps using the owner,
 which touches freed memory if the reference counting is wrong.
 
-## Open: an AccessViolation under coverage instrumentation
+## Open: `Widget.Destroy` corrupts memory
 
-`dotnet test --collect:"XPlat Code Coverage"` **aborts** partway, at around 81 of
-119 tests, with:
+`Destroy()` tears down the native object but leaves the managed wrapper's toggle
+ref registered against it. Nothing fails at that moment. It fails later, when the
+wrapper is garbage collected and the queued unref runs on a main-loop timeout:
 
 ```
 Fatal error. System.AccessViolationException: Attempted to read or write protected memory.
    at GLib.ToggleRef.Free()
    at GLib.ToggleRef.PerformQueuedUnrefs()
    at GLib.Timeout+TimeoutProxy.Handler()
-   at GLib.MainContext.RunIteration(Boolean)
 ```
 
-The ordinary run passes all 119, so this is timing-sensitive: coverlet's
-instrumentation shifts GC and main-loop timing enough to expose it. That makes it
-a real defect rather than a coverage artefact — `ToggleRef.Free` is unreffing a
-GObject that is already gone.
+`Dispose()` does not have the problem — it takes a reference before destroying,
+with a comment saying exactly why: *"Freeing our toggle ref expects a normal ref
+to exist, and therefore does not check if the object still exists."*
 
-One hypothesis was tested and **disproved**: `Widget.Destroy` does not take the
-compensating reference that `Widget.Dispose` does, and `Dispose`'s own comment
-says freeing a toggle ref expects a normal reference to exist. Adding that ref to
-`Destroy` did not change the crash, so the cause lies elsewhere and the
-speculative change was reverted rather than left in.
+**Localised by experiment, not by reading.** Excluding `ChildWindowTests`, the
+only tests that destroy toplevels, makes an instrumented run complete; switching
+those calls from `Destroy()` to `Dispose()` makes the full suite complete. It
+appears only under coverage instrumentation because that shifts GC timing —
+which makes it latent, not absent.
 
-Until it is understood, coverage cannot be measured on the full suite.
+**Three fixes were tried and none worked**, so the cause is not yet understood:
+
+1. taking the compensating reference in `Destroy`, as `Dispose` does;
+2. releasing the wrapper from `Destroy` by calling `Dispose`;
+3. both together.
+
+All were reverted rather than left in — an unverified change to object lifetime
+is worse than a documented bug. The stack says `PerformQueuedUnrefs`, meaning the
+wrapper was *collected* rather than disposed, so the object at fault may be a
+child widget freed along with its window rather than the window itself.
+
+Until this is understood, **`ChildWindowTests` uses `Dispose()`**, and calling
+`Widget.Destroy()` on a toplevel should be considered unsafe.
 
 ## Measuring coverage
 
@@ -261,6 +272,32 @@ dotnet test Source/Tests/GtkSharp.Tests --collect:"XPlat Code Coverage"
 
 Read the number as a map of what is untested, then write **behavioural** tests
 for the parts that matter. Do not write tests to move the number.
+
+At 160 tests the figures are:
+
+| | line rate |
+|:--|--:|
+| overall | 7.4% |
+| `Samples` | 70.5% |
+| `GLibSharp` | 35.9% |
+| `CairoSharp` | 25.0% |
+| `GtkSourceSharp` | 13.7% |
+| `GrapheneSharp` | 9.2% |
+| `GtkSharp` | 7.8% |
+| `GioSharp` | 2.0% |
+| `AdwaitaSharp` | 0.0% |
+
+**These numbers mean less than they appear to.** `GtkSharp` alone generates tens
+of thousands of lines of property getters and P/Invoke declarations, uniform by
+construction: testing one property round-trip exercises the same emission path as
+the thousand like it, so line coverage measures how many bindings exist far more
+than how well they work. `GLibSharp` scores highest of the libraries precisely
+because it is the one that is *hand-written*.
+
+The useful reading is the ordering, not the percentage. `AdwaitaSharp` at zero is
+real information — nothing exercises libadwaita at all. `GioSharp` at 2% likewise.
+Those are worth tests. Raising `GtkSharp` from 7.8% by walking generated
+properties would not be.
 
 Note that most of `Source/Libs/*` is generated, and generated code is uniform by
 construction: testing one property round-trip exercises the same emission path
