@@ -41,7 +41,7 @@ namespace Samples
 				Hexpand = true
 			};
 
-			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> showing html text");
+			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> showing html text", null);
 
 			return ($"{nameof(WebView)} show html text:", webView);
 		}
@@ -81,18 +81,21 @@ namespace Samples
 			
 			userContentManager.AddScript(script2);
 			
-			userContentManager.RegisterScriptMessageHandler(messageHandlerName);
+			userContentManager.RegisterScriptMessageHandler(messageHandlerName, null);
 
 			userContentManager.ScriptMessageReceived += (o, args) => {
-				var value = args.JsResult?.JsValue;
-
-				if (value is { IsString: true } v)
-					ApplicationOutput.WriteLine($"{nameof(userContentManager.ScriptMessageReceived)}:\t{nameof(JavascriptResult.JsValue)}\t{v?.ToString()}");
-
+				// WebKit 6 delivers a JSCValue rather than a WebKitJavascriptResult.
+				// JavaScriptCore has its own gir and is not one of the bound
+				// assemblies, so the value arrives as an opaque handle and cannot
+				// be decoded here; that the message was delivered at all is what
+				// this demonstrates.
+				ApplicationOutput.WriteLine(
+					$"{nameof(userContentManager.ScriptMessageReceived)}:\tvalue handle {args.Value}");
 			};
 
 			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> with {nameof(UserScript)}" +
-			                 "<br/>Send message <input id=\"clickMeButton\" type=\"button\" value=\"Submit\" class=\"button\" onclick=\"\">");
+			                 "<br/>Send message <input id=\"clickMeButton\" type=\"button\" value=\"Submit\" class=\"button\" onclick=\"\">",
+			                 null);
 
 			webView.LoadChanged += (s, e) => {
 				ApplicationOutput.WriteLine(s, $"{e.LoadEvent}");
@@ -100,25 +103,28 @@ namespace Samples
 				if (e.LoadEvent != LoadEvent.Finished)
 					return;
 
-				webView.RunJavascript("testFunc()", null, HandleJavaScriptResult);
+				// run_javascript became evaluate_javascript, which also takes the
+				// world name and a source URI for attributing errors.
+				webView.EvaluateJavascript("testFunc()", null, null, null, HandleJavaScriptResult);
 
 			};
 
-			void HandleJavaScriptResult(object source_object, IAsyncResult res)
+			void HandleJavaScriptResult(GLib.Object source_object, GLib.IAsyncResult res, IntPtr data)
 			{
 				if (source_object is not WebView view) return;
 
 				try {
-					JavascriptResult js_result = view.RunJavascriptFinish(res);
+					// WebKitJavascriptResult is gone: the finish call returns the
+					// JSCValue itself. Unbound, so it is an opaque handle here --
+					// a non-zero handle means the script ran and produced a value,
+					// and a failure still arrives as an exception.
+					IntPtr js_value = view.EvaluateJavascriptFinish(res);
 
-					if (js_result.JsValue is { } jsValue) {
-						if (jsValue.IsString) {
-							ApplicationOutput.WriteLine($"{nameof(webView.RunJavascriptFinish)}:\t{nameof(JavascriptResult.JsValue)}\t{jsValue.ToString()}");
-						}
-					}
+					ApplicationOutput.WriteLine(
+						$"{nameof(view.EvaluateJavascriptFinish)}:\tvalue handle {js_value}");
 
 				} catch (Exception exception) {
-					ApplicationOutput.WriteLine($"{nameof(webView.RunJavascriptFinish)} throws:\n{exception.Message}");
+					ApplicationOutput.WriteLine($"{nameof(view.EvaluateJavascriptFinish)} throws:\n{exception.Message}");
 				}
 			}
 
