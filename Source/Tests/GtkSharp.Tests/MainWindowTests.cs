@@ -3,6 +3,10 @@ using Gtk;
 using Samples;
 using Xunit;
 
+// These exercise APIs Gtk 4.10 deprecated on purpose: they are still
+// bound, so they still need to work.
+#pragma warning disable CS0612, CS0618
+
 namespace GtkSharp.Tests
 {
     /// <summary>
@@ -74,3 +78,4 @@ namespace GtkSharp.Tests
 
     }
 }
+#pragma warning restore CS0612, CS0618
