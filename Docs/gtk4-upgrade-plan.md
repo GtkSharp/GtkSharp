@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–4 complete**. Phase 5 in progress — 8 of 11 assemblies compile. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete** — all 11 assemblies build clean. Phase 6 (samples) next. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -745,8 +745,8 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **2** | `GirToGapi` converter | ✅ **complete** — 2026-08-05, gates 1 and 2 passed |
 | **3** | Assembly graph, native library map | ✅ **complete** — 2026-08-05 |
 | **4** | api.xml regeneration + metadata triage | ✅ **complete** — 2026-08-06, all nine assemblies at zero unmatched rules |
-| **5** | Hand-written layer port | 🔶 **in progress** — 8 of 11 assemblies compile |
-| **6** | Samples port (37 sections) | ⬜ not started |
+| **5** | Hand-written layer port | ✅ **complete** — all 11 assemblies build clean |
+| **6** | Samples port (37 sections) | 🔶 **next** — 29 errors, all in `Source/Samples` |
 | **7** | Templates and workload | ⬜ not started |
 | **8** | Native runtime, CI | ⬜ not started |
 
@@ -807,81 +807,108 @@ GIR annotates natively — the rules that supplied them by hand are now redundan
 `scripts/triage-metadata.py` and `scripts/retire-rules.py` carry the method; 705
 of GtkSharp's 732 unmatched rules were decidable mechanically.
 
-### Phase 5 — in progress
+### Phase 5 — complete
 
-| Assembly | Build state |
-|:---------|:------------|
-| `GLibSharp`, `CairoSharp` | ✅ clean (hand-written, untouched) |
-| `GrapheneSharp`, `GioSharp`, `PangoSharp` | ✅ **clean** |
-| `GdkSharp` | ✅ **clean** — 28 hand-written files deleted |
-| `GskSharp` | ✅ **clean** — `RenderNode` hierarchy deferred |
-| `GtkSharp` | ✅ **clean** — 46 hand-written files deleted, `Expression` hierarchy deferred |
-| `AdwaitaSharp` | 🔶 2 unique errors — next |
-| `GtkSourceSharp` | 🔶 26 unique errors |
-| `WebkitGtkSharp` | 🔶 30 unique errors |
+**All eleven assemblies build clean on `net8.0` and `netstandard2.0`.** The only
+build errors left in the tree are 29 in `Source/Samples`, which is Phase 6.
 
-**GtkSharp is the big one and it is done.** 46 of 117 hand-written files removed —
-the §5.1 list in full plus the menu, action, stock, selection and target
-families. `Gtk.Container` is gone with no shim: R7 discharged as the plan
-intended. What survived needed porting rather than deleting — `Widget`,
-`Application`, `TextBuffer`, `StyleContext`, `Image`, `Global`, `Notebook`,
-`IconTheme`, `CssProvider`, `NodeView`, `NodeSelection`.
+| Assembly | Notes |
+|:---------|:------|
+| `GLibSharp`, `CairoSharp` | hand-written, untouched |
+| `GrapheneSharp`, `GioSharp`, `PangoSharp` | clean |
+| `GdkSharp` | 28 hand-written files deleted |
+| `GskSharp` | `RenderNode` hierarchy deferred, see below |
+| `GtkSharp` | 46 hand-written files deleted; `Expression` hierarchy deferred |
+| `AdwaitaSharp` | new binding, clean from scratch |
+| `GtkSourceSharp`, `WebkitGtkSharp` | clean |
 
-`ChildAttribute.cs` was deleted in error and restored: it is GtkSharp's `[Child]`
-template-binding attribute, nothing to do with `GtkContainer` child properties.
+`Gtk.Container` is gone with no compatibility shim: **R7 discharged** as the plan
+intended.
 
-Four codegen fixes came out of this, all pre-existing bugs Gtk 3 never reached:
+#### What the last three assemblies needed
+
+All three were blocked by one thing. GtkSharp hides `GtkBuildable` and every
+`implements` entry naming it (`GtkSharp.metadata:47`, `:93`), and an `implements`
+entry pointing at a hidden interface makes codegen drop the **whole implementing
+type**, not just the entry. That silently removed `AdwSidebarSection` and eleven
+GtkSourceView types — they never appeared in the generated output at all, and the
+only clue was a `WARN` about an unknown GInterface. Downstream assemblies need the
+same rule GtkSharp has; it is now in all three.
+
+The rest were name collisions in the three shapes this migration keeps producing,
+resolved with the conventions already established: rename the function when it
+exists to raise a signal (`Emit*`), rename the signal to a past participle when
+the function performs the action, hide the property when a method already
+provides it.
+
+One long-standing latent bug surfaced: `GtkSourceSharp.metadata` set
+`scope="notify"` — the spelling `Gapi.xsd` documents — while `MethodBody` has
+always tested for GIR's `"notified"`. The mismatch was invisible while nothing was
+hidden; once closure and destroy indices are emitted, the parameter gets hidden
+without the branch that declares its local ever running.
+
+#### Codegen fixes made during Phase 5
+
+All were pre-existing bugs that Gtk 3 never reached.
 
 | Fix | Why |
 |:----|:----|
-| Interface properties stop emitting `implementor.` into implementing classes | `Property.RawGetter` keyed off "this property belongs to an interface" — equally true when it is emitted into an implementor (`ObjectGen.cs:232`), which has no such field. Every implementor of an interface with properties referenced a name that does not exist. |
-| `sizeof(IntPtr)` → `IntPtr.Size` | `sizeof` on a pointer-sized type needs an unsafe context, and these expressions land in ordinary signal-marshalling code. |
-| Enum GType helper classes are public | A signal in another assembly carrying the enum needs its GType; `internal` put `Gdk.DragActionGType` beyond GtkSharp's reach. |
-| The `Property` name-vs-type guard also checks the implementor | Kept, though the case that motivated it (`Gtk.Text`) is solved by renaming the type. |
+| Interface properties stop emitting `implementor.` into implementing classes | `Property.RawGetter` keyed off "the property belongs to an interface" — equally true when it is emitted into an implementor (`ObjectGen.cs:232`), which has no such field. |
+| `sizeof(IntPtr)` → `IntPtr.Size` | `sizeof` on a pointer-sized type needs an unsafe context; these expressions land in ordinary signal-marshalling code. |
+| Enum GType helper classes are public | A signal in another assembly carrying the enum needs its GType; `internal` put `Gdk.DragActionGType` out of GtkSharp's reach. |
+| `StructField` honours `is_callback` | Function-pointer fields were emitted with an empty type. A struct's fields are its layout, so the slot stays, as an opaque pointer. |
+| `StructField` declaration matches `EqualityName` | Private array fields were declared StudlyCaps but referenced lower-cased by the generated `Equals`. |
+| `Ctor` skips hidden parameters and stops mis-indexing | It indexed `Parameters` by the filtered names index, which only lined up while every parameter contributed a name. |
+| `Property` name-vs-type guard also checks the implementor | |
 
-Two naming consequences. `GtkText` is bound as **`Gtk.TextWidget`**: `GtkEditable`'s
-`Text` member cannot live on a class called `Text`, renaming the member breaks the
-interface contract, and hiding the type cascades into every widget that takes a
-`GtkText`. And Gtk 4 introduces `Gtk.EventArgs`/`Gtk.EventHandler`, which shadow
-the `System` ones inside `namespace Gtk`, so the hand-written layer now qualifies
-them explicitly.
+Two naming consequences worth knowing: `GtkText` is bound as **`Gtk.TextWidget`**,
+because `GtkEditable`'s `Text` member cannot live on a class called `Text`; and
+Gtk 4's `Gtk.EventArgs`/`Gtk.EventHandler` shadow the `System` ones inside
+`namespace Gtk`, so the hand-written layer qualifies them explicitly.
 
-**Automatic signal connection is unsupported.** Gtk 4 removed
+**Automatic signal connection is unsupported.** Gtk 4 replaced
 `gtk_builder_connect_signals_full`, `gtk_widget_class_set_connect_func` and
-`GtkBuilderConnectFunc` in favour of `GtkBuilderScope`, which is not bound.
+`GtkBuilderConnectFunc` with `GtkBuilderScope`, which is not bound.
 `SignalConnector.ConnectSignals` throws rather than silently doing nothing — a
 template whose handlers were never wired reads as a UI that ignores every click,
 much harder to diagnose than an exception naming the cause.
 
-Still untouched: the deletions and rewrites in §5.1 and §5.2 — `Container`,
-`Menu`, `Application.Run`, `Clipboard`, `Dialog.Run`, the TreeView stack and the
-rest of the hand-written Gtk layer. That work has not started, and it is the bulk
-of Phase 5.
+### Open: GLib fundamental types are not bound
 
-Seven converter and codegen fixes came out of compiling the output rather than
-reading XML:
+Gtk 4 uses GLib *fundamental* types — `glib:fundamental="1"`, GTypeInstance with
+their own ref/unref rather than GObject descendants — for three whole hierarchies:
+`GdkEvent` and its event subclasses, `GskRenderNode` and its 36 node subclasses,
+and `GtkExpression` and its 7. `ObjectGen` has no notion of them: it emits
+`Handle`, `CreateNativeObject`, a `base(IntPtr)` chain-up and
+`GLib.Object.GetObject(raw) as T`, all of which assume GObject.
 
-| Fix | Why |
-|:----|:----|
-| Skip namespace-level `<function>` with `moved-to` | GIR lists `graphene_box_empty` both on the record and again as a namespace alias; emitting both produced a spurious `<class name="Box">` colliding with the boxed type. 411 such aliases across the vendored set. |
-| Fixed-size arrays as `type="X" array_len="N"` | Not `type="X*"`. `FieldBase` keys `IsArray` off `array_len`, so the pointer spelling made codegen reference a field it never declared. |
-| `scope` only with a usable `closure` index | `g_bus_own_name` takes three callbacks against one `user_data`, and GIR annotates only the last; `MethodBody`'s i+1/i+2 fallback then lands on the next callback. |
-| No `pass_as="out"` for caller-allocated array buffers | `g_input_stream_read`'s `void *buffer` is storage the caller supplies. Marking it out produced methods that never assign it. Struct out-parameters unaffected. |
-| Infer `throws` from a trailing `GError**` | GIR sets `throws` on methods but not callbacks. gapi keys its whole GError treatment off it, so the parameter stayed visible and collided with the `error` local codegen declares. |
-| `StructField` declaration vs `EqualityName` | Private array fields were declared StudlyCaps but referenced lower-cased by the generated `Equals`. Gtk 3 never had a private struct-level array; `graphene_quad_t` does. |
-| `Ctor` skips hidden parameters | It also indexed `Parameters` by the filtered names index, which only lined up while every parameter contributed a name. |
+Current state:
 
-**A recurring class of problem, worth expecting in Gdk and Gtk:** gapi2xml.pl
-emitted bogus type names — `variant` where the type is `GVariant*` — that
-`SymbolTable` never knew, so codegen dropped those members with a warning and
-their name collisions never surfaced. Gtk 3 built partly *because* of that;
-`GLib.IAction.State` was simply absent from the binding. GirToGapi emits the real
-type, so they resolve now and the collisions are real. The fix is the one the
-existing metadata already models: hide the property whose accessor comes from a
-vfunc, or rename the function that emits a same-named signal.
+- **`GdkEvent`** is carried by a small hand-written base supplying that surface
+  over a plain handle. Constructing an event from managed code throws, since GDK
+  delivers events to controllers and never accepts them.
+- **`GskRenderNode` (36 types) and `GtkExpression` (7) are hidden.** The same
+  trick does not work there, because the generated code casts through
+  `GLib.Object.GetObject`, which will not compile unless the root derives from
+  `GLib.Object` — and making it do so would put `g_object_ref`/`unref` on handles
+  whose lifetime belongs to `gsk_render_node_ref`/`unref`. A binding that
+  mismanages refcounts is worse than one that is missing.
 
+Cost: three GtkSharp members reference `GskRenderNode`, 44 reference
+`GtkExpression` — chiefly the expression-based list-item factories and property
+bindings. `Gsk.Renderer`, `Transform` and `RoundedRect` are unaffected.
+
+Doing this properly means teaching `ObjectGen` about fundamental types: per-type
+`GetObject` factories and ref/unref hooks. **This is the largest single piece of
+work outstanding**, and it blocks custom widget drawing via `GtkSnapshot`, which
+§6.3 needs for the DrawingArea samples.
 ### Phases 6–8 — not started
 
-Samples (37 sections), templates and workload, native runtime and CI. The V4
-decision (gvsbuild `2026.6.0`) and the corrected `GtkSharp.targets` paths in §8.1
-are settled but not yet applied.
+Samples (37 sections) is next and is the acceptance test: the repository has no
+test project, so a running Samples app is the only end-to-end verification
+available. 29 build errors remain there, `Gtk.EventArgs` shadowing `System`'s
+among them.
+
+Templates and workload, then native runtime and CI, follow. The V4 decision
+(gvsbuild `2026.6.0`) and the corrected `GtkSharp.targets` paths in §8.1 are
+settled but not yet applied.
