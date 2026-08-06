@@ -67,7 +67,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_get_type();
 
-		static d_jsc_value_get_type jsc_value_get_type = FuncLoader.LoadFunction<d_jsc_value_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_get_type"));
+		static d_jsc_value_get_type jsc_value_get_type = FuncLoader.LoadFunction<d_jsc_value_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_get_type"));
 
 		public static new GLib.GType GType {
 			get {
@@ -81,7 +81,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_constructor_callv(IntPtr raw, uint n_parameters, IntPtr[] parameters);
 
-		static d_jsc_value_constructor_callv jsc_value_constructor_callv = FuncLoader.LoadFunction<d_jsc_value_constructor_callv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_constructor_callv"));
+		static d_jsc_value_constructor_callv jsc_value_constructor_callv = FuncLoader.LoadFunction<d_jsc_value_constructor_callv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_constructor_callv"));
 
 		public Value ConstructorCallv(Value[] parameters)
 		{
@@ -100,7 +100,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_function_callv(IntPtr raw, uint n_parameters, IntPtr[] parameters);
 
-		static d_jsc_value_function_callv jsc_value_function_callv = FuncLoader.LoadFunction<d_jsc_value_function_callv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_function_callv"));
+		static d_jsc_value_function_callv jsc_value_function_callv = FuncLoader.LoadFunction<d_jsc_value_function_callv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_function_callv"));
 
 		public Value FunctionCallv(Value[] parameters)
 		{
@@ -119,7 +119,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_is_array(IntPtr raw);
 
-		static d_jsc_value_is_array jsc_value_is_array = FuncLoader.LoadFunction<d_jsc_value_is_array>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_is_array"));
+		static d_jsc_value_is_array jsc_value_is_array = FuncLoader.LoadFunction<d_jsc_value_is_array>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_is_array"));
 
 		public bool IsArray {
 			get {
@@ -133,7 +133,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_is_boolean(IntPtr raw);
 
-		static d_jsc_value_is_boolean jsc_value_is_boolean = FuncLoader.LoadFunction<d_jsc_value_is_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_is_boolean"));
+		static d_jsc_value_is_boolean jsc_value_is_boolean = FuncLoader.LoadFunction<d_jsc_value_is_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_is_boolean"));
 
 		public bool IsBoolean {
 			get {
@@ -147,7 +147,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_is_constructor(IntPtr raw);
 
-		static d_jsc_value_is_constructor jsc_value_is_constructor = FuncLoader.LoadFunction<d_jsc_value_is_constructor>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_is_constructor"));
+		static d_jsc_value_is_constructor jsc_value_is_constructor = FuncLoader.LoadFunction<d_jsc_value_is_constructor>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_is_constructor"));
 
 		public bool IsConstructor {
 			get {
@@ -161,7 +161,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_is_function(IntPtr raw);
 
-		static d_jsc_value_is_function jsc_value_is_function = FuncLoader.LoadFunction<d_jsc_value_is_function>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_is_function"));
+		static d_jsc_value_is_function jsc_value_is_function = FuncLoader.LoadFunction<d_jsc_value_is_function>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_is_function"));
 
 		public bool IsFunction {
 			get {
@@ -175,7 +175,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_is_null(IntPtr raw);
 
-		static d_jsc_value_is_null jsc_value_is_null = FuncLoader.LoadFunction<d_jsc_value_is_null>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_is_null"));
+		static d_jsc_value_is_null jsc_value_is_null = FuncLoader.LoadFunction<d_jsc_value_is_null>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_is_null"));
 
 		public bool IsNull {
 			get {
@@ -189,7 +189,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_is_number(IntPtr raw);
 
-		static d_jsc_value_is_number jsc_value_is_number = FuncLoader.LoadFunction<d_jsc_value_is_number>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_is_number"));
+		static d_jsc_value_is_number jsc_value_is_number = FuncLoader.LoadFunction<d_jsc_value_is_number>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_is_number"));
 
 		public bool IsNumber {
 			get {
@@ -203,7 +203,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_is_object(IntPtr raw);
 
-		static d_jsc_value_is_object jsc_value_is_object = FuncLoader.LoadFunction<d_jsc_value_is_object>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_is_object"));
+		static d_jsc_value_is_object jsc_value_is_object = FuncLoader.LoadFunction<d_jsc_value_is_object>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_is_object"));
 
 		public bool IsObject {
 			get {
@@ -217,7 +217,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_is_string(IntPtr raw);
 
-		static d_jsc_value_is_string jsc_value_is_string = FuncLoader.LoadFunction<d_jsc_value_is_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_is_string"));
+		static d_jsc_value_is_string jsc_value_is_string = FuncLoader.LoadFunction<d_jsc_value_is_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_is_string"));
 
 		public bool IsString {
 			get {
@@ -231,7 +231,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_is_undefined(IntPtr raw);
 
-		static d_jsc_value_is_undefined jsc_value_is_undefined = FuncLoader.LoadFunction<d_jsc_value_is_undefined>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_is_undefined"));
+		static d_jsc_value_is_undefined jsc_value_is_undefined = FuncLoader.LoadFunction<d_jsc_value_is_undefined>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_is_undefined"));
 
 		public bool IsUndefined {
 			get {
@@ -245,7 +245,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_object_delete_property(IntPtr raw, IntPtr name);
 
-		static d_jsc_value_object_delete_property jsc_value_object_delete_property = FuncLoader.LoadFunction<d_jsc_value_object_delete_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_object_delete_property"));
+		static d_jsc_value_object_delete_property jsc_value_object_delete_property = FuncLoader.LoadFunction<d_jsc_value_object_delete_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_object_delete_property"));
 
 		public bool ObjectDeleteProperty(string name)
 		{
@@ -260,7 +260,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_object_enumerate_properties(IntPtr raw);
 
-		static d_jsc_value_object_enumerate_properties jsc_value_object_enumerate_properties = FuncLoader.LoadFunction<d_jsc_value_object_enumerate_properties>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_object_enumerate_properties"));
+		static d_jsc_value_object_enumerate_properties jsc_value_object_enumerate_properties = FuncLoader.LoadFunction<d_jsc_value_object_enumerate_properties>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_object_enumerate_properties"));
 
 		public string[] ObjectEnumerateProperties()
 		{
@@ -273,7 +273,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_object_get_property(IntPtr raw, IntPtr name);
 
-		static d_jsc_value_object_get_property jsc_value_object_get_property = FuncLoader.LoadFunction<d_jsc_value_object_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_object_get_property"));
+		static d_jsc_value_object_get_property jsc_value_object_get_property = FuncLoader.LoadFunction<d_jsc_value_object_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_object_get_property"));
 
 		public Value ObjectGetProperty(string name)
 		{
@@ -288,7 +288,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_object_get_property_at_index(IntPtr raw, uint index);
 
-		static d_jsc_value_object_get_property_at_index jsc_value_object_get_property_at_index = FuncLoader.LoadFunction<d_jsc_value_object_get_property_at_index>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_object_get_property_at_index"));
+		static d_jsc_value_object_get_property_at_index jsc_value_object_get_property_at_index = FuncLoader.LoadFunction<d_jsc_value_object_get_property_at_index>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_object_get_property_at_index"));
 
 		public Value ObjectGetPropertyAtIndex(uint index)
 		{
@@ -301,7 +301,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_object_has_property(IntPtr raw, IntPtr name);
 
-		static d_jsc_value_object_has_property jsc_value_object_has_property = FuncLoader.LoadFunction<d_jsc_value_object_has_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_object_has_property"));
+		static d_jsc_value_object_has_property jsc_value_object_has_property = FuncLoader.LoadFunction<d_jsc_value_object_has_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_object_has_property"));
 
 		public bool ObjectHasProperty(string name)
 		{
@@ -316,7 +316,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_object_invoke_methodv(IntPtr raw, IntPtr name, uint n_parameters, IntPtr[] parameters);
 
-		static d_jsc_value_object_invoke_methodv jsc_value_object_invoke_methodv = FuncLoader.LoadFunction<d_jsc_value_object_invoke_methodv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_object_invoke_methodv"));
+		static d_jsc_value_object_invoke_methodv jsc_value_object_invoke_methodv = FuncLoader.LoadFunction<d_jsc_value_object_invoke_methodv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_object_invoke_methodv"));
 
 		public Value ObjectInvokeMethodv(string name, Value[] parameters)
 		{
@@ -337,7 +337,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_object_is_instance_of(IntPtr raw, IntPtr name);
 
-		static d_jsc_value_object_is_instance_of jsc_value_object_is_instance_of = FuncLoader.LoadFunction<d_jsc_value_object_is_instance_of>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_object_is_instance_of"));
+		static d_jsc_value_object_is_instance_of jsc_value_object_is_instance_of = FuncLoader.LoadFunction<d_jsc_value_object_is_instance_of>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_object_is_instance_of"));
 
 		public bool ObjectIsInstanceOf(string name)
 		{
@@ -352,7 +352,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_jsc_value_object_set_property(IntPtr raw, IntPtr name, IntPtr property);
 
-		static d_jsc_value_object_set_property jsc_value_object_set_property = FuncLoader.LoadFunction<d_jsc_value_object_set_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_object_set_property"));
+		static d_jsc_value_object_set_property jsc_value_object_set_property = FuncLoader.LoadFunction<d_jsc_value_object_set_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_object_set_property"));
 
 		public void ObjectSetProperty(string name, Value property)
 		{
@@ -364,7 +364,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_jsc_value_object_set_property_at_index(IntPtr raw, uint index, IntPtr property);
 
-		static d_jsc_value_object_set_property_at_index jsc_value_object_set_property_at_index = FuncLoader.LoadFunction<d_jsc_value_object_set_property_at_index>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_object_set_property_at_index"));
+		static d_jsc_value_object_set_property_at_index jsc_value_object_set_property_at_index = FuncLoader.LoadFunction<d_jsc_value_object_set_property_at_index>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_object_set_property_at_index"));
 
 		public void ObjectSetPropertyAtIndex(uint index, Value property)
 		{
@@ -374,7 +374,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_jsc_value_to_boolean(IntPtr raw);
 
-		static d_jsc_value_to_boolean jsc_value_to_boolean = FuncLoader.LoadFunction<d_jsc_value_to_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_to_boolean"));
+		static d_jsc_value_to_boolean jsc_value_to_boolean = FuncLoader.LoadFunction<d_jsc_value_to_boolean>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_to_boolean"));
 
 		public bool ToBoolean()
 		{
@@ -387,7 +387,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate double d_jsc_value_to_double(IntPtr raw);
 
-		static d_jsc_value_to_double jsc_value_to_double = FuncLoader.LoadFunction<d_jsc_value_to_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_to_double"));
+		static d_jsc_value_to_double jsc_value_to_double = FuncLoader.LoadFunction<d_jsc_value_to_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_to_double"));
 
 		public double ToDouble()
 		{
@@ -400,7 +400,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_jsc_value_to_int32(IntPtr raw);
 
-		static d_jsc_value_to_int32 jsc_value_to_int32 = FuncLoader.LoadFunction<d_jsc_value_to_int32>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_to_int32"));
+		static d_jsc_value_to_int32 jsc_value_to_int32 = FuncLoader.LoadFunction<d_jsc_value_to_int32>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_to_int32"));
 
 		public int ToInt32()
 		{
@@ -413,7 +413,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_to_json(IntPtr raw, uint indent);
 
-		static d_jsc_value_to_json jsc_value_to_json = FuncLoader.LoadFunction<d_jsc_value_to_json>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_to_json"));
+		static d_jsc_value_to_json jsc_value_to_json = FuncLoader.LoadFunction<d_jsc_value_to_json>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_to_json"));
 
 		public string ToJson(uint indent)
 		{
@@ -426,7 +426,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_to_string(IntPtr raw);
 
-		static d_jsc_value_to_string jsc_value_to_string = FuncLoader.LoadFunction<d_jsc_value_to_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_to_string"));
+		static d_jsc_value_to_string jsc_value_to_string = FuncLoader.LoadFunction<d_jsc_value_to_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_to_string"));
 
 		public override string ToString()
 		{
@@ -439,7 +439,7 @@ namespace JavaScript
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_jsc_value_to_string_as_bytes(IntPtr raw);
 
-		static d_jsc_value_to_string_as_bytes jsc_value_to_string_as_bytes = FuncLoader.LoadFunction<d_jsc_value_to_string_as_bytes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Webkit), "jsc_value_to_string_as_bytes"));
+		static d_jsc_value_to_string_as_bytes jsc_value_to_string_as_bytes = FuncLoader.LoadFunction<d_jsc_value_to_string_as_bytes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.JavaScriptCore), "jsc_value_to_string_as_bytes"));
 
 		public GLib.Bytes ToStringAsBytes()
 		{

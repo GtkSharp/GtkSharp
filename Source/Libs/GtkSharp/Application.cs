@@ -131,16 +131,7 @@ namespace Gtk {
 				main_loop.Quit ();
 		}
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_get_current_event();
-		static d_gtk_get_current_event gtk_get_current_event = FuncLoader.LoadFunction<d_gtk_get_current_event>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_get_current_event"));
-
-		public static Gdk.Event CurrentEvent {
-			get {
-				// gtk_get_current_event is transfer-full.
-				return GLib.Opaque.GetOpaque (gtk_get_current_event (), typeof (Gdk.Event), true) as Gdk.Event;
-			}
-		}
+		// CurrentEvent: gtk_get_current_event is gone in Gtk 4. An event controller receives the event it is handling directly.
 
 		internal class InvokeCB {
 			System.EventHandler d;

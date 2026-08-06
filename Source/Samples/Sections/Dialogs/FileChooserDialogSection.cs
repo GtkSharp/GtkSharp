@@ -3,7 +3,7 @@ using Gtk;
 namespace Samples
 {
     [Section(ContentType = typeof(FileChooserDialog), Category = Category.Dialogs)]
-    class FileChooserDialogSection : ListSection
+    public class FileChooserDialogSection : ListSection
 	{
 		public FileChooserDialogSection ()
 		{

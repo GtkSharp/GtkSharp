@@ -20,5 +20,6 @@ enum Library
     Gtk,
     GtkSource,
     Webkit,
+    JavaScriptCore,
     Adwaita
 }

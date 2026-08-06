@@ -83,20 +83,6 @@ namespace Gtk {
 		}
 
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		unsafe delegate void d_gtk_style_context_get_property(IntPtr raw, IntPtr property, int state, GLib.Value* value);
-		static d_gtk_style_context_get_property gtk_style_context_get_property = FuncLoader.LoadFunction<d_gtk_style_context_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_style_context_get_property"));
-
-		public GLib.Value GetProperty(string property, Gtk.StateFlags state)
-		{
-			var value = new GLib.Value();
-			IntPtr native_property = GLib.Marshaller.StringToPtrGStrdup(property);
-			unsafe
-			{
-				gtk_style_context_get_property(Handle, native_property, (int)state, &value);
-			}
-			GLib.Marshaller.Free(native_property);
-			return value;
-		}
+		// GetProperty: gtk_style_context_get_property is gone in Gtk 4 -- style properties were removed with the Gtk 3 theming API. Read the CSS property through GtkStyleContext's typed getters instead.
 	}
 }

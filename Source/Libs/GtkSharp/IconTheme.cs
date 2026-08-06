@@ -27,37 +27,13 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class IconTheme {
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_icon_theme_list_icons(IntPtr raw, IntPtr context);
-		static d_gtk_icon_theme_list_icons gtk_icon_theme_list_icons = FuncLoader.LoadFunction<d_gtk_icon_theme_list_icons>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_list_icons"));
-
-		public string[] ListIcons (string context)
-		{
-			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (context);
-			IntPtr list_ptr = gtk_icon_theme_list_icons (Handle, native);
-			GLib.Marshaller.Free (native);
-			if (list_ptr == IntPtr.Zero)
-				return new string [0];
-
-			GLib.List list = new GLib.List (list_ptr, typeof (string), true, true);
-			string[] result = new string [list.Count];
-			int i = 0;
-			foreach (string val in list)
-				result [i++] = val;
-			return result;
-		}
+		// ListIcons: gtk_icon_theme_list_icons is gone in Gtk 4; the generated IconNames property replaces it.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_icon_theme_get_search_path(IntPtr raw, out IntPtr path, out int n_elements);
 		static d_gtk_icon_theme_get_search_path gtk_icon_theme_get_search_path = FuncLoader.LoadFunction<d_gtk_icon_theme_get_search_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_get_search_path"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_icon_theme_set_search_path(IntPtr raw, IntPtr[] path, int n_elements);
 		static d_gtk_icon_theme_set_search_path gtk_icon_theme_set_search_path = FuncLoader.LoadFunction<d_gtk_icon_theme_set_search_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_set_search_path"));
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_icon_theme_get_search_path_utf8(IntPtr raw, out IntPtr path, out int n_elements);
-		static d_gtk_icon_theme_get_search_path_utf8 gtk_icon_theme_get_search_path_utf8 = FuncLoader.LoadFunction<d_gtk_icon_theme_get_search_path_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_get_search_path_utf8"));
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_icon_theme_set_search_path_utf8(IntPtr raw, IntPtr[] path, int n_elements);
-		static d_gtk_icon_theme_set_search_path_utf8 gtk_icon_theme_set_search_path_utf8 = FuncLoader.LoadFunction<d_gtk_icon_theme_set_search_path_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_set_search_path_utf8"));
 
 		bool IsWindowsPlatform {
 			get {

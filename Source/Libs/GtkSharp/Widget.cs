@@ -135,118 +135,19 @@ namespace Gtk {
 		{
 		}
 
-		private class BindingInvoker {
-			System.Reflection.MethodInfo mi;
-			object[] parms;
-
-			public BindingInvoker (System.Reflection.MethodInfo mi, object[] parms)
-			{
-				this.mi = mi;
-				this.parms = parms;
-			}
-
-			public void Invoke (Widget w)
-			{
-				mi.Invoke (w, parms);
-			}
-		}
-
-		/* As gtk_binding_entry_add_signall only allows passing long, double and string parameters
-		 * to the specified signal, we cannot pass a pointer to the BindingInvoker directly to the signal.
-		 * Instead, the signal takes the index of the BindingInvoker in binding_invokers.
-		 */
-		static IList<BindingInvoker> binding_invokers;
-
-		static void BindingMarshal_cb (IntPtr raw_closure, IntPtr return_val, uint n_param_vals, IntPtr param_values, IntPtr invocation_hint, IntPtr marshal_data)
-		{
-			try {
-				GLib.Value[] inst_and_params = new GLib.Value [n_param_vals];
-				int gvalue_size = Marshal.SizeOf<GLib.Value> ();
-				for (int idx = 0; idx < n_param_vals; idx++)
-					inst_and_params [idx] = (GLib.Value) Marshal.PtrToStructure (new IntPtr (param_values.ToInt64 () + idx * gvalue_size), typeof (GLib.Value));
-
-				Widget w = inst_and_params [0].Val as Widget;
-				BindingInvoker invoker = binding_invokers [(int) (long) inst_and_params [1]];
-				invoker.Invoke (w);
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-
-		static ClosureMarshal binding_delegate;
-		static ClosureMarshal BindingDelegate {
-			get {
-				if (binding_delegate == null)
-					binding_delegate = new ClosureMarshal (BindingMarshal_cb);
-				return binding_delegate;
-			}
-		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_binding_set_by_class(IntPtr class_ptr);
-		static d_gtk_binding_set_by_class gtk_binding_set_by_class = FuncLoader.LoadFunction<d_gtk_binding_set_by_class>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_set_by_class"));
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_binding_entry_add_signall(IntPtr binding_set, uint keyval, Gdk.ModifierType modifiers, IntPtr signal_name, IntPtr binding_args);
-		static d_gtk_binding_entry_add_signall gtk_binding_entry_add_signall = FuncLoader.LoadFunction<d_gtk_binding_entry_add_signall>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_binding_entry_add_signall"));
-
-		[StructLayout(LayoutKind.Sequential)]
-		struct GtkBindingArg {
-			public IntPtr arg_type;
-			public GtkBindingArgData data;
-		}
-
-		[StructLayout(LayoutKind.Explicit)]
-		struct GtkBindingArgData {
-		#if WIN64LONGS
-			[FieldOffset (0)] public int long_data;
-		#else
-			[FieldOffset (0)] public IntPtr long_data;
-		#endif
-			[FieldOffset (0)] public double double_data;
-			[FieldOffset (0)] public IntPtr string_data;
-		}
+		// The [Binding] machinery lived here: an invoker table, a closure
+		// marshaller and gtk_binding_set_by_class / gtk_binding_entry_add_signall.
+		// Gtk 4 removed GtkBindingSet entirely -- key bindings are installed on a
+		// GtkShortcutController now -- so every one of those symbols resolved to
+		// a null delegate and the whole path could only throw.
 
 		static void ClassInit (GLib.GType gtype, Type t)
 		{
-			InitBindings (gtype, t);
 			InitTemplateForType (gtype, t);
 			InitCssName (gtype, t);
 		}
 
-		static void InitBindings (GLib.GType gtype, Type t)
-		{
-			object[] attrs = t.GetCustomAttributes (typeof (BindingAttribute), true);
-			if (attrs.Length == 0) return;
-
-			string signame = t.Name.Replace (".", "_") + "_bindings";
-			IntPtr native_signame = GLib.Marshaller.StringToPtrGStrdup (signame);
-			RegisterSignal (signame, gtype, GLib.Signal.Flags.RunLast | GLib.Signal.Flags.Action, GLib.GType.None, new GLib.GType[] {GLib.GType.Long}, BindingDelegate);
-
-			if (binding_invokers == null)
-				binding_invokers = new List<BindingInvoker> ();
-
-			foreach (BindingAttribute attr in attrs) {
-				System.Reflection.MethodInfo mi = t.GetMethod (attr.Handler, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
-				if (mi == null)
-					throw new Exception ("Instance method " + attr.Handler + " not found in " + t);
-
-				GtkBindingArg arg = new GtkBindingArg ();
-				arg.arg_type = GLib.GType.Long.Val;
-
-				var bi = new BindingInvoker (mi, attr.Parms);
-				binding_invokers.Add (bi);
-				int binding_invoker_idx = binding_invokers.IndexOf (bi);
-#if WIN64LONGS
-				arg.data.long_data = binding_invoker_idx;
-#else
-				arg.data.long_data = new IntPtr (binding_invoker_idx);
-#endif
-
-				GLib.SList binding_args = new GLib.SList (new object[] {arg}, typeof (GtkBindingArg), false, false);
-				gtk_binding_entry_add_signall (gtk_binding_set_by_class (gtype.GetClassPtr ()), (uint) attr.Key, attr.Mod, native_signame, binding_args.Handle);
-				binding_args.Dispose ();
-			}
-			GLib.Marshaller.Free (native_signame);
-		}
+		// InitBindings: GtkBindingSet is gone in Gtk 4. Key bindings are installed with a GtkShortcutController, which is not wrapped by [Binding] yet.
 
 		static void InitTemplateForType (GLib.GType gtype, Type type)
 		{
@@ -369,40 +270,8 @@ namespace Gtk {
 			}
 		}
 
-		public object StyleGetProperty (string property_name)
-		{
-			GLib.Value value;
-			try {
-				value = StyleGetPropertyValue (property_name);
-			} catch (ArgumentException) {
-				return null;
-			}
-			object ret = value.Val;
-			value.Dispose ();
-			return ret;
-		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_widget_class_find_style_property(IntPtr class_ptr, IntPtr property_name);
-		static d_gtk_widget_class_find_style_property gtk_widget_class_find_style_property = FuncLoader.LoadFunction<d_gtk_widget_class_find_style_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_find_style_property"));
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_widget_style_get_property(IntPtr inst, IntPtr property_name, ref GLib.Value value);
-		static d_gtk_widget_style_get_property gtk_widget_style_get_property = FuncLoader.LoadFunction<d_gtk_widget_style_get_property>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_style_get_property"));
-
-		internal GLib.Value StyleGetPropertyValue (string property_name)
-		{
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (property_name);
-			try {
-				IntPtr pspec_ptr = gtk_widget_class_find_style_property (this.LookupGType ().GetClassPtr (), native_name);
-				if (pspec_ptr == IntPtr.Zero)
-					throw new ArgumentException (String.Format ("Cannot find style property \"{0}\"", property_name));
-
-				GLib.Value value = new GLib.Value ((new GLib.ParamSpec (pspec_ptr)).ValueType);
-				gtk_widget_style_get_property (Handle, native_name, ref value);
-				return value;
-			} finally {
-				GLib.Marshaller.Free (native_name);
-			}
-		}
+		// StyleGetProperty: Gtk 4 removed widget style properties; everything they carried is CSS now.
+		// StyleGetPropertyValue: Gtk 4 removed widget style properties; everything they carried is CSS now.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_widget_list_mnemonic_labels(IntPtr raw);
 		static d_gtk_widget_list_mnemonic_labels gtk_widget_list_mnemonic_labels = FuncLoader.LoadFunction<d_gtk_widget_list_mnemonic_labels>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_list_mnemonic_labels"));

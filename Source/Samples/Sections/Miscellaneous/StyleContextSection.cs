@@ -17,14 +17,20 @@ namespace Samples
         {
             var styleCtx = ((Button)sender).StyleContext;
 
-            var props = new[] { "padding-left", "padding-right", "padding-top", "padding-bottom", "min-width", "min-height", "color", "background-color", "font-size", "font-style" };
+            // Gtk 4 removed gtk_style_context_get_property, and with it the
+            // ability to ask for an arbitrary CSS property by name. What remains
+            // is a handful of typed getters for the values a widget actually
+            // needs in order to lay itself out.
+            ApplicationOutput.WriteLine($"State: {styleCtx.State}");
+            ApplicationOutput.WriteLine($"Color: {styleCtx.Color}");
+            ApplicationOutput.WriteLine($"Padding: {Describe(styleCtx.Padding)}");
+            ApplicationOutput.WriteLine($"Margin: {Describe(styleCtx.Margin)}");
+            ApplicationOutput.WriteLine($"Border: {Describe(styleCtx.Border)}");
+        }
 
-            foreach (var prop in props)
-            {
-                GLib.Value val = styleCtx.GetProperty(prop, styleCtx.State);
-                string msg = string.Format("Property {0}, type {1}, value {2}", prop, val.Val.GetType().Name, val.Val.ToString());
-                ApplicationOutput.WriteLine(msg);
-            }
+        private static string Describe(Border border)
+        {
+            return $"left {border.Left}, right {border.Right}, top {border.Top}, bottom {border.Bottom}";
         }
     }
 }
