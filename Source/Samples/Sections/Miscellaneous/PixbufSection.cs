@@ -41,9 +41,9 @@ namespace Samples
 			Gdk.Threads.Leave ();
 		}
 
-		protected override void OnPressed ()
+		protected override void OnClicked ()
 		{
-			base.OnPressed ();
+			base.OnClicked ();
 			var count = 0;
 
 			if (running) {

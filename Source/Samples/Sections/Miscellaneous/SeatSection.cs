@@ -18,9 +18,9 @@ namespace Samples
         {
         }
 
-        protected override void OnPressed()
+        protected override void OnClicked()
         {
-            base.OnPressed();
+            base.OnClicked();
 
             var seat = Display.DefaultSeat;
             ApplicationOutput.WriteLine($"Default seat: {seat}");

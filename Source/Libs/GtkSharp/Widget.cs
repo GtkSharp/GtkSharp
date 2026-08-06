@@ -261,23 +261,41 @@ namespace Gtk {
 			if (resource_stream == null)
 				throw new Exception ("Template resource '" + resource_name + "' not found");
 
-			SetTemplateFromStream (gtype, resource_stream);
+			var template = new byte[(int) resource_stream.Length];
+			resource_stream.Read (template, 0, template.Length);
+			resource_stream.Dispose ();
+
+			SetTemplate (gtype, template);
 			BindTemplateChildren (gtype, type, data.FieldBindings);
-			
-			data.SignalConnector = new SignalConnector (type);
-			data.SignalConnector.ConnectSignals (gtype);
+
+			// Gtk 4 routes template signal connection through GtkBuilderScope,
+			// which is not bound, so ConnectSignals throws. Only templates that
+			// actually declare a <signal> need it: binding [Child] fields is a
+			// separate mechanism and works either way. Asking first keeps the
+			// useful subset working while still failing loudly -- rather than
+			// silently ignoring every click -- for templates that do want
+			// handlers wired.
+			if (DeclaresSignals (template)) {
+				data.SignalConnector = new SignalConnector (type);
+				data.SignalConnector.ConnectSignals (gtype);
+			}
+
 			Templates[type] = data;
+		}
+
+		static bool DeclaresSignals (byte[] template)
+		{
+			// The template is a UTF-8 GtkBuilder document; "<signal" only ever
+			// appears as the element that requests a handler.
+			var text = System.Text.Encoding.UTF8.GetString (template);
+			return text.IndexOf ("<signal", StringComparison.Ordinal) >= 0;
 		}
 
 		delegate IntPtr d_gtk_widget_class_set_template(IntPtr class_ptr, IntPtr template_bytes);
 		static d_gtk_widget_class_set_template gtk_widget_class_set_template = FuncLoader.LoadFunction<d_gtk_widget_class_set_template>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_set_template"));
 
-		static void SetTemplateFromStream (GLib.GType gtype, System.IO.Stream resource)
+		static void SetTemplate (GLib.GType gtype, byte[] buffer)
 		{
-			var buffer = new byte[(int)resource.Length];
-			resource.Read (buffer, 0, buffer.Length);
-			resource.Dispose ();
-
 			var bytes = new GLib.Bytes (buffer);
 			gtk_widget_class_set_template (gtype.GetClassPtr (), bytes.Handle);
 			bytes.Dispose ();

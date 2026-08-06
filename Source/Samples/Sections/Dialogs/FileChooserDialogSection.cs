@@ -15,7 +15,7 @@ namespace Samples
 	{
 		public FileChooserDialogDemo (string text) : base (text) { }
 
-		protected override void OnPressed ()
+		protected override void OnClicked ()
 		{
 			var fcd = new FileChooserDialog ("Open File", null, FileChooserAction.Open);
 			fcd.AddButton (Stock.Cancel, ResponseType.Cancel);

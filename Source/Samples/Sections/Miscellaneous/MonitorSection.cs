@@ -18,9 +18,9 @@ namespace Samples
         {
         }
 
-        protected override void OnPressed()
+        protected override void OnClicked()
         {
-            base.OnPressed();
+            base.OnClicked();
 
             Gdk.Display display = Gdk.Display.Default;
             int monitorsCount = display.NMonitors;

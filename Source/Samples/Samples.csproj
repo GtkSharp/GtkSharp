@@ -6,8 +6,10 @@
     <OutputPath>..\..\BuildOutput\Samples</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="**\*.glade" />
-    <EmbeddedResource Include="**\*.glade">
+    <!-- Gtk 4 reads GtkBuilder XML as .ui; the Gtk 3 samples used Glade's
+         .glade extension for the same format. -->
+    <None Remove="**\*.ui" />
+    <EmbeddedResource Include="**\*.ui">
       <LogicalName>%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Testpic.png">

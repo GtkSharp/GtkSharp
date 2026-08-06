@@ -13,9 +13,9 @@ namespace Samples
         }
     }
 
-    [Template("CompositeWidget.glade", true)]
+    [Template("CompositeWidget.ui", true)]
     [GLib.TypeName(nameof(CompositeWidget))]
-    class CompositeWidget : Bin
+    class CompositeWidget : Box
     {
 #pragma warning disable CS0649, CS0169
         [Child] Button btn1;
@@ -31,6 +31,12 @@ namespace Samples
             System.Diagnostics.Debug.Assert(btn1 != null);
             System.Diagnostics.Debug.Assert(btn2 != null);
             System.Diagnostics.Debug.Assert(entry != null);
+
+            // Gtk 4 connects template signals through GtkBuilderScope, which is
+            // not bound, so the .ui declares no <signal> and the handlers are
+            // wired here instead.
+            btn1.Clicked += on_btn1_clicked;
+            btn2.Clicked += on_btn2_clicked;
         }
 
         private void on_btn1_clicked(object sender, System.EventArgs e)
