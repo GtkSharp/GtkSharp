@@ -1302,4 +1302,13 @@ that declares its own.
 this is build-verified and packs correctly, but the first run against the real
 library will be CI on ubuntu-24.04.
 
-Still to do: items 7–8.
+**7. `GtkParamSpecExpression` — bound.** It already carried
+`fundamental="true"`, so dropping the unbindable `GParamSpec` parent leaves
+`ObjectGen` to root it at `GLib.Opaque` like the rest of the Expression
+hierarchy. **The declared hierarchy is deliberately not the C one**: in C this
+is a `GParamSpec`, and it is bound here as a plain refcounted handle with no
+`ref_func`, so its lifetime is the caller's business. Taken knowingly, because
+`GParamSpec` is not bound as a type anywhere and binding it properly is a much
+larger change.
+
+Still to do: item 8, the push.
