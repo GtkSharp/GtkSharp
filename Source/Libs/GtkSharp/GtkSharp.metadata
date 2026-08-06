@@ -50,7 +50,8 @@
   <attr path="/api/namespace/interface[@cname='GtkCellEditable']/property[@cname='editing-canceled']" name="hidden">1</attr>
   <attr path="/api/namespace/interface[@cname='GtkCellLayout']/*[@name='GetCells']/return-type" name="element_type">GtkCellRenderer*</attr> 
   <attr path="/api/namespace/interface[@cname='GtkCellLayout']/*[@name='GetCells']/return-type" name="owned">true</attr> 
-  <attr path="/api/namespace/interface[@cname='GtkCellLayout']/method[@name='SetAttributes']" name="hidden">1</attr> 
+  <!-- Not hidden: it is an ICellLayout member, so hiding it leaves every
+       implementor failing to implement the interface. -->
   <remove-node path="/api/namespace/interface[@cname='GtkColorChooser']/class_struct[@cname='GtkColorChooserInterface']/method[@vm='get_rgba']" />
   <remove-node path="/api/namespace/interface[@cname='GtkColorChooser']/class_struct[@cname='GtkColorChooserInterface']/method[@vm='set_rgba']" />
   <attr path="/api/namespace/interface[@cname='GtkColorChooser']/method[@cname='gtk_color_chooser_get_rgba']/*/parameter[@name='color']" name="pass_as">out</attr>
@@ -358,35 +359,10 @@
   <attr path="/api/namespace/object[@cname='GtkTextBuffer']/signal[@name='RemoveTag']" name="name">TagRemoved</attr>
   <attr path="/api/namespace/object[@cname='GtkTextChildAnchor']/method[@name='GetWidgets']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkTextTag']/property[@name='Weight']" name="hidden">1</attr>
-  <add-node path="/api/namespace/object[@cname='GtkTextTag']">
-    <property name="BackgroundSet" cname="background_set" type="gboolean" readable="true" writeable="true" />
-    <property name="BackgroundFullHeightSet" cname="background_full_height_set" type="gboolean" readable="true" writeable="true" />
-    <property name="BackgroundStippleSet" cname="background_stipple_set" type="gboolean" readable="true" writeable="true" />
-    <property name="ForegroundSet" cname="foreground_set" type="gboolean" readable="true" writeable="true" />
-    <property name="ForegroundStippleSet" cname="foreground_stipple_set" type="gboolean" readable="true" writeable="true" />
-    <property name="EditableSet" cname="editable_set" type="gboolean" readable="true" writeable="true" />
-    <property name="FamilySet" cname="family_set" type="gboolean" readable="true" writeable="true" />
-    <property name="StyleSet" cname="style_set" type="gboolean" readable="true" writeable="true" />
-    <property name="VariantSet" cname="variant_set" type="gboolean" readable="true" writeable="true" />
-    <property name="WeightSet" cname="weight_set" type="gboolean" readable="true" writeable="true" />
-    <property name="StretchSet" cname="stretch_set" type="gboolean" readable="true" writeable="true" />
-    <property name="SizeSet" cname="size_set" type="gboolean" readable="true" writeable="true" />
-    <property name="ScaleSet" cname="scale_set" type="gboolean" readable="true" writeable="true" />
-    <property name="JustificationSet" cname="justification_set" type="gboolean" readable="true" writeable="true" />
-    <property name="LanguageSet" cname="language_set" type="gboolean" readable="true" writeable="true" />
-    <property name="LeftMarginSet" cname="left_margin_set" type="gboolean" readable="true" writeable="true" />
-    <property name="IndentSet" cname="indent_set" type="gboolean" readable="true" writeable="true" />
-    <property name="RiseSet" cname="rise_set" type="gboolean" readable="true" writeable="true" />
-    <property name="PixelsAboveLinesSet" cname="pixels_above_lines_set" type="gboolean" readable="true" writeable="true" />
-    <property name="PixelsBelowLinesSet" cname="pixels_below_lines_set" type="gboolean" readable="true" writeable="true" />
-    <property name="PixelsInsideWrapSet" cname="pixels_inside_wrap_set" type="gboolean" readable="true" writeable="true" />
-    <property name="StrikethroughSet" cname="strikethrough_set" type="gboolean" readable="true" writeable="true" />
-    <property name="RightMarginSet" cname="right_margin_set" type="gboolean" readable="true" writeable="true" />
-    <property name="UnderlineSet" cname="underline_set" type="gboolean" readable="true" writeable="true" />
-    <property name="WrapModeSet" cname="wrap_mode_set" type="gboolean" readable="true" writeable="true" />
-    <property name="TabsSet" cname="tabs_set" type="gboolean" readable="true" writeable="true" />
-    <property name="InvisibleSet" cname="invisible_set" type="gboolean" readable="true" writeable="true" />
-  </add-node>
+  <!-- Gtk 3 needed 27 "*-set" properties added by hand here: gapi2xml.pl parsed
+       them out of the C struct as underscore-spelled fields and never emitted
+       them as properties. GIR lists every one of them, hyphenated, so the block
+       is redundant and its underscore spellings collided with the real ones. -->
 
   <attr path="/api/namespace/object[@cname='GtkTextTagTable']/method[@name='Foreach']/*/*[@name='func']" name="scope">call</attr>
   <attr path="/api/namespace/object[@cname='GtkTextView']/constructor[@cname='gtk_text_view_new_with_buffer']" name="hidden">1</attr>
@@ -557,4 +533,99 @@
        and it is kept bug-compatible with gapi2xml.pl because ~1900 metadata
        XPaths select on the names it produces. Renamed here in the same spirit. -->
   <attr path="/api/namespace/enum[@cname='GtkLicense']/member[@cname='GTK_LICENSE_0BSD']" name="name">ZeroBsd</attr>
+
+  <!-- Functions whose whole purpose is to raise a signal of the same name.
+       Renamed Emit*, as in GioSharp and GdkSharp. -->
+  <attr path="/api/namespace/*[@cname='GtkFilter']/method[@cname='gtk_filter_changed']" name="name">EmitChanged</attr>
+  <attr path="/api/namespace/*[@cname='GtkIconView']/method[@cname='gtk_icon_view_item_activated']" name="name">EmitItemActivated</attr>
+  <attr path="/api/namespace/*[@cname='GtkSectionModel']/method[@cname='gtk_section_model_sections_changed']" name="name">EmitSectionsChanged</attr>
+  <attr path="/api/namespace/*[@cname='GtkSelectionModel']/method[@cname='gtk_selection_model_selection_changed']" name="name">EmitSelectionChanged</attr>
+  <attr path="/api/namespace/*[@cname='GtkSorter']/method[@cname='gtk_sorter_changed']" name="name">EmitChanged</attr>
+
+  <!-- Here the function performs the action and the signal reports it, so the
+       signal is the one renamed - the convention this file already used for
+       ApplyTag/TagApplied and InsertPixbuf/PixbufInserted in Gtk 3. -->
+  <attr path="/api/namespace/*[@cname='GtkCellArea']/signal[@cname='apply-attributes']" name="name">AttributesApplied</attr>
+  <attr path="/api/namespace/*[@cname='GtkDragSource']/signal[@cname='drag-cancel']" name="name">DragCancelled</attr>
+  <attr path="/api/namespace/*[@cname='GtkTextBuffer']/signal[@cname='insert-paintable']" name="name">PaintableInserted</attr>
+  <attr path="/api/namespace/*[@cname='GtkTextBuffer']/signal[@cname='redo']" name="name">Redone</attr>
+  <attr path="/api/namespace/*[@cname='GtkTextBuffer']/signal[@cname='undo']" name="name">Undone</attr>
+
+  <!-- Properties duplicating a method or a Get vfunc on the same type. The
+       function wins, as it did in Gtk 3. -->
+  <attr path="/api/namespace/*[@cname='GtkColorChooser']/property[@cname='rgba']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkEditable']/property[@cname='text']" name="hidden">1</attr>
+
+  <!--
+    GtkText is bound as Gtk.TextWidget.
+
+    It implements GtkEditable, whose Text member cannot live on a C# class also
+    called Text (CS0542). Renaming the member is not a way out: the class then no
+    longer satisfies IEditable, and codegen does not emit explicit interface
+    implementations. Hiding the type is worse still - other widgets take a
+    GtkText in their signatures, so it cascades.
+
+    Renaming the type is the smallest loss. Gtk.Entry, which wraps GtkText and is
+    what most code uses, is unaffected and keeps its Text property.
+  -->
+  <attr path="/api/namespace/object[@cname='GtkText']" name="name">TextWidget</attr>
+  <attr path="/api/namespace/*[@cname='GtkDropControllerMotion']/property[@cname='contains-pointer']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkDropControllerMotion']/property[@cname='is-pointer']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkEntryBuffer']/property[@cname='length']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkEntryBuffer']/property[@cname='text']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkEventControllerFocus']/property[@cname='contains-focus']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkEventControllerFocus']/property[@cname='is-focus']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkEventControllerMotion']/property[@cname='contains-pointer']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkEventControllerMotion']/property[@cname='is-pointer']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkIconPaintable']/property[@cname='is-symbolic']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkMapListModel']/property[@cname='has-map']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkMediaStream']/property[@cname='ended']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkMediaStream']/property[@cname='error']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkMediaStream']/property[@cname='has-audio']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkMediaStream']/property[@cname='has-video']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GtkMediaStream']/property[@cname='prepared']" name="hidden">1</attr>
+
+  <!-- Iterator value types the hand-written layer extends as "partial struct".
+       Boxed defaults to opaque, which generates a class; Gtk 3 carried both of
+       these non-opaque. Same treatment as GtkBorder and GtkRequisition. -->
+  <attr path="/api/namespace/boxed[@cname='GtkTextIter']" name="opaque">false</attr>
+  <attr path="/api/namespace/boxed[@cname='GtkTreeIter']" name="opaque">false</attr>
+
+  <!-- GtkFileChooser's properties each duplicate a Get/Set method pair, and the
+       clash surfaces on every implementing class, not on the interface. The
+       methods win, as elsewhere. -->
+  <attr path="/api/namespace/interface[@cname='GtkFileChooser']/property[@cname='action']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkFileChooser']/property[@cname='create-folders']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkFileChooser']/property[@cname='filter']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkFileChooser']/property[@cname='filters']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkFileChooser']/property[@cname='select-multiple']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkFileChooser']/property[@cname='shortcut-folders']" name="hidden">1</attr>
+
+  <!-- A "drop" property and a "drop" signal cannot share a name; the signal wins. -->
+  <attr path="/api/namespace/object[@cname='GtkDropTarget']/property[@cname='drop']" name="hidden">1</attr>
+
+  <!-- Properties duplicating a Get/Set method pair on the same type or on an
+       interface the type implements. The methods win. -->
+  <attr path="/api/namespace/object[@cname='GtkCalendar']/property[@cname='date']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkListBase']/property[@cname='orientation']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkEditable']/property[@cname='editable']" name="hidden">1</attr>
+
+  <!-- gtk_media_stream_ended was deprecated in 4.4 in favour of
+       gtk_media_stream_stream_ended, and its derived name collides with the
+       Ended property from gtk_media_stream_get_ended. -->
+  <attr path="/api/namespace/object[@cname='GtkMediaStream']/method[@cname='gtk_media_stream_ended']" name="hidden">1</attr>
+
+  <!-- Three Gtk 4 Button constructors all take a single string, so they collide
+       as C# overloads. Gtk 3 solved the same clash by making with_label a static
+       factory; from_icon_name joins it. -->
+  <attr path="/api/namespace/object[@cname='GtkButton']/constructor[@cname='gtk_button_new_from_icon_name']" name="shared">true</attr>
+
+  <!-- GtkParamSpecExpression derives from GParamSpec, which SymbolTable maps to
+       IntPtr, so the generated class tries to derive from nint. GParamSpec
+       subclasses are not bound. -->
+  <attr path="/api/namespace/object[@cname='GtkParamSpecExpression']" name="hidden">1</attr>
+
+  <!-- The "drop" signal and the Drop property from gtk_drop_target_get_drop
+       collide; the signal is renamed, as with ApplyTag/TagApplied in Gtk 3. -->
+  <attr path="/api/namespace/object[@cname='GtkDropTarget']/signal[@cname='drop']" name="name">Dropped</attr>
 </metadata>

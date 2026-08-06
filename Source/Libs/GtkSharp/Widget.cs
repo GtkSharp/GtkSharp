@@ -32,11 +32,7 @@ namespace Gtk {
 
 	public partial class Widget {
 
-		[Obsolete ("Replaced by Window property.")]
-		public Gdk.Window GdkWindow {
-			get { return Window; }
-			set { Window = value; }
-		}
+		// GdkWindow: Gtk 4 renamed GdkWindow to GdkSurface; Widget.Native gives the surface.
 
 		struct TemplateData
 		{
@@ -54,10 +50,7 @@ namespace Gtk {
 
 		private static Dictionary<Type, TemplateData> Templates = new Dictionary<Type, TemplateData>();
 
-		public void AddAccelerator (string accel_signal, AccelGroup accel_group, AccelKey accel_key)
-		{
-			this.AddAccelerator (accel_signal, accel_group, (uint) accel_key.Key, accel_key.AccelMods, (Gtk.AccelFlags) accel_key.AccelFlags);
-		}
+		// AddAccelerator: GtkAccelGroup is gone; use a GtkShortcutController.
 
 		/*
 		public int FocusLineWidth {
@@ -410,15 +403,6 @@ namespace Gtk {
 		}
 		*/
 
-		public void ModifyBg (Gtk.StateType state)
-		{
-			gtk_widget_modify_bg (Handle, (int) state, IntPtr.Zero);
-		}
-
-		public void ModifyFg (Gtk.StateType state)
-		{
-			gtk_widget_modify_fg (Handle, (int) state, IntPtr.Zero);
-		}
 
 		/*
 		public void ModifyText (Gtk.StateType state)

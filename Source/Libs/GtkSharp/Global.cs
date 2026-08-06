@@ -25,10 +25,7 @@ namespace Gtk {
 			return ShowUri (null, uri);
 		}
 
-		public static bool ShowUri (Gdk.Screen screen, string uri)
-		{
-			return ShowUri (screen, uri, Gtk.Global.CurrentEventTime);
-		}
+		// Screen-based helpers are gone with GdkScreen.
 
 		public static bool IsSupported => GLibrary.IsSupported(Library.Gtk);
 

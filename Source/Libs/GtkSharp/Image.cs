@@ -27,24 +27,7 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Image {
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_image_new_from_icon_set(IntPtr icon_set, int size);
-		static d_gtk_image_new_from_icon_set gtk_image_new_from_icon_set = FuncLoader.LoadFunction<d_gtk_image_new_from_icon_set>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_icon_set"));
-
-		public Image (Gtk.IconSet icon_set, Gtk.IconSize size) : base (IntPtr.Zero)
-		{
-			if (GetType () != typeof (Image)) {
-				var vals = new List<GLib.Value> ();
-				var names = new List<string> ();
-				names.Add ("icon_set");
-				vals.Add (new GLib.Value (icon_set));
-				names.Add ("icon_size");
-				vals.Add (new GLib.Value ((int)size));
-				CreateNativeObject (names.ToArray (), vals.ToArray ());
-				return;
-			}
-			Raw = gtk_image_new_from_icon_set(icon_set.Handle, (int) size);
-		}
+		// Image(IconSet, IconSize): GtkIconSet is gone; use an icon name or GdkPaintable.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_image_new_from_stock(IntPtr stock_id, int size);
 		static d_gtk_image_new_from_stock gtk_image_new_from_stock = FuncLoader.LoadFunction<d_gtk_image_new_from_stock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_stock"));

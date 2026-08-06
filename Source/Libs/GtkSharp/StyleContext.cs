@@ -72,10 +72,7 @@ namespace Gtk {
 			Render.Handle (this, cr, x, y, width, height);
 		}
 
-		public Gdk.Pixbuf RenderIconPixbuf (Gtk.IconSource source, Gtk.IconSize size)
-		{
-			return Render.IconPixbuf (this, source, size);
-		}
+		// RenderIconPixbuf: GtkIconSource and the icon-set machinery are gone.
 
 		public void RenderLayout (Cairo.Context cr, double x, double y, Pango.Layout layout)
 		{

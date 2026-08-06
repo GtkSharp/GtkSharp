@@ -120,7 +120,12 @@ namespace GtkSharp.Generation {
 				modifiers = "new ";
 
 			string name = Name;
-			if (name == container_type.Name) {
+			// container_type is the type that DECLARES the property, which for an
+			// interface property is the interface. The clash is with the type the
+			// member is emitted into, so the implementor has to be checked too:
+			// Gtk.Text implements Gtk.Editable, and Editable's "text" property
+			// lands on a class called Text.
+			if (name == container_type.Name || (implementor != null && name == implementor.Name)) {
 				name += "Prop";
 			}
 			string qpname = "\"" + CName + "\"";
