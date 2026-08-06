@@ -104,6 +104,13 @@ investigate — not something to relax.
 | `OptionalLibraryTests` | WebKit and JavaScriptCore, skipped where the library is absent. |
 | `AdwaitaTests` | libadwaita, which had **zero** coverage: it built and packed and no line of it had ever run. |
 | `DeeperStackTests` | Gio variants, streams, cancellables and files; Gdk colours, rectangles, pixbufs and textures; Pango layout and wrapping; Gsk nodes and transforms. |
+| `KeyFileTests` | `GLib.KeyFile` round-trips: every value goes out through `ToData` and back into a *fresh* `KeyFile`, so nothing can be satisfied from an in-memory cache. Covers the cases where naive marshalling gives itself away — a value holding both the list separator and a backslash, non-ASCII text, a single-element list, an integer too wide for an `int`. |
+| `TimeTests` | `GLib.Date` and `GLib.DateTime`. The oracles are facts about the calendar rather than about the binding: 2024 has a 29 February, 2100 is not a leap year, 1 January 2021 falls in ISO week 53 of 2020. |
+| `CairoTests` | Renders to an `ImageSurface` and reads the pixels back, so what is asserted is what landed in the buffer: fill rules, premultiplied alpha, clipping, dash gaps, gradients, tiling. Plus `Matrix`, `Region` and `FontOptions` value semantics. |
+| `StreamAndBuilderTests` | `GioStream` as a `System.IO.Stream` — chunked reads, offsets, seeking from all three origins, the file modes — and `Gtk.Builder` producing widgets from XML with the structure the markup described. |
+| `MarshallingTests` | The layer under everything else: `GLib.Value` at each numeric width, strings and arrays through unmanaged memory, `GLib.List` and `PtrArray` as collections. |
+| `TreeModelTests` | `ListStore`, `TreeStore`, `TreeModelFilter`, `TreeModelSort`, `TreePath` — deprecated in Gtk 4, still shipped, still what a ported application arrives holding. |
+| `PixbufAndLogTests` | Image encode/decode round-trips (PNG is lossless, so the comparison is exact), sub-pixbuf aliasing, and the callback plumbing in `GLib.Log` and the idle/timeout sources. |
 
 ### Guards against vacuous passes
 
@@ -325,6 +332,67 @@ tests failed, none of them about annotations.
 cannot be constructed anyway, and the rest of the assembly keeps working. Only
 `NullReferenceException` is caught, so a real fault still surfaces.
 
+## Fixed: GLib.PtrArray looked its symbols up in the wrong library
+
+All seven `g_ptr_array_*` symbols were loaded from `Library.GObject`. They live
+in GLib. `GetProcAddress` found none of them, `FuncLoader` returned null
+delegates, and **every constructor threw `NullReferenceException` the first time
+it was called** — with nothing in the message naming a missing symbol. The class
+had never worked.
+
+The same failure mode as the removed Gtk 3 functions, from a different cause: not
+a symbol that went away, but a symbol looked for in the wrong place. Both are
+invisible until something calls, and 186 lines nothing called is exactly where
+it survives.
+
+When adding a `FuncLoader` lookup, check which library actually exports the
+symbol rather than which binding the type belongs to. `GLib.KeyFile` and
+`GLib.PtrArray` are both in `GLibSharp`, and only one of them is a GObject.
+
+## Fixed: GioStream could not open a file, and Read overran its buffer
+
+`GioStream` adapts a GLib stream to `System.IO.Stream` in 254 lines that nothing
+had called.
+
+Both file constructors — by path and by URI — threw `NotImplementedException`, so
+the class could only wrap a stream the caller had already opened, which is the
+one case where it saves nobody any work. They now go through Gio and map
+`FileMode`: `Open`/`OpenOrCreate` read, `Create`/`Truncate` replace, `CreateNew`
+creates and fails if the file exists, `Append` appends.
+
+`Read` guarded with `offset + count - 1 > buffer.Length`, which admits a request
+exactly one byte too long. With `offset == 0` that count went straight to the
+native read as a length larger than the managed buffer — an overrun, not an
+exception. `Write` ten lines below has the same guard written correctly, which is
+what gave it away. Compare adjacent guards when one of a pair is tested and the
+other is not.
+
+`Read`'s offset path also used `buf.CopyTo(buffer, offset)`, copying the whole
+scratch buffer rather than the bytes actually read, so a short read wrote the
+scratch buffer's trailing zeroes over data the caller already had.
+
+## Behaviour worth knowing, found by an assertion that was wrong
+
+Three tests failed because *my* expectation was wrong, not the library's. Each is
+now pinned as what it is, because in every case the plausible assumption is the
+one that produces silently wrong results:
+
+- **`GLib.Date.DaysBetween` reads backwards from its name.** The receiver is
+  `date1`, the argument `date2`, and the C function returns `date2 - date1`, so
+  `a.DaysBetween(b)` is `b - a`.
+- **`KeyFile` discards translations on load** unless `KeepTranslations` is given,
+  and `GetLocaleString` then falls back to the untranslated value rather than
+  failing — so forgetting the flag yields plausible wrong answers, not an error.
+- **A `TreeIter` identifies a row, not a position.** After swapping the first and
+  last rows, the iter that named the first still names it, now at the end.
+  Reordering code that treats an iter as an index moves the wrong row silently.
+
+Also: `GLib.Value(object, name)` initialises a `Value` of the property's *type*
+without reading the property — it exists to be an out-parameter for
+`g_object_get`. Reading is `GetProperty`'s job. And `ListBase.Empty` frees the
+native list only when the wrapper owns it, so on the single-argument constructor
+most callers reach for, it does nothing at all.
+
 ## Open: boxed types with no allocator cannot be constructed
 
 `Gsk.RoundedRect` has no `_alloc` function in C, so the binding generates no
@@ -357,19 +425,47 @@ dotnet test Source/Tests/GtkSharp.Tests --collect:"XPlat Code Coverage"
 Read the number as a map of what is untested, then write **behavioural** tests
 for the parts that matter. Do not write tests to move the number.
 
-At 160 tests the figures are:
+**Measure the hand-written layer, not the whole assembly.** Almost everything
+under `Generated/` is a property getter or a P/Invoke declaration emitted from a
+template, uniform by construction — one round-trip exercises the same emission
+path as the thousand like it. The overall figure therefore tracks how many
+bindings exist far more than how well they are tested, and it moves when the
+api.xml changes. The number worth reading excludes `Generated/` and `Samples`:
+
+```sh
+# after collecting, per file, excluding Generated:
+python - <<'EOF'
+import xml.etree.ElementTree as ET, glob
+r = ET.parse(sorted(glob.glob('BuildOutput/Coverage/*/coverage.cobertura.xml'))[-1]).getroot()
+for p in r.iter('package'):
+    for c in p.iter('class'):
+        fn = c.get('filename') or ''
+        if 'Generated' in fn or p.get('name') == 'Samples': continue
+        lines = list(c.iter('line'))
+        if not lines: continue
+        hit = sum(1 for l in lines if int(l.get('hits')) > 0)
+        print(f'{len(lines)-hit:5d} uncovered  {hit:4d}/{len(lines):4d}  {fn}')
+EOF
+```
+
+Ranked by *uncovered lines*, that list is a work queue. Every defect found in
+§"Fixed" below came off it.
+
+At 403 tests:
 
 | | line rate |
 |:--|--:|
-| overall | 8.1% |
-| `Samples` | 73.7% |
-| `GLibSharp` | 38.0% |
-| `CairoSharp` | 25.0% |
-| `GtkSourceSharp` | 13.7% |
-| `GrapheneSharp` | 9.2% |
-| `GtkSharp` | 8.0% |
-| `GioSharp` | 2.5% |
-| `AdwaitaSharp` | 4.3% |
+| **hand-written (Generated and Samples excluded)** | **43.6%** |
+| overall, including generated | 9.5% |
+| `Samples` | 73.8% |
+| `GLibSharp` hand-written | 54.6% |
+| `CairoSharp` hand-written | 44.2% |
+| `GioSharp` hand-written | 52.1% |
+| `GtkSharp` hand-written | 21.9% |
+
+Files still worth attention, largest first: `Gtk/NodeStore.cs` (384 lines, none
+reached), `GLib/IOChannel.cs` (286, none), `Gtk/SignalConnector.cs` (178, none),
+`GLib/Spawn.cs` (168, none), `Cairo/Context.cs` (548 of 836 still uncovered).
 
 `SectionBrowsingTests` is what a manual tester does: it drives `MainWindow`'s
 selection handler for every row rather than constructing sections directly, so it

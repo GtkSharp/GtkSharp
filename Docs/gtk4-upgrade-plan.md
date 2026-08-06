@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them. **Phase 10 complete — gate 7 passed**: the suite now runs on Linux (Debian trixie, Gtk 4.18.6, real WebKit), 226 of 227 passing with one documented skip, which found three more defects that Windows structurally could not show — including one where a single class missing from an older installed library disabled an entire assembly (§16).
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them. **Phase 10 complete — gate 7 passed**: the suite now runs on Linux (Debian trixie, Gtk 4.18.6, real WebKit), 226 of 227 passing with one documented skip, which found three more defects that Windows structurally could not show — including one where a single class missing from an older installed library disabled an entire assembly (§16). **Phase 11 complete**: 403 tests, hand-written coverage 30.5% → 43.6%, four further defects fixed — among them `GLib.PtrArray`, which had never worked at all because its symbols were looked up in the wrong library (§17).
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -684,7 +684,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | 4 | Codegen | `dotnet cake build.cake --BuildTarget=Prepare` | `Generated/*.cs` produced for all 10 |
 | 5 | Compile | `dotnet cake build.cake --BuildTarget=Build` | Solution builds clean, both TFMs, `LangVersion 9` |
 | 6 | Pack | `dotnet cake build.cake` | 11 nupkgs + workload + templates in `BuildOutput/NugetPackages` |
-| 7 | Symbol resolution | Run Samples on Linux with GTK 4.22.4 | ✅ **passed** — the suite runs the sample sections on Debian trixie (Gtk 4.18.6, webkitgtk 2.52.5): 226 pass, 1 skip. No `DllNotFoundException` / `EntryPointNotFoundException`. Three defects only Linux could show — see §16. |
+| 7 | Symbol resolution | Run Samples on Linux with GTK 4.22.4 | ✅ **passed** — the suite runs the sample sections on Debian trixie (Gtk 4.18.6, webkitgtk 2.52.5): 402 pass, 1 skip. No `DllNotFoundException` / `EntryPointNotFoundException`. Three defects only Linux could show — see §16. |
 | 8 | Samples runtime | `dotnet cake build.cake --BuildTarget=RunSamples` | All 37 sections render and are interactive |
 | 9 | Windows | Same on Windows with the V4 bundle | Samples runs; `GtkSharp.targets` downloads and unzips correctly |
 | 10 | Templates | `dotnet new gtkapp` from the packed template, then build and run | Produces a running GTK4 app |
@@ -751,6 +751,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **8** | Native runtime, CI | ✅ **complete** |
 | **9** | Open items from §15 | ✅ **complete** |
 | **10** | First run on Linux (gate 7) | ✅ **complete** — 227 tests, 226 pass, 1 skip |
+| **11** | Hand-written layer test sweep | ✅ **complete** — 403 tests; hand-written coverage 30.5% → 43.6%; four more defects fixed |
 
 ### Phase 1 — complete
 
@@ -1282,3 +1283,57 @@ assembly does not work."
 
 Remaining gates: 10 (`dotnet new gtkapp` end-to-end), 11 (workload install), and
 CI, which still has not been observed running.
+
+---
+
+## 17. Phase 11 — testing the hand-written layer
+
+The 8% overall line rate quoted in earlier phases measured the wrong thing.
+Nearly all of it is code under `Generated/` — property getters and P/Invoke
+declarations emitted from a template, uniform by construction, where one
+round-trip exercises the same emission path as the thousand like it. The figure
+tracks how many bindings exist, and moves whenever the api.xml does.
+
+The number that matters excludes `Generated/` and `Samples`: the hand-written
+layer is where a defect can actually live, and it stood at **30.5%**. Ranked by
+uncovered lines it is also a work queue, and working down it produced 176 new
+tests across seven files (403 total, 402 passing on Linux, 400 on Windows with
+three WebKit skips) and took the hand-written figure to **43.6%**.
+
+Four more defects came off that queue, all of them in code nothing had ever
+called:
+
+1. **`GLib.PtrArray` had never worked.** All seven `g_ptr_array_*` symbols were
+   loaded from `Library.GObject`; they live in GLib. Every constructor threw
+   `NullReferenceException` on first use, naming nothing. The same null-delegate
+   failure mode as the removed Gtk 3 functions, from the opposite cause — not a
+   symbol that went away, but one looked for in the wrong place.
+
+2. **`GioStream` could not open a file.** Both file constructors threw
+   `NotImplementedException`, so the class could only wrap a stream the caller
+   had already opened. They now go through Gio and map `System.IO.FileMode`.
+
+3. **`GioStream.Read` overran its buffer.** The guard read
+   `offset + count - 1 > buffer.Length`, admitting a request one byte too long;
+   with `offset == 0` that length went straight to the native read. `Write`, ten
+   lines below, had the same guard written correctly. Its offset path also
+   copied the whole scratch buffer instead of the bytes read, so a short read
+   overwrote the caller's data with zeroes.
+
+4. **`GLib.Log.WriteLog` was the only instance method** on an otherwise entirely
+   static class, and touched no instance state — writing a log line meant
+   constructing a `Log` first.
+
+Three further tests failed because the expectation was wrong rather than the
+library, and each is now pinned as behaviour, because in every case the
+plausible assumption is the one that produces silently wrong results:
+`Date.DaysBetween` returns `date2 - date1` and so reads backwards from its name;
+`KeyFile` discards translations on load without `KeepTranslations` and then falls
+back to the untranslated value rather than failing; and a `TreeIter` identifies a
+row rather than a position, so reordering code that treats it as an index moves
+the wrong row.
+
+Still untouched and worth the next pass, largest first: `Gtk/NodeStore.cs` (384
+lines, none reached), `GLib/IOChannel.cs` (286, none), `Gtk/SignalConnector.cs`
+(178, none), `GLib/Spawn.cs` (168, none), and the remaining 548 uncovered lines
+of `Cairo/Context.cs`.
