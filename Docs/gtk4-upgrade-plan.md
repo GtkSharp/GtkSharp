@@ -1217,5 +1217,12 @@ push comes last.
   in Phase 9 were rewritten; the warnings are the honest record of the rest.
 - **`GtkParamSpecExpression`'s declared hierarchy is not the C one** — it is a
   `GParamSpec` there and a bare `GLib.Opaque` here, with no `ref_func`.
-- **CI has not been observed running.** The workflow moved to ubuntu-24.04 and
+- **CI has not been observed running.**
+- **An `AccessViolationException` in `GLib.ToggleRef.Free` aborts the suite under
+  coverage instrumentation** (~81 of 119 tests). The ordinary run passes, so it
+  is timing-sensitive, but the stack is real memory corruption: a toggle ref
+  unreffing a GObject that is already gone. One hypothesis — that
+  `Widget.Destroy` lacks the compensating reference `Widget.Dispose` takes — was
+  tested and disproved. Coverage cannot be measured on the full suite until this
+  is understood. See `Docs/testing.md`. The workflow moved to ubuntu-24.04 and
   gained the test step, but no run has been seen from this side.

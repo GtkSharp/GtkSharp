@@ -218,6 +218,32 @@ constructor result, so the ordering matters:
 a regression here: it disposes a borrowed wrapper and then keeps using the owner,
 which touches freed memory if the reference counting is wrong.
 
+## Open: an AccessViolation under coverage instrumentation
+
+`dotnet test --collect:"XPlat Code Coverage"` **aborts** partway, at around 81 of
+119 tests, with:
+
+```
+Fatal error. System.AccessViolationException: Attempted to read or write protected memory.
+   at GLib.ToggleRef.Free()
+   at GLib.ToggleRef.PerformQueuedUnrefs()
+   at GLib.Timeout+TimeoutProxy.Handler()
+   at GLib.MainContext.RunIteration(Boolean)
+```
+
+The ordinary run passes all 119, so this is timing-sensitive: coverlet's
+instrumentation shifts GC and main-loop timing enough to expose it. That makes it
+a real defect rather than a coverage artefact — `ToggleRef.Free` is unreffing a
+GObject that is already gone.
+
+One hypothesis was tested and **disproved**: `Widget.Destroy` does not take the
+compensating reference that `Widget.Dispose` does, and `Dispose`'s own comment
+says freeing a toggle ref expects a normal reference to exist. Adding that ref to
+`Destroy` did not change the crash, so the cause lies elsewhere and the
+speculative change was reverted rather than left in.
+
+Until it is understood, coverage cannot be measured on the full suite.
+
 ## Measuring coverage
 
 Coverage is measured, not chased:
