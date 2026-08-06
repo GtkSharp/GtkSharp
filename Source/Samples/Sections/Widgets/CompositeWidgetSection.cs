@@ -33,13 +33,13 @@ namespace Samples
             System.Diagnostics.Debug.Assert(entry != null);
         }
 
-        private void on_btn1_clicked(object sender, EventArgs e)
+        private void on_btn1_clicked(object sender, System.EventArgs e)
         {
             entry.Text = DateTime.Now.ToString();
             ApplicationOutput.WriteLine(this, "Instance handler clicked");
         }
 
-        private static void on_btn2_clicked(object sender, EventArgs e)
+        private static void on_btn2_clicked(object sender, System.EventArgs e)
         {
             ApplicationOutput.WriteLine("Static handler clicked");
         }

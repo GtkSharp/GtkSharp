@@ -193,7 +193,7 @@ namespace Samples.Sections.Widgets
 			_treeView.InsertColumn(-1, "Yummy", rendererProgress, "value", (int)ColumnItem.Yummy);
 		}
 
-		private void AddItem(object sender, EventArgs e)
+		private void AddItem(object sender, System.EventArgs e)
 		{
 			TreeIter iter;
 
@@ -233,7 +233,7 @@ namespace Samples.Sections.Widgets
 			_treeView.SetCursor(path, column, false);
 		}
 
-		private void RemoveItem(object sender, EventArgs e)
+		private void RemoveItem(object sender, System.EventArgs e)
 		{
 			TreeSelection selection = _treeView.Selection;
 

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Atk;
 using Gdk;
 using Gtk;
 using WebKit;

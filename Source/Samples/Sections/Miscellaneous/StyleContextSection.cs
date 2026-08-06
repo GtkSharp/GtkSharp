@@ -13,7 +13,7 @@ namespace Samples
             AddItem("Press button to output style context properties:", btn);
         }
 
-        private void OnBtnClicked(object sender, EventArgs e)
+        private void OnBtnClicked(object sender, System.EventArgs e)
         {
             var styleCtx = ((Button)sender).StyleContext;
 

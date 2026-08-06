@@ -100,7 +100,7 @@ namespace Samples
             store.InsertWithValues(-1, idx++, "Wyatt", null);
         }
 
-        private void OnTreeSelectionChanged(object sender, EventArgs e)
+        private void OnTreeSelectionChanged(object sender, System.EventArgs e)
         {
             if (!tree.Selection.GetSelected(out TreeIter it))
                 return;
@@ -141,7 +141,7 @@ namespace Samples
             ApplicationOutput.WriteLine(sender, $"RowHasChildToggled, path {args.Path}, name {name}");
         }
 
-        private void OnAddClicked(object sender, EventArgs e)
+        private void OnAddClicked(object sender, System.EventArgs e)
         {
             if (!tree.Selection.GetSelected(out TreeIter it))
                 return;
@@ -154,7 +154,7 @@ namespace Samples
             store.InsertWithValues(it, -1, idx, txt, null);
         }
 
-        private void OnEditClicked(object sender, EventArgs e)
+        private void OnEditClicked(object sender, System.EventArgs e)
         {
             if (!tree.Selection.GetSelected(out TreeIter it))
                 return;
@@ -166,7 +166,7 @@ namespace Samples
             store.SetValue(it, ColumnName, txt);
         }
 
-        private void OnRemoveClicked(object sender, EventArgs e)
+        private void OnRemoveClicked(object sender, System.EventArgs e)
         {
             if (!tree.Selection.GetSelected(out TreeIter it))
                 return;

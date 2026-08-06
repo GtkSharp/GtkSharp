@@ -77,7 +77,7 @@ namespace Samples
             Destroyed += (sender, e) => Application.Quit();
         }
 
-        private void Selection_Changed(object sender, EventArgs e)
+        private void Selection_Changed(object sender, System.EventArgs e)
         {
             if (_treeView.Selection.GetSelected(out TreeIter iter))
             {

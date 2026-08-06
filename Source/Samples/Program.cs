@@ -44,12 +44,12 @@ namespace Samples
             Application.Run();
         }
 
-        private static void HelpActivated(object sender, EventArgs e)
+        private static void HelpActivated(object sender, System.EventArgs e)
         {
 
         }
 
-        private static void AboutActivated(object sender, EventArgs e)
+        private static void AboutActivated(object sender, System.EventArgs e)
         {
             var dialog = new AboutDialog
             {
@@ -66,7 +66,7 @@ namespace Samples
             dialog.Hide();
         }
 
-        private static void QuitActivated(object sender, EventArgs e)
+        private static void QuitActivated(object sender, System.EventArgs e)
         {
             Application.Quit();
         }
