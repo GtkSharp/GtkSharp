@@ -620,10 +620,19 @@
        factory; from_icon_name joins it. -->
   <attr path="/api/namespace/object[@cname='GtkButton']/constructor[@cname='gtk_button_new_from_icon_name']" name="shared">true</attr>
 
-  <!-- GtkParamSpecExpression derives from GParamSpec, which SymbolTable maps to
-       IntPtr, so the generated class tries to derive from nint. GParamSpec
-       subclasses are not bound. -->
-  <attr path="/api/namespace/object[@cname='GtkParamSpecExpression']" name="hidden">1</attr>
+  <!--
+    GtkParamSpecExpression derives from GParamSpec, which SymbolTable maps to
+    IntPtr, so the generated class would try to derive from nint. GParamSpec is
+    not bound as a type anywhere.
+
+    It is already marked fundamental, so dropping the unbindable parent leaves
+    ObjectGen to root it at GLib.Opaque like the rest of the Expression
+    hierarchy. The declared hierarchy is therefore not the C one: in C this is a
+    GParamSpec, and it is bound here as a plain refcounted handle. That is a
+    deliberate trade to make the type reachable at all, and it carries no
+    ref_func, so lifetime is the caller's business.
+  -->
+  <remove-attr path="/api/namespace/object[@cname='GtkParamSpecExpression']" name="parent" />
 
   <!-- The "drop" signal and the Drop property from gtk_drop_target_get_drop
        collide; the signal is renamed, as with ApplyTag/TagApplied in Gtk 3. -->
