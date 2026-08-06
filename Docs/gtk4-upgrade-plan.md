@@ -1280,4 +1280,26 @@ aborts the process. Every `ColumnView` and `ListView` goes through `GListModel`,
 so the common case was the broken one. The menu model's signal is renamed, giving
 it its own args class.
 
-Still to do: items 5–8.
+**5 and 6. `JavaScriptCoreSharp` — done.** A twelfth assembly, generated from
+`JavaScriptCore-6.0.gir`. The gir comes from `libjavascriptcoregtk-6.0-dev`,
+which is a *separate* Debian package from `libwebkitgtk-6.0-dev` even though
+both are built from the webkit2gtk source — the WebKit package ships only
+`WebKit-6.0.gir` and `WebKitWebProcessExtension-6.0.gir`. Provenance and sha256
+are recorded alongside the other 13.
+
+The `JSCValue` → `gpointer` mapping is gone, so
+`WebView.EvaluateJavascriptFinish` returns a real `JavaScriptCore.Value` and the
+sample reads the result rather than printing a handle.
+
+**A codegen bug came with it.** JavaScriptCore declares a type called
+`Exception`, so the `catch (Exception e)` that generated marshallers emit bound
+to `JavaScriptCore.Exception` and would not compile — the same shape as
+`Gtk.EventArgs` shadowing `System.EventArgs` in Phase 5. Generated catch blocks
+now qualify `System.Exception`, which prevents it recurring in any namespace
+that declares its own.
+
+**Not exercised locally:** gvsbuild ships no WebKit or JavaScriptCore DLL, so
+this is build-verified and packs correctly, but the first run against the real
+library will be CI on ubuntu-24.04.
+
+Still to do: items 7–8.
