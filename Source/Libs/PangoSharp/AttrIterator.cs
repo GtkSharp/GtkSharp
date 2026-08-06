@@ -39,7 +39,10 @@ namespace Pango {
 				extra_attrs = new Pango.Attribute [0];
 				return;
 			}
-			GLib.SList list = new GLib.SList (list_handle);
+			// Without an element type the list marshals each item as a GObject
+			// -- which a PangoAttribute is not -- and hands back null, so
+			// unboxing it to IntPtr threw NullReferenceException.
+			GLib.SList list = new GLib.SList (list_handle, typeof (IntPtr));
 			extra_attrs = new Pango.Attribute [list.Count];
 			int i = 0;
 			foreach (IntPtr raw_attr in list)
@@ -54,7 +57,7 @@ namespace Pango {
 				IntPtr list_handle = pango_attr_iterator_get_attrs (Handle);
 				if (list_handle == IntPtr.Zero)
 					return new Pango.Attribute [0];
-				GLib.SList list = new GLib.SList (list_handle);
+				GLib.SList list = new GLib.SList (list_handle, typeof (IntPtr));
 				Pango.Attribute[] attrs = new Pango.Attribute [list.Count];
 				int i = 0;
 				foreach (IntPtr raw_attr in list)
