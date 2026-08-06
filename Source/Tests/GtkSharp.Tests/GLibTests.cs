@@ -117,6 +117,38 @@ namespace GtkSharp.Tests
         }
 
         [Fact]
+        public void Opaque_constructor_owns_the_reference_it_created()
+        {
+            // The Raw setter takes a reference through the Ref hook, which is
+            // right when wrapping a borrowed pointer and one too many for a
+            // transfer-full constructor result. It does not double-count,
+            // because the parameterless Opaque ctor claims ownership first and
+            // the hook is guarded on !Owned. This pins that.
+            using var list = new Pango.AttrList();
+
+            Assert.True(list.Owned);
+        }
+
+        [Fact]
+        public void Disposing_a_second_wrapper_does_not_free_the_first()
+        {
+            // Two wrappers over one refcounted object. If the borrowed wrapper
+            // took the last reference on dispose, the call below would touch
+            // freed memory -- which is the failure mode a refcounting mistake
+            // actually produces.
+            var owner = new Pango.AttrList();
+
+            var borrowed = (Pango.AttrList) GLib.Opaque.GetOpaque(
+                owner.Handle, typeof(Pango.AttrList), false);
+            borrowed.Dispose();
+
+            using var copy = owner.Copy();
+            Assert.NotEqual(IntPtr.Zero, copy.Handle);
+
+            owner.Dispose();
+        }
+
+        [Fact]
         public void Marshaller_round_trips_a_string_through_unmanaged_memory()
         {
             // Every string that crosses the boundary goes through here.
