@@ -147,32 +147,54 @@ namespace GtkSharp.GirConversion.Emit {
 				? new List<XElement> ()
 				: girParams.Elements (Ns.Core + "parameter").ToList ();
 
-			if (list.Count == 0 && !includeEmptyParameters) {
-				if (girParams != null && girParams.Attribute ("throws") == null)
-					return;
-				if (girParams == null)
-					return;
-			}
-
-			var parameters = new XElement ("parameters");
-
-			// GIR sets throws on methods but not on callbacks, even when the
-			// callback takes a trailing GError**. gapi keys the whole GError
-			// treatment off this attribute -- Parameters.IsHidden only hides a
-			// GError** when Throws is set -- so without it the parameter stays
-			// visible and collides with the "error" local codegen declares for it.
-			// Infer it from the parameter list rather than trusting the attribute.
+			// GIR puts throws on the callable, not on its parameter list, and
+			// omits it entirely on callbacks that take a trailing GError**.
+			// gapi keys the whole GError treatment off the attribute --
+			// Parameters.IsHidden only hides a GError** when Throws is set --
+			// so it is taken from the callable and also inferred from the
+			// parameters, rather than trusting either alone.
 			var throws = (string) gir.Attribute ("throws") == "1"
 				|| list.Any (p => {
 					var t = types.Resolve (p);
 					return t != null && t.Type == "GError**";
 				});
 
+			// A method whose only C argument is the GError** has no <parameters>
+			// in GIR at all. Returning early here left gdk_pixbuf_loader_close
+			// and its kind with no error argument, so they too called a
+			// function with one argument fewer than it takes.
+			if (list.Count == 0 && !includeEmptyParameters && !throws)
+				return;
+
+			var parameters = new XElement ("parameters");
+
 			if (throws)
 				parameters.Add (new XAttribute ("throws", "1"));
 
 			foreach (var p in list)
 				parameters.Add (Parameter (p));
+
+			// The throws attribute alone is not enough. GapiCodegen decides
+			// whether a call needs a GError by looking for a trailing GError**
+			// *parameter* -- Parameters.cs turns it into an ErrorParameter, and
+			// MethodBody.ThrowsException walks the parameter list looking for
+			// its CType -- so the attribute only tells codegen to hide the
+			// parameter, never to add one. gapi2xml.pl emitted both, because
+			// the C header it read had the argument written out; GIR states it
+			// as a flag on the callable instead, so it has to be materialised
+			// here.
+			//
+			// Without this the generated P/Invoke declares one argument fewer
+			// than the C function takes: the callee reads whatever happens to
+			// be in the argument register, which is why GLib reported
+			// "assertion 'error == NULL || *error == NULL' failed", and no
+			// GException was ever raised.
+			if (throws && !parameters.Elements ("parameter")
+					.Any (p => (string) p.Attribute ("type") == "GError**")) {
+				parameters.Add (new XElement ("parameter",
+					new XAttribute ("type", "GError**"),
+					new XAttribute ("name", "error")));
+			}
 
 			el.Add (parameters);
 		}
