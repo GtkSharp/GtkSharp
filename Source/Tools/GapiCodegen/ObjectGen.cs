@@ -530,18 +530,35 @@ namespace GtkSharp.Generation {
 	
 			foreach (string key in dir_info.objects.Keys) {
 				if (GetExpected(key) != dir_info.objects[key]) {
-					sw.WriteLine ("\t\t\tGLib.GType.Register ({0}.GType, typeof ({0}));", dir_info.objects [key]);
+					sw.WriteLine ("\t\t\tRegister (() => {0}.GType, typeof ({0}));", dir_info.objects [key]);
 				}
 			}
-			
+
 			sw.WriteLine ();
 			sw.WriteLine ("\t\t\tInitializeExtras();");
-			
+
 			sw.WriteLine ("\t\t}");
-			
+
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t// A type declared by the api.xml need not exist in the library that is");
+			sw.WriteLine ("\t\t// actually installed, which is routinely older. Its get_type symbol is");
+			sw.WriteLine ("\t\t// then absent, FuncLoader hands back a null delegate, and reading GType");
+			sw.WriteLine ("\t\t// throws NullReferenceException -- which, unguarded, would abort this");
+			sw.WriteLine ("\t\t// method and leave every other type in the assembly unregistered, making");
+			sw.WriteLine ("\t\t// the whole binding unusable over one missing class. Skip that type");
+			sw.WriteLine ("\t\t// instead: it cannot be constructed either way. Only NullReferenceException");
+			sw.WriteLine ("\t\t// is caught, so a genuine fault still surfaces.");
+			sw.WriteLine ("\t\tstatic void Register (System.Func<GLib.GType> gtype, System.Type type)");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\ttry {");
+			sw.WriteLine ("\t\t\t\tGLib.GType.Register (gtype (), type);");
+			sw.WriteLine ("\t\t\t} catch (System.NullReferenceException) {");
+			sw.WriteLine ("\t\t\t}");
+			sw.WriteLine ("\t\t}");
+
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tstatic partial void InitializeExtras();");
-			
+
 			sw.WriteLine ();
 			sw.WriteLine ("\t}");
 			sw.WriteLine ("}");
