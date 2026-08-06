@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Samples: declaration surface cleared, which opened the method-body phase Roslyn had been skipping: 127 errors, the true size of the port. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Samples: declaration surface cleared, which opened the method-body phase Roslyn had been skipping: 127 errors, the true size of the port; now at 75. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -950,9 +950,9 @@ Samples are the acceptance test: the repository has no test project (CLAUDE.md
 > awaiting the body phase.
 
 **The declaration surface is clear**, and the body phase it was hiding is now
-visible: **127 errors**. That is the real size of Phase 6, and it was always
-there — the earlier counts of 29, 14 and 6 measured only what Roslyn binds
-before it gives up.
+visible. It opened at **127 errors** — the real size of Phase 6, always there,
+with the earlier counts of 29, 14 and 6 measuring only what Roslyn binds before
+it gives up. Now at **75**.
 
 | Done | Change |
 |:-----|:-------|
@@ -974,9 +974,21 @@ class-init. Nothing else referenced it.
 
 Remaining 127, dominated by one pattern:
 
-| Cause | Count | Gtk 4 replacement |
+`Box.PackStart` is done — every call became `Append`, with the old `expand`
+packing flag becoming the child's own `Hexpand`/`Vexpand`. The `PackStart` calls
+that remain are `GtkHeaderBar`'s and `GtkCellLayout`'s, both of which Gtk 4
+keeps.
+
+`ContainerChildPropertiesSection` was the largest single file at 33 errors, and
+its whole premise — GtkContainer child properties — is gone. Rather than delete
+it, it now demonstrates the **three separate mechanisms** Gtk 4 replaced them
+with, which is more instructive than the original: `Box` has none at all
+(expansion is a property of the child, ordering a method on the box), `Grid`
+keeps attach data queryable through `QueryChild`, and `Stack` gives each child a
+real `GtkStackPage` GObject.
+
+| Remaining cause | Count | Gtk 4 replacement |
 |:------|------:|:------------------|
-| `Box.PackStart` | 38 | `Append`, with expand as `Hexpand`/`Vexpand` and padding as margins |
 | `VBox`/`HBox`/`HPaned`/`VPaned`/`VScale` | 7 | The base class plus an `Orientation` |
 | `Container.Add`/`Children` | 5 | `Append`/`SetChild`, `FirstChild`/`NextSibling` |
 | `Gtk.Stock` | 3 | Icon names from the standard naming spec |
