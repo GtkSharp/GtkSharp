@@ -272,6 +272,59 @@ Why it only showed under coverage: instrumentation shifts GC timing, so
 finalizers run at different moments relative to allocation. The bug was always
 there.
 
+## Fixed: two managed types claiming one GType
+
+Only reproducible on Linux, because Windows has no WebKit to load.
+
+`WebkitGtkSharp` carried a hand-written `JavaScript.Value` registered against
+`JSCValue`'s GType. `JavaScriptCoreSharp` now binds `JSCValue` properly and
+registers `JavaScriptCore.Value` for the same GType, so the registry held two
+managed types for one native type and the later registration decided what a
+signal argument came back as. The `script-message-received` handler then threw
+`InvalidCastException` *inside the signal marshaller*, where there is no caller
+to catch it, and the run aborted. The duplicate is deleted.
+
+A GType may therefore be registered by exactly one managed type. When a
+hand-written wrapper and a generated one describe the same native type, the
+hand-written one has to go.
+
+## Fixed: a signal argument that no name rule can resolve
+
+With the duplicate gone the same signal produced a bare `GLib.Object`, because
+nothing had registered `JSCValue` at all. `ObjectManager.Initialize()` runs from
+the static constructor of that assembly's own types, and a WebKit program never
+touches a JavaScriptCore type first — the first one it meets arrives *as* the
+signal argument, by which time the lookup has already missed.
+
+`GType.LookupType`'s name-based fallback cannot cover for it either. It splits a
+C name at the second capital, so `JSCValue` becomes `J.SCValue`. Any library
+whose prefix is an acronym is beyond it.
+
+So `WebkitGtkSharp.ObjectManager.InitializeExtras` chains
+`JavaScriptCoreSharp.ObjectManager.Initialize()` explicitly. **An assembly whose
+signals hand out another assembly's types must initialise that assembly's
+registry**, because a signal argument is resolved by GType at runtime, not by the
+static type in the handler's signature.
+
+## Fixed: one missing type killing a whole assembly
+
+The api.xml files are generated from Debian forky's girs, and the installed
+library is routinely older. `gtksourceview` 5.18 added `GtkSourceAnnotation`;
+5.16, which Debian trixie ships, has no `gtk_source_annotation_get_type` at all.
+
+Reading `GtkSource.Annotation.GType` therefore called a null delegate and threw
+`NullReferenceException` — from inside `ObjectManager.Initialize()`, which
+registers every type in the assembly in one unguarded run. The first missing
+symbol aborted it, so *no* GtkSource type was registered, and every later use of
+the assembly failed with `TypeInitializationException` naming an unrelated class.
+One class absent from the installed library made the whole binding unusable: 38
+tests failed, none of them about annotations.
+
+`GapiCodegen`'s mapper now routes each registration through a helper that catches
+`NullReferenceException` and skips that type. A type whose `get_type` is missing
+cannot be constructed anyway, and the rest of the assembly keeps working. Only
+`NullReferenceException` is caught, so a real fault still surfaces.
+
 ## Open: boxed types with no allocator cannot be constructed
 
 `Gsk.RoundedRect` has no `_alloc` function in C, so the binding generates no

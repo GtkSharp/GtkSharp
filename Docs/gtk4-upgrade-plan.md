@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them. **Phase 10 complete — gate 7 passed**: the suite now runs on Linux (Debian trixie, Gtk 4.18.6, real WebKit), 226 of 227 passing with one documented skip, which found three more defects that Windows structurally could not show — including one where a single class missing from an older installed library disabled an entire assembly (§16).
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -684,7 +684,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | 4 | Codegen | `dotnet cake build.cake --BuildTarget=Prepare` | `Generated/*.cs` produced for all 10 |
 | 5 | Compile | `dotnet cake build.cake --BuildTarget=Build` | Solution builds clean, both TFMs, `LangVersion 9` |
 | 6 | Pack | `dotnet cake build.cake` | 11 nupkgs + workload + templates in `BuildOutput/NugetPackages` |
-| 7 | Symbol resolution | Run Samples on Linux with GTK 4.22.4 | No `DllNotFoundException` / `EntryPointNotFoundException`. **This is where a wrong V3 answer surfaces.** |
+| 7 | Symbol resolution | Run Samples on Linux with GTK 4.22.4 | ✅ **passed** — the suite runs the sample sections on Debian trixie (Gtk 4.18.6, webkitgtk 2.52.5): 226 pass, 1 skip. No `DllNotFoundException` / `EntryPointNotFoundException`. Three defects only Linux could show — see §16. |
 | 8 | Samples runtime | `dotnet cake build.cake --BuildTarget=RunSamples` | All 37 sections render and are interactive |
 | 9 | Windows | Same on Windows with the V4 bundle | Samples runs; `GtkSharp.targets` downloads and unzips correctly |
 | 10 | Templates | `dotnet new gtkapp` from the packed template, then build and run | Produces a running GTK4 app |
@@ -748,7 +748,9 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **5** | Hand-written layer port | ✅ **complete** |
 | **6** | Samples port (37 sections) | ✅ **complete** |
 | **7** | Templates and workload | ✅ **complete** |
-| **8** | Native runtime, CI | ✅ **complete* |
+| **8** | Native runtime, CI | ✅ **complete** |
+| **9** | Open items from §15 | ✅ **complete** |
+| **10** | First run on Linux (gate 7) | ✅ **complete** — 227 tests, 226 pass, 1 skip |
 
 ### Phase 1 — complete
 
@@ -1230,3 +1232,53 @@ push comes last.
   is `Skip`ped pointing at it. See `Docs/testing.md`.
  The workflow moved to ubuntu-24.04 and
   gained the test step, but no run has been seen from this side.
+
+---
+
+## 16. Phase 10 — the first run on Linux
+
+Gate 7 could not be met from Windows: gvsbuild ships no WebKit, so every
+`WebkitGtkSharp` and `JavaScriptCoreSharp` path was skipped rather than
+exercised, and `GLibrary`'s Linux filename slots were never read. The suite was
+therefore run on Debian trixie in WSL — Gtk 4.18.6, libwebkitgtk-6.0-4 2.52.5,
+libjavascriptcoregtk-6.0-1, gtksourceview 5.16, .NET 8.0.423.
+
+Three defects surfaced that Windows structurally could not show. Each is written
+up in `Docs/testing.md`; in brief:
+
+1. **Two managed types claimed `JSCValue`'s GType.** The hand-written
+   `WebKit`-side `JavaScript.Value` and the generated `JavaScriptCore.Value` were
+   both registered, so which one a signal argument arrived as depended on
+   registration order. The handler's cast threw inside the signal marshaller,
+   where nothing can catch it, and the run aborted. The duplicate is deleted, and
+   `WebkitGtkSharp-api.xml` regenerated so `script-message-received` carries a
+   typed `JSCValue*` rather than the `gpointer` it fell back to when the
+   converter could not resolve the type.
+
+2. **Nothing registered `JSCValue` at all.** `ObjectManager.Initialize()` runs
+   from the static constructor of its *own* assembly's types, and a WebKit
+   program meets its first JavaScriptCore type as a signal argument — after the
+   lookup has already missed. The name-based fallback cannot help: it splits a C
+   name at the second capital, turning `JSCValue` into `J.SCValue`.
+   `WebkitGtkSharp.ObjectManager.InitializeExtras` now chains
+   `JavaScriptCoreSharp.ObjectManager.Initialize()`.
+
+3. **One missing type killed a whole assembly.** `gtksourceview` 5.18 added
+   `GtkSourceAnnotation`; trixie ships 5.16, which has no
+   `gtk_source_annotation_get_type`. Reading its `GType` called a null delegate,
+   the `NullReferenceException` aborted `ObjectManager.Initialize()` partway, and
+   *no* GtkSource type ended up registered — 38 tests failed, none of them about
+   annotations, all reporting `TypeInitializationException` on an unrelated
+   class. `GapiCodegen` now routes each registration through a helper that
+   catches `NullReferenceException` and skips that one type. This is not
+   cosmetic: without it, any installed library even slightly older than the girs
+   disables its entire binding.
+
+The third is the general lesson of this upgrade restated once more. The api.xml
+describes the library the girs came from, not the library that is installed, and
+the gap is invisible until something calls. Guarding the registration is the
+difference between "one class from a newer release is unavailable" and "this
+assembly does not work."
+
+Remaining gates: 10 (`dotnet new gtkapp` end-to-end), 11 (workload install), and
+CI, which still has not been observed running.
