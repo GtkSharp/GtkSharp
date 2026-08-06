@@ -1210,4 +1210,14 @@ push comes last.
 Everything in §15 is scheduled. This section is rewritten as each lands; what
 stays here at the end is what was knowingly left.
 
-- Nothing yet — Phase 9 has not started.
+**1. Caller-allocates out-parameters — done.** The distinction was unrecoverable
+from the api.xml, so it is preserved rather than inferred: the converter now
+emits `caller_allocates="1"` alongside `pass_as="out"`, and
+`Parameter.IsCallerAllocatedOut` keys off it. For those parameters codegen
+allocates `abi_info.Size` bytes, passes the pointer **by value**, and hands the
+buffer to the wrapper as owned. The managed signature keeps its `out`; only the
+P/Invoke changes. 232 parameters across five assemblies. The two `Skip`ped tests
+are un-skipped and pass — `graphene_rect_union` and `gsk_render_node_get_bounds`
+now return real values.
+
+Still to do: items 2–8.

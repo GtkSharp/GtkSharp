@@ -177,50 +177,26 @@ unread fourth slot, so it could never have loaded on Windows.
 
 ---
 
-## Known defect: caller-allocates out-parameters
+## Fixed: caller-allocates out-parameters
 
-Two tests are `Skip`ped, pointing at a real bug rather than a flaky one.
-
-C functions like these take a pointer to storage **the caller provides**:
+Kept here because the shape recurs. C functions like these write into storage
+**the caller** provides:
 
 ```c
-void graphene_rect_union     (const graphene_rect_t *a, const graphene_rect_t *b,
-                              graphene_rect_t *res);      /* caller-allocates */
-void gsk_render_node_get_bounds (GskRenderNode *node,
-                              graphene_rect_t *bounds);   /* caller-allocates */
+void graphene_rect_union (const graphene_rect_t *a, const graphene_rect_t *b,
+                          graphene_rect_t *res);      /* caller-allocates */
 ```
 
-GIR marks them `direction="out" caller-allocates="1"`. The converter emits plain
-`pass_as="out"`, and codegen then generates:
+Codegen used to pass `out IntPtr` — an 8-byte slot for a 16-byte struct, so the
+callee wrote past it and the pointer read back was garbage. Stack corruption, not
+a wrong answer, across 232 parameters.
 
-```csharp
-IntPtr native_res;
-graphene_rect_union (Handle, b.Handle, out native_res);
-```
-
-That passes a pointer to an **8-byte stack slot** for a **16-byte struct**, so
-the callee writes past it, and the resulting `IntPtr` is garbage read as a
-handle. It is stack corruption, not merely a wrong answer.
-
-**Why it is not a one-line fix.** `pass_as="out"` is *correct* when the type is a
-value type: `Gdk.Rectangle` out-parameters work, and their test passes. The
-difference is not visible in the api.xml — both `GdkRectangle` and
-`graphene_rect_t` are emitted as `<boxed opaque="true">`. `GdkRectangle` is a
-struct only because `GdkSharp-symbols.xml` overrides it:
-
-```xml
-<symbol type="struct" cname="GdkRectangle" name="Gdk.Rectangle"/>
-```
-
-So the converter cannot tell which is which, and blanket-dropping `pass_as="out"`
-for caller-allocates would silently break the `Gdk.Rectangle` case — a struct
-passed by value means the callee fills a copy.
-
-A correct fix allocates the caller's storage in the generated method for
-reference-typed out-parameters. Around **154 parameters** across the api.xml
-files match the shape and are candidates.
-
----
+The fix could not be inferred from the api.xml, because `pass_as="out"` is
+*correct* for value types: `Gdk.Rectangle` out-parameters work, and both
+`GdkRectangle` and `graphene_rect_t` are emitted as `<boxed opaque="true">` —
+`GdkRectangle` is a struct only because `GdkSharp-symbols.xml` overrides it. So
+the fact is now carried explicitly, `caller_allocates="1"`, and codegen allocates
+`abi_info.Size` bytes and passes the pointer by value.
 
 ## Measuring coverage
 
