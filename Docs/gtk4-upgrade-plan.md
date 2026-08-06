@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Phase 6 (samples) next. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Samples are down from 29 build errors to 14, all structural. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -933,12 +933,33 @@ through that shim's factory and would have overridden the generated type.
 Still unbound: `GtkParamSpecExpression`, which derives from `GParamSpec` rather
 than from `GtkExpression`; `SymbolTable` maps `GParamSpec` to `IntPtr`.
 
-### Phases 6–8 — not started
+### Phase 6 — in progress
 
-Samples (37 sections) is next and is the acceptance test: the repository has no
-test project, so a running Samples app is the only end-to-end verification
-available. 29 build errors remain there, `Gtk.EventArgs` shadowing `System`'s
-among them.
+Samples are the acceptance test: the repository has no test project (CLAUDE.md
+§Tests), so a running Samples app is the only end-to-end verification available.
+
+Started at 29 build errors. The mechanical tier is done — **14 remain**, all
+structural.
+
+| Fixed | Count | Change |
+|:------|------:|:-------|
+| `Gtk.EventArgs` shadowing | 13 | Handler signatures qualified as `System.EventArgs`. Codegen emits `System.EventHandler` explicitly, so `Gtk.EventArgs` — the args type for signals carrying a `Gdk.Event` — was never the right one here. |
+| `using Atk;` | 2 | Gtk 4 has no separate Atk binding; accessibility moved into Gtk itself as `GtkAccessible`. Both usings were already unused. |
+
+Remaining, by removed API:
+
+| Sample | Needs |
+|:-------|:------|
+| `PolarFixed.cs` | `Container`, `ContainerChild`, `Callback` — deleted with R7 |
+| `CompositeWidgetSection.cs` | `Bin` — deleted in Gtk 4 |
+| `DrawingAreaSection.cs`, `ImageDrawn.cs` | `Drawn`/`OnDrawn` — replaced by `SetDrawFunc` / snapshot |
+| `ApplicationOutput.cs` | `SizeAllocated` — signal removed |
+| 4 × `OnPressed()` | `Button`'s press vfunc — gesture-based in Gtk 4 |
+| `CustomCellRenderer.cs` | `OnRender` — snapshot-based in Gtk 4 |
+
+### Phases 7–8 — not started
+
+
 
 Templates and workload, then native runtime and CI, follow. The V4 decision
 (gvsbuild `2026.6.0`) and the corrected `GtkSharp.targets` paths in §8.1 are
