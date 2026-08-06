@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete** — all 11 assemblies build clean. Phase 6 (samples) next. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Phase 6 (samples) next. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -816,9 +816,9 @@ build errors left in the tree are 29 in `Source/Samples`, which is Phase 6.
 |:---------|:------|
 | `GLibSharp`, `CairoSharp` | hand-written, untouched |
 | `GrapheneSharp`, `GioSharp`, `PangoSharp` | clean |
-| `GdkSharp` | 28 hand-written files deleted |
-| `GskSharp` | `RenderNode` hierarchy deferred, see below |
-| `GtkSharp` | 46 hand-written files deleted; `Expression` hierarchy deferred |
+| `GdkSharp` | 29 hand-written files deleted, the `Event` shim among them |
+| `GskSharp` | clean; the 36-type `RenderNode` hierarchy is bound, see below |
+| `GtkSharp` | 46 hand-written files deleted; the `Expression` hierarchy is bound |
 | `AdwaitaSharp` | new binding, clean from scratch |
 | `GtkSourceSharp`, `WebkitGtkSharp` | clean |
 
@@ -873,35 +873,66 @@ Gtk 4's `Gtk.EventArgs`/`Gtk.EventHandler` shadow the `System` ones inside
 template whose handlers were never wired reads as a UI that ignores every click,
 much harder to diagnose than an exception naming the cause.
 
-### Open: GLib fundamental types are not bound
+### GLib fundamental types — bound
 
 Gtk 4 uses GLib *fundamental* types — `glib:fundamental="1"`, GTypeInstance with
-their own ref/unref rather than GObject descendants — for three whole hierarchies:
-`GdkEvent` and its event subclasses, `GskRenderNode` and its 36 node subclasses,
-and `GtkExpression` and its 7. `ObjectGen` has no notion of them: it emits
-`Handle`, `CreateNativeObject`, a `base(IntPtr)` chain-up and
-`GLib.Object.GetObject(raw) as T`, all of which assume GObject.
+their own ref/unref rather than GObject descendants — for three whole
+hierarchies. All three are now bound, generated rather than hand-written:
 
-Current state:
+| Hierarchy | Types | Refcounting |
+|:----------|------:|:------------|
+| `GskRenderNode` | 36 | `gsk_render_node_ref`/`unref` |
+| `GdkEvent` | 14 | `gdk_event_ref`/`unref` |
+| `GtkExpression` | 7 | `gtk_expression_ref`/`unref` |
 
-- **`GdkEvent`** is carried by a small hand-written base supplying that surface
-  over a plain handle. Constructing an event from managed code throws, since GDK
-  delivers events to controllers and never accepts them.
-- **`GskRenderNode` (36 types) and `GtkExpression` (7) are hidden.** The same
-  trick does not work there, because the generated code casts through
-  `GLib.Object.GetObject`, which will not compile unless the root derives from
-  `GLib.Object` — and making it do so would put `g_object_ref`/`unref` on handles
-  whose lifetime belongs to `gsk_render_node_ref`/`unref`. A binding that
-  mismanages refcounts is worse than one that is missing.
+**The base is `GLib.Opaque`, not `GLib.Object`.** Opaque already wraps a bare
+handle, tracks ownership and routes disposal through `Ref`/`Unref` hooks, so the
+lifetime lands on the type's own refcounting rather than on `g_object_ref`. That
+is what made this tractable: the alternative considered earlier — rooting them at
+`GLib.Object` — would have compiled and then called `g_object_unref` on handles
+GObject does not own.
 
-Cost: three GtkSharp members reference `GskRenderNode`, 44 reference
-`GtkExpression` — chiefly the expression-based list-item factories and property
-bindings. `Gsk.Renderer`, `Transform` and `RoundedRect` are unaffected.
+GIR supplies everything needed. `glib:fundamental="1"` marks every member of a
+hierarchy; `glib:ref-func`/`unref-func` appear on the root only, which is exactly
+where the overrides belong. The converter emits these as `fundamental="true"`,
+`ref_func` and `unref_func` on `<object>` (`ObjectEmitter.cs:54`), and codegen
+keys off them:
 
-Doing this properly means teaching `ObjectGen` about fundamental types: per-type
-`GetObject` factories and ref/unref hooks. **This is the largest single piece of
-work outstanding**, and it blocks custom widget drawing via `GtkSnapshot`, which
-§6.3 needs for the DrawingArea samples.
+| Site | Change |
+|:-----|:-------|
+| `ObjectGen.cs` — base | A fundamental root has no parent, so `GLib.Opaque` is substituted |
+| `ObjectGen.cs` — `GenFundamentalRefcounting` | Emits `Ref`/`Unref`/`Copy` overrides and a finalizer on the root, matching `OpaqueGen`'s shape |
+| `ObjectGen.cs` — `CallByName` | Transfer-full is `OwnedCopy`, Opaque's spelling |
+| `ObjectBase.cs` — `FromNative` | Resolves via `GLib.Opaque.GetOpaque`, not `GLib.Object.GetObject` |
+| `Ctor.cs` | Still chains to `base (IntPtr.Zero)`, but skips `CreateNativeObject`: a fundamental type is not a GObject and cannot be subclassed from managed code |
+| `ReturnValue.cs` | Same `OwnedCopy` spelling on the callback return path |
+
+Two ownership details are worth recording, because getting either wrong leaks or
+double-frees silently:
+
+- **`Copy` returns a *separate* owning wrapper**, rather than Opaque's default
+  `return this`. That default is right for a plain boxed pointer and wrong for a
+  refcounted one. A distinct wrapper makes both callers correct: `GetOpaque` on a
+  transfer-none value yields a wrapper holding its own reference, and `OwnedCopy`
+  hands a fresh reference to the callee while the original keeps — and still
+  unrefs — its own.
+- **Constructors set `Owned = true` before assigning `Raw`.** Opaque's `Raw`
+  setter takes a reference via the `Ref` hook, which is right when wrapping a
+  borrowed pointer and one too many for a transfer-full constructor result.
+  Claiming ownership first makes the hook, guarded on `!Owned`, correctly do
+  nothing. (This over-referencing is pre-existing for hand-written refcounted
+  opaques such as `Pango.AttrList`, which is not fixed here.)
+
+Consequences: `Gtk.Snapshot.ToNode` and `AppendNode` now exist, so **custom
+widget drawing via `GtkSnapshot` is no longer blocked** for the §6.3 DrawingArea
+samples. The hand-written `Source/Libs/GdkSharp/Event.cs` shim is deleted, and
+with it the restriction that events could not be constructed from managed code.
+`GdkSharp-symbols.xml` lost its Gtk 3 event entries, which routed `GdkEvent`
+through that shim's factory and would have overridden the generated type.
+
+Still unbound: `GtkParamSpecExpression`, which derives from `GParamSpec` rather
+than from `GtkExpression`; `SymbolTable` maps `GParamSpec` to `IntPtr`.
+
 ### Phases 6–8 — not started
 
 Samples (37 sections) is next and is the acceptance test: the repository has no
