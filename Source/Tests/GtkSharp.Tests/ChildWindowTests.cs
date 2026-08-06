@@ -104,12 +104,9 @@ namespace GtkSharp.Tests
                 {
                     Assert.NotEqual(IntPtr.Zero, window.Handle);
 
-                    // Dispose rather than Destroy, deliberately: Destroy leaves
-                    // the wrapper's toggle ref registered against an object that
-                    // has been torn down, and the queued unref later crashes in
-                    // ToggleRef.Free. See "Open: Widget.Destroy" in
-                    // Docs/testing.md.
-                    window.Dispose();
+                    // Gtk 4 tears a toplevel down with gtk_window_destroy;
+                    // leaving them open would leak across the whole run.
+                    window.Destroy();
                 }
             });
         }
@@ -140,7 +137,50 @@ namespace GtkSharp.Tests
                 Assert.Single(opened);
                 Assert.IsType<FileChooserDialog>(opened[0]);
 
-                opened[0].Dispose();
+                opened[0].Destroy();
+            });
+        }
+
+        [Fact]
+        public void A_window_destroyed_and_finalized_does_not_disturb_later_objects()
+        {
+            // Widget.Destroy tears the object down behind the wrapper's back,
+            // leaving it holding a native address that Gtk is free to reuse. The
+            // wrapper's finalizer then looked that address up in the handle map
+            // and unreffed whatever it found -- by then, possibly a different
+            // object -- which corrupted the new object and crashed later inside
+            // ToggleRef.Free.
+            //
+            // The oracle is the *later* object, not the absence of a crash: if
+            // the stale finalizer hijacked a reused address, the window built
+            // afterwards is the one that would be damaged.
+            Run(() =>
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    var window = new Window { Title = "transient" };
+                    window.Child = new Label("content");
+                    window.Destroy();
+                }
+            });
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+
+            Run(() =>
+            {
+                // Finalizers queue their unrefs onto the main loop, so let them run.
+                for (int i = 0; i < 200 && Application.EventsPending(); i++)
+                    Application.RunIteration(false);
+
+                var survivor = new Window { Title = "survivor" };
+                survivor.Child = new Label("still here");
+
+                Assert.Equal("survivor", survivor.Title);
+                Assert.Equal("still here", ((Label) survivor.Child).Text);
+
+                survivor.Destroy();
             });
         }
 
@@ -168,7 +208,7 @@ namespace GtkSharp.Tests
                 Assert.Equal("GtkSharp Sample Application", dialog.ProgramName);
                 Assert.Equal("1.0.0.0", dialog.Version);
 
-                dialog.Dispose();
+                dialog.Destroy();
             });
         }
 
@@ -199,7 +239,7 @@ namespace GtkSharp.Tests
 
                 Assert.Equal((int) ResponseType.Cancel, seen);
 
-                dialog.Dispose();
+                dialog.Destroy();
             });
         }
     }
