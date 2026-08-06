@@ -820,47 +820,36 @@ of GtkSharp's 732 unmatched rules were decidable mechanically.
 | `GtkSharp` | 🔶 in progress — generated side compiles; hand-written layer is next |
 | `AdwaitaSharp`, `GtkSourceSharp`, `WebkitGtkSharp` | ⬜ blocked behind `GtkSharp` |
 
-**GtkSharp status.** The generated side is down to a handful of issues; the
-remaining 185 errors are overwhelmingly the 117-file hand-written layer, which
-had never been compiled against Gtk 4 until now. The distribution matches the
-§5.1 delete list almost exactly — `NativeDialog`, `Clipboard`, `ColorSelection`,
-`Accel`, `StatusIcon`, `Menu`, `Container.Forall`, `SelectionData` account for
-most of it, and all of them bind types Gtk 4 removed. `FileChooserNative`,
-`TextTag` and `MediaStream` are the generated-side remainder.
+**GtkSharp status.** 46 of the 117 hand-written files are gone — the §5.1 delete
+list in full, plus the menu, action, stock, selection and target families,
+`Key`, `Calendar`, `NativeDialog` and `FileChooserNative`. `Gtk.Container` is
+among them: that is R7, the single most user-visible break, and no shim was
+added.
 
-**GdkSharp is where the §5.1 deletions began.** Gone: `Window` (→ `Surface`),
-`WindowAttr`, `Screen`, `Color`, `Property`, `Keymap`, `Atom`, `Selection`,
-`TextProperty`, `Pixdata`, `PixbufFrame`, the whole `Event*` struct family
-(17 files), plus `Device.cs` and `Display.cs`, which held nothing but removed
-API. `Global.cs` shrank to a single member.
+Remaining: 122 unique errors, now in the deeper hand-written layer —
+`NodeStore`/`NodeView`/`NodeSelection` (built on `ITreeModel`), `Application`,
+`Button` and others that call `Container.Add` or the Gtk 3 `EventArgs` shapes.
 
-### Open: GLib fundamental types are not bound
+Three findings from this pass:
 
-Gtk 4 uses GLib *fundamental* types — `glib:fundamental="1"`, GTypeInstance with
-their own ref/unref rather than GObject descendants — for two whole hierarchies:
-`GdkEvent` and its ~20 event subclasses, and `GskRenderNode` and its 36 node
-subclasses. `ObjectGen` has no notion of them: it emits `Handle`,
-`CreateNativeObject`, a `base(IntPtr)` chain-up and
-`GLib.Object.GetObject(raw) as T`, all of which assume GObject.
-
-Current state:
-
-- **`GdkEvent`** is carried by a small hand-written base supplying that surface
-  over a plain handle. Constructing an event from managed code throws, since GDK
-  delivers events to controllers and never accepts them.
-- **`GskRenderNode` and its 36 subclasses are hidden.** The same trick does not
-  work there because the generated code casts through `GLib.Object.GetObject`,
-  which will not compile unless `RenderNode` derives from `GLib.Object` — and
-  making it do so would put `g_object_ref`/`unref` on handles whose lifetime
-  belongs to `gsk_render_node_ref`/`unref`. A binding that mismanages refcounts
-  is worse than one that is missing. Cost: three GtkSharp members that reference
-  `GskRenderNode` go with them; `Gsk.Renderer`, `Transform` and `RoundedRect` are
+- **`GtkText` is bound as `Gtk.TextWidget`.** It implements `GtkEditable`, whose
+  `Text` member cannot live on a C# class also called `Text`. Renaming the member
+  breaks the interface contract, and codegen emits no explicit interface
+  implementations; hiding the type cascades, since other widgets take a `GtkText`
+  in their signatures. `Gtk.Entry`, which wraps it and is what most code uses, is
   unaffected.
-
-Doing this properly means teaching `ObjectGen` about fundamental types: per-type
-`GetObject` factories and ref/unref hooks. That is the largest single piece of
-work left in Phase 5 after the Gtk layer itself, and it blocks custom widget
-drawing via `GtkSnapshot`, which §6.3 needs for the DrawingArea samples.
+- **`ICellLayout.SetAttributes` became an extension method.** It was declared on
+  the hand-written interface, which left every implementor owing an
+  implementation; Gtk 4's gir marks more types as implementing `GtkCellLayout`.
+  It is written purely in terms of other interface members, so an extension
+  serves all of them and works on `netstandard2.0`, where default interface
+  members do not.
+- **Automatic signal connection is not supported.** Gtk 4 removed
+  `gtk_builder_connect_signals_full`, `gtk_widget_class_set_connect_func` and
+  `GtkBuilderConnectFunc` in favour of `GtkBuilderScope`, which is not bound.
+  `SignalConnector.ConnectSignals` throws rather than silently doing nothing — a
+  template whose handlers were never wired reads as a UI that ignores every
+  click, which is far harder to diagnose than an exception naming the cause.
 
 Still untouched: the deletions and rewrites in §5.1 and §5.2 — `Container`,
 `Menu`, `Application.Run`, `Clipboard`, `Dialog.Run`, the TreeView stack and the
