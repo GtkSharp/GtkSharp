@@ -1220,4 +1220,21 @@ P/Invoke changes. 232 parameters across five assemblies. The two `Skip`ped tests
 are un-skipped and pass — `graphene_rect_union` and `gsk_render_node_get_bounds`
 now return real values.
 
-Still to do: items 2–8.
+**2. `GLib.Opaque` over-referencing — no defect; the premise was wrong.**
+
+The decision was to fix it, so it was investigated first, and the reported bug
+does not exist. A generated opaque constructor chains implicitly to the
+parameterless `Opaque()`, which sets `owned = true` **before** `Raw` is
+assigned; the `Raw` setter's `Ref` hook is guarded on `!Owned` and therefore
+correctly does nothing. `GetOpaque` separately compensates for the
+`Opaque(IntPtr)` path, with a comment saying so.
+
+The case that really was broken is the *fundamental* types, which chain
+`base (IntPtr.Zero)` → `Opaque(IntPtr)` → `owned = false`, and that was already
+fixed in Phase 5 by emitting `Owned = true` ahead of the assignment.
+
+No code changed. Two tests now pin the invariant, including one that disposes a
+borrowed second wrapper and then keeps using the first — the failure mode a
+refcounting mistake actually produces.
+
+Still to do: items 3–8.

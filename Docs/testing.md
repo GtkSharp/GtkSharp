@@ -198,6 +198,26 @@ The fix could not be inferred from the api.xml, because `pass_as="out"` is
 the fact is now carried explicitly, `caller_allocates="1"`, and codegen allocates
 `abi_info.Size` bytes and passes the pointer by value.
 
+## Ownership and refcounting
+
+`GLib.Opaque`'s `Raw` setter takes a reference through the `Ref` hook. That is
+right when wrapping a borrowed pointer and one too many for a transfer-full
+constructor result, so the ordering matters:
+
+- The parameterless `Opaque()` sets `owned = true` **before** `Raw` is assigned,
+  and the hook is guarded on `!Owned`. Generated opaque constructors chain to it,
+  so they do not double-reference.
+- `Opaque(IntPtr)` sets `owned = false`, so the hook *does* take a reference —
+  correct for a borrowed pointer. `GetOpaque` undoes it when the caller said the
+  pointer was already owned.
+- Fundamental types chain `base (IntPtr.Zero)`, which is the `Opaque(IntPtr)`
+  path, so their generated constructors emit `Owned = true` before assigning
+  `Raw`.
+
+`Disposing_a_second_wrapper_does_not_free_the_first` is the test that would catch
+a regression here: it disposes a borrowed wrapper and then keeps using the owner,
+which touches freed memory if the reference counting is wrong.
+
 ## Measuring coverage
 
 Coverage is measured, not chased:
