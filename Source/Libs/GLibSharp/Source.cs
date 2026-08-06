@@ -270,6 +270,14 @@ namespace GLib {
 				return ret;
 			}
 		}
+		// g_source_destroy was already loaded further down, for Free, but no
+		// public method reached it: a Source could be asked whether it had been
+		// destroyed and never destroyed, except by the static Remove, which
+		// needs an id the caller may no longer have.
+		public void Destroy () {
+			g_source_destroy (Handle);
+		}
+
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_source_is_destroyed(IntPtr raw);
 		static d_g_source_is_destroyed g_source_is_destroyed = FuncLoader.LoadFunction<d_g_source_is_destroyed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_is_destroyed"));
