@@ -42,11 +42,11 @@ class GLibrary
 		_libraryDefinitions[Library.Adwaita] = new[] {"adwaita-1-0.dll", "libadwaita-1.so.0", "libadwaita-1.0.dylib", "libadwaita-1-0.dll"};
 		// WebKitGTK 6.0 has no Windows build -- neither gvsbuild nor MSYS2 ships one --
 		// so callers must gate on GLibrary.IsSupported(Library.Webkit).
-		_libraryDefinitions[Library.Webkit] = new[] {"libwebkitgtk-6.0.so.4", "libwebkitgtk-6.0.so.4", "libwebkitgtk-6.0.dylib", "libwebkitgtk-6.0-4.dll"};
+		_libraryDefinitions[Library.Webkit] = new[] {"webkitgtk-6.0-4.dll", "libwebkitgtk-6.0.so.4", "libwebkitgtk-6.0.dylib"};
 		// JavaScriptCore ships as its own shared library. The jsc_* symbols were
 		// being looked up in the WebKit handle, which cannot find them: a module
 		// handle only resolves its own exports, so every one was a null delegate.
-		_libraryDefinitions[Library.JavaScriptCore] = new[] {"libjavascriptcoregtk-6.0.so.1", "libjavascriptcoregtk-6.0.so.1", "libjavascriptcoregtk-6.0.dylib", "javascriptcoregtk-6.0-1.dll"};
+		_libraryDefinitions[Library.JavaScriptCore] = new[] {"javascriptcoregtk-6.0-1.dll", "libjavascriptcoregtk-6.0.so.1", "libjavascriptcoregtk-6.0.dylib"};
 	}
 
 	public static IntPtr Load(Library library)
