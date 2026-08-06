@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 49 tests, all passing and with no GLib diagnostics left, which found eight more defects that compiling had missed — including a wrong ABI on all 724 `throws` methods. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -1056,7 +1056,7 @@ gone; `--BuildTarget=Test` is the entry point, and CI calls it.
 | `BindingTests` | 14 behavioural round-trips, each pinning something this migration fixed: the button label ctor, box append/reorder/unparent, `Grid.QueryChild`, `StackPage.Title`, `RGBA.Parse` components, `Snapshot.ToNode` returning a `GskRenderNode`, `ConstantExpression.ValueType`, and `Application.Run` returning after `Quit`. |
 | `GtkFixture` | Owns the single thread Gtk is initialised on and marshals every test body onto it — Gtk may only be used from the thread that called `gtk_init`, and xunit promises no thread affinity. Parallelisation is disabled assembly-wide. Each work item drains pending main-loop work, so a failure in layout or a draw function is attributed to the test that caused it. |
 
-**49 tests, all passing**, against a real Gtk 4 runtime, with **no GLib CRITICAL or WARNING output left**.
+**83 tests, all passing**, against a real Gtk 4 runtime, with **no GLib CRITICAL or WARNING output left**.
 
 `MainWindowTests` closes the one gap between the tests and the smoke run they
 replaced: the smoke run also built `MainWindow`, added it to the application and
@@ -1136,6 +1136,53 @@ singleton, so a second `MainWindow` was handed a widget that still belonged to
 the first, and Gtk 4 refuses to re-parent in place — it is now detached first.
 And `Program.EnsureApplication` no longer discards the result of
 `Application.Register`.
+
+### Pressing the buttons: 13 more dead symbols
+
+Constructing a section never opens a dialog — dialogs appear on a press — so
+`ChildWindowTests` presses every button each section contains and requires that
+any window that opens is a live toplevel which can be closed again. Getting that
+working took two corrections worth recording:
+
+- **`Widget.Activate` does not reach the handler.** Gtk 4 routes a press through
+  a gesture, and `gtk_button_clicked` is gone. The theory passed on all 31
+  sections while pressing nothing. `GLib.Signal.Emit(button, "clicked")` works,
+  and `Pressing_the_file_chooser_button_opens_a_toplevel` now guards against the
+  same silence returning.
+- **Two buttons must not be pressed by a test**, and neither is a defect:
+  `PixbufDemo` is a manual leak-stress toggle whose first press enters a loop
+  that only a second press ends, and `LinkButton` asks the desktop to open a URI,
+  which launches a browser.
+
+The first real press crashed the run: `StyleContext.GetProperty` was a null
+delegate. Rather than chase these one at a time, a sweep compared **every symbol
+the hand-written layer loads** against the vendored `.gir` files. It found 13
+that Gtk 4 does not export, each a `NullReferenceException` waiting to be
+called:
+
+| Removed in Gtk 4 | Was |
+|:-----------------|:----|
+| `gtk_style_context_get_property` | `StyleContext.GetProperty` — style properties went with the Gtk 3 theming API |
+| `gtk_get_current_event` | `Application.CurrentEvent` |
+| `gtk_binding_set_by_class`, `gtk_binding_entry_add_signall` | the whole `[Binding]` machinery — `GtkBindingSet` is replaced by `GtkShortcutController` |
+| `gtk_widget_class_find_style_property`, `gtk_widget_style_get_property` | `Widget.StyleGetProperty` |
+| `gtk_cell_renderer_render` | `CellRenderer.Render` |
+| `gtk_icon_theme_list_icons` | `IconTheme.ListIcons` |
+| `gtk_icon_theme_{get,set}_search_path_utf8` | a Gtk 2/3-on-Windows artifact that never existed in Gtk 4 |
+| `gtk_image_new_from_stock` | `Image(stock_id, size)` |
+| `gtk_window_{get,set}_icon_list`, `..._default_icon_list` | `Window.IconList`, `Window.DefaultIconList` |
+
+All are removed rather than left to throw, so callers get a compile error.
+
+**JavaScriptCore was being loaded from the wrong library.** 27 `jsc_*` symbols
+were looked up in the WebKit module handle, which cannot resolve them — a handle
+only exposes its own exports. `Library.JavaScriptCore` is added to the enum and
+the filename map, and the lookups retargeted.
+
+Two sample bugs surfaced too: `StyleContextSection` asked for CSS properties by
+name, which Gtk 4 cannot do, and now reads the typed getters that remain; and
+`LinkButtonSection` passed a caption to `gtk_link_button_new`, whose argument is
+the URI, so Gtk refused to follow it.
 
 ## 15. Open items
 
