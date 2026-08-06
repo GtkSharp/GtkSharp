@@ -232,6 +232,14 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("// Any changes made will be lost if regenerated.");
 			sw.WriteLine ();
 
+			// The binding necessarily references its own deprecated types: a
+			// deprecated class still has properties, and its methods still take
+			// and return it. Warning about that here produces noise a consumer
+			// cannot act on, and would bury the [Obsolete] warnings that are
+			// aimed at them. Their own uses still warn.
+			sw.WriteLine ("#pragma warning disable CS0612, CS0618");
+			sw.WriteLine ();
+
 			return sw;
 		}
 
