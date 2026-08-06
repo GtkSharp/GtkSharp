@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 (the eight open items, all now decided — see §15) is in progress.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -1205,110 +1205,17 @@ fix change generated output and lifetimes, so they come before anything that
 builds on them; `[Obsolete]` precedes the samples rewrite that reacts to it; the
 push comes last.
 
-## 16. Remaining after Phase 9
+## 16. Remaining
 
-Everything in §15 is scheduled. This section is rewritten as each lands; what
-stays here at the end is what was knowingly left.
-
-**1. Caller-allocates out-parameters — done.** The distinction was unrecoverable
-from the api.xml, so it is preserved rather than inferred: the converter now
-emits `caller_allocates="1"` alongside `pass_as="out"`, and
-`Parameter.IsCallerAllocatedOut` keys off it. For those parameters codegen
-allocates `abi_info.Size` bytes, passes the pointer **by value**, and hands the
-buffer to the wrapper as owned. The managed signature keeps its `out`; only the
-P/Invoke changes. 232 parameters across five assemblies. The two `Skip`ped tests
-are un-skipped and pass — `graphene_rect_union` and `gsk_render_node_get_bounds`
-now return real values.
-
-**2. `GLib.Opaque` over-referencing — no defect; the premise was wrong.**
-
-The decision was to fix it, so it was investigated first, and the reported bug
-does not exist. A generated opaque constructor chains implicitly to the
-parameterless `Opaque()`, which sets `owned = true` **before** `Raw` is
-assigned; the `Raw` setter's `Ref` hook is guarded on `!Owned` and therefore
-correctly does nothing. `GetOpaque` separately compensates for the
-`Opaque(IntPtr)` path, with a comment saying so.
-
-The case that really was broken is the *fundamental* types, which chain
-`base (IntPtr.Zero)` → `Opaque(IntPtr)` → `owned = false`, and that was already
-fixed in Phase 5 by emitting `Owned = true` ahead of the assignment.
-
-No code changed. Two tests now pin the invariant, including one that disposes a
-borrowed second wrapper and then keeps using the first — the failure mode a
-refcounting mistake actually produces.
-
-**3. `[Obsolete]` on the deprecated stack — done.** GIR marks 50 Gtk classes
-deprecated, `TreeView`, `Dialog` and `ComboBox` among them at 4.10, and the flag
-sits on the *type* as well as its members. `ObjectEmitter` never copied it, so
-974 members carried `[Obsolete]` while the types they belong to did not. It does
-now.
-
-Generated files also gained `#pragma warning disable CS0612, CS0618`. The
-binding necessarily references its own deprecated types — a deprecated class
-still has properties, and methods still take and return it — and warning about
-that produced 1230 warnings a consumer cannot act on, which would bury the ones
-aimed at them. Library warnings fell from 1439 to 10; consumer code still warns,
-which is the point.
-
-**4. Samples ported to ColumnView — done for the three chosen sections.**
-`ListStoreSection`, `TreeViewSection` and `EditableCellsSection` are rewritten
-onto `GLib.ListStore` + `SingleSelection` + `ColumnView`. Rows are managed
-`GLib.Object` subclasses, since a Gtk 4 list model holds GObjects rather than
-struct tuples, and columns are `SignalListItemFactory` pairs that build real
-widgets. Editable cells are simply an `Entry` or `SpinButton` in the row, which
-is why `EditableCellsSection` is now a third of its former length.
-
-Samples deprecation warnings fell 290 → **114**. The remainder is deliberate:
-`ComboBoxSection`, `CellRendererSection`, `EntrySection` and others demonstrate
-APIs that are deprecated but still bound, and were not in the three sections
-chosen for rewriting. They are left visible rather than suppressed, because the
-warning is the honest record of what still uses the old stack.
-
-Library warnings are suppressed at the project level instead
-(`Source/Libs/Directory.Build.props`), for the same reason the generated files
-are: the binding necessarily references its own deprecated types, including from
-the hand-written layer — `NodeStore`, `NodeView` and `TreeModelAdapter` wrap
-that stack by definition.
-
-**A binding bug surfaced doing this, and it was fatal.** `GListModel::items-changed`
-and `GMenuModel::items-changed` are different signals sharing a name in one
-namespace, with different parameter types — `guint` against `gint`. GapiCodegen
-names the args class after the signal, so one class served both, and the menu
-model won: `GLib.ItemsChangedArgs` cast the list model's `guint` position to
-`int` and threw `InvalidCastException` **inside the signal marshaller**, which
-aborts the process. Every `ColumnView` and `ListView` goes through `GListModel`,
-so the common case was the broken one. The menu model's signal is renamed, giving
-it its own args class.
-
-**5 and 6. `JavaScriptCoreSharp` — done.** A twelfth assembly, generated from
-`JavaScriptCore-6.0.gir`. The gir comes from `libjavascriptcoregtk-6.0-dev`,
-which is a *separate* Debian package from `libwebkitgtk-6.0-dev` even though
-both are built from the webkit2gtk source — the WebKit package ships only
-`WebKit-6.0.gir` and `WebKitWebProcessExtension-6.0.gir`. Provenance and sha256
-are recorded alongside the other 13.
-
-The `JSCValue` → `gpointer` mapping is gone, so
-`WebView.EvaluateJavascriptFinish` returns a real `JavaScriptCore.Value` and the
-sample reads the result rather than printing a handle.
-
-**A codegen bug came with it.** JavaScriptCore declares a type called
-`Exception`, so the `catch (Exception e)` that generated marshallers emit bound
-to `JavaScriptCore.Exception` and would not compile — the same shape as
-`Gtk.EventArgs` shadowing `System.EventArgs` in Phase 5. Generated catch blocks
-now qualify `System.Exception`, which prevents it recurring in any namespace
-that declares its own.
-
-**Not exercised locally:** gvsbuild ships no WebKit or JavaScriptCore DLL, so
-this is build-verified and packs correctly, but the first run against the real
-library will be CI on ubuntu-24.04.
-
-**7. `GtkParamSpecExpression` — bound.** It already carried
-`fundamental="true"`, so dropping the unbindable `GParamSpec` parent leaves
-`ObjectGen` to root it at `GLib.Opaque` like the rest of the Expression
-hierarchy. **The declared hierarchy is deliberately not the C one**: in C this
-is a `GParamSpec`, and it is bound here as a plain refcounted handle with no
-`ref_func`, so its lifetime is the caller's business. Taken knowingly, because
-`GParamSpec` is not bound as a type anywhere and binding it properly is a much
-larger change.
-
-Still to do: item 8, the push.
+- **WebKit and JavaScriptCore are never exercised locally.** gvsbuild ships
+  neither DLL, so `WebkitGtkSharp` and `JavaScriptCoreSharp` are build-verified
+  and pack correctly, but their first run against the real libraries is CI on
+  ubuntu-24.04.
+- **114 deprecation warnings remain in the samples**, deliberately.
+  `ComboBoxSection`, `CellRendererSection`, `EntrySection` and others demonstrate
+  APIs that Gtk 4.10 deprecated but still ships. Only the three sections chosen
+  in Phase 9 were rewritten; the warnings are the honest record of the rest.
+- **`GtkParamSpecExpression`'s declared hierarchy is not the C one** — it is a
+  `GParamSpec` there and a bare `GLib.Opaque` here, with no `ref_func`.
+- **CI has not been observed running.** The workflow moved to ubuntu-24.04 and
+  gained the test step, but no run has been seen from this side.
