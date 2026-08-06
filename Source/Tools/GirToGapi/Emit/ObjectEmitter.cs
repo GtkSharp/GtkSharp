@@ -49,6 +49,24 @@ namespace GtkSharp.GirConversion.Emit {
 					var info = registry.Resolve (parent, doc.Name);
 					el.Add (new XAttribute ("parent", info != null ? info.CType : parent));
 				}
+
+				// A GLib *fundamental* type: a GTypeInstance rooted at itself
+				// rather than at GObject, with its own ref/unref pair instead of
+				// g_object_ref/unref. GskRenderNode, GtkExpression and GdkEvent
+				// are the three in Gtk 4. GIR marks every member of the
+				// hierarchy, but carries ref-func/unref-func only on the root,
+				// which is exactly where the overrides belong.
+				if ((string) gir.Attribute (Ns.GlibFundamental) == "1") {
+					el.Add (new XAttribute ("fundamental", "true"));
+
+					var refFunc = (string) gir.Attribute (Ns.GlibRefFunc);
+					if (!string.IsNullOrEmpty (refFunc))
+						el.Add (new XAttribute ("ref_func", refFunc));
+
+					var unrefFunc = (string) gir.Attribute (Ns.GlibUnrefFunc);
+					if (!string.IsNullOrEmpty (unrefFunc))
+						el.Add (new XAttribute ("unref_func", unrefFunc));
+				}
 			}
 
 			// Signals first: the class-struct pass needs to know which slots are

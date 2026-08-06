@@ -26,6 +26,9 @@ namespace GtkSharp.GirConversion.Gir {
 		public static readonly XName GlibIsGTypeStructFor = Glib + "is-gtype-struct-for";
 		public static readonly XName GlibSignal = Glib + "signal";
 		public static readonly XName GlibNick = Glib + "nick";
+		public static readonly XName GlibFundamental = Glib + "fundamental";
+		public static readonly XName GlibRefFunc = Glib + "ref-func";
+		public static readonly XName GlibUnrefFunc = Glib + "unref-func";
 	}
 
 	/// <summary>A loaded .gir file, reduced to the one namespace it declares.</summary>
