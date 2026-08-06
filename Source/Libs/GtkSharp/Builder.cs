@@ -170,7 +170,7 @@ namespace Gtk {
 
 			// Remembered so Autoconnect only reaches for signal connection when
 			// the document actually asks for it; see below.
-			if (text.IndexOf ("<signal", StringComparison.Ordinal) >= 0)
+			if (BuilderXml.DeclaresSignals (text))
 				declares_signals = true;
 
 			AddFromString (text);

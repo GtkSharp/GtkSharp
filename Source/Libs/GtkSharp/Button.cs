@@ -25,23 +25,25 @@ namespace Gtk {
 
 	public partial class Button {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_button_new_from_stock(IntPtr stock_id);
-		static d_gtk_button_new_from_stock gtk_button_new_from_stock = FuncLoader.LoadFunction<d_gtk_button_new_from_stock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_button_new_from_stock"));
+		delegate IntPtr d_button_new_with_label_ctor(IntPtr label);
+		static d_button_new_with_label_ctor button_new_with_label_ctor = FuncLoader.LoadFunction<d_button_new_with_label_ctor>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_button_new_with_label"));
 
-		public Button (string stock_id) : base (IntPtr.Zero)
+		// Gtk 3 read this string as a stock id and fell back to using it as a
+		// label. Gtk 4 removed the stock registry along with
+		// gtk_button_new_from_stock and the use_stock property, so the string is
+		// simply the label -- which is what nearly every caller already meant.
+		public Button (string label) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (Button)) {
-				GLib.Value[] vals = new GLib.Value [2];
-				string[] names = new string [2];
+				GLib.Value[] vals = new GLib.Value [1];
+				string[] names = new string [1];
 				names [0] = "label";
-				vals [0] = new GLib.Value (stock_id);
-				names [1] = "use_stock";
-				vals [1] = new GLib.Value (true);
+				vals [0] = new GLib.Value (label);
 				CreateNativeObject (names, vals);
 				return;
 			}
-			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (stock_id);
-			Raw = gtk_button_new_from_stock (native);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (label);
+			Raw = button_new_with_label_ctor (native);
 			GLib.Marshaller.Free (native);
 		}
 

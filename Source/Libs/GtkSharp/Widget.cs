@@ -285,10 +285,7 @@ namespace Gtk {
 
 		static bool DeclaresSignals (byte[] template)
 		{
-			// The template is a UTF-8 GtkBuilder document; "<signal" only ever
-			// appears as the element that requests a handler.
-			var text = System.Text.Encoding.UTF8.GetString (template);
-			return text.IndexOf ("<signal", StringComparison.Ordinal) >= 0;
+			return BuilderXml.DeclaresSignals (System.Text.Encoding.UTF8.GetString (template));
 		}
 
 		delegate IntPtr d_gtk_widget_class_set_template(IntPtr class_ptr, IntPtr template_bytes);
@@ -342,9 +339,17 @@ namespace Gtk {
 			if (Templates.TryGetValue(type, out TemplateData data))
 			{
 				GLib.GType gtype = LookupGType (type);
-				data.SignalConnector.template_object_instance = this;
+
+				// Only templates that declare a <signal> get a SignalConnector,
+				// since connecting them throws under Gtk 4. The instance hand-off
+				// exists purely for that connector, so it is skipped with it.
+				if (data.SignalConnector != null)
+					data.SignalConnector.template_object_instance = this;
+
 				gtk_widget_init_template (Handle);
-				data.SignalConnector.template_object_instance = null;
+
+				if (data.SignalConnector != null)
+					data.SignalConnector.template_object_instance = null;
 				foreach (KeyValuePair<FieldInfo, string> pair in data.FieldBindings)
 				{
 					FieldInfo field = pair.Key;

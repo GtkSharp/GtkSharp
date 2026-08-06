@@ -3,7 +3,7 @@
 
 namespace Samples
 {
-    enum Category
+    public enum Category
     {
         Widgets,
         Dialogs,
