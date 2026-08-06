@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Samples are down from 29 build errors to 14, all structural. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–5 complete, Phase 6 in progress** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. Samples: declaration-surface errors down from 29 to 6; note that Roslyn has not yet type-checked any method body, so the remaining work is larger than that number. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -938,23 +938,41 @@ than from `GtkExpression`; `SymbolTable` maps `GParamSpec` to `IntPtr`.
 Samples are the acceptance test: the repository has no test project (CLAUDE.md
 §Tests), so a running Samples app is the only end-to-end verification available.
 
-Started at 29 build errors. The mechanical tier is done — **14 remain**, all
-structural.
+> **The error count understates the work, and did so from the start.** Roslyn
+> binds declarations before method bodies and stops if the declaration phase has
+> errors, so while any signature, base type or override is unresolved, *no body
+> is ever type-checked*. Confirmed directly: a deliberately bogus type inserted
+> into a method body produced no diagnostic, while one in a method signature
+> did. The counts below therefore measure the **declaration surface only**.
+> `new VBox()` and `Box.PackStart` are already known to be broken and have never
+> appeared in a build log. A survey of the sources finds 46 `PackStart` calls,
+> 16 `.Add(`, 17 `Container` references, plus `VBox`/`HBox` and `ShowAll`
+> awaiting the body phase.
 
-| Fixed | Count | Change |
-|:------|------:|:-------|
-| `Gtk.EventArgs` shadowing | 13 | Handler signatures qualified as `System.EventArgs`. Codegen emits `System.EventHandler` explicitly, so `Gtk.EventArgs` — the args type for signals carrying a `Gdk.Event` — was never the right one here. |
-| `using Atk;` | 2 | Gtk 4 has no separate Atk binding; accessibility moved into Gtk itself as `GtkAccessible`. Both usings were already unused. |
+Declaration surface: started at 29, now **6**.
 
-Remaining, by removed API:
+| Done | Change |
+|:-----|:-------|
+| `Gtk.EventArgs` shadowing (13) | Handler signatures qualified as `System.EventArgs`. Codegen emits `System.EventHandler` explicitly, so `Gtk.EventArgs` — the args type for signals carrying a `Gdk.Event` — was never the right one. |
+| `using Atk;` (2) | Gtk 4 has no separate Atk binding; accessibility moved into Gtk as `GtkAccessible`. Both usings were unused. |
+| `OnPressed` → `OnClicked` (4) | Gtk 4 removed `GtkButton::pressed`; buttons are gesture-driven and `clicked` is the signal that survives. |
+| `DrawingAreaSection` | `Drawn` → the `DrawFunc` property (`gtk_drawing_area_set_draw_func`). The draw function is handed width and height directly, so `Allocation` is gone; it does not own the `cairo_t`, so the `cr.Dispose()` calls — a double free under Gtk 4 — are gone too. |
+| `ApplicationOutput` | Gtk 4 has no `size-allocate` signal. Scrolling to the bottom now happens where text is appended, via a `TextMark` rather than an iterator so it survives until layout runs. |
+| `CompositeWidget` | `GtkBin` is gone: the template is rooted at `GtkBox`, `.glade` became `.ui`, and `<packing>` blocks were dropped (expand/fill are child properties in Gtk 4, position is order). |
+
+**Template signal connection was blocking every `[Template]` widget, not just
+this sample.** `Widget.InitTemplateForType` called `SignalConnector.ConnectSignals`
+unconditionally, and that throws under Gtk 4. Binding `[Child]` fields is a
+separate mechanism that works regardless, so the call is now made only when the
+template actually declares a `<signal>`. Signal-free templates work; templates
+that do want handlers still fail loudly rather than silently ignoring input.
+
+Remaining declaration errors:
 
 | Sample | Needs |
 |:-------|:------|
-| `PolarFixed.cs` | `Container`, `ContainerChild`, `Callback` — deleted with R7 |
-| `CompositeWidgetSection.cs` | `Bin` — deleted in Gtk 4 |
-| `DrawingAreaSection.cs`, `ImageDrawn.cs` | `Drawn`/`OnDrawn` — replaced by `SetDrawFunc` / snapshot |
-| `ApplicationOutput.cs` | `SizeAllocated` — signal removed |
-| 4 × `OnPressed()` | `Button`'s press vfunc — gesture-based in Gtk 4 |
+| `PolarFixed.cs` (4) | `Container`, `ContainerChild`, `Callback` — deleted with R7 |
+| `ImageDrawn.cs` | `OnDrawn` — snapshot-based in Gtk 4 |
 | `CustomCellRenderer.cs` | `OnRender` — snapshot-based in Gtk 4 |
 
 ### Phases 7–8 — not started
