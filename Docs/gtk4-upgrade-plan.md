@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 46 tests, all passing, which found three more null-delegate defects that compiling had missed. See §14.
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 48 tests, all passing, which found five more defects that compiling had missed. See §14.
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -1056,7 +1056,15 @@ gone; `--BuildTarget=Test` is the entry point, and CI calls it.
 | `BindingTests` | 14 behavioural round-trips, each pinning something this migration fixed: the button label ctor, box append/reorder/unparent, `Grid.QueryChild`, `StackPage.Title`, `RGBA.Parse` components, `Snapshot.ToNode` returning a `GskRenderNode`, `ConstantExpression.ValueType`, and `Application.Run` returning after `Quit`. |
 | `GtkFixture` | Owns the single thread Gtk is initialised on and marshals every test body onto it — Gtk may only be used from the thread that called `gtk_init`, and xunit promises no thread affinity. Parallelisation is disabled assembly-wide. Each work item drains pending main-loop work, so a failure in layout or a draw function is attributed to the test that caused it. |
 
-**46 tests, all passing**, against a real Gtk 4 runtime.
+**48 tests, all passing**, against a real Gtk 4 runtime.
+
+`MainWindowTests` closes the one gap between the tests and the smoke run they
+replaced: the smoke run also built `MainWindow`, added it to the application and
+presented it, and nothing else assembles the sections into a window or drives
+`GtkSourceView` and `TreeStore` together. It asserts the Gtk 4 layout the port
+produced — title on the window rather than the header bar, the header bar as
+`Titlebar`, a single `Paned` child with the tree view as its `StartChild`, and a
+populated section model — then presents and checks the window becomes visible.
 
 #### What running it actually found
 
@@ -1068,6 +1076,16 @@ first run, all `NullReferenceException` from a null delegate:
 | `Button(string)` threw for every caller | It called `gtk_button_new_from_stock`, removed in Gtk 4 along with the stock registry and the `use_stock` property. Gtk 3 read the string as a stock id; it is now simply the label, which is what nearly every caller already meant. |
 | Every `[Template]` widget crashed | `InitTemplateForInstance` dereferenced `data.SignalConnector` unconditionally, and the Phase 6 fix only assigns it when the template declares a `<signal>`. |
 | `DeclaresSignals` misread its own documentation | It searched for the text `<signal`, which also matches a *comment* explaining that a document deliberately has none — precisely the case that must not be misread. It now parses the XML (`BuilderXml.cs`), shared by `Builder` and the template path. |
+
+Writing the window test then exposed a fifth defect, this one silent by
+construction. `Program.EnsureApplication` discarded the result of
+`Application.Register`, and registration fails wherever there is no session bus
+— which is the normal case on Windows. An unregistered GApplication **silently
+refuses `AddWindow`**: the window still works, but the application never tracks
+it, and `Application.Windows` stays empty with nothing said. The result is now
+checked and a warning printed. The test asserts `Visible` after `Present`
+instead of asserting window tracking, because the latter is environment
+dependent and would fail for reasons that are not defects.
 
 Then the test project found one more that the smoke run had masked:
 `ButtonSection` adds an action to the application, and the smoke run happened to
