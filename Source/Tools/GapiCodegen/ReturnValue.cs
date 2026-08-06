@@ -182,8 +182,11 @@ namespace GtkSharp.Generation {
 
 			if (IGen is IManualMarshaler)
 				return (IGen as IManualMarshaler).AllocNative (var);
+			// A fundamental type is a GLib.Opaque, so it spells the transfer-full
+			// form the same way an opaque does.
 			else if (IGen is ObjectGen && owned)
-				return var + " == null ? IntPtr.Zero : " + var + ".OwnedHandle";
+				return var + " == null ? IntPtr.Zero : " + var +
+					((IGen as ObjectGen).IsFundamental ? ".OwnedCopy" : ".OwnedHandle");
 			else if (IGen is OpaqueGen && owned)
 				return var + " == null ? IntPtr.Zero : " + var + ".OwnedCopy";
 			else

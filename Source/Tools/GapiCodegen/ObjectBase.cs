@@ -190,6 +190,15 @@ namespace GtkSharp.Generation {
 
 		public override string FromNative (string var, bool owned)
 		{
+			// A fundamental type is not a GObject, so the GType->managed-type
+			// map GLib.Object.GetObject consults has no entry for it and
+			// g_object_ref/unref would be the wrong lifetime. Resolve through
+			// GLib.Opaque instead, which instantiates via the IntPtr ctor and
+			// dispatches disposal to the type's own ref/unref.
+			if (Elem.GetAttributeAsBoolean ("fundamental"))
+				return "GLib.Opaque.GetOpaque (" + var + ", typeof (" + QualifiedName + "), " +
+					(owned ? "true" : "false") + ") as " + QualifiedName;
+
 			return "GLib.Object.GetObject(" + var + (owned ? ", true" : "") + ") as " + QualifiedName;
 		}
 

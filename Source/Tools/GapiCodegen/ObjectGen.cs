@@ -76,6 +76,12 @@ namespace GtkSharp.Generation {
 
 		public override string CallByName (string var, bool owned)
 		{
+			// GLib.Opaque spells the transfer-full form OwnedCopy, and for a
+			// refcounted fundamental the Copy override below makes it mean
+			// "take a reference and hand that one over", leaving ours intact.
+			if (IsFundamental)
+				return String.Format ("{0} == null ? IntPtr.Zero : {0}.{1}", var, owned ? "OwnedCopy" : "Handle");
+
 			return String.Format ("{0} == null ? IntPtr.Zero : {0}.{1}", var, owned ? "OwnedHandle" : "Handle");
 		}
 
@@ -159,8 +165,22 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t" + attr);
 			sw.Write ("\t{0} {1}partial class " + Name, IsInternal ? "internal" : "public", IsAbstract ? "abstract " : "");
 			string cs_parent = table.GetCSType(Elem.GetAttribute("parent"));
+
+			// A fundamental type's root has no parent, because it *is* a root:
+			// a GTypeInstance with its own ref/unref rather than a GObject
+			// descendant. GLib.Opaque is the right base -- it wraps a bare
+			// handle, tracks ownership and dispatches disposal through the
+			// Ref/Unref hooks emitted below, so the lifetime lands on
+			// gtk_expression_unref rather than g_object_unref.
+			if (cs_parent == "" && IsFundamental)
+				cs_parent = "GLib.Opaque";
+
 			if (cs_parent != "") {
-				di.objects.Add (CName, QualifiedName);
+				// Not registered with the GType->managed-type map: that map is
+				// consulted by GLib.Object.GetObject, which never sees these.
+				// Opaque resolves through GetOpaque and the IntPtr ctor instead.
+				if (!IsFundamental)
+					di.objects.Add (CName, QualifiedName);
 				sw.Write (" : " + cs_parent);
 			}
 			foreach (string iface in interfaces) {
@@ -177,6 +197,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 
 			GenCtors (gen_info);
+			GenFundamentalRefcounting (gen_info);
 			GenProperties (gen_info, null);
 			GenFields (gen_info);
 			GenChildProperties (gen_info);
@@ -259,14 +280,137 @@ namespace GtkSharp.Generation {
 			Statistics.ObjectCount++;
 		}
 
+		/// <summary>
+		/// True for a GLib fundamental type: a GTypeInstance rooted at itself
+		/// rather than at GObject, refcounted by its own ref/unref pair.
+		/// Gtk 4 has three -- GdkEvent, GskRenderNode and GtkExpression.
+		/// </summary>
+		public bool IsFundamental {
+			get { return Elem.GetAttributeAsBoolean ("fundamental"); }
+		}
+
+		/// <summary>
+		/// Emits the Ref/Unref overrides and finalizer on a fundamental root.
+		/// GIR carries ref-func/unref-func only on the root, which is where the
+		/// overrides belong -- subclasses inherit them and must not re-emit.
+		/// The shape matches OpaqueGen's, so disposal behaves identically for
+		/// every GLib.Opaque in the binding.
+		/// </summary>
+		void GenFundamentalRefcounting (GenerationInfo gen_info)
+		{
+			if (!IsFundamental)
+				return;
+
+			// Removed from Methods, as OpaqueGen does: refcounting is the base
+			// class's job now, and leaving them would emit the P/Invoke import
+			// a second time and offer a public Ref()/Unref() that lets callers
+			// desynchronise Owned from the real refcount.
+			Method ref_ = TakeMethodByCName (Elem.GetAttribute ("ref_func"));
+			Method unref = TakeMethodByCName (Elem.GetAttribute ("unref_func"));
+			if (ref_ == null && unref == null)
+				return;
+
+			StreamWriter sw = gen_info.Writer;
+
+			if (ref_ != null) {
+				ref_.GenerateImport (sw);
+				sw.WriteLine ("\t\tprotected override void Ref (IntPtr raw)");
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\tif (!Owned) {");
+				sw.WriteLine ("\t\t\t\t" + ref_.CName + " (raw);");
+				sw.WriteLine ("\t\t\t\tOwned = true;");
+				sw.WriteLine ("\t\t\t}");
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+
+				// GLib.Opaque's default Copy returns "this" without taking a
+				// reference, which is right for a plain boxed pointer and wrong
+				// for a refcounted one. Returning a *separate* owning wrapper is
+				// what makes both callers correct: GetOpaque on a transfer-none
+				// value gets a wrapper that took its own reference, and
+				// OwnedCopy hands a fresh reference to the callee while this
+				// wrapper keeps -- and still unrefs -- its own.
+				sw.WriteLine ("\t\tprotected override GLib.Opaque Copy (IntPtr raw)");
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\t" + ref_.CName + " (raw);");
+				sw.WriteLine ("\t\t\tvar copy = (GLib.Opaque) Activator.CreateInstance (GetType (), new object[] { raw });");
+				sw.WriteLine ("\t\t\tcopy.Owned = true;");
+				sw.WriteLine ("\t\t\treturn copy;");
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+			}
+
+			if (unref == null)
+				return;
+
+			unref.GenerateImport (sw);
+			sw.WriteLine ("\t\tprotected override void Unref (IntPtr raw)");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tif (Owned) {");
+			sw.WriteLine ("\t\t\t\t" + unref.CName + " (raw);");
+			sw.WriteLine ("\t\t\t\tOwned = false;");
+			sw.WriteLine ("\t\t\t}");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+
+			// Unref off the finalizer thread, as OpaqueGen does: these types are
+			// not thread-safe and the last reference commonly belongs to the
+			// main loop.
+			sw.WriteLine ("\t\tclass FinalizerInfo {");
+			sw.WriteLine ("\t\t\tIntPtr handle;");
+			sw.WriteLine ("\t\t\tpublic uint timeoutHandlerId;");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t\tpublic FinalizerInfo (IntPtr handle)");
+			sw.WriteLine ("\t\t\t{");
+			sw.WriteLine ("\t\t\t\tthis.handle = handle;");
+			sw.WriteLine ("\t\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t\tpublic bool Handler ()");
+			sw.WriteLine ("\t\t\t{");
+			sw.WriteLine ("\t\t\t\t{0} (handle);", unref.CName);
+			sw.WriteLine ("\t\t\t\tGLib.Timeout.Remove (timeoutHandlerId);");
+			sw.WriteLine ("\t\t\t\treturn false;");
+			sw.WriteLine ("\t\t\t}");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t~{0} ()", Name);
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tif (!Owned)");
+			sw.WriteLine ("\t\t\t\treturn;");
+			sw.WriteLine ("\t\t\tFinalizerInfo info = new FinalizerInfo (Handle);");
+			sw.WriteLine ("\t\t\tinfo.timeoutHandlerId = GLib.Timeout.Add (50, new GLib.TimeoutHandler (info.Handler));");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+		}
+
+		Method TakeMethodByCName (string cname)
+		{
+			if (String.IsNullOrEmpty (cname))
+				return null;
+
+			foreach (Method m in Methods.Values) {
+				if (m.CName != cname)
+					continue;
+
+				Methods.Remove (m.Name);
+				return m;
+			}
+
+			return null;
+		}
+
 		protected override void GenCtors (GenerationInfo gen_info)
 		{
-			if (!Elem.HasAttribute("parent"))
+			// A fundamental root has no parent but still needs the IntPtr ctor:
+			// GLib.Opaque.GetOpaque instantiates through it.
+			if (!Elem.HasAttribute("parent") && !IsFundamental)
 				return;
 			string defaultconstructoraccess = Elem.HasAttribute ("defaultconstructoraccess") ? Elem.GetAttribute ("defaultconstructoraccess") : "public";
 
 			gen_info.Writer.WriteLine ("\t\t"+ defaultconstructoraccess + " " + Name + " (IntPtr raw) : base(raw) {}");
-			if (ctors.Count == 0 && !DisableVoidCtor) {
+			// CreateNativeObject is g_object_new_with_properties: subclassing a
+			// fundamental type from managed code is not a thing, so no void ctor.
+			if (ctors.Count == 0 && !DisableVoidCtor && !IsFundamental) {
 				gen_info.Writer.WriteLine();
 				gen_info.Writer.WriteLine("\t\tprotected " + Name + "() : base(IntPtr.Zero)");
 				gen_info.Writer.WriteLine("\t\t{");

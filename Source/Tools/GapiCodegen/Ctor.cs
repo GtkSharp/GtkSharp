@@ -33,14 +33,27 @@ namespace GtkSharp.Generation {
 		private bool deprecated;
 		private string name;
 		private bool needs_chaining;
+		private bool creates_native_object;
+		private bool fundamental;
 
 		public Ctor (XmlElement elem, ClassBase implementor) : base (elem, implementor)
 		{
 			preferred = elem.GetAttributeAsBoolean ("preferred");
 			deprecated = elem.GetAttributeAsBoolean("deprecated");
 
-			if (implementor is ObjectGen)
+			ObjectGen obj = implementor as ObjectGen;
+			if (obj != null) {
 				needs_chaining = true;
+
+				// Chaining serves two purposes, and a fundamental type wants
+				// only the first: reach the base IntPtr ctor, and -- when the
+				// instance is really a managed subclass -- build the native
+				// object through g_object_new_with_properties instead. A
+				// fundamental type is not a GObject and cannot be subclassed
+				// from managed code, so that second branch has nothing to call.
+				creates_native_object = !obj.IsFundamental;
+				fundamental = obj.IsFundamental;
+			}
 
 			name = implementor.Name;
 		}
@@ -117,7 +130,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t{0} {1}{2} ({3}) {4}", Protection, Safety, name, Signature.ToString(), needs_chaining ? ": base (IntPtr.Zero)" : "");
 				sw.WriteLine("\t\t{");
 
-				if (needs_chaining) {
+				if (needs_chaining && creates_native_object) {
 					sw.WriteLine ("\t\t\tif (GetType () != typeof (" + name + ")) {");
 					
 					if (Parameters.Count == 0) {
@@ -174,7 +187,16 @@ namespace GtkSharp.Generation {
 					sw.WriteLine ("\t\t\t}");
 				}
 	
-				Body.Initialize(gen_info, false, false, ""); 
+				// GLib.Opaque's Raw setter takes a reference on assignment, via
+				// the Ref hook, for the common case of wrapping a borrowed
+				// pointer. A constructor result is transfer-full, so that
+				// reference would be one too many and the type would never
+				// reach a refcount of zero. Claiming ownership first makes the
+				// hook -- which is guarded on !Owned -- correctly do nothing.
+				if (fundamental)
+					sw.WriteLine ("\t\t\tOwned = true;");
+
+				Body.Initialize(gen_info, false, false, "");
 				sw.WriteLine("\t\t\t{0} = {1}({2});", container_type.AssignToName, CName, Body.GetCallString (false));
 				Body.Finish (sw, "");
 				Body.HandleException (sw, "");

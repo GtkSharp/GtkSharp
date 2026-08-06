@@ -155,7 +155,8 @@ namespace Gtk {
 
 		public static Gdk.Event CurrentEvent {
 			get {
-				return Gdk.Event.GetEvent (gtk_get_current_event ());
+				// gtk_get_current_event is transfer-full.
+				return GLib.Opaque.GetOpaque (gtk_get_current_event (), typeof (Gdk.Event), true) as Gdk.Event;
 			}
 		}
 
