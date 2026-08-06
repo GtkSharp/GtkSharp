@@ -19,6 +19,10 @@
     <!-- Coverage is measured to find untested areas, never chased as a target;
          see Docs/testing.md. -->
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <!-- Lets a test skip at runtime with a reason. WebKit and JavaScriptCore
+         are not present in every environment, and a test that silently returns
+         early would be a false pass. -->
+    <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +36,8 @@
     <ProjectReference Include="..\..\Libs\GtkSharp\GtkSharp.csproj" />
     <ProjectReference Include="..\..\Libs\AdwaitaSharp\AdwaitaSharp.csproj" />
     <ProjectReference Include="..\..\Libs\GtkSourceSharp\GtkSourceSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\JavaScriptCoreSharp\JavaScriptCoreSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\WebkitGtkSharp\WebkitGtkSharp.csproj" />
     <!-- The samples are the widest exercise of the bindings this repository
          has, so the section-construction tests drive them directly. -->
     <ProjectReference Include="..\..\Samples\Samples.csproj" />
