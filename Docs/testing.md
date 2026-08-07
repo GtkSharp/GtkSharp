@@ -567,18 +567,18 @@ EOF
 Ranked by *uncovered lines*, that list is a work queue. Every defect found in
 §"Fixed" below came off it.
 
-At 484 tests:
+At 556 tests:
 
 | | line rate |
 |:--|--:|
-| **hand-written (Generated and Samples excluded)** | **50.3%** |
-| overall, including generated | 10.4% |
-| `GLibSharp` hand-written | 58.8% |
-| `CairoSharp` hand-written | 52.3% |
+| **hand-written (Generated and Samples excluded)** | **52.7%** |
+| overall, including generated | 10.7% |
+| `GLibSharp` hand-written | 61.5% |
+| `CairoSharp` hand-written | 52.1% |
 | `GioSharp` hand-written | 52.1% |
 | `PangoSharp` hand-written | 42.2% |
 | `GdkSharp` hand-written | 40.4% |
-| `GtkSharp` hand-written | 32.7% |
+| `GtkSharp` hand-written | 38.0% |
 
 `Gtk/SignalConnector.cs` will not move: `ConnectSignals` throws
 `NotSupportedException` because Gtk 4 replaced

@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them. **Phase 10 complete — gate 7 passed**: the suite now runs on Linux (Debian trixie, Gtk 4.18.6, real WebKit), 226 of 227 passing with one documented skip, which found three more defects that Windows structurally could not show — including one where a single class missing from an older installed library disabled an entire assembly (§16). **Phase 11 complete**: 403 tests, hand-written coverage 30.5% → 43.6%, four further defects fixed — among them `GLib.PtrArray`, which had never worked at all because its symbols were looked up in the wrong library (§17). **Phase 12 complete**: 484 tests, 50.3%, six more defects — including `Cairo.Context.FontMatrix`, whose `out`-on-a-class ABI corrupted the stack and killed the test host outright (§18).
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them. **Phase 10 complete — gate 7 passed**: the suite now runs on Linux (Debian trixie, Gtk 4.18.6, real WebKit), 226 of 227 passing with one documented skip, which found three more defects that Windows structurally could not show — including one where a single class missing from an older installed library disabled an entire assembly (§16). **Phase 11 complete**: 403 tests, hand-written coverage 30.5% → 43.6%, four further defects fixed — among them `GLib.PtrArray`, which had never worked at all because its symbols were looked up in the wrong library (§17). **Phase 12 complete**: 484 tests, 50.3%, six more defects — including `Cairo.Context.FontMatrix`, whose `out`-on-a-class ABI corrupted the stack and killed the test host outright (§18). **Phase 13 complete**: 556 tests, 52.7%, four more defects — among them `TreeModelSort.AppendValues` recursing into itself forever, and a constructor hazard that only reaches consumers of the package (§19).
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -753,6 +753,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **10** | First run on Linux (gate 7) | ✅ **complete** — 227 tests, 226 pass, 1 skip |
 | **11** | Hand-written layer test sweep | ✅ **complete** — 403 tests; hand-written coverage 30.5% → 43.6%; four more defects fixed |
 | **12** | Second sweep: the files with no coverage | ✅ **complete** — 484 tests; 43.6% → 50.3%; six more defects fixed, one of them a process-killing ABI |
+| **13** | Third sweep: the tree wrappers, main loop, Object and Value | ✅ **complete** — 556 tests; 50.3% → 52.7%; four more defects, and the "intermittent" abort explained |
 
 ### Phase 1 — complete
 
@@ -1409,3 +1410,64 @@ and looked intermittent. Phase 13 has the detail.
 
 Remaining, largest first: `GLib/Value.cs` (314 uncovered), `Gtk/TreeStore.cs`
 (244), `GLib/Object.cs` (200), `GLib/Source.cs` (206), `Cairo/Surface.cs` (142).
+
+---
+
+## 19. Phase 13 — the tree wrappers, the main loop, Object and Value
+
+Seventy-two more tests (556 total, 553 passing on Windows with three WebKit
+skips) took the hand-written figure from 50.3% to **52.7%**. The percentage moved
+least of the three sweeps and the findings were the worst, which is the argument
+for reading the queue rather than the number.
+
+**`TreeModelSort.AppendValues` recursed into itself forever.** It read
+`return AppendValues ((Array) values);`, and there is no `AppendValues (Array)`
+overload, so the cast bound straight back to the same method with the array
+wrapped in a fresh `object[]`. A stack overflow cannot be caught, so this took
+the process down. A sort model has no rows of its own, so it now says so and
+names the call that works.
+
+**Fourteen `SetValue` overloads threw `NotImplementedException`.** Refusing is
+correct — `GtkTreeModel` has no set operation, because writing a row is the
+store's job — but the exception read as "unfinished" rather than "ask the child
+model". They now throw `NotSupportedException` naming
+`ConvertIterToChildIter`, and the tests follow that advice to prove it works.
+
+**`GLib.Source` was almost unreachable.** It has properties for priority, name,
+recursion, its context and whether it has been destroyed — 272 lines — and
+`Idle.Add`/`Timeout.Add` return an id that nothing could turn into a `Source`.
+`MainContext.FindSourceById` does that now. `Source.Destroy` was missing for a
+related reason: `g_source_destroy` was already loaded for `Free`, but no public
+method reached it, so `IsDestroyed` had nothing to pair with.
+
+**A number can bind to the raw-pointer constructor.** Since .NET 7 `IntPtr` is
+`nint` and `int` converts to it implicitly, so `new ValueArray(2)`,
+`new Date(2)` and `new DateTime(2)` all reach the pointer overload and
+dereference address 2. The wrapper libraries are `LangVersion 9`, where the
+conversion does not exist — so this reaches only consumers of the package, which
+is the worst place for a hazard to live and the reason it survived.
+`Opaque.CheckRaw` rejects addresses in the first page, and returns the pointer so
+it can be used in a base-call argument: a guard in the constructor body throws
+*after* `base(raw)`, and the finalizer frees address 2 regardless.
+
+### The abort recorded in §18 as unexplained
+
+It was not the `GLib.Opaque` over-referencing suspected at the time. A test in
+`CairoTextAndPathTests` leaked a `Cairo.Path`; finalising one takes the process
+down, and because that happens whenever the GC gets round to it, the crash landed
+on an unrelated test and looked intermittent. The suite now runs 556 stably
+across three plain and three instrumented runs.
+
+Three crashes across Phases 12 and 13 shared a shape worth stating once: **a run
+whose total is lower than it should be, under a "Passed!" line**. The pass count
+looks fine because the tests that finished did pass. Check the total. And when a
+crash appears to move between runs, suspect a finalizer before suspecting
+nondeterminism.
+
+Remaining, largest first: `Cairo/Context.cs` (398 uncovered), `GLib/Marshaller.cs`
+(188), `Gtk/SignalConnector.cs` (178, unreachable by design — see §18),
+`GdkSharp/Pixbuf.cs` (172), `GLib/HookList.cs` (118, none).
+
+**Not yet verified on Linux.** WSL's service stopped (`Wsl/0x80070422`) before
+this phase could be run there, and restarting it needs elevation. Everything
+above is Windows-only evidence.
