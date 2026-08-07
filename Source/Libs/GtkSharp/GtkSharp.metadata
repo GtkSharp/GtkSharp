@@ -645,6 +645,31 @@
   <!--
     The GtkExpression hierarchy is bound as GLib fundamental types: the api.xml
     carries fundamental="true" plus gtk_expression_ref/unref on the root, and
-    ObjectGen roots it at GLib.Opaque rather than GLib.Object. Nothing to hide.
+    ObjectGen roots it at GLib.Opaque rather than GLib.Object.
+
+    Five entry points in it need shapes the api.xml cannot express; all are
+    rebound in Source/Libs/GtkSharp/{Expression,ExpressionWatch,ClosureExpression,
+    CClosureExpression,TryExpression}.cs.
+
+    gtk_expression_evaluate and gtk_expression_watch_evaluate fill a GValue the
+    CALLER provides - the same caller-allocates shape as
+    gdk_content_provider_get_value. Codegen copied the managed Value out to
+    unmanaged memory, called, and then freed that memory without reading it
+    back, so the answer was discarded every time and the method could not do
+    the one thing it exists for.
+
+    gtk_expression_bind takes its receiver as (transfer full): the watch it
+    creates owns the expression. An api.xml <method> describes its PARAMETERS'
+    ownership and has no way to describe the instance's, so the wrapper went on
+    owning a reference the callee had eaten and both unreffed.
+
+    gtk_closure_expression_new and gtk_try_expression_new take "T **items plus a
+    count", for which codegen has no rule; each came out taking a single
+    Expression whose own first machine word the callee then read as element zero.
   -->
+  <attr path="/api/namespace/object[@cname='GtkExpression']/method[@cname='gtk_expression_evaluate']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkExpression']/method[@cname='gtk_expression_bind']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='GtkExpressionWatch']/method[@cname='gtk_expression_watch_evaluate']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkClosureExpression']/constructor[@cname='gtk_closure_expression_new']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkTryExpression']/constructor[@cname='gtk_try_expression_new']" name="hidden">1</attr>
 </metadata>
