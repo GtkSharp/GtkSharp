@@ -15,8 +15,8 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 871 tests Windows reports 868 passing with 3 skips, and
-the forky container 870 passing with 1.
+so only broke there. At 915 tests Windows reports 912 passing with 3 skips, and
+the forky container 914 passing with 1.
 
 ### Running the suite on the Gtk the bindings describe
 
@@ -169,6 +169,7 @@ investigate — not something to relax.
 | `AuthoringTests` | The other direction: a C# program **writing** Gtk types rather than calling them, which is the code that runs C into managed. GType registration and `[GLib.TypeName]`, `[GLib.Property]` read and written through GObject rather than through C#, `notify::`, `Gtk.Builder` constructing a managed type by name, declaring an activation signal by overriding `OnActivate`, virtual overrides proved by asking a *parent* for the answer, chaining to a base vfunc, a `Gtk.LayoutManager` subclass placing children by transforms the test does the arithmetic for, and `[Gtk.Template]`/`[Child]`. |
 | `GLibDeepTests` | The rest of hand-written GLib: `HookList`'s ABI description checked against the struct `g_hook_list_init` actually writes, the container half of `Variant`/`VariantType` (tuples, arrays, maybes, dict entries, subtyping), `Bytes` slicing and ownership, the `Marshaller` helpers below the ones every binding uses, and the two branches of `GLib.Signal` that only a returning signal or an emission hook reaches. |
 | `GioDeepTests` | The half of Gio that needs a filesystem and a main loop. GSettings over a schema the test writes and compiles with `glib-compile-schemas`, stored through a **keyfile backend** so the oracle is the ini file on disk rather than anything GSettings remembers: defaults, writes, resets, user value versus default, ranges, the `changed` signal, delay/apply/revert, enum and flags nicknames, a child schema, and a two-way binding to a widget property. Then `GFileMonitor` over a directory the test builds, the async pattern end to end (callback thread, `GAsyncResult`, what `Finish` returns), `GCancellable` stopping a walk that has already started, `GFileInfo` attributes, `GFileEnumerator`, and `GFile` copy/move/rename/delete with their error codes. |
+| `GrapheneMathTests` | Graphene, and the arithmetic half of Gsk — the corner of the tree with the best oracles there are, because every answer can be worked out in the test: a matrix times its inverse, a 3-4-5 triangle's area, a ray entering a box spanning [-1,1] at t=4, the six planes of a 60-degree frustum meeting the axis at 30 degrees. Matrix multiply/invert/decompose/transpose/interpolate/project, the vectors, rectangle intersection and the in-place trap, quad, triangle and barycentric coordinates, box, sphere, plane, ray, frustum, euler and quaternion; then `GskTransform`'s conversions and render-node bounds. Four codegen defects and a heap corruption; four pieces of graphene behaviour pinned because the obvious expectation is wrong. |
 | `ExpressionTests` | `GtkExpression`: how the Gtk 4 list stack reads a value out of an item, and how a property is kept in step with one on another object. Property, constant, object, closure, cclosure and try expressions; evaluation against a this-object and the GValue it fills; watches and their invalidation; `Bind` and what a failed evaluation does to the target; expression-driven `StringSorter`, `NumericSorter`, `StringFilter` and `BoolFilter` over a list model. Four defects; the oracles are the length of a word, an alphabet and a set of ages chosen here. |
 
 ### Guards against vacuous passes
@@ -1534,3 +1535,208 @@ violations the rest of this document is about in one step.
   `/usr/bin`. A test that needs it has to look in the multiarch directory or it
   will skip on the reference container while passing on Windows, where gvsbuild
   ships it in `bin/`.
+
+## Fixed: the two things graphene's gir says that nothing else's does
+
+Graphene had 52% coverage and no defects on record, which turned out to mean
+that almost none of it existed.
+
+**Its predicates returned a type the symbol table did not know.** Graphene's
+headers include `<stdbool.h>`, so its gir says
+`<type name="gboolean" c:type="bool"/>` where every other library in the tree
+says `gboolean`. `GirToGapi` writes the C type through, `SymbolTable` had no
+entry for `bool`, and codegen drops a method whose return type does not
+resolve — **silently, and all 49 of them**:
+
+| gone | what could not be done |
+|:--|:--|
+| `graphene_matrix_inverse`, `graphene_matrix_decompose` | undo or take apart a transform |
+| `graphene_matrix_is_2d`, `_is_identity`, `_is_singular` | ask a matrix anything |
+| `graphene_rect_contains_point`, `_contains_rect`, `_intersection` | hit-test or clip |
+| `graphene_box_intersection`, `_contains_point`, `_contains_box` | the same in 3D |
+| `graphene_ray_intersects_*`, `graphene_frustum_intersects_*` | picking, culling |
+| every `_equal` and `_near`, on every type | compare two values |
+
+`CBoolGen` maps it. C99's `bool` is **one byte** and only the low byte of the
+return register is architecturally defined, so it marshals as a `byte` and is
+compared against zero rather than being handed to the runtime as a `bool`,
+whose default marshalling reads the four bytes a `gboolean` occupies. gcc and
+clang zero-extend; MSVC does not promise to, and gvsbuild is MSVC.
+
+**And a fixed-size array parameter came out as one element.** `CTypeMapper`
+drops `float v[16]` to its element type, which is right for a *field* — the
+`array_len` attribute carries the count — and wrong for a parameter, where it
+left the binding passing a single `float` in a vector register to a callee that
+writes sixty-four bytes through a pointer register nobody set. Twenty-one
+parameters, across four assemblies:
+
+- `graphene_matrix_to_float` / `_init_from_float` — reading a matrix's sixteen
+  elements out, and building one from them, which is the most basic thing there
+  is to do with a matrix.
+- `graphene_vec2/3/4_to_float` / `_init_from_float`,
+  `graphene_triangle_init_from_float`.
+- `gsk_border_node_new` and `gtk_snapshot_append_border` — `const float [4]`
+  plus `const GdkRGBA [4]`, so GSK read four colours out of one.
+- `gdk_texture_downloader_download_bytes_with_planes` — two `gsize [4]`
+  out-buffers filled through scalars.
+
+`ArrayParameter` already had a `FixedArrayLength` field and nothing working
+behind it: it emitted an allocation for a by-value parameter and passed the
+array as `out T[]`, which is a `T**`. It now sizes and pins the buffer for a
+callee-filled one, **checks the length** of a caller-supplied one — C cannot,
+because there is no count argument — and never passes an array as an `out`.
+
+Four of the twenty-one are N boxed structs end to end, which no attribute can
+express: every graphene type is bound as a class, so a `Vec3[]` marshals as an
+array of addresses rather than as 8 x 16 bytes. `Parameters.Validate` drops
+those with a warning instead of emitting the overrun, and
+`GrapheneSharp/FixedVertexArrays.cs` binds `Rect.GetVertices`,
+`Box.GetVertices`, `Frustum.GetPlanes` and `Quad.InitFromPoints` by hand over
+contiguous buffers.
+
+## Fixed: graphene's SIMD vector is aligned and the ABI description could not see it
+
+`graphene_simd4f_t` is `__m128` on any SIMD build, so it aligns to 16. Its
+managed replica is four plain floats and aligns to 4, and `AbiStruct` measures a
+field's alignment by asking the runtime where the replica lands after a leading
+`sbyte` — so **everything embedding it was measured short**:
+
+| | abi_info said | C |
+|:--|--:|--:|
+| `graphene_plane_t` `{ vec3; float }` | 20 | 32 |
+| `graphene_euler_t` `{ vec3; enum }` | 20 | 32 |
+| `graphene_sphere_t` `{ vec3; float }` | 20 | 32 |
+| `graphene_frustum_t` `{ plane[6] }` | 120 | 192 |
+
+That number is what every caller-allocates out parameter of those types
+allocates before handing the pointer to graphene, so `Plane.Negate`,
+`Plane.Normalize`, `Plane.Transform`, `Triangle.Plane`, `Box.BoundingSphere`,
+`Sphere.Translate` and `Euler.Reorder` each let it write twelve bytes past the
+end. Reading a frustum's planes gave four plausible ones and two assembled out
+of denormal floats, because the stride was twelve short — the four that looked
+right are how it survived.
+
+The measurements come from graphene: writing a plane with a marked constant into
+a zeroed block puts the constant at offset **16**, not 12, and the six planes of
+a 60-degree perspective frustum land **32 bytes** apart.
+`GenBase.GenerateAlign` now honours an `align` attribute on a `<struct>`, and
+`GrapheneSharp.metadata` states it once, for `graphene_simd4f_t`. Every other
+graphene type's size was already right and stays right.
+
+## Fixed: freeing a caller-allocated block with the wrong allocator
+
+The worst of the four, and the one with no symptom at the call site.
+
+A caller-allocates out parameter is storage this side provides and the wrapper
+then *owns*, so it ends up at the type's own free function. **Those do not all
+free what `g_malloc` allocates.** Graphene allocates everything holding a SIMD
+vector with `graphene_aligned_alloc` — `_aligned_malloc` where the compiler has
+it — and frees it with `_aligned_free`, which cannot be given a `g_malloc`
+pointer. `Matrix.Multiply`, `Matrix.Inverse`, `Matrix.Transpose`, `Vec3.Cross`,
+`Vec3.Normalize`, `Plane.Negate` and two dozen others handed it one every time.
+
+Nothing happens at the call. The generated `Opaque` finalizer queues its free
+onto a **50 ms main-loop timeout**, so the damage lands whenever the GC ran and
+the loop turned — in a test run that is some unrelated test, as a bare "test
+host process crashed" with an empty diagnostic log and a total that moves
+between runs. Asking Windows for the exit code is what named it:
+`0xC0000374`, `STATUS_HEAP_CORRUPTION`. Reproducing it needs all three of
+allocate, collect and pump; twenty rounds of that fail every time and a single
+call never does.
+
+`graphene_rect_t` is the exception that let 871 tests pass over this: it needs
+no alignment, so its allocator is `calloc` and its free is `free`. Nothing in
+the suite had ever allocated a graphene *matrix* or *vector* through this path.
+
+`GLib.Opaque.AllocateNative` now takes the block from the type's own allocator —
+its parameterless constructor (`new Graphene.Vec3 ()` *is*
+`graphene_vec3_alloc`) or its static `Alloc` — and falls back to the zeroed
+`g_malloc` that all of these used to get for the two types that have neither,
+`Gtk.BitsetIter` and `Gsk.PathPoint`. The factory is resolved once per type and
+cached, because this is what every matrix multiply allocates.
+`Pango.GlyphString` was in the same state and is fixed by the same change.
+
+**The rule: whatever will free the block has to have allocated it.** The size
+being right is not enough.
+
+Caller-allocated buffers are also `g_malloc0`'d rather than `g_malloc`'d now,
+because a callee does not always write the whole struct — see
+`graphene_sphere_translate` below. Zeroing does not make the answer right; it
+makes it the same every time, which is the difference between a defect a test
+can pin and one that looks like a flake.
+
+## Graphene: behaviour worth knowing
+
+Four of these were found by an assertion that turned out to be wrong, and every
+one of them is a plausible assumption that produces silently wrong results.
+
+- **`graphene_matrix_determinant` returns the *negative* determinant.** The
+  identity's is `-1`. The magnitude is right, so it survives every test that
+  squares it or compares it against zero — and the sign is the one thing a
+  determinant is actually used for, since a negative one means the handedness
+  was flipped. A renderer reversing its winding order on `determinant < 0` does
+  it on exactly the wrong matrices. `IsSingular` is unaffected: zero has no
+  sign.
+- **`graphene_euler_reorder` does not preserve the rotation.** It reads like a
+  change of spelling and is documented as one. Reordering `Sxyz(10,20,30)` into
+  `Rzyx` gives the angles the textbook identity predicts — `(30,20,10)` — and
+  then graphene's own `to_matrix` reads them back as a different rotation, the
+  3x3 anti-transpose. Of the thirty-one orders only the ones that are `Sxyz`
+  under another name survive the round trip. Normalising a set of euler angles
+  into a preferred order silently rotates the object.
+- **`graphene_matrix_interpolate` is not exact at its endpoints.** It does not
+  blend the sixteen elements: it decomposes both matrices into translation,
+  scale, shear, perspective and a quaternion, blends those and multiplies a
+  fresh matrix out. Factor 0 therefore does *not* return the source — it returns
+  it carrying about 2.4e-4 of rotation that was never there. Quaternion slerp,
+  which has no decomposition in the way, *is* exact at 0 and within a couple of
+  ulp at 1.
+- **`graphene_sphere_translate` never copies the radius.** It assigns the centre
+  and leaves the rest of the struct as it found it, so the moved sphere comes
+  back with whatever radius the allocator had lying there — 1.49e15 on one run
+  before caller-allocated buffers were zeroed, 0 afterwards, and `IsEmpty` then
+  says the sphere has vanished.
+- **`a.Multiply (b)` applies `a` first.** The documentation says "multiplies a
+  by b", which reads like the mathematical product *AB* and is the other way
+  round from what happens to a point. It only shows up where the operations do
+  not commute, which a scale and a translate do not.
+- **`Inset`, `Offset` and `Normalize` change the rectangle they are called on;
+  `InsetR`, `OffsetR` and `NormalizeR` do not.** graphene spells the in-place
+  operation without a suffix, which is the reverse of what a C# caller expects
+  from a method that returns a value: `var smaller = rect.Inset (1, 1);`
+  compiles, reads like a pure function, and shrinks the rectangle the caller
+  still holds.
+- **`graphene_rect_contains_point` is inclusive on all four edges**, so two
+  rectangles laid side by side both contain the point where they meet.
+  Hit-testing adjacent regions by asking each in turn has no unique answer on a
+  boundary; the order of the walk decides it. `graphene_box_contains_point` is
+  the same.
+- **A failed `Intersection` still fills its out parameter.** It is a zeroed
+  rectangle, not null, so the `bool` is the only thing separating "no overlap"
+  from "an empty rectangle at the origin" — and a caller who tests the result
+  for null concludes that everything intersects.
+- **`graphene_triangle_get_barycoords` hands back the *third* and *second*
+  weights.** `res.x` is the weight of **c** and `res.y` the weight of **b**,
+  with a's left implicit as `1 - x - y`. So vertex `a` comes back as `(0,0)`,
+  `b` as `(0,1)` and `c` as `(1,0)`, and code that reconstructs a point from
+  them swaps two corners with no error.
+- **`Euler.Alpha`, `Beta` and `Gamma` follow the rotation order, not x, y, z.**
+  They are the first, second and third rotations applied, in whatever order the
+  angle carries — for `Sxyz` they coincide with X, Y and Z, which is exactly why
+  reading alpha as "the x angle" survives testing, and for `Ryxz` alpha is the
+  *y* angle. They are also in radians while `X`, `Y` and `Z` are in degrees.
+- **`Matrix.IsIdentity` and `Quaternion.Equal` are exact comparisons**, so
+  neither is a question to ask about a value that has been through arithmetic. A
+  scale times its own inverse is the identity to the last bit under gvsbuild and
+  a few ulp away from it on Debian — same graphene, different compiler and
+  vector unit — so neither answer is a fact about the binding. `Near`, and for
+  quaternions the dot product, are the comparisons that mean something. The same
+  goes for how far `graphene_matrix_interpolate`'s recomposition lands from the
+  endpoint: 4.9e-3 under gvsbuild, 6.9e-3 under Debian's build.
+- **`GskTransform`'s category records how it was built, not what it does.**
+  Handing it a matrix that is a plain scale gives `Unknown`, so a renderer's
+  fast path for an affine transform is missed while the matrix itself reads
+  back element for element.
+- **A `GskTransform` chain applies its *last* operation to a point first**, the
+  way a CSS transform list does and the opposite of the order the calls are
+  written in.
