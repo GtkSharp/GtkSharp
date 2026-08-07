@@ -26,6 +26,10 @@
   <attr path="/api/namespace/boxed[@cname='GtkTextIter']/method[@name='GetMarks']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GtkTextIter']/method[@name='GetTags']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GtkTextIter']/method[@name='GetToggledTags']" name="hidden">1</attr>
+  <!-- gtk_text_iter_order swaps *both* iterators; 'second' is not const, and
+       without this the caller only ever sees the change to the receiver, so
+       ordering a reversed pair silently collapses it to an empty range. -->
+  <attr path="/api/namespace/boxed[@cname='GtkTextIter']/method[@name='Order']/*/*[@type='GtkTextIter*']" name="pass_as">ref</attr>
   <attr path="/api/namespace/boxed[@cname='GtkTreeIter']/method[@name='Copy']" name="deprecated">1</attr>
   <attr path="/api/namespace/boxed[@cname='GtkTreePath']/constructor[@cname='gtk_tree_path_new_from_indices']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GtkTreePath']/constructor[@cname='gtk_tree_path_new_from_indicesv']" name="hidden">1</attr>
