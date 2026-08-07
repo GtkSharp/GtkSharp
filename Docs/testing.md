@@ -54,6 +54,41 @@ Both aborts land under a **"Passed!" line with a truncated total** — the failu
 mode this document keeps returning to. 135 of 766 was the shape of the WebKit
 one.
 
+### The WebKit sandbox, and why the suite now predicts it
+
+The flag above is a convenience for a local run, not a requirement. Leave it off
+and the suite still finishes: `WebKitSandbox` runs the operation `bwrap` begins
+with — `bwrap --unshare-user --ro-bind / / /bin/true`, the same binary WebKit
+will spawn — and skips the WebKit-backed sections when it is refused, in
+`SampleSectionTests`, `ChildWindowTests` and `SectionBrowsingTests` alike.
+
+It has to be a *prediction*. The abort is a `g_error` inside WebKit, not an
+exception: no `try` reaches it, and by the time it prints, the host is gone.
+
+Refusal is the norm rather than the exception. Docker's default seccomp profile
+blocks `clone(CLONE_NEWUSER)`, so a plain `docker run debian:forky` — and the
+`container:` of the CI job, which is the same thing — has no user namespace to
+give:
+
+```console
+$ docker run --rm debian:forky unshare -U true
+unshare: unshare failed: Operation not permitted
+$ docker run --rm --security-opt seccomp=unconfined debian:forky unshare -U true
+$ echo $?
+0
+```
+
+That second line is the other way to get the sections back, and the better one
+of the two: it lets WebKit keep its sandbox instead of turning it off. Passing
+`--security-opt seccomp=unconfined` to the container makes the probe succeed and
+the skips stop firing, with nothing in the test project to change. CI does not
+do it by default because it relaxes the syscall filter for a job holding a
+`packages:write` token, which is a wider grant than the coverage is worth — see
+the comment on the "Run tests headless" step.
+
+`OptionalLibraryTests` is unaffected either way. Constructing a `WebKit.WebView`
+never reaches the sandbox; only loading a page does.
+
 ---
 
 ## Why calling matters far more than compiling here
