@@ -1,10 +1,36 @@
-# JavaScriptCoreSharp
+# Net4x.JavaScriptCoreSharp
 
-JavaScriptCoreSharp is a C# wrapper for the JavaScriptCore library.
+JavaScriptCoreSharp is a C# wrapper for JavaScriptCore, the JavaScript engine behind WebKitGTK, including the JSCValue bridge for reading results.
 
-Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a binding for Gtk 4 and its
-companion libraries that needs no glue library: every native call is resolved by
-symbol lookup at runtime, so the package carries no compiled shim of its own.
+Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
+libraries.
 
-Targets `net10.0` and `netstandard2.0`. A Gtk 4 runtime has to be present to
-use it, because a missing native export surfaces only when the call is reached.
+```sh
+dotnet add package Net4x.JavaScriptCoreSharp
+```
+
+## What it needs
+
+Targets `net10.0` and `netstandard2.0`.
+
+At run time it needs the native library it wraps, **`libjavascriptcoregtk-6.0.so.1`**
+(Debian and Ubuntu: `libjavascriptcoregtk-6.0-1`). The binding does not carry a copy of it.
+
+This package does not install a Windows runtime of its own. Reference
+`Net4x.GtkSharp` as well if you want the gvsbuild download it brings,
+or put the library on the loader's search path yourself.
+
+The gvsbuild bundle used on Windows ships no JavaScriptCore, so in practice this package is used on Linux and macOS. `JavaScriptCore.Global.IsSupported` reports whether the library could be loaded.
+
+## How it binds
+
+There is no glue library. Every native entry point is resolved by symbol
+lookup at run time rather than through a fixed `DllImport` library name,
+which is what lets one package work across Windows, Linux and macOS. It
+also means a symbol missing from the installed native library surfaces
+when it is first called, not when the assembly loads.
+
+## Licence
+
+GNU Library General Public License v2. Sources, samples and the full
+licence text are in the [repository](https://github.com/pieroviano/GtkSharp).

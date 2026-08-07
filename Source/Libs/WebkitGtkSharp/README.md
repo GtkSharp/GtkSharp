@@ -1,10 +1,37 @@
-# WebkitGtkSharp
+# Net4x.WebkitGtkSharp
 
-GtkWebkitSharp is a C# wrapper for the Gtk-Webkit library.
+WebkitGtkSharp is a C# wrapper for WebKitGTK 6.0: an embeddable browser engine widget for Gtk 4.
 
-Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a binding for Gtk 4 and its
-companion libraries that needs no glue library: every native call is resolved by
-symbol lookup at runtime, so the package carries no compiled shim of its own.
+Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
+libraries.
 
-Targets `net10.0` and `netstandard2.0`. A Gtk 4 runtime has to be present to
-use it, because a missing native export surfaces only when the call is reached.
+```sh
+dotnet add package Net4x.WebkitGtkSharp
+```
+
+## What it needs
+
+Targets `net10.0` and `netstandard2.0`.
+
+At run time it needs the native library it wraps, **`libwebkitgtk-6.0.so.4`**
+(Debian and Ubuntu: `libwebkitgtk-6.0-4`). The binding does not carry a copy of it.
+
+On Windows that runtime is installed for you: this package pulls in
+`GtkSharp.targets`, which downloads a gvsbuild Gtk 4 build into
+`%LOCALAPPDATA%\Gtk\4.22.4` before the first build. Set
+`SkipGtkInstall=true` to manage it yourself.
+
+The gvsbuild bundle used on Windows ships no WebKit, so in practice this package is used on Linux and macOS. `WebKit.Global.IsSupported` reports whether the library could be loaded. WebKit renders in sandboxed helper processes, which need an unprivileged user namespace; inside a container that is often refused, and WebKit aborts the process rather than failing the call.
+
+## How it binds
+
+There is no glue library. Every native entry point is resolved by symbol
+lookup at run time rather than through a fixed `DllImport` library name,
+which is what lets one package work across Windows, Linux and macOS. It
+also means a symbol missing from the installed native library surfaces
+when it is first called, not when the assembly loads.
+
+## Licence
+
+GNU Library General Public License v2. Sources, samples and the full
+licence text are in the [repository](https://github.com/pieroviano/GtkSharp).

@@ -8,6 +8,13 @@
          about that here produces noise no consumer can act on and buries the
          [Obsolete] warnings aimed at them. Consumer code still warns. -->
     <NoWarn>$(NoWarn);CS0612;CS0618</NoWarn>
+
+    <!-- The package is Net4x.GtkSharp; the assembly inside it is still
+         GtkSharp.dll. Only the id on the feed carries the prefix, because the
+         assembly name and namespaces are what the generated code and the
+         native symbol lookups are written against. -->
+    <PackageId>Net4x.$(MSBuildProjectName)</PackageId>
+
     <TargetFrameworks>net$(_GtkSharpNetVersion);netstandard2.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>$(_GtkSharpBuildOutputDirectory)\$(Configuration)</OutputPath>
