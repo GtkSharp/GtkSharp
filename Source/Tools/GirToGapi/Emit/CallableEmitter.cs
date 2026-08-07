@@ -247,8 +247,34 @@ namespace GtkSharp.GirConversion.Emit {
 			// bare too. A caller-allocated *struct* is still a genuine out
 			// parameter, so the exemption is limited to arrays.
 			var direction = (string) girParam.Attribute ("direction");
+
+			// A fixed-size array parameter -- `float v[16]`, `GdkRGBA colour[4]` --
+			// is N elements, and how many is knowable from the gir alone. Without
+			// this it came out as the ELEMENT type, so the binding passed ONE
+			// value where the callee reads or writes N: graphene_matrix_to_float
+			// wrote sixty-four bytes through a float passed in a vector register,
+			// and gsk_border_node_new read four GdkRGBAs out of one. CTypeMapper
+			// deliberately drops to the element type, because that is what a
+			// fixed-size *field* needs; a parameter needs the array as well.
+			var fixedArray = t != null && t.IsArray && t.FixedSize.HasValue;
+
+			// direction="out" with caller-allocates="1" on an array is a buffer the
+			// caller supplies for the callee to fill -- g_input_stream_read's
+			// `void *buffer` -- not a C# out parameter. Marking it out makes
+			// codegen emit a method that never assigns it. gapi2xml.pl left these
+			// bare too. A caller-allocated *struct* is still a genuine out
+			// parameter, so the exemption is limited to arrays.
+			//
+			// A fixed-size one is the exception to the exception: its length is
+			// known, so codegen can allocate the buffer itself and hand it back,
+			// which is a real out parameter.
 			var callerAllocatedBuffer = (string) girParam.Attribute ("caller-allocates") == "1"
-				&& t != null && t.IsArray;
+				&& t != null && t.IsArray && !fixedArray;
+
+			if (fixedArray) {
+				el.Add (new XAttribute ("array", "true"));
+				el.Add (new XAttribute ("array_len", t.FixedSize.Value));
+			}
 
 			if (direction == "out" && !callerAllocatedBuffer) {
 				el.Add (new XAttribute ("pass_as", "out"));
@@ -260,7 +286,10 @@ namespace GtkSharp.GirConversion.Emit {
 				// a pointer to storage the caller owns, and passing "out IntPtr"
 				// there gives the callee an 8-byte slot to write a whole struct
 				// into. Codegen keys off this attribute; see Parameter.cs.
-				if ((string) girParam.Attribute ("caller-allocates") == "1")
+				// Not for a fixed-size array: caller_allocates means "a pointer to
+				// one struct's worth of storage", and ArrayParameter already sizes
+				// and pins the buffer itself.
+				if ((string) girParam.Attribute ("caller-allocates") == "1" && !fixedArray)
 					el.Add (new XAttribute ("caller_allocates", "1"));
 			}
 			else if (direction == "inout")
