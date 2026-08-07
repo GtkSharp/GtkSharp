@@ -219,6 +219,7 @@ investigate — not something to relax.
 | `TreeViewStackTests` | The legacy tree *view*, where the largest block of untested hand-written `GtkSharp` was: `TreeViewColumn`'s attribute mapping and cell data funcs proved through `CellSetCellData`, the column list and its reordering, a header click driving the model's sortable interface, `TreeSelection` including a select function that vetoes, `TreeRowReference` against a `TreePath` that does not move, expansion and `MapExpandedRows`, a managed `CellRenderer` subclass measured and snapshotted *by Gtk*, `CellArea`/`ICellLayout`, the toggle and accel renderers, and a row moved between positions through `TreeDragSource`/`TreeDragDest` end to end. One use-after-free; three pieces of behaviour pinned. |
 | `PangoShapingTests` | The half of Pango that turns text into glyphs, where `PangoTests` stops at attributes and measurement: itemization, shaping, the Unicode break algorithm, bidi, the layout iterator, `ScriptIter`, `AttrList` splice/filter/update, tab arrays, coverage, font families and faces, `Matrix`, cursor movement and layout serialisation. The oracles are outside the library — Unicode says where the word boundaries are, the bidi algorithm says which run gets an odd embedding level, a cluster's widths have to add up to the run's width, and index-to-position has to invert position-to-index. Eleven array parameters bound as scalars, a double free on every borrowed attribute, a mutable static identity matrix, and a field holding a struct by value that was read as a pointer to one. |
 | `ControlsAndTransferTests` | The controls an application is built out of, and the two subsystems Gtk 4 replaced wholesale. Entry and `GtkEditable` over non-ASCII text (a position is characters, a length is bytes); adjustment clamping and the two signals that separate a change of range from a change of value; spin button stepping, wrapping and snapping; scale marks; level-bar offsets; progress-bar pulse; calendar; notebook reordering; `Gtk.Stack.Pages` as a list model; expander, popover, drop-down, scrolled window, search entry and search bar. Then `Gdk.Clipboard` — set, read back asynchronously, and the mime types Gdk negotiates around a `GValue` — and `GtkDragSource`/`GtkDropTarget`, whose signals are emitted directly against a subclass's vfuncs, because no drag can be started without a pointer device. Five defects. |
+| `DesktopIntegrationTests` | Everything that talks to the desktop rather than to the screen, none of which had a test. The Gtk 4 async dialogs — `FileDialog`, `AlertDialog`, `ColorDialog`, `FontDialog` — driven to their Finish methods the only way a test without a user can, by cancelling the `GCancellable` they were started with; `FileFilter` matching a `GFileInfo` by suffix, pattern and content type, serialised through a `GVariant` and built from a `GtkFileFilter` buildable description; the launchers, held but never launched; the legacy `GtkFileChooser`; and the printing stack, which is nearly all pure data — `PaperSize`, `PageSetup` and `PrintSettings` through key files, every typed accessor and every unit, and a `PrintOperation` exported to a PDF so the whole signal chain runs with no printer. The oracles are ISO 216, ANSI, the definition of a point, and the file on disk. Three defects. |
 
 ### Guards against vacuous passes
 
@@ -2199,3 +2200,120 @@ fresh value now, so the mutation lands on the temporary.
   and nothing looks wrong.
 - **A tab whose decimal point was never set reports U+0000**, not `'.'`, so
   reading it as a character and printing it produces a NUL.
+
+## Fixed: a file chooser that still spoke Gtk 3's filenames
+
+Two metadata rules in `GtkSharp.metadata` retyped `GtkFileChooser`'s folders as
+filenames:
+
+```xml
+<attr path="…/method[@name='GetCurrentFolder']/return-type" name="type">gfilename*</attr>
+<attr path="…/method/parameters/*[@name='folder']" name="type">const-gfilename*</attr>
+```
+
+That was true of **Gtk 3**, where a chooser spoke in paths. Gtk 4 takes and
+returns `GFile *`, and nothing failed when the API changed underneath, because a
+pointer is a pointer:
+
+- `IFileChooser.CurrentFolder` came out as a `string`, so the getter took the
+  `GFile *` that `gtk_file_chooser_get_current_folder` hands back, read the
+  object's memory as a NUL-terminated string, and then **`g_free`d the GObject**
+  — the return value is transfer-full, so the binding "owned" it. An application
+  that set a folder and read it back corrupted the heap.
+- `AddShortcutFolder (string)` and `RemoveShortcutFolder (string)` marshalled a
+  `char *` into a parameter Gtk dereferences as a `GFile *`.
+
+The rules are deleted; the interface now says `GLib.IFile` in all three places.
+The half of the pair that was already right — `SetCurrentFolder (GLib.IFile)`,
+whose parameter is named `file` rather than `folder` — is what made the mismatch
+survive: setting worked, so only a program that read back was hurt.
+
+Worth knowing while testing it: a `GtkFileChooserWidget` loads its folder
+through the main loop, so `CurrentFolder` is **null** until the loop has turned.
+A test that reads it straight after setting it concludes the getter is broken.
+
+## Fixed: page ranges nobody could read past the first
+
+`gtk_print_settings_get_page_ranges` returns a `GtkPageRange *` array plus a
+count, transfer full; `gtk_print_settings_set_page_ranges` takes the same pair.
+The api.xml has no way to say "array whose length is that other argument", so
+codegen bound **both** over a single `GtkPageRange`:
+
+- the getter marshalled the first element and leaked the rest of the `g_malloc`
+  block on every call;
+- the setter marshalled one struct and told Gtk to read `num_ranges` of them.
+
+"Pages 1-3, 6 and 10-12" is the ordinary thing to type into a print dialog, and
+only the first range ever arrived. Both are hidden in the metadata and rebound
+over real arrays in `Source/Libs/GtkSharp/PrintSettings.cs`, the same shape as
+the eleven Pango array parameters above.
+
+## Fixed: the dialog that replaced GtkMessageDialog had no constructor
+
+`GtkAlertDialog`'s only C constructor is
+`gtk_alert_dialog_new (const char *format, ...)`, and codegen emits nothing for
+an ellipsis. With `ctors.Count == 0`, `ObjectGen` falls back to the **protected**
+void constructor it gives an abstract base class like `GtkFilter` — so
+`new Gtk.AlertDialog ()` did not compile for anyone outside the assembly, and
+the type Gtk 4 offers in place of `GtkMessageDialog` could not be used at all.
+
+`disable_void_ctor="1"` turns the fallback off and `AlertDialog.cs` writes the
+constructors by hand. They go through `g_object_new` rather than the varargs
+entry point on purpose: `gtk_alert_dialog_new` runs its first argument through
+`g_strdup_vprintf`, so binding it directly would make
+`new AlertDialog ("Copied 50% of the files")` undefined behaviour — the hazard
+`Gtk.MessageDialog` still carries.
+
+## The desktop dialogs and the print stack: behaviour worth knowing
+
+- **Rotating a sheet changes which margins bound the page.** A margin belongs to
+  the sheet and never moves — `GetLeftMargin` is 15mm in every orientation — but
+  `gtk_page_setup_get_page_width` subtracts *left and right* in portrait and
+  *top and bottom* in landscape. So the formula the accessor names invite,
+  `paper width − left − right`, is silently wrong in landscape by the difference
+  between the two pairs. A test whose four margins are chosen so that
+  left+right equals top+bottom cannot tell the two apart; the one here uses four
+  different numbers.
+- **`GtkFileDialog.InitialFile` does not round-trip.** `set_initial_file` is
+  documented as a shortcut for `set_initial_folder` + `set_initial_name`, and
+  that is all it is: it stores nothing of its own, so reading the property back
+  returns **null** while the other two hold the answer.
+- **The 4.10 dialog family does not agree on what a cancel is.**
+  `GtkAlertDialog` answers with `G_IO_ERROR_CANCELLED` (19);
+  `GtkFileDialog` and `GtkColorDialog` answer with `GTK_DIALOG_ERROR_CANCELLED`,
+  a different domain whose code is **1**. Comparing the code without the domain
+  mistakes the second for `G_IO_ERROR_NOT_FOUND`.
+- **A content type is not a mime type.** `gtk_file_filter_add_mime_type` stores
+  `g_content_type_from_mime_type` of what it was given, and matching compares
+  content types — which are the mime strings themselves on Linux and registry
+  entries like `".png"` on Windows. Putting a mime type straight into a
+  `GFileInfo`'s `standard::content-type` therefore matches on one platform and
+  not the other; converting on both sides, as Gtk does internally, is portable.
+  The same asymmetry makes a **mime rule lossy through a `GVariant`**:
+  `to_gvariant` writes the stored *content* type and `new_from_gvariant` feeds it
+  back to `add_mime_type`, which converts again — on Windows the rule comes back
+  as `"*"` and matches everything.
+- **`gtk_paper_size_is_equal` is a `strcmp` on the names.** A custom sheet cut to
+  exactly 210×297mm is not equal to `iso_a4`, and two independently constructed
+  A4s are.
+- **A standard paper size is written to a key file under its *PPD* name**, and
+  its own name is left out entirely — there is no `iso_a5` anywhere in the file,
+  only `PPDName=A5`, and the name is recovered from Gtk's table on the way back
+  in.
+- **A print settings paper *format* and paper *width* are independent keys.**
+  Naming a standard sheet records the name and nothing else, so
+  `GetPaperWidth` answers **0** right after `PaperSize` was assigned. Only
+  `PaperSize` knows how to look a name up.
+- **`set_resolution_xy (300, 1200)` leaves the plain `resolution` key on the
+  horizontal one**, so reading `Resolution` back gives 300 — not 1200, and not
+  an average.
+- **An exported print operation never reaches `Finished`.** That status comes
+  from a print backend watching a spooled job and there is no backend behind
+  `GTK_PRINT_OPERATION_ACTION_EXPORT`, so the operation sits at
+  `GeneratingData` with `IsFinished` false even though `::done` has run and the
+  PDF is complete. Waiting on `IsFinished` after an export waits for ever.
+- **An export with no `export-filename` fails through the return value only.**
+  Gtk fails a `g_return_val_if_fail` and hands back
+  `GTK_PRINT_OPERATION_RESULT_ERROR` **without** filling in the `GError`, so a
+  caller that only catches `GException` sees an export that silently did
+  nothing.
