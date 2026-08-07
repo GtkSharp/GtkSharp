@@ -120,10 +120,9 @@ namespace GtkSharp.Generation {
 		{
 			int bitfields = 0;
 			bool need_field = true;
-			StringBuilder hashcode = new StringBuilder ();
+			List<string> hashterms = new List<string> ();
 			StringBuilder equals = new StringBuilder ();
 
-			hashcode.Append ("this.GetType ().FullName.GetHashCode ()");
 			equals.Append ("true");
 
 			foreach (StructField field in fields) {
@@ -136,10 +135,7 @@ namespace GtkSharp.Generation {
 						equals.Append (".Equals (other._bitfield");
 						equals.Append (bitfields);
 						equals.Append (")");
-						hashcode.Append (" ^ ");
-						hashcode.Append ("_bitfield");
-						hashcode.Append (bitfields++);
-						hashcode.Append (".GetHashCode ()");
+						hashterms.Add ("_bitfield" + bitfields++);
 						need_field = false;
 					}
 				} else {
@@ -149,9 +145,7 @@ namespace GtkSharp.Generation {
 					equals.Append (".Equals (other.");
 					equals.Append (field.EqualityName);
 					equals.Append (")");
-					hashcode.Append (" ^ ");
-					hashcode.Append (field.EqualityName);
-					hashcode.Append (".GetHashCode ()");
+					hashterms.Add (field.EqualityName);
 				}
 			}
 
@@ -169,9 +163,23 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			if (Elem.GetAttributeAsBoolean ("nohash"))
 				return;
+			GenHashCode (sw, hashterms);
+		}
+
+		// Combines the fields in order rather than XOR-ing them together. XOR is
+		// commutative, so a plain fold gives every permutation of a struct's
+		// fields the same hash: Gdk.RGBA red and green, or a Gdk.Rectangle and
+		// the same one with x and y swapped, collided exactly.
+		internal static void GenHashCode (StreamWriter sw, IList<string> terms)
+		{
 			sw.WriteLine ("\t\tpublic override int GetHashCode ()");
 			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\treturn {0};", hashcode.ToString ());
+			sw.WriteLine ("\t\t\tunchecked {");
+			sw.WriteLine ("\t\t\t\tint hash = this.GetType ().FullName.GetHashCode ();");
+			foreach (string term in terms)
+				sw.WriteLine ("\t\t\t\thash = hash * 397 ^ {0}.GetHashCode ();", term);
+			sw.WriteLine ("\t\t\t\treturn hash;");
+			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 

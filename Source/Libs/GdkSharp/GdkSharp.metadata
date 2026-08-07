@@ -96,6 +96,38 @@
        GLib.List, which does not compile. SetIconList covers the functionality. -->
   <attr path="/api/namespace/interface[@cname='GdkToplevel']/property[@cname='icon-list']" name="hidden">1</attr>
 
+  <!-- Caller-allocates pixel buffers, and arrays codegen cannot infer from the
+       api.xml. Each of these was bound as a scalar, which is not merely
+       useless but unsafe: gdk_texture_download writes Height * stride bytes
+       through the address of a single `out byte`, and gdk_content_formats_new
+       reads n_mime_types pointers out of the bytes of one strdup'd string.
+       Hidden here and bound by hand in Texture.cs / TextureDownloader.cs /
+       ContentFormats.cs, the same treatment gdk_pixbuf_save* already gets. -->
+  <attr path="/api/namespace/object[@cname='GdkTexture']/method[@cname='gdk_texture_download']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkTextureDownloader']/method[@cname='gdk_texture_downloader_download_into']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkContentFormats']/constructor[@cname='gdk_content_formats_new']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkContentFormats']/method[@cname='gdk_content_formats_get_gtypes']" name="hidden">1</attr>
+
+  <!-- The api.xml cannot say that a method CONSUMES its receiver, and these six
+       do: every gdk_content_formats_union* eats a reference to the formats it
+       is called on, and gdk_content_formats_builder_free_to_formats frees the
+       builder. The generated wrappers passed Handle and kept owning it, so the
+       receiver was freed under the wrapper and unreffed a second time when it
+       was disposed or finalized. Rebound by hand, taking the reference the
+       callee eats. -->
+  <attr path="/api/namespace/boxed[@cname='GdkContentFormats']/method[@cname='gdk_content_formats_union']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkContentFormats']/method[@cname='gdk_content_formats_union_deserialize_gtypes']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkContentFormats']/method[@cname='gdk_content_formats_union_deserialize_mime_types']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkContentFormats']/method[@cname='gdk_content_formats_union_serialize_gtypes']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkContentFormats']/method[@cname='gdk_content_formats_union_serialize_mime_types']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkContentFormatsBuilder']/method[@cname='gdk_content_formats_builder_free_to_formats']" name="hidden">1</attr>
+
+  <!-- gdk_content_provider_get_value fills a GValue the CALLER has to
+       g_value_init to the type it wants. Codegen made it an out-parameter over
+       an AllocHGlobal'd block, so Gdk read an uninitialised GType out of
+       uninitialised memory. Rebound in ContentProvider.cs, taking the type. -->
+  <attr path="/api/namespace/object[@cname='GdkContentProvider']/method[@cname='gdk_content_provider_get_value']" name="hidden">1</attr>
+
   <!-- Null-terminated string-array fields. The generated setter marshals the
        whole array with StringToPtrGStrdup, which expects one string. They
        describe a loader that is already registered, so read-only is right. -->
