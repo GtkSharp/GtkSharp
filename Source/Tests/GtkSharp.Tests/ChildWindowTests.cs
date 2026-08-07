@@ -67,12 +67,17 @@ namespace GtkSharp.Tests
         /// dialog the port broke fails here and not in a test that only happens
         /// to agree with it.
         /// </remarks>
-        [Theory]
+        [SkippableTheory]
         [MemberData(nameof(Sections))]
         public void Section_buttons_can_be_pressed_and_any_window_they_open_is_live(string typeName)
         {
             var type = typeof(SectionAttribute).Assembly.GetType(typeName);
             Assert.NotNull(type);
+
+            // Constructing the section is what loads the page, so this one is
+            // out of reach for the same reason as in SampleSectionTests.
+            Skip.If(WebKitSandbox.IsBacked(type) && !WebKitSandbox.Available,
+                    WebKitSandbox.SkipReason);
 
             Run(() =>
             {
