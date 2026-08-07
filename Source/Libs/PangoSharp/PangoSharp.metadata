@@ -29,6 +29,19 @@
   <attr path="/api/namespace/boxed[@cname='PangoGlyphItem']/method[@name='Free']" name="deprecated">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoGlyphString']/field[@name='Glyphs']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoGlyphString']/field[@name='LogClusters']" name="hidden">1</attr>
+  <!-- Arrays whose length is a separate argument, or is implied by the text.
+       The api.xml cannot say so, and codegen has no rule for the shape, so each
+       came out taking or returning a *single* value: an int* the callee fills
+       with one entry per character became "out int", and pango wrote the rest
+       past the end of a four-byte block. Rebound over real arrays in the
+       hand-written partials beside this file. -->
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphItem']/method[@name='GetLogicalWidths']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphItem']/method[@name='LetterSpace']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphString']/method[@name='GetLogicalWidths']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphString']/method[@name='IndexToXFull']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoLanguage']/method[@name='GetScripts']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='PangoFontFace']/method[@name='ListSizes']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoCoverage']/method[@name='FromBytes']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoLayoutIter']/method[@name='Free']" name="deprecated">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoLayoutIter']/method[@name='GetCharExtents']/*/*[@type='PangoRectangle*']" name="pass_as">out</attr>
   <attr path="/api/namespace/boxed[@cname='PangoLayoutIter']/method[@name='GetClusterExtents']/*/*[@type='PangoRectangle*']" name="pass_as">out</attr>
@@ -52,10 +65,15 @@
   <attr path="/api/namespace/class[@cname='PangoCairo_']/method[@name='ContextSetFontOptions']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoCairo_']/method[@name='CreateContext']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/class[@cname='PangoCairo_']/method[@name='CreateLayout']/return-type" name="owned">true</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Break']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='DefaultBreak']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='GetLogAttrs']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='TailorBreak']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ExtentsToPixels']/*/*[@type='PangoRectangle*']" name="pass_as">ref</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ItemizeWithBaseDir']/return-type" name="element_type">PangoItem*</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ItemizeWithBaseDir']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ItemizeWithBaseDir']/return-type" name="elements_owned">true</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Log2visGetEmbeddingLevels']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ParseMarkup']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ReadLine']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ReorderItems']" name="hidden">1</attr>
@@ -90,6 +108,12 @@
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='SetMarkupWithAccel']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='SetText']" name="hidden">1</attr>
   <attr path="/api/namespace/*[@cname='PangoAttribute']" name="hidden">1</attr>
+  <!-- Pango.Attribute is a manual symbol whose from_fmt hands back a *borrowed*
+       wrapper, because that is what almost every PangoAttribute* arriving from
+       C is: a callback argument, or something a PangoAttrList still owns. This
+       one allocates, so the wrapper has to own it, and the manual symbol has
+       nowhere to say so. Rebound in AttrFontFeatures.cs. -->
+  <attr path="/api/namespace/struct[@cname='PangoAttrFontFeatures']/method[@name='New']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrClass']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrColor']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrFloat']" name="hidden">1</attr>
