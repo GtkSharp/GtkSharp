@@ -30,7 +30,7 @@ docker run --rm -v /path/to/GtkSharp:/src -w /src debian:forky bash -lc '
   apt-get install -y -qq --no-install-recommends ca-certificates curl git dbus \
     libicu-dev libgtk-4-1 libadwaita-1-0 libgtksourceview-5-0 \
     libwebkitgtk-6.0-4 libjavascriptcoregtk-6.0-1 xvfb xauth &&
-  curl -sSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel 8.0 --install-dir /usr/local/dotnet &&
+  curl -sSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel 10.0 --install-dir /usr/local/dotnet &&
   export PATH=/usr/local/dotnet:$PATH &&
   WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1 \
     dbus-run-session -- xvfb-run -a dotnet test Source/Tests/GtkSharp.Tests -c Release'
@@ -1523,34 +1523,40 @@ EOF
 Ranked by *uncovered lines*, that list is a work queue. Every defect found in
 §"Fixed" below came off it.
 
-At 766 tests, measured on Windows (so the two WebKit tests are skipped and
+At 1183 tests, measured on Windows (so the two WebKit tests are skipped and
 those two assemblies are understated):
 
 | | line rate |
 |:--|--:|
-| **hand-written (Generated and Samples excluded)** | **58.6%** (12034/20540) |
-| overall, including generated | 12.8% (32950/256816) |
+| **hand-written (Generated and Samples excluded)** | **62.1%** (13480/21706) |
+| overall, including generated | 17.7% (45702/257906) |
 
 Per assembly, hand-written only, ordered by how much hand-written code there is
 to cover — which is the ordering that says where the work is:
 
 | assembly | covered / total | line rate |
 |:--|--:|--:|
-| `GLibSharp` | 6418 / 9516 | 67.4% |
-| `GtkSharp` | 1596 / 4002 | 39.9% |
-| `CairoSharp` | 2048 / 3204 | 63.9% |
-| `GdkSharp` | 602 / 1084 | 55.5% |
-| `PangoSharp` | 414 / 980 | 42.2% |
-| `GioSharp` | 296 / 568 | 52.1% |
-| `GskSharp` | 184 / 280 | 65.7% |
+| `GLibSharp` | 6642 / 9656 | 68.8% |
+| `GtkSharp` | 2264 / 4590 | 49.3% |
+| `CairoSharp` | 2050 / 3204 | 64.0% |
+| `PangoSharp` | 764 / 1226 | 62.3% |
+| `GdkSharp` | 624 / 1110 | 56.2% |
+| `GioSharp` | 372 / 630 | 59.0% |
+| `GskSharp` | 190 / 280 | 67.9% |
+| `GrapheneSharp` | 186 / 272 | 68.4% |
 | `AdwaitaSharp` | 128 / 214 | 59.8% |
 | `GtkSourceSharp` | 90 / 180 | 50.0% |
-| `GrapheneSharp` | 88 / 168 | 52.4% |
 | `WebkitGtkSharp` | 86 / 174 | 49.4% |
 | `JavaScriptCoreSharp` | 84 / 170 | 49.4% |
 
+The hand-written totals grow as well as the covered counts, because each sweep
+rebinds what it found broken — `GtkSharp` and `PangoSharp` are 588 and 246
+hand-written lines larger than when this table was last measured. A rate can
+therefore move less than the work behind it suggests, which is another reason to
+read the covered/total column rather than the percentage.
+
 `GtkSharp` is the lowest of the large ones and has by far the most hand-written
-lines left uncovered — 2406 — which is where the next pass belongs.
+lines left uncovered — 2326 — which is where the next pass belongs.
 
 `Gtk/SignalConnector.cs` will not move: `ConnectSignals` throws
 `NotSupportedException` because Gtk 4 replaced
