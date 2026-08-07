@@ -15,7 +15,44 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 765 tests Windows reports 762 passing with 3 skips.
+so only broke there. At 766 tests Windows reports 763 passing with 3 skips, and
+the forky container 765 passing with 1.
+
+### Running the suite on the Gtk the bindings describe
+
+WSL's Debian is *trixie* — Gtk 4.18.6 — and reports false failures for anything
+the gir marks `version="4.22"`. The container is the reference environment:
+
+```sh
+docker run --rm -v /path/to/GtkSharp:/src -w /src debian:forky bash -lc '
+  apt-get update -qq &&
+  apt-get install -y -qq --no-install-recommends ca-certificates curl git dbus \
+    libicu-dev libgtk-4-1 libadwaita-1-0 libgtksourceview-5-0 \
+    libwebkitgtk-6.0-4 libjavascriptcoregtk-6.0-1 xvfb xauth &&
+  curl -sSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel 8.0 --install-dir /usr/local/dotnet &&
+  export PATH=/usr/local/dotnet:$PATH &&
+  WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1 \
+    dbus-run-session -- xvfb-run -a dotnet test Source/Tests/GtkSharp.Tests -c Release'
+```
+
+Four things in that line are load-bearing, and each one fails in a way that does
+not say what is wrong:
+
+- **`libicu-dev`** — without it the .NET host aborts before `Main` with
+  "Couldn't find a valid ICU package installed on the system".
+- **`dbus-run-session`** — Gtk 4.22 on forky decodes images through **glycin**,
+  which runs each loader in a `bwrap` sandbox it talks to over a bus. With no
+  session bus the loader cannot start and takes the test host with it.
+- **`WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1`** — WebKit spawns its network
+  and web processes into the same kind of sandbox, which needs user namespaces
+  a container does not necessarily have. It does not fail the call; it aborts
+  the process (`bwrap: Creating new namespace failed`, then `Failed to fully
+  launch dbus-proxy`), part-way through the suite.
+- **`dotnet-install.sh`** — forky has no `dotnet-sdk-8.0` package at all.
+
+Both aborts land under a **"Passed!" line with a truncated total** — the failure
+mode this document keeps returning to. 135 of 766 was the shape of the WebKit
+one.
 
 ---
 
@@ -210,6 +247,25 @@ with `GLibrary.IsSupported(Library.Webkit)` — `WebviewSection` already checks
 reads index 0 on Windows, 1 on Linux, 2 on macOS. **There is no index 3.**
 WebKit's entry had the Linux `.so` name in the Windows slot and a `.dll` in an
 unread fourth slot, so it could never have loaded on Windows.
+
+### Two gdk-pixbuf implementations, and what may be asserted of both
+
+Debian forky routes gdk-pixbuf through **glycin**; gvsbuild ships the classic
+loaders. They are not interchangeable, and three tests had to be written to the
+intersection rather than to whichever one was in front of them:
+
+| | classic (gvsbuild) | glycin (forky) |
+|:--|:--|:--|
+| half a PNG, `Close()` | succeeds, full-size pixbuf, missing rows blank | raises `org.gnome.glycin.Error.LoadingError` |
+| saving an **RGBA** pixbuf as JPEG | drops the alpha channel | refuses: "the encoder or decoder for Jpeg does not support the color type `Rgba8`" |
+| `Gdk.Pixbuf.Formats` | every format names an extension | at least one names none |
+
+So: `Close()`'s return value is not a completeness check on **either** — on one
+it reports partial data as success, on the other it reports it as failure, and
+neither says how much arrived. A JPEG test must start from a pixbuf with no
+alpha, which is what an application saving a photograph has anyway. And a loop
+of `NotEmpty` over `Formats` asserts a property of the installed module set, not
+of this binding — the png assertions beside it are the ones with an oracle.
 
 ---
 
@@ -992,10 +1048,19 @@ instead is not enough, because `GenEqualsAndHash` skips hidden fields and would
 emit `Equals` as `return true`. Nothing else in the repository touches the type,
 so the damage is confined to whoever reaches for it first.
 
-`SatelliteAssemblyTests.The_rounded_rect_struct_is_eight_bytes_short_of_the_one_gsk_writes`
+`SatelliteAssemblyTests.The_rounded_rect_struct_holds_pointers_where_gsk_embeds_the_values`
 pins the mismatch against arithmetic over the C declaration, and is written to
 fail once the layout is corrected — so the person who fixes it is sent back to
 unskip `A_rounded_rect_keeps_its_bounds`.
+
+It asserts the **field types** rather than `Marshal.SizeOf`, because the runtime
+cannot be asked to measure this struct portably: .NET on Linux refuses outright
+("Type 'Gsk.RoundedRect' cannot be marshaled as an unmanaged structure" — a
+`ByValArray` of a class is not a layout the marshaller has), while on Windows it
+answers 40. Those are two reports of one defect, and the defect is upstream of
+both: a pointer field and an array-of-references field cannot describe sixteen
+embedded bytes followed by thirty-two more, whatever number a given runtime is
+willing to put on them.
 
 ## Measuring coverage
 
@@ -1034,18 +1099,34 @@ EOF
 Ranked by *uncovered lines*, that list is a work queue. Every defect found in
 §"Fixed" below came off it.
 
-At 603 tests:
+At 766 tests, measured on Windows (so the two WebKit tests are skipped and
+those two assemblies are understated):
 
 | | line rate |
 |:--|--:|
-| **hand-written (Generated and Samples excluded)** | **53.0%** |
-| overall, including generated | 11.1% |
-| `GLibSharp` hand-written | 62.3% |
-| `CairoSharp` hand-written | 52.1% |
-| `GioSharp` hand-written | 52.1% |
-| `PangoSharp` hand-written | 42.2% |
-| `GdkSharp` hand-written | 40.4% |
-| `GtkSharp` hand-written | 38.0% |
+| **hand-written (Generated and Samples excluded)** | **58.6%** (12034/20540) |
+| overall, including generated | 12.8% (32950/256816) |
+
+Per assembly, hand-written only, ordered by how much hand-written code there is
+to cover — which is the ordering that says where the work is:
+
+| assembly | covered / total | line rate |
+|:--|--:|--:|
+| `GLibSharp` | 6418 / 9516 | 67.4% |
+| `GtkSharp` | 1596 / 4002 | 39.9% |
+| `CairoSharp` | 2048 / 3204 | 63.9% |
+| `GdkSharp` | 602 / 1084 | 55.5% |
+| `PangoSharp` | 414 / 980 | 42.2% |
+| `GioSharp` | 296 / 568 | 52.1% |
+| `GskSharp` | 184 / 280 | 65.7% |
+| `AdwaitaSharp` | 128 / 214 | 59.8% |
+| `GtkSourceSharp` | 90 / 180 | 50.0% |
+| `GrapheneSharp` | 88 / 168 | 52.4% |
+| `WebkitGtkSharp` | 86 / 174 | 49.4% |
+| `JavaScriptCoreSharp` | 84 / 170 | 49.4% |
+
+`GtkSharp` is the lowest of the large ones and has by far the most hand-written
+lines left uncovered — 2406 — which is where the next pass belongs.
 
 `Gtk/SignalConnector.cs` will not move: `ConnectSignals` throws
 `NotSupportedException` because Gtk 4 replaced
@@ -1071,10 +1152,12 @@ the thousand like it, so line coverage measures how many bindings exist far more
 than how well they work. `GLibSharp` scores highest of the libraries precisely
 because it is the one that is *hand-written*.
 
-The useful reading is the ordering, not the percentage. `AdwaitaSharp` at zero is
-real information — nothing exercises libadwaita at all. `GioSharp` at 2% likewise.
-Those are worth tests. Raising `GtkSharp` from 7.8% by walking generated
-properties would not be.
+The useful reading is the ordering, not the percentage. When this table was first
+written `AdwaitaSharp` stood at zero and `GioSharp` at 2%, and that was real
+information: nothing exercised libadwaita at all. Those were worth tests, and
+`AdwaitaTests`, `ActionsAndModelsTests` and `SatelliteAssemblyTests` are what
+came of it. Raising `GtkSharp` by walking generated properties would not have
+been.
 
 Note that most of `Source/Libs/*` is generated, and generated code is uniform by
 construction: testing one property round-trip exercises the same emission path
