@@ -6,7 +6,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <SignAssembly>false</SignAssembly>
-    <OutputPath>..\..\..\BuildOutput\Tests</OutputPath>
+    <!-- $(Configuration) matters here. Without it Debug and Release share one
+         directory, so whichever was built last is what `dotnet test` loads and
+         what a coverage run instruments. That is how a coverage comparison came
+         out with Context.cs reporting 838 instrumented lines in one run and
+         1228 in the next, from byte-identical source. -->
+    <OutputPath>..\..\..\BuildOutput\Tests\$(Configuration)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
