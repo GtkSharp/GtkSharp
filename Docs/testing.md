@@ -9,8 +9,14 @@ dotnet cake build.cake --BuildTarget=Test      # or: dotnet test Source/Tests/Gt
 ```
 
 It requires a **Gtk 4 runtime to be installed**, because it calls into Gtk
-rather than merely compiling against it. CI runs it on `ubuntu-24.04` under
-`xvfb-run`.
+rather than merely compiling against it. CI runs it in a `debian:forky`
+container under `xvfb-run`.
+
+**Run it on both platforms before trusting a change.** Windows and Linux each
+see defects the other structurally cannot: gvsbuild ships no WebKit, so two
+tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
+so only broke there. At 603 tests Linux reports 602 passing with 1 skip and
+Windows 600 with 3.
 
 ---
 

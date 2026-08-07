@@ -1469,9 +1469,9 @@ Remaining, largest first: `Cairo/Context.cs` (398 uncovered), `GLib/Marshaller.c
 (188), `Gtk/SignalConnector.cs` (178, unreachable by design — see §18),
 `GdkSharp/Pixbuf.cs` (172), `GLib/HookList.cs` (118, none).
 
-**Not yet verified on Linux.** WSL's service stopped (`Wsl/0x80070422`) before
-this phase could be run there, and restarting it needs elevation. Everything
-above is Windows-only evidence.
+**Verified on Linux**: 602 of 603 passing, the one skip being the documented
+`Gsk.RoundedRect`. Both WebKit tests run there, so the skip count is 1 rather
+than the 3 Windows reports.
 
 ---
 
@@ -1535,7 +1535,8 @@ Hand-written coverage is 53.0%. Remaining, largest first: `Cairo/Context.cs`
 (398 uncovered), `GLib/Marshaller.cs` (186), `GdkSharp/Pixbuf.cs` (172),
 `GLib/HookList.cs` (118, none).
 
-**Still not verified on Linux.** WSL's service has been down since Phase 13
-(`Wsl/0x80070422`) and restarting it needs elevation. Phases 13 and 14 are
-Windows-only evidence — and Phase 14 changes seven api.xml files, so it deserves
-a Linux run before it is trusted.
+**Verified on Linux**: 602 of 603 passing. The api.xml regeneration was also
+re-run there and produced files byte-identical to the ones committed from
+Windows, which is the check this phase actually needed — a converter change that
+rewrote seven api.xml files has to be reproducible across platforms, or the
+checked-in api.xml becomes whichever machine ran `RegenerateApi` last.
