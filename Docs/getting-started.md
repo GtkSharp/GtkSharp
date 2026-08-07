@@ -28,9 +28,8 @@ through gesture controllers rather than widget signals.
 
 ## What you need
 
-- **.NET 10 SDK**. The packages themselves are built for `netstandard2.0` and
-  nothing else, so a project on an older runtime — .NET Framework 4.x, Mono —
-  resolves the same assembly a .NET 10 project does.
+- **.NET 10 SDK**. The package also targets `netstandard2.0`, so a project on
+  an older runtime still resolves an assembly — it simply gets that one.
 - **A Gtk 4 runtime.** The binding calls into the real libraries; it does not
   bundle them.
 
@@ -185,61 +184,6 @@ A `DeleteRange` handler attached with a lambda reads the **empty string** out of
 the range it was handed, because the iterators have already collapsed onto the
 deletion point. Nothing errors; you just get the wrong half of the transaction.
 
-**For a few signals it is worse than that: the lambda never runs at all.** A
-signal whose accumulator stops the emission as soon as the class handler has
-answered never reaches an "after" handler. `GtkDragSource::prepare` and
-`GtkDropTarget::accept` — the two signals a drag-and-drop implementation is built
-on — are exactly those, so they cannot be handled with a lambda:
-
-```csharp
-// Never invoked. No error, no warning: the emission is over before it gets here.
-source.Prepare += (o, args) => args.RetVal = MakeContentProvider();
-
-// Right:
-[GLib.ConnectBefore]
-void OnPrepare(object o, PrepareArgs args) { args.RetVal = MakeContentProvider(); }
-source.Prepare += OnPrepare;
-```
-
-`GtkRange::change-value` is the contrast: its accumulator stops only for a
-handler that returns `true`, so an "after" lambda does run there. When a handler
-you connected appears to be ignored, this is the first thing to check.
-
-### An exception you do not catch ends the process
-
-A handler runs on a native stack, called by GLib. An exception that escapes it
-cannot be propagated back through those frames, so the binding catches it and
-hands it to `GLib.ExceptionManager`. With nothing subscribed to
-`ExceptionManager.UnhandledException`, that prints the exception to **stderr**
-and calls `Environment.Exit(1)`.
-
-For a GUI application that means the window vanishes mid-click with no dialog and
-no visible stack trace — it reads as a native crash, and the first place people
-look is the binding. Catch inside the handler:
-
-```csharp
-button.Clicked += (o, e) =>
-{
-    try { DoTheWork(); }
-    catch (Exception ex) { ShowTheProblem(ex); }
-};
-```
-
-Or install a process-wide policy. Subscribing at all is what keeps the
-application alive — the exit is what happens when *nobody* is listening:
-
-```csharp
-GLib.ExceptionManager.UnhandledException += args =>
-{
-    Console.Error.WriteLine(args.ExceptionObject);
-    // args.ExitApplication = true;  // opt back in to exiting, per exception
-};
-```
-
-`ExitApplication` is one-way: the setter accepts `true` and ignores `false`, so a
-handler can decide to end the process but cannot un-decide it. Throwing from
-inside this handler exits, unconditionally.
-
 ---
 
 ## Building UI from `.ui` files
@@ -277,31 +221,11 @@ Embed the file in your `.csproj`:
 </ItemGroup>
 ```
 
-**Do not put `<signal>` elements in your `.ui`** — such a document does not
-load **at all**, which is stronger than it sounds. Gtk 4 replaced
-`gtk_builder_connect_signals_full` with `GtkBuilderScope`, and the scope resolves
-each handler name while the document is being *parsed*. The default scope looks
-the name up as an exported C symbol, never finds your C# method, and fails the
-whole file:
-
-```
-NotSupportedException: This document declares a <signal> handler. Gtk 4 resolves
-builder signal handlers through GtkBuilderScope at parse time ...
-GtkBuilder reported: No function named `OnClicked`.
-```
-
-That inner sentence is what GtkBuilder says on its own, and it reads like a
-missing native symbol rather than an unsupported feature, so `AddFromString`,
-`AddFromFile`, `AddFromResource` and the `Stream` constructor all explain it
-instead. `Builder.DeclaresSignals` is set even when the load fails, so you can
-tell "my XML is wrong" from "this is not supported yet".
-
-**The throw comes from the load call, not from `Autoconnect`.** Parsing is when
-the handler is resolved, so the builder gives up before `Autoconnect` is ever
-reached — put the `try` around `AddFromString`/`AddFromFile`, not around the
-line you would expect to be responsible for signals.
-
-Connect handlers in C#, after `Autoconnect` has bound the fields.
+**Do not put `<signal>` elements in your `.ui`.** Gtk 4 replaced
+`gtk_builder_connect_signals_full` with `GtkBuilderScope`, which this binding does
+not implement yet. `Autoconnect` binds fields happily, but a document that
+declares signals throws `NotSupportedException` naming the cause — deliberately,
+rather than silently ignoring every click. Connect handlers in C#.
 
 You can also build from a string, which is handy in tests:
 
@@ -336,33 +260,6 @@ window.AddController(keys);
 `EventControllerMotion`, `EventControllerFocus`, `EventControllerScroll`,
 `DropTarget` and `DragSource` follow the same shape. `RemoveController` detaches
 one, and `controller.Widget` tells you what it is attached to.
-
-**A controller that never fires is usually the propagation phase.** A key event
-targets the *focus* widget, and `PropagationPhase` defaults to `Bubble`, which
-runs from that target outwards. Any widget along the way that handles the event
-and returns `true` ends the emission, and every controller further out is simply
-never reached.
-
-Composite widgets make this the normal case rather than the exception. A Gtk 4
-`Entry` is a shell around an internal `GtkText`, and it is the `GtkText` that
-holds the focus — so a controller on the `Entry` is already one step outwards,
-and `GtkText` hands the key to the input method, inserts the character and
-returns `true`. Nothing errors; the character appears and your handler never
-runs. The key controller in the sketch above has the same problem: the window is
-further out still, so `Escape` reaches it only while no text widget has focus.
-
-`Capture` runs the other way, root down to the target, so an ancestor sees the
-event first:
-
-```csharp
-var keys = new EventControllerKey();
-keys.PropagationPhase = PropagationPhase.Capture;   // before GtkText swallows it
-keys.KeyPressed += (o, args) => { …; args.RetVal = false; };
-entry.AddController(keys);
-```
-
-Keep returning `false`: capture only moves *when* you see the event, and `true`
-still consumes it, so the character would never be typed.
 
 Keyboard shortcuts go through a `ShortcutController`:
 
@@ -546,22 +443,14 @@ buffer.Text = "Hello, world";
 buffer.GetBounds(out var start, out var end);
 Console.WriteLine(buffer.GetText(start, end, includeHiddenChars: false));
 
-var bold = buffer.TagTable.Lookup("bold");
-if (bold == null)
-{
-    // gtk_text_buffer_create_tag is variadic, so it is not bound. Build the tag
-    // and register it: the two steps that call rolls into one.
-    bold = new TextTag("bold") { Weight = Pango.Weight.Bold };
-    buffer.TagTable.Add(bold);
-}
-
-buffer.ApplyTag(bold, buffer.GetIterAtOffset(0), buffer.GetIterAtOffset(5));
+var bold = buffer.TagTable.Lookup("bold")
+           ?? buffer.CreateTag("bold", "weight", (int) Pango.Weight.Bold);
+buffer.GetIterAtOffset(out var from, 0);
+buffer.GetIterAtOffset(out var to, 5);
+buffer.ApplyTag(bold, from, to);
 ```
 
-`GetIterAtOffset` returns the iterator rather than filling an `out` parameter —
-the `TextIter`-returning shape is the one this binding emits.
-
-Three things surprise people:
+Two things surprise people:
 
 - **A left-gravity `TextMark` is the one that does *not* move** when text is
   inserted at its position; the right-gravity mark is pushed along. The name
@@ -569,9 +458,6 @@ Three things surprise people:
 - **`ForwardWordEnd` returns `false` at the end of the buffer**, even though the
   last word ends there — so `while (iter.ForwardWordEnd())` silently drops the
   final word.
-- **`Weight` is `Pango.Weight`, not an `int`.** The generated `gint` property is
-  hidden in favour of a hand-written typed one, so `tag.Weight =
-  Pango.Weight.Bold` is the whole of it.
 
 ---
 
@@ -594,16 +480,13 @@ the SDK integration.
 
 ## Traps
 
-Collected from defects actually caught, by the test suite or by walking through
-the `GettingStarted` tour. Each of these *compiles cleanly*.
+Collected from defects the test suite has actually caught. Each of these
+*compiles cleanly*.
 
 | Trap | What happens |
 |:--|:--|
 | `+=` with a lambda connects **after** the default handler | your handler sees the operation already done |
-| `DragSource.Prepare` / `DropTarget.Accept` with a lambda | **never runs**; the accumulator ends the emission first. Use a named `[GLib.ConnectBefore]` method |
-| `<signal>` in a `.ui` file | the document fails to **load**; `NotSupportedException` from `AddFromString`/`AddFromFile`, not from `Autoconnect` |
-| An exception escaping a signal handler | `Environment.Exit(1)`; the window vanishes and the trace goes to stderr |
-| An `EventControllerKey` on an `Entry` | never fires: the internal `GtkText` is the target and consumes the key. Use `PropagationPhase.Capture` |
+| `<signal>` in a `.ui` file | `NotSupportedException` — connect in C# |
 | `Widget.Activate()` on a button | does **not** raise `Clicked`; Gtk 4 routes presses through a gesture |
 | `SimpleAction.StateChanged` | it is `change-state`; you must apply the state yourself |
 | Leaking a `Cairo.Path` or surface | the finalizer kills the process, far from the cause |
@@ -615,18 +498,6 @@ the `GettingStarted` tour. Each of these *compiles cleanly*.
 ---
 
 ## Where to look next
-
-- **`SampleApps/GettingStarted`** — **this document as a running application.**
-  One page per section above, including the traps, demonstrated by doing rather
-  than describing: the two InsertText handlers side by side, the stateful action
-  that does and does not apply its own state, the list pipeline reporting what
-  each stage holds, `Activate()` failing to raise `Clicked`. It is a standalone
-  solution consuming the NuGet packages, so it also exercises the packaging:
-
-  ```sh
-  dotnet cake build.cake --BuildTarget=PackageNuGet --Configuration=Release
-  cd SampleApps && dotnet run --project GettingStarted
-  ```
 
 - **`Source/Samples`** — a browsable application with a section per widget. Run it
   with `dotnet cake build.cake --BuildTarget=RunSamples`. It is the widest worked
