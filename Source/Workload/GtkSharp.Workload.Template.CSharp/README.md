@@ -10,6 +10,7 @@ being installed on their own:
 
 ```sh
 dotnet workload install gtk
+dotnet new gtkapp -o HelloGtk
 ```
 
 ## Templates
