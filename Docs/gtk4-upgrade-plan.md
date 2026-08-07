@@ -1,6 +1,6 @@
 # Plan — Upgrade GtkSharp to GTK 4.22.4
 
-**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them. **Phase 10 complete — gate 7 passed**: the suite now runs on Linux (Debian trixie, Gtk 4.18.6, real WebKit), 226 of 227 passing with one documented skip, which found three more defects that Windows structurally could not show — including one where a single class missing from an older installed library disabled an entire assembly (§16). **Phase 11 complete**: 403 tests, hand-written coverage 30.5% → 43.6%, four further defects fixed — among them `GLib.PtrArray`, which had never worked at all because its symbols were looked up in the wrong library (§17). **Phase 12 complete**: 484 tests, 50.3%, six more defects — including `Cairo.Context.FontMatrix`, whose `out`-on-a-class ABI corrupted the stack and killed the test host outright (§18). **Phase 13 complete**: 556 tests, 52.7%, four more defects — among them `TreeModelSort.AppendValues` recursing into itself forever, and a constructor hazard that only reaches consumers of the package (§19).
+**Status:** V1–V5 passed; gates 1 and 2 passed; **Phases 1–8 complete** — all 11 assemblies build clean, and the three GLib fundamental-type hierarchies (`GskRenderNode`, `GdkEvent`, `GtkExpression` — 57 types) are now bound, which unblocks `GtkSnapshot` drawing. **Phase 6 compiles: 0 errors across all 11 assemblies and Samples**, and the samples now run. Porting them exposed ten silent library defects, including one that prevented any Gtk 4 application from starting. Phase 7 packs templates and workload clean. **Phase 8 complete, verified against a real Gtk 4 runtime**: an xunit project (`Source/Tests/GtkSharp.Tests`) replaces the planned smoke flag — 83 tests, all passing and with no GLib diagnostics left, which found a wrong ABI on all 724 `throws` methods and 13 more removed-symbol null delegates. Phase 9 complete: all eight open items resolved (§15), and four further defects found while doing them. **Phase 10 complete — gate 7 passed**: the suite now runs on Linux (Debian trixie, Gtk 4.18.6, real WebKit), 226 of 227 passing with one documented skip, which found three more defects that Windows structurally could not show — including one where a single class missing from an older installed library disabled an entire assembly (§16). **Phase 11 complete**: 403 tests, hand-written coverage 30.5% → 43.6%, four further defects fixed — among them `GLib.PtrArray`, which had never worked at all because its symbols were looked up in the wrong library (§17). **Phase 12 complete**: 484 tests, 50.3%, six more defects — including `Cairo.Context.FontMatrix`, whose `out`-on-a-class ABI corrupted the stack and killed the test host outright (§18). **Phase 13 complete**: 556 tests, 52.7%, four more defects — among them `TreeModelSort.AppendValues` recursing into itself forever, and a constructor hazard that only reaches consumers of the package (§19). **Phase 14 complete**: 603 tests, and a defect in `GirToGapi` itself — a type-normalisation rule dropped a level of indirection on `const char* const*`, so 67 string-array parameters and returns across seven assemblies bound as a single string (§20).
 **Target:** GTK 4.22.4 (latest stable), replacing GTK 3.22/3.24 support
 **Branch:** `gtk4` (cut from `develop` @ `c01f5f97d`)
 **Package version line:** `4.22.4.x`
@@ -754,6 +754,7 @@ There is no test project (`CLAUDE.md` §Tests), so verification is layered and m
 | **11** | Hand-written layer test sweep | ✅ **complete** — 403 tests; hand-written coverage 30.5% → 43.6%; four more defects fixed |
 | **12** | Second sweep: the files with no coverage | ✅ **complete** — 484 tests; 43.6% → 50.3%; six more defects fixed, one of them a process-killing ABI |
 | **13** | Third sweep: the tree wrappers, main loop, Object and Value | ✅ **complete** — 556 tests; 50.3% → 52.7%; four more defects, and the "intermittent" abort explained |
+| **14** | Fourth sweep: the Gtk 4 application layer | ✅ **complete** — 603 tests; a converter defect affecting 67 sites across seven assemblies |
 
 ### Phase 1 — complete
 
@@ -1471,3 +1472,70 @@ Remaining, largest first: `Cairo/Context.cs` (398 uncovered), `GLib/Marshaller.c
 **Not yet verified on Linux.** WSL's service stopped (`Wsl/0x80070422`) before
 this phase could be run there, and restarting it needs elevation. Everything
 above is Windows-only evidence.
+
+---
+
+## 20. Phase 14 — the Gtk 4 application layer, and a converter defect
+
+Forty-seven tests aimed at what a Gtk 4 application actually does — widget
+measurement and layout, event controllers, CSS, and the `GAction`/`GMenu` and
+`GListModel` stacks that replaced `GtkAction`, `GtkUIManager`,
+`GtkTreeModelFilter` and `GtkTreeModelSort`. Those two stacks were introduced
+wholesale by this port, so neither had any history of working.
+
+Writing them found a defect in **`GirToGapi` itself**, which is the first one at
+that level since Phase 2.
+
+### `const char* const*` lost a star
+
+The C-type normaliser had a rule to tidy const qualifiers:
+
+    (const\s+)?(\w+)\*\s+const\*  ->  const $2*
+
+`const char* const*` is a pointer to const pointers to const char — `char**`
+with both levels qualified — and the rule dropped one of the two stars. Every
+parameter and return value spelled that way came through as a single string, and
+the call handed GTK the bytes of that string to read as an array of pointers.
+
+**Sixty-seven of them, across seven assemblies.** `gtk_string_list_new` is the
+one to remember: `new StringList(text)` compiled, read correctly, and was wrong.
+
+It was partial, which is why it survived. The strv detection already accepted
+`gchar**`, `char**` and `const char**`, covering most of the girs; the
+`const T* const*` spelling accounts for 85 more, and only those broke. String
+arrays therefore worked in enough places to look fine.
+
+One character in the replacement, then `RegenerateApi`. The affected sites now
+carry `type="const-char**" null_term_array="true"` and bind as `string[]` —
+which is also how this became testable: `StringList(string[])` did not exist
+before the fix.
+
+### Also fixed
+
+**A signal carrying an unmapped boxed type could not be handled.**
+`GtkCssProvider`'s `parsing-error` carries a `GError`, whose GType resolves by
+name to `GLib.Error` — a type this binding does not have — so `GLib.Value.ToBoxed`
+threw from inside the signal marshaller, where nothing can catch it. The one
+signal that tells an application its stylesheet is broken killed the process.
+`ToBoxed` now returns the raw pointer, which is what the generated argument
+(`ParsingErrorArgs.Error`, an `IntPtr`) expects anyway.
+
+### Behaviour pinned rather than left as folklore
+
+- `SimpleAction.StateChanged` is the `change-state` signal, not a notification.
+  `GSimpleAction`'s default handler applies the state and connecting *replaces*
+  it, so a handler that only reads the value leaves the action unchanged.
+- `Widget.Activate` does not reach a `Clicked` handler, because Gtk 4 routes a
+  press through a gesture. This is what once made the sample button-press theory
+  pass while pressing nothing.
+- `GMenuModel`'s items-changed carries signed counts; `GListModel`'s carries
+  unsigned ones.
+
+Hand-written coverage is 53.0%. Remaining, largest first: `Cairo/Context.cs`
+(398 uncovered), `GLib/Marshaller.cs` (186), `GdkSharp/Pixbuf.cs` (172),
+`GLib/HookList.cs` (118, none).
+
+**Still not verified on Linux.** WSL's service has been down since Phase 13
+(`Wsl/0x80070422`) and restarting it needs elevation. Phases 13 and 14 are
+Windows-only evidence — and Phase 14 changes seven api.xml files, so it deserves
+a Linux run before it is trusted.

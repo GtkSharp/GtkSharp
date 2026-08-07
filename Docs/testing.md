@@ -115,6 +115,8 @@ investigate — not something to relax.
 | `IOChannelAndSpawnTests` | `GLib.IOChannel` and `GLib.Spawn`, both with oracles outside the library: a file the test wrote, and a child process whose output the test chose. |
 | `PangoTests` | The hand-rolled `Pango.Attribute` hierarchy, attribute iteration, layout measurement and wrapping, tab arrays, font descriptions and metrics. |
 | `CairoTextAndPathTests` | The rest of `Cairo.Context`: text measurement and drawing, path copying and flattening, groups, masks, clip extents, PNG round-trips. |
+| `WidgetBehaviourTests` | What a Gtk 4 application does: `Measure` with an orientation and a for-size, walking the child list that replaced `GtkContainer`, grid coordinates and spans, event controllers, CSS classes and providers, layout managers. |
+| `ActionsAndModelsTests` | The two stacks the port introduced wholesale — `GAction`/`GMenu`, and the `GListModel` filter/sort chain — so neither has any history of working. |
 | `TreeWrapperTests` | The hand-written halves of `TreeModelSort`, `TreeModelFilter` and `TreeStore`, and `NodeSelection`, which had none: iterator and path conversion both ways, a filter rooted at a subtree, `SetModifyFunc` synthesising a column, node selection by node and by path. |
 | `MainLoopTests` | `Source`, `Idle`, `Timeout`, `MainContext`, `MainLoop`. The oracles are ordering rather than completion: a high-priority idle before a low-priority one, a shorter timeout before a longer one, a removed source never. |
 | `ObjectAndValueTests` | The wrapper identity map, notifications, per-object data, and the `Value` cases the numeric round-trips do not reach — boxed opaques, value arrays, a managed object carried through unmanaged code. |
@@ -509,6 +511,48 @@ outlives the context it came from, which is what makes it easy to forget.
 So: **check the total, not the pass count.** And when a crash appears to move
 around between runs, suspect a finalizer before suspecting nondeterminism.
 
+## Fixed: a lost level of indirection on `const char* const*`
+
+`GirToGapi`'s C-type normaliser had a rule to tidy const qualifiers:
+
+```csharp
+(const\s+)?(\w+)\*\s+const\*   ->   const $2*
+```
+
+`const char* const*` is a pointer to const pointers to const char — `char**`
+with both levels qualified — and that rule **dropped one of the two stars**. So
+every parameter and return value spelled that way arrived as a single string, and
+the call handed GTK the bytes of that string to read as an array of pointers.
+
+Sixty-seven of them, across seven assemblies. `gtk_string_list_new` is the one to
+remember: `new StringList(text)` compiled, read correctly, and was wrong.
+
+**Why it was partial, and so harder to see.** The strv detection already accepted
+`gchar**`, `char**`, `const gchar**` and `const char**`, which between them cover
+most of the girs. The `const T* const*` spelling accounts for 85 more, and only
+those were broken — so string arrays worked in enough places to look fine.
+
+A one-character fix in the replacement, then `RegenerateApi`. The affected sites
+now carry `type="const-char**" null_term_array="true"` and bind as `string[]` —
+which is also how this became testable at all: `StringList(string[])` did not
+exist before the fix.
+
+## Behaviour worth knowing, found by an assertion that was wrong
+
+Beyond the three above:
+
+- **`SimpleAction.StateChanged` is the `change-state` signal**, not a
+  notification after the fact. `GSimpleAction`'s default handler is what applies
+  the new state, and connecting *replaces* it — so a handler that only reads the
+  value leaves the action on its old state. Named like an observer, behaves like
+  a veto.
+- **`Widget.Activate` does not reach a `Clicked` handler**, because Gtk 4 routes
+  a press through a gesture on the button. This is the behaviour that once made
+  the sample button-press theory pass while pressing nothing.
+- **`GMenuModel`'s items-changed carries signed counts** while `GListModel`'s
+  carries unsigned ones — separate signals with separate args classes, which is
+  what the port had to split them into.
+
 ## Open: boxed types with no allocator cannot be constructed
 
 `Gsk.RoundedRect` has no `_alloc` function in C, so the binding generates no
@@ -567,13 +611,13 @@ EOF
 Ranked by *uncovered lines*, that list is a work queue. Every defect found in
 §"Fixed" below came off it.
 
-At 556 tests:
+At 603 tests:
 
 | | line rate |
 |:--|--:|
-| **hand-written (Generated and Samples excluded)** | **52.7%** |
-| overall, including generated | 10.7% |
-| `GLibSharp` hand-written | 61.5% |
+| **hand-written (Generated and Samples excluded)** | **53.0%** |
+| overall, including generated | 11.1% |
+| `GLibSharp` hand-written | 62.3% |
 | `CairoSharp` hand-written | 52.1% |
 | `GioSharp` hand-written | 52.1% |
 | `PangoSharp` hand-written | 42.2% |
