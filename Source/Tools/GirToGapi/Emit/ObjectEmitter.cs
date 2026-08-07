@@ -217,8 +217,11 @@ namespace GtkSharp.GirConversion.Emit {
 
 				// A callback slot. It is a signal's class closure when its name
 				// matches a signal on the same class; otherwise a plain vfunc.
-				// Validated at 328/329 against GTK 3 with zero false negatives -
-				// see Docs/gir-gapi-coverage.md section 3.
+				// gapi2xml.pl got this link by parsing the C *_class_init body
+				// for G_STRUCT_OFFSET(XxxClass, field) in g_signal_new; GIR does
+				// not carry it, so it is reconstructed by name. Validated at
+				// 328/329 against GTK 3 with zero false negatives - rerun with
+				// scripts/signal-vm-parity.py.
 				if (signalByField.ContainsKey (fieldName)) {
 					cs.Add (new XElement ("method", new XAttribute ("signal_vm", fieldName)));
 					usedAsSignalSlot.Add (fieldName);
