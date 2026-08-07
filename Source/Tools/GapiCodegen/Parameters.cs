@@ -213,6 +213,20 @@ namespace GtkSharp.Generation {
 
 				if (p.IsArray) {
 					p = new ArrayParameter (parm);
+
+					// `graphene_vec3_t vertices[8]` is eight structs laid end to
+					// end, and every reference type here marshals as a pointer, so
+					// a T[] would hand the callee an array of addresses instead.
+					// There is no spelling for it, and emitting one anyway is a
+					// buffer overrun rather than a compile error, so the method is
+					// dropped and left to a hand-written partial class.
+					bool marshalsByValue = gen is SimpleGen || gen is EnumGen || gen is StructBase;
+					if (((ArrayParameter) p).FixedArrayLength.HasValue && !marshalsByValue) {
+						log.Warn ("Fixed-size array of reference-typed elements on parameter {0}: hide and bind manually.", p.Name);
+						Clear ();
+						return false;
+					}
+
 					if (i < elem.ChildNodes.Count - 1) {
 						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
 						if (next != null || next.Name == "parameter") {
