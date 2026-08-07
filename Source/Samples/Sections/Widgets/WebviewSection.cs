@@ -137,9 +137,32 @@ namespace Samples
 				Hexpand = true,
 			};
 
-			webView.LoadUri("https://github.com/GtkSharp/GtkSharp#readme");
+			// This used to fetch https://github.com/GtkSharp/GtkSharp#readme,
+			// which made the sample show an error page with no network and, more
+			// to the point, made the test suite render a remote document -- in
+			// CI, inside a job holding a token. LoadUri is what is being
+			// demonstrated, and a file:// URI demonstrates it just as well while
+			// being offline and deterministic.
+			webView.LoadUri(new Uri(WriteLocalPage()).AbsoluteUri);
 
 			return ($"{nameof(WebView)} show uri:", webView);
+		}
+
+		/// <summary>Writes the page ShowUri navigates to, and returns its path.
+		/// Kept beside the running assembly so it is cleaned up with the build
+		/// rather than accumulating in the temp directory.</summary>
+		static string WriteLocalPage()
+		{
+			var path = Path.Combine(
+				Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? Path.GetTempPath(),
+				"webview-sample.html");
+
+			File.WriteAllText(path,
+				"<!doctype html><meta charset=\"utf-8\">" +
+				$"<title>{nameof(WebView)}</title>" +
+				$"<h1>Loaded from a URI</h1><p>This page was fetched by <code>{nameof(WebView.LoadUri)}</code>.</p>");
+
+			return path;
 		}
 
 	}
