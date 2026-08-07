@@ -24,6 +24,32 @@ namespace GtkSharp.Tests
                 Gtk.Application.RunIteration(false);
         }
 
+        /// <summary>
+        /// Runs the loop until nothing has been dispatched for longer than the
+        /// delay a deferred finalizer uses.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Drain"/> only clears what is ready <em>now</em>. Every
+        /// generated Opaque finalizer in this binding queues its unref onto a
+        /// 50 ms timeout, so a source belonging to no test at all can become
+        /// ready in the middle of one -- and a timeout outranks an idle, so it
+        /// takes the single dispatch a test like
+        /// <see cref="Iterating_the_context_dispatches_one_pending_source"/> is
+        /// counting. That showed up as roughly one failed run in twenty-five,
+        /// always in a test that counts dispatches, never in the same place.
+        /// </remarks>
+        private static void Quiesce()
+        {
+            // Capped, because a source that stays ready -- an idle returning
+            // true -- would otherwise dispatch forever and hang the run rather
+            // than fail it.
+            var total = Stopwatch.StartNew();
+            var quiet = Stopwatch.StartNew();
+            while (quiet.ElapsedMilliseconds < 120 && total.ElapsedMilliseconds < 1000)
+                if (GLib.MainContext.Iteration(false))
+                    quiet.Restart();
+        }
+
         /// <summary>Blocks until <paramref name="done"/> or the deadline.</summary>
         private static void PumpUntil(Func<bool> done, int milliseconds = 5000)
         {
@@ -235,7 +261,7 @@ namespace GtkSharp.Tests
         {
             Run(() =>
             {
-                Drain();
+                Quiesce();
 
                 Assert.False(GLib.MainContext.Pending());
 
@@ -254,7 +280,7 @@ namespace GtkSharp.Tests
         {
             Run(() =>
             {
-                Drain();
+                Quiesce();
 
                 var calls = 0;
                 GLib.Idle.Add(() => { calls++; return false; });
