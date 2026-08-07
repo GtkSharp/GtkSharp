@@ -151,6 +151,14 @@ namespace Cairo {
 
 		public static bool operator == (Matrix lhs, Matrix rhs)
 		{
+			// Matrix is a class, so both sides can be null. Comparing one
+			// against null is the most ordinary thing a caller can write, and
+			// it used to throw NullReferenceException from inside the operator.
+			if (ReferenceEquals (lhs, rhs))
+				return true;
+			if (ReferenceEquals (lhs, null) || ReferenceEquals (rhs, null))
+				return false;
+
 			return (lhs.Xx == rhs.Xx &&
 				lhs.Xy == rhs.Xy &&
 				lhs.Yx == rhs.Yx &&
@@ -176,12 +184,25 @@ namespace Cairo {
 
 		public override int GetHashCode()
 		{
-			return  (int)this.Xx ^ (int)this.Xx>>32 ^
-				(int)this.Xy ^ (int)this.Xy>>32 ^
-				(int)this.Yx ^ (int)this.Yx>>32 ^
-				(int)this.Yy ^ (int)this.Yy>>32 ^
-				(int)this.X0 ^ (int)this.X0>>32 ^
-				(int)this.Y0 ^ (int)this.Y0>>32;
+			// This used to be six terms of the form `(int)Xx ^ (int)Xx>>32`,
+			// written as though the fields were 64 bits wide. They are not:
+			// the cast makes each one an int, and C# masks an int shift count
+			// to five bits, so `>>32` is `>>0` and every term cancelled
+			// against itself. The hash was therefore always zero, for every
+			// matrix -- which no equality test can notice, because equal
+			// objects hashing equally is exactly what a constant satisfies.
+			// The cast also discarded the fractional part, so 1.5 and 1.9
+			// were indistinguishable to it.
+			unchecked {
+				int hash = 17;
+				hash = hash * 31 + Xx.GetHashCode ();
+				hash = hash * 31 + Yx.GetHashCode ();
+				hash = hash * 31 + Xy.GetHashCode ();
+				hash = hash * 31 + Yy.GetHashCode ();
+				hash = hash * 31 + X0.GetHashCode ();
+				hash = hash * 31 + Y0.GetHashCode ();
+				return hash;
+			}
 		}
 
 		public object Clone()
