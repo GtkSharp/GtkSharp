@@ -15,8 +15,8 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 766 tests Windows reports 763 passing with 3 skips, and
-the forky container 765 passing with 1.
+so only broke there. At 797 tests Windows reports 794 passing with 3 skips, and
+the forky container 796 passing with 1.
 
 ### Running the suite on the Gtk the bindings describe
 
@@ -166,6 +166,7 @@ investigate — not something to relax.
 | `GdkDeepTests` | The Gdk that needs no display: `PixbufLoader` fed a PNG seven bytes at a time and required to agree with the whole file, its signal ordering and the rows its area-updated events name, pixbuf save options, `PixbufFormat`, texture download compared against the bytes the test chose, `RGBA` parsing and hashing, rectangle arithmetic against Gdk's own hit test, and the Gtk 4 clipboard data model — `ContentFormats`, `ContentFormatsBuilder`, `ContentProvider` — which nothing had ever called. |
 | `TextStackTests` | `TextBuffer`, `TextIter`, `TextMark`, `TextTag`, `TextTagTable`, `TextChildAnchor` and `EntryBuffer` — the stack a text-editing application is built out of. The oracles are mostly outside Gtk: how many Unicode scalars a string has against how many UTF-16 units C# stores, how many bytes UTF-8 needs for them, which characters terminate a sentence, that a combining mark is not a cursor position. Plus mark gravity, tag toggle boundaries, search across a child anchor, the undo history, and the commit-notify callback added in Gtk 4.16. |
 | `SatelliteAssemblyTests` | The three assemblies whose generated surface nothing had reached: libadwaita, GtkSourceView and Gsk. Render-node trees serialised and read back, node bounds composed by arithmetic the test does itself, `GskTransform`'s builder chain and the NULL that means the identity, `GskPathBuilder`; GtkSourceView's language guessing, line sorting, search occurrence counts, syntax context classes, regions and snippets; libadwaita's navigation stack, view-stack pages, toasts, style manager, spring params and breakpoint conditions. |
+| `AuthoringTests` | The other direction: a C# program **writing** Gtk types rather than calling them, which is the code that runs C into managed. GType registration and `[GLib.TypeName]`, `[GLib.Property]` read and written through GObject rather than through C#, `notify::`, `Gtk.Builder` constructing a managed type by name, declaring an activation signal by overriding `OnActivate`, virtual overrides proved by asking a *parent* for the answer, chaining to a base vfunc, a `Gtk.LayoutManager` subclass placing children by transforms the test does the arithmetic for, and `[Gtk.Template]`/`[Child]`. |
 | `GLibDeepTests` | The rest of hand-written GLib: `HookList`'s ABI description checked against the struct `g_hook_list_init` actually writes, the container half of `Variant`/`VariantType` (tuples, arrays, maybes, dict entries, subtyping), `Bytes` slicing and ownership, the `Marshaller` helpers below the ones every binding uses, and the two branches of `GLib.Signal` that only a returning signal or an emission hook reaches. |
 
 ### Guards against vacuous passes
@@ -1061,6 +1062,88 @@ answers 40. Those are two reports of one defect, and the defect is upstream of
 both: a pointer field and an array-of-references field cannot describe sixteen
 embedded bytes followed by thirty-two more, whatever number a given runtime is
 willing to put on them.
+
+## Fixed: no managed widget could override OnActivate
+
+`Gtk.Widget.ConnectActivate` is what runs when a managed subclass overrides
+`OnActivate`: it registers a signal with `g_signal_newv` and tells Gtk that this
+is the type's *activation* signal. Gtk 3 said that by writing the signal id into
+a public `GtkWidgetClass` field, and this still did:
+
+```csharp
+uint* raw_ptr = (uint*)(((long) gtype.GetClassPtr())
+                        + (long) class_abi.GetFieldOffset ("activate_signal"));
+```
+
+Gtk 4 made that field private. `GtkWidgetClass` has no `activate_signal` member,
+so the generated ABI description has no such field, and `AbiStruct.GetFieldOffset`
+indexed an `OrderedDictionary` with a name that is not in it and dereferenced the
+null it got back. **The exception is thrown from class-init**, i.e. the first time
+the type is used at all, so the subclass could not be constructed — with a
+`NullReferenceException` naming nothing, out of a method the author never called.
+
+The Gtk 4 way to say the same thing is `gtk_widget_class_set_activate_signal`,
+which is now what it calls. That also makes `Widget.Activate ()` emit the signal,
+so a managed widget can be activated the way any other one is. The signal keeps
+its Gtk 3 name, `activate_signal`, rather than becoming `activate`: `Button`,
+`Entry` and others already have a signal called `activate`, and registering a
+second of that name on a subclass's own GType is an error.
+
+The same shape as every other Gtk 3 leftover in this document — it compiled, and
+nothing called it.
+
+## Fixed: a nullable transfer-full argument released before the null check
+
+Codegen emits, for an owned opaque parameter, one line that hands ownership over
+and then a call that already copes with `null`:
+
+```csharp
+public void Allocate (int width, int height, int baseline, Gsk.Transform transform) {
+    transform.Owned = false;                                  // <-- dereferences it
+    gtk_widget_allocate (Handle, width, height, baseline,
+                         transform == null ? IntPtr.Zero : transform.Handle);
+}
+```
+
+`gtk_widget_allocate`'s transform is `nullable="1" transfer-ownership="full"`, and
+**NULL is the identity transform** — exactly what a layout manager passes for a
+child that sits at the origin. So the obvious call threw `NullReferenceException`
+from inside the binding, before any native code ran and with nothing in the
+message naming the argument. `Parameter.Prepare` now guards the assignment;
+fourteen call sites across four assemblies were affected, among them
+`ListView.ScrollTo`, `Viewport.ScrollTo` and `DropTargetAsync.Formats`, all of
+which document their argument as optional.
+
+## Authoring: what Gtk 4 changed about overriding
+
+Three things surfaced writing `AuthoringTests`, none of them binding defects, all
+of them able to make an override look broken:
+
+- **A widget's layout manager answers instead of its `measure` and
+  `size_allocate` vfuncs.** Gtk 4 consults `priv->layout_manager` first and only
+  falls back to the class vtable when there is none. `GtkBox` always has a
+  `GtkBoxLayout`, so `OnMeasure` on a `Box` subclass is installed in the class
+  struct and never called — setting `LayoutManager = null` makes the same
+  override take effect immediately, which is how the test proves the patch was
+  there all along. A `Box` subclass that wants to measure differently has to
+  replace the layout manager. `Gtk.Label` has none, so it is what the chain-up
+  tests subclass.
+- **An unmapped widget is never snapshotted.** `SnapshotChild` on a widget whose
+  window has not been presented returns *no node at all* and does not call
+  `OnSnapshot`. A snapshot test that skips `Present ()` therefore asserts
+  nothing, quietly.
+- **A `[GLib.Property]` setter is an ordinary C# setter.** Assigning it in C#
+  emits no `notify`; only a write that goes through GObject does. A property that
+  wants to be observable has to call `Notify` itself.
+
+And one thing that cannot be tested at all: a managed `GLib.Object` subclass with
+no `(IntPtr)` constructor raises `MissingIntPtrCtorException` **from inside
+GObject's constructor callback**. Windows unwinds that back to the caller and it
+looks like an ordinary exception; Linux cannot unwind a managed exception through
+a native frame, and the test host dies mid-run — under a "Passed!" line, with 54
+of 797. The requirement is therefore asserted by reflection in
+`Gtk_Builder_constructs_a_managed_type_by_name_and_sets_its_declared_properties`
+rather than demonstrated by breaking it.
 
 ## Measuring coverage
 
