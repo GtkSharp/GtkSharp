@@ -15,8 +15,8 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 835 tests Windows reports 832 passing with 3 skips, and
-the forky container 834 passing with 1.
+so only broke there. At 871 tests Windows reports 868 passing with 3 skips, and
+the forky container 870 passing with 1.
 
 ### Running the suite on the Gtk the bindings describe
 
@@ -168,6 +168,7 @@ investigate — not something to relax.
 | `SatelliteAssemblyTests` | The three assemblies whose generated surface nothing had reached: libadwaita, GtkSourceView and Gsk. Render-node trees serialised and read back, node bounds composed by arithmetic the test does itself, `GskTransform`'s builder chain and the NULL that means the identity, `GskPathBuilder`; GtkSourceView's language guessing, line sorting, search occurrence counts, syntax context classes, regions and snippets; libadwaita's navigation stack, view-stack pages, toasts, style manager, spring params and breakpoint conditions. |
 | `AuthoringTests` | The other direction: a C# program **writing** Gtk types rather than calling them, which is the code that runs C into managed. GType registration and `[GLib.TypeName]`, `[GLib.Property]` read and written through GObject rather than through C#, `notify::`, `Gtk.Builder` constructing a managed type by name, declaring an activation signal by overriding `OnActivate`, virtual overrides proved by asking a *parent* for the answer, chaining to a base vfunc, a `Gtk.LayoutManager` subclass placing children by transforms the test does the arithmetic for, and `[Gtk.Template]`/`[Child]`. |
 | `GLibDeepTests` | The rest of hand-written GLib: `HookList`'s ABI description checked against the struct `g_hook_list_init` actually writes, the container half of `Variant`/`VariantType` (tuples, arrays, maybes, dict entries, subtyping), `Bytes` slicing and ownership, the `Marshaller` helpers below the ones every binding uses, and the two branches of `GLib.Signal` that only a returning signal or an emission hook reaches. |
+| `GioDeepTests` | The half of Gio that needs a filesystem and a main loop. GSettings over a schema the test writes and compiles with `glib-compile-schemas`, stored through a **keyfile backend** so the oracle is the ini file on disk rather than anything GSettings remembers: defaults, writes, resets, user value versus default, ranges, the `changed` signal, delay/apply/revert, enum and flags nicknames, a child schema, and a two-way binding to a widget property. Then `GFileMonitor` over a directory the test builds, the async pattern end to end (callback thread, `GAsyncResult`, what `Finish` returns), `GCancellable` stopping a walk that has already started, `GFileInfo` attributes, `GFileEnumerator`, and `GFile` copy/move/rename/delete with their error codes. |
 | `ExpressionTests` | `GtkExpression`: how the Gtk 4 list stack reads a value out of an item, and how a property is kept in step with one on another object. Property, constant, object, closure, cclosure and try expressions; evaluation against a this-object and the GValue it fills; watches and their invalidation; `Bind` and what a failed evaluation does to the target; expression-driven `StringSorter`, `NumericSorter`, `StringFilter` and `BoolFilter` over a list model. Four defects; the oracles are the length of a word, an alphabet and a set of ages chosen here. |
 
 ### Guards against vacuous passes
@@ -1362,3 +1363,174 @@ construction: testing one property round-trip exercises the same emission path
 as the thousand others like it. High line coverage over generated code is
 therefore close to meaningless. The parts worth testing are the hand-written
 layer, the codegen's decisions, and the places where Gtk 4 changed semantics.
+
+## Fixed: two signals called "changed", one args class
+
+Exactly the shape `GMenuModel::items-changed` had, one namespace over.
+`GSettings::changed` carries a key name; `GFileMonitor::changed` carries
+`(GFile *file, GFile *other_file, GFileMonitorEvent event_type)`. GapiCodegen
+names a signal's args class after the signal, so both asked for
+`GLib.ChangedArgs`, and only one of them could have it.
+
+GSettings won. A `FileMonitor.Changed` handler was therefore handed an args
+object whose single member reads `Args[0]` as a `string` — and `Args[0]` is a
+`GFile`. The cast threw `InvalidCastException` from inside the signal
+marshaller, and nothing on the args named the file, the event type or the rename
+destination. **The one signal a file monitor exists to raise could not be used
+for anything.**
+
+The monitor's signal is renamed in `GioSharp.metadata`, so it is
+`FileMonitor.FileChanged` with a `FileChangedArgs` carrying `File`, `OtherFile`
+and `EventType`. The cname stays `changed`; nothing about what is connected
+natively changes.
+
+**Where else to look:** two signals of the same name in one assembly is a
+collision by construction, not an accident. The check is a grep for
+`typeof (GLib.XArgs)` across an assembly's `Generated/` and a count of the
+distinct types that emit each one.
+
+## Fixed: g_settings_schema_source_list_schemas read an array as a string
+
+The function fills two `gchar ***` out-parameters — two NULL-terminated string
+arrays the caller owns. `SymbolTable` has no rule for a triple pointer, so
+codegen fell back to `out IntPtr` and then ran `PtrToStringGFree` over it: it
+read the **array of pointers** as though the first bytes of a heap address were
+UTF-8 text, freed the array, and leaked every string in it. It is hidden in the
+metadata and rebound over `string[]` in
+`Source/Libs/GioSharp/SettingsSchemaSource.cs`.
+
+## Fixed: a property that generated nothing also suppressed its own accessor
+
+`ClassBase.IgnoreMethod` drops a `GetX` method whenever a property called `X`
+exists, on the assumption that the property will carry the getter. It does not
+always: `Property.Generate` bails out on `!Readable && !Writable`, and GObject
+reports `GFileEnumerator:container` as construct-only and write-only. So the
+property emitted nothing, the method was suppressed, and
+`g_file_enumerator_get_container` — the only way to turn a `GFileInfo` back into
+a path without remembering where the walk started — **could not be reached from
+managed code at all**.
+
+The early-out now also asks whether the property has a real accessor method
+behind it, which is what the `Getter`/`Setter` machinery in `PropertyBase`
+exists for. Five properties across the whole tree are in this state, and all
+five were inaccessible: `GFileEnumerator:container`,
+`GApplicationCommandLine:arguments` and `:platform-data`,
+`GSubprocessLauncher:flags`, and `JSCWeakValue:value`.
+
+## Fixed: a NULL GVariant came back as a wrapper around IntPtr.Zero
+
+`g_settings_get_user_value` returns NULL to say "the user has never written this
+key" — that is the whole point of the call, and the only way to tell a value
+apart from a default. `ManualGen.FromNative` emitted `new GLib.Variant (raw_ret)`
+with no guard, so the caller got a live-looking object with `Handle == 0`, which
+compares non-null, blows up on use, and made `g_variant_ref_sink` log a CRITICAL
+on the way in. 67 GVariant returns and 17 GVariantType returns had the shape.
+
+The guard is **opt-in** rather than blanket, because it is not true of every
+manual type: a NULL `GList *` **is** the empty list, and turning that into null
+would break every caller that iterates a result. Only `GVariant` and
+`GVariantType` declare `NullIsNull`. It also only applies when the source
+expression is a plain identifier, since the guard names it twice — `FieldBase`
+and `DefaultSignalHandler` pass a call expression and keep the unguarded form.
+
+## Fixed: Dispose released the object before disconnecting its handlers
+
+`GLib.Object.Dispose (true)` did this:
+
+```csharp
+tref.Dispose ();                 // g_object_remove_toggle_ref -> may finalize
+foreach (var sig in signals.Keys)
+        signals[sig].Free ();    // g_signal_handler_is_connected (raw_ptr, id)
+```
+
+`SignalClosure` keeps its own copy of the raw GObject pointer. When the toggle
+ref held the last reference — the normal case for an object the program made and
+then disposed — the GObject was finalized inside `tref.Dispose ()`, and the
+disconnect that followed read freed memory. The finalizer branch ten lines below
+already had the order right (`QueueSignalFree ()` then `tref.QueueUnref ()`); the
+disposing branch is now the same way round.
+
+This was found while chasing the monitor crash below, and it is **not** what
+caused it. It has no test of its own, because making it fail on demand needs the
+GObject's freed memory to be reused between the two calls; it is kept because
+the two branches of one method disagreeing about ordering is a defect whichever
+way the race happens to fall.
+
+## Fixed: GLib.FileFactory leaked every GFile it made
+
+`g_file_new_for_path`, `_for_uri` and `_for_commandline_arg` all return a new
+reference. `FileFactory` passed `owned: false` to `FileAdapter.GetObject`, which
+then took a *second* one, so nothing created through this class was ever freed —
+and this class is how the samples, the tests and the documentation all make a
+`GFile`. The generated `GLib.File.NewForPath` sitting beside it passes `true`,
+which is the authority for what the ownership is.
+
+## Open: unreffing a cancelled GFileMonitor corrupts the heap on Windows
+
+Reproducible outside the test host, in about four runs in five:
+
+```csharp
+var monitor = GLib.FileFactory.NewForPath (dir)
+              .MonitorDirectory (GLib.FileMonitorFlags.None, null);
+monitor.Cancel ();
+/* iterate the main loop for ~1 s */
+monitor.Dispose ();          // exit code 0xC0000374, STATUS_HEAP_CORRUPTION
+```
+
+All three parts are needed: without the `Cancel ()`, or without the main-loop
+iterations in between, twenty rounds run clean. No signal handler need be
+attached, and it is a heap corruption rather than an access violation, which
+points at glib's win32 backend freeing a buffer an outstanding
+`ReadDirectoryChangesW` still owns rather than at anything in this binding. It
+does not reproduce on Linux's inotify backend.
+
+`GioDeepTests`' two monitor tests therefore do not dispose their monitor; the
+wrapper is collected instead, which defers the unref onto a main-loop timeout,
+and is what every other test here does anyway. The comment in the test says so,
+so that nobody "tidies up" by adding a `using`.
+
+It is also a reminder that the exit code is worth reading. `dotnet test` prints
+"Test host process crashed" for every one of these, and the diagnostic log has
+nothing in it; running the same code standalone and asking Windows for the
+process exit code separated a heap corruption (`0xC0000374`) from the access
+violations the rest of this document is about in one step.
+
+## Gio: behaviour worth knowing
+
+- **`g_file_copy`'s progress callback is called a platform-dependent number of
+  times.** On Linux a local-to-local copy is one `copy_file_range` and reports
+  **once**; the fallback path Windows takes reports per buffer. What holds on
+  both is that every report carries the same total and the last one has
+  `current == total`. An assertion that a megabyte takes more than one buffer
+  passes on Windows and fails on Linux.
+- **Cancelling from that progress callback therefore does not reliably cancel
+  the copy.** With no loop there is no place to check the cancellable, so on
+  Linux the copy finishes and reports success. An in-flight cancellation test
+  needs an operation that is genuinely iterative — a `GFileEnumerator` walk is
+  the portable one.
+- **A cancelled async operation still calls back.** Skipping the `Finish` call
+  because "it was cancelled anyway" leaks the `GTask` every time; the callback
+  runs and `Finish` raises `G_IO_ERROR_CANCELLED`.
+- **A Gio async callback runs on the thread that started the operation**, via
+  its thread-default main context — which is what makes the pattern usable from
+  a Gtk program at all, and is worth an explicit assertion rather than an
+  assumption.
+- **A `GFileInfo` only carries the attributes that were asked for**, and reading
+  one that was not is not an error: `standard::size` off an info queried for
+  `standard::name` is **0**, which looks exactly like an empty file.
+- **`g_settings_reset` deletes the key rather than writing the default back**,
+  which is what lets a later change of default reach the user. In a keyfile
+  backend the line disappears from the file.
+- **A `GSettingsSchemaKey`'s range is `(sv)`** — the word `"range"` and a
+  *boxed* variant holding `(min, max)`. Reading the second child as the tuple
+  gives one child, not two.
+- **An interface adapter is a fresh wrapper every time.**
+  `FileAdapter.GetObject` does not cache the way `GLib.Object.GetObject` does,
+  so two lookups of one `GFile` are not reference-equal; `g_file_equal` is how
+  to compare them.
+- **`glib-compile-schemas` is not on `PATH` on Debian.** `libglib2.0-0` puts it
+  in `/usr/lib/<triplet>/glib-2.0/`, and only `libglib2.0-dev-bin` — which
+  nothing in the Gtk dependency chain pulls in — installs the copy in
+  `/usr/bin`. A test that needs it has to look in the multiarch directory or it
+  will skip on the reference container while passing on Windows, where gvsbuild
+  ships it in `bin/`.
