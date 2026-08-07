@@ -83,13 +83,23 @@ namespace GLib {
 
 			if (disposing)
 			{
-				tref.Dispose ();
-
+				// Disconnect before releasing, not after. tref.Dispose () drops
+				// the reference this process holds, and when it is the last one
+				// the GObject is finalized inside that call -- so
+				// SignalClosure.Disconnect, which calls
+				// g_signal_handler_is_connected on the raw pointer it kept,
+				// would then be reading freed memory. It is a use-after-free on
+				// the ordinary Dispose () of any object with a handler attached,
+				// and it only bites when nothing else holds a reference, which
+				// is what made it look like an intermittent crash somewhere
+				// else. The finalizer path below already had the order right.
 				if (signals != null)
 				{
 					foreach (var sig in signals.Keys)
 						signals[sig].Free ();
 				}
+
+				tref.Dispose ();
 			}
 			else
 			{
