@@ -21,4 +21,13 @@
        ask whether it should happen, so here the signal is renamed, following
        ApplyTag/TagApplied. -->
   <attr path="/api/namespace/object[@cname='AdwTabView']/signal[@cname='close-page']" name="name">ClosePageRequested</attr>
+
+  <!-- Two arrays whose length is a separate parameter rather than a NULL
+       terminator, a shape codegen has no rule for: Replace came out taking one
+       AdwNavigationPage where libadwaita wants AdwNavigationPage**, and
+       ReplaceWithTags one string where it wants char**. Both handed the callee
+       the first machine word of the value as though it were the first element.
+       Rebound over arrays in NavigationView.cs. -->
+  <attr path="/api/namespace/object[@cname='AdwNavigationView']/method[@cname='adw_navigation_view_replace']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='AdwNavigationView']/method[@cname='adw_navigation_view_replace_with_tags']" name="hidden">1</attr>
 </metadata>

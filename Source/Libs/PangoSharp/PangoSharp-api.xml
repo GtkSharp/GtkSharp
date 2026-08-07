@@ -565,7 +565,7 @@
     </object>
     <object name="Font" cname="PangoFont" parent="GObject">
       <class_struct cname="PangoFontClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
         <method vm="describe" />
         <method vm="get_coverage" />
         <method vm="get_glyph_extents" />
@@ -575,7 +575,7 @@
         <method vm="get_features" />
         <method vm="create_hb_font" />
       </class_struct>
-      <field name="ParentInstance" cname="parent_instance" type="GObject" />
+      <field name="ParentInstance" cname="parent_instance" type="GObject" readable="true" />
       <virtual_method name="Describe" cname="describe">
         <return-type type="PangoFontDescription*" owned="true" />
       </virtual_method>
@@ -692,7 +692,7 @@
     </object>
     <object name="FontFace" cname="PangoFontFace" parent="GObject">
       <class_struct cname="PangoFontFaceClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
         <method vm="get_face_name" />
         <method vm="describe" />
         <method vm="list_sizes" />
@@ -701,7 +701,7 @@
         <method vm="_pango_reserved3" />
         <method vm="_pango_reserved4" />
       </class_struct>
-      <field name="ParentInstance" cname="parent_instance" type="GObject" />
+      <field name="ParentInstance" cname="parent_instance" type="GObject" readable="true" />
       <virtual_method name="GetFaceName" cname="get_face_name">
         <return-type type="const-char*" />
       </virtual_method>
@@ -752,7 +752,7 @@
     </object>
     <object name="FontFamily" cname="PangoFontFamily" parent="GObject">
       <class_struct cname="PangoFontFamilyClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
         <method vm="list_faces" />
         <method vm="get_name" />
         <method vm="is_monospace" />
@@ -760,7 +760,7 @@
         <method vm="get_face" />
         <method vm="_pango_reserved2" />
       </class_struct>
-      <field name="ParentInstance" cname="parent_instance" type="GObject" />
+      <field name="ParentInstance" cname="parent_instance" type="GObject" readable="true" />
       <property name="IsMonospace" cname="is-monospace" type="gboolean" readable="true" />
       <property name="IsVariable" cname="is-variable" type="gboolean" readable="true" />
       <property name="ItemType" cname="item-type" type="GType" readable="true" />
@@ -819,17 +819,17 @@
     </object>
     <object name="FontMap" cname="PangoFontMap" parent="GObject">
       <class_struct cname="PangoFontMapClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
         <method vm="load_font" />
         <method vm="list_families" />
         <method vm="load_fontset" />
-        <field name="ShapeEngineType" cname="shape_engine_type" type="const-char*" />
+        <field name="ShapeEngineType" cname="shape_engine_type" type="const-char*" readable="true" />
         <method vm="get_serial" />
         <method vm="changed" />
         <method vm="get_family" />
         <method vm="get_face" />
       </class_struct>
-      <field name="ParentInstance" cname="parent_instance" type="GObject" />
+      <field name="ParentInstance" cname="parent_instance" type="GObject" readable="true" />
       <property name="ItemType" cname="item-type" type="GType" readable="true" />
       <property name="NItems" cname="n-items" type="guint" readable="true" />
       <virtual_method name="LoadFont" cname="load_font">
@@ -931,7 +931,7 @@
     </object>
     <object name="Fontset" cname="PangoFontset" parent="GObject">
       <class_struct cname="PangoFontsetClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
         <method vm="get_font" />
         <method vm="get_metrics" />
         <method vm="get_language" />
@@ -941,7 +941,7 @@
         <method vm="_pango_reserved3" />
         <method vm="_pango_reserved4" />
       </class_struct>
-      <field name="ParentInstance" cname="parent_instance" type="GObject" />
+      <field name="ParentInstance" cname="parent_instance" type="GObject" readable="true" />
       <virtual_method name="GetFont" cname="get_font">
         <return-type type="PangoFont*" owned="true" />
         <parameters>
@@ -1380,7 +1380,7 @@
       <field name="Underline" cname="underline" type="PangoUnderline" access="private" />
       <field name="Strikethrough" cname="strikethrough" type="gboolean" access="private" />
       <field name="ActiveCount" cname="active_count" type="int" access="private" />
-      <field name="Matrix" cname="matrix" type="PangoMatrix*" />
+      <field name="Matrix" cname="matrix" type="PangoMatrix*" readable="true" />
       <field name="Priv" cname="priv" type="PangoRendererPrivate*" access="private" />
       <virtual_method name="DrawGlyphs" cname="draw_glyphs">
         <return-type type="void" />
@@ -1616,30 +1616,30 @@
       </method>
     </object>
     <struct name="Analysis" cname="PangoAnalysis">
-      <field name="ShapeEngine" cname="shape_engine" type="gpointer" access="public" writeable="true" />
-      <field name="LangEngine" cname="lang_engine" type="gpointer" access="public" writeable="true" />
-      <field name="Font" cname="font" type="PangoFont*" access="public" writeable="true" />
-      <field name="Level" cname="level" type="guint8" access="public" writeable="true" />
-      <field name="Gravity" cname="gravity" type="guint8" access="public" writeable="true" />
-      <field name="Flags" cname="flags" type="guint8" access="public" writeable="true" />
-      <field name="Script" cname="script" type="guint8" access="public" writeable="true" />
-      <field name="Language" cname="language" type="PangoLanguage*" access="public" writeable="true" />
-      <field name="ExtraAttrs" cname="extra_attrs" type="GSList*" access="public" writeable="true" />
+      <field name="ShapeEngine" cname="shape_engine" type="gpointer" access="public" readable="true" writeable="true" />
+      <field name="LangEngine" cname="lang_engine" type="gpointer" access="public" readable="true" writeable="true" />
+      <field name="Font" cname="font" type="PangoFont*" access="public" readable="true" writeable="true" />
+      <field name="Level" cname="level" type="guint8" access="public" readable="true" writeable="true" />
+      <field name="Gravity" cname="gravity" type="guint8" access="public" readable="true" writeable="true" />
+      <field name="Flags" cname="flags" type="guint8" access="public" readable="true" writeable="true" />
+      <field name="Script" cname="script" type="guint8" access="public" readable="true" writeable="true" />
+      <field name="Language" cname="language" type="PangoLanguage*" access="public" readable="true" writeable="true" />
+      <field name="ExtraAttrs" cname="extra_attrs" type="GSList*" access="public" readable="true" writeable="true" />
     </struct>
     <struct name="AttrClass" cname="PangoAttrClass">
-      <field name="Type" cname="type" type="PangoAttrType" access="public" writeable="true" />
+      <field name="Type" cname="type" type="PangoAttrType" access="public" readable="true" writeable="true" />
     </struct>
     <struct name="AttrColor" cname="PangoAttrColor">
-      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
-      <field name="Color" cname="color" type="PangoColor" access="public" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" readable="true" writeable="true" />
+      <field name="Color" cname="color" type="PangoColor" access="public" readable="true" writeable="true" />
     </struct>
     <struct name="AttrFloat" cname="PangoAttrFloat">
-      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
-      <field name="Value" cname="value" type="double" access="public" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" readable="true" writeable="true" />
+      <field name="Value" cname="value" type="double" access="public" readable="true" writeable="true" />
     </struct>
     <struct name="AttrFontDesc" cname="PangoAttrFontDesc">
-      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
-      <field name="Desc" cname="desc" type="PangoFontDescription*" access="public" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" readable="true" writeable="true" />
+      <field name="Desc" cname="desc" type="PangoFontDescription*" access="public" readable="true" writeable="true" />
       <method name="New" cname="pango_attr_font_desc_new" shared="true">
         <return-type type="PangoAttribute*" owned="true" />
         <parameters>
@@ -1648,8 +1648,8 @@
       </method>
     </struct>
     <struct name="AttrFontFeatures" cname="PangoAttrFontFeatures">
-      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
-      <field name="Features" cname="features" type="gchar*" access="public" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" readable="true" writeable="true" />
+      <field name="Features" cname="features" type="gchar*" access="public" readable="true" writeable="true" />
       <method name="New" cname="pango_attr_font_features_new" shared="true">
         <return-type type="PangoAttribute*" owned="true" />
         <parameters>
@@ -1658,8 +1658,8 @@
       </method>
     </struct>
     <struct name="AttrInt" cname="PangoAttrInt">
-      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
-      <field name="Value" cname="value" type="int" access="public" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" readable="true" writeable="true" />
+      <field name="Value" cname="value" type="int" access="public" readable="true" writeable="true" />
     </struct>
     <boxed name="AttrIterator" cname="PangoAttrIterator" opaque="true">
       <method name="Copy" cname="pango_attr_iterator_copy">
@@ -1700,8 +1700,8 @@
       </method>
     </boxed>
     <struct name="AttrLanguage" cname="PangoAttrLanguage">
-      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
-      <field name="Value" cname="value" type="PangoLanguage*" access="public" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" readable="true" writeable="true" />
+      <field name="Value" cname="value" type="PangoLanguage*" access="public" readable="true" writeable="true" />
       <method name="New" cname="pango_attr_language_new" shared="true">
         <return-type type="PangoAttribute*" owned="true" />
         <parameters>
@@ -1787,12 +1787,12 @@
       </method>
     </boxed>
     <struct name="AttrShape" cname="PangoAttrShape">
-      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
-      <field name="InkRect" cname="ink_rect" type="PangoRectangle" access="public" writeable="true" />
-      <field name="LogicalRect" cname="logical_rect" type="PangoRectangle" access="public" writeable="true" />
-      <field name="Data" cname="data" type="gpointer" access="public" writeable="true" />
-      <field name="CopyFunc" cname="copy_func" type="PangoAttrDataCopyFunc" is_callback="1" access="public" writeable="true" />
-      <field name="DestroyFunc" cname="destroy_func" type="GDestroyNotify" is_callback="1" access="public" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" readable="true" writeable="true" />
+      <field name="InkRect" cname="ink_rect" type="PangoRectangle" access="public" readable="true" writeable="true" />
+      <field name="LogicalRect" cname="logical_rect" type="PangoRectangle" access="public" readable="true" writeable="true" />
+      <field name="Data" cname="data" type="gpointer" access="public" readable="true" writeable="true" />
+      <field name="CopyFunc" cname="copy_func" type="PangoAttrDataCopyFunc" is_callback="1" access="public" readable="true" writeable="true" />
+      <field name="DestroyFunc" cname="destroy_func" type="GDestroyNotify" is_callback="1" access="public" readable="true" writeable="true" />
       <method name="New" cname="pango_attr_shape_new" shared="true">
         <return-type type="PangoAttribute*" owned="true" />
         <parameters>
@@ -1812,9 +1812,9 @@
       </method>
     </struct>
     <struct name="AttrSize" cname="PangoAttrSize">
-      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
-      <field name="Size" cname="size" type="int" access="public" writeable="true" />
-      <field name="Absolute" cname="absolute" type="guint" bits="1" access="public" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" readable="true" writeable="true" />
+      <field name="Size" cname="size" type="int" access="public" readable="true" writeable="true" />
+      <field name="Absolute" cname="absolute" type="guint" bits="1" access="public" readable="true" writeable="true" />
       <method name="New" cname="pango_attr_size_new" shared="true">
         <return-type type="PangoAttribute*" owned="true" />
         <parameters>
@@ -1829,13 +1829,13 @@
       </method>
     </struct>
     <struct name="AttrString" cname="PangoAttrString">
-      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
-      <field name="Value" cname="value" type="char*" access="public" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" readable="true" writeable="true" />
+      <field name="Value" cname="value" type="char*" access="public" readable="true" writeable="true" />
     </struct>
     <boxed name="Attribute" cname="PangoAttribute" opaque="true">
-      <field name="Klass" cname="klass" type="const-PangoAttrClass*" access="public" writeable="true" />
-      <field name="StartIndex" cname="start_index" type="guint" access="public" writeable="true" />
-      <field name="EndIndex" cname="end_index" type="guint" access="public" writeable="true" />
+      <field name="Klass" cname="klass" type="const-PangoAttrClass*" access="public" readable="true" writeable="true" />
+      <field name="StartIndex" cname="start_index" type="guint" access="public" readable="true" writeable="true" />
+      <field name="EndIndex" cname="end_index" type="guint" access="public" readable="true" writeable="true" />
       <method name="AsColor" cname="pango_attribute_as_color">
         <return-type type="PangoAttrColor*" />
       </method>
@@ -1886,9 +1886,9 @@
       </method>
     </boxed>
     <boxed name="Color" cname="PangoColor" opaque="true">
-      <field name="Red" cname="red" type="guint16" access="public" writeable="true" />
-      <field name="Green" cname="green" type="guint16" access="public" writeable="true" />
-      <field name="Blue" cname="blue" type="guint16" access="public" writeable="true" />
+      <field name="Red" cname="red" type="guint16" access="public" readable="true" writeable="true" />
+      <field name="Green" cname="green" type="guint16" access="public" readable="true" writeable="true" />
+      <field name="Blue" cname="blue" type="guint16" access="public" readable="true" writeable="true" />
       <method name="Copy" cname="pango_color_copy">
         <return-type type="PangoColor*" owned="true" />
       </method>
@@ -2156,21 +2156,21 @@
       </method>
     </boxed>
     <struct name="GlyphGeometry" cname="PangoGlyphGeometry">
-      <field name="Width" cname="width" type="PangoGlyphUnit" access="public" writeable="true" />
-      <field name="XOffset" cname="x_offset" type="PangoGlyphUnit" access="public" writeable="true" />
-      <field name="YOffset" cname="y_offset" type="PangoGlyphUnit" access="public" writeable="true" />
+      <field name="Width" cname="width" type="PangoGlyphUnit" access="public" readable="true" writeable="true" />
+      <field name="XOffset" cname="x_offset" type="PangoGlyphUnit" access="public" readable="true" writeable="true" />
+      <field name="YOffset" cname="y_offset" type="PangoGlyphUnit" access="public" readable="true" writeable="true" />
     </struct>
     <struct name="GlyphInfo" cname="PangoGlyphInfo">
-      <field name="Glyph" cname="glyph" type="PangoGlyph" access="public" writeable="true" />
-      <field name="Geometry" cname="geometry" type="PangoGlyphGeometry" access="public" writeable="true" />
-      <field name="Attr" cname="attr" type="PangoGlyphVisAttr" access="public" writeable="true" />
+      <field name="Glyph" cname="glyph" type="PangoGlyph" access="public" readable="true" writeable="true" />
+      <field name="Geometry" cname="geometry" type="PangoGlyphGeometry" access="public" readable="true" writeable="true" />
+      <field name="Attr" cname="attr" type="PangoGlyphVisAttr" access="public" readable="true" writeable="true" />
     </struct>
     <boxed name="GlyphItem" cname="PangoGlyphItem" opaque="true">
-      <field name="Item" cname="item" type="PangoItem*" access="public" writeable="true" />
-      <field name="Glyphs" cname="glyphs" type="PangoGlyphString*" access="public" writeable="true" />
-      <field name="YOffset" cname="y_offset" type="int" access="public" writeable="true" />
-      <field name="StartXOffset" cname="start_x_offset" type="int" access="public" writeable="true" />
-      <field name="EndXOffset" cname="end_x_offset" type="int" access="public" writeable="true" />
+      <field name="Item" cname="item" type="PangoItem*" access="public" readable="true" writeable="true" />
+      <field name="Glyphs" cname="glyphs" type="PangoGlyphString*" access="public" readable="true" writeable="true" />
+      <field name="YOffset" cname="y_offset" type="int" access="public" readable="true" writeable="true" />
+      <field name="StartXOffset" cname="start_x_offset" type="int" access="public" readable="true" writeable="true" />
+      <field name="EndXOffset" cname="end_x_offset" type="int" access="public" readable="true" writeable="true" />
       <method name="ApplyAttrs" cname="pango_glyph_item_apply_attrs">
         <return-type type="GSList*" owned="true" />
         <parameters>
@@ -2211,14 +2211,14 @@
       </method>
     </boxed>
     <boxed name="GlyphItemIter" cname="PangoGlyphItemIter" opaque="true">
-      <field name="GlyphItem" cname="glyph_item" type="PangoGlyphItem*" access="public" writeable="true" />
-      <field name="Text" cname="text" type="const-gchar*" access="public" writeable="true" />
-      <field name="StartGlyph" cname="start_glyph" type="int" access="public" writeable="true" />
-      <field name="StartIndex" cname="start_index" type="int" access="public" writeable="true" />
-      <field name="StartChar" cname="start_char" type="int" access="public" writeable="true" />
-      <field name="EndGlyph" cname="end_glyph" type="int" access="public" writeable="true" />
-      <field name="EndIndex" cname="end_index" type="int" access="public" writeable="true" />
-      <field name="EndChar" cname="end_char" type="int" access="public" writeable="true" />
+      <field name="GlyphItem" cname="glyph_item" type="PangoGlyphItem*" access="public" readable="true" writeable="true" />
+      <field name="Text" cname="text" type="const-gchar*" access="public" readable="true" writeable="true" />
+      <field name="StartGlyph" cname="start_glyph" type="int" access="public" readable="true" writeable="true" />
+      <field name="StartIndex" cname="start_index" type="int" access="public" readable="true" writeable="true" />
+      <field name="StartChar" cname="start_char" type="int" access="public" readable="true" writeable="true" />
+      <field name="EndGlyph" cname="end_glyph" type="int" access="public" readable="true" writeable="true" />
+      <field name="EndIndex" cname="end_index" type="int" access="public" readable="true" writeable="true" />
+      <field name="EndChar" cname="end_char" type="int" access="public" readable="true" writeable="true" />
       <method name="Copy" cname="pango_glyph_item_iter_copy">
         <return-type type="PangoGlyphItemIter*" owned="true" />
       </method>
@@ -2250,9 +2250,9 @@
       </method>
     </boxed>
     <boxed name="GlyphString" cname="PangoGlyphString" opaque="true">
-      <field name="NumGlyphs" cname="num_glyphs" type="int" access="public" writeable="true" />
-      <field name="Glyphs" cname="glyphs" type="PangoGlyphInfo*" access="public" writeable="true" />
-      <field name="LogClusters" cname="log_clusters" type="int*" access="public" writeable="true" />
+      <field name="NumGlyphs" cname="num_glyphs" type="int" access="public" readable="true" writeable="true" />
+      <field name="Glyphs" cname="glyphs" type="PangoGlyphInfo*" access="public" readable="true" writeable="true" />
+      <field name="LogClusters" cname="log_clusters" type="int*" access="public" readable="true" writeable="true" />
       <field name="Space" cname="space" type="int" access="private" />
       <constructor cname="pango_glyph_string_new" name="New" />
       <method name="Copy" cname="pango_glyph_string_copy">
@@ -2336,14 +2336,14 @@
       </method>
     </boxed>
     <struct name="GlyphVisAttr" cname="PangoGlyphVisAttr">
-      <field name="IsClusterStart" cname="is_cluster_start" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsColor" cname="is_color" type="guint" bits="1" access="public" writeable="true" />
+      <field name="IsClusterStart" cname="is_cluster_start" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsColor" cname="is_color" type="guint" bits="1" access="public" readable="true" writeable="true" />
     </struct>
     <boxed name="Item" cname="PangoItem" opaque="true">
-      <field name="Offset" cname="offset" type="int" access="public" writeable="true" />
-      <field name="Length" cname="length" type="int" access="public" writeable="true" />
-      <field name="NumChars" cname="num_chars" type="int" access="public" writeable="true" />
-      <field name="Analysis" cname="analysis" type="PangoAnalysis" access="public" writeable="true" />
+      <field name="Offset" cname="offset" type="int" access="public" readable="true" writeable="true" />
+      <field name="Length" cname="length" type="int" access="public" readable="true" writeable="true" />
+      <field name="NumChars" cname="num_chars" type="int" access="public" readable="true" writeable="true" />
+      <field name="Analysis" cname="analysis" type="PangoAnalysis" access="public" readable="true" writeable="true" />
       <constructor cname="pango_item_new" name="New" />
       <method name="ApplyAttrs" cname="pango_item_apply_attrs">
         <return-type type="void" />
@@ -2504,12 +2504,12 @@
       </method>
     </boxed>
     <boxed name="LayoutLine" cname="PangoLayoutLine" opaque="true">
-      <field name="Layout" cname="layout" type="PangoLayout*" access="public" writeable="true" />
-      <field name="StartIndex" cname="start_index" type="gint" access="public" writeable="true" />
-      <field name="Length" cname="length" type="gint" access="public" writeable="true" />
-      <field name="Runs" cname="runs" type="GSList*" access="public" writeable="true" />
-      <field name="IsParagraphStart" cname="is_paragraph_start" type="guint" bits="1" access="public" writeable="true" />
-      <field name="ResolvedDir" cname="resolved_dir" type="guint" bits="3" access="public" writeable="true" />
+      <field name="Layout" cname="layout" type="PangoLayout*" access="public" readable="true" writeable="true" />
+      <field name="StartIndex" cname="start_index" type="gint" access="public" readable="true" writeable="true" />
+      <field name="Length" cname="length" type="gint" access="public" readable="true" writeable="true" />
+      <field name="Runs" cname="runs" type="GSList*" access="public" readable="true" writeable="true" />
+      <field name="IsParagraphStart" cname="is_paragraph_start" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="ResolvedDir" cname="resolved_dir" type="guint" bits="3" access="public" readable="true" writeable="true" />
       <method name="GetExtents" cname="pango_layout_line_get_extents">
         <return-type type="void" />
         <parameters>
@@ -2578,30 +2578,30 @@
       </method>
     </boxed>
     <struct name="LogAttr" cname="PangoLogAttr">
-      <field name="IsLineBreak" cname="is_line_break" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsMandatoryBreak" cname="is_mandatory_break" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsCharBreak" cname="is_char_break" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsWhite" cname="is_white" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsCursorPosition" cname="is_cursor_position" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsWordStart" cname="is_word_start" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsWordEnd" cname="is_word_end" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsSentenceBoundary" cname="is_sentence_boundary" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsSentenceStart" cname="is_sentence_start" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsSentenceEnd" cname="is_sentence_end" type="guint" bits="1" access="public" writeable="true" />
-      <field name="BackspaceDeletesCharacter" cname="backspace_deletes_character" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsExpandableSpace" cname="is_expandable_space" type="guint" bits="1" access="public" writeable="true" />
-      <field name="IsWordBoundary" cname="is_word_boundary" type="guint" bits="1" access="public" writeable="true" />
-      <field name="BreakInsertsHyphen" cname="break_inserts_hyphen" type="guint" bits="1" access="public" writeable="true" />
-      <field name="BreakRemovesPreceding" cname="break_removes_preceding" type="guint" bits="1" access="public" writeable="true" />
-      <field name="Reserved" cname="reserved" type="guint" bits="17" access="public" writeable="true" />
+      <field name="IsLineBreak" cname="is_line_break" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsMandatoryBreak" cname="is_mandatory_break" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsCharBreak" cname="is_char_break" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsWhite" cname="is_white" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsCursorPosition" cname="is_cursor_position" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsWordStart" cname="is_word_start" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsWordEnd" cname="is_word_end" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsSentenceBoundary" cname="is_sentence_boundary" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsSentenceStart" cname="is_sentence_start" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsSentenceEnd" cname="is_sentence_end" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="BackspaceDeletesCharacter" cname="backspace_deletes_character" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsExpandableSpace" cname="is_expandable_space" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="IsWordBoundary" cname="is_word_boundary" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="BreakInsertsHyphen" cname="break_inserts_hyphen" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="BreakRemovesPreceding" cname="break_removes_preceding" type="guint" bits="1" access="public" readable="true" writeable="true" />
+      <field name="Reserved" cname="reserved" type="guint" bits="17" access="public" readable="true" writeable="true" />
     </struct>
     <boxed name="Matrix" cname="PangoMatrix" opaque="true">
-      <field name="Xx" cname="xx" type="double" access="public" writeable="true" />
-      <field name="Xy" cname="xy" type="double" access="public" writeable="true" />
-      <field name="Yx" cname="yx" type="double" access="public" writeable="true" />
-      <field name="Yy" cname="yy" type="double" access="public" writeable="true" />
-      <field name="X0" cname="x0" type="double" access="public" writeable="true" />
-      <field name="Y0" cname="y0" type="double" access="public" writeable="true" />
+      <field name="Xx" cname="xx" type="double" access="public" readable="true" writeable="true" />
+      <field name="Xy" cname="xy" type="double" access="public" readable="true" writeable="true" />
+      <field name="Yx" cname="yx" type="double" access="public" readable="true" writeable="true" />
+      <field name="Yy" cname="yy" type="double" access="public" readable="true" writeable="true" />
+      <field name="X0" cname="x0" type="double" access="public" readable="true" writeable="true" />
+      <field name="Y0" cname="y0" type="double" access="public" readable="true" writeable="true" />
       <method name="Concat" cname="pango_matrix_concat">
         <return-type type="void" />
         <parameters>
@@ -2678,10 +2678,10 @@
       </method>
     </boxed>
     <struct name="Rectangle" cname="PangoRectangle">
-      <field name="X" cname="x" type="int" access="public" writeable="true" />
-      <field name="Y" cname="y" type="int" access="public" writeable="true" />
-      <field name="Width" cname="width" type="int" access="public" writeable="true" />
-      <field name="Height" cname="height" type="int" access="public" writeable="true" />
+      <field name="X" cname="x" type="int" access="public" readable="true" writeable="true" />
+      <field name="Y" cname="y" type="int" access="public" readable="true" writeable="true" />
+      <field name="Width" cname="width" type="int" access="public" readable="true" writeable="true" />
+      <field name="Height" cname="height" type="int" access="public" readable="true" writeable="true" />
     </struct>
     <struct name="RendererPrivate" cname="PangoRendererPrivate" opaque="true" />
     <boxed name="ScriptIter" cname="PangoScriptIter" opaque="true">

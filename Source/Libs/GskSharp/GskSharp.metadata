@@ -28,4 +28,38 @@
        what the C functions do with the value they are handed. -->
   <remove-attr path="/api/namespace/*[@cname='GskPath']/method[@cname='gsk_path_get_next']/parameters/parameter[@name='point']" name="pass_as" />
   <remove-attr path="/api/namespace/*[@cname='GskPath']/method[@cname='gsk_path_get_previous']/parameters/parameter[@name='point']" name="pass_as" />
+
+  <!-- Two arrays of render nodes that codegen has no rule for, because the length
+       is a separate parameter rather than a NULL terminator. Both came out as a
+       single GskRenderNode* where GSK wants a GskRenderNode**, so the node's own
+       first word - its GskRenderNodeClass pointer - was read back as the first
+       element and reffed. Same family as gdk_content_formats_new. Hand-written on
+       RenderNode.cs / ContainerNode.cs, over a RenderNode[]. -->
+  <attr path="/api/namespace/*[@cname='GskRenderNode']/method[@cname='gsk_render_node_get_children']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskContainerNode']/constructor[@cname='gsk_container_node_new']" name="hidden">1</attr>
+
+  <!-- Every GskTransform builder takes its receiver as (transfer full): the new
+       transform links the old one into its chain and keeps that reference. An
+       api.xml <method> can describe its parameters' ownership but never the
+       instance's, so the generated wrappers passed Handle and went on owning it
+       - a double unref waiting for two finalizers. Same shape as the
+       gdk_content_formats_union family. Rebound in Transform.cs, which takes
+       the reference the callee eats. -->
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_invert']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_matrix']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_matrix_2d']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_perspective']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_rotate']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_rotate_3d']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_scale']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_scale_3d']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_skew']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_transform']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_translate']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskTransform']/method[@cname='gsk_transform_translate_3d']" name="hidden">1</attr>
+
+  <!-- gsk_path_builder_free_to_path frees the builder outright, the same way
+       gdk_content_formats_builder_free_to_formats does. Rebound in
+       PathBuilder.cs so that a method does not destroy its receiver. -->
+  <attr path="/api/namespace/*[@cname='GskPathBuilder']/method[@cname='gsk_path_builder_free_to_path']" name="hidden">1</attr>
 </metadata>

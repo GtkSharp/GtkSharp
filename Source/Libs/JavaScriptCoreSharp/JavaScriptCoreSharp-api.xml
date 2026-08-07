@@ -113,7 +113,7 @@
     </callback>
     <object name="Class" cname="JSCClass" parent="GObject">
       <class_struct cname="JSCClassClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
       </class_struct>
       <property name="Context" cname="context" type="JSCContext*" writeable="true" construct-only="true" />
       <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
@@ -209,7 +209,7 @@
     </object>
     <object name="Context" cname="JSCContext" parent="GObject">
       <class_struct cname="JSCContextClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
       </class_struct>
       <property name="VirtualMachine" cname="virtual-machine" type="JSCVirtualMachine*" readable="true" writeable="true" construct-only="true" />
       <constructor cname="jsc_context_new" name="New" />
@@ -345,7 +345,7 @@
     </object>
     <object name="Exception" cname="JSCException" parent="GObject">
       <class_struct cname="JSCExceptionClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
       </class_struct>
       <constructor cname="jsc_exception_new" name="New">
         <parameters>
@@ -420,7 +420,7 @@
     </object>
     <object name="Value" cname="JSCValue" parent="GObject">
       <class_struct cname="JSCValueClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
       </class_struct>
       <property name="Context" cname="context" type="JSCContext*" readable="true" writeable="true" construct-only="true" />
       <constructor cname="jsc_value_new_array" name="NewArray">
@@ -758,7 +758,7 @@
     </object>
     <object name="VirtualMachine" cname="JSCVirtualMachine" parent="GObject">
       <class_struct cname="JSCVirtualMachineClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
       </class_struct>
       <constructor cname="jsc_virtual_machine_new" name="New" />
       <method name="GetType" cname="jsc_virtual_machine_get_type" shared="true">
@@ -767,7 +767,7 @@
     </object>
     <object name="WeakValue" cname="JSCWeakValue" parent="GObject">
       <class_struct cname="JSCWeakValueClass">
-        <field name="ParentClass" cname="parent_class" type="GObjectClass" />
+        <field name="ParentClass" cname="parent_class" type="GObjectClass" readable="true" />
       </class_struct>
       <property name="Value" cname="value" type="JSCValue*" writeable="true" construct-only="true" />
       <signal name="Cleared" cname="cleared" when="LAST">
@@ -787,11 +787,11 @@
       </method>
     </object>
     <struct name="ClassVTable" cname="JSCClassVTable">
-      <field name="GetProperty" cname="get_property" type="JSCClassGetPropertyFunction" is_callback="1" access="public" writeable="true" />
-      <field name="SetProperty" cname="set_property" type="JSCClassSetPropertyFunction" is_callback="1" access="public" writeable="true" />
-      <field name="HasProperty" cname="has_property" type="JSCClassHasPropertyFunction" is_callback="1" access="public" writeable="true" />
-      <field name="DeleteProperty" cname="delete_property" type="JSCClassDeletePropertyFunction" is_callback="1" access="public" writeable="true" />
-      <field name="EnumerateProperties" cname="enumerate_properties" type="JSCClassEnumeratePropertiesFunction" is_callback="1" access="public" writeable="true" />
+      <field name="GetProperty" cname="get_property" type="JSCClassGetPropertyFunction" is_callback="1" access="public" readable="true" writeable="true" />
+      <field name="SetProperty" cname="set_property" type="JSCClassSetPropertyFunction" is_callback="1" access="public" readable="true" writeable="true" />
+      <field name="HasProperty" cname="has_property" type="JSCClassHasPropertyFunction" is_callback="1" access="public" readable="true" writeable="true" />
+      <field name="DeleteProperty" cname="delete_property" type="JSCClassDeletePropertyFunction" is_callback="1" access="public" readable="true" writeable="true" />
+      <field name="EnumerateProperties" cname="enumerate_properties" type="JSCClassEnumeratePropertiesFunction" is_callback="1" access="public" readable="true" writeable="true" />
     </struct>
     <class name="Options" cname="JscOptions_">
       <method name="Foreach" cname="jsc_options_foreach" shared="true">
