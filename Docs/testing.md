@@ -15,8 +15,7 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 603 tests Linux reports 602 passing with 1 skip and
-Windows 600 with 3.
+so only broke there. At 730 tests Windows reports 727 passing with 3 skips.
 
 ---
 
@@ -128,6 +127,7 @@ investigate — not something to relax.
 | `MainLoopTests` | `Source`, `Idle`, `Timeout`, `MainContext`, `MainLoop`. The oracles are ordering rather than completion: a high-priority idle before a low-priority one, a shorter timeout before a longer one, a removed source never. |
 | `ObjectAndValueTests` | The wrapper identity map, notifications, per-object data, and the `Value` cases the numeric round-trips do not reach — boxed opaques, value arrays, a managed object carried through unmanaged code. |
 | `GdkDeepTests` | The Gdk that needs no display: `PixbufLoader` fed a PNG seven bytes at a time and required to agree with the whole file, its signal ordering and the rows its area-updated events name, pixbuf save options, `PixbufFormat`, texture download compared against the bytes the test chose, `RGBA` parsing and hashing, rectangle arithmetic against Gdk's own hit test, and the Gtk 4 clipboard data model — `ContentFormats`, `ContentFormatsBuilder`, `ContentProvider` — which nothing had ever called. |
+| `TextStackTests` | `TextBuffer`, `TextIter`, `TextMark`, `TextTag`, `TextTagTable`, `TextChildAnchor` and `EntryBuffer` — the stack a text-editing application is built out of. The oracles are mostly outside Gtk: how many Unicode scalars a string has against how many UTF-16 units C# stores, how many bytes UTF-8 needs for them, which characters terminate a sentence, that a combining mark is not a cursor position. Plus mark gravity, tag toggle boundaries, search across a child anchor, the undo history, and the commit-notify callback added in Gtk 4.16. |
 | `GLibDeepTests` | The rest of hand-written GLib: `HookList`'s ABI description checked against the struct `g_hook_list_init` actually writes, the container half of `Variant`/`VariantType` (tuples, arrays, maybes, dict entries, subtyping), `Bytes` slicing and ownership, the `Marshaller` helpers below the ones every binding uses, and the two branches of `GLib.Signal` that only a returning signal or an emission hook reaches. |
 
 ### Guards against vacuous passes
@@ -614,6 +614,26 @@ Beyond the three above:
   ARGB32 — which is `B,G,R,A` in memory on a little-endian machine, the reverse
   of a `Gdk.Pixbuf`'s channel order. Copying one buffer into the other without
   swapping is a red/blue swap that survives every size assertion.
+- **`+=` on a signal connects the handler `after` the default one**, unless the
+  handler *method* carries `[GLib.ConnectBefore]` — `Signal.AddDelegate` reads
+  the attribute off the delegate's `MethodInfo`, which a lambda cannot carry.
+  For `RUN_LAST` signals whose default handler does the work, that inverts what
+  the Gtk documentation describes: a `TextBuffer.InsertText` handler sees the
+  text already inserted and `::changed` already emitted, and a `DeleteRange`
+  handler reads the *empty string* out of the range it was handed, because both
+  iterators have collapsed onto the deletion point. Neither errors. So a
+  handler that needs the pre-edit state must be a named method with the
+  attribute.
+- **`gtk_text_iter_forward_word_end` and `forward_sentence_end` return `FALSE`
+  at the end of the buffer**, even though the last word and the last sentence
+  end there. A `while (iter.ForwardWordEnd())` loop therefore drops the final
+  one; the buffer's end has to be added back by hand.
+- **`GtkTextBufferCommitNotify` reports zero for `AFTER_DELETE`'s length.** The
+  range is already gone, so there is nothing left to describe — a handler that
+  read it as "how much was removed" would see every deletion as empty.
+- **A `TextMark` with left gravity is the one that does *not* move.** "Left
+  gravity" means it stays to the left of text inserted at it; the right-gravity
+  mark is pushed along. The name reads like a description of where it goes.
 
 ## Fixed: emitting a signal that returns a value took the process down
 
@@ -786,6 +806,35 @@ though it returned something.
   it a plain out-parameter over `Marshal.AllocHGlobal`, so Gdk read a `GType`
   out of uninitialised heap. It is now `GetValue (GType, out Value)`, which is
   the only signature that can express the call.
+
+## Fixed: two text-stack calls that Gtk 4 reshaped underneath
+
+`gtk_text_child_anchor_get_widgets` took one argument in Gtk 3 and returned a
+`GList*`. In Gtk 4 it takes a second, an out-parameter for the count, and
+returns a `GtkWidget**` array. The hand-written `TextChildAnchor.Widgets` still
+had the Gtk 3 shape, so it left the callee writing the count through whatever
+the caller happened to have left in the second argument register, and then read
+an array of pointers as though it were a linked list. Reading the property took
+the process down:
+
+```
+Fatal error. System.AccessViolationException: Attempted to read or write protected memory.
+   at Gtk.TextChildAnchor.get_Widgets()
+```
+
+`GetWidgets` is `hidden` in the metadata, so the hand-written property was the
+only way to reach it at all, and nothing had ever called it. This is the same
+family as the removed Gtk 3 symbols: a signature that changed is quieter than a
+symbol that vanished, because it still links and still compiles.
+
+`gtk_text_iter_order` writes through **both** its pointers — it swaps the pair
+so the receiver holds the earlier position. The gir does not mark the second
+parameter `inout` (only its C type gives it away: `GtkTextIter*` where
+`gtk_text_iter_assign`'s is `const GtkTextIter*`), so codegen passed it by
+value and dropped the write-back. Ordering a reversed pair therefore returned
+`(2, 2)` where Gtk had produced `(2, 7)`: the range silently collapsed to a
+point, and every range operation performed on the "ordered" pair became a
+no-op. Fixed with `pass_as="ref"` in `GtkSharp.metadata`.
 
 ## Open: boxed types with no allocator cannot be constructed
 
