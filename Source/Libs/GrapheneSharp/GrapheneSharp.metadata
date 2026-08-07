@@ -12,4 +12,16 @@
        and hides the function. Matched across all types rather than listed one
        by one: every graphene type with a zero() has the same collision. -->
   <attr path="/api/namespace/*/method[@name='Zero']" name="hidden">1</attr>
+
+  <!-- graphene_simd4f_t is __m128 (or float32x4_t, or a GRAPHENE_ALIGN16
+       struct on the scalar fallback), so it aligns to 16. Its managed replica
+       is four plain floats and aligns to 4, and the ABI description measures
+       alignment by asking the runtime about that replica - so every type
+       embedding it was measured short. graphene_plane_t, graphene_euler_t and
+       graphene_sphere_t are each { 16-byte vector; float }, which C rounds up
+       to 32 and abi_info reported as 20; every caller-allocates out parameter
+       of those types allocated twenty bytes and let graphene write thirty-two.
+       Stating the alignment here fixes all four (graphene_frustum_t is six
+       planes) at the root. -->
+  <attr path="/api/namespace/struct[@cname='graphene_simd4f_t']" name="align">16</attr>
 </metadata>

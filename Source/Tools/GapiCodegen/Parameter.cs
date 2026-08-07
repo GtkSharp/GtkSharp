@@ -322,8 +322,13 @@ namespace GtkSharp.Generation {
 					// g_malloc'd and released by the type's own free function,
 					// which pairs correctly because GLib's slice allocator has
 					// been an alias for g_malloc since 2.76.
+					//
+					// Zeroed, because a callee does not always write the whole
+					// struct: graphene_sphere_translate sets the centre and
+					// leaves the radius as it found it. Uninitialised memory
+					// there makes the result differ from run to run.
 					return new string [] {
-						"IntPtr native_" + CallName + " = GLib.Marshaller.Malloc ((ulong) " +
+						"IntPtr native_" + CallName + " = GLib.Marshaller.Malloc0 ((ulong) " +
 							CSType + ".abi_info.Size);"
 					};
 				}

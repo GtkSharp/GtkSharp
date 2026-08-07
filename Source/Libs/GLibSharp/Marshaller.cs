@@ -229,6 +229,23 @@ namespace GLib {
 			return g_malloc (new UIntPtr (size));
 		}
 
+		/// <summary>
+		/// Zeroed allocation, for a buffer a C function is going to fill in.
+		/// </summary>
+		/// <remarks>
+		/// A caller-allocates out parameter is not always written in full:
+		/// graphene_sphere_translate assigns the centre and leaves the radius
+		/// alone, so what comes back out of an uninitialised block is whatever
+		/// the allocator had there. Zeroing does not make the answer right --
+		/// only graphene can do that -- but it makes it the same every time,
+		/// which is the difference between a defect that can be tested for and
+		/// one that looks like a flake.
+		/// </remarks>
+		public static IntPtr Malloc0 (ulong size)
+		{
+			return g_malloc0 (new UIntPtr (size));
+		}
+
 		static System.DateTime local_epoch = new System.DateTime (1970, 1, 1, 0, 0, 0);
 		static int utc_offset = (int) (System.TimeZone.CurrentTimeZone.GetUtcOffset (System.DateTime.Now)).TotalSeconds;
 
