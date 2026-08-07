@@ -42,8 +42,7 @@ namespace GtkSharp.Tests
         [SkippableFact]
         public void A_WebView_can_be_constructed()
         {
-            Skip.IfNot(WebKit.Global.IsSupported,
-                       "WebKitGTK is not installed (gvsbuild ships no webkit).");
+            Skip.IfNot(TestEnvironment.WebKitUsable, TestEnvironment.WebKitSkipReason);
 
             Run(() =>
             {

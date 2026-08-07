@@ -44,14 +44,10 @@ namespace GtkSharp.Tests
         [MemberData(nameof(Sections))]
         public void Section_constructs_and_produces_a_live_widget(string typeName)
         {
+            Skip.If(TestEnvironment.SkipWebKitSectionNamed(typeName), TestEnvironment.WebKitSkipReason);
+
             var type = typeof(SectionAttribute).Assembly.GetType(typeName);
             Assert.NotNull(type);
-
-            // A WebKit-backed section loads a page as it is built, and a page
-            // load without a usable sandbox aborts the host rather than
-            // throwing -- so this is a skip, not a try/catch.
-            Skip.If(WebKitSandbox.IsBacked(type) && !WebKitSandbox.Available,
-                    WebKitSandbox.SkipReason);
 
             var widget = Run(() =>
             {
