@@ -178,11 +178,20 @@ namespace GtkSharp.Tests
         public void A_copied_path_can_be_appended_to_another_context()
         {
             using var source = new ImageSurface(Format.Argb32, 40, 40);
-            Path path;
-            using (var cr = new Context(source))
+
+            // Cairo.Path must be disposed. Leaking one does not merely warn: the
+            // finalizer reaches CairoDebug.OnDisposed, which writes to stderr
+            // from the finalizer thread, and the run dies there -- at whatever
+            // moment the GC happens to collect, so it lands on an unrelated
+            // test. A copied path outlives the context it came from, which is
+            // what makes it easy to forget.
+            using Path path = PathOf(source);
+
+            static Path PathOf(ImageSurface surface)
             {
+                using var cr = new Context(surface);
                 cr.Rectangle(5, 5, 10, 10);
-                path = cr.CopyPath();
+                return cr.CopyPath();
             }
 
             using var target = new ImageSurface(Format.Argb32, 40, 40);
