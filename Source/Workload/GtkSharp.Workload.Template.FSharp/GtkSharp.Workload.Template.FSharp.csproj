@@ -1,54 +1,44 @@
 <Project Sdk="Microsoft.Build.NoTargets">
-
-  <Import Project="..\Shared\Templates.targets" />
-
-  <PropertyGroup>
-    <Title>GTK templates for FSharp</Title>
-    <Description>A set of F# templates for your .NET GTK Application. Installed with the GtkSharp .NET workload.</Description>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <_GtkSharpTemplateContent Include="content\**" />
-    <_GtkSharpTemplateContent Remove="**\*.in.*" />
-    <None Include="@(_GtkSharpTemplateContent)" 
-      CopyToOutputDirectory="PreserveNewest" 
-      Pack="true"
-      PackagePath="content"
-    />
-  </ItemGroup>
-
-  <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
+    <PropertyGroup>
+        <PackageOutputPath>$(SolutionDir)BuildOutput/NugetPackages/</PackageOutputPath>
+    </PropertyGroup>
+    <PropertyGroup>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Version>$(VersionPrefix).$(VersionSuffix)</Version>
+    </PropertyGroup>
+    <Import Project="..\Shared\Templates.targets" />
+    <PropertyGroup>
+        <Title>GTK templates for FSharp</Title>
+        <Description>A set of F# templates for your .NET GTK Application. Installed with the GtkSharp .NET workload.</Description>
+    </PropertyGroup>
+    <ItemGroup>
+        <_GtkSharpTemplateContent Include="content\**" />
+        <_GtkSharpTemplateContent Remove="**\*.in.*" />
+        <None Include="@(_GtkSharpTemplateContent)" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="content" />
+    </ItemGroup>
+    <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
        condition is on the build host, so packages published by CI (which packs
        in a debian:forky container) go without it. -->
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <PackageReference Include="Net4x.NuGetUtility" Version="1.0.13" PrivateAssets="all" />
-  </ItemGroup>
-
-  <Import Project="..\Shared\ReplaceText.targets" />
-
-  <Target Name="_ReplaceJsonText"
-      BeforeTargets="Build;AssignTargetPaths"
-      Inputs="$(MSBuildProjectFile);content\GtkSharp.Application.FSharp\.template.config\template.in.json"
-      Outputs="$(IntermediateOutputPath)template.json">
-    
-    <ReplaceText
-        Input="content\GtkSharp.Application.FSharp\.template.config\template.in.json"
-        Output="$(IntermediateOutputPath)template.json"
-        OldValue="@GTKSHARPNETVERSION@"
-        NewValue="$(_GtkSharpNetVersion)"
-    />
-
-    <ItemGroup>
-      <None
-          Include="$(IntermediateOutputPath)template.json"
-          Link="content\GtkSharp.Application.FSharp\.template.config\template.json"
-          CopyToOutputDirectory="PreserveNewest"
-          Pack="true"
-          PackagePath="content\GtkSharp.Application.FSharp\.template.config\template.json"
-      />
-      <FileWrites Include="$(IntermediateOutputPath)template.json" />
+    <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+        <PackageReference Include="Net4x.NuGetUtility" Version="1.0.13" PrivateAssets="all" />
     </ItemGroup>
-  
-  </Target>
-
+    <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="README.md" Link="README.md" Pack="true" PackagePath="\README.md" />
+        <Content Include="$(SolutionDir)License.txt" Link="License.txt" Pack="true" PackagePath="\License.txt" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(SolutionDir)License.txt')" />
+    </ItemGroup>
+    <Import Project="..\Shared\ReplaceText.targets" />
+    <Target Name="_ReplaceJsonText" BeforeTargets="Build;AssignTargetPaths" Inputs="$(MSBuildProjectFile);content\GtkSharp.Application.FSharp\.template.config\template.in.json" Outputs="$(IntermediateOutputPath)template.json">
+        <ReplaceText Input="content\GtkSharp.Application.FSharp\.template.config\template.in.json" Output="$(IntermediateOutputPath)template.json" OldValue="@GTKSHARPNETVERSION@" NewValue="$(_GtkSharpNetVersion)" />
+        <ItemGroup>
+            <None Include="$(IntermediateOutputPath)template.json" Link="content\GtkSharp.Application.FSharp\.template.config\template.json" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="content\GtkSharp.Application.FSharp\.template.config\template.json" />
+            <FileWrites Include="$(IntermediateOutputPath)template.json" />
+        </ItemGroup>
+    </Target>
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
 </Project>

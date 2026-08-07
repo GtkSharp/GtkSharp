@@ -1,65 +1,44 @@
 <Project Sdk="Microsoft.Build.NoTargets">
-
-  <Import Project="..\Shared\Common.targets" />
-
-  <PropertyGroup>
-    <Description>GtkSharp SDK. Enabled via the net8.0-gtk TFM.</Description>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="**\*.in.*" />
-    <None Update="@(None)" PackagePath="" CopyToOutputDirectory="PreserveNewest" Pack="true" />
-    <None 
-      Include="$(_GtkSharpSourceDirectory)Libs\GtkSharp\GtkSharp.targets" 
-      Link="targets\GtkSharp.targets"
-      CopyToOutputDirectory="PreserveNewest"
-      Pack="true"
-      PackagePath="targets"
-      Visible="false" 
-    />
-  </ItemGroup>
-
-  <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
+    <PropertyGroup>
+        <PackageOutputPath>$(SolutionDir)BuildOutput/NugetPackages/</PackageOutputPath>
+    </PropertyGroup>
+    <PropertyGroup>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Version>$(VersionPrefix).$(VersionSuffix)</Version>
+    </PropertyGroup>
+    <Import Project="..\Shared\Common.targets" />
+    <PropertyGroup>
+        <Description>GtkSharp SDK. Enabled via the net8.0-gtk TFM.</Description>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="**\*.in.*" />
+        <None Update="@(None)" PackagePath="" CopyToOutputDirectory="PreserveNewest" Pack="true" />
+        <None Include="$(_GtkSharpSourceDirectory)Libs\GtkSharp\GtkSharp.targets" Link="targets\GtkSharp.targets" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="targets" Visible="false" />
+    </ItemGroup>
+    <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
        condition is on the build host, so packages published by CI (which packs
        in a debian:forky container) go without it. -->
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <PackageReference Include="Net4x.NuGetUtility" Version="1.0.13" PrivateAssets="all" />
-  </ItemGroup>
-
-  <Import Project="..\Shared\ReplaceText.targets" />
-
-  <Target Name="_ReplaceSdkText"
-      BeforeTargets="Build;AssignTargetPaths"
-      Inputs="$(MSBuildProjectFile);Sdk\Sdk.in.targets"
-      Outputs="$(IntermediateOutputPath)Sdk.targets">
-    
-    <ReplaceText
-        Input="Sdk\Sdk.in.targets"
-        Output="$(IntermediateOutputPath)Sdk.targets"
-        OldValue="@GTKSHARPVERSION@"
-        NewValue="$(_GtkSharpVersion)"
-    />
-
-    <ReplaceText
-        Input="$(IntermediateOutputPath)Sdk.targets"
-        Output="$(IntermediateOutputPath)Sdk.targets"
-        OldValue="@GTKSHARPNETVERSION@"
-        NewValue="$(_GtkSharpNetVersion)"
-    />
-
-    <ItemGroup>
-      <None
-          Include="$(IntermediateOutputPath)Sdk.targets"
-          Link="Sdk\Sdk.targets"
-          CopyToOutputDirectory="PreserveNewest"
-          Pack="true"
-          PackagePath="Sdk"
-          Visible="false"
-      />
-      <FileWrites Include="$(IntermediateOutputPath)Sdk.targets" />
+    <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+        <PackageReference Include="Net4x.NuGetUtility" Version="1.0.13" PrivateAssets="all" />
     </ItemGroup>
-  
-  </Target>
-
-
+    <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="README.md" Link="README.md" Pack="true" PackagePath="\README.md" />
+        <Content Include="$(SolutionDir)License.txt" Link="License.txt" Pack="true" PackagePath="\License.txt" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(SolutionDir)License.txt')" />
+    </ItemGroup>
+    <Import Project="..\Shared\ReplaceText.targets" />
+    <Target Name="_ReplaceSdkText" BeforeTargets="Build;AssignTargetPaths" Inputs="$(MSBuildProjectFile);Sdk\Sdk.in.targets" Outputs="$(IntermediateOutputPath)Sdk.targets">
+        <ReplaceText Input="Sdk\Sdk.in.targets" Output="$(IntermediateOutputPath)Sdk.targets" OldValue="@GTKSHARPVERSION@" NewValue="$(_GtkSharpVersion)" />
+        <ReplaceText Input="$(IntermediateOutputPath)Sdk.targets" Output="$(IntermediateOutputPath)Sdk.targets" OldValue="@GTKSHARPNETVERSION@" NewValue="$(_GtkSharpNetVersion)" />
+        <ItemGroup>
+            <None Include="$(IntermediateOutputPath)Sdk.targets" Link="Sdk\Sdk.targets" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="Sdk" Visible="false" />
+            <FileWrites Include="$(IntermediateOutputPath)Sdk.targets" />
+        </ItemGroup>
+    </Target>
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
 </Project>

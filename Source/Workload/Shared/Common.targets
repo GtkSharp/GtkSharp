@@ -2,7 +2,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageType>DotnetPlatform</PackageType>
-    <PackageId>$(MSBuildProjectName)</PackageId>
+    <!-- Prefixed on the feed. These ids are also resolved by name out of the
+         workload manifest, so WorkloadManifest.in.json, WorkloadManifest.targets,
+         Sdk.in.targets and build.cake's packNames all carry the same prefix and
+         have to move together with this line. -->
+    <PackageId>Net4x.$(MSBuildProjectName)</PackageId>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateDependencyFile>false</GenerateDependencyFile>

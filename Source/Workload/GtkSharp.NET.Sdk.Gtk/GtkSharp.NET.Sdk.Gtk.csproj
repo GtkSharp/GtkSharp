@@ -1,67 +1,53 @@
 <Project Sdk="Microsoft.Build.NoTargets">
-
-  <Import Project="..\Shared\Common.targets" />
-
-  <PropertyGroup>
-    <PackageId>$(PackageId).Manifest-$(_GtkSharpManifestVersionBand)</PackageId>
-    <Description>GtkSharp workload manifest</Description>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <!-- Workaround: Visual Studio complains if the version contains 4 parts (major.minor.patch.rev, the one that GtkSharp is currently using) -->
-    <_GtkSharpVersionMajorMinorPatch>$([System.Text.RegularExpressions.Regex]::Match($(Version), '(\d+)\.(\d+).(\d+)'))</_GtkSharpVersionMajorMinorPatch>
-    <_GtkSharpManifestVersion>$(Version.Replace('$(_GtkSharpVersionMajorMinorPatch).', '$(_GtkSharpVersionMajorMinorPatch)-rev.'))</_GtkSharpManifestVersion>
-  </PropertyGroup>
-
-  <Import Project="..\Shared\ReplaceText.targets" />
-
-  <ItemGroup>
-    <None Update="WorkloadManifest.targets" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="data" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="../GtkSharp.*/*.csproj" />
-    <!-- Exclude self -->
-    <ProjectReference Remove="../GtkSharp.NET.*/*.csproj" />
-  </ItemGroup>
-
-  <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
+    <PropertyGroup>
+        <PackageOutputPath>$(SolutionDir)BuildOutput/NugetPackages/</PackageOutputPath>
+    </PropertyGroup>
+    <PropertyGroup>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Version>$(VersionPrefix).$(VersionSuffix)</Version>
+    </PropertyGroup>
+    <Import Project="..\Shared\Common.targets" />
+    <PropertyGroup>
+        <PackageId>$(PackageId).Manifest-$(_GtkSharpManifestVersionBand)</PackageId>
+        <Description>GtkSharp workload manifest</Description>
+    </PropertyGroup>
+    <PropertyGroup>
+        <!-- Workaround: Visual Studio complains if the version contains 4 parts (major.minor.patch.rev, the one that GtkSharp is currently using) -->
+        <_GtkSharpVersionMajorMinorPatch>$([System.Text.RegularExpressions.Regex]::Match($(Version), '(\d+)\.(\d+).(\d+)'))</_GtkSharpVersionMajorMinorPatch>
+        <_GtkSharpManifestVersion>$(Version.Replace('$(_GtkSharpVersionMajorMinorPatch).', '$(_GtkSharpVersionMajorMinorPatch)-rev.'))</_GtkSharpManifestVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="README.md" Link="README.md" Pack="true" PackagePath="\README.md" />
+        <Content Include="$(SolutionDir)License.txt" Link="License.txt" Pack="true" PackagePath="\License.txt" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(SolutionDir)License.txt')" />
+    </ItemGroup>
+    <Import Project="..\Shared\ReplaceText.targets" />
+    <ItemGroup>
+        <None Update="WorkloadManifest.targets" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="data" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../GtkSharp.*/*.csproj" />
+        <!-- Exclude self -->
+        <ProjectReference Remove="../GtkSharp.NET.*/*.csproj" />
+    </ItemGroup>
+    <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
        condition is on the build host, so packages published by CI (which packs
        in a debian:forky container) go without it. -->
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <PackageReference Include="Net4x.NuGetUtility" Version="1.0.13" PrivateAssets="all" />
-  </ItemGroup>
-
-  <Target Name="_ReplaceJsonText"
-      BeforeTargets="Build;AssignTargetPaths"
-      Inputs="$(MSBuildProjectFile);WorkloadManifest.in.json"
-      Outputs="$(IntermediateOutputPath)WorkloadManifest.json">
-    
-    <ReplaceText
-        Input="WorkloadManifest.in.json"
-        Output="$(IntermediateOutputPath)WorkloadManifest.json"
-        OldValue="@VERSION@"
-        NewValue="$(Version)"
-    />
-
-    <ReplaceText
-        Input="$(IntermediateOutputPath)WorkloadManifest.json"
-        Output="$(IntermediateOutputPath)WorkloadManifest.json"
-        OldValue="@GTKSHARPMANIFESTVERSION@"
-        NewValue="$(_GtkSharpManifestVersion)"
-    />
-
-    <ItemGroup>
-      <None
-          Include="$(IntermediateOutputPath)WorkloadManifest.json"
-          Link="WorkloadManifest.json"
-          CopyToOutputDirectory="PreserveNewest"
-          Pack="true"
-          PackagePath="data"
-      />
-      <FileWrites Include="$(IntermediateOutputPath)WorkloadManifest.json" />
+    <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+        <PackageReference Include="Net4x.NuGetUtility" Version="1.0.13" PrivateAssets="all" />
     </ItemGroup>
-  
-  </Target>
-
+    <Target Name="_ReplaceJsonText" BeforeTargets="Build;AssignTargetPaths" Inputs="$(MSBuildProjectFile);WorkloadManifest.in.json" Outputs="$(IntermediateOutputPath)WorkloadManifest.json">
+        <ReplaceText Input="WorkloadManifest.in.json" Output="$(IntermediateOutputPath)WorkloadManifest.json" OldValue="@VERSION@" NewValue="$(Version)" />
+        <ReplaceText Input="$(IntermediateOutputPath)WorkloadManifest.json" Output="$(IntermediateOutputPath)WorkloadManifest.json" OldValue="@GTKSHARPMANIFESTVERSION@" NewValue="$(_GtkSharpManifestVersion)" />
+        <ItemGroup>
+            <None Include="$(IntermediateOutputPath)WorkloadManifest.json" Link="WorkloadManifest.json" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="data" />
+            <FileWrites Include="$(IntermediateOutputPath)WorkloadManifest.json" />
+        </ItemGroup>
+    </Target>
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
 </Project>
