@@ -57,20 +57,30 @@ namespace GLib {
 			Raw = g_bytes_new_from_bytes (bytes.Handle, new UIntPtr (offset), new UIntPtr (length));
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_g_bytes_new_take(byte [] data, UIntPtr size);
+		delegate IntPtr d_g_bytes_new_take(IntPtr data, UIntPtr size);
 		static d_g_bytes_new_take g_bytes_new_take = FuncLoader.LoadFunction<d_g_bytes_new_take>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_new_take"));
 
+		// g_bytes_new_take assumes ownership of the pointer and g_frees it when
+		// the last reference goes. A blittable byte[] is *pinned* by the
+		// marshaller rather than copied, so what was handed over was an interior
+		// pointer into the GC heap: glib freeing that corrupts the process heap,
+		// and nothing had ever called this to find out. Copy into memory glib is
+		// entitled to free.
 		public static Bytes NewTake (byte [] data)
 		{
-			return new Bytes (g_bytes_new_take (data, new UIntPtr ((ulong)data.Length)));
+			IntPtr native = Marshaller.ArrayToArrayPtr (data);
+			return (Bytes) GLib.Opaque.GetOpaque (g_bytes_new_take (native, new UIntPtr ((ulong) data.Length)), typeof (Bytes), true);
 		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_g_bytes_new_static(byte [] data, UIntPtr size);
-		static d_g_bytes_new_static g_bytes_new_static = FuncLoader.LoadFunction<d_g_bytes_new_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_bytes_new_static"));
 
+		// g_bytes_new_static keeps the caller's pointer forever and never frees
+		// it, which a managed array cannot satisfy at all: the pin lasts only
+		// for the duration of the call, so the GBytes was left pointing at
+		// memory the collector was free to move or reclaim. There is no way to
+		// honour "static" for a byte[], so this copies. The observable result is
+		// the same GBytes -- one glib may actually keep.
 		public static Bytes NewStatic (byte [] data)
 		{
-			return new Bytes (g_bytes_new_static (data, new UIntPtr ((ulong)data.Length)));
+			return new Bytes (data);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_bytes_compare(IntPtr raw, IntPtr bytes);

@@ -39,6 +39,22 @@ namespace GLib {
 			get { return handle; }
 		}
 
+		// Set when this instance points *into* another type's string rather
+		// than owning one of its own -- see First()/Next(). Holding the owner
+		// keeps that string alive; freeing it is not ours to do.
+		VariantType owner;
+
+		static VariantType Borrowed (IntPtr raw, VariantType owner)
+		{
+			if (raw == IntPtr.Zero)
+				return null;
+
+			VariantType result = new VariantType ();
+			result.handle = raw;
+			result.owner = owner;
+			return result;
+		}
+
 		// Docs say that GVariant is threadsafe.
 		~VariantType ()
 		{
@@ -58,8 +74,11 @@ namespace GLib {
 			if (handle == IntPtr.Zero)
 				return;
 
-			g_variant_type_free (handle);
+			if (owner == null)
+				g_variant_type_free (handle);
+
 			handle = IntPtr.Zero;
+			owner = null;
 			if (disposing)
 				GC.SuppressFinalize (this);
 		}
@@ -105,10 +124,26 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_variant_type_peek_string(IntPtr a);
 		static d_g_variant_type_peek_string g_variant_type_peek_string = FuncLoader.LoadFunction<d_g_variant_type_peek_string>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_peek_string"));
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate UIntPtr d_g_variant_type_get_string_length(IntPtr a);
+		static d_g_variant_type_get_string_length g_variant_type_get_string_length = FuncLoader.LoadFunction<d_g_variant_type_get_string_length>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_get_string_length"));
 
+		// A GVariantType's string is deliberately NOT nul-terminated: it is a
+		// pointer and a length, and g_variant_type_peek_string hands back only
+		// the pointer. Reading it as a C string ran off the end of the type --
+		// NewMaybe (Int32) printed as "mivoke", because g_variant_type_new_maybe
+		// allocates exactly one byte per character and writes no terminator, and
+		// a borrowed type inside a tuple printed the whole rest of the tuple.
 		public override string ToString ()
 		{
-			return Marshaller.Utf8PtrToString (g_variant_type_peek_string (Handle));
+			IntPtr raw = g_variant_type_peek_string (Handle);
+			if (raw == IntPtr.Zero)
+				return null;
+
+			int length = (int) g_variant_type_get_string_length (Handle);
+			byte[] bytes = new byte [length];
+			Marshal.Copy (raw, bytes, 0, length);
+			return System.Text.Encoding.UTF8.GetString (bytes);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_variant_type_is_array(IntPtr type);
@@ -187,9 +222,18 @@ namespace GLib {
 		delegate IntPtr d_g_variant_type_first(IntPtr type);
 		static d_g_variant_type_first g_variant_type_first = FuncLoader.LoadFunction<d_g_variant_type_first>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_variant_type_first"));
 
+		// "next" means "advance past the type at this address", so the address
+		// has to still be inside the enclosing tuple's string. Copying it, the
+		// way every other accessor here does, produces a standalone one-item
+		// type whose next address is its own end -- so First().Next() returned
+		// the empty type, and so did everything after it. The walk that
+		// g_variant_type_first exists for could not be done at all.
+		//
+		// These two therefore borrow, and Next() returns null past the last
+		// item, which is what a loop needs to terminate on.
 		public VariantType First ()
 		{
-			return new VariantType (g_variant_type_first (Handle));
+			return Borrowed (g_variant_type_first (Handle), owner ?? this);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_variant_type_next(IntPtr type);
@@ -197,7 +241,7 @@ namespace GLib {
 
 		public VariantType Next ()
 		{
-			return new VariantType (g_variant_type_next (Handle));
+			return Borrowed (g_variant_type_next (Handle), owner ?? this);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_variant_type_n_items(IntPtr type);

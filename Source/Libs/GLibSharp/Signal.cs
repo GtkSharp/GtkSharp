@@ -302,8 +302,22 @@ namespace GLib {
 			object ret_obj = null;
 			Query query;
 			g_signal_query (signal_id, out query);
-			if (query.return_type != GType.None.Val) {
-				GLib.Value ret = GLib.Value.Empty;
+
+			// GSignalQuery.return_type carries G_SIGNAL_TYPE_STATIC_SCOPE in its
+			// low bit, which is never part of a GType, so it has to come off
+			// before the type is compared or used.
+			IntPtr return_type = (IntPtr) ((long) query.return_type & ~1L);
+
+			if (return_type != GType.None.Val) {
+				// g_signal_emitv requires the return GValue to be initialised to
+				// the signal's return type and refuses to emit otherwise. This
+				// passed Value.Empty -- a zeroed GValue holding G_TYPE_INVALID --
+				// so every emission of a signal that returns something logged
+				// "g_value_set_boolean: assertion 'G_VALUE_HOLDS_BOOLEAN (value)'
+				// failed", emitted nothing, and then read Val off the
+				// uninitialised Value and took the process down. The whole branch
+				// was unreachable from the test suite, so nothing said so.
+				GLib.Value ret = new GLib.Value (new GType (return_type));
 				g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, ref ret);
 				ret_obj = ret.Val;
 				ret.Dispose ();

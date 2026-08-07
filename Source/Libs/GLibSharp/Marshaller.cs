@@ -393,35 +393,52 @@ namespace GLib {
 			return result;
 		}
 
+		// The inverse of StructArrayToNullTerminatedStructArrayIntPtr below: an
+		// array *of pointers*, terminated by a null one.
+		//
+		// This used to walk the base pointer forward by sizeof(T) and stop when
+		// the pointer itself went null, which it never does -- it read past the
+		// end of the block until it faulted. It also passed a boxed default(T)
+		// to the object overload of PtrToStructure, which rejects value types,
+		// and then added that same untouched box to the result. Nothing in the
+		// tree calls either half, which is how both survived.
 		public static T[] StructArrayFromNullTerminatedIntPtr<T> (IntPtr array)
 		{
 			var res = new List<T> ();
-			IntPtr current = array;
-			T currentStruct = default(T);
 
-			while (current != IntPtr.Zero) {
-				Marshal.PtrToStructure (current, currentStruct);
-				res.Add (currentStruct);
-				current = (IntPtr) ((long)current + Marshal.SizeOf<T> ());
+			if (array == IntPtr.Zero)
+				return res.ToArray ();
+
+			for (int i = 0; ; i++) {
+				IntPtr current = Marshal.ReadIntPtr (array, i * IntPtr.Size);
+				if (current == IntPtr.Zero)
+					break;
+
+				res.Add (Marshal.PtrToStructure<T> (current));
 			}
 
 			return res.ToArray ();
 		}
 
+		// This returned `mem` after the loop had advanced it past every element,
+		// so the caller was handed a pointer to the null terminator -- an empty
+		// array -- and the block that was allocated could no longer be reached
+		// or freed.
 		public static unsafe IntPtr StructArrayToNullTerminatedStructArrayIntPtr<T> (T[] InputArray)
 		{
 			int intPtrSize = sizeof (IntPtr);
 			IntPtr mem = Marshal.AllocHGlobal ((InputArray.Length + 1) * intPtrSize);
+			IntPtr cursor = mem;
 
 			for (int i = 0; i < InputArray.Length; i++) {
 				IntPtr structPtr = Marshal.AllocHGlobal (Marshal.SizeOf<T> ());
 				Marshal.StructureToPtr (InputArray[i], structPtr, false);
+				Marshal.WriteIntPtr (cursor, structPtr);
 				// jump to next pointer
-				Marshal.WriteIntPtr (mem, structPtr);
-				mem = (IntPtr) ((long)mem + intPtrSize);
+				cursor = (IntPtr) ((long)cursor + intPtrSize);
 			}
 			// null terminate
-			Marshal.WriteIntPtr (mem, IntPtr.Zero);
+			Marshal.WriteIntPtr (cursor, IntPtr.Zero);
 
 			return mem;
 		}
