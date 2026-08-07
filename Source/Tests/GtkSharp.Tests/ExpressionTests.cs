@@ -956,12 +956,9 @@ namespace GtkSharp.Tests
 
         // -------------------------------------------------------- TryExpression
 
-        [SkippableFact]
+        [Fact]
         public void A_TryExpression_yields_the_first_branch_that_evaluates()
         {
-            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
-                       TestEnvironment.NeedsGtk(4, 22, "gtk_expression_new_try"));
-
             // gtk_try_expression_new arrived in Gtk 4.22, which is the version
             // the api.xml here is generated from.
             Run(() =>
@@ -986,12 +983,9 @@ namespace GtkSharp.Tests
             });
         }
 
-        [SkippableFact]
+        [Fact]
         public void A_TryExpression_fails_when_every_branch_fails()
         {
-            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
-                       TestEnvironment.NeedsGtk(4, 22, "gtk_expression_new_try"));
-
             Run(() =>
             {
                 using var expression = new TryExpression(HomeCityOf(), HomeCityOf());
@@ -1001,12 +995,9 @@ namespace GtkSharp.Tests
             });
         }
 
-        [SkippableFact]
+        [Fact]
         public void A_TryExpression_gives_a_binding_the_fallback_it_otherwise_has_no_way_to_get()
         {
-            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
-                       TestEnvironment.NeedsGtk(4, 22, "gtk_expression_new_try"));
-
             // Bind leaves the target alone when evaluation fails; wrapping the
             // chain in a TryExpression is the documented answer, and this is the
             // difference between the two written out.
@@ -1030,12 +1021,9 @@ namespace GtkSharp.Tests
 
         // --------------------------------------------------------- the hierarchy
 
-        [SkippableFact]
+        [Fact]
         public void Each_expression_object_is_natively_of_the_subtype_its_wrapper_claims()
         {
-            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
-                       TestEnvironment.NeedsGtk(4, 22, "gtk_expression_new_try"));
-
             // GtkExpression is a GTypeInstance fundamental, not a GObject, and
             // the metadata roots the whole family at GLib.Opaque to get it bound
             // at all -- so the managed hierarchy is asserted here rather than

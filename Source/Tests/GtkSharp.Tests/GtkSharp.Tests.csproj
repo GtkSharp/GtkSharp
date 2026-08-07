@@ -15,21 +15,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
-    <!-- Picked up by `dotnet test` without a command-line flag, so a coverage
-         run excludes Generated/ whoever starts it. See coverlet.runsettings. -->
-    <RunSettingsFilePath>$(MSBuildProjectDirectory)\coverlet.runsettings</RunSettingsFilePath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Builder(Assembly, resourceName, ...) is the constructor the templates and
-         the getting-started guide use, and it can only be exercised against a
-         real manifest resource. LogicalName is pinned so the test names the
-         resource rather than depending on how the SDK derives one from the path. -->
-    <EmbeddedResource Include="Resources\embedded-window.ui" LogicalName="GtkSharp.Tests.embedded-window.ui" />
-    <!-- Same reasoning for CssProvider.LoadFromResource, which is hand-written
-         and reported no coverage at all. -->
-    <EmbeddedResource Include="Resources\embedded-style.css" LogicalName="GtkSharp.Tests.embedded-style.css" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
