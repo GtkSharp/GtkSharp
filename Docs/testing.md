@@ -54,6 +54,51 @@ Both aborts land under a **"Passed!" line with a truncated total** — the failu
 mode this document keeps returning to. 135 of 766 was the shape of the WebKit
 one.
 
+### The WebKit sandbox, and why the switch is a switch
+
+The alternative to that flag is `GTKSHARP_TESTS_SKIP_WEBKIT=1`, which is what CI
+sets. `TestEnvironment` reads it and skips the WebKit-backed cases —
+`OptionalLibraryTests`, and the WebView section in `SampleSectionTests`,
+`ChildWindowTests` and `SectionBrowsingTests`. **Set one or the other when
+running the suite in a container**; leave both unset on a desktop, where the
+sandbox starts and WebKit is covered.
+
+It has to be decided in advance either way. The abort is a `g_error` inside
+WebKit, not an exception: no `try` reaches it, and by the time it prints, the
+host is gone.
+
+**Detecting it instead was tried and does not work.** The obvious probe — run
+the operation bwrap begins with, `bwrap --unshare-user --ro-bind / / /bin/true`,
+against the binary WebKit will spawn — reports success in a container where
+WebKit still aborts. Shimming `/usr/bin/bwrap` to log its argv shows why: WebKit
+makes four calls, and the first is a capability check shaped like the probe,
+which passes. The one that fails is the fourth,
+
+```text
+bwrap --args 217 -- /usr/bin/xdg-dbus-proxy --args=213
+```
+
+whose failure is `Creating new namespace failed: Operation not permitted` —
+bubblewrap's message for a namespace other than the user one, not the
+`No permissions to create a new namespace…` a blocked `CLONE_NEWUSER` produces.
+So the probe answers a question WebKit is not asking, and a probe that can say
+"usable" and then abort is worse than no probe: a wrong "skip" costs coverage, a
+wrong "run" costs the whole suite.
+
+Loosening the container does not earn the coverage back cheaply either. Measured
+on one image, running only the section theory:
+
+| container | result |
+|---|---|
+| *(default)* | aborts, 18 of 32 |
+| `--security-opt seccomp=unconfined` | aborts, 18 of 32 |
+| `--privileged` | 32 of 32 |
+
+`seccomp=unconfined` is enough for `unshare -U true` and for bwrap on its own —
+Docker's default profile is what blocks `clone(CLONE_NEWUSER)` — and still not
+enough for WebKit. Only `--privileged` is, and that is a far wider grant than a
+job holding a `packages:write` token should have.
+
 ---
 
 ## Why calling matters far more than compiling here
@@ -208,6 +253,21 @@ Anything touching Gtk must be inside `Run`.
 ---
 
 ## Things a test must not do
+
+**Never assert that a floating-point result is inexact.** Whether an operation
+comes out exact is a property of the vector unit and the compiler that built the
+native library, never of the binding. Two graphene tests asserted a round trip
+was *not* exact — reasonable-looking, since it is inexact under gvsbuild — and
+CI failed on both, because on the runner's hardware the same operations are
+exact. Assert the property that holds everywhere (the translation moves
+linearly; the dot product of two quaternions is 1) to a stated tolerance, and
+say in a comment why the tolerance is what it is.
+
+The same applies to `Marshal.SizeOf`, to the set of gdk-pixbuf loaders
+installed, and to anything else that describes the machine rather than the code.
+A test that pins the host will pass on the host it was written on and fail
+somewhere else, which costs more than the coverage it bought.
+
 
 Two sample buttons are skipped by name in `ChildWindowTests`, and **neither is a
 defect** — both are the sample behaving as designed:
