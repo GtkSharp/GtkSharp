@@ -25,5 +25,16 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\GtkSharp.snk</AssemblyOriginatorKeyFile>
     <LangVersion>9</LangVersion>
+
+    <!-- Every wrapper has a README.md beside its .csproj describing what it
+         binds and what it depends on; nuget.org shows it on the package page.
+         Set here rather than in twelve project files, which means a new wrapper
+         has to have one too: pack fails when the file is missing, which is the
+         right way round. -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
