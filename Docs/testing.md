@@ -127,6 +127,7 @@ investigate — not something to relax.
 | `TreeWrapperTests` | The hand-written halves of `TreeModelSort`, `TreeModelFilter` and `TreeStore`, and `NodeSelection`, which had none: iterator and path conversion both ways, a filter rooted at a subtree, `SetModifyFunc` synthesising a column, node selection by node and by path. |
 | `MainLoopTests` | `Source`, `Idle`, `Timeout`, `MainContext`, `MainLoop`. The oracles are ordering rather than completion: a high-priority idle before a low-priority one, a shorter timeout before a longer one, a removed source never. |
 | `ObjectAndValueTests` | The wrapper identity map, notifications, per-object data, and the `Value` cases the numeric round-trips do not reach — boxed opaques, value arrays, a managed object carried through unmanaged code. |
+| `GLibDeepTests` | The rest of hand-written GLib: `HookList`'s ABI description checked against the struct `g_hook_list_init` actually writes, the container half of `Variant`/`VariantType` (tuples, arrays, maybes, dict entries, subtyping), `Bytes` slicing and ownership, the `Marshaller` helpers below the ones every binding uses, and the two branches of `GLib.Signal` that only a returning signal or an emission hook reaches. |
 
 ### Guards against vacuous passes
 
@@ -585,6 +586,113 @@ Beyond the three above:
 - **`GMenuModel`'s items-changed carries signed counts** while `GListModel`'s
   carries unsigned ones — separate signals with separate args classes, which is
   what the port had to split them into.
+
+## Fixed: emitting a signal that returns a value took the process down
+
+`GLib.Signal.Emit` has two branches, and only one of them had ever run. When the
+signal returns something it emits into a `GLib.Value` — and it passed
+`GLib.Value.Empty`, a zeroed `GValue` holding `G_TYPE_INVALID`. `g_signal_emitv`
+requires that value to be **initialised to the signal's return type**, so what
+happened was:
+
+```
+GLib-GObject-CRITICAL **: g_value_set_boolean: assertion 'G_VALUE_HOLDS_BOOLEAN (value)' failed
+```
+
+— no emission at all, followed by reading `.Val` off the uninitialised value,
+which aborted the test host. Every signal in Gtk that returns a `gboolean`
+(`close-request`, `keynav-failed`, `query-tooltip`, …) was unreachable through
+`Emit`.
+
+`GSignalQuery.return_type` also carries `G_SIGNAL_TYPE_STATIC_SCOPE` in its low
+bit, which is never part of a `GType`, so it has to be masked off before the type
+is compared or used.
+
+The branch existed since the mono era and had no test, which is the whole point:
+`Emit` is *the* signal entry point, exercised constantly — but only ever on
+`void` signals, so the other half of an `if` sat there compiling.
+
+## Fixed: three ways a GVariantType lies about itself
+
+A `GVariantType`'s string is **not nul-terminated**. It is a pointer and a
+length, and `g_variant_type_peek_string` returns only the pointer.
+
+- **`ToString` read it as a C string**, so it ran off the end.
+  `g_variant_type_new_maybe` allocates exactly one byte per character and writes
+  no terminator, so `VariantType.NewMaybe (Int32).ToString ()` came back
+  `"mivoke"` — the type, plus whatever the allocator had next door. Every type
+  built by `NewArray`/`NewMaybe`/`NewTuple`/`NewDictionaryEntry` printed garbage;
+  only the ones built from a string worked, because `g_variant_type_new` goes
+  through `g_strndup`. It now copies `g_variant_type_get_string_length` bytes.
+
+- **`First ()` and `Next ()` copied.** They are *positions inside the enclosing
+  tuple's string* — "next" means "advance past the type at this address" — and
+  every accessor in the class wrapped its result in `new VariantType (ptr)`,
+  which is `g_variant_type_copy`. A copy's next address is its own end, so
+  `First ().Next ()` returned the empty type, and so did everything after it:
+  walking a tuple gave `["s", "", ""]`. The walk `g_variant_type_first` exists
+  for could not be done at all. Both now hold a borrowed pointer plus a reference
+  to the type that owns the string, `Dispose` frees only what it owns, and
+  `Next ()` returns **null** past the last item — which is the terminator a loop
+  needs and there previously was none of.
+
+`Element ()`, `Key ()` and `Value ()` keep copying, which is right: they are not
+chained, and a copy nul-terminates.
+
+## Fixed: gulong is not 8 bytes on Windows
+
+`GLib.HookList` is 118 lines that describe the layout of `GHookList` and bind
+nothing at all — the highest uncovered-line count in `GLibSharp` and, until now,
+with nothing whatsoever reaching it.
+
+Its first field is `seq_id`, a `gulong`. That is C's `unsigned long`: 8 bytes
+under LP64, **4 under Windows' LLP64** and on any 32-bit target. The generated
+code said `sizeof (ulong)`, which is 8 everywhere, and took the alignment from a
+helper struct holding a `UIntPtr`, which is wrong in exactly the same place. So
+on Windows every field after it was described four bytes too far along — `hooks`
+at 16 where glib writes it at 8 — and the struct was reported as 56 bytes instead
+of 48.
+
+The oracle is glib itself: `g_hook_list_init` writes `seq_id = 1`, `hook_size =`
+its argument, `is_setup = TRUE`, NULLs `hooks` and `dummy3`, and installs its own
+`default_finalize_hook` — that last one being the better probe, because a wrong
+offset lands on one of the NULLs on either side of it. A second test links a real
+hook with `g_hook_insert_before` and requires the pointer `g_hook_alloc` returned
+to be readable at the `hooks` offset, which needs no knowledge of `GHook`'s own
+layout.
+
+**A defect on one platform only is the signature of this mistake**, the same way
+the `g_spawn_*_utf8` lookups were. `HookList` is the only `sizeof (ulong)` in the
+tree, so the fix is local; a `gulong` field in a struct that *is* regenerated
+would need the same treatment in `GapiCodegen`.
+
+`HookList` itself is still inert: it declares no methods, and being a boxed type
+with no allocator, `new HookList ()` leaves the handle null — the same shape as
+the `Gsk.RoundedRect` item below. A test pins that, so that adding an operation
+forces a test to be added with it.
+
+## Fixed: three helpers that handed glib memory it was not allowed to have
+
+- **`Bytes.NewTake`** passed a `byte[]` to `g_bytes_new_take`, which assumes
+  ownership of the pointer and `g_free`s it on the last unref. A blittable array
+  is *pinned* by the marshaller, not copied, so glib was handed an interior
+  pointer into the GC heap and would eventually free it. It now copies into
+  `g_malloc`'d memory, and takes the reference correctly through `GetOpaque` —
+  the old code double-referenced, so the `GBytes` was never freed and the defect
+  could not fire.
+
+- **`Bytes.NewStatic`** is worse in principle: `g_bytes_new_static` keeps the
+  pointer forever and never frees it, and the pin lasts only for the duration of
+  the call. "Static" cannot be honoured for a managed array at all, so it copies.
+
+- **`Marshaller.StructArrayToNullTerminatedStructArrayIntPtr`** returned `mem`
+  *after* the loop had advanced it past every element, so the caller got a
+  pointer to the null terminator — an empty array — and the allocated block was
+  unreachable. Its reader half walked the base pointer forward by `sizeof(T)` and
+  stopped when the *pointer* went null, which it never does, and passed a boxed
+  `default(T)` to the `object` overload of `PtrToStructure`, which rejects value
+  types. Nothing in the tree calls either, which is how both survived; they are
+  now inverses, and the test asserts a round trip rather than either half alone.
 
 ## Open: boxed types with no allocator cannot be constructed
 
