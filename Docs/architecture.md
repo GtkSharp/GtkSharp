@@ -302,7 +302,7 @@ you go looking for the metadata rule that does not exist:
 
 ## Packaging
 
-- `Source/Libs/Directory.Build.props` — `net8.0;netstandard2.0`, `LangVersion 9`,
+- `Source/Libs/Directory.Build.props` — `net10.0;netstandard2.0`, `LangVersion 9`,
   `AllowUnsafeBlocks`, strong-name signing with `GtkSharp.snk`. **New code must
   compile as C# 9 against both target frameworks.**
 - `Source/Workload/` — the .NET `gtk` workload: ref pack, runtime pack, SDK pack
