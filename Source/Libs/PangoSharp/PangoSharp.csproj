@@ -1,30 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <Description>PangoSharp is a C# wrapper for the Pango library.</Description>
-    <PackageTags>pango;pangosharp;pango-sharp;wrapper</PackageTags>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\Shared\*.cs">
-      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GLibSharp\GLibSharp.csproj">
-      <Name>GLibSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CairoSharp\CairoSharp.csproj">
-      <Name>CairoSharp</Name>
-    </ProjectReference>
-  </ItemGroup>
-
-  <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
+    <PropertyGroup>
+        <PackageOutputPath>$(SolutionDir)BuildOutput/NugetPackages/</PackageOutputPath>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <Version>$(VersionPrefix).$(VersionSuffix)</Version>
+        <Description>PangoSharp is a C# wrapper for the Pango library.</Description>
+        <PackageTags>pango;pangosharp;pango-sharp;wrapper</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\Shared\*.cs">
+            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GLibSharp\GLibSharp.csproj">
+            <Name>GLibSharp</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\CairoSharp\CairoSharp.csproj">
+            <Name>CairoSharp</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
        condition is on the build host, so packages published by CI (which packs
        in a debian:forky container) go without it. -->
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <PackageReference Include="Net4x.NuGetUtility" Version="1.0.13" PrivateAssets="all" />
-  </ItemGroup>
-
+    <ItemGroup>
+        <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
+    </ItemGroup>
+    <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="README.md" Link="README.md" Pack="true" PackagePath="\README.md" />
+        <Content Include="$(SolutionDir)License.txt" Link="License.txt" Pack="true" PackagePath="\License.txt" Condition="Exists('$(SolutionDir)License.txt')" />
+    </ItemGroup>
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
 </Project>
