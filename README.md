@@ -29,7 +29,7 @@ Pre requirements for building from source are that you have .Net 6 installed on 
 To build the repository, simply do:
 
 ```sh
-git clone https://github.com/GtkSharp/GtkSharp.git
+git clone https://github.com/pieroviano/GtkSharp.git
 cd GtkSharp
 dotnet tool restore
 dotnet cake build.cake
@@ -44,7 +44,7 @@ A breakdown on how the source is structured:
 
 ## Using the library
 
-On macOS, you'll need to manually install Gtk, see [Installing Gtk on Mac](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Mac) wiki page for more details on how to do it.
+On macOS, you'll need to manually install Gtk, see [Installing Gtk on Mac](https://github.com/pieroviano/GtkSharp/wiki/Installing-Gtk-on-Mac) wiki page for more details on how to do it.
 
 Available NuGet packages:
 

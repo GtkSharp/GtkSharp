@@ -78,7 +78,7 @@ Verify by inspecting a real 4.22.4 install: `nm -D /usr/lib/x86_64-linux-gnu/lib
 
 ### V4 — Windows runtime acquisition
 
-[GtkSharp.targets:4-5](../Source/Libs/GtkSharp/GtkSharp.targets#L4) downloads `https://github.com/GtkSharp/Dependencies/raw/master/gtk-3.24.24.zip` into `%LOCALAPPDATA%\Gtk\3.24.24`. **There is no `gtk-4.22.4.zip` in that repository.** This blocks Windows builds of Samples and every consumer of the `GtkSharp` package.
+[GtkSharp.targets:4-5](../Source/Libs/GtkSharp/GtkSharp.targets#L4) downloads `https://github.com/pieroviano/Dependencies/raw/master/gtk-3.24.24.zip` into `%LOCALAPPDATA%\Gtk\3.24.24`. **There is no `gtk-4.22.4.zip` in that repository.** This blocks Windows builds of Samples and every consumer of the `GtkSharp` package.
 
 Decide before Phase 8:
 1. Build a GTK 4.22.4 Windows bundle with [gvsbuild](https://github.com/wingtk/gvsbuild) and publish it to `GtkSharp/Dependencies` (needs push rights to that repo — **confirm access**), or
@@ -627,7 +627,7 @@ Port `Program.cs`/`MainWindow.cs` (and `.fs`/`.vb` equivalents) to the `GtkAppli
 V4 chose the gvsbuild release asset. [GtkSharp.targets:4-10](../Source/Libs/GtkSharp/GtkSharp.targets#L4):
 
 ```diff
--    <GtkUrl Condition=" '$(GtkUrl)' == '' ">https://github.com/GtkSharp/Dependencies/raw/master/gtk-3.24.24.zip</GtkUrl>
+-    <GtkUrl Condition=" '$(GtkUrl)' == '' ">https://github.com/pieroviano/Dependencies/raw/master/gtk-3.24.24.zip</GtkUrl>
 -    <GtkDir Condition=" '$(GtkDir)' == '' ">$(LOCALAPPDATA)\Gtk\3.24.24</GtkDir>
 +    <GtkUrl Condition=" '$(GtkUrl)' == '' ">https://github.com/wingtk/gvsbuild/releases/download/2026.6.0/GTK4_Gvsbuild_2026.6.0_x64.zip</GtkUrl>
 +    <GtkDir Condition=" '$(GtkDir)' == '' ">$(LOCALAPPDATA)\Gtk\4.22.4</GtkDir>
