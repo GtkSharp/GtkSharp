@@ -217,6 +217,7 @@ investigate — not something to relax.
 | `GrapheneMathTests` | Graphene, and the arithmetic half of Gsk — the corner of the tree with the best oracles there are, because every answer can be worked out in the test: a matrix times its inverse, a 3-4-5 triangle's area, a ray entering a box spanning [-1,1] at t=4, the six planes of a 60-degree frustum meeting the axis at 30 degrees. Matrix multiply/invert/decompose/transpose/interpolate/project, the vectors, rectangle intersection and the in-place trap, quad, triangle and barycentric coordinates, box, sphere, plane, ray, frustum, euler and quaternion; then `GskTransform`'s conversions and render-node bounds. Four codegen defects and a heap corruption; four pieces of graphene behaviour pinned because the obvious expectation is wrong. |
 | `ExpressionTests` | `GtkExpression`: how the Gtk 4 list stack reads a value out of an item, and how a property is kept in step with one on another object. Property, constant, object, closure, cclosure and try expressions; evaluation against a this-object and the GValue it fills; watches and their invalidation; `Bind` and what a failed evaluation does to the target; expression-driven `StringSorter`, `NumericSorter`, `StringFilter` and `BoolFilter` over a list model. Four defects; the oracles are the length of a word, an alphabet and a set of ages chosen here. |
 | `TreeViewStackTests` | The legacy tree *view*, where the largest block of untested hand-written `GtkSharp` was: `TreeViewColumn`'s attribute mapping and cell data funcs proved through `CellSetCellData`, the column list and its reordering, a header click driving the model's sortable interface, `TreeSelection` including a select function that vetoes, `TreeRowReference` against a `TreePath` that does not move, expansion and `MapExpandedRows`, a managed `CellRenderer` subclass measured and snapshotted *by Gtk*, `CellArea`/`ICellLayout`, the toggle and accel renderers, and a row moved between positions through `TreeDragSource`/`TreeDragDest` end to end. One use-after-free; three pieces of behaviour pinned. |
+| `PangoShapingTests` | The half of Pango that turns text into glyphs, where `PangoTests` stops at attributes and measurement: itemization, shaping, the Unicode break algorithm, bidi, the layout iterator, `ScriptIter`, `AttrList` splice/filter/update, tab arrays, coverage, font families and faces, `Matrix`, cursor movement and layout serialisation. The oracles are outside the library — Unicode says where the word boundaries are, the bidi algorithm says which run gets an odd embedding level, a cluster's widths have to add up to the run's width, and index-to-position has to invert position-to-index. Eleven array parameters bound as scalars, a double free on every borrowed attribute, a mutable static identity matrix, and a field holding a struct by value that was read as a pointer to one. |
 | `ControlsAndTransferTests` | The controls an application is built out of, and the two subsystems Gtk 4 replaced wholesale. Entry and `GtkEditable` over non-ASCII text (a position is characters, a length is bytes); adjustment clamping and the two signals that separate a change of range from a change of value; spin button stepping, wrapping and snapping; scale marks; level-bar offsets; progress-bar pulse; calendar; notebook reordering; `Gtk.Stack.Pages` as a list model; expander, popover, drop-down, scrolled window, search entry and search bar. Then `Gdk.Clipboard` — set, read back asynchronously, and the mime types Gdk negotiates around a `GValue` — and `GtkDragSource`/`GtkDropTarget`, whose signals are emitted directly against a subclass's vfuncs, because no drag can be started without a pointer device. Five defects. |
 
 ### Guards against vacuous passes
@@ -2034,3 +2035,167 @@ back as `7:7:7:7`, the churn's value, rather than crashing some tests later.
   leaves the renderer packed, so the cell keeps whatever it was last given
   rather than being reset — a column that has gone stale on screen is what that
   produces.
+
+## Fixed: eleven Pango arrays whose length is a separate argument
+
+The `gsk_container_node_new` family again, and the largest single instance of it
+in the tree. Codegen has a rule for a NULL-terminated array and none for
+"pointer plus count" — or for "one entry per character of the text", which is
+what Pango's break and shaping functions take — so each of these came out taking
+or returning a **single value**, and Pango wrote the rest past the end of it:
+
+| function | what it came out as | what happened |
+|:--|:--|:--|
+| `pango_get_log_attrs` | `PangoLogAttr attrs, int attrs_len` | one four-byte struct marshalled, `attrs_len` of them written through it |
+| `pango_default_break`, `pango_break`, `pango_tailor_break` | the same | the same |
+| `pango_glyph_string_get_logical_widths` | `out int` | one width per character written through a four-byte stack slot |
+| `pango_glyph_item_get_logical_widths` | `out int` | as above, `item->num_chars` of them |
+| `pango_glyph_string_index_to_x_full` | `PangoLogAttr attrs` | read past the end of one struct for any index beyond the first cluster |
+| `pango_glyph_item_letter_space` | `PangoLogAttr log_attrs` | as above |
+| `pango_language_get_scripts` | `PangoScript` | the low 32 bits of the array's address returned as a script |
+| `pango_font_face_list_sizes` | `out int` | an eight-byte address written through a four-byte slot |
+| `pango_log2vis_get_embedding_levels` | `byte` | the low eight bits of the array's address returned as a level, array leaked |
+| `pango_coverage_from_bytes` | `out byte` | the *input* array bound as an out-parameter, so the one thing the caller had to supply could not be supplied |
+
+`pango_default_break` is the one that explains why none of this had ever
+surfaced: its `attrs_len` argument is `G_GNUC_UNUSED`, so the overrun is silent
+and the first entries are even correct.
+
+All eleven are `hidden` in `PangoSharp.metadata` and rebound over real arrays in
+`Source/Libs/PangoSharp/{Global,GlyphString,GlyphItem,Language,FontFace,Coverage}.cs`,
+with the length computed **by the binding** from the text — `g_utf8_strlen`'s
+count, not `string.Length`, because a character outside the BMP is two UTF-16
+units and one code point.
+
+`PangoGlyphString`'s two array *fields*, `glyphs` and `log_clusters`, were
+already hidden with nothing in their place, so the glyphs a shaping run produced
+and the character each one came from could not be reached from managed code at
+all. They are properties over `abi_info`'s offsets now, sized by `num_glyphs`.
+
+## Fixed: a field holding a struct by value, read as a pointer to one
+
+`FieldBase`'s ABI-offset accessor reads the machine word at the field's offset
+and hands it to `FromNative`. For a `T *` field that is right. For a struct
+embedded **by value** the offset *is* the address, and reading the first word of
+the struct as though it were the address of the struct is not:
+
+```csharp
+IntPtr* raw_ptr = (IntPtr*)(((byte*)Handle) + abi_info.GetFieldOffset ("analysis"));
+return Pango.Analysis.New ((*raw_ptr));       // *raw_ptr is analysis.shape_engine
+```
+
+`PangoAnalysis` begins with the two deprecated engine pointers, which are always
+NULL, and `StructBase.FromNative` maps NULL to `Zero` — so **every `PangoItem`
+reported a zeroed analysis**: script `Common`, no language, no font, bidi level
+0, and no error anywhere. Shaping still worked, because `pango_shape` is handed
+the analysis straight back and never looks at the managed copy; only a caller
+*reading* it saw nothing, and reading it is how a caller finds out what script
+or direction the itemizer decided on.
+
+`FieldBase.IsEmbeddedStruct` now takes the offset as the address in both the
+getter and the setter. **Regenerating all eleven assemblies changes exactly one
+field** — `Pango.Item.analysis` is the only struct-by-value field with a public
+accessor in the tree — which is the check to re-run before touching this: the
+generic path is the right one for every other field, and a wrong
+`IsEmbeddedStruct` would silently turn a pointer field into a garbage read.
+
+`An_items_analysis_reports_the_script_language_and_bidi_level` is the test; the
+whole shaping half of `PangoShapingTests` fails without the fix, because
+`Pango.Global.Shape (text, item.Analysis)` would be handed a zeroed analysis.
+
+## Fixed: Pango.Attribute destroyed whatever it was handed
+
+`Pango.Attribute` is hand-written, wraps a bare `PangoAttribute *`, and its
+finalizer called `pango_attribute_destroy` unconditionally. A `PangoAttribute *`
+arriving from C says nothing about who owns it, and four of the five places one
+arrives are **borrowed**:
+
+- the attribute a `PangoAttrFilterFunc` is handed — which a `PangoAttrList` is
+  about to move into the list `Filter` returns, or to keep;
+- the attribute a `PangoShapeRendererFunc` and `PangoRenderer::draw_shape` are
+  handed;
+- `pango_attr_iterator_get`'s return, which belongs to the list;
+- the attributes hanging off a `PangoAnalysis`.
+
+So each of those was freed under the list that still owned it, and the *second*
+free landed wherever the allocator handed the block out again. `AttrList.Filter`
+reproduces it every time.
+
+Borrowed is therefore the default and the transfer-full callers ask —
+`pango_attr_iterator_get_attrs` and `get_font`'s extra attributes, both of which
+are documented as needing `pango_attribute_destroy` per item, and
+`pango_attribute_copy`. `pango_attr_font_features_new` is the one generated
+function that allocates, so it is hidden and rebound in `AttrFontFeatures.cs`;
+the other four call sites of the manual symbol's `from_fmt` are all borrowed.
+
+`GetAttribute (IntPtr.Zero)` also returned a live-looking wrapper whose `Type`
+read `Invalid` and whose `StartIndex` read address zero. NULL is how
+`pango_attr_iterator_get` says "no attribute of that kind here", so the null
+check every caller writes never fired. It returns `null` now.
+
+## Fixed: a static field that every caller could rotate
+
+`Pango.Matrix.Identity` was a **static field**, and every `PangoMatrix`
+operation mutates in place. `Pango.Matrix.Identity.Rotate (90)` compiles, reads
+like arithmetic on a constant, and leaves the identity permanently rotated for
+every other caller in the process. It is a get-only property handing back a
+fresh value now, so the mutation lands on the temporary.
+`The_identity_matrix_survives_being_rotated_where_it_stands` pins it.
+
+## Pango: behaviour worth knowing
+
+- **A font's coverage is read-only on the fontconfig backend.**
+  `pango_coverage_set` is a vfunc and `PangoFcCoverage` overrides it with an
+  empty body, so a `Set`/`Get` round trip on the coverage
+  `pango_font_get_coverage` returns succeeds under gvsbuild's win32 backend and
+  silently does nothing on Debian. Which of the two happens is a fact about the
+  host; the round trip belongs on a coverage the caller made with
+  `pango_coverage_new`, which is Pango's own class either way.
+- **Coverage serialisation is inert, not broken.** Pango 1.44 reimplemented
+  coverage over `hb_set`: `pango_coverage_to_bytes` writes NULL and 0, and
+  `pango_coverage_from_bytes` returns NULL for any input. The binding has to
+  guard, because `Marshal.Copy` rejects a null source whatever the length —
+  otherwise "nothing to serialise" arrives as an `ArgumentNullException`. 1.44
+  also folded every level other than `NONE` into `EXACT`, so asking for
+  `APPROXIMATE` and reading back `EXACT` is the answer rather than a fault.
+- **Face names are not unique within a family.** `pango_font_family_get_face` is
+  a linear search that stops at the first match, so on a machine carrying a
+  family with two faces called "Thin" — this one does — the third and fourth
+  faces cannot be looked up at all. A test that asserted `GetFace (f.FaceName)`
+  is `f` for every face was one font install away from failing, and the order
+  `list_families` returns is the order the platform enumerated its fonts, so
+  indexing into it asserts something about the machine too.
+- **`pango_layout_move_cursor_visually` reports running off the layout with two
+  different sentinels**: `-1` at the beginning and `G_MAXINT` at the end.
+  Neither is a byte offset, and a loop written as `while (index >= 0)` therefore
+  does not terminate going forwards — it feeds `G_MAXINT` back in for ever. That
+  is what the test that pins it was written as first, and it hung.
+- **A layout's line box is not `ascent + descent`.** Measured at Sans 12 it is
+  21504 against 19776, because the line box is rounded up to whole pixels while
+  the context's metrics are not — and how much hinting rounds is a property of
+  the backend. What holds everywhere is proportion: the same family at twice the
+  size gives twice the ascent, twice the descent and twice the line.
+- **`pango_attribute_equal` ignores the range.** It compares the value, because
+  it is what an attr list uses to decide two runs can be merged — so "bold here"
+  and "bold there" are equal, and code that de-duplicates attributes with it
+  loses every range but the first.
+- **`pango_glyph_item_letter_space` puts the space between clusters, not around
+  them.** *n* clusters grow the run by *n-1* spacings and a one-letter run does
+  not grow at all, so text set with letter spacing measures narrower than
+  "characters times spacing" predicts. Its two array arguments are also indexed
+  differently and neither says so: `text` is the whole paragraph, while
+  `log_attrs` starts at *this item's* first character. The same split runs
+  through the two logical-width calls — a glyph string is given only the text it
+  shaped, a glyph item the whole paragraph and its own `Item.Offset`.
+- **The layout iterator hands back a null run once it has passed the last one**,
+  and the wrapper turns that into a zeroed `GlyphItem` rather than into null, so
+  a `do … while (NextRun ())` loop reads `Item` and gets nothing on its last
+  turn. `run.Item == null` is the test.
+- **`PangoLanguage` values are interned**, so `Language.FromString ("en-gb")`
+  and `("EN-GB")` are the same pointer — which is what lets the itemizer compare
+  them by pointer. A language Pango has no table entry for answers **every**
+  script to `IncludesScript`, because the empty script list means "unknown"
+  rather than "none": a caller filtering fonts by script gets everything through
+  and nothing looks wrong.
+- **A tab whose decimal point was never set reports U+0000**, not `'.'`, so
+  reading it as a character and printing it produces a NUL.
