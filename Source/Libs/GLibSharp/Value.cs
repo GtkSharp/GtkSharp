@@ -436,7 +436,20 @@ namespace GLib {
 
 			Type t = GType.LookupType (type);
 			if (t == null)
-				throw new Exception ("Unknown type " + new GType (type).ToString ());
+				// A boxed type with no managed counterpart used to throw here.
+				// That is not an error the caller can do anything about, and
+				// because it happens inside a signal marshaller -- where there
+				// is nobody to catch it -- it took the process down.
+				//
+				// GtkCssProvider's parsing-error signal carries a GError, whose
+				// GType resolves by name to "GLib.Error", a type this binding
+				// does not have. So the one signal that tells an application its
+				// stylesheet is broken could not be handled at all.
+				//
+				// The generated argument for an unmapped boxed type is an IntPtr
+				// already, so handing back the pointer is what the surface above
+				// expects, and it lets the handler run.
+				return boxed_ptr;
 			else if (t.IsSubclassOf (typeof (GLib.Opaque)))
 				return (GLib.Opaque) this;
 
