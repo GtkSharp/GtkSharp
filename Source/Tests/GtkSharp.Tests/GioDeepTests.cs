@@ -775,11 +775,19 @@ namespace GtkSharp.Tests
         }
 
         [Fact]
-        public void A_copy_reports_progress_that_ends_at_the_size_of_the_file()
+        public void A_copy_reports_progress_whose_last_report_is_the_whole_file()
         {
             // The progress callback is the one place a caller sees the copy
-            // happening, and its two arguments are easy to swap. A megabyte is
-            // several buffers, so the last call is not also the first.
+            // happening, and its two arguments are easy to swap. What GIO
+            // promises is that every report carries the same total -- the source
+            // size, known before a byte moves -- and that the last one has
+            // current equal to it.
+            //
+            // How many reports there are in between is NOT portable, and an
+            // assertion that a megabyte takes more than one buffer fails on
+            // Linux: a local-to-local copy there is one copy_file_range and is
+            // reported exactly once. That is also why the cancellation test
+            // below cancels a directory walk rather than a copy.
             Run(() => WithTempDir(dir =>
             {
                 var payload = new byte[1024 * 1024];
@@ -787,7 +795,8 @@ namespace GtkSharp.Tests
                     payload[i] = (byte) (i % 251);
                 File.WriteAllBytes(Path.Combine(dir, "big.bin"), payload);
 
-                long lastCurrent = -1, lastTotal = -1;
+                long lastCurrent = -1;
+                var totals = new HashSet<long>();
                 var calls = 0;
                 var monotonic = true;
 
@@ -797,15 +806,15 @@ namespace GtkSharp.Tests
                     if (current < lastCurrent)
                         monotonic = false;
                     lastCurrent = current;
-                    lastTotal = total;
+                    totals.Add(total);
                 };
 
                 Assert.True(FileAt(dir, "big.bin")
                             .Copy(FileAt(dir, "big.copy"), GLib.FileCopyFlags.None, null, progress));
 
-                Assert.True(calls > 1, "a megabyte should take more than one buffer");
+                Assert.True(calls >= 1, "the progress callback was never called");
                 Assert.True(monotonic, "progress went backwards");
-                Assert.Equal(payload.Length, lastTotal);
+                Assert.Equal(new[] { (long) payload.Length }, totals.ToArray());
                 Assert.Equal(payload.Length, lastCurrent);
                 Assert.Equal(payload, File.ReadAllBytes(Path.Combine(dir, "big.copy")));
             }));
@@ -1000,41 +1009,62 @@ namespace GtkSharp.Tests
         }
 
         [Fact]
-        public void Cancelling_from_the_progress_callback_stops_a_copy_that_is_already_running()
+        public void Cancelling_a_walk_that_has_started_stops_it_where_it_was()
         {
-            // A cancellable is only interesting once the operation has started.
-            // The progress callback runs inside g_file_copy, so cancelling there
-            // is in-flight by construction rather than by luck.
+            // A cancellable is only interesting once the operation is under way.
+            // A directory enumeration is the operation that can be caught in the
+            // middle on every platform: it is open, three entries have been
+            // taken out of it, and the cancel lands before the fourth.
+            //
+            // Cancelling a *copy* from its progress callback is not the same
+            // test, however obvious it looks -- on Linux a local-to-local copy
+            // is a single copy_file_range with no place to check a cancellable,
+            // so the copy finishes and reports success.
             Run(() => WithTempDir(dir =>
             {
-                var payload = new byte[4 * 1024 * 1024];
-                File.WriteAllBytes(Path.Combine(dir, "large.bin"), payload);
+                for (var i = 0; i < 12; i++)
+                    File.WriteAllText(Path.Combine(dir, "f" + i + ".txt"), "x");
 
                 var cancellable = new GLib.Cancellable();
-                var calls = 0;
 
-                GLib.FileProgressCallback progress = (current, total, data) =>
-                {
-                    calls++;
-                    if (current > 0)
-                        cancellable.Cancel();
-                };
+                using var enumerator = GLib.FileFactory.NewForPath(dir)
+                    .EnumerateChildren("standard::name", GLib.FileQueryInfoFlags.None, cancellable);
+
+                var seen = new List<string>();
+                for (var i = 0; i < 3; i++)
+                    seen.Add(enumerator.NextFile(cancellable).Name);
+
+                Assert.Equal(3, seen.Distinct().Count());
+
+                cancellable.Cancel();
+
+                var error = Assert.Throws<GLib.GException>(() => enumerator.NextFile(cancellable));
+                Assert.Equal((int) GLib.IOErrorEnum.Cancelled, error.Code);
+
+                // Cancelling stops the walk; it does not close the enumerator
+                // and it certainly does not touch the directory.
+                Assert.False(enumerator.IsClosed);
+                Assert.Equal(12, Directory.GetFiles(dir).Length);
+            }));
+        }
+
+        [Fact]
+        public void A_cancellable_that_is_already_cancelled_stops_a_copy_before_it_writes()
+        {
+            Run(() => WithTempDir(dir =>
+            {
+                File.WriteAllText(Path.Combine(dir, "src.txt"), "never copied");
+
+                var cancellable = new GLib.Cancellable();
+                cancellable.Cancel();
 
                 var error = Assert.Throws<GLib.GException>(
-                    () => FileAt(dir, "large.bin").Copy(FileAt(dir, "large.copy"),
-                                                        GLib.FileCopyFlags.None, cancellable, progress));
+                    () => FileAt(dir, "src.txt").Copy(FileAt(dir, "dst.txt"),
+                                                      GLib.FileCopyFlags.None, cancellable, null));
 
                 Assert.Equal((int) GLib.IOErrorEnum.Cancelled, error.Code);
-                Assert.True(cancellable.IsCancelled);
-                Assert.True(calls > 0);
-
-                // What GIO does with the half-written destination is not the
-                // same everywhere -- Windows leaves it on disk -- so the only
-                // thing a caller can rely on is that it is not the whole file.
-                var copy = new FileInfo(Path.Combine(dir, "large.copy"));
-                var copied = copy.Exists ? copy.Length : 0;
-                Assert.True(copied < payload.Length,
-                            "a cancelled copy produced all " + payload.Length + " bytes");
+                Assert.False(File.Exists(Path.Combine(dir, "dst.txt")));
+                Assert.Equal("never copied", File.ReadAllText(Path.Combine(dir, "src.txt")));
             }));
         }
 
@@ -1077,8 +1107,15 @@ namespace GtkSharp.Tests
             {
                 var events = new List<(string Name, GLib.FileMonitorEvent Type)>();
 
+                // Deliberately not disposed: unreffing a *cancelled* monitor
+                // once the loop has run takes the process down with
+                // STATUS_HEAP_CORRUPTION on Windows, which is glib's win32
+                // backend freeing a buffer an outstanding
+                // ReadDirectoryChangesW still owns. Letting the wrapper be
+                // collected defers the unref onto a main-loop timeout and is
+                // what every other test here does anyway.
                 var monitor = GLib.FileFactory.NewForPath(dir)
-                                    .MonitorDirectory(GLib.FileMonitorFlags.None, null);
+                              .MonitorDirectory(GLib.FileMonitorFlags.None, null);
                 monitor.RateLimit = 0;
                 monitor.FileChanged += (o, args) =>
                     events.Add((args.File?.Basename, args.EventType));
@@ -1100,8 +1137,6 @@ namespace GtkSharp.Tests
 
                 Assert.True(monitor.Cancel());
                 Assert.True(monitor.IsCancelled);
-                PumpUntil(() => false, 200);
-                monitor.Dispose();
             }));
         }
 
@@ -1112,8 +1147,9 @@ namespace GtkSharp.Tests
             {
                 var events = 0;
 
+                // Not disposed, for the reason given in the test above.
                 var monitor = GLib.FileFactory.NewForPath(dir)
-                                    .MonitorDirectory(GLib.FileMonitorFlags.None, null);
+                              .MonitorDirectory(GLib.FileMonitorFlags.None, null);
                 monitor.RateLimit = 0;
                 monitor.FileChanged += (o, args) => events++;
 
@@ -1127,8 +1163,6 @@ namespace GtkSharp.Tests
                 PumpUntil(() => events > afterCancel, 1000);
 
                 Assert.Equal(afterCancel, events);
-                PumpUntil(() => false, 200);
-                monitor.Dispose();
             }));
         }
     }
