@@ -303,6 +303,13 @@ namespace GtkSharp.GirConversion.Emit {
 			if ((string) gir.Attribute ("private") == "1")
 				el.Add (new XAttribute ("access", "private"));
 
+			// Same rule as EmitProperty below: GIR omits readable="1" because
+			// readable is the default, while GapiCodegen's FieldBase requires the
+			// attribute to be present before it emits a getter. Without this every
+			// public field in the tree came out WRITE-ONLY - graphene_point_t's x
+			// and y could be assigned and never read back.
+			if ((string) gir.Attribute ("readable") != "0")
+				el.Add (new XAttribute ("readable", "true"));
 			if ((string) gir.Attribute ("writable") == "1")
 				el.Add (new XAttribute ("writeable", "true"));
 

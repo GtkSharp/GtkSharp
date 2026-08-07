@@ -134,6 +134,11 @@ namespace GtkSharp.GirConversion.Emit {
 			var isPrivate = (string) gir.Attribute ("private") == "1";
 			el.Add (new XAttribute ("access", isPrivate ? "private" : "public"));
 
+			// GIR omits readable="1" because readable is the default, and
+			// GapiCodegen's FieldBase only emits a getter when the attribute is
+			// there. Leaving it out made every public field write-only.
+			if ((string) gir.Attribute ("readable") != "0")
+				el.Add (new XAttribute ("readable", "true"));
 			if ((string) gir.Attribute ("writable") == "1")
 				el.Add (new XAttribute ("writeable", "true"));
 
