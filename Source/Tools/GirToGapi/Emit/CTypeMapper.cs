@@ -88,7 +88,16 @@ namespace GtkSharp.GirConversion.Emit {
 			var t = ctype.Trim ();
 
 			t = Regex.Replace (t, @"\s+(\*+)", "$1 ");                       // "gchar *x" -> "gchar* x"
-			t = Regex.Replace (t, @"(const\s+)?(\w+)\*\s+const\*", "const $2*");
+			// "const char* const*" is a pointer to const pointers to const char --
+			// char** with both levels const-qualified. This rule dropped one of
+			// the two stars, so the 85 parameters spelled that way across the
+			// girs came through as a single string. GTK then read the bytes of
+			// that string as an array of pointers.
+			//
+			// gtk_string_list_new is the one to remember: "new StringList(text)"
+			// compiled, looked right, and handed GTK a char* where it wanted a
+			// NULL-terminated char**.
+			t = Regex.Replace (t, @"(const\s+)?(\w+)\*\s+const\*", "const $2**");
 			t = Regex.Replace (t, @"(\*+)\s*const\s+", "$1 ");
 			t = Regex.Replace (t, @"(\w+)\s+const\s*\*", "const $1*");
 			t = Regex.Replace (t, @"const\s+", "const-");
