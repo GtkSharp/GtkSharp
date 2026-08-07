@@ -70,10 +70,17 @@
   <attr path="/api/namespace/interface[@cname='GtkEditable']/virtual_method[@cname='do_insert_text']/*/*[@name='position']" name="pass_as">ref</attr>
   <attr path="/api/namespace/interface[@cname='GtkEditable']/virtual_method[@name='SetSelectionBounds']" name="name">SelectRegion</attr>
   <attr path="/api/namespace/interface[@cname='GtkFileChooser']" name="consume_only">1</attr>
-  <attr path="/api/namespace/interface[@cname='GtkFileChooser']/method[@name='GetCurrentFolder']/return-type" name="type">gfilename*</attr>
   <!-- Gtk 4: gtk_file_chooser_get_files returns a GListModel, not a GList, so
-       an element_type here is meaningless and makes ReturnValue.FromNative throw. -->
-  <attr path="/api/namespace/interface[@cname='GtkFileChooser']/method/parameters/*[@name='folder']" name="type">const-gfilename*</attr>
+       an element_type here is meaningless and makes ReturnValue.FromNative throw.
+
+       Two rules used to live here retyping GetCurrentFolder's return value and
+       every 'folder' parameter as gfilename*. That was true of Gtk 3, where a
+       chooser spoke in filenames; Gtk 4 takes and returns GFile*. The retype
+       made the binding read a GObject's memory as a NUL-terminated string and
+       then g_free the object, and hand gtk_file_chooser_add_shortcut_folder a
+       char* to dereference as a GFile. Both are pinned by
+       DesktopIntegrationTests now. -->
+
   <attr path="/api/namespace/interface[@cname='GtkTreeModel']/method[@name='Foreach']/*/*[@name='func']" name="scope">call</attr>
   <attr path="/api/namespace/interface[@cname='GtkTreeModel']/*[@name='GetIterFirst']/*/*[@name='iter']" name="pass_as">out</attr>
   <attr path="/api/namespace/interface[@cname='GtkTreeModel']/method[@name='Get']" name="hidden">1</attr>
@@ -102,6 +109,13 @@
   <attr path="/api/namespace/object[@cname='GtkAboutDialog']/method[@name='SetAuthors']/*/*[@name='authors']" name="null_term_array">1</attr>
   <attr path="/api/namespace/object[@cname='GtkAboutDialog']/method[@name='SetDocumenters']/*/*[@name='documenters']" name="null_term_array">1</attr>
   <attr path="/api/namespace/object[@cname='GtkAdjustment']/constructor[@cname='gtk_adjustment_new']" name="hidden">1</attr>
+  <!-- gtk_alert_dialog_new is (const char *format, ...), and codegen emits
+       nothing for an ellipsis. With no constructor left, ObjectGen fell back to
+       the *protected* void constructor it gives an abstract base class, so the
+       type that replaced GtkMessageDialog in Gtk 4 could not be created at all
+       from outside the assembly. The fallback is turned off here and public
+       constructors are written by hand in AlertDialog.cs. -->
+  <attr path="/api/namespace/object[@cname='GtkAlertDialog']" name="disable_void_ctor">1</attr>
   <attr path="/api/namespace/object[@cname='GtkApplication']/method[@name='GetWindows']/return-type" name="element_type">GtkWindow*</attr>
   <attr path="/api/namespace/object[@cname='GtkApplication']/method[@name='SetAccelsForAction']/*/*[@name='accels']" name="null_term_array">1</attr>
   <attr path="/api/namespace/object[@cname='GtkApplication']/method[@name='GetAccelsForAction']/return-type" name="null_term_array">1</attr>
@@ -250,6 +264,13 @@
   <attr path="/api/namespace/object[@cname='GtkPrintJob']/signal" name="block_glue">1</attr>
   <attr path="/api/namespace/object[@cname='GtkPrintSettings']/constructor[@cname='gtk_print_settings_new_from_file']/*/*[@name='file_name']" name="type">const-gfilename*</attr>
   <attr path="/api/namespace/object[@cname='GtkPrintSettings']/method[@name='Foreach']/*/*[@name='func']" name="scope">call</attr>
+  <!-- Both sides of the page-range pair are arrays whose length is a separate
+       argument, which the api.xml has no way to say, so codegen bound them over
+       a single GtkPageRange: the getter read the first range and leaked the
+       rest, and the setter handed Gtk one struct alongside a count it then read
+       that many elements through. Rebound over real arrays in PrintSettings.cs. -->
+  <attr path="/api/namespace/object[@cname='GtkPrintSettings']/method[@name='GetPageRanges']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkPrintSettings']/method[@name='SetPageRanges']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkPrintSettings']/method[@name='ToFile']/*/*[@name='file_name']" name="type">const-gfilename*</attr>
   <attr path="/api/namespace/object[@cname='GtkProgressBar']" name="parent">GtkWidget</attr>
   <attr path="/api/namespace/object[@cname='GtkRecentManager']/method[@cname='gtk_recent_manager_get_items']" name="name">GetRecentItems</attr>
