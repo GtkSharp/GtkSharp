@@ -137,7 +137,7 @@ namespace Samples
 				Hexpand = true,
 			};
 
-			// This used to fetch https://github.com/GtkSharp/GtkSharp#readme,
+			// This used to fetch https://github.com/pieroviano/GtkSharp#readme,
 			// which made the sample show an error page with no network and, more
 			// to the point, made the test suite render a remote document -- in
 			// CI, inside a job holding a token. LoadUri is what is being

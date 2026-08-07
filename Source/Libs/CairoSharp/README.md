@@ -2,7 +2,7 @@
 
 CairoSharp is a C# wrapper for the Cairo library.
 
-Part of [GtkSharp](https://github.com/GtkSharp/GtkSharp), a binding for Gtk 4 and its
+Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a binding for Gtk 4 and its
 companion libraries that needs no glue library: every native call is resolved by
 symbol lookup at runtime, so the package carries no compiled shim of its own.
 
