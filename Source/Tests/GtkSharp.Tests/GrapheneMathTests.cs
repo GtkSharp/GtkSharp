@@ -359,10 +359,12 @@ namespace GtkSharp.Tests
             // of rotation that was never there.
             //
             // What IS true, and what an animation actually depends on, is that
-            // the translation moves linearly. That is asserted to two decimal
-            // places, which is three times the observed error and still forty
-            // times tighter than the gap between the halfway value and either
-            // endpoint.
+            // the translation moves linearly. How far off the recomposition
+            // lands is a property of the vector unit and the compiler rather
+            // than of graphene -- 4.9e-3 on the z translation under gvsbuild,
+            // 6.9e-3 under Debian's build -- so this is asserted to one decimal
+            // place: seven times the largest error seen and still fifty times
+            // tighter than the five-unit gap between consecutive samples.
             Run(() =>
             {
                 var from = Translation(0, 0, 0);
@@ -377,9 +379,9 @@ namespace GtkSharp.Tests
                 })
                 {
                     var mid = from.Interpolate(to, pair.Item1);
-                    Assert.Equal(pair.Item2, mid.XTranslation, 2);
-                    Assert.Equal(pair.Item2 * 2, mid.YTranslation, 2);
-                    Assert.Equal(pair.Item2 * 3, mid.ZTranslation, 2);
+                    Assert.Equal(pair.Item2, mid.XTranslation, 1);
+                    Assert.Equal(pair.Item2 * 2, mid.YTranslation, 1);
+                    Assert.Equal(pair.Item2 * 3, mid.ZTranslation, 1);
                 }
             });
         }
@@ -425,12 +427,23 @@ namespace GtkSharp.Tests
                 Assert.False(Translation(1, 2, 3).Is2d());
                 Assert.True(Translation(1, 2, 0).Is2d());
 
-                // And a matrix that happens to be the identity is the identity,
-                // however it was arrived at.
+                // IsIdentity is an EXACT comparison, so it is not a question to
+                // ask of a matrix that has been through any arithmetic. A scale
+                // times its own inverse is the identity to the last bit on
+                // Windows and a few ulp away from it on Debian -- same graphene,
+                // different compiler and vector unit -- so neither answer is a
+                // fact about the binding. Near is the one that means something
+                // here, and 1e-6 is four orders of magnitude tighter than the
+                // difference any real defect would make.
                 var roundTrip = Scaling(4, 4, 4);
                 Graphene.Matrix inverse;
                 Assert.True(roundTrip.Inverse(out inverse));
-                Assert.True(roundTrip.Multiply(inverse).IsIdentity);
+                Assert.True(roundTrip.Multiply(inverse).Near(Identity(), 1e-6f));
+
+                // What IsIdentity does answer reliably is a matrix built to be
+                // something else, however small the difference.
+                Assert.False(Scaling(1, 1, 1.0001f).IsIdentity);
+                Assert.True(Scaling(1, 1, 1).IsIdentity);
             });
         }
 
