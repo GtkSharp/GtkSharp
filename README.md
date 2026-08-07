@@ -6,8 +6,7 @@ GtkSharp is a C# wrapper for Gtk and its related components. The component list 
 
 | Branch    | Gtk version | Package version line | Status                                                     |
 |:----------|:------------|:---------------------|:-----------------------------------------------------------|
-| `develop` | Gtk 3.24    | `3.24.24.x`          | Gtk 3 maintenance line.                                     |
-| `gtk4`    | Gtk 4.22.4  | `4.22.4.x`           | Gtk 4 upgrade, in progress — see [Docs/gtk4-upgrade-plan.md](Docs/gtk4-upgrade-plan.md). |
+| `develop` | Gtk 4.22.4  | `4.22.4.x`           | Gtk 4 upgrade.                                             |
 
 The Gtk 4 line is a hard break: same assembly names and namespaces, no side-by-side install with the 3.24.x packages.
 
@@ -15,8 +14,7 @@ Differences can be seen with the following table:
 
 |               | Target framework   | Target Gtk Version                                 | Extra notes                   |
 |:--------------|:-------------------|:---------------------------------------------------|:------------------------------|
-| GtkSharp      | .NET Standard 2.0  | Gtk 4.22 (`gtk4` branch), Gtk 3.22 (`develop`)      | Does not need glue libraries. |
-| mono/gtksharp | .NET Framework 4.5 | Gtk 2 (also Gtk 3.0 but never officially released) |                               |
+| GtkSharp      | .NET Standard 2.0  | Gtk 4.22 (`gtk4` branch), Gtk 3.22 (`develop`)     | Does not need glue libraries. |
 
 * [Building from source](#building-from-source)
 * [Using the library](#using-the-library)
