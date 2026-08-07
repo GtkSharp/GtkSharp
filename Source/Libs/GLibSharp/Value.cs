@@ -307,9 +307,35 @@ namespace GLib {
 			return g_value_get_pointer (ref val);
 		}
 
+		// g_value_get_boxed hands back a pointer the GValue owns: g_value_unset
+		// frees it. A wrapper made over that pointer therefore lives only as
+		// long as the value does -- until the end of a signal emission, or until
+		// the generated property getter three lines below calls Dispose -- and
+		// nothing about the object the caller is holding says so.
+		//
+		// Reading Gtk.RowActivatedArgs.Path after the handler returned was an
+		// access violation out of Gtk.TreePath.ToString, i.e. a dead test host
+		// rather than a failing test, from a line naming nothing.
+		//
+		// Where the type is reference counted, wrapping the pointer already
+		// takes a claim of its own through the Ref hook, so the pointer stays
+		// good and copying as well would leak. Where it is not -- Gtk.TreePath,
+		// Pango.FontDescription, Gtk.PaperSize -- the only way for the wrapper
+		// to outlive the value is to own a copy of what it points at.
 		public static explicit operator GLib.Opaque (Value val)
 		{
-			return GLib.Opaque.GetOpaque (g_value_get_boxed (ref val), (Type) new GType (val.type), false);
+			IntPtr boxed = g_value_get_boxed (ref val);
+			if (boxed == IntPtr.Zero)
+				return null;
+
+			Type type = (Type) new GType (val.type);
+			if (type == null)
+				return null;
+
+			if (GLib.Opaque.WrappingTakesAReference (type))
+				return GLib.Opaque.GetOpaque (boxed, type, false);
+
+			return GLib.Opaque.GetOpaque (g_boxed_copy (val.type, boxed), type, true);
 		}
 
 		public static explicit operator GLib.Variant (Value val)
@@ -761,6 +787,9 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_get_boxed(ref Value val);
 		static d_g_value_get_boxed g_value_get_boxed = FuncLoader.LoadFunction<d_g_value_get_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_boxed"));
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_g_boxed_copy(IntPtr boxed_type, IntPtr src_boxed);
+		static d_g_boxed_copy g_boxed_copy = FuncLoader.LoadFunction<d_g_boxed_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_boxed_copy"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate double d_g_value_get_double(ref Value val);
 		static d_g_value_get_double g_value_get_double = FuncLoader.LoadFunction<d_g_value_get_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_double"));

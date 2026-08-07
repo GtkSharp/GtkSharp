@@ -27,11 +27,44 @@
 namespace GLib {
 
 	using System;
+	using System.Reflection;
 
 	public class Opaque : IWrapper, IDisposable {
 
 		IntPtr _obj;
 		bool owned;
+
+		static readonly System.Collections.Generic.Dictionary<Type, bool> takes_a_reference =
+			new System.Collections.Generic.Dictionary<Type, bool> ();
+
+		// Whether wrapping a raw pointer in this type gives the wrapper a claim
+		// of its own, i.e. whether the type overrides the Ref hook the Raw
+		// setter calls. For a reference-counted opaque the answer is yes and the
+		// wrapper outlives whatever handed the pointer over; for a plain boxed
+		// one -- Gtk.TreePath, Pango.FontDescription -- the wrapper is a bare
+		// alias, and anyone who needs it to survive has to copy.
+		//
+		// The lookup is reflective, so it is cached: this is on the path every
+		// boxed signal argument and every boxed property getter takes.
+		internal static bool WrappingTakesAReference (Type type)
+		{
+			if (type == null)
+				return false;
+
+			lock (takes_a_reference) {
+				bool cached;
+				if (takes_a_reference.TryGetValue (type, out cached))
+					return cached;
+
+				MethodInfo mi = type.GetMethod ("Ref",
+					BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy,
+					null, new Type[] { typeof (IntPtr) }, null);
+
+				bool result = mi != null && mi.DeclaringType != typeof (Opaque);
+				takes_a_reference [type] = result;
+				return result;
+			}
+		}
 
 		public static Opaque GetOpaque (IntPtr o, Type type, bool owned)
 		{
