@@ -15,8 +15,9 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 951 tests Windows reports 948 passing with 3 skips, and
-the forky container 950 passing with 1.
+so only broke there. At 1183 tests both report 1180 passing with 3 skips — the
+container is run with `GTKSHARP_TESTS_SKIP_WEBKIT=1`, which is why its two
+WebKit skips coincide with gvsbuild's.
 
 ### Running the suite on the Gtk the bindings describe
 
@@ -221,6 +222,7 @@ investigate — not something to relax.
 | `ControlsAndTransferTests` | The controls an application is built out of, and the two subsystems Gtk 4 replaced wholesale. Entry and `GtkEditable` over non-ASCII text (a position is characters, a length is bytes); adjustment clamping and the two signals that separate a change of range from a change of value; spin button stepping, wrapping and snapping; scale marks; level-bar offsets; progress-bar pulse; calendar; notebook reordering; `Gtk.Stack.Pages` as a list model; expander, popover, drop-down, scrolled window, search entry and search bar. Then `Gdk.Clipboard` — set, read back asynchronously, and the mime types Gdk negotiates around a `GValue` — and `GtkDragSource`/`GtkDropTarget`, whose signals are emitted directly against a subclass's vfuncs, because no drag can be started without a pointer device. Five defects. |
 | `DesktopIntegrationTests` | Everything that talks to the desktop rather than to the screen, none of which had a test. The Gtk 4 async dialogs — `FileDialog`, `AlertDialog`, `ColorDialog`, `FontDialog` — driven to their Finish methods the only way a test without a user can, by cancelling the `GCancellable` they were started with; `FileFilter` matching a `GFileInfo` by suffix, pattern and content type, serialised through a `GVariant` and built from a `GtkFileFilter` buildable description; the launchers, held but never launched; the legacy `GtkFileChooser`; and the printing stack, which is nearly all pure data — `PaperSize`, `PageSetup` and `PrintSettings` through key files, every typed accessor and every unit, and a `PrintOperation` exported to a PDF so the whole signal chain runs with no printer. The oracles are ISO 216, ANSI, the definition of a point, and the file on disk. Three defects. |
 | `AccessibilityTests` | `GtkAccessible`, which is where Gtk 4 put ATK and which nothing had ever called. The role every widget class declares, checked twice over — the property, and Gtk's own `gtk_test_accessible_has_role` — against the ARIA names, which are the fixed point when a member is inserted into the middle of `GtkAccessibleRole`; a role reassigned, and one named in a `.ui` file. Then the accessible tree, which is not the widget tree: a composite widget's parts, a parent assigned without reparenting, the sibling that only `SetAccessibleParent` can set. Then states, properties and relations set through the rebound update API and read back through Gtk's test API, the value type each attribute wants, the `<accessibility>` block in a `.ui` file, and `AccessibleList`. Three defects; `GtkAccessibleText` and `GtkAccessibleRange` pinned as unreachable. |
+| `ApplicationTests` | The application object and the global state around it — the code every program runs before it does anything else, and which the rest of the suite only ever touched by accident. `GLib.Application` registration, the once-only `::startup` against the every-time `::activate`, the id rules, the busy counter and the property that drives it; `g_application_open` end to end; a `GApplicationCommandLine` built by the test, because `::command-line` needs a session bus and Windows re-reads the real process command line anyway. Then `Gtk.Application`'s window list — newest first, which is also what `ActiveWindow` means — accelerators through `SetAccelsForAction`/`GetAccelsForAction`, an `ApplicationWindow` as a `GActionGroup` under `win.` and the `app.` actions its widgets reach; `Gtk.Settings` overridden and reset; `Gtk.IconTheme` search and resource paths and an icon the test wrote; window modality, transient-for, groups, default size and the `::close-request` veto; `HeaderBar`/`WindowControls`; `Gtk.Accelerator`; `Gtk.Global`; and the `GLib.MainLoop` that `Application.Run` became when `gtk_main` was deleted. Five defects. |
 
 ### Guards against vacuous passes
 
@@ -2485,3 +2487,115 @@ vfuncs, so a managed implementation would have no observable effect.
   client-side decorations. Neither number is portable, so the test asserts
   geometry it arranged itself: two buttons stacked in a spacing-free box are the
   same width, and the second starts exactly where the first ends.
+
+
+## Fixed: five more arrays, and a property emitted as the wrong type
+
+All in the layer an application crosses before it draws anything, and none of it
+had ever been called.
+
+- **`g_application_open` could not be called at all.** It takes
+  `GFile **files, gint n_files`, and the api.xml has no way to tie the two
+  together, so codegen bound `files` as a single `GFile` and passed the
+  GObject's own address where Gio dereferences an array of pointers — the first
+  "file" it read was that object's class pointer. This is the one entry point
+  `G_APPLICATION_HANDLES_OPEN` exists to serve. Rebound in
+  `Source/Libs/GioSharp/Application.cs`, with the count taken from the array,
+  which is the only place it can be right.
+
+- **`g_application_command_line_get_arguments` returned the program name and
+  leaked the rest.** It is `gchar **` with its length in an out-parameter and,
+  says the gir, *without* a terminating NULL — the one array shape codegen has
+  no rule for, so the return value came out as a single string. Reading its own
+  command line is the whole point of an application registered with
+  `HANDLES_COMMAND_LINE`.
+
+- **`Gtk.IconTheme.SearchPath` was a `string`, and worked in neither
+  direction.** `GetSearchPath`/`SetSearchPath` were hidden by a mono-era
+  metadata rule, written when they took Gtk 3's `(char ***, int *)` and
+  `IconTheme.cs` bound them by hand. Gtk 4 gives them the plain strv shape, but
+  with the methods hidden `PropertyBase.Getter` found nothing and the
+  `search-path` *GObject property* was emitted instead — as a `string`, because
+  that is what `SymbolTable` makes of `const-gchar**` with no array rule. The
+  value holds a `G_TYPE_STRV`, so the getter read **null** and the setter asked
+  GObject to transform a string into a strv and was silently refused.
+  `ResourcePath`, whose methods were never hidden, sat right beside it working
+  perfectly. Both metadata rules are gone, and the two dead Gtk 3 delegates that
+  were the reason for them.
+
+- **`gtk_accelerator_parse_with_keycode` wrote a pointer through a four-byte
+  slot.** `accelerator_codes` is a `guint **` out-parameter for a
+  zero-terminated array the caller must free; bound as `out uint` it gave Gtk
+  four bytes to write an eight-byte pointer into, reported the low half of an
+  address as a keycode, and leaked the array. Rebound in
+  `Source/Libs/GtkSharp/Accelerator.cs`.
+
+- **`gtk_distribute_natural_allocation` threw its own answer away.** It reads
+  `n_requested_sizes` structs and writes each one's allocation *back* into
+  `MinimumSize`. Codegen marshalled one struct by value into memory it freed on
+  return, so with more than one size Gtk wrote past a 24-byte block and with
+  exactly one the result was unreachable. Rebound over a real array in
+  `Source/Libs/GtkSharp/Global.cs` — and note that a **blittable managed array
+  is not enough**: the first attempt passed `Gtk.RequestedSize[]` straight to the
+  delegate on the assumption that the runtime would pin it, and the distribution
+  came back unchanged. It copies in and out explicitly.
+
+While there, `gtk_widget_get_settings` was un-hidden. Nothing replaced it and
+nothing explained the rule, so the widget-level way to reach the settings an
+application reads did not exist. It is `Widget.Settings` now.
+
+## The application object: behaviour worth knowing
+
+- **`gtk_application_get_windows` runs newest first**, because it prepends — and
+  `gtk_application_get_active_window` is *defined* as the head of that list, not
+  as whatever has the pointer focus. So `Windows[0]` is the last window added,
+  and `ActiveWindow` is deterministic with no window manager present. Reading
+  `Windows[0]` as "the window I added first" is the natural mistake.
+- **An accelerator's action name is stored normalised.** What goes in as
+  `app.open('x')` comes back out of `GetActionsForAccel` as `app.open::x`, and
+  the untargeted `app.open` is a different action with no accelerator at all.
+- **`gtk_accelerator_valid` is about the key, not about the shortcut.** A bare
+  letter with no modifier passes; only a key that cannot be an accelerator at
+  all — a modifier key — is refused.
+- **A `GtkHeaderBar`'s packed children are not its children.** Everything goes
+  behind a `GtkWindowHandle`, so that a drag on the bar moves the window — and
+  so walking `FirstChild`/`NextSibling` for a packed button finds the handle.
+- **Registration is idempotent and activation is not.** `Register` twice emits
+  `::startup` once; `Activate` twice emits `::activate` twice, which is the
+  point — a second launch of a running application arrives as a second
+  activation. And `gtk_application_add_window` does nothing whatsoever before
+  registration: it logs a critical and returns.
+- **Busy is a counter and a hold is not part of it.** Two `MarkBusy` calls need
+  two `UnmarkBusy` calls, and `Hold` — which is what keeps `g_application_run`
+  from returning — leaves `IsBusy` false.
+- **`gtk_check_version`'s message is written from the caller's point of view.**
+  Asking for a *lower* major version than the one running reports the library as
+  "too new".
+- **`gtk_window_close` destroys the window** when the `::close-request` handler
+  does not veto it, so the managed wrapper is left pointing at freed memory:
+  asking it `Visible` afterwards is a use-after-free that shows up only as a
+  `GTK_IS_WIDGET` critical. `gtk_window_list_toplevels` is the thing left to ask,
+  and it is also how `DestroyWithParent` can be tested at all.
+- **Replacing an icon theme's search path can make a missing icon uncatchable.**
+  A lookup never returns null — it falls back to `image-missing`, which is itself
+  an icon that has to be found somewhere. A display-less `GtkIconTheme` whose
+  `SearchPath` has been *assigned* one directory has nowhere to find it, and Gtk
+  4.22 blows the stack rather than giving up. Appending with `AddSearchPath`,
+  which is what an application shipping its own icons does, is safe — so this is
+  arranged so it cannot happen rather than pinned by a test, because a stack
+  overflow takes the host with it.
+- **Starting a `GtkApplication` registers `<resource-base-path>/icons/` with the
+  display's icon theme.** That is the only part of `gtk_application`'s
+  `::startup` observable from managed code, and it is why an application's own
+  icons are found by name with no code at all.
+- **A `GApplicationCommandLine` can be constructed.** Its `arguments` property
+  is construct-only and write-only and holds an `aay` — an array of
+  NUL-terminated byte strings, which is what an argv is and what a C# string is
+  not. That is the only way to reach a command-line reader without a second
+  process, because `::command-line` is emitted by the primary instance over
+  D-Bus and Windows ignores the argv passed to `g_application_run` entirely in
+  favour of the real process command line.
+- **`g_application_get_default` is a bare static pointer.** GLib stores it
+  without taking a reference and never clears it, so a `GApplication` collected
+  while it is the process default leaves the next caller holding freed memory.
+  Anything creating applications in a long-lived process has to keep them alive.
