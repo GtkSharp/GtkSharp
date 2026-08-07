@@ -139,6 +139,13 @@
   <attr path="/api/namespace/object[@cname='GtkDialog']/method[@name='SetDefaultResponse']/*/*[@name='response_id']" name="type">GtkResponseType</attr>
   <attr path="/api/namespace/object[@cname='GtkDialog']/method[@name='SetResponseSensitive']/*/*[@name='response_id']" name="type">GtkResponseType</attr>
   <attr path="/api/namespace/object[@cname='GtkDialog']/signal[@name='Response']/*/*[@name='response_id']" name="type">GtkResponseType</attr>
+  <!-- gtk_drop_target_get_gtypes returns a GType ARRAY plus its length, and
+       gtk_drop_target_set_gtypes takes one. Codegen has no rule for "pointer
+       plus count", so it wrapped the array address in a GLib.GType on the way
+       out and passed a GType's numeric value as an array address on the way in.
+       Rebound over GLib.GType[] in Source/Libs/GtkSharp/DropTarget.cs. -->
+  <attr path="/api/namespace/object[@cname='GtkDropTarget']/method[@name='GetGtypes']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkDropTarget']/method[@name='SetGtypes']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkEntry']/method[@name='GetIconArea']/parameters/parameter[@name='icon_area']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GtkEntry']/signal[@name='Activate']" name="name">Activated</attr>
   <attr path="/api/namespace/object[@cname='GtkEntryCompletion']/signal[@name='InsertPrefix']" name="name">PrefixInserted</attr>

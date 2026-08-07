@@ -45,5 +45,47 @@ namespace Gdk {
 				throw new GLib.GException (error);
 			return ret;
 		}
+
+		// gdk_content_provider_new_union takes "GdkContentProvider **providers,
+		// gsize n_providers" -- the same pointer-plus-count shape codegen has no
+		// rule for as gsk_container_node_new and gtk_drop_target_set_gtypes.
+		// It emitted
+		//
+		//   public ContentProvider (Gdk.ContentProvider providers, ulong n)
+		//
+		// and passed a single provider's handle as the address of the array, so
+		// GDK read that object's own GTypeInstance class pointer as element
+		// zero and reffed it as a content provider. This is how a drag source
+		// offers one thing several ways -- a file as a URI and as an image --
+		// which is the whole reason the union provider exists.
+		//
+		// Both the array and a reference to every provider in it are
+		// (transfer full): GDK keeps the block and frees it with g_free, and
+		// unrefs each element when the union is disposed. So the array has to
+		// come from g_malloc, and each reference has to be taken here rather
+		// than surrendered, or the managed wrappers are left holding pointers
+		// the union has already released.
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_gdk_content_provider_new_union(IntPtr providers, UIntPtr n_providers);
+		static d_gdk_content_provider_new_union gdk_content_provider_new_union = FuncLoader.LoadFunction<d_gdk_content_provider_new_union>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_content_provider_new_union"));
+
+		public ContentProvider (Gdk.ContentProvider[] providers) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (ContentProvider)) {
+				CreateNativeObject (new string [0], new GLib.Value [0]);
+				return;
+			}
+
+			int count = providers == null ? 0 : providers.Length;
+
+			IntPtr native = IntPtr.Zero;
+			if (count > 0) {
+				native = GLib.Marshaller.Malloc ((ulong) count * (ulong) IntPtr.Size);
+				for (int i = 0; i < count; i++)
+					Marshal.WriteIntPtr (native, i * IntPtr.Size, providers [i].OwnedHandle);
+			}
+
+			Raw = gdk_content_provider_new_union (native, new UIntPtr ((ulong) count));
+		}
 	}
 }

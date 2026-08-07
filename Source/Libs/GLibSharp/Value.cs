@@ -121,6 +121,37 @@ namespace GLib {
 			g_value_set_pointer (ref this, val);
 		}
 
+		/// <summary>The GType of a GValue itself, G_TYPE_VALUE.</summary>
+		/// <remarks>
+		/// A boxed type whose contents are another GValue. Signals that carry a
+		/// value of an unknown type declare their parameter this way --
+		/// GtkDropTarget::drop is the one an application meets -- so without a
+		/// way to build one, such a signal could not be emitted at all.
+		/// </remarks>
+		public static GType ValueGType {
+			get { return new GType (g_value_get_type ()); }
+		}
+
+		/// <summary>Boxes <paramref name="inner"/> inside a G_TYPE_VALUE.</summary>
+		/// <remarks>
+		/// Not a constructor overload on purpose: `new Value (someValue)` today
+		/// binds to Value (object) and means something else entirely, and
+		/// silently changing what that call does would be worse than a name.
+		/// g_value_set_boxed duplicates through G_TYPE_VALUE's copy function,
+		/// so the temporary block is the caller's to free.
+		/// </remarks>
+		public static Value NewBoxedValue (Value inner)
+		{
+			Value boxed = new Value (ValueGType);
+			IntPtr native_inner = GLib.Marshaller.StructureToPtrAlloc (inner);
+			try {
+				g_value_set_boxed (ref boxed, native_inner);
+			} finally {
+				Marshal.FreeHGlobal (native_inner);
+			}
+			return boxed;
+		}
+
 		public Value (Variant variant) : this (GType.Variant)
 		{
 			g_value_set_variant (ref this, variant == null ? IntPtr.Zero : variant.Handle);
@@ -660,6 +691,9 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_char(ref Value val, sbyte data);
 		static d_g_value_set_char g_value_set_char = FuncLoader.LoadFunction<d_g_value_set_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_char"));
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_g_value_get_type();
+		static d_g_value_get_type g_value_get_type = FuncLoader.LoadFunction<d_g_value_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_type"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_boxed(ref Value val, IntPtr data);
 		static d_g_value_set_boxed g_value_set_boxed = FuncLoader.LoadFunction<d_g_value_set_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_boxed"));

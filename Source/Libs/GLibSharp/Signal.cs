@@ -289,19 +289,43 @@ namespace GLib {
 			signal_id = GetSignalId (signal_name, instance);
 			if (signal_id <= 0)
 				throw new ArgumentException ("Invalid signal name: " + signal_name);
+			Query query;
+			g_signal_query (signal_id, out query);
+
+			if (query.n_params != args.Length)
+				throw new ArgumentException (String.Format ("{0} takes {1} argument(s), not {2}",
+									   signal_name, query.n_params, args.Length));
+
 			GLib.Value[] vals = new GLib.Value [args.Length + 1];
 			GLib.ValueArray inst_and_params = new GLib.ValueArray ((uint) args.Length + 1);
-			
+
 			vals [0] = new GLib.Value (instance);
 			inst_and_params.Append (vals [0]);
 			for (int i = 1; i < vals.Length; i++) {
-				vals [i] = new GLib.Value (args [i - 1]);
+				// GLib.Value (object) reads the GType off the argument's own
+				// managed type, which a null argument does not have: it threw
+				// NullReferenceException from inside the constructor. Yet a
+				// nullable object parameter is ordinary -- GtkDropTarget::accept
+				// is emitted with one -- so the type has to come from the signal
+				// instead, which g_signal_query already told us. Each entry of
+				// param_types carries G_SIGNAL_TYPE_STATIC_SCOPE in its low bit
+				// exactly as return_type does, so it has to be masked off.
+				if (args [i - 1] == null) {
+					IntPtr param_type = Marshal.ReadIntPtr (query.param_types, (i - 1) * IntPtr.Size);
+					vals [i] = new GLib.Value (new GType ((IntPtr) ((long) param_type & ~1L)));
+				} else if (args [i - 1] is GLib.Value)
+					// A GValue-typed parameter (G_TYPE_VALUE) has to be boxed
+					// rather than described by its managed type, which is not a
+					// GType at all: GLib.Value (object) produced a value of no
+					// usable type, the emission went through, and the handler
+					// then threw "Unknown type" out of the signal marshaller.
+					vals [i] = GLib.Value.NewBoxedValue ((GLib.Value) args [i - 1]);
+				else
+					vals [i] = new GLib.Value (args [i - 1]);
 				inst_and_params.Append (vals [i]);
 			}
 
 			object ret_obj = null;
-			Query query;
-			g_signal_query (signal_id, out query);
 
 			// GSignalQuery.return_type carries G_SIGNAL_TYPE_STATIC_SCOPE in its
 			// low bit, which is never part of a GType, so it has to come off

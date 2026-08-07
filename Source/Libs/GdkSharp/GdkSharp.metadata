@@ -108,6 +108,13 @@
   <attr path="/api/namespace/boxed[@cname='GdkContentFormats']/constructor[@cname='gdk_content_formats_new']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GdkContentFormats']/method[@cname='gdk_content_formats_get_gtypes']" name="hidden">1</attr>
 
+  <!-- gdk_content_provider_new_union takes "GdkContentProvider **, gsize" and
+       codegen has no rule for pointer-plus-count, so it emitted a constructor
+       taking ONE provider and passed its handle as the array's address. Both
+       the array and a reference to each element are (transfer full). Rebound
+       over an array in Source/Libs/GdkSharp/ContentProvider.cs. -->
+  <attr path="/api/namespace/object[@cname='GdkContentProvider']/constructor[@cname='gdk_content_provider_new_union']" name="hidden">1</attr>
+
   <!-- The api.xml cannot say that a method CONSUMES its receiver, and these six
        do: every gdk_content_formats_union* eats a reference to the formats it
        is called on, and gdk_content_formats_builder_free_to_formats frees the
