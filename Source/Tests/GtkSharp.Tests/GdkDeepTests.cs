@@ -37,9 +37,15 @@ namespace GtkSharp.Tests
 
         /// <summary>A pixbuf whose every pixel differs, so a stride or row-order
         /// mistake cannot survive a comparison of two of them.</summary>
-        private static Gdk.Pixbuf Gradient(int width, int height)
+        private static Gdk.Pixbuf Gradient(int width, int height) => Gradient(width, height, true);
+
+        /// <summary>The same, with the alpha channel made optional: a JPEG
+        /// encoder has no alpha to write, and glycin's refuses an RGBA source
+        /// outright rather than dropping the channel the way the classic
+        /// gdk-pixbuf loaders do.</summary>
+        private static Gdk.Pixbuf Gradient(int width, int height, bool hasAlpha)
         {
-            var pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb, true, 8, width, height);
+            var pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb, hasAlpha, 8, width, height);
             pixbuf.Fill(0x000000FFu);
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
@@ -283,11 +289,15 @@ namespace GtkSharp.Tests
             // succeeded. A caller that ignores Close's error therefore ships an
             // empty pixbuf, which is why Close has to raise.
             //
-            // Note how little of the image has to be missing before this is the
-            // ONLY signal: cutting a PNG in half raises nothing at all, because
-            // libpng has by then produced a pixbuf and gdk-pixbuf reports the
-            // partial decode as success. Only a stream too short to have
-            // produced any pixbuf is an error.
+            // The second half of this test is where the two runtimes part, and
+            // the disagreement is worth pinning rather than papering over: given
+            // HALF a PNG, gdk-pixbuf's classic libpng loader closes successfully
+            // and hands back a full-size pixbuf with the missing rows blank,
+            // while Debian forky's glycin loader raises
+            // org.gnome.glycin.Error.LoadingError ("unexpected end of file").
+            // Both are asserted, because what a caller must not conclude is the
+            // same on either: Close's return value says nothing about how much
+            // of the image arrived, so it is not a completeness check.
             Run(() =>
             {
                 byte[] encoded;
@@ -307,8 +317,30 @@ namespace GtkSharp.Tests
 
                 var partial = new Gdk.PixbufLoader();
                 Assert.True(partial.Write(half));
-                Assert.True(partial.Close());
-                Assert.Equal(32, partial.Pixbuf.Width);
+
+                bool closed;
+                try
+                {
+                    closed = partial.Close();
+                }
+                catch (GLib.GException)
+                {
+                    closed = false;
+                }
+
+                if (closed)
+                {
+                    // The trap: success, and a pixbuf of the full encoded size
+                    // whose lower rows were never decoded.
+                    Assert.Equal(32, partial.Pixbuf.Width);
+                    Assert.Equal(32, partial.Pixbuf.Height);
+                }
+                else
+                {
+                    // The other loader refuses instead, and then there is no
+                    // pixbuf at all rather than a partly-filled one.
+                    Assert.Null(partial.Pixbuf);
+                }
             });
         }
 
@@ -337,11 +369,10 @@ namespace GtkSharp.Tests
         }
 
         [Fact]
-        public void Png_declines_the_quality_option_that_jpeg_accepts_when_the_jpeg_loader_is_installed()
+        public void Png_has_a_compression_option_and_no_quality_one()
         {
-            // Two facts about the formats rather than about the binding: PNG is
-            // lossless and so has no quality knob, JPEG does. Guarded because
-            // the jpeg loader is a separate module and need not be installed.
+            // A fact about the format rather than about the binding: PNG is
+            // lossless, so it has a compression level and no quality knob.
             Run(() =>
             {
                 var png = FormatNamed("png");
@@ -349,27 +380,44 @@ namespace GtkSharp.Tests
                 Assert.True(png.IsWritable);
                 Assert.False(png.IsSaveOptionSupported("quality"));
                 Assert.True(png.IsSaveOptionSupported("compression"));
+            });
+        }
 
+        [SkippableFact]
+        public void Jpeg_has_a_quality_option_and_no_compression_one()
+        {
+            // The mirror of the PNG case, and skippable rather than folded into
+            // it because the jpeg loader is a separate module: an early `return`
+            // would report green having asserted nothing.
+            Skip.If(Run(() => FormatNamed("jpeg") == null), "no jpeg loader in this runtime");
+
+            Run(() =>
+            {
                 var jpeg = FormatNamed("jpeg");
-                if (jpeg == null)
-                    return;   // no jpeg module in this runtime
-
                 Assert.True(jpeg.IsSaveOptionSupported("quality"));
                 Assert.False(jpeg.IsSaveOptionSupported("compression"));
             });
         }
 
-        [Fact]
-        public void A_worse_jpeg_quality_produces_a_smaller_file_when_the_jpeg_loader_is_installed()
+        [SkippableFact]
+        public void A_worse_jpeg_quality_produces_a_smaller_file()
         {
             // Arithmetic on file sizes: whatever else changes, quality 10 must
             // not encode a photograph-like gradient larger than quality 95.
+            //
+            // The source deliberately has no alpha channel. JPEG cannot carry
+            // one, and the two implementations disagree about what to do with
+            // it: the classic gdk-pixbuf encoder drops it, glycin's refuses the
+            // colour type outright with
+            // "the encoder or decoder for Jpeg does not support the color type
+            // Rgba8". An RGB source is the case both agree on, and the one an
+            // application saving a photograph actually has.
+            Skip.If(Run(() => FormatNamed("jpeg") == null), "no jpeg loader in this runtime");
+
             Run(() =>
             {
-                if (FormatNamed("jpeg") == null)
-                    return;   // no jpeg module in this runtime
-
-                using var original = Gradient(64, 64);
+                using var original = Gradient(64, 64, false);
+                Assert.False(original.HasAlpha);
 
                 var coarse = original.SaveToBuffer("jpeg", new[] { "quality" }, new[] { "10" });
                 var fine = original.SaveToBuffer("jpeg", new[] { "quality" }, new[] { "95" });
@@ -380,27 +428,27 @@ namespace GtkSharp.Tests
         }
 
         [Fact]
-        public void Every_writable_format_names_at_least_one_extension_and_mime_type()
+        public void The_png_format_names_its_extension_and_mime_type()
         {
             // The two string-array fields of GdkPixbufFormat are marshalled by
             // the generated struct reader from a null-terminated char**; a
             // truncation there shows up as an empty array, not as an error.
+            //
+            // Scoped to png on purpose. Asserting this of every installed format
+            // is a loop of NotEmpty with no oracle behind it, and it is not even
+            // true: forky's glycin-backed loaders include a format that names no
+            // extension at all, which is a fact about that runtime's module set
+            // rather than about this binding.
             Run(() =>
             {
-                var formats = Gdk.Pixbuf.Formats;
-                Assert.NotEmpty(formats);
-
-                foreach (var format in formats)
-                {
-                    Assert.False(string.IsNullOrEmpty(format.Name), "a format with no name");
-                    Assert.NotEmpty(format.Extensions);
-                    Assert.NotEmpty(format.MimeTypes);
-                }
+                Assert.NotEmpty(Gdk.Pixbuf.Formats);
 
                 var png = FormatNamed("png");
+                Assert.Equal("png", png.Name);
                 Assert.Contains("png", png.Extensions);
                 Assert.Contains("image/png", png.MimeTypes);
                 Assert.False(png.IsScalable);
+                Assert.True(png.IsWritable);
             });
         }
 

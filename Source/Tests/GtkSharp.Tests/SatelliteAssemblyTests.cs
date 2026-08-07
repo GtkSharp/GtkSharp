@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Reflection;
 using Xunit;
 
 namespace GtkSharp.Tests
@@ -492,7 +492,7 @@ namespace GtkSharp.Tests
         }
 
         [Fact]
-        public void The_rounded_rect_struct_is_eight_bytes_short_of_the_one_gsk_writes()
+        public void The_rounded_rect_struct_holds_pointers_where_gsk_embeds_the_values()
         {
             // DeeperStackTests.A_rounded_rect_keeps_its_bounds is Skipped with the
             // wrong reason. Gsk.RoundedRect is not a boxed type with a missing
@@ -515,6 +515,16 @@ namespace GtkSharp.Tests
             // bytes through it -- an eight-byte heap overrun on every single
             // call, with `bounds` read as an address built out of two floats.
             //
+            // What is asserted is the FIELD TYPES rather than Marshal.SizeOf,
+            // because asking the runtime to measure this struct is not portable:
+            // .NET on Linux refuses outright ("Type 'Gsk.RoundedRect' cannot be
+            // marshaled as an unmanaged structure", since a ByValArray of a
+            // class is not a layout the marshaller has), while on Windows it
+            // answers 40. Those are two reports of one defect, and the defect is
+            // upstream of both -- a pointer field and an array-of-references
+            // field cannot describe 16 embedded bytes followed by 32 more,
+            // whatever number a given runtime is willing to put on them.
+            //
             // The numbers below are arithmetic over the C declaration, so they
             // hold independently of this binding. The test is written to fail the
             // day the layout is corrected, which is the point: fixing it means
@@ -522,12 +532,31 @@ namespace GtkSharp.Tests
             // that should have to come back here and unskip the other test.
             Run(() =>
             {
-                const int GskRoundedRectSize = 16 + 4 * 8;
-                const int CornerOffset = 16;
-
+                const int GskRoundedRectSize = 16 + 4 * 8;   // graphene_rect_t + graphene_size_t[4]
                 Assert.Equal(48, GskRoundedRectSize);
-                Assert.NotEqual(GskRoundedRectSize, Marshal.SizeOf<Gsk.RoundedRect>());
-                Assert.NotEqual((IntPtr) CornerOffset, Marshal.OffsetOf<Gsk.RoundedRect>("Corner"));
+
+                var type = typeof(Gsk.RoundedRect);
+                var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public |
+                                            BindingFlags.NonPublic);
+
+                // Two instance fields, and neither carries any of the bytes GSK
+                // expects to find: `bounds` is one pointer where C has 16 bytes
+                // of floats, and `corner` is a managed array whose elements are
+                // themselves references, because Graphene.Size is a class.
+                Assert.Equal(2, fields.Length);
+
+                var bounds = type.GetField("_bounds", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.Equal(typeof(IntPtr), bounds.FieldType);
+
+                var corner = type.GetField("Corner", BindingFlags.Instance | BindingFlags.Public);
+                Assert.Equal(typeof(Graphene.Size[]), corner.FieldType);
+                Assert.True(typeof(Graphene.Size).IsClass);
+                Assert.True(typeof(Graphene.Rect).IsClass);
+
+                // So the managed description of the whole struct is two machine
+                // words, and GSK reads and writes 48 bytes through the pointer
+                // every generated method hands it.
+                Assert.NotEqual(GskRoundedRectSize, 2 * IntPtr.Size);
 
                 // And it is not merely mis-sized: a default instance has no
                 // corners at all, so even the managed half of the struct cannot
