@@ -127,6 +127,7 @@ investigate — not something to relax.
 | `TreeWrapperTests` | The hand-written halves of `TreeModelSort`, `TreeModelFilter` and `TreeStore`, and `NodeSelection`, which had none: iterator and path conversion both ways, a filter rooted at a subtree, `SetModifyFunc` synthesising a column, node selection by node and by path. |
 | `MainLoopTests` | `Source`, `Idle`, `Timeout`, `MainContext`, `MainLoop`. The oracles are ordering rather than completion: a high-priority idle before a low-priority one, a shorter timeout before a longer one, a removed source never. |
 | `ObjectAndValueTests` | The wrapper identity map, notifications, per-object data, and the `Value` cases the numeric round-trips do not reach — boxed opaques, value arrays, a managed object carried through unmanaged code. |
+| `GdkDeepTests` | The Gdk that needs no display: `PixbufLoader` fed a PNG seven bytes at a time and required to agree with the whole file, its signal ordering and the rows its area-updated events name, pixbuf save options, `PixbufFormat`, texture download compared against the bytes the test chose, `RGBA` parsing and hashing, rectangle arithmetic against Gdk's own hit test, and the Gtk 4 clipboard data model — `ContentFormats`, `ContentFormatsBuilder`, `ContentProvider` — which nothing had ever called. |
 | `GLibDeepTests` | The rest of hand-written GLib: `HookList`'s ABI description checked against the struct `g_hook_list_init` actually writes, the container half of `Variant`/`VariantType` (tuples, arrays, maybes, dict entries, subtyping), `Bytes` slicing and ownership, the `Marshaller` helpers below the ones every binding uses, and the two branches of `GLib.Signal` that only a returning signal or an emission hook reaches. |
 
 ### Guards against vacuous passes
@@ -483,6 +484,17 @@ While there: `Matrix.operator ==` dereferenced both sides unconditionally, so
 `matrix == null` — the first thing any caller writes about a class — threw
 `NullReferenceException` from inside the operator.
 
+### And a third: every generated struct hashed its fields commutatively
+
+`GapiCodegen` emitted `GetHashCode` as `typename ^ f1 ^ f2 ^ …`. XOR is
+commutative, so **any permutation of a struct's fields produced the same hash**:
+`Gdk.RGBA` red `(1,0,0,1)` and green `(0,1,0,1)` collided exactly, as did
+`Gdk.Rectangle(1,2,3,4)` and `Gdk.Rectangle(2,1,4,3)`. Legal — equal values still
+hash equal — but a colour or a rectangle is exactly the kind of thing that ends up
+as a dictionary key, and the collisions are not rare accidents but a structural
+property. `StructBase.GenHashCode` now folds the fields in order
+(`hash = hash * 397 ^ field.GetHashCode ()`), and `NativeStructGen` shares it.
+
 ## Fixed: Pango's attribute iterator and font-description equality
 
 `AttrIterator` built its `GLib.SList` without an element type, in both `Attrs`
@@ -586,6 +598,22 @@ Beyond the three above:
 - **`GMenuModel`'s items-changed carries signed counts** while `GListModel`'s
   carries unsigned ones — separate signals with separate args classes, which is
   what the port had to split them into.
+- **Writing to a closed `PixbufLoader` is not a `GError`.** It is a
+  `g_return_val_if_fail`: gdk-pixbuf logs a CRITICAL, returns `FALSE`, and leaves
+  the error pointer NULL. `Write`'s bool return is therefore the only thing that
+  says the bytes went nowhere — and `PixbufLoader.LoadFromStream`, in this
+  repository, ignores it.
+- **A truncated PNG usually closes without error.** Cut one in half and
+  `Close ()` succeeds and hands back a full-size pixbuf with the missing rows
+  blank; only a stream too short to have produced any pixbuf at all raises. So
+  "did `Close` throw" is not a completeness check.
+- **`ContentFormatsBuilder.ToFormats` resets the builder.** A second call returns
+  empty formats rather than the same set again, which is silent: nothing
+  distinguishes "offered nothing" from "read twice".
+- **`gdk_texture_download` always produces `GDK_MEMORY_DEFAULT`**, i.e. cairo
+  ARGB32 — which is `B,G,R,A` in memory on a little-endian machine, the reverse
+  of a `Gdk.Pixbuf`'s channel order. Copying one buffer into the other without
+  swapping is a red/blue swap that survives every size assertion.
 
 ## Fixed: emitting a signal that returns a value took the process down
 
@@ -693,6 +721,71 @@ forces a test to be added with it.
   `default(T)` to the `object` overload of `PtrToStructure`, which rejects value
   types. Nothing in the tree calls either, which is how both survived; they are
   now inverses, and the test asserts a round trip rather than either half alone.
+
+## Fixed: the api.xml cannot say a method eats its receiver
+
+`gdk_content_formats_union` and its four `union_*` siblings take the formats they
+are called on as **`(transfer full)`** — the callee consumes a reference — and
+`gdk_content_formats_builder_free_to_formats` frees the builder outright. An
+api.xml `<method>` describes the ownership of its *parameters* and has no way to
+describe the instance's, so codegen passed `Handle` and the wrapper went on
+owning it. The formats were freed underneath a live wrapper, which unreffed them
+again when it was disposed or finalized.
+
+```
+Gdk-CRITICAL **: gdk_content_formats_unref: assertion 'formats->ref_count > 0' failed
+```
+
+Then, later, an access violation somewhere unrelated. **The full suite crashed
+roughly one run in three, at a different point each time**, because the second
+unref is queued onto the main loop by the generated finalizer — the exact shape
+this document warns about under "a crash that appears to move around is a
+finalizer". A single test never reproduced it; sixteen wrappers plus a forced
+`GC.Collect` and a drained main loop made it certain.
+
+The fix takes the reference the callee eats, so the managed object keeps
+behaving like every other one here — a method does not destroy the object it was
+called on. Scanning every vendored gir for `<instance-parameter …
+transfer-ownership="full">` finds **51 such functions across the stack**; most
+are `*_unref`/`*_free`, which the binding already handles, but
+`gtk_snapshot_free_to_node`, `gsk_path_builder_free_to_path`,
+`gtk_expression_bind`, `g_string_free_to_bytes` and
+`g_bytes_unref_to_array` are the same shape and are not yet covered.
+
+```python
+# the audit, run over Source/Gir/*.gir
+re.finditer(r'<(?:method|constructor|function)\b[^>]*?c:identifier="([a-z0-9_]+)"[^>]*>(.*?)</...>', t, re.S)
+# flag any whose <instance-parameter ... transfer-ownership="full">
+```
+
+## Fixed: three caller-allocates buffers in Gdk bound as scalars
+
+Same family as the `graphene_rect_union` and `cairo_get_font_matrix` defects
+above: a function that writes into storage **the caller** provides, bound as
+though it returned something.
+
+- **`gdk_texture_download`** writes `Height * stride` bytes through a `guchar *`.
+  Codegen bound it `out byte` and returned that byte, so
+  `texture.Download (stride)` handed Gdk the address of one stack slot and let it
+  write a whole image through it. `gdk_texture_downloader_download_into` is
+  identical. Both are now hidden and rebound onto a `byte[]` the caller sizes,
+  with the guard the C API has no way to enforce.
+
+- **`gdk_content_formats_new`** takes `const char **mime_types` plus a count. The
+  api.xml says `const-char**` with an explicit length rather than
+  `null_term_array`, a shape codegen has no rule for, so it emitted
+  `ContentFormats (string, uint)` and passed **one** strdup'd string — which Gdk
+  then read as an array of pointers, using the characters of the string as
+  addresses. `gdk_content_formats_get_gtypes` is the mirror image: it returns a
+  `GType` array and its length, and the binding wrapped the **array pointer**
+  in a `GLib.GType`, producing a type whose value was an address.
+
+- **`gdk_content_provider_get_value`** fills a `GValue` the caller has already
+  `g_value_init`ed to the type it is asking for — the type is an *input*, and
+  the provider answers `G_VALUE_HOLDS` and refuses anything else. Codegen made
+  it a plain out-parameter over `Marshal.AllocHGlobal`, so Gdk read a `GType`
+  out of uninitialised heap. It is now `GetValue (GType, out Value)`, which is
+  the only signature that can express the call.
 
 ## Open: boxed types with no allocator cannot be constructed
 
