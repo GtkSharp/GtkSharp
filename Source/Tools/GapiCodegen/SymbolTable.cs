@@ -126,8 +126,8 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GList", "GLib.List"));
 			AddType (new ManualGen ("GPtrArray", "GLib.PtrArray"));
 			AddType (new ManualGen ("GSList", "GLib.SList"));
-			AddType (new ManualGen ("GVariant", "GLib.Variant"));
-			AddType (new ManualGen ("GVariantType", "GLib.VariantType"));
+			AddType (new ManualGen ("GVariant", "GLib.Variant") { NullIsNull = true });
+			AddType (new ManualGen ("GVariantType", "GLib.VariantType") { NullIsNull = true });
 			AddType (new ManualGen ("GValueArray", "GLib.ValueArray"));
 			AddType (new ManualGen ("GMutex", "GLib.Mutex",
 						"new GLib.Mutex({0})",

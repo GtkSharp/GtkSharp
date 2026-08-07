@@ -266,4 +266,32 @@
     The menu model's signal is renamed instead, giving it its own args class.
   -->
   <attr path="/api/namespace/object[@cname='GMenuModel']/signal[@cname='items-changed']" name="name">MenuItemsChanged</attr>
+
+  <!--
+    Exactly the same collision, one namespace over: GSettings::changed carries a
+    key name, GFileMonitor::changed carries (GFile *file, GFile *other_file,
+    GFileMonitorEvent event_type). Both are called "changed", so both asked
+    GapiCodegen for a class called GLib.ChangedArgs, and only one of them can
+    have it. GSettings won, so a GFileMonitor handler was handed a ChangedArgs
+    whose single member reads Args[0] as a string, and Args[0] is a GFile.
+    Reading it threw InvalidCastException from inside the signal marshaller,
+    and nothing else on the args object named the file, the event type or the
+    rename destination, so the signal could not be used for anything at all.
+
+    The monitor's signal is renamed, following the GMenuModel precedent: the
+    less-used of the pair moves so the other keeps its natural spelling. The
+    cname stays "changed", so what is connected to native is unchanged.
+  -->
+  <attr path="/api/namespace/object[@cname='GFileMonitor']/signal[@cname='changed']" name="name">FileChanged</attr>
+
+  <!--
+    g_settings_schema_source_list_schemas fills two gchar*** out-parameters,
+    i.e. two NULL-terminated string arrays. SymbolTable has no rule for a triple
+    pointer, so codegen fell back to "out IntPtr" and then read the array of
+    pointers as though it were one UTF-8 string, g_freeing it afterwards. Every
+    call returned the first few bytes of a heap address as text and leaked the
+    strings. Hidden here and rebound over string[] in
+    Source/Libs/GioSharp/SettingsSchemaSource.cs.
+  -->
+  <attr path="/api/namespace/boxed[@cname='GSettingsSchemaSource']/method[@name='ListSchemas']" name="hidden">1</attr>
 </metadata>

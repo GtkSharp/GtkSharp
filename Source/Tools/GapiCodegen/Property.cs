@@ -93,9 +93,20 @@ namespace GtkSharp.Generation {
 			return "SetProperty(" + qpname + ", val)";
 		}
 
+		// A property that GObject reports as neither readable nor writable can
+		// still have a real accessor: g_file_enumerator_get_container reads a
+		// "container" that is declared construct-only and write-only. Bailing
+		// out on the GObject flags alone dropped the property AND, because
+		// ClassBase.IgnoreMethod suppresses a GetX method whenever a property
+		// called X exists, the method with it -- so the accessor could not be
+		// reached from managed code at all.
+		bool Generates {
+			get { return !Hidden && (Readable || Writable || Getter != null || Setter != null); }
+		}
+
 		public void GenerateDecl (StreamWriter sw, string indent)
 		{
-			if (Hidden || (!Readable && !Writable))
+			if (!Generates)
 				return;
 
 			string name = Name;
@@ -119,7 +130,7 @@ namespace GtkSharp.Generation {
 			SymbolTable table = SymbolTable.Table;
 			StreamWriter sw = gen_info.Writer;
 
-			if (Hidden || (!Readable && !Writable))
+			if (!Generates)
 				return;
 
 			string modifiers = "";
