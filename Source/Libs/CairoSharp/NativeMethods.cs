@@ -632,10 +632,9 @@ namespace Cairo
 		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
 		//internal static extern IntPtr cairo_pdf_surface_create_for_stream (string filename, double width, double height);
 		
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate void d_cairo_pdf_surface_restrict_to_version(IntPtr surface, PdfVersion version);
-		internal static d_cairo_pdf_surface_restrict_to_version cairo_pdf_surface_restrict_to_version = FuncLoader.LoadFunction<d_cairo_pdf_surface_restrict_to_version>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_pdf_surface_restrict_to_version"));
-
+		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
+		//internal static extern void cairo_pdf_surface_restrict_to_version (IntPtr surface, PdfVersion version);
+		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate void d_cairo_pdf_surface_set_size(IntPtr surface, double x, double y);
 		internal static d_cairo_pdf_surface_set_size cairo_pdf_surface_set_size = FuncLoader.LoadFunction<d_cairo_pdf_surface_set_size>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_pdf_surface_set_size"));
@@ -674,17 +673,16 @@ namespace Cairo
 		internal delegate void d_cairo_ps_surface_dsc_comment(IntPtr surface, string comment);
 		internal static d_cairo_ps_surface_dsc_comment cairo_ps_surface_dsc_comment = FuncLoader.LoadFunction<d_cairo_ps_surface_dsc_comment>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_ps_surface_dsc_comment"));
 		
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate bool d_cairo_ps_surface_get_eps(IntPtr surface);
-		internal static d_cairo_ps_surface_get_eps cairo_ps_surface_get_eps = FuncLoader.LoadFunction<d_cairo_ps_surface_get_eps>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_ps_surface_get_eps"));
-
+		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
+		//[return: MarshalAs (UnmanagedType.U1)]
+		//internal static extern bool cairo_ps_surface_get_eps (IntPtr surface);
+		
 		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
 		//internal static extern void cairo_ps_surface_restrict_to_level (IntPtr surface, PSLevel level);
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate void d_cairo_ps_surface_set_eps(IntPtr surface, bool eps);
-		internal static d_cairo_ps_surface_set_eps cairo_ps_surface_set_eps = FuncLoader.LoadFunction<d_cairo_ps_surface_set_eps>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_ps_surface_set_eps"));
-
+		
+		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
+		//internal static extern void cairo_ps_surface_set_eps (IntPtr surface, bool eps);
+		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate void d_cairo_ps_surface_set_size(IntPtr surface, double x, double y);
 		internal static d_cairo_ps_surface_set_size cairo_ps_surface_set_size = FuncLoader.LoadFunction<d_cairo_ps_surface_set_size>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_ps_surface_set_size"));
@@ -710,25 +708,11 @@ namespace Cairo
 		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
 		//internal static extern IntPtr cairo_quartz_surface_get_cg_context (IntPtr surface);
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate IntPtr d_cairo_recording_surface_create(Content content, IntPtr extents);
-		internal static d_cairo_recording_surface_create cairo_recording_surface_create = FuncLoader.LoadFunction<d_cairo_recording_surface_create>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_recording_surface_create"));
+		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
+		//internal static extern IntPtr cairo_recording_surface_create (Content content, IntPtr extents);
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate void d_cairo_recording_surface_ink_extents(IntPtr surface, out double x, out double y, out double width, out double height);
-		internal static d_cairo_recording_surface_ink_extents cairo_recording_surface_ink_extents = FuncLoader.LoadFunction<d_cairo_recording_surface_ink_extents>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_recording_surface_ink_extents"));
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate bool d_cairo_recording_surface_get_extents(IntPtr surface, out Rectangle extents);
-		internal static d_cairo_recording_surface_get_extents cairo_recording_surface_get_extents = FuncLoader.LoadFunction<d_cairo_recording_surface_get_extents>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_recording_surface_get_extents"));
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate IntPtr d_cairo_script_create(string filename);
-		internal static d_cairo_script_create cairo_script_create = FuncLoader.LoadFunction<d_cairo_script_create>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_script_create"));
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate IntPtr d_cairo_script_surface_create(IntPtr device, Content content, double width, double height);
-		internal static d_cairo_script_surface_create cairo_script_surface_create = FuncLoader.LoadFunction<d_cairo_script_surface_create>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_script_surface_create"));
+		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
+		//internal static extern void cairo_recording_surface_ink_extents (IntPtr surface, out double x, out double y, out double width, out double height);
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate void d_cairo_rectangle(IntPtr cr, double x, double y, double width, double height);
 		internal static d_cairo_rectangle cairo_rectangle = FuncLoader.LoadFunction<d_cairo_rectangle>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_rectangle"));
@@ -1018,9 +1002,8 @@ namespace Cairo
 		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
 		//internal static extern void cairo_surface_copy_page (IntPtr surface);
 		
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate IntPtr d_cairo_surface_create_for_rectangle(IntPtr surface, double x, double y, double width, double height);
-		internal static d_cairo_surface_create_for_rectangle cairo_surface_create_for_rectangle = FuncLoader.LoadFunction<d_cairo_surface_create_for_rectangle>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_surface_create_for_rectangle"));
+		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
+		//internal static extern IntPtr cairo_surface_create_for_rectangle (IntPtr surface, double x, double y, double width, double height);
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate IntPtr d_cairo_surface_create_similar(IntPtr surface, Cairo.Content content, int width, int height);
@@ -1130,14 +1113,6 @@ namespace Cairo
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		internal delegate IntPtr d_cairo_svg_surface_restrict_to_version(IntPtr surface, SvgVersion version);
 		internal static d_cairo_svg_surface_restrict_to_version cairo_svg_surface_restrict_to_version = FuncLoader.LoadFunction<d_cairo_svg_surface_restrict_to_version>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_svg_surface_restrict_to_version"));
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate void d_cairo_svg_surface_set_document_unit(IntPtr surface, SvgUnit unit);
-		internal static d_cairo_svg_surface_set_document_unit cairo_svg_surface_set_document_unit = FuncLoader.LoadFunction<d_cairo_svg_surface_set_document_unit>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_svg_surface_set_document_unit"));
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		internal delegate SvgUnit d_cairo_svg_surface_get_document_unit(IntPtr surface);
-		internal static d_cairo_svg_surface_get_document_unit cairo_svg_surface_get_document_unit = FuncLoader.LoadFunction<d_cairo_svg_surface_get_document_unit>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Cairo), "cairo_svg_surface_get_document_unit"));
 		
 		//[DllImport (cairo, CallingConvention=CallingConvention.Cdecl)]
 		//internal static extern IntPtr cairo_svg_version_to_string (SvgVersion version);

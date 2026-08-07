@@ -25,20 +25,13 @@ using System;
 namespace Cairo
 {
 
-	/// <summary>
-	/// Mirrors <c>cairo_device_type_t</c>; the values are what
-	/// <c>cairo_device_get_type</c> returns.
-	/// </summary>
 	public enum DeviceType {
-		Invalid = -1,
-		Drm = 0,
+		Drm,
 		GL,
 		Script,
 		Xcb,
 		Xlib,
 		Xml,
-		Cogl,
-		Win32,
 	}
 
 	public class Device : IDisposable
@@ -46,26 +39,12 @@ namespace Cairo
 
 		IntPtr handle;
 
-		internal Device (IntPtr handle) : this (handle, false)
-		{
-		}
-
-		/// <param name="owner">
-		/// True when the caller already holds a reference that this wrapper is
-		/// to take over — <c>cairo_script_create</c> returns one. False for a
-		/// borrowed pointer such as <c>cairo_surface_get_device</c>'s, which is
-		/// then referenced here.
-		/// </param>
-		internal Device (IntPtr handle, bool owner)
+		internal Device (IntPtr handle)
 		{
 			if (handle == IntPtr.Zero)
 				throw new ArgumentException ("handle should not be NULL", "handle");
 
-			this.handle = owner ? handle : NativeMethods.cairo_device_reference (handle);
-		}
-
-		public IntPtr Handle {
-			get { return handle; }
+			this.handle = NativeMethods.cairo_device_reference (handle);
 		}
 
 		public Status Acquire ()

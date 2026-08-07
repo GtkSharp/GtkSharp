@@ -63,19 +63,7 @@ namespace GLib {
 		IntPtr handle;
 		IntPtr raw_closure;
 		string name;
-
-		// gulong, which is 64 bits everywhere except Windows -- so uint was too
-		// narrow on Linux and macOS. GapiCodegen has mapped gulong to UIntPtr
-		// through LPUGen since the mono era (SymbolTable.cs); this hand-written
-		// file simply never followed. Handler ids are small sequential counters,
-		// so nothing has been observed to break, and nothing here can prove it
-		// would -- the point is that the declared ABI is wrong, not that a test
-		// caught it.
-		//
-		// Zero is GLib's own "no handler": g_signal_connect_closure returns 0 when
-		// it cannot connect, so it makes a better unset marker than UInt32.MaxValue
-		// did, and it is the default.
-		UIntPtr id;
+		uint id = UInt32.MaxValue;
 		System.Type args_type;
 		Delegate custom_marshaler;
 		GCHandle gch;
@@ -115,7 +103,7 @@ namespace GLib {
 
 		public void Disconnect ()
 		{
-			if (id != UIntPtr.Zero && g_signal_handler_is_connected (handle, id))
+			if (id != UInt32.MaxValue && g_signal_handler_is_connected (handle, id))
 				g_signal_handler_disconnect (handle, id);
 		}
 
@@ -225,13 +213,13 @@ namespace GLib {
 		delegate void d_g_closure_add_finalize_notifier(IntPtr closure, IntPtr dummy, ClosureNotify notify);
 		static d_g_closure_add_finalize_notifier g_closure_add_finalize_notifier = FuncLoader.LoadFunction<d_g_closure_add_finalize_notifier>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_closure_add_finalize_notifier"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate UIntPtr d_g_signal_connect_closure(IntPtr obj, IntPtr name, IntPtr closure, bool is_after);
+		delegate uint d_g_signal_connect_closure(IntPtr obj, IntPtr name, IntPtr closure, bool is_after);
 		static d_g_signal_connect_closure g_signal_connect_closure = FuncLoader.LoadFunction<d_g_signal_connect_closure>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_connect_closure"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_g_signal_handler_disconnect(IntPtr instance, UIntPtr handler);
+		delegate void d_g_signal_handler_disconnect(IntPtr instance, uint handler);
 		static d_g_signal_handler_disconnect g_signal_handler_disconnect = FuncLoader.LoadFunction<d_g_signal_handler_disconnect>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_handler_disconnect"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate bool d_g_signal_handler_is_connected(IntPtr instance, UIntPtr handler);
+		delegate bool d_g_signal_handler_is_connected(IntPtr instance, uint handler);
 		static d_g_signal_handler_is_connected g_signal_handler_is_connected = FuncLoader.LoadFunction<d_g_signal_handler_is_connected>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_signal_handler_is_connected"));
 	}
 }

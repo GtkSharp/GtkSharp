@@ -108,21 +108,6 @@
   <!-- These two corrected gapi2xml.pl's mangling of GIOStream and GUnixFDList.
        GirToGapi takes the c:type verbatim and already spells them correctly. -->
   <attr path="/api/namespace/object[@cname='GApplication']/method[@cname='g_application_run']" name="hidden">1</attr>
-  <!-- g_application_open takes "GFile **files, gint n_files". The api.xml has no
-       way to tie the two together, so codegen bound files as a single GFile and
-       passed the GObject's own address where Gio dereferences an array of
-       pointers: the first "file" it read was the object's class pointer. The one
-       entry point an application registered with HANDLES_OPEN exists to serve
-       could not be called. Rebound over a real array in Application.cs. -->
-  <attr path="/api/namespace/object[@cname='GApplication']/method[@cname='g_application_open']" name="hidden">1</attr>
-  <!-- g_application_command_line_get_arguments returns "gchar **" with its
-       length in the out-parameter beside it, and the gir says the array is not
-       zero-terminated - so the null_term_array rule cannot be used and codegen
-       fell back to a single string, which is the first argument and a leak of
-       the rest. Reading its own command line is the whole point of an
-       application registered with HANDLES_COMMAND_LINE. Rebound over the count
-       in ApplicationCommandLine.cs. -->
-  <attr path="/api/namespace/object[@cname='GApplicationCommandLine']/method[@name='GetArguments']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GApplication']/signal[@cname='activate']" name="name">Activated</attr>
   <attr path="/api/namespace/object[@cname='GApplication']/signal[@cname='open']" name="name">Opened</attr>
   <attr path="/api/namespace/object[@cname='GAppLaunchContext']/signal[@cname='launch-failed']" name="name">LaunchedFailed</attr>
@@ -309,24 +294,4 @@
     Source/Libs/GioSharp/SettingsSchemaSource.cs.
   -->
   <attr path="/api/namespace/boxed[@cname='GSettingsSchemaSource']/method[@name='ListSchemas']" name="hidden">1</attr>
-
-  <!--
-    The rest of the GFileMonitor::changed collision, found by the audit that
-    followed it: a signal's args class is named after the signal, so two signals
-    of one name in one assembly cannot both have their own shape.
-  -->
-
-  <!-- interface-added/interface-removed: (interface) on GDBusObject,
-       (object, interface) on GDBusObjectManager. The manager's shape won, so a
-       GDBusObject handler read Args[0], its interface, as an object, and
-       looked for an interface in an Args[1] that is not there. -->
-  <attr path="/api/namespace/interface[@cname='GDBusObjectManager']/signal[@cname='interface-added']" name="name">ObjectInterfaceAdded</attr>
-  <attr path="/api/namespace/interface[@cname='GDBusObjectManager']/signal[@cname='interface-removed']" name="name">ObjectInterfaceRemoved</attr>
-
-  <!-- event: (GSocketClientEvent, GSocketConnectable, GIOStream) on
-       GSocketClient, (GSocketListenerEvent, GSocket) on GSocketListener. The
-       listener's shape won, so the client's handler (the one applications
-       actually connect, to watch a connection being established) read its
-       event as the wrong enum and its GSocketConnectable as a GSocket. -->
-  <attr path="/api/namespace/object[@cname='GSocketListener']/signal[@cname='event']" name="name">ListenerEvent</attr>
 </metadata>

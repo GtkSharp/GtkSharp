@@ -94,16 +94,7 @@ namespace Gtk {
 				if (sig == null)
 					throw new Exception("Unknown signal GC handle received " + gch);
 
-				// This callback was copied from TreeModelFilter, cast and all.
-				// An adapter is what wraps a model whose GType this binding does
-				// not know -- above all a C# ITreeModelImplementor -- so the one
-				// thing the emitter can never be is a TreeModelFilter, which is
-				// generated as a concrete ITreeModel and never reaches an
-				// adapter. The cast therefore always produced null, the count
-				// below always threw NullReferenceException, and the catch hands
-				// that to ExceptionManager, which with no handler installed
-				// calls Environment.Exit: a reorder took the process down.
-				ITreeModel sender = Gtk.TreeModelAdapter.GetObject (arg0, false);
+				TreeModelFilter sender = GLib.Object.GetObject (arg0) as TreeModelFilter;
 				args.Args = new object[3];
 				args.Args[0] = arg1 == IntPtr.Zero ? null : (Gtk.TreePath) GLib.Opaque.GetOpaque (arg1, typeof (Gtk.TreePath), false);
 				args.Args[1] = Gtk.TreeIter.New (arg2);

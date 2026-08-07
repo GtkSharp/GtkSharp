@@ -45,11 +45,8 @@ namespace Pango {
 			GLib.SList list = new GLib.SList (list_handle, typeof (IntPtr));
 			extra_attrs = new Pango.Attribute [list.Count];
 			int i = 0;
-			// pango_attr_iterator_get_font hands over the extra attributes, so
-			// these wrappers own them. Everything else that reaches
-			// GetAttribute is looking at an attribute a list still holds.
 			foreach (IntPtr raw_attr in list)
-				extra_attrs [i++] = Pango.Attribute.GetAttribute (raw_attr, true);
+				extra_attrs [i++] = Pango.Attribute.GetAttribute (raw_attr);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_iterator_get_attrs(IntPtr raw);
@@ -63,9 +60,8 @@ namespace Pango {
 				GLib.SList list = new GLib.SList (list_handle, typeof (IntPtr));
 				Pango.Attribute[] attrs = new Pango.Attribute [list.Count];
 				int i = 0;
-				// pango_attr_iterator_get_attrs returns copies, so these are ours.
 				foreach (IntPtr raw_attr in list)
-					attrs [i++] = Pango.Attribute.GetAttribute (raw_attr, true);
+					attrs [i++] = Pango.Attribute.GetAttribute (raw_attr);
 				return attrs;
 			}
 		}

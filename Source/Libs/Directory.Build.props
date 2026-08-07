@@ -8,7 +8,7 @@
          about that here produces noise no consumer can act on and buries the
          [Obsolete] warnings aimed at them. Consumer code still warns. -->
     <NoWarn>$(NoWarn);CS0612;CS0618</NoWarn>
-    <TargetFramework>$(_GtkSharpLibTfm)</TargetFramework>
+    <TargetFrameworks>net$(_GtkSharpNetVersion);netstandard2.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>$(_GtkSharpBuildOutputDirectory)\$(Configuration)</OutputPath>
     <!--  
@@ -18,16 +18,5 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\GtkSharp.snk</AssemblyOriginatorKeyFile>
     <LangVersion>9</LangVersion>
-
-    <!-- Every wrapper has a README.md beside its .csproj describing what it
-         binds and what it depends on; nuget.org shows it on the package page.
-         Set here rather than in twelve project files, which means a new wrapper
-         has to have one too: pack fails when the file is missing, which is the
-         right way round. -->
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
 </Project>

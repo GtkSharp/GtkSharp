@@ -15,4 +15,11 @@
     <ProjectReference Include="..\GtkSharp\GtkSharp.csproj" />
   </ItemGroup>
 
+  <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
+       condition is on the build host, so packages published by CI (which packs
+       in a debian:forky container) go without it. -->
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+    <PackageReference Include="Net4x.NuGetUtility" Version="1.0.13" PrivateAssets="all" />
+  </ItemGroup>
+
 </Project>
