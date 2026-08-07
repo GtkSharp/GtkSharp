@@ -15,8 +15,8 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 797 tests Windows reports 794 passing with 3 skips, and
-the forky container 796 passing with 1.
+so only broke there. At 835 tests Windows reports 832 passing with 3 skips, and
+the forky container 834 passing with 1.
 
 ### Running the suite on the Gtk the bindings describe
 
@@ -168,6 +168,7 @@ investigate — not something to relax.
 | `SatelliteAssemblyTests` | The three assemblies whose generated surface nothing had reached: libadwaita, GtkSourceView and Gsk. Render-node trees serialised and read back, node bounds composed by arithmetic the test does itself, `GskTransform`'s builder chain and the NULL that means the identity, `GskPathBuilder`; GtkSourceView's language guessing, line sorting, search occurrence counts, syntax context classes, regions and snippets; libadwaita's navigation stack, view-stack pages, toasts, style manager, spring params and breakpoint conditions. |
 | `AuthoringTests` | The other direction: a C# program **writing** Gtk types rather than calling them, which is the code that runs C into managed. GType registration and `[GLib.TypeName]`, `[GLib.Property]` read and written through GObject rather than through C#, `notify::`, `Gtk.Builder` constructing a managed type by name, declaring an activation signal by overriding `OnActivate`, virtual overrides proved by asking a *parent* for the answer, chaining to a base vfunc, a `Gtk.LayoutManager` subclass placing children by transforms the test does the arithmetic for, and `[Gtk.Template]`/`[Child]`. |
 | `GLibDeepTests` | The rest of hand-written GLib: `HookList`'s ABI description checked against the struct `g_hook_list_init` actually writes, the container half of `Variant`/`VariantType` (tuples, arrays, maybes, dict entries, subtyping), `Bytes` slicing and ownership, the `Marshaller` helpers below the ones every binding uses, and the two branches of `GLib.Signal` that only a returning signal or an emission hook reaches. |
+| `ExpressionTests` | `GtkExpression`: how the Gtk 4 list stack reads a value out of an item, and how a property is kept in step with one on another object. Property, constant, object, closure, cclosure and try expressions; evaluation against a this-object and the GValue it fills; watches and their invalidation; `Bind` and what a failed evaluation does to the target; expression-driven `StringSorter`, `NumericSorter`, `StringFilter` and `BoolFilter` over a list model. Four defects; the oracles are the length of a word, an alphabet and a set of ages chosen here. |
 
 ### Guards against vacuous passes
 
@@ -872,7 +873,9 @@ transfer-ownership="full">` finds **51 such functions across the stack**; most
 are `*_unref`/`*_free`, which the binding already handles, but
 `gtk_snapshot_free_to_node`, `gsk_path_builder_free_to_path`,
 `gtk_expression_bind`, `g_string_free_to_bytes` and
-`g_bytes_unref_to_array` are the same shape and are not yet covered.
+`g_bytes_unref_to_array` are the same shape. `gsk_path_builder_free_to_path` and
+the twelve `GskTransform` builders were fixed next; `gtk_expression_bind` after
+them. `g_string_free_to_bytes` and `g_bytes_unref_to_array` are still open.
 
 ```python
 # the audit, run over Source/Gir/*.gir
@@ -1144,6 +1147,118 @@ a native frame, and the test host dies mid-run — under a "Passed!" line, with 
 of 797. The requirement is therefore asserted by reflection in
 `Gtk_Builder_constructs_a_managed_type_by_name_and_sets_its_declared_properties`
 rather than demonstrated by breaking it.
+
+## Fixed: an evaluation that threw its own answer away
+
+`gtk_expression_evaluate` and `gtk_expression_watch_evaluate` fill a `GValue`
+**the caller** provides — the same shape as `graphene_rect_union`,
+`cairo_get_font_matrix` and `gdk_content_provider_get_value`. Codegen bound the
+`GValue*` as a by-value parameter, which produced:
+
+```csharp
+public bool Evaluate (IntPtr this_, GLib.Value value) {
+    IntPtr native_value = GLib.Marshaller.StructureToPtrAlloc (value);
+    bool ret = gtk_expression_evaluate (Handle, this_, native_value);
+    Marshal.FreeHGlobal (native_value);       // <-- the answer was in there
+    return ret;
+}
+```
+
+So every evaluation reported `true` and produced nothing. `GtkExpression` is how
+the whole Gtk 4 list stack gets a value out of an item, and `Evaluate` is the
+only way to ask an expression for one directly, so nothing in the hierarchy
+could be used from managed code at all. Both are now
+`Evaluate (… out GLib.Value value)`, initialising the block to `G_VALUE_INIT`
+(zeroed, which is what `gtk_expression_evaluate` requires because it
+`g_value_init`s the value itself) and copying the filled struct back out.
+
+**This is the fourth caller-allocates defect in this document.** They are all
+found the same way: a C function whose out-parameter is a pointer to storage
+rather than a return value, bound as though it returned something.
+
+## Fixed: gtk_expression_bind, the last of the receiver-eating calls in Gtk
+
+Predicted by the audit under "the api.xml cannot say a method eats its
+receiver", and the same defect: `gtk_expression_bind`'s instance parameter is
+`(transfer full)` — the watch it creates owns the expression — so the wrapper
+went on holding a reference the callee had already consumed and unreffed it
+again from the generated finalizer, on a 50 ms main-loop timeout. `Bind` is
+hidden in `GtkSharp.metadata` and rebound in `Source/Libs/GtkSharp/Expression.cs`
+over a `Consumed` property that takes the reference first, exactly as
+`Gsk.Transform` does. It also now takes `GLib.Object` for its target and
+this-object rather than the two bare `gpointer`s the gir declares.
+
+## Fixed: two more array-plus-count constructors, and one that was never emitted
+
+`gtk_closure_expression_new (GType, GClosure *, guint n_params, GtkExpression **params)`
+and `gtk_try_expression_new (guint, GtkExpression **)` are the
+`gsk_container_node_new` shape again — codegen has a rule for a
+NULL-terminated array and none for "pointer plus count" — so each came out
+taking a **single** `Gtk.Expression` whose own first machine word GTK then read
+as element zero. Both are hidden and rebound over `Gtk.Expression[]`.
+
+`gtk_cclosure_expression_new` is worse: it takes a `GClosureMarshal`, a
+`GCallback` and a `GClosureNotify`, none of which `SymbolTable` maps, so
+**codegen emitted no constructor for `GtkCClosureExpression` at all** and the
+class was left holding nothing but its `GType`. That is the type a Gtk 4 list
+view reaches for to derive a display value from an item, so the job it exists
+for could not be done through the binding. It is now hand-written over GObject's
+libffi marshaller (`g_cclosure_marshal_generic`), taking a managed delegate:
+
+```csharp
+[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+delegate int NameLengthCallback (IntPtr this_, IntPtr name, IntPtr userData);
+
+new CClosureExpression (GLib.GType.Int, callback, propertyExpression)
+```
+
+The marshaller calls it with the C signature the `GValue`s describe —
+`(this_object, param1 … paramN, user_data)` — and the delegate is rooted by a
+`GCHandle` passed as that `user_data` and released by the closure's destroy
+notify, so it lives exactly as long as the closure does. `ClosureExpression`
+gets the same convenience beside its raw `GClosure*` constructor, because
+managed code has no other way to obtain a `GClosure`.
+
+## Expressions: behaviour worth knowing
+
+- **A `GtkSorter` is a comparison function, not an observer.** A `StringSorter`
+  reads its property through an expression but installs no watch on any item, so
+  renaming a row leaves a `SortListModel` in an order that is now wrong and says
+  nothing. And the obvious remedy is not one:
+  `gtk_sorter_changed (GTK_SORTER_CHANGE_DIFFERENT)` re-runs the sort over the
+  sort **keys** the model cached when the item arrived, so it reorders nothing —
+  while the same sorter, asked directly with `gtk_sorter_compare`, already gives
+  the new answer. What works is telling the *model* the item changed
+  (`g_list_model_items_changed`), which is what makes it recompute that key.
+  Bind and Watch, by contrast, follow a property immediately.
+- **`gtk_expression_bind` is one-way and has no bidirectional mode**, unlike
+  `g_object_bind_property`, which is the API it resembles. Writing the target
+  neither writes the source nor survives the next evaluation.
+- **A failed evaluation leaves the target alone.** A chain through a null link
+  is a normal outcome rather than an error, and `Bind` responds by not writing —
+  so the failure mode on screen is a stale value, not a blank one. Wrapping the
+  chain in a `TryExpression` with a constant is the documented way to get a
+  fallback, and is the only difference between the two tests that pin this.
+- **A closure expression is not consulted at all when one of its parameters
+  fails to evaluate**, so a closure cannot be used to supply that default
+  either.
+- **`[GLib.Property]` setters are why a binding looks broken.** An ordinary C#
+  setter emits no `notify`, so a binding fires once, at `Bind` time, and never
+  again — while the property itself reads back correctly the whole time. Writing
+  the same property through GObject does notify, which is how the test tells the
+  two apart.
+
+## Fixed: a main-loop test that a deferred finalizer could steal
+
+`MainLoopTests.Iterating_the_context_dispatches_one_pending_source` counts a
+single dispatch. Every generated `Opaque` finalizer in this binding queues its
+unref onto a **50 ms timeout**, and a timeout outranks an idle, so a source
+belonging to no test at all could become ready mid-test and take that dispatch.
+It failed about one run in twenty-five, always in a test that counts dispatches.
+`Drain ()` cannot prevent it, because it only clears what is ready *now*; the
+two affected tests now `Quiesce ()` first — run until nothing has been
+dispatched for longer than that 50 ms, capped so that a permanently-ready idle
+fails the run instead of hanging it.
 
 ## Measuring coverage
 
