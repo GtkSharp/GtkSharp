@@ -338,7 +338,17 @@ namespace GtkSharp.Generation {
 				} else if (PassAs == "ref" && CSType != MarshalType) {
 					return new string [] { gen.MarshalType + " native_" + CallName + " = (" + gen.MarshalType + ") " + CallName + ";" };
 				} else if (gen is OpaqueGen && Owned) {
-					return new string [] { CallName + ".Owned = false;" };
+					// A (transfer full) opaque parameter is very often nullable
+					// as well -- a NULL GskTransform *is* the identity, and
+					// gtk_widget_allocate documents NULL as "no transform" --
+					// so the ownership hand-off has to tolerate a null argument.
+					// The call itself already does (it emits
+					// "x == null ? IntPtr.Zero : x.Handle"), and without this
+					// guard the line above it threw NullReferenceException
+					// before any native code ran: every layout manager that
+					// placed a child at the origin crashed inside
+					// Widget.Allocate.
+					return new string [] { "if (" + CallName + " != null) " + CallName + ".Owned = false;" };
 				}
 
 				return new string [0];

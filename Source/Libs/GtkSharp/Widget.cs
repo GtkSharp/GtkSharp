@@ -117,17 +117,34 @@ namespace Gtk {
 
 		static ClosureMarshal ActivateMarshalCallback;
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_gtk_widget_class_set_activate_signal(IntPtr widget_class, uint signal_id);
+		static d_gtk_widget_class_set_activate_signal gtk_widget_class_set_activate_signal = FuncLoader.LoadFunction<d_gtk_widget_class_set_activate_signal>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_widget_class_set_activate_signal"));
+
+		// Gtk 3 stored the activation signal's id in a public GtkWidgetClass
+		// field, and this wrote it there by hand. Gtk 4 made that field private:
+		// GtkWidgetClass has no "activate_signal" member any more, so
+		// class_abi.GetFieldOffset ("activate_signal") looked up a name the ABI
+		// description does not contain and threw NullReferenceException out of
+		// AbiStruct -- at class-init, before the first instance existed. Every
+		// managed Widget subclass that overrode OnActivate was therefore
+		// unconstructible, with an exception naming nothing.
+		//
+		// gtk_widget_class_set_activate_signal is the Gtk 4 way to say the same
+		// thing, and it is what makes Widget.Activate () emit the signal.
 		static void ConnectActivate (GLib.GType gtype)
 		{
 			if (ActivateMarshalCallback == null)
 				ActivateMarshalCallback = new ClosureMarshal (ActivateMarshal_cb);
 
-			unsafe {
-				uint* raw_ptr = (uint*)(((long) gtype.GetClassPtr()) + (long) class_abi.GetFieldOffset("activate_signal"));
+			// The signal keeps its Gtk 3 name rather than becoming "activate":
+			// Button, Entry and several others already define a signal called
+			// "activate", and registering a second one of that name on a
+			// subclass's own GType is an error.
+			uint id = RegisterSignal ("activate_signal", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None,
+					new GLib.GType [0], ActivateMarshalCallback);
 
-				*raw_ptr = RegisterSignal ("activate_signal", gtype, GLib.Signal.Flags.RunLast, GLib.GType.None,
-						new GLib.GType [0], ActivateMarshalCallback);
-			}
+			gtk_widget_class_set_activate_signal (gtype.GetClassPtr (), id);
 		}
 
 		[GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectActivate")]
