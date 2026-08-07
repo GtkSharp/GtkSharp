@@ -121,6 +121,7 @@ investigate — not something to relax.
 | `IOChannelAndSpawnTests` | `GLib.IOChannel` and `GLib.Spawn`, both with oracles outside the library: a file the test wrote, and a child process whose output the test chose. |
 | `PangoTests` | The hand-rolled `Pango.Attribute` hierarchy, attribute iteration, layout measurement and wrapping, tab arrays, font descriptions and metrics. |
 | `CairoTextAndPathTests` | The rest of `Cairo.Context`: text measurement and drawing, path copying and flattening, groups, masks, clip extents, PNG round-trips. |
+| `CairoDeepTests` | What the two files above did not reach, with the oracle outside the library wherever one exists: the `PathData` union walked back into operations and coordinates, joins and caps decided by trigonometry, the compositing operators decided by arithmetic, `PushGroup(Content)`, `ScaledFont` and `FontFace`, the pattern subclasses, and the region operations and hashing. |
 | `WidgetBehaviourTests` | What a Gtk 4 application does: `Measure` with an orientation and a for-size, walking the child list that replaced `GtkContainer`, grid coordinates and spans, event controllers, CSS classes and providers, layout managers. |
 | `ActionsAndModelsTests` | The two stacks the port introduced wholesale — `GAction`/`GMenu`, and the `GListModel` filter/sort chain — so neither has any history of working. |
 | `TreeWrapperTests` | The hand-written halves of `TreeModelSort`, `TreeModelFilter` and `TreeStore`, and `NodeSelection`, which had none: iterator and path conversion both ways, a filter rooted at a subtree, `SetModifyFunc` synthesising a column, node selection by node and by path. |
@@ -454,6 +455,32 @@ so the run reports whatever finished first and stops. Before the fix, the class
 reported *nine passing tests of twenty-one* and the whole suite reported 68 of
 484 — both with a "Passed!" line. When a run's total is lower than it should be,
 that is the thing to chase, not the pass count.
+
+## Fixed: two hash functions that could not be wrong in a way equality notices
+
+`Cairo.Matrix.GetHashCode` was six terms of the shape `(int)Xx ^ (int)Xx>>32`,
+written as though the fields were 64 bits wide. They are not: the cast makes each
+one an `int`, and C# masks an `int` shift count to five bits, so `>>32` is `>>0`
+and **every term cancelled against itself. The hash was always zero**, for every
+matrix. The cast also discarded the fractional part, so `1.5` and `1.9` were
+indistinguishable to it even in principle.
+
+`Cairo.Region.GetHashCode` returned the handle's, while `Equals` calls
+`cairo_region_equal`. Two regions covering the same ground were therefore equal
+and hashed apart, which breaks the one rule a hash has to keep: a `Region` could
+not be used as a dictionary key at all, because the lookup missed even when an
+equal key was in the table. It now hashes the region's rectangles, which cairo
+keeps in canonical form, so equal regions produce the same list.
+
+**A broken hash survives the obvious test.** `Assert.Equal(a.GetHashCode(),
+b.GetHashCode())` on a value and its copy is exactly what a constant satisfies,
+and `CairoTests.Matrices_compare_by_value` had been asserting it against zero
+since it was written. What catches it is hashing *distinct* values and requiring
+them to differ, or putting the type in a `Dictionary` and looking a key back out.
+
+While there: `Matrix.operator ==` dereferenced both sides unconditionally, so
+`matrix == null` — the first thing any caller writes about a class — threw
+`NullReferenceException` from inside the operator.
 
 ## Fixed: Pango's attribute iterator and font-description equality
 
