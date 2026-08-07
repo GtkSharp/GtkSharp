@@ -50,17 +50,25 @@ namespace Graphene {
 		/// owned wrappers, then releases the buffer.
 		/// </summary>
 		/// <remarks>
+		/// <para>
 		/// Each element is copied into its own allocation rather than wrapped in
 		/// place: a wrapper over an interior pointer would free the middle of
 		/// somebody else's block, and every one of these arrays outlives the
 		/// call that produced it.
+		/// </para>
+		/// <para>
+		/// That allocation comes from the type's own allocator, because the
+		/// wrapper is going to free it with the type's own free function --
+		/// <c>graphene_vec3_free</c> is <c>_aligned_free</c> where the compiler
+		/// has one, and a g_malloc'd pointer given to that corrupts the heap.
+		/// </para>
 		/// </remarks>
 		public static T[] Split<T> (IntPtr buffer, int count, int size) where T : GLib.Opaque
 		{
 			var result = new T [count];
 
 			for (int i = 0; i < count; i++) {
-				IntPtr element = GLib.Marshaller.Malloc ((ulong) size);
+				IntPtr element = GLib.Opaque.AllocateNative (typeof (T), (ulong) size);
 				Copy (buffer + i * size, element, size);
 				result [i] = (T) GLib.Opaque.GetOpaque (element, typeof (T), true);
 			}

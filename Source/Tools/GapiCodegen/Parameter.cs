@@ -317,19 +317,23 @@ namespace GtkSharp.Generation {
 				IGeneratable gen = Generatable;
 
 				if (IsCallerAllocatedOut) {
-					// abi_info.Size is the type's own computed C size, which is
-					// exactly what the callee is going to write. The buffer is
-					// g_malloc'd and released by the type's own free function,
-					// which pairs correctly because GLib's slice allocator has
-					// been an alias for g_malloc since 2.76.
+					// The block is released by the type's own free function, so
+					// it has to come from the type's own allocator: graphene
+					// allocates everything holding a SIMD vector with
+					// _aligned_malloc and frees it with _aligned_free, and
+					// handing that a g_malloc pointer corrupts the heap on
+					// Windows. AllocateNative uses the type's parameterless
+					// constructor or its static Alloc, and falls back to a
+					// zeroed g_malloc of abi_info.Size -- the type's own
+					// computed C size, which is exactly what the callee writes
+					// -- for the types that have neither.
 					//
-					// Zeroed, because a callee does not always write the whole
-					// struct: graphene_sphere_translate sets the centre and
-					// leaves the radius as it found it. Uninitialised memory
-					// there makes the result differ from run to run.
+					// Zeroed either way, because a callee does not always write
+					// the whole struct: graphene_sphere_translate sets the
+					// centre and leaves the radius as it found it.
 					return new string [] {
-						"IntPtr native_" + CallName + " = GLib.Marshaller.Malloc0 ((ulong) " +
-							CSType + ".abi_info.Size);"
+						"IntPtr native_" + CallName + " = GLib.Opaque.AllocateNative (typeof (" +
+							CSType + "), (ulong) " + CSType + ".abi_info.Size);"
 					};
 				}
 

@@ -51,6 +51,86 @@ namespace GLib {
 			return opaque;
   		}
   
+		/// <summary>
+		/// A block for a C function to fill in, allocated by whatever the type's
+		/// own free function is going to release.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// A caller-allocates out parameter is storage this side provides and
+		/// the wrapper then owns, so it is eventually handed to the type's
+		/// <c>Free</c> -- <c>graphene_matrix_free</c>,
+		/// <c>pango_glyph_string_free</c>. <b>Those do not all free what
+		/// g_malloc allocates.</b> Every graphene type carrying a SIMD vector is
+		/// allocated with <c>graphene_aligned_alloc</c>, which is
+		/// <c>_aligned_malloc</c> where the compiler has it, and freeing such a
+		/// pointer with the wrong deallocator is heap corruption on Windows --
+		/// exit code 0xC0000374, minutes later, in unrelated work.
+		/// </para>
+		/// <para>
+		/// So the block comes from the type's own allocator when it has one: a
+		/// parameterless constructor (<c>new Graphene.Vec3 ()</c> is
+		/// <c>graphene_vec3_alloc</c>) or a static <c>Alloc</c>
+		/// (<c>Graphene.Rect.Alloc</c>). The wrapper that made it gives up
+		/// ownership immediately, so the pointer belongs to whoever receives it.
+		/// Where a type has neither -- <c>Gtk.BitsetIter</c>, <c>Gsk.PathPoint</c>
+		/// -- this falls back to a zeroed g_malloc, which is what every one of
+		/// these used to get.
+		/// </para>
+		/// <para>
+		/// The factory is looked up once per type and cached, because these are
+		/// not cold paths: this is what every matrix multiply allocates.
+		/// </para>
+		/// </remarks>
+		public static IntPtr AllocateNative (Type type, ulong fallbackSize)
+		{
+			Func<Opaque> make = AllocatorFor (type);
+
+			if (make != null) {
+				Opaque allocated = null;
+				try {
+					allocated = make ();
+				} catch (Exception) {
+					allocated = null;
+				}
+
+				if (allocated != null && allocated.Handle != IntPtr.Zero) {
+					allocated.Owned = false;
+					return allocated.Handle;
+				}
+			}
+
+			return Marshaller.Malloc0 (fallbackSize);
+		}
+
+		static readonly System.Collections.Generic.Dictionary<Type, Func<Opaque>> allocators =
+			new System.Collections.Generic.Dictionary<Type, Func<Opaque>> ();
+
+		static Func<Opaque> AllocatorFor (Type type)
+		{
+			lock (allocators) {
+				Func<Opaque> cached;
+				if (allocators.TryGetValue (type, out cached))
+					return cached;
+
+				Func<Opaque> make = null;
+
+				var ctor = type.GetConstructor (Type.EmptyTypes);
+				if (ctor != null)
+					make = () => (Opaque) ctor.Invoke (null);
+				else {
+					var alloc = type.GetMethod ("Alloc",
+						System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static,
+						null, Type.EmptyTypes, null);
+					if (alloc != null && typeof (Opaque).IsAssignableFrom (alloc.ReturnType))
+						make = () => (Opaque) alloc.Invoke (null, null);
+				}
+
+				allocators [type] = make;
+				return make;
+			}
+		}
+
 		public Opaque ()
 		{
 			owned = true;
