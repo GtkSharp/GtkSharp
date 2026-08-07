@@ -89,6 +89,21 @@ namespace GtkSharp.Tests
                && typeName != null
                && typeName.EndsWith("WebviewSection", StringComparison.Ordinal);
 
+        /// <summary>
+        /// Whether a section may be mounted by the label the sample's tree shows
+        /// for it, rather than by type name.
+        /// </summary>
+        /// <remarks>
+        /// The browsing tests reach sections the way the application does —
+        /// through the tree, by label — so <see cref="SkipWebKitSectionNamed"/>
+        /// does not reach them. Two of them pick a section positionally rather
+        /// than from the theory data (the first row, the first five rows), and
+        /// the tree lists a section under its content type's name, so the row to
+        /// step over is "WebView".
+        /// </remarks>
+        public static bool CanMountSectionLabelled(string label)
+            => !SkipWebKitSections || label != "WebView";
+
         static bool IsTruthy(string value)
             => !string.IsNullOrEmpty(value)
                && value != "0"

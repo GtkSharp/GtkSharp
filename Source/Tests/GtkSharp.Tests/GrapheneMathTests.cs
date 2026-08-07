@@ -349,29 +349,29 @@ namespace GtkSharp.Tests
         [Fact]
         public void Interpolating_a_matrix_is_not_exact_even_at_the_endpoints()
         {
-            // The obvious expectation is wrong, and this pins it rather than
-            // relaxing an assertion to hide it. graphene_matrix_interpolate does
-            // not blend the sixteen elements: it decomposes both matrices into
-            // translation, scale, shear, perspective and a quaternion, blends
-            // those, and multiplies a fresh matrix back out. So factor 0 does
-            // NOT hand back the first matrix -- it hands back a matrix that has
-            // been through a decomposition, and comes out carrying about 2.4e-4
+            // graphene_matrix_interpolate does not blend the sixteen elements:
+            // it decomposes both matrices into translation, scale, shear,
+            // perspective and a quaternion, blends those, and multiplies a fresh
+            // matrix back out. So factor 0 need not hand back the first matrix
+            // bit for bit -- under gvsbuild it comes back carrying about 2.4e-4
             // of rotation that was never there.
             //
-            // What IS true, and what an animation actually depends on, is that
-            // the translation moves linearly. How far off the recomposition
-            // lands is a property of the vector unit and the compiler rather
-            // than of graphene -- 4.9e-3 on the z translation under gvsbuild,
-            // 6.9e-3 under Debian's build -- so this is asserted to one decimal
-            // place: seven times the largest error seen and still fifty times
+            // "Need not", and that is as far as this goes. An earlier version
+            // asserted the round trip was NOT exact, and CI proved that wrong:
+            // on the runner's vector unit the decomposition recomposes exactly
+            // and the assertion failed. Whether a floating-point operation is
+            // exact is a property of the hardware and the compiler, never of
+            // the library, so it is not something a test may require in either
+            // direction. What IS true on every build, and what an animation
+            // actually depends on, is that the translation moves linearly.
+            //
+            // One decimal place: seven times the largest recomposition error
+            // seen (6.9e-3 on z under Debian's build) and still fifty times
             // tighter than the five-unit gap between consecutive samples.
             Run(() =>
             {
                 var from = Translation(0, 0, 0);
                 var to = Translation(10, 20, 30);
-
-                Assert.False(from.Interpolate(to, 0).Equal(from),
-                             "interpolate at 0 returned the source matrix exactly; the comment above is now out of date");
 
                 foreach (var pair in new[]
                 {
@@ -1190,12 +1190,19 @@ namespace GtkSharp.Tests
         [Fact]
         public void A_quaternion_and_the_rotation_matrix_it_makes_agree_both_ways()
         {
-            // Round-tripping through a matrix loses precision -- the quaternion
-            // that comes back off a rotation matrix differs from the one that
-            // built it in the fourth decimal place -- and graphene_quaternion_equal
-            // is an exact float comparison, so it says false. The dot product,
-            // which is the cosine of half the angle between two rotations, is the
-            // measure that means something: 1 to within 1e-6.
+            // graphene_quaternion_equal is an exact float comparison, and a round
+            // trip through a matrix may or may not survive one: under gvsbuild
+            // the returned quaternion differs in the fourth decimal place, on
+            // CI's vector unit it comes back identical.
+            //
+            // So exactness is not asserted in either direction. An earlier
+            // version required the round trip to be inexact and CI failed on it,
+            // which is the right outcome for a test asserting a property of the
+            // hardware rather than of the library.
+            //
+            // The dot product is the measure that means something: it is the
+            // cosine of half the angle between two rotations, so 1 says they are
+            // the same rotation whether or not the bits agree.
             Run(() =>
             {
                 var q = new Graphene.Quaternion();
@@ -1207,7 +1214,6 @@ namespace GtkSharp.Tests
                 var back = new Graphene.Quaternion();
                 back.InitFromMatrix(RotationZ(90));
 
-                Assert.False(back.Equal(q), "the round trip is now exact; the comment above is out of date");
                 Assert.Equal(1f, back.Dot(q), 5);
 
                 // Which is to say the two rotate a point to the same place.
