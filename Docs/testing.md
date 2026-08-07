@@ -216,6 +216,7 @@ investigate — not something to relax.
 | `GioDeepTests` | The half of Gio that needs a filesystem and a main loop. GSettings over a schema the test writes and compiles with `glib-compile-schemas`, stored through a **keyfile backend** so the oracle is the ini file on disk rather than anything GSettings remembers: defaults, writes, resets, user value versus default, ranges, the `changed` signal, delay/apply/revert, enum and flags nicknames, a child schema, and a two-way binding to a widget property. Then `GFileMonitor` over a directory the test builds, the async pattern end to end (callback thread, `GAsyncResult`, what `Finish` returns), `GCancellable` stopping a walk that has already started, `GFileInfo` attributes, `GFileEnumerator`, and `GFile` copy/move/rename/delete with their error codes. |
 | `GrapheneMathTests` | Graphene, and the arithmetic half of Gsk — the corner of the tree with the best oracles there are, because every answer can be worked out in the test: a matrix times its inverse, a 3-4-5 triangle's area, a ray entering a box spanning [-1,1] at t=4, the six planes of a 60-degree frustum meeting the axis at 30 degrees. Matrix multiply/invert/decompose/transpose/interpolate/project, the vectors, rectangle intersection and the in-place trap, quad, triangle and barycentric coordinates, box, sphere, plane, ray, frustum, euler and quaternion; then `GskTransform`'s conversions and render-node bounds. Four codegen defects and a heap corruption; four pieces of graphene behaviour pinned because the obvious expectation is wrong. |
 | `ExpressionTests` | `GtkExpression`: how the Gtk 4 list stack reads a value out of an item, and how a property is kept in step with one on another object. Property, constant, object, closure, cclosure and try expressions; evaluation against a this-object and the GValue it fills; watches and their invalidation; `Bind` and what a failed evaluation does to the target; expression-driven `StringSorter`, `NumericSorter`, `StringFilter` and `BoolFilter` over a list model. Four defects; the oracles are the length of a word, an alphabet and a set of ages chosen here. |
+| `TreeViewStackTests` | The legacy tree *view*, where the largest block of untested hand-written `GtkSharp` was: `TreeViewColumn`'s attribute mapping and cell data funcs proved through `CellSetCellData`, the column list and its reordering, a header click driving the model's sortable interface, `TreeSelection` including a select function that vetoes, `TreeRowReference` against a `TreePath` that does not move, expansion and `MapExpandedRows`, a managed `CellRenderer` subclass measured and snapshotted *by Gtk*, `CellArea`/`ICellLayout`, the toggle and accel renderers, and a row moved between positions through `TreeDragSource`/`TreeDragDest` end to end. One use-after-free; three pieces of behaviour pinned. |
 | `ControlsAndTransferTests` | The controls an application is built out of, and the two subsystems Gtk 4 replaced wholesale. Entry and `GtkEditable` over non-ASCII text (a position is characters, a length is bytes); adjustment clamping and the two signals that separate a change of range from a change of value; spin button stepping, wrapping and snapping; scale marks; level-bar offsets; progress-bar pulse; calendar; notebook reordering; `Gtk.Stack.Pages` as a list model; expander, popover, drop-down, scrolled window, search entry and search bar. Then `Gdk.Clipboard` — set, read back asynchronously, and the mime types Gdk negotiates around a `GValue` — and `GtkDragSource`/`GtkDropTarget`, whose signals are emitted directly against a subclass's vfuncs, because no drag can be started without a pointer device. Five defects. |
 
 ### Guards against vacuous passes
@@ -1958,3 +1959,78 @@ one of them is a plausible assumption that produces silently wrong results.
 - **A `GskTransform` chain applies its *last* operation to a point first**, the
   way a CSS transform list does and the opposite of the order the calls are
   written in.
+
+## Fixed: a boxed signal argument that died with the emission
+
+`GLib.Value`'s conversion to `GLib.Opaque` wrapped whatever
+`g_value_get_boxed` returned, without copying:
+
+```csharp
+public static explicit operator GLib.Opaque (Value val)
+{
+	return GLib.Opaque.GetOpaque (g_value_get_boxed (ref val), (Type) new GType (val.type), false);
+}
+```
+
+That pointer belongs to the **GValue**, and `g_value_unset` frees it. So the
+wrapper is alive exactly as long as the value is — until the end of a signal
+emission, or until the generated property getter three lines below it calls
+`Dispose` — and nothing about the object the caller is holding says so.
+
+`GtkTreeView::row-activated` declares its `GtkTreePath` **without**
+`G_SIGNAL_TYPE_STATIC_SCOPE`, so `g_signal_emit` copies the path into the
+emission's `GValue`: the pointer the handler is handed is measurably *not* the
+one the caller passed to `gtk_tree_view_row_activated`, and it is freed the
+moment the emission ends. Keeping `args.Path` — which is what an application
+does when it remembers the activated row — therefore read freed memory. The
+symptom was the one this document keeps returning to: an
+`AccessViolationException` out of `Gtk.TreePath.ToString`, landing on whatever
+test happened to be running when the allocator handed the block out again, and a
+run that reports "Passed!" with a truncated total. It reproduced about one run
+in three; the rest of the time the freed block still held plausible bytes.
+
+The fix has to be conditional, because **53 opaque types in the tree override
+the `Ref` hook**. For those, `Opaque (IntPtr)` already takes a reference of its
+own through the `Raw` setter, so the wrapper outlives the value and copying as
+well would leak. For the rest — `Gtk.TreePath`, `Pango.FontDescription`,
+`Gtk.PaperSize` — the wrapper is a bare alias and the only way for it to survive
+is `g_boxed_copy`. `GLib.Opaque.WrappingTakesAReference` answers which, by
+asking whether the type declares `Ref (IntPtr)` itself, cached because this is
+on the path every boxed signal argument and every boxed property getter takes.
+
+`GLib.Opaque.GetOpaque (o, type, owned: false)` is *supposed* to make a copy —
+that is what its `else` branch calls `Copy` for — but `OpaqueGen`'s `Copy`
+override has been inside `#if false` since the mono era, so the default
+`Copy` returns `this` and the promise has never been kept for any opaque type.
+Fixing that generally is still open; it would change every transfer-none opaque
+return in eleven assemblies at once.
+
+`An_activated_rows_path_outlives_the_emission_that_carried_it` pins it, and
+allocates 256 tree paths between the emission and the read so that a regression
+**fails** rather than passing on luck: without the fix the captured path reads
+back as `7:7:7:7`, the churn's value, rather than crashing some tests later.
+
+## The tree view: behaviour worth knowing
+
+- **`gtk_tree_view_expand_to_path` opens the row it names, not just its
+  ancestors.** It walks depths 1 to *depth* inclusive, so a row that has
+  children of its own ends up showing them — one level more than "expand to"
+  suggests.
+- **A `CellArea` reports its renderers in the order they were added, not the
+  order they are laid out.** A renderer packed at the end still comes back where
+  it was added, so `Cells` and `Foreach` are no guide to what is drawn where.
+- **`gtk_cell_area_foreach` stops when the callback returns TRUE**, which is the
+  reverse of the "keep going" convention most callbacks in this stack follow.
+- **A `GtkCellRendererToggle` does not toggle itself.** Activating it emits
+  `toggled` with the row's path and leaves `active` exactly as it was; a handler
+  that assumes the renderer already flipped writes the old value back into the
+  model.
+- **`GtkCellRendererPixbuf:pixbuf` is write-only in Gtk 4** (`readable="0"` in
+  the gir), so the binding emits a setter and no getter and the image has to be
+  read back through `:texture`. The image properties are one slot: setting any
+  of them clears the others.
+- **A cell data func runs after the attribute mapping and overrides it**, and
+  clearing the func hands the column back to its attributes. `ClearAttributes`
+  leaves the renderer packed, so the cell keeps whatever it was last given
+  rather than being reset — a column that has gone stale on screen is what that
+  produces.
