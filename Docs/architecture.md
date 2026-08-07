@@ -2,8 +2,7 @@
 
 This describes how the repository is put together and, more usefully, **why** —
 the constraints that produced each decision, and what breaks when one is
-violated. For how the code is verified, see [testing.md](testing.md); for the
-Gtk 3 → Gtk 4 migration itself, [gtk4-upgrade-plan.md](gtk4-upgrade-plan.md).
+violated. For how the code is verified, see [testing.md](testing.md).
 
 ## The one-paragraph model
 
