@@ -39,6 +39,34 @@ namespace GLib
 			return Run (null, null);
 		}
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_g_application_open(IntPtr raw, IntPtr[] files, int n_files, IntPtr hint);
+		static d_g_application_open g_application_open = FuncLoader.LoadFunction<d_g_application_open>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gio), "g_application_open"));
+
+		// g_application_open (GApplication *, GFile **files, gint n_files, const
+		// gchar *hint). The generated binding took one GFile and an n_files the
+		// caller had to supply itself, and handed Gio the GObject's address as
+		// the base of the array -- so files[0] was that object's class pointer.
+		// The count comes from the array here, which is the only place it can be
+		// right.
+		public void Open (GLib.IFile[] files, string hint)
+		{
+			if (files == null)
+				throw new ArgumentNullException ("files");
+
+			IntPtr[] native_files = new IntPtr [files.Length];
+			for (int i = 0; i < files.Length; i++) {
+				GLib.IFile file = files [i];
+				if (file == null)
+					throw new ArgumentException ("files may not contain a null element", "files");
+				native_files [i] = (file is GLib.Object) ? ((GLib.Object) file).Handle : ((GLib.FileAdapter) file).Handle;
+			}
+
+			IntPtr native_hint = GLib.Marshaller.StringToPtrGStrdup (hint);
+			g_application_open (Handle, native_files, files.Length, native_hint);
+			GLib.Marshaller.Free (native_hint);
+		}
+
 		public int Run (string program_name, string[] args)
 		{
 			var argc = 0;

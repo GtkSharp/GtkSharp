@@ -41,6 +41,17 @@
   <attr path="/api/namespace/boxed[@cname='GtkTreeRowReference']/method[@name='GetPath']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/callback[@cname='GtkTreeModelFilterModifyFunc']/parameters/parameter[@name='value']" name="pass_as">ref</attr>
   <attr path="/api/namespace/class[@cname='GtkAccelerator_']/method[@name='GetDefaultModMask']/return-type" name="type">GdkModifierType</attr>
+  <!-- Two more arrays whose length the api.xml cannot express, both of which
+       came out as a single value. gtk_accelerator_parse_with_keycode's
+       accelerator_codes is a "guint **" out-parameter for a zero-terminated
+       array; bound as "out uint" it gave Gtk a four-byte slot to write an
+       eight-byte pointer into, and leaked the array. gtk_distribute_natural_-
+       allocation reads and writes n_requested_sizes GtkRequestedSize structs
+       through a pointer that was marshalled as one struct by value, so the
+       function every layout manager's arithmetic goes through could not be
+       called at all. Both rebound in Accelerator.cs / Global.cs. -->
+  <attr path="/api/namespace/class[@cname='GtkAccelerator_']/method[@name='ParseWithKeycode']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='GtkGlobal']/method[@name='DistributeNaturalAllocation']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GtkGlobal']/method[@name='CheckVersion']/return-type" name="type">const-gchar*</attr>
   <attr path="/api/namespace/class[@cname='GtkGlobal']/method[@name='EnumeratePrinters']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GtkPrint_']/method[@name='RunPageSetupDialogAsync']/*/*[@name='done_cb']" name="scope">async</attr>
@@ -194,11 +205,19 @@
   <attr path="/api/namespace/object[@cname='GtkGesture']/method[@cname='gtk_gesture_get_sequences']/return-type" name="elements_owned">false</attr>
   <attr path="/api/namespace/object[@cname='GtkGesture']/method[@cname='gtk_gesture_get_sequences']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='GtkIconTheme']/method[@name='GetIconSizes']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GtkIconTheme']/method[@name='GetSearchPath']" name="hidden">1</attr>
+  <!-- GetSearchPath/SetSearchPath were hidden in the mono era, when they took
+       Gtk 3's (char ***, int *) and IconTheme.cs bound them by hand. Gtk 4 gives
+       them the same strv shape as the resource path, and with them hidden
+       PropertyBase.Getter found nothing, so the "search-path" GObject property
+       was emitted through GetProperty/SetProperty instead, as a *string*,
+       because that is what SymbolTable makes of const-gchar** with no array
+       rule. The value holds a G_TYPE_STRV, so the getter read null and the
+       setter asked GObject to transform a string into a strv and was refused.
+       Unhidden, the method pair forms the property, exactly as ResourcePath
+       right beside it already did. -->
   <attr path="/api/namespace/object[@cname='GtkIconTheme']/method[@name='LookupIcon']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='GtkIconTheme']/method[@cname='gtk_icon_theme_lookup_by_gicon']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='GtkIconTheme']/method[@cname='gtk_icon_theme_lookup_by_gicon']" name="name">LookupIcon</attr>
-  <attr path="/api/namespace/object[@cname='GtkIconTheme']/method[@name='SetSearchPath']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkIconView']/method[@name='GetCursor']/*/parameter" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GtkIconView']/method[@name='GetCursor']/*/*[@name='path']" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='GtkIconView']/method[@name='GetDestItemAtPos']/*/*[@name='path']" name="pass_as">out</attr>
@@ -502,7 +521,6 @@
   <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='HasFocus']" name="name">GetHasFocus</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='IsFocus']" name="name">GetIsFocus</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='ListMnemonicLabels']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='GetSettings']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/signal[@name='Destroy']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/signal[@name='Hide']" name="name">Hidden</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/signal[@name='KeynavFailed']" name="hidden">1</attr>
