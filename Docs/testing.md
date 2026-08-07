@@ -115,6 +115,9 @@ investigate — not something to relax.
 | `IOChannelAndSpawnTests` | `GLib.IOChannel` and `GLib.Spawn`, both with oracles outside the library: a file the test wrote, and a child process whose output the test chose. |
 | `PangoTests` | The hand-rolled `Pango.Attribute` hierarchy, attribute iteration, layout measurement and wrapping, tab arrays, font descriptions and metrics. |
 | `CairoTextAndPathTests` | The rest of `Cairo.Context`: text measurement and drawing, path copying and flattening, groups, masks, clip extents, PNG round-trips. |
+| `TreeWrapperTests` | The hand-written halves of `TreeModelSort`, `TreeModelFilter` and `TreeStore`, and `NodeSelection`, which had none: iterator and path conversion both ways, a filter rooted at a subtree, `SetModifyFunc` synthesising a column, node selection by node and by path. |
+| `MainLoopTests` | `Source`, `Idle`, `Timeout`, `MainContext`, `MainLoop`. The oracles are ordering rather than completion: a high-priority idle before a low-priority one, a shorter timeout before a longer one, a removed source never. |
+| `ObjectAndValueTests` | The wrapper identity map, notifications, per-object data, and the `Value` cases the numeric round-trips do not reach — boxed opaques, value arrays, a managed object carried through unmanaged code. |
 
 ### Guards against vacuous passes
 
@@ -458,6 +461,53 @@ Pango offers — `Equal` says so, `Hash` agrees — but were unequal here and ha
 differently, so one could not be used to find the other in a dictionary. It now
 overrides `Equals`/`GetHashCode` onto Pango's own two functions rather than
 reimplementing the comparison: which fields count is Pango's business.
+
+## Fixed: a number that binds to the raw-pointer constructor
+
+Since .NET 7, `IntPtr` is `nint` and `int` converts to it **implicitly**. Where a
+type has both a raw-pointer constructor and a numeric one, the obvious call binds
+to the wrong one:
+
+```csharp
+new GLib.ValueArray(2)   // reads as "preallocate 2"  -> ValueArray(IntPtr)
+new GLib.Date(2)         // reads as a Julian day     -> Date(IntPtr)
+new GLib.DateTime(2)     // reads as a Unix time      -> DateTime(IntPtr)
+```
+
+Each then dereferences address 2. `GLib.Value` and `GLib.Variant` have the same
+pair but are safe, because their `int` overload is an exact match and wins.
+
+**The wrapper libraries are `LangVersion 9`, where the conversion does not
+exist**, so nothing inside this repository could hit it — only consumers of the
+package, on any modern language version. That is the worst place for a hazard to
+live, and it is why it survived.
+
+`Opaque.CheckRaw` now rejects any address in the first page, which is never
+mappable on any platform this runs on — the null page is reserved precisely so a
+small integer faults. It returns the pointer so it can be used **in a base-call
+argument**, which is the only position that runs before the handle is stored: a
+guard in the constructor body throws *after* `base(raw)`, and the finalizer then
+frees address 2 anyway.
+
+## The failure modes that do not fail a test
+
+Three crashes in this suite have been mistaken for something else, and they share
+a shape worth naming: **a run whose *total* is lower than it should be, under a
+"Passed!" line.** The pass count looks fine because the tests that finished did
+pass.
+
+| Cause | What it looked like |
+|:------|:--------------------|
+| `out`-on-a-class ABI in `cairo_get_font_matrix` | 9 of 21 tests in a class; 68 of 484 in the suite |
+| Infinite recursion in `TreeModelSort.AppendValues` | stack overflow, uncatchable |
+| A leaked `Cairo.Path` | 315 of 484, **at whatever moment the GC ran** — so it landed on an unrelated test and looked intermittent |
+
+The third was recorded in this document as an unexplained flake for exactly that
+reason. It is not a flake: `Cairo.Path` must be disposed, and a copied path
+outlives the context it came from, which is what makes it easy to forget.
+
+So: **check the total, not the pass count.** And when a crash appears to move
+around between runs, suspect a finalizer before suspecting nondeterminism.
 
 ## Open: boxed types with no allocator cannot be constructed
 

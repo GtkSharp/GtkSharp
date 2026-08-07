@@ -1400,11 +1400,12 @@ stays only as the shape of what an implementation would need. And
 `pango_parse_markup` is `hidden="1"` in the api.xml, so the markup parser has no
 bound entry point — the test reaches it through `Gtk.Label` instead.
 
-One observation, unexplained: a single run under coverage instrumentation
-aborted at 315 of 484. Four subsequent instrumented runs completed cleanly. That
-is consistent with the `GLib.Opaque` over-referencing already listed as open,
-which is GC-timing sensitive and so shifts under instrumentation, but it has not
-been reproduced and is not diagnosed.
+One observation was recorded here as unexplained: a run under coverage
+instrumentation aborting at 315 of 484. It is explained now, and it was not the
+`GLib.Opaque` suspicion recorded at the time. A test in `CairoTextAndPathTests`
+leaked a `Cairo.Path`, and finalising one takes the process down. Because the
+crash happens whenever the GC gets round to it, it landed on an unrelated test
+and looked intermittent. Phase 13 has the detail.
 
 Remaining, largest first: `GLib/Value.cs` (314 uncovered), `Gtk/TreeStore.cs`
 (244), `GLib/Object.cs` (200), `GLib/Source.cs` (206), `Cairo/Surface.cs` (142).
