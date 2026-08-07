@@ -15,8 +15,8 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 915 tests Windows reports 912 passing with 3 skips, and
-the forky container 914 passing with 1.
+so only broke there. At 951 tests Windows reports 948 passing with 3 skips, and
+the forky container 950 passing with 1.
 
 ### Running the suite on the Gtk the bindings describe
 
@@ -171,6 +171,7 @@ investigate — not something to relax.
 | `GioDeepTests` | The half of Gio that needs a filesystem and a main loop. GSettings over a schema the test writes and compiles with `glib-compile-schemas`, stored through a **keyfile backend** so the oracle is the ini file on disk rather than anything GSettings remembers: defaults, writes, resets, user value versus default, ranges, the `changed` signal, delay/apply/revert, enum and flags nicknames, a child schema, and a two-way binding to a widget property. Then `GFileMonitor` over a directory the test builds, the async pattern end to end (callback thread, `GAsyncResult`, what `Finish` returns), `GCancellable` stopping a walk that has already started, `GFileInfo` attributes, `GFileEnumerator`, and `GFile` copy/move/rename/delete with their error codes. |
 | `GrapheneMathTests` | Graphene, and the arithmetic half of Gsk — the corner of the tree with the best oracles there are, because every answer can be worked out in the test: a matrix times its inverse, a 3-4-5 triangle's area, a ray entering a box spanning [-1,1] at t=4, the six planes of a 60-degree frustum meeting the axis at 30 degrees. Matrix multiply/invert/decompose/transpose/interpolate/project, the vectors, rectangle intersection and the in-place trap, quad, triangle and barycentric coordinates, box, sphere, plane, ray, frustum, euler and quaternion; then `GskTransform`'s conversions and render-node bounds. Four codegen defects and a heap corruption; four pieces of graphene behaviour pinned because the obvious expectation is wrong. |
 | `ExpressionTests` | `GtkExpression`: how the Gtk 4 list stack reads a value out of an item, and how a property is kept in step with one on another object. Property, constant, object, closure, cclosure and try expressions; evaluation against a this-object and the GValue it fills; watches and their invalidation; `Bind` and what a failed evaluation does to the target; expression-driven `StringSorter`, `NumericSorter`, `StringFilter` and `BoolFilter` over a list model. Four defects; the oracles are the length of a word, an alphabet and a set of ages chosen here. |
+| `ControlsAndTransferTests` | The controls an application is built out of, and the two subsystems Gtk 4 replaced wholesale. Entry and `GtkEditable` over non-ASCII text (a position is characters, a length is bytes); adjustment clamping and the two signals that separate a change of range from a change of value; spin button stepping, wrapping and snapping; scale marks; level-bar offsets; progress-bar pulse; calendar; notebook reordering; `Gtk.Stack.Pages` as a list model; expander, popover, drop-down, scrolled window, search entry and search bar. Then `Gdk.Clipboard` — set, read back asynchronously, and the mime types Gdk negotiates around a `GValue` — and `GtkDragSource`/`GtkDropTarget`, whose signals are emitted directly against a subclass's vfuncs, because no drag can be started without a pointer device. Five defects. |
 
 ### Guards against vacuous passes
 
@@ -1261,6 +1262,163 @@ It failed about one run in twenty-five, always in a test that counts dispatches.
 two affected tests now `Quiesce ()` first — run until nothing has been
 dispatched for longer than that 50 ms, capped so that a permanently-ready idle
 fails the run instead of hanging it.
+
+## Fixed: the error was checked after the return value had been converted
+
+Every generated method that both returns something and takes a `GError **`
+emitted this order:
+
+```csharp
+IntPtr raw_ret = gdk_clipboard_read_value_finish (Handle, …, out error);
+GLib.Value ret = (GLib.Value) Marshal.PtrToStructure (raw_ret, typeof (GLib.Value));
+if (error != IntPtr.Zero) throw new GLib.GException (error);   // never reached
+```
+
+On failure a C function's return value is undefined and is, in practice, NULL —
+and `Marshal.PtrToStructure` raises `NullReferenceException` on NULL. So asking
+the clipboard for a type it does not hold, which is an ordinary answer rather
+than a fault, produced an exception naming nothing, from a line that had the
+real reason sitting in a variable one line below, and leaked the `GError`.
+
+`Method.GenerateBody` now emits the throw **after** the parameter clean-up (so
+nothing marshalled for the call leaks) and **before** the return value is
+converted. Seven call sites convert through `Marshal.PtrToStructure` and would
+have crashed; sixteen more wrap NULL in a `GLib.Bytes` or `GLib.List` and merely
+made the wrong object first.
+
+`ByRefGen.FromNative` gained the matching NULL guard, because NULL is not always
+a failure: `gtk_drop_target_get_value` returns it whenever no drag is in
+progress, which is nearly always, so simply **reading `DropTarget.Value` — the
+first thing anyone does writing a drop handler — threw**. It answers
+`default (GLib.Value)` now, which is `G_VALUE_INIT`. The guard names the source
+twice, so it is only applied when that source is a plain identifier, the same
+rule `ManualGen`'s `NullIsNull` guard follows.
+
+## Fixed: two more array-plus-count parameters
+
+The `gsk_container_node_new` family again, this time in the drag-and-drop stack.
+
+- **`gtk_drop_target_set_gtypes (const GType *, gsize)`** came out as
+  `SetGtypes (GLib.GType types, ulong n_types)` and passed `types.Val` as the
+  address of the array — `G_TYPE_STRING` is 64, so GTK dereferenced address 64 —
+  while `gtk_drop_target_get_gtypes` wrapped the array's address in a
+  `GLib.GType` and returned a type whose value is a pointer. The constructor
+  takes a single type, so this pair is the **only** way to make one drop target
+  accept two, and it could not be used at all.
+
+- **`gdk_content_provider_new_union (GdkContentProvider **, gsize)`** came out as
+  `ContentProvider (Gdk.ContentProvider providers, ulong n_providers)`, so GDK
+  read the provider's own `GTypeInstance` class pointer as element zero. This is
+  how a drag source offers one thing several ways — a file as a URI and as an
+  image — which is the entire reason the union provider exists. Both the array
+  and a reference to each element are `(transfer full)`: the array has to come
+  from `g_malloc` because GDK keeps it and `g_free`s it, and the references have
+  to be **taken** here rather than surrendered, or the managed wrappers are left
+  holding pointers the union has already released.
+
+Both are hidden in the metadata and rebound in
+`Source/Libs/GtkSharp/DropTarget.cs` and `Source/Libs/GdkSharp/ContentProvider.cs`.
+
+## Fixed: a selection model that could not be enumerated
+
+`GtkSelectionModel`'s gir says `<prerequisite name="Gio.ListModel"/>`: every
+selection model **is** a list model, and the selection interface has no way to
+ask what is in it. `GirToGapi` drops prerequisites and the api.xml has nowhere to
+put them, so `Gtk.ISelectionModel` derived from `GLib.IWrapper` alone.
+
+That was invisible for as long as the object behind the interface was a bound
+concrete type — `Gtk.SingleSelection` and `Adw.ViewStackPages` are generated as
+`: GLib.Object, GLib.IListModel, Gtk.ISelectionModel`, so `(GLib.IListModel)` on
+them succeeds. But `SelectionModelAdapter.GetObject` falls back to wrapping the
+handle whenever the concrete GType is one this binding does not know, and
+**`GtkStackPages` is private to GTK and appears in no gir**. So `Gtk.Stack.Pages`
+— the only way in Gtk 4 to enumerate a stack's pages, and the object a
+`GtkStackSwitcher` is driven from — came back as an adapter that threw
+`InvalidCastException` and had no `NItems`, no `GetObject` and no
+`items-changed`.
+
+`Source/Libs/GtkSharp/SelectionModelAdapter.cs` adds `GLib.IListModel` to the
+partial interface (C# unions the base lists of a partial declaration) and
+implements it **explicitly** on the adapter over a `GLib.ListModelAdapter`,
+which keeps it clear of the adapter's own static `GetObject` overloads. The
+general fix — teaching `GirToGapi` and `GapiCodegen` about interface
+prerequisites — is still open; only `SelectionModelAdapter` was in this state.
+
+## Fixed: two signal arguments Signal.Emit could not build
+
+`GLib.Signal.Emit` builds each parameter's `GValue` with `new GLib.Value (arg)`,
+which reads the GType off the argument's own managed type. Two ordinary
+arguments have no such type:
+
+- **A null object.** `GtkDropTarget::accept` is emitted with a nullable
+  `GdkDrop`, and `obj.GetType ()` on null is a `NullReferenceException` thrown
+  from inside the constructor. The type now comes from the signal itself —
+  `g_signal_query` already returns `param_types`, whose entries carry
+  `G_SIGNAL_TYPE_STATIC_SCOPE` in the low bit exactly as `return_type` does and
+  have to be masked the same way.
+
+- **A `GLib.Value`.** `GtkDropTarget::drop` declares its payload as
+  `G_TYPE_VALUE`, a boxed GValue inside the signal's own GValue. `typeof
+  (GLib.Value)` is not a GType at all, so the emission produced a value of no
+  usable type, went through, and the handler threw "Unknown type" out of the
+  marshaller where nothing can catch it. `GLib.Value.NewBoxedValue` boxes it
+  properly, which is what makes **the one signal a drop target exists for**
+  reachable from managed code. It is a named static rather than a constructor
+  overload because `new Value (someValue)` already binds to `Value (object)` and
+  means something else.
+
+`Emit` also checks the argument count against `query.n_params` now and names the
+mismatch, rather than handing `g_signal_emitv` a short array.
+
+## Controls and transfer: behaviour worth knowing
+
+Found by assertions that were wrong, and pinned because in each case the
+plausible reading produces a wrong answer rather than an error:
+
+- **`gtk_spin_button_spin` reads its `increment` argument for a step and ignores
+  it for a page.** `STEP_FORWARD` moves by the *argument* — the adjustment's
+  step increment plays no part at all, which makes it identical to
+  `USER_DEFINED` — while `PAGE_FORWARD` moves by the adjustment's *page
+  increment* and ignores the argument. So a caller who sets a step increment of
+  3 and asks for one step gets 1.
+- **`gtk_adjustment_set_upper` does not re-clamp the value.** An adjustment
+  whose model shrank reports a value its own range no longer contains, and only
+  the *next* write — even a write of the same number — brings it back.
+  `Configure` clamps; the individual setters do not.
+- **An adjustment's reachable maximum is `upper - page_size`.** Code that treats
+  `Upper` as the maximum scrolls to a position the adjustment will not take and
+  is told nothing.
+- **`SnapToTicks` acts when the text is parsed, not when `Value` is assigned**,
+  so nothing snaps until `Update ()`. Setting the value and reading it straight
+  back suggests the property does nothing.
+- **`GtkCalendar:month` counts from zero** (it is `struct tm`'s) while the
+  `GDateTime` from `gtk_calendar_get_date` counts from one (it is GLib's).
+  Round-tripping a date through a calendar without the conversion moves it a
+  month and yields a perfectly plausible answer.
+- **`GtkLevelBar::offset-changed` is emitted by *defining* an offset**, not by
+  the value crossing one, and removing an offset says nothing at all.
+- **Pulsing a progress bar is invisible from managed code.** `Fraction` stays 0
+  and emits no `notify`, so there is nothing to bind to and no way to ask
+  whether the bar is in pulse mode.
+- **A `GtkDropDown` always has something selected.** It wraps its model in a
+  `GtkSingleSelection` with autoselect on, so `GTK_INVALID_LIST_POSITION` — the
+  value that means "nothing" everywhere else in the list stack — is refused
+  without a word, and swapping the model resets the selection to 0.
+- **`GtkSearchEntry` delays `::search-changed` by `SearchDelay`, except when the
+  entry becomes empty**, which is reported at once. A test that only types never
+  sees the asymmetry.
+- **A widget's measured size is not stable across this suite.** `AdwaitaTests`
+  calls `adw_init`, which replaces the process's stylesheet, so metrics measured
+  before and after it differ: a `GtkScale` with an unlabelled mark measures 40
+  against a bare 34 on its own and **28** against 34 inside the suite. Only
+  comparisons that hold under any stylesheet may be asserted — a label is a line
+  of text, so it needs a line of room either way.
+- **`GtkStack::transition-running` is a fact about being drawn.** The transition
+  runs off the frame clock, which an unmapped widget does not have, so switching
+  the visible child of a stack that is not on screen never starts one.
+- **A popover's parent is set with `gtk_widget_set_parent`**, not by adding it to
+  a container, and its child's parent is not the popover — it is wrapped in the
+  popover's own contents box.
 
 ## Measuring coverage
 
