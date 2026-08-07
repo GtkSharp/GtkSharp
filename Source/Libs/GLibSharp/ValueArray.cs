@@ -43,9 +43,9 @@ namespace GLib {
 
 		public ValueArray (IntPtr raw)
 		{
-			handle = g_value_array_copy (raw);
+			handle = g_value_array_copy (Opaque.CheckRaw (raw, "raw"));
 		}
-		
+
 		~ValueArray ()
 		{
 			Dispose (false);

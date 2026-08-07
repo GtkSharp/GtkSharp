@@ -370,7 +370,9 @@ namespace GLib {
 			return ret;
 		}
 
-		public DateTime(IntPtr raw) : base(raw) {}
+		// "new DateTime (2)" reads as a Unix time and binds here instead, because
+		// int converts to IntPtr implicitly since .NET 7. See ValueArray.CheckRaw.
+		public DateTime(IntPtr raw) : base(CheckRaw (raw, "raw")) {}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_date_time_new(IntPtr tz, int year, int month, int day, int hour, int minute, double seconds);
 		static d_g_date_time_new g_date_time_new = FuncLoader.LoadFunction<d_g_date_time_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_date_time_new"));

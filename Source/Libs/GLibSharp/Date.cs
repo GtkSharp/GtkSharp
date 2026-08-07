@@ -416,7 +416,9 @@ namespace GLib {
 			return ret;
 		}
 
-		public Date(IntPtr raw) : base(raw) {}
+		// "new Date (2)" reads as a Julian day and binds here instead, because
+		// int converts to IntPtr implicitly since .NET 7. See ValueArray.CheckRaw.
+		public Date(IntPtr raw) : base(CheckRaw (raw, "raw")) {}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_date_new();
 		static d_g_date_new g_date_new = FuncLoader.LoadFunction<d_g_date_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_date_new"));

@@ -62,6 +62,34 @@ namespace GLib {
 			Raw = raw;
 		}
 
+		// Since .NET 7, IntPtr is nint and int converts to it implicitly. Where a
+		// type has both a raw-pointer constructor and a numeric one -- Date takes
+		// a Julian day, DateTime a Unix time, ValueArray a preallocation count --
+		// "new Date (2)" reads as the numeric overload and binds to the pointer
+		// one, then dereferences address 2. The wrapper libraries are
+		// LangVersion 9, where the conversion does not exist, so this reaches
+		// only consumers of the package.
+		//
+		// No address in the first page is mappable on any platform this runs on:
+		// the null page is reserved precisely so a small integer faults. Such an
+		// argument is a mistake, and saying so beats the fault -- which was an
+		// access violation, and worse still one raised by the finalizer later,
+		// landing on an unrelated piece of work.
+		//
+		// Returns the pointer so it can be used in a base-call argument, which is
+		// the only place it runs *before* the handle is stored.
+		internal static IntPtr CheckRaw (IntPtr raw, string name)
+		{
+			if (raw != IntPtr.Zero && (ulong) (long) raw < 0x10000)
+				throw new ArgumentException (
+					"An address in the first page cannot be a valid pointer. This is almost " +
+					"certainly a number that bound to the raw-pointer constructor, because int " +
+					"converts to IntPtr implicitly: add the suffix the numeric overload needs " +
+					"(2u, 2L) to reach it.", name);
+
+			return raw;
+		}
+
 		protected IntPtr Raw {
 			get {
 				return _obj;
