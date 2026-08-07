@@ -1202,7 +1202,7 @@ namespace GtkSharp.Tests
             //
             // The dot product is the measure that means something: it is the
             // cosine of half the angle between two rotations, so 1 says they are
-            // the same rotation whether or not the bits agree.
+            // the same rotation whether or not the bits agree. 
             Run(() =>
             {
                 var q = new Graphene.Quaternion();
