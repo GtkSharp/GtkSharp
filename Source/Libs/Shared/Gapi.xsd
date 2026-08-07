@@ -143,6 +143,7 @@
         <xs:attribute name="cname" type="xs:string"/>
         <xs:attribute name="consume_only" type="xs:boolean" use="optional"/>
         <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+        <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="objectType">
@@ -170,6 +171,7 @@
         <xs:attribute name="ref_func" type="xs:string" use="optional"/>
         <xs:attribute name="unref_func" type="xs:string" use="optional"/>
         <xs:attribute name="disable_void_ctor" type="xs:boolean" use="optional"/>
+        <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="structType">
@@ -229,6 +231,14 @@
     </xs:complexType>
 
 	<xs:complexType name="fieldType">
+        <!--
+            A field may carry a <warning> that GirToGapi emitted when it could
+            not describe the field faithfully. It is documentation for whoever
+            reads the api.xml; codegen ignores it.
+        -->
+        <xs:sequence>
+            <xs:element name="warning" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
         <xs:attribute name="name" type="xs:string"/>
         <xs:attribute name="cname" type="xs:string"/>
         <xs:attribute name="padding" type="xs:boolean" use="optional"/>
@@ -238,6 +248,16 @@
         <xs:attribute name="hidden" type="xs:boolean" use="optional"/>
         <xs:attribute name="access" type="xs:string" use="optional"/>
         <xs:attribute name="writeable" type="xs:boolean" use="optional"/>
+        <!--
+            GIR omits readable="1" because readable is its default, while
+            FieldBase requires the attribute to be present before it emits a
+            getter. GirToGapi therefore writes it out explicitly, on every
+            field in the tree.
+        -->
+        <xs:attribute name="readable" type="xs:boolean" use="optional"/>
+        <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
+        <!-- A function-pointer field: a vtable slot, bound as a delegate. -->
+        <xs:attribute name="is_callback" type="xs:boolean" use="optional"/>
         <xs:attribute name="bits" type="xs:positiveInteger" use="optional"/>
     </xs:complexType>
 
@@ -296,6 +316,7 @@
                 <xs:attribute name="field_name" type="xs:string" use="optional"/>
                 <xs:attribute name="block_glue" type="xs:boolean" use="optional"/>
                 <xs:attribute name="manual" type="xs:boolean" use="optional"/>
+                <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -334,6 +355,14 @@
         -->
         <xs:attribute name="closure" type="xs:nonNegativeInteger" use="optional"/>
         <xs:attribute name="destroy" type="xs:nonNegativeInteger" use="optional"/>
+        <!--
+            The callee writes into storage the CALLER provides, rather than
+            returning a pointer it owns. Parameter.cs allocates the block from
+            the type's own allocator and passes it by value.
+        -->
+        <xs:attribute name="caller_allocates" type="xs:boolean" use="optional"/>
+        <!-- The parameter is a function pointer, so it takes a delegate. -->
+        <xs:attribute name="is_callback" type="xs:boolean" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="constructor-parameterType">
