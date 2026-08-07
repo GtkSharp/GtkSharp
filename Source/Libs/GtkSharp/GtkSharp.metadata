@@ -7,6 +7,7 @@
        retired. A further group went because GIR already carries what they
        supplied by hand - out-parameter directions above all. -->
   <attr path="/api/namespace" name="library">Library.Gtk</attr>
+  <attr path="/api/namespace/boxed[@cname='GtkAccessibleList']/constructor[@cname='gtk_accessible_list_new_from_array']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GtkBorder']" name="opaque">false</attr>
   <attr path="/api/namespace/boxed[@cname='GtkPaperSize']/method[@name='GetPaperSizes']/return-type" name="element_type">GtkPaperSize*</attr>
   <attr path="/api/namespace/boxed[@cname='GtkPaperSize']/method[@name='GetPaperSizes']/return-type" name="owned">true</attr>
@@ -47,7 +48,21 @@
   <attr path="/api/namespace/class[@cname='GtkTree_']/method[@name='GetRowDragData']/*/*[@name='tree_model']" name="pass_as">out</attr>
   <attr path="/api/namespace/class[@cname='GtkTree_']/method[@name='GetRowDragData']/*/*[@name='path']" name="pass_as">out</attr>
   <attr path="/api/namespace/class[@cname='GtkTree_']/method[@name='GetRowDragData']/*/*[@name='path']" name="owned">true</attr>
-  <attr path="/api/namespace/interface[@cname='GtkActionable']/property[@name='ActionName']" name="hidden">1</attr> 
+  <!-- gtk_accessible_update_{state,property,relation}_value take *two* arrays
+       of n elements - the attributes to set, and their values - behind a single
+       count. The api.xml has no way to say so, and codegen has no rule for the
+       shape, so "GtkAccessibleState *states" came out as a *return value*
+       ("out int") and "const GValue *values" as one struct by value. The
+       generated call therefore handed Gtk an uninitialised stack slot as the
+       list of states to write, and every widget in the tree inherited it,
+       because these are interface methods. Rebound over real arrays in
+       Accessible.cs. The varargs siblings the documentation points at
+       (gtk_accessible_update_state and friends) are dropped by codegen
+       already. -->
+  <attr path="/api/namespace/interface[@cname='GtkAccessible']/method[@name='UpdatePropertyValue']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkAccessible']/method[@name='UpdateRelationValue']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkAccessible']/method[@name='UpdateStateValue']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkActionable']/property[@name='ActionName']" name="hidden">1</attr>
   <attr path="/api/namespace/interface[@cname='GtkBuildable']" name="hidden">1</attr> 
   <attr path="/api/namespace/interface[@cname='GtkCellEditable']/method[@name='EditingDone']" name="name">FinishEditing</attr>
   <attr path="/api/namespace/interface[@cname='GtkCellEditable']/signal[@name='RemoveWidget']" name="name">WidgetRemoved</attr>

@@ -32,6 +32,26 @@ namespace Gtk {
 
 	public partial class Widget {
 
+		// GtkSharp's GType -> managed type registry exists for the types whose
+		// managed name the name mangler cannot guess, and codegen puts the call
+		// that populates it in the static constructor of each such type. In this
+		// assembly there is exactly one - GtkText, bound as Gtk.TextWidget - so
+		// the registry was installed only by a program that had already named
+		// Gtk.TextWidget. Until then any GtkText* Gtk handed back (a
+		// GtkSpinButton's or GtkEntry's inner text widget, reached through
+		// GetFirstAccessibleChild or a signal) resolved by mangling "GtkText"
+		// into "Gtk.Text", which does not exist, and came back as a bare
+		// Gtk.Widget from the parent GType.
+		//
+		// Widget is the root of everything Gtk hands out, so bootstrapping here
+		// makes the registry complete before any of it can be wrapped. Initialize
+		// is idempotent, and the re-entry through Gtk.TextWidget.GType finds the
+		// flag already set.
+		static Widget ()
+		{
+			GtkSharp.GtkSharp.ObjectManager.Initialize ();
+		}
+
 		// GdkWindow: Gtk 4 renamed GdkWindow to GdkSurface; Widget.Native gives the surface.
 
 		struct TemplateData
