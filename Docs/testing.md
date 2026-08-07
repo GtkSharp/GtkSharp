@@ -220,6 +220,7 @@ investigate — not something to relax.
 | `PangoShapingTests` | The half of Pango that turns text into glyphs, where `PangoTests` stops at attributes and measurement: itemization, shaping, the Unicode break algorithm, bidi, the layout iterator, `ScriptIter`, `AttrList` splice/filter/update, tab arrays, coverage, font families and faces, `Matrix`, cursor movement and layout serialisation. The oracles are outside the library — Unicode says where the word boundaries are, the bidi algorithm says which run gets an odd embedding level, a cluster's widths have to add up to the run's width, and index-to-position has to invert position-to-index. Eleven array parameters bound as scalars, a double free on every borrowed attribute, a mutable static identity matrix, and a field holding a struct by value that was read as a pointer to one. |
 | `ControlsAndTransferTests` | The controls an application is built out of, and the two subsystems Gtk 4 replaced wholesale. Entry and `GtkEditable` over non-ASCII text (a position is characters, a length is bytes); adjustment clamping and the two signals that separate a change of range from a change of value; spin button stepping, wrapping and snapping; scale marks; level-bar offsets; progress-bar pulse; calendar; notebook reordering; `Gtk.Stack.Pages` as a list model; expander, popover, drop-down, scrolled window, search entry and search bar. Then `Gdk.Clipboard` — set, read back asynchronously, and the mime types Gdk negotiates around a `GValue` — and `GtkDragSource`/`GtkDropTarget`, whose signals are emitted directly against a subclass's vfuncs, because no drag can be started without a pointer device. Five defects. |
 | `DesktopIntegrationTests` | Everything that talks to the desktop rather than to the screen, none of which had a test. The Gtk 4 async dialogs — `FileDialog`, `AlertDialog`, `ColorDialog`, `FontDialog` — driven to their Finish methods the only way a test without a user can, by cancelling the `GCancellable` they were started with; `FileFilter` matching a `GFileInfo` by suffix, pattern and content type, serialised through a `GVariant` and built from a `GtkFileFilter` buildable description; the launchers, held but never launched; the legacy `GtkFileChooser`; and the printing stack, which is nearly all pure data — `PaperSize`, `PageSetup` and `PrintSettings` through key files, every typed accessor and every unit, and a `PrintOperation` exported to a PDF so the whole signal chain runs with no printer. The oracles are ISO 216, ANSI, the definition of a point, and the file on disk. Three defects. |
+| `AccessibilityTests` | `GtkAccessible`, which is where Gtk 4 put ATK and which nothing had ever called. The role every widget class declares, checked twice over — the property, and Gtk's own `gtk_test_accessible_has_role` — against the ARIA names, which are the fixed point when a member is inserted into the middle of `GtkAccessibleRole`; a role reassigned, and one named in a `.ui` file. Then the accessible tree, which is not the widget tree: a composite widget's parts, a parent assigned without reparenting, the sibling that only `SetAccessibleParent` can set. Then states, properties and relations set through the rebound update API and read back through Gtk's test API, the value type each attribute wants, the `<accessibility>` block in a `.ui` file, and `AccessibleList`. Three defects; `GtkAccessibleText` and `GtkAccessibleRange` pinned as unreachable. |
 
 ### Guards against vacuous passes
 
@@ -2317,3 +2318,170 @@ entry point on purpose: `gtk_alert_dialog_new` runs its first argument through
   `GTK_PRINT_OPERATION_RESULT_ERROR` **without** filling in the `GError`, so a
   caller that only catches `GException` sees an export that silently did
   nothing.
+
+
+## Fixed: the whole GtkAccessible update API, and a registry that bootstrapped itself
+
+`GtkAccessible` is how Gtk 4 replaced ATK, and setting a state, a property or a
+relation on a widget could not be done at all.
+
+Gtk offers each of the three twice. The varargs spelling —
+`gtk_accessible_update_state (self, GTK_ACCESSIBLE_STATE_BUSY, TRUE, -1)` — is
+what the documentation shows and what no binding can call; codegen drops it, as
+it should. The other spelling is
+
+```c
+void gtk_accessible_update_state_value (GtkAccessible      *self,
+                                        int                 n_states,
+                                        GtkAccessibleState  states[],
+                                        const GValue        values[]);
+```
+
+— **two parallel arrays behind one count**, which the api.xml has no way to say
+and codegen has no rule for. So `states` was read as a pointer-to-enum and
+emitted as the method's *return value*, and `values` as one `GValue` by value:
+
+```csharp
+public Gtk.AccessibleProperty UpdatePropertyValue (int n_properties, GLib.Value values) {
+        int native_properties;                               // uninitialised
+        gtk_accessible_update_property_value (Handle, n_properties, out native_properties, …);
+```
+
+Gtk then read `native_properties[0]` — a stack slot nothing had written — as
+*which* property to set. Being interface methods, the three appeared on
+`IAccessible`, on the adapter, and on all 190-odd widget classes at once.
+
+They are hidden in the metadata and rebound in `Source/Libs/GtkSharp/Accessible.cs`
+as extension methods on `IAccessible` taking real arrays, plus the single-attribute
+form every caller actually wants.
+
+Beside them, **`gtk_accessible_{state,property,relation}_init_value` are now
+bound by hand.** Gtk's documentation says of them "this function is mostly meant
+for language bindings", and this language binding could not reach them: the gir
+attaches them to the *enum* (`moved-to="AccessibleState.init_value"`) and gapi
+enums carry no methods, so they never appeared in the api.xml. Without them a
+caller has to know that `checked` is a tristate, `invalid` is its own enum,
+`expanded` is an int, and a reference relation is a bare `gpointer`.
+
+`GLib.Value` gained `ValueType` for the same reason: `Val` answers with an
+instance, and an object-typed value holding NULL is indistinguishable from a
+value of some other type that way. The relation API needs the distinction to
+tell `active-descendant`, which points at one accessible, from every other
+reference relation, which points at a list.
+
+### `gtk_accessible_list_new_from_array` cannot be used at all
+
+Its own constructor had the same shape — `GtkAccessible **` plus a count, bound
+as one `GtkAccessible` — but rebinding it over an array does not help, because
+Gtk 4.22 guards it with
+
+```c
+g_return_val_if_fail (accessibles == NULL || n_accessibles == 0, NULL);
+```
+
+an inverted assertion that rejects every non-empty array and returns NULL. (The
+string is in the shipped library; that is how it was confirmed rather than
+inferred.) `AccessibleList (IAccessible[])` therefore goes through
+`gtk_accessible_list_new_from_list`, which has no such guard.
+
+### A registry that only a program already using the type could install
+
+`GtkSharp.GtkSharp.ObjectManager.Initialize ()` maps GType to managed type for
+the types whose managed name `GType.LookupType`'s mangler cannot guess, and
+`ObjectGen` emits the call into the static constructor of *each such type*:
+
+```csharp
+if (cs_parent != String.Empty && GetExpected (CName) != QualifiedName) { … }
+```
+
+In `GtkSharp` there is exactly one such type — `GtkText`, bound as
+`Gtk.TextWidget` because `Gtk.Text` cannot also carry `GtkEditable`'s `Text`
+member — so the registry was populated only by a program that had **already
+named `Gtk.TextWidget`**. Until then every `GtkText*` Gtk handed back came out
+as a bare `Gtk.Widget`: the mangler turns `GtkText` into `Gtk.Text`, finds
+nothing, and walks up to the parent GType. A `GtkSpinButton`'s inner text
+widget, reached through `GetFirstAccessibleChild`, is how this surfaced.
+
+`GtkSourceSharp`, `WebkitGtkSharp` and `JavaScriptCoreSharp` are not affected —
+nearly every type in them is renamed, so any one of them bootstraps the
+registry. It is the assembly with *one* renamed type that cannot. `Gtk.Widget`'s
+hand-written partial now carries the call, since Widget is the root of
+everything Gtk hands out.
+
+## GtkAccessibleText and GtkAccessibleRange cannot be reached from managed code
+
+Not fixed, and pinned by a test so that fixing it is noticed.
+
+`InterfaceVM.Validate` drops a vfunc that has no C function to invoke:
+
+```csharp
+if (target == null && !(container_type as InterfaceGen).IsConsumeOnly) {
+        log.Warn ("No matching target method to invoke. Add target_method attribute with fixup.");
+        return false;
+}
+```
+
+That is right for an interface whose vfuncs mirror public functions, and wrong
+for one that is *only* a vfunc table. `GtkAccessibleText` has ten vfuncs —
+`get_contents`, `get_caret_position`, `get_selection`, `get_attributes` — and
+Gtk exports no function that calls any of them; `GtkAccessibleRange` has one,
+`set_current_value`; `GtkAccessibleHypertext` has three. All are dropped, and
+the generated `IAccessibleTextImplementor`, `IAccessibleRangeImplementor` and
+`IAccessibleHypertextImplementor` are **empty interfaces**.
+
+So a managed widget cannot tell an assistive technology what its text is, and no
+managed caller can ask another widget. The consumer half is bound and the
+widgets do implement the interfaces — `GtkLabel`, `GtkTextView`, `GtkText` and
+`GtkInscription` are `IAccessibleText` — but the only members on it are the
+three `update_*` notifications, which are real C functions.
+
+Fixing it means falling back to the vm's own name when there is no target, which
+is a change to how every interface in eleven assemblies is emitted, and it
+cannot be verified from a test: there is no public function that invokes these
+vfuncs, so a managed implementation would have no observable effect.
+
+## Accessibility: behaviour worth knowing
+
+- **A widget and its AT context do not report the same role.** A role that comes
+  from the widget class is applied when the context is *realized*, which for a
+  widget that was never shown never happens, so `GetAtContext ().AccessibleRole`
+  is `Widget` while `GetAccessibleRole ()` is `Label`. Only a role that was
+  explicitly assigned appears in both.
+- **Assigning `AccessibleRole.Widget` is not a change.** It is the abstract "some
+  widget" role; the widget goes on reporting what its class declared, with no
+  warning. Clearing a role by assigning the base one silently keeps the old one.
+- **`gtk_test_accessible_has_state` means "is this attribute present", not "is it
+  true".** A `GtkCheckButton` publishes `checked=false` from the moment it is
+  built, so it *has* the checked state while `Active` is false. Meanwhile a
+  sensitive button does not have the disabled state at all.
+- **Gtk maintains part of the accessible description itself** — insensitive
+  becomes `disabled`, `GtkToggleButton:active` becomes `pressed`,
+  `GtkExpander:expanded` becomes `expanded`, a `GtkRange` publishes
+  `value-now`/`value-min`/`value-max`, a placeholder becomes `placeholder`, and
+  `gtk_label_set_mnemonic_widget` sets `labelled-by` **on the target**. What it
+  does not do is publish a button's own label as the accessible label: that is
+  computed when an AT asks, so `has_property (LABEL)` is false on a
+  `Button ("press me")`.
+- **`active-descendant` is the only reference relation that takes one
+  accessible.** Every other one is a `GList` of them behind a `gpointer` —
+  including `error-message`, which reads like a single thing. Passing the wrong
+  shape sets nothing and reports nothing.
+- **Gtk 4.22 has no `init_value` case for `GTK_ACCESSIBLE_STATE_VISITED`**, added
+  in 4.12. The GValue comes back uninitialised, and assigning `Val` to one of
+  those throws rather than doing nothing. A plain boolean works.
+- **A `GValue` of the wrong type is refused silently.** No exception, no return
+  value: `UpdateProperty (Label, new GLib.Value (42))` logs a critical and leaves
+  the property unset, so the only way to know is to ask afterwards.
+- **`SetAccessibleParent` works in one direction only.** The child reports the
+  new parent, and the parent goes on reporting the children it really has. The
+  next sibling has to be passed to `SetAccessibleParent` too —
+  `UpdateNextAccessibleSibling` on a widget whose accessible parent was never set
+  does nothing at all.
+- **A widget's accessible id is its `GtkBuilder` id**, and a widget nothing named
+  has **null**, not the empty string.
+- **`gtk_accessible_get_bounds` is not `gtk_widget_get_width`.** It reports the
+  widget's border box, which for a window's child came out as the surface width
+  where `get_width` gave the content width — 220 against 186 under gvsbuild's
+  client-side decorations. Neither number is portable, so the test asserts
+  geometry it arranged itself: two buttons stacked in a spacing-free box are the
+  same width, and the second starts exactly where the first ends.
