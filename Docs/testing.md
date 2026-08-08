@@ -3104,3 +3104,48 @@ This is why a `ListView` always has a row highlighted, and why turning off only
 the flag whose name mentions unselecting appears to do nothing at all. The test
 asserts the state after each of the three steps, so the one that works is
 distinguishable from the two that quietly do not.
+
+## Behaviour worth knowing: how to read a widget's own painting back
+
+`DrawingAreaTests` covers the custom-drawing path — `Docs/getting-started.md`
+devotes a section to it and the suite had no mention of `DrawingArea` or
+`SetDrawFunc` at all. It is the most common thing an application does beyond
+arranging widgets, and it crosses every boundary in the binding at once: a
+managed delegate marshalled into Gtk, invoked from native code, handed a
+`Cairo.Context` it did not create.
+
+Counting invocations is not enough. A draw function that *is* called but whose
+context is wrong paints nothing, and an invocation counter calls that a pass. The
+oracle has to be the pixels — but the context belongs to Gtk's surface, so it
+cannot be read directly. The route that works goes through the scene graph Gtk
+itself draws through:
+
+```csharp
+var paintable = new Gtk.WidgetPaintable(widget);
+var snapshot = new Gtk.Snapshot();
+paintable.Snapshot(snapshot, width, height);
+var node = snapshot.ToNode();          // null if the widget painted nothing
+
+using var surface = new Cairo.ImageSurface(Cairo.Format.Argb32, width, height);
+using (var cr = new Cairo.Context(surface)) node.Draw(cr);
+```
+
+This is worth knowing beyond drawing areas: it rasterises **any** widget, so it
+is the general way to assert on what Gtk rendered rather than on what it was
+asked to render. It leans on `RenderNode.Draw`, which `GskRenderNodeTests`
+pins independently.
+
+Each drawing test is paired with a control that must paint nothing — an empty
+draw function, an empty `Pango.Layout` — so "there are pixels" reports the
+drawing rather than the theme, the window background, or anything else that ends
+up in a snapshot.
+
+**And a trap worth stating plainly.** The `width` and `height` a draw function
+receives are the widget's **allocation**, not its `ContentWidth`/`ContentHeight`.
+Those two are a natural-size request; a window stretches its child past them. A
+test that asked for 16 and asserted 16 got 188 — the area filling the smallest
+window the display would make. Asserting the requested size would have been
+asserting a fact about the window manager, which is the class of mistake this
+document keeps coming back to. Compare against `AllocatedWidth`/`AllocatedHeight`
+instead, and assert the *requested* size through `Measure` where it really is the
+contract.
