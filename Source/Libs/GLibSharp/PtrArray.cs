@@ -206,8 +206,12 @@ namespace GLib {
 			get { return false; }
 		}
 
+		readonly object sync_root = new object ();
+
+		// ICollection.SyncRoot is documented as an object a caller can lock, and
+		// lock (null) is a NullReferenceException. Same hole ListBase had.
 		public object SyncRoot {
-			get { return null; }
+			get { return sync_root; }
 		}
 
 		public void CopyTo (Array array, int index)
@@ -228,6 +232,7 @@ namespace GLib {
 		private class ListEnumerator : IEnumerator
 		{
 			private int current = -1;
+			private bool finished;
 			private PtrArray vals;
 
 			public ListEnumerator (PtrArray vals)
@@ -243,10 +248,18 @@ namespace GLib {
 				}
 			}
 
+			// Running off the end used to put the cursor back to -1, which is
+			// also "not started" -- so the next MoveNext began again and answered
+			// true, and a loop that kept asking never terminated. Same defect as
+			// ListBase's enumerator, written separately and fixed separately.
 			public bool MoveNext ()
 			{
+				if (finished)
+					return false;
+
 				if (++current >= vals.Count) {
 					current = -1;
+					finished = true;
 					return false;
 				}
 
@@ -256,6 +269,7 @@ namespace GLib {
 			public void Reset ()
 			{
 				current = -1;
+				finished = false;
 			}
 		}
 		
@@ -264,14 +278,24 @@ namespace GLib {
 		{
 			return new ListEnumerator (this);
 		}
+		// g_ptr_array_copy (GPtrArray *array, GCopyFunc func, gpointer user_data)
+		// since GLib 2.62. The delegate declared one parameter, so the call left
+		// func and user_data as whatever happened to be in the argument
+		// registers -- and a non-NULL func is *called*, once per element. Clone
+		// did not return a wrong answer; it jumped to an arbitrary address and
+		// took the process with it.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_g_ptr_array_copy(IntPtr raw);
+		delegate IntPtr d_g_ptr_array_copy(IntPtr raw, IntPtr func, IntPtr user_data);
 		static d_g_ptr_array_copy g_ptr_array_copy = FuncLoader.LoadFunction<d_g_ptr_array_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_ptr_array_copy"));
 
 		// ICloneable
 		public object Clone ()
 		{
-			return new PtrArray (g_ptr_array_copy (Handle), element_type, false, false);
+			// A NULL copy function is a shallow copy: the new array holds the
+			// same pointers, so it owns the array it was handed (transfer full)
+			// but not the elements, which the original still owns.
+			IntPtr copy = g_ptr_array_copy (Handle, IntPtr.Zero, IntPtr.Zero);
+			return new PtrArray (copy, element_type, true, false);
 		}
 	}
 }
