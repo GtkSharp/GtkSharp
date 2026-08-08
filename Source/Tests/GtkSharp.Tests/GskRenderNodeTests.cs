@@ -663,6 +663,196 @@ namespace GtkSharp.Tests
             });
         }
 
+        // ------------------------------------------------- rounded rectangles
+
+        // GskRoundedRect is twelve floats -- graphene_rect_t bounds followed by
+        // graphene_size_t corner[4]. It used to be a pointer plus a managed array,
+        // so nothing built on one could be used at all; these four node types are
+        // what that cost.
+
+        static Gsk.RoundedRect Rounded(float x, float y, float w, float h, float radius)
+        {
+            var rounded = new Gsk.RoundedRect();
+            rounded.InitFromRect(Rect(x, y, w, h), radius);
+            return rounded;
+        }
+
+        [Fact]
+        public void A_rounded_rect_rounds_the_corners_off_a_clip()
+        {
+            Run(() =>
+            {
+                var node = new Gsk.RoundedClipNode(Color(Red, 0, 0, 8, 8), Rounded(0, 0, 8, 8, 4));
+
+                Assert.Equal(4f, node.Clip.TopLeftWidth, 3);
+                Assert.Equal(8, node.Clip.Width, 3);
+
+                var pixel = Render(node);
+
+                // The middle survives the clip; the corner is cut away by it.
+                Assert.Equal(255, pixel(4, 4).A);
+                Assert.Equal(0, pixel(0, 0).A);
+            });
+        }
+
+        [Fact]
+        public void A_square_rounded_clip_keeps_the_corners_a_rounded_one_removes()
+        {
+            Run(() =>
+            {
+                // The contrast is what makes the test above mean anything: with a
+                // zero radius the same node keeps its corner.
+                var node = new Gsk.RoundedClipNode(Color(Red, 0, 0, 8, 8), Rounded(0, 0, 8, 8, 0));
+
+                Assert.Equal(255, Render(node)(0, 0).A);
+                Assert.True(node.Clip.Equals(Rounded(0, 0, 8, 8, 0)));
+            });
+        }
+
+        [Fact]
+        public void A_border_node_draws_only_the_edges_it_was_given_a_width_for()
+        {
+            Run(() =>
+            {
+                // Left edge only: widths are top, right, bottom, left.
+                var widths = new[] { 0f, 0f, 0f, 2f };
+                var colours = new[] { Red, Red, Red, Red };
+
+                var node = new Gsk.BorderNode(Rounded(0, 0, 8, 8, 0), widths, colours);
+
+                Assert.Equal(widths, node.Widths);
+                Assert.Equal(4, node.Colors.Length);
+                Assert.Equal(1f, node.Colors[3].Red, 3);
+                Assert.Equal(8, node.Outline.Width, 3);
+
+                var pixel = Render(node);
+
+                Assert.Equal(255, pixel(0, 4).R);    // on the left border
+                Assert.Equal(0, pixel(7, 4).A);      // the right edge has no width
+            });
+        }
+
+        [Fact]
+        public void A_border_node_keeps_a_different_colour_per_edge()
+        {
+            Run(() =>
+            {
+                // get_colors used to return the array's first element as the whole
+                // answer, so three of these four were unreachable.
+                var colours = new[] { Red, Blue, Rgba(0, 1, 0), Rgba(1, 1, 0) };
+
+                var node = new Gsk.BorderNode(
+                    Rounded(0, 0, 8, 8, 0), new[] { 1f, 1f, 1f, 1f }, colours);
+
+                var read = node.Colors;
+
+                Assert.Equal(1f, read[Gsk.BorderNode.TopEdge].Red, 3);
+                Assert.Equal(1f, read[Gsk.BorderNode.RightEdge].Blue, 3);
+                Assert.Equal(1f, read[Gsk.BorderNode.BottomEdge].Green, 3);
+                Assert.Equal(0f, read[Gsk.BorderNode.LeftEdge].Blue, 3);
+            });
+        }
+
+        [Fact]
+        public void An_outset_shadow_paints_outside_its_outline_and_an_inset_one_inside()
+        {
+            Run(() =>
+            {
+                var outline = Rounded(2, 2, 4, 4, 0);
+
+                var outset = new Gsk.OutsetShadowNode(outline, Opaque, 0, 0, 1f, 0f);
+                var inset = new Gsk.InsetShadowNode(outline, Opaque, 0, 0, 1f, 0f);
+
+                Assert.Equal(1f, outset.Spread, 3);
+                Assert.Equal(2, outset.Outline.X, 3);
+
+                // An outset shadow is drawn around the outline, never within it.
+                var out_pixel = Render(outset);
+                Assert.Equal(255, out_pixel(1, 4).A);
+                Assert.Equal(0, out_pixel(4, 4).A);
+
+                // An inset one is the mirror image: inside the outline only.
+                var in_pixel = Render(inset);
+                Assert.Equal(0, in_pixel(1, 4).A);
+                Assert.Equal(255, in_pixel(2, 4).A);
+            });
+        }
+
+        [Fact]
+        public void A_rounded_rect_answers_what_it_contains()
+        {
+            Run(() =>
+            {
+                var rect = Rounded(0, 0, 40, 20, 5);
+
+                Assert.True(rect.ContainsPoint(Point(20, 10)), "the middle is inside");
+                Assert.False(rect.ContainsPoint(Point(0, 0)), "the rounded corner is not");
+                Assert.True(rect.ContainsRect(Rect(10, 5, 20, 10)));
+                Assert.True(rect.IntersectsRect(Rect(-5, -5, 20, 20)));
+                Assert.False(rect.IntersectsRect(Rect(100, 100, 5, 5)));
+            });
+        }
+
+        [Fact]
+        public void A_rounded_rect_is_rectilinear_only_when_it_has_no_corners()
+        {
+            Run(() =>
+            {
+                Assert.True(Rounded(0, 0, 40, 20, 0).IsRectilinear);
+                Assert.False(Rounded(0, 0, 40, 20, 5).IsRectilinear);
+            });
+        }
+
+        [Fact]
+        public void Shrinking_a_rounded_rect_insets_each_edge_separately()
+        {
+            Run(() =>
+            {
+                var rect = Rounded(0, 0, 40, 20, 5);
+
+                rect.Shrink(2, 4, 6, 8);       // top, right, bottom, left
+
+                Assert.Equal(8, rect.X, 3);
+                Assert.Equal(2, rect.Y, 3);
+                Assert.Equal(40 - 8 - 4, rect.Width, 3);
+                Assert.Equal(20 - 2 - 6, rect.Height, 3);
+            });
+        }
+
+        [Fact]
+        public void Offsetting_a_rounded_rect_moves_it_and_leaves_the_corners_alone()
+        {
+            Run(() =>
+            {
+                var rect = Rounded(0, 0, 40, 20, 5);
+
+                rect.Offset(3, 7);
+
+                Assert.Equal(3, rect.X, 3);
+                Assert.Equal(7, rect.Y, 3);
+                Assert.Equal(40, rect.Width, 3);
+                Assert.Equal(5, rect.TopLeftWidth, 3);
+            });
+        }
+
+        [Fact]
+        public void Two_rounded_rects_are_equal_only_when_every_float_matches()
+        {
+            Run(() =>
+            {
+                // Generated with noequals/nohash, because a field-less struct would
+                // get an Equals that compares nothing and answers true for
+                // everything -- which is what a copy-only test would have missed.
+                var rect = Rounded(0, 0, 40, 20, 5);
+
+                Assert.Equal(rect, Rounded(0, 0, 40, 20, 5));
+                Assert.NotEqual(rect, Rounded(0, 0, 40, 20, 6));
+                Assert.NotEqual(rect, Rounded(1, 0, 40, 20, 5));
+                Assert.Equal(rect.GetHashCode(), Rounded(0, 0, 40, 20, 5).GetHashCode());
+                Assert.NotEqual(rect.GetHashCode(), Rounded(0, 0, 20, 40, 5).GetHashCode());
+            });
+        }
+
         // -------------------------------------------------- serialisation
 
         [Fact]

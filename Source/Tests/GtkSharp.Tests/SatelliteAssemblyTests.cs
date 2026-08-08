@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace GtkSharp.Tests
@@ -492,78 +493,86 @@ namespace GtkSharp.Tests
         }
 
         [Fact]
-        public void The_rounded_rect_struct_holds_pointers_where_gsk_embeds_the_values()
+        public void The_rounded_rect_struct_lays_its_twelve_floats_out_the_way_gsk_reads_them()
         {
-            // DeeperStackTests.A_rounded_rect_keeps_its_bounds is Skipped with the
-            // wrong reason. Gsk.RoundedRect is not a boxed type with a missing
-            // allocator -- it is a generated [StructLayout(Sequential)] struct,
-            // and the reason it takes the process down is that its layout is not
-            // GskRoundedRect's:
+            // This test used to assert the opposite, and said so: "written to fail
+            // the day the layout is corrected". That day came. What was there:
             //
             //     struct _GskRoundedRect {
             //         graphene_rect_t bounds;      /*  16 bytes, by value  */
             //         graphene_size_t corner[4];   /*  4 x 8 = 32 bytes    */
             //     };                               /*  48 bytes total      */
             //
-            // Both member types are bound as *classes* (boxed opaques), so
-            // codegen emitted `bounds` as one IntPtr and `corner` as a ByValArray
-            // of four object references. Every generated method then does
+            // Both member types are bound as *classes* (boxed opaques), so codegen
+            // emitted `bounds` as one IntPtr and `corner` as a ByValArray of four
+            // object references -- 40 bytes on Windows, and on Linux not
+            // marshallable at all. Every generated method did
             //
             //     AllocHGlobal (Marshal.SizeOf<Gsk.RoundedRect> ())
             //
-            // and hands that pointer to a GSK function that reads and writes 48
-            // bytes through it -- an eight-byte heap overrun on every single
-            // call, with `bounds` read as an address built out of two floats.
+            // and handed that to a GSK function that reads and writes 48 bytes
+            // through it: an eight-byte heap overrun on every call, with `bounds`
+            // read as an address built out of two floats.
             //
-            // What is asserted is the FIELD TYPES rather than Marshal.SizeOf,
-            // because asking the runtime to measure this struct is not portable:
-            // .NET on Linux refuses outright ("Type 'Gsk.RoundedRect' cannot be
-            // marshaled as an unmanaged structure", since a ByValArray of a
-            // class is not a layout the marshaller has), while on Windows it
-            // answers 40. Those are two reports of one defect, and the defect is
-            // upstream of both -- a pointer field and an array-of-references
-            // field cannot describe 16 embedded bytes followed by 32 more,
-            // whatever number a given runtime is willing to put on them.
-            //
-            // The numbers below are arithmetic over the C declaration, so they
-            // hold independently of this binding. The test is written to fail the
-            // day the layout is corrected, which is the point: fixing it means
-            // embedding boxed members by value in StructBase, and whoever does
-            // that should have to come back here and unskip the other test.
+            // The fields are now removed in GskSharp.metadata and declared in
+            // Source/Libs/GskSharp/RoundedRect.cs, which is the only file that
+            // declares any -- so sequential layout is that file's declaration
+            // order and nothing else. The offsets below are arithmetic over the C
+            // declaration and hold independently of this binding.
             Run(() =>
             {
-                const int GskRoundedRectSize = 16 + 4 * 8;   // graphene_rect_t + graphene_size_t[4]
-                Assert.Equal(48, GskRoundedRectSize);
-
                 var type = typeof(Gsk.RoundedRect);
+
+                Assert.Equal(48, Marshal.SizeOf<Gsk.RoundedRect>());
+
                 var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public |
                                             BindingFlags.NonPublic);
 
-                // Two instance fields, and neither carries any of the bytes GSK
-                // expects to find: `bounds` is one pointer where C has 16 bytes
-                // of floats, and `corner` is a managed array whose elements are
-                // themselves references, because Graphene.Size is a class.
-                Assert.Equal(2, fields.Length);
+                Assert.Equal(12, fields.Length);
+                Assert.All(fields, f => Assert.Equal(typeof(float), f.FieldType));
 
-                var bounds = type.GetField("_bounds", BindingFlags.Instance | BindingFlags.NonPublic);
-                Assert.Equal(typeof(IntPtr), bounds.FieldType);
+                // graphene_rect_t bounds -- origin then size.
+                Assert.Equal(0, (int) Marshal.OffsetOf<Gsk.RoundedRect>("X"));
+                Assert.Equal(4, (int) Marshal.OffsetOf<Gsk.RoundedRect>("Y"));
+                Assert.Equal(8, (int) Marshal.OffsetOf<Gsk.RoundedRect>("Width"));
+                Assert.Equal(12, (int) Marshal.OffsetOf<Gsk.RoundedRect>("Height"));
 
-                var corner = type.GetField("Corner", BindingFlags.Instance | BindingFlags.Public);
-                Assert.Equal(typeof(Graphene.Size[]), corner.FieldType);
-                Assert.True(typeof(Graphene.Size).IsClass);
-                Assert.True(typeof(Graphene.Rect).IsClass);
+                // graphene_size_t corner[4] -- clockwise from the top left.
+                Assert.Equal(16, (int) Marshal.OffsetOf<Gsk.RoundedRect>("TopLeftWidth"));
+                Assert.Equal(24, (int) Marshal.OffsetOf<Gsk.RoundedRect>("TopRightWidth"));
+                Assert.Equal(32, (int) Marshal.OffsetOf<Gsk.RoundedRect>("BottomRightWidth"));
+                Assert.Equal(40, (int) Marshal.OffsetOf<Gsk.RoundedRect>("BottomLeftWidth"));
+                Assert.Equal(44, (int) Marshal.OffsetOf<Gsk.RoundedRect>("BottomLeftHeight"));
+            });
+        }
 
-                // So the managed description of the whole struct is two machine
-                // words, and GSK reads and writes 48 bytes through the pointer
-                // every generated method hands it.
-                Assert.NotEqual(GskRoundedRectSize, 2 * IntPtr.Size);
+        [Fact]
+        public void A_rounded_rect_reads_back_what_gsk_wrote_into_it()
+        {
+            // The layout test above says the bytes are in the right places; this
+            // one says GSK agrees, which is the part reflection cannot show.
+            Run(() =>
+            {
+                var bounds = Graphene.Rect.Alloc();
+                bounds.Init(1, 2, 40, 20);
 
-                // And it is not merely mis-sized: a default instance has no
-                // corners at all, so even the managed half of the struct cannot
-                // be written out without the caller filling the array first.
                 var rect = new Gsk.RoundedRect();
-                Assert.Null(rect.Corner);
-                Assert.Null(rect.Bounds);
+                rect.InitFromRect(bounds, 5);
+
+                Assert.Equal(1, rect.X, 3);
+                Assert.Equal(2, rect.Y, 3);
+                Assert.Equal(40, rect.Width, 3);
+                Assert.Equal(20, rect.Height, 3);
+
+                // init_from_rect gives every corner the same radius.
+                Assert.Equal(5, rect.TopLeftWidth, 3);
+                Assert.Equal(5, rect.TopLeftHeight, 3);
+                Assert.Equal(5, rect.BottomRightWidth, 3);
+                Assert.Equal(5, rect.BottomLeftHeight, 3);
+
+                // And the returned value is the receiver, not a copy read out of
+                // memory the wrapper had already freed.
+                Assert.Equal(rect, rect.InitFromRect(bounds, 5));
             });
         }
 
