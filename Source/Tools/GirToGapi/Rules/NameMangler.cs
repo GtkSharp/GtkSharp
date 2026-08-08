@@ -23,8 +23,8 @@ namespace GtkSharp.GirConversion.Rules {
 	/// against GTK 3, StudlyCaps(gir @name) reproduces gapi2xml.pl's @name for
 	/// 5987 of 6204 members; every difference is a case where GIR attributes a
 	/// function to a different owner than the Perl script's C-header heuristic
-	/// did, and GIR is the more accurate of the two. See scripts/name-parity.py
-	/// and Docs/gir-gapi-coverage.md.
+	/// did, and GIR is the more accurate of the two. Rerun the measurement with
+	/// scripts/name-parity.py.
 	/// </remarks>
 	public static class NameMangler {
 
