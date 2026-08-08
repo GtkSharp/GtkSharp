@@ -3149,3 +3149,72 @@ asserting a fact about the window manager, which is the class of mistake this
 document keeps coming back to. Compare against `AllocatedWidth`/`AllocatedHeight`
 instead, and assert the *requested* size through `Measure` where it really is the
 contract.
+
+## Fixed: `AttrList.Attributes` handed back a list of nulls
+
+`PangoAttributeTests` covers `Pango.AttrList` and `Pango.AttrIterator` — nearly
+all hand-written, and `AttrIterator` had no mention in the suite at all.
+
+`AttrList.Attributes` was generated as
+
+```csharp
+public GLib.SList Attributes {
+    get { return new GLib.SList (pango_attr_list_get_attributes (Handle)); }
+}
+```
+
+with no element type. `GLib.SList` then marshals each item as a GObject, which a
+`PangoAttribute` is not, so every element came back **null** and touching one
+threw `NullReferenceException`. There was no way to enumerate a list's
+attributes.
+
+What makes this one worth reading is that the fix already existed twelve lines
+away. `AttrIterator.Attrs` is hand-written specifically to avoid this, and says
+so in a comment. The list's own getter had the identical bug and kept it, because
+**nothing called it** — the hand-written file was written in response to a crash
+somebody hit, and the neighbouring method nobody happened to use was never
+looked at. Rebound over `Pango.Attribute[]` in `AttrList.cs`.
+
+**Where else to look:** `grep` the generated tree for `new GLib.SList (` and
+`new GLib.List (` with a single argument. Every one of those is a list whose
+elements will marshal as GObject regardless of what they are.
+
+## Behaviour worth knowing: an attribute iterator has a run after the last attribute
+
+`AttrIterator` does not stop when the attributes do. After the last attributed
+run it yields one more, from the end of the last attribute to `G_MAXINT`,
+carrying no attributes — the unformatted remainder of whatever text the list is
+eventually applied to. The list has no idea how long that text is, which is why
+the end is a sentinel rather than a length.
+
+I expected `Next()` to return false there, and a caller who assumes the same will
+attribute the trailing run's (empty) formatting to the last real run.
+
+Attribute indices are **byte** offsets, not character offsets, which is pinned
+with a two-character, three-byte string. Getting it wrong formats half a letter
+and Pango does not complain.
+
+## And a repeat of a mistake this document already records
+
+The metadata edit for the fix above contained `--` inside an XML comment, which
+is not legal XML. `GapiFixup` failed, codegen produced nothing for the whole of
+PangoSharp, and **MSBuild still printed "0 Error(s)"** — the Cake task failed
+underneath a build that reported success. Grepping the log for `error CS` and
+`Error(s)` found nothing wrong.
+
+This is the third variant of the same failure recorded here: a truncated test
+total, a schema that would not load, and now a metadata file that would not
+parse. The lesson has to be mechanical rather than remembered:
+
+```sh
+dotnet cake build.cake --BuildTarget=Build > build.log 2>&1; echo "EXIT: $?"
+```
+
+**Check the exit code.** Grepping for the word "error" is not a substitute, and
+`0 Error(s)` from MSBuild says nothing about whether the tool that runs before it
+did its job. A cheap second check, since the metadata is XML and XML is
+checkable:
+
+```sh
+python -c "import glob,xml.dom.minidom as m; [m.parse(f) for f in glob.glob('Source/Libs/*/*.metadata')]"
+```
