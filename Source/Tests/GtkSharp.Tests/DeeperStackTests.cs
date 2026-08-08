@@ -279,11 +279,14 @@ namespace GtkSharp.Tests
 
         // ------------------------------------------------------------------ Gsk
 
-        [Fact(Skip = "Gsk.RoundedRect has no allocator: it is a boxed type whose only " +
-                     "constructor is GLib.Opaque's parameterless one, which leaves a null " +
-                     "handle, so Init writes through it and crashes. See Docs/testing.md.")]
+        [Fact]
         public void A_rounded_rect_keeps_its_bounds()
         {
+            // Skipped for a long time, and for the wrong reason: the skip blamed a
+            // missing allocator on a boxed type, when Gsk.RoundedRect is a plain
+            // sequential struct whose *layout* was wrong -- a pointer and a managed
+            // array where GSK reads 48 bytes of floats. See
+            // SatelliteAssemblyTests.The_rounded_rect_struct_lays_its_twelve_floats_out_the_way_gsk_reads_them.
             Run(() =>
             {
                 var bounds = Graphene.Rect.Alloc();
@@ -293,6 +296,7 @@ namespace GtkSharp.Tests
                 rounded.InitFromRect(bounds, 5);
 
                 Assert.Equal(40, rounded.Bounds.Width, 3);
+                Assert.Equal(20, rounded.Bounds.Height, 3);
             });
         }
 
