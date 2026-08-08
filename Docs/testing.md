@@ -3923,3 +3923,156 @@ the other vfuncs, and a C# `IActionGroupImplementor` overwrites it with a
 delegate that dispatches straight back to managed code. That is only correct as
 long as the generated implementor interface makes every such method mandatory,
 which is worth checking one interface at a time rather than assuming.
+
+## Fixed: ten methods that printed into a buffer nobody could read
+
+`GLib.GString` was described in its own header as a "marshaler for GStrings", and
+that is all it was: a handle, a constructor from a C# string, a finalizer, and a
+static `PtrToString`. `SymbolTable` bound the C type accordingly —
+
+```csharp
+AddType (new MarshalGen ("GString", "string", "IntPtr",
+                         "new GLib.GString ({0}).Handle",
+                         "GLib.GString.PtrToString ({0})"));
+```
+
+— which is the wrong shape for what a `GString *` parameter **is** in this API.
+Every one of them is an *output accumulator*: the caller allocates the buffer,
+the callee appends to it, and the caller reads it back afterwards. There are ten,
+spread across four libraries:
+
+| method | library |
+|:--|:--|
+| `Gdk.ContentFormats.Print`, `Gdk.RGBA.Print` | gdk |
+| `GLib.DBusNodeInfo.GenerateXml`, `GLib.DBusInterfaceInfo.GenerateXml` | gio |
+| `Gsk.Path.Print`, `Gsk.Transform.Print` | gsk |
+| `Gtk.CssSection.Print`, `Gtk.ShortcutAction.Print`, `Gtk.ShortcutTrigger.Print`, `Gtk.ShortcutTrigger.PrintLabel` | gtk |
+
+Bound through that `MarshalGen`, each took a C# `string`, built a **fresh**
+`GString` out of it, handed the callee that, and then let it go. The text the
+callee wrote went into a buffer the caller had no reference to and no way to
+read, and the buffer leaked. Ten methods whose entire purpose is to produce text
+produced none, and not one of them failed, threw, or logged anything.
+
+`Gdk.RGBA.Print` failed twice over, because it is the one of the ten that
+*returns* the buffer. The return came back through `GLib.GString.PtrToString`,
+which was
+
+```csharp
+public static string PtrToString (IntPtr ptr)
+{
+        return Marshaller.Utf8PtrToString (ptr);   // ptr is a GString*, not a char*
+}
+```
+
+`struct GString { gchar *str; gsize len; gsize allocated_len; }`, so decoding the
+`GString *` as UTF-8 decodes the **bytes of a heap pointer**. What `Print`
+returned was whatever those eight bytes happened to spell — usually nothing
+printable, occasionally a fragment of another allocation, never the colour.
+
+Both halves are fixed. `GLib.GString` is now a wrapper a caller can keep: `Str`,
+`Length` (bytes, read out of the struct's `len` field), `Append`, `Truncate`,
+`ToString`, `IDisposable`, an ownership flag so it only frees what it allocated —
+the old finalizer freed unconditionally, including `IntPtr.Zero` — and a
+`PtrToString` that reads the `str` field. `SymbolTable` binds the C type as the
+wrapper:
+
+```csharp
+AddType (new ManualGen ("GString", "GLib.GString", "new GLib.GString ({0}, false)"));
+```
+
+Never owning, and the test proves that is the right call rather than assuming it:
+`gdk_rgba_print` hands back **the very buffer it was given** —
+`Assert.Equal (buffer.Handle, returned.Handle)` — so an owning wrapper over the
+return would free what its caller still holds.
+
+`Gtk.ShortcutTrigger`, `Gtk.KeyvalTrigger`, `Gtk.ShortcutAction`,
+`Gtk.NamedAction` and `Gtk.NothingAction` had no test of any kind before this;
+they are the vehicle for half of these, so they get their first coverage here.
+
+## Behaviour worth knowing: what makes a print-into-a-buffer test an oracle
+
+"It printed something" is not an assertion, and neither is comparing `Print`
+against `ToString` on its own — the two could agree by both being empty.
+`GStringPrintTests` asks four things of each of the ten, and the first two cannot
+pass at all against a binding that allocates its own buffer:
+
+- **A prefix already in the buffer survives.** The buffer is created as
+  `new GLib.GString ("keys: ")` and has to read `"keys: <Control>a"` afterwards.
+  A binding that builds its own buffer cannot produce the prefix.
+- **Printing twice appends twice.** `first + first`, arithmetic the test does
+  itself. This is what separates "wrote into my buffer" from "wrote into some
+  buffer and I happened to be shown the result".
+- **The text agrees with the independent `to_string` sibling** — two different
+  native entry points that must say the same thing — and, where the syntax is
+  documented, with a literal: `"<Control>a"`, `"rgb(255,0,0)"`,
+  `"action(win.close)"`, `"nothing"`. `Gtk.Accelerator.Name` is asked for the
+  same pair as a third way in.
+- **A second object must print differently.** `<Control>b` beside `<Control>a`,
+  `rgb(0,0,255)` beside `rgb(255,0,0)`, `scale(2)` beside `translate(10, 20)`,
+  a 20-unit line beside a triangle.
+
+Three of them get a full round trip on top of that, through a parser that never
+sees the managed object:
+
+- `Gsk.Path.Parse (printed)` and `gsk_path_equal` against the path it was printed
+  from, with a different path as the negative.
+- `new Gtk.ShortcutTrigger (printed)` compared with `gtk_shortcut_trigger_equal`
+  and `_hash` against the trigger, and against a trigger differing only in the
+  shift bit. The control that keeps it honest is
+  `new Gtk.ShortcutTrigger ("<NotAModifier>notakey")`, whose `Handle` is
+  `IntPtr.Zero`: parsing is what decides the printed text meant anything, and it
+  can say no.
+- `new GLib.DBusNodeInfo (buffer.Str)` — generate the XML, parse it back, and
+  find the interface, its method and its property again by name, with
+  `LookupInterface`/`LookupMethod` for names that were never in the document
+  returning null. A serialisation round trip this binding did not write.
+
+The `indent` argument of `GenerateXml` is the one part of these calls the caller
+chooses, so it is checked as arithmetic rather than by eye: the document is
+generated at indent 0 and at indent 4, the two are split into lines, and every
+non-empty line of the second must be four spaces plus the corresponding line of
+the first.
+
+## Behaviour worth knowing, found by an assertion that was wrong
+
+`gtk_shortcut_trigger_parse_string` and `gtk_shortcut_action_parse_string` return
+*derived* types — a `GtkKeyvalTrigger`, a `GtkNamedAction` — and the api.xml binds
+each as a **constructor on the base class**. So
+
+```csharp
+var parsed = new Gtk.ShortcutAction ("action(win.close)");
+Assert.IsType<Gtk.NamedAction> (parsed);            // fails
+```
+
+The expectation was wrong, not the library. `Raw`'s setter registers the wrapper
+in `GLib.Object.Objects` under the type that is being constructed, and it does so
+before anything can ask GObject what was really built; `GLib.Object.GetObject` on
+the same handle afterwards returns that same base-typed wrapper, because the
+identity map is consulted first. The native object is unaffected and is the thing
+worth asserting about:
+
+```csharp
+Assert.Equal (Gtk.NamedAction.GType, parsed.NativeType);
+Assert.Equal ("win.close", parsed.GetProperty ("action-name").Val);
+```
+
+Both read out of GObject, neither through the C# type. A caller who needs the
+concrete managed class has to go the long way round — construct
+`Gtk.NamedAction` directly, or take the handle before any wrapper exists — and
+that is a real limitation of binding a factory function as a base-class
+constructor, not something this pass changed.
+
+**Where else to look:** the `MarshalGen` that caused this is one line in
+`SymbolTable.cs`, and it is not the only entry there that turns a *by-reference
+buffer* into a by-value C# type. `GTimeVal`, `GError`, `GClosure`, `GArray`,
+`GByteArray` and `GParamSpec` are all bound as bare `IntPtr` under a
+"FIXME: These ought to be handled properly" comment; each is a place where a
+caller is handed an address with no way to read what is behind it, and
+`pango_scan_string`, `pango_scan_word` and `pango_read_line` show the same
+accumulator shape in api.xml entries codegen currently drops for other reasons.
+Beyond marshalling, `Gtk.ShortcutController`, `Gtk.Shortcut`,
+`Gtk.CallbackAction`, `Gtk.SignalAction`, `Gtk.ActivateAction` and the remaining
+trigger subclasses are still untested; `gtk_shortcut_action_activate` is directly
+callable with a widget and a `GVariant`, so the whole action half is testable
+without synthesising a key event, which is the part that is not.
