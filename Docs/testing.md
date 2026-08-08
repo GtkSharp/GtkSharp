@@ -2771,3 +2771,68 @@ surface.Flush();
 Assert on *both* directions — a pixel that should be painted and one that should
 not. Half the assertions in that file would pass against a surface nothing ever
 touched, and the other half are what stop that from being a green run.
+
+## Fixed: GskRoundedRect was 40 bytes where GSK reads 48
+
+The single defect that had blocked the most surface. `GskRoundedRect` is two
+structs embedded by value:
+
+```c
+struct GskRoundedRect {
+    graphene_rect_t bounds;      /* 16 bytes: x, y, width, height       */
+    graphene_size_t corner[4];   /* 32 bytes: 4 x (width, height)       */
+};                               /* 48 bytes, all of it floats          */
+```
+
+`graphene_rect_t` and `graphene_size_t` are bound as opaque boxed **classes**, so
+`SymbolTable` had no by-value form for either. The generated struct came out as
+an `IntPtr` for the bounds followed by a managed `Graphene.Size[]` marshalled
+`ByValArray` — 40 bytes on Windows, and on Linux not marshallable at all
+("Type 'Gsk.RoundedRect' cannot be marshaled as an unmanaged structure"). Every
+method then did `AllocHGlobal(Marshal.SizeOf<Gsk.RoundedRect>())` and handed that
+to a function reading and writing 48 bytes through it.
+
+Nothing built on a rounded rectangle worked: `BorderNode`, `RoundedClipNode`,
+`InsetShadowNode`, `OutsetShadowNode`, `PathBuilder.AddRoundedRect` and
+`Snapshot.AppendBorder`. That is four of the thirty-eight render-node types.
+
+**Hiding the struct is not the fix.** Tried first, and codegen then drops every
+dependent that mentions `const-GskRoundedRect*` with an "Unknown type" warning
+rather than keeping it — `BorderNode.New`, `RoundedClipNode.New`,
+`Snapshot.AppendBorder` and the rest simply vanish from the binding. What works
+is removing the two *fields* and declaring them by hand:
+
+```xml
+<remove-node path="/api/namespace/struct[@cname='GskRoundedRect']/field[@cname='bounds']" />
+<remove-node path="/api/namespace/struct[@cname='GskRoundedRect']/field[@cname='corner']" />
+<attr path="/api/namespace/struct[@cname='GskRoundedRect']" name="noequals">1</attr>
+<attr path="/api/namespace/struct[@cname='GskRoundedRect']" name="nohash">1</attr>
+```
+
+`noequals`/`nohash` are load-bearing, and the reason is worth remembering:
+`StructBase.GenEqualsAndHash` builds `Equals` by folding the field list, so a
+struct with no api.xml fields gets `return true;` — every rounded rectangle equal
+to every other. The two attributes already existed for other reasons; without
+them this fix would have traded a crash for a silent wrong answer.
+
+`RoundedRect.cs` then declares the twelve floats. Because it is the *only* file
+that declares any, sequential layout is that file's declaration order and nothing
+else — which is what makes hand-completing a generated struct safe at all.
+
+**And a use-after-free that fell out on the way.** The six methods returning
+`GskRoundedRect*` return their own receiver, and the wrapper freed its copy
+before reading the return value out of it:
+
+```csharp
+ReadNative (this_as_native, ref this);          // correct: the receiver is updated
+Marshal.FreeHGlobal (this_as_native);
+ret = Gsk.RoundedRect.New (raw_ret);            // raw_ret == this_as_native
+```
+
+So `rect.InitFromRect(bounds, 5)` left `rect` right and returned garbage. Now
+bound over `ref this`, which needs no copy at all once the struct is blittable.
+
+**Where else to look:** any api.xml `<field>` whose type is a boxed opaque is
+embedded by value in C and cannot be described by the class codegen emits for it.
+`grep` the generated tree for `IntPtr _` fields inside a `[StructLayout]` struct,
+and for `ByValArray` over anything that is not a primitive.
