@@ -72,8 +72,8 @@ namespace GettingStarted
                 Version = "4.22",
                 Comments = "Every page here is one section of Docs/getting-started.md, "
                          + "running rather than described.",
-                Website = "https://github.com/pieroviano/GtkSharp",
-                WebsiteLabel = "pieroviano/GtkSharp",
+                Website = "https://github.com/GtkSharp/GtkSharp",
+                WebsiteLabel = "GtkSharp/GtkSharp",
                 LogoIconName = "help-about-symbolic",
                 License = "Public domain."
             };
