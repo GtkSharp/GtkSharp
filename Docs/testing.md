@@ -240,6 +240,7 @@ investigate — not something to relax.
 | `DesktopIntegrationTests` | Everything that talks to the desktop rather than to the screen, none of which had a test. The Gtk 4 async dialogs — `FileDialog`, `AlertDialog`, `ColorDialog`, `FontDialog` — driven to their Finish methods the only way a test without a user can, by cancelling the `GCancellable` they were started with; `FileFilter` matching a `GFileInfo` by suffix, pattern and content type, serialised through a `GVariant` and built from a `GtkFileFilter` buildable description; the launchers, held but never launched; the legacy `GtkFileChooser`; and the printing stack, which is nearly all pure data — `PaperSize`, `PageSetup` and `PrintSettings` through key files, every typed accessor and every unit, and a `PrintOperation` exported to a PDF so the whole signal chain runs with no printer. The oracles are ISO 216, ANSI, the definition of a point, and the file on disk. Three defects. |
 | `AccessibilityTests` | `GtkAccessible`, which is where Gtk 4 put ATK and which nothing had ever called. The role every widget class declares, checked twice over — the property, and Gtk's own `gtk_test_accessible_has_role` — against the ARIA names, which are the fixed point when a member is inserted into the middle of `GtkAccessibleRole`; a role reassigned, and one named in a `.ui` file. Then the accessible tree, which is not the widget tree: a composite widget's parts, a parent assigned without reparenting, the sibling that only `SetAccessibleParent` can set. Then states, properties and relations set through the rebound update API and read back through Gtk's test API, the value type each attribute wants, the `<accessibility>` block in a `.ui` file, and `AccessibleList`. Three defects; `GtkAccessibleText` and `GtkAccessibleRange` pinned as unreachable. |
 | `CairoSurfaceTests` | The surfaces that are not `ImageSurface`. The three paginated backends whose whole job is to write somebody else's file format, checked against that format: the SVG parsed as XML and its path data read back as numbers, the PostScript checked against the DSC comments the test asked for and against per-page bounding boxes the test flips itself, the PDF against its version header and the `/MediaBox` entries `SetSize` produces. Then the recording surface — ink extents as arithmetic, replay as pixels, a bounded recording against an unbounded control — the subsurface view, and `Cairo.Device`, which no property had ever handed out. |
+| `TreeModelImplementorTests` | The other end of `GtkTreeModel`: a C# class that **is** one. `Gtk.TreeModelAdapter` writes fifteen managed function pointers into a `GLib.Object` subclass's `GtkTreeModelIface`, so a file tree the test declares is walked by `gtk_tree_model_foreach`, filtered by a `GtkTreeModelFilter` and expanded by a `GtkTreeView`, each of which can only reach a row by calling back into managed code. Depth-first order, path strings both ways, sibling stepping forward and back, indexing against walking, child counts, parent links and the model flags. Then `Gtk.TreeEnumerator`, which is what `foreach` over a `ListStore` runs. Two defects, one of them fatal. |
 | `ApplicationTests` | The application object and the global state around it — the code every program runs before it does anything else, and which the rest of the suite only ever touched by accident. `GLib.Application` registration, the once-only `::startup` against the every-time `::activate`, the id rules, the busy counter and the property that drives it; `g_application_open` end to end; a `GApplicationCommandLine` built by the test, because `::command-line` needs a session bus and Windows re-reads the real process command line anyway. Then `Gtk.Application`'s window list — newest first, which is also what `ActiveWindow` means — accelerators through `SetAccelsForAction`/`GetAccelsForAction`, an `ApplicationWindow` as a `GActionGroup` under `win.` and the `app.` actions its widgets reach; `Gtk.Settings` overridden and reset; `Gtk.IconTheme` search and resource paths and an icon the test wrote; window modality, transient-for, groups, default size and the `::close-request` veto; `HeaderBar`/`WindowControls`; `Gtk.Accelerator`; `Gtk.Global`; and the `GLib.MainLoop` that `Application.Run` became when `gtk_main` was deleted. Five defects. |
 
 ### Guards against vacuous passes
@@ -3669,4 +3670,118 @@ dotnet test Source/Tests/GtkSharp.Tests -c Release \
   --filter "FullyQualifiedName!=GtkSharp.Tests.ControlsAndTransferTests.A_popover_pops_up_and_down_and_reports_its_closing"
 ```
 
-which gives 1435 tests, 1433 passing and 2 WebKit skips, twice over.
+which gives 1452 tests, 1450 passing and 2 WebKit skips, twice over.
+
+## Fixed: connecting to a managed model's `rows-reordered` killed the process
+
+`Gtk.TreeModelAdapter` is what wraps a `GtkTreeModel` whose GType this binding
+does not know — above all a C# `ITreeModelImplementor`, which is the only way to
+write a tree model in managed code. Its hand-written `RowsReordered` event runs
+this callback:
+
+```csharp
+TreeModelFilter sender = GLib.Object.GetObject (arg0) as TreeModelFilter;
+...
+int child_cnt = arg2 == IntPtr.Zero ? sender.IterNChildren () : sender.IterNChildren (iter);
+```
+
+The file it was copied from is `TreeModelFilter.cs`, where that cast is right.
+Here it is the one thing the emitter can never be: `GtkTreeModelFilter` is
+generated as a concrete `ITreeModel`, so `TreeModelAdapter.GetObject` hands it
+back directly and it never reaches an adapter at all. The cast therefore always
+produced `null` and the next line always threw.
+
+**And "always threw" is not "the handler did not run".** The `catch` calls
+`ExceptionManager.RaiseUnhandledException (e, false)`, and with no
+`UnhandledException` handler installed that prints and calls
+`Environment.Exit (1)`. Reordering the rows of a managed tree model with anything
+connected to `RowsReordered` **took the process down**, in the shape this
+document keeps returning to: the run below printed `Passed!` with `Total: 9`.
+
+```text
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Gtk.TreeModelAdapter.RowsReorderedSignalCallback(...)
+   at Gtk.TreeModelAdapter.EmitRowsReordered(TreePath path, TreeIter iter, Int32[] new_order)
+```
+
+The sender is now built with `TreeModelAdapter.GetObject (arg0, false)`, which
+returns an `ITreeModel` — the interface that carries both `IterNChildren ()` and
+`IterNChildren (iter)`, so both branches of the count still work. The other four
+copies of this callback (`ListStore`, `TreeStore`, `TreeModelSort`,
+`TreeModelFilter`) each cast to their own type and are correct; the adapter was
+the only one that had been left pointing at its donor.
+
+## Fixed: a reorder that could not name more than one row
+
+`gtk_tree_model_rows_reordered_with_length (path, iter, int *new_order, int length)`
+is the introspectable half of the pair above, and it is the
+`gsk_container_node_new` family one more time. The gir gives `new_order` an
+`<array length="3">`; the api.xml can only say `int*`; codegen has a rule for
+`n_something` in front of an array and none for a parameter called `length`
+behind one. So it came out as
+
+```csharp
+public int RowsReorderedWithLength (TreePath path, TreeIter iter, int length)
+```
+
+— the array bound as a scalar `out` and returned, meaning the call passed GTK the
+address of **one uninitialised stack slot** and told it to read `length`
+integers from it. A permutation could not be expressed at all, and asking for one
+was an out-of-bounds read.
+
+Two metadata lines fix it without a hand-written rebind: `array="1"` on
+`new_order`, and renaming `length` to `n_new_order` so `Parameters.Validate`
+pairs them into the `ArrayCountPair` it already knows how to emit. The result is
+`void RowsReorderedWithLength (TreePath, TreeIter, int[])`, and the length GTK
+receives is now the array's own.
+
+This is worth stating as a rule, because it is the fourth time it has appeared:
+**codegen recognises a count only when it is named `n_*` and only when it comes
+first.** Every `(T *items, int length)` and `(T *items, gsize n)` spelled any
+other way is silently a scalar. `Parameter.IsLength` exists and matches `*len`
+and `*length`, and nothing in `Parameters.Validate` consults it.
+
+## Behaviour worth knowing: what makes a managed tree model testable
+
+The trap in testing an interface you implement yourself is that the test can end
+up asserting the C# object against the C# object, with the binding a spectator.
+Three things keep it honest here:
+
+- **Only Gtk's own walkers are asked the questions.** `gtk_tree_model_foreach` is
+  C: it reaches the six rows of the sample tree only by calling `GetIterFirst`,
+  `IterChildren`, `IterHasChild`, `IterNext` and `GetPath` through the vtable,
+  and it visits them depth-first. The expected list is written out of the tree
+  literal in the test, so it fails if any one of those five is wrong.
+- **A second, independent consumer.** `GtkTreeModelFilter` builds a parallel tree
+  by interrogating the managed model, and `GtkTreeView` decides on its own which
+  rows are expandable. Hiding the files leaves `docs`, `notes` and `src` and
+  hides `notes`'s child with it; expanding everything opens exactly `0` and
+  `0:1`, because `src` is an empty folder and `LICENSE` is a file. Neither answer
+  exists anywhere in the test's own data structure.
+- **A mutation check.** Making the model's `IterNChildren` return 0 for every row
+  fails five of the seventeen tests, which is the proof that those assertions are
+  reading through the vtable rather than past it.
+
+`RefNode`/`UnrefNode` are the pair a model "may ignore"; the tree-view test
+counts the calls and requires at least one, which is the cheapest available proof
+that Gtk really is holding rows through the managed interface.
+
+Two smaller things the sample model has to get right, and both are properties of
+`Gtk.TreeIter` rather than of any one model. `Stamp` and `UserData` are the only
+fields a managed implementor can use — `_user_data2` and `_user_data3` are
+private — so a row id has to be **one-based**, because `TreeIter.Zero` is how the
+adapter spells "the invisible root" when C passes `NULL` for a parent. And
+`TreeModelAdapter.IterChildren (out iter)`, `IterNChildren ()` and
+`IterNthChild (out iter, n)` are hand-written precisely because they pass
+`IntPtr.Zero` rather than a zeroed iter: a zeroed `GtkTreeIter*` is not `NULL`,
+and the generated overloads cannot ask about the roots.
+
+**Where else to look:** `Gtk.TreeEnumerator` — what `foreach` over a `ListStore`
+runs — subscribes to `RowChanged`, `RowDeleted`, `RowInserted` and
+`RowsReordered` in its constructor and **never unsubscribes**. Every enumeration
+of a store therefore adds four permanent signal connections to it and leaves an
+enumerator that can never be collected, which is invisible to a test because the
+handlers only set a `bool`. `ListStore.GetEnumerator` is the only caller, so the
+blast radius is one `foreach` per leak, but a program that redraws a list in a
+loop pays for every pass. The same question applies to `NodeStore`'s
+`GCHandle` list, which is freed only in `Dispose`.
