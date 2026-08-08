@@ -140,5 +140,13 @@
        describe a loader that is already registered, so read-only is right. -->
   <attr path="/api/namespace/*[@cname='GdkPixbufFormat']/field[@cname='mime_types']" name="writeable">false</attr>
   <attr path="/api/namespace/*[@cname='GdkPixbufFormat']/field[@cname='extensions']" name="writeable">false</attr>
+
+  <!-- compute-size is declared by both GdkToplevel, carrying a GdkToplevelSize,
+       and GdkDragSurface, carrying a GdkDragSurfaceSize. A signal's args class
+       is named after the signal, so both asked for Gdk.ComputeSizeArgs and the
+       toplevel's won: a drag surface handler read its GdkDragSurfaceSize as a
+       GdkToplevelSize, which is a different struct. The toplevel is the one
+       applications use, so the drag surface moves; the cname is unchanged. -->
+  <attr path="/api/namespace/interface[@cname='GdkDragSurface']/signal[@cname='compute-size']" name="name">ComputeDragSurfaceSize</attr>
 </metadata>
 
