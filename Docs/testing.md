@@ -2605,3 +2605,93 @@ application reads did not exist. It is `Widget.Settings` now.
   without taking a reference and never clears it, so a `GApplication` collected
   while it is the process default leaves the next caller holding freed memory.
   Anything creating applications in a long-lived process has to keep them alive.
+
+## Fixed: sixteen signals whose args class belonged to another signal
+
+The GtkSharp package could not be consumed at all: `GtkSharp.targets`, which
+ships inside it and is imported by the **consumer's** build, had a `--` inside an
+XML comment. MSBuild rejected it with `MSB4024`, naming a path inside the user's
+package cache. Nothing in this repository imports that file — `Source/Samples`
+uses `ProjectReference` — so no amount of building `GtkSharp.sln` could see it.
+`SampleApps/GettingStarted` exists partly to keep that path exercised, and found
+this on its first build.
+
+The second defect it found is the one this section is named for.
+`Gtk.PressedArgs` was reporting `GtkGestureLongPress`'s arguments to
+`GtkGestureClick`'s handlers, so a click's `args.X` was really its `n_press` and
+nothing on the args held the coordinates at all.
+
+That is the collision [GioSharp fixed for `GFileMonitor::changed`](#fixed-two-signals-called-changed-one-args-class),
+and finding a second one by accident is the reason to look for the rest
+systematically. **GapiCodegen names a signal's args class after the signal**, so
+two signals of one name in one assembly ask for the same class and only one shape
+can have it. Every other user is handed members that read the wrong `Args[]`
+slot: the wrong type, or past the end of the array. It compiles, the handler
+still runs, and it reads the wrong thing.
+
+The audit groups every signal in an assembly by name and reports any name with
+two or more **distinct parameter shapes**. The filter that matters is that a
+signal with no parameters emits `System.EventHandler` and claims no args class at
+all, so it cannot collide: 31 shared names fall to 16 real ones.
+
+| Assembly | Args class | Who lost, and what they read instead |
+|:--|:--|:--|
+| Gtk | `PressedArgs` | `GestureClick` — `X` was `n_press`, no coordinates at all |
+| Gtk | `ChangeValueArgs` | `Range` — the proposed value was simply absent |
+| Gtk | `DragBeginArgs`, `DragEndArgs` | `DragSource` — could not reach the `GdkDrag` it exists to hand you |
+| Gtk | `PrepareArgs` | `Assistant` — read a `GtkWidget*` as a `double` |
+| Gtk | `TagRemovedArgs` | `TextBuffer` — no `Start`/`End`, so nothing said which range lost the tag |
+| Gtk | `ChangedArgs` | `Filter` and `CellRendererCombo` — three shapes, one name |
+| Gtk | `MoveCursorArgs` | four shapes; the three-parameter ones read a fourth argument that is not there |
+| Gtk | `ResponseArgs` | both — `GtkDialog`'s `GtkResponseType` arrived as a bare `gint` |
+| Gtk | `MoveFocusOutArgs`, `ChangeCurrentPageArgs` | a parameter *name* only |
+| Gdk | `ComputeSizeArgs` | `DragSurface` — read a `GdkDragSurfaceSize` as a `GdkToplevelSize` |
+| Gio | `InterfaceAddedArgs`, `InterfaceRemovedArgs` | `DBusObject` — read its interface as an object, then looked past the end |
+| Gio | `SocketEventArgs` | `SocketClient` — wrong enum, and a `GSocketConnectable` read as a `GSocket` |
+| Adw | `SetupMenuArgs` | `Sidebar` — read an `AdwSidebarItem` as an `AdwTabPage` |
+
+All sixteen are fixed in the `.metadata` files, following the precedent: **the
+less-used side moves and the cname never changes**, so nothing about what is
+connected natively is affected. Where the two sides disagreed only about a
+parameter's name or its width, the parameter is normalised instead and no signal
+is renamed — which is how `GtkNativeDialog::response` came to be typed
+`GtkResponseType` at both ends.
+
+The renames are `GestureLongPress.LongPressed`, `GestureDrag.DragStarted` /
+`DragEnded`, `SpinButton.ChangeValueByScroll`, `Assistant.PreparePage`,
+`TextBuffer.TagUnapplied` (pairing with `TagApplied`, and leaving `TagRemoved` to
+`TextTagTable`, which owns the `TagAdded`/`TagChanged`/`TagRemoved` triple),
+`Filter.FilterChanged`, `Sorter.SorterChanged`, `CellRendererCombo.ComboChanged`,
+`Label`/`TextView.MoveTextCursor`, `Text.MoveEntryCursor`,
+`TreeView.MoveTreeCursor`, `DragSurface.ComputeDragSurfaceSize`,
+`DBusObjectManager.ObjectInterfaceAdded` / `ObjectInterfaceRemoved`,
+`SocketListener.ListenerEvent` and `Sidebar.SetupItemMenu`.
+
+`SignalArgsCollisionTests` pins them by emitting each signal directly and reading
+the args back, because most of them need a pointer device, a display or a session
+bus that a test does not have — and the argument marshalling, which is the part
+that was wrong, is exercised either way.
+
+**Where else to look:** the audit is cheap and should be re-run after any change
+to `GirToGapi`'s name mangling or to a `.metadata` signal rename, because a
+rename is itself capable of *creating* a collision. `TextBuffer.TagRemoved` was
+exactly that: a deliberate rename, made to avoid clashing with the `RemoveTag`
+method, that landed on a name `GtkTextTagTable` already had.
+
+## Behaviour worth knowing: a lambda on some signals never runs at all
+
+Found while pinning the above. `+=` connects **after** the class closure, and a
+signal whose accumulator ends the emission as soon as the class handler has
+answered therefore never reaches an "after" handler — it is not late, it is not
+called. `GtkDragSource::prepare` and `GtkDropTarget::accept`, the two signals a
+drag-and-drop implementation is built on, are exactly those.
+
+```csharp
+source.Prepare += (o, args) => args.RetVal = MakeProvider();   // never invoked
+```
+
+Since a lambda cannot carry `[GLib.ConnectBefore]` — the attribute is read off
+the delegate's `MethodInfo` — those two signals cannot be handled with one at
+all. `GtkRange::change-value` is the contrast that makes the rule legible: its
+accumulator stops only for a handler returning `true`, so an "after" lambda does
+run there. The distinction is the accumulator, not the return type.
