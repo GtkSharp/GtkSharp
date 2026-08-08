@@ -89,6 +89,10 @@ namespace Cairo {
 				return new DirectFBSurface (surface, owned);
 			case SurfaceType.Svg:
 				return new SvgSurface (surface, owned);
+			case SurfaceType.Recording:
+				return new RecordingSurface (surface, owned);
+			case SurfaceType.Script:
+				return new ScriptSurface (surface, owned);
 			default:
 				return new Surface (surface, owned);
 			}
@@ -122,6 +126,35 @@ namespace Cairo {
 				this.Handle, content, width, height);
 
 			return new Cairo.Surface (p, true);
+		}
+
+		/// <summary>
+		/// A view onto a rectangle of this surface. Drawing into the view lands
+		/// in the target at the offset given, and is clipped to the rectangle.
+		/// </summary>
+		public Cairo.Surface CreateForRectangle (double x, double y, double width, double height)
+		{
+			CheckDisposed ();
+			IntPtr p = NativeMethods.cairo_surface_create_for_rectangle (handle, x, y, width, height);
+
+			return new Cairo.Surface (p, true);
+		}
+
+		public Cairo.Surface CreateForRectangle (Rectangle rectangle)
+		{
+			return CreateForRectangle (rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+		}
+
+		/// <summary>
+		/// The device this surface draws through, or null for the backends that
+		/// have none — an image surface among them.
+		/// </summary>
+		public Device Device {
+			get {
+				CheckDisposed ();
+				IntPtr device = NativeMethods.cairo_surface_get_device (handle);
+				return device == IntPtr.Zero ? null : new Device (device);
+			}
 		}
 
 		~Surface ()

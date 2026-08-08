@@ -64,5 +64,22 @@ namespace Cairo {
 			CheckDisposed ();
 			NativeMethods.cairo_ps_surface_set_size (Handle, width, height);
 		}
+
+		/// <summary>
+		/// Whether the file is written as Encapsulated PostScript. Must be set
+		/// before anything is drawn; it changes the leading comment from
+		/// <c>%!PS-Adobe-3.0</c> to <c>%!PS-Adobe-3.0 EPSF-3.0</c> and confines
+		/// the document to a single page.
+		/// </summary>
+		public bool Eps {
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_ps_surface_get_eps (Handle);
+			}
+			set {
+				CheckDisposed ();
+				NativeMethods.cairo_ps_surface_set_eps (Handle, value);
+			}
+		}
 	}
 }
