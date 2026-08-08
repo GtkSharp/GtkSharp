@@ -182,11 +182,16 @@ namespace GtkSharp.Generation {
 
 			if (IGen is IManualMarshaler)
 				return (IGen as IManualMarshaler).AllocNative (var);
-			// A fundamental type is a GLib.Opaque, so it spells the transfer-full
-			// form the same way an opaque does.
-			else if (IGen is ObjectGen && owned)
-				return var + " == null ? IntPtr.Zero : " + var +
-					((IGen as ObjectGen).IsFundamental ? ".OwnedCopy" : ".OwnedHandle");
+			// Anything handed back transfer-full has to carry a reference of its
+			// own, and ObjectBase already spells that per kind: OwnedCopy for a
+			// refcounted fundamental (which is a GLib.Opaque), OwnedHandle for a
+			// GObject, and the object-or-adapter pair for an interface. Testing
+			// for ObjectGen alone missed every interface, so a managed
+			// implementation of e.g. GtkTreeListModelCreateModelFunc or
+			// GtkAccessible::get_accessible_parent gave C a bare handle where C
+			// then owned a reference nobody had taken.
+			else if (IGen is ObjectBase && owned)
+				return (IGen as ObjectBase).CallByName (var, true);
 			else if (IGen is OpaqueGen && owned)
 				return var + " == null ? IntPtr.Zero : " + var + ".OwnedCopy";
 			else
