@@ -309,4 +309,24 @@
     Source/Libs/GioSharp/SettingsSchemaSource.cs.
   -->
   <attr path="/api/namespace/boxed[@cname='GSettingsSchemaSource']/method[@name='ListSchemas']" name="hidden">1</attr>
+
+  <!--
+    The rest of the GFileMonitor::changed collision, found by the audit that
+    followed it: a signal's args class is named after the signal, so two signals
+    of one name in one assembly cannot both have their own shape.
+  -->
+
+  <!-- interface-added/interface-removed: (interface) on GDBusObject,
+       (object, interface) on GDBusObjectManager. The manager's shape won, so a
+       GDBusObject handler read Args[0], its interface, as an object, and
+       looked for an interface in an Args[1] that is not there. -->
+  <attr path="/api/namespace/interface[@cname='GDBusObjectManager']/signal[@cname='interface-added']" name="name">ObjectInterfaceAdded</attr>
+  <attr path="/api/namespace/interface[@cname='GDBusObjectManager']/signal[@cname='interface-removed']" name="name">ObjectInterfaceRemoved</attr>
+
+  <!-- event: (GSocketClientEvent, GSocketConnectable, GIOStream) on
+       GSocketClient, (GSocketListenerEvent, GSocket) on GSocketListener. The
+       listener's shape won, so the client's handler (the one applications
+       actually connect, to watch a connection being established) read its
+       event as the wrong enum and its GSocketConnectable as a GSocket. -->
+  <attr path="/api/namespace/object[@cname='GSocketListener']/signal[@cname='event']" name="name">ListenerEvent</attr>
 </metadata>

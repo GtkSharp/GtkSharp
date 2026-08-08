@@ -7,8 +7,14 @@
       install tree, so everything GtkSharp loads lives under bin/.
 
       The sentinel below and GLibrary's SetDllDirectory must agree with GtkDir
-      and with _libraryDefinitions[Library.Gtk][0] -- note there is no "lib"
+      and with _libraryDefinitions[Library.Gtk][0]. Note there is no "lib"
       prefix on the gvsbuild DLL names.
+
+      Keep every comment in this file free of a double hyphen: XML forbids one
+      inside a comment, and this file is imported by MSBuild in the CONSUMER's
+      build, where the failure is MSB4024 on a path inside their package cache
+      rather than anything pointing back here. Nothing in this repository
+      imports it, so only a project referencing the package can catch it.
     -->
     <GtkUrl Condition=" '$(GtkUrl)' == '' ">https://github.com/wingtk/gvsbuild/releases/download/2026.6.0/GTK4_Gvsbuild_2026.6.0_x64.zip</GtkUrl>
     <GtkDir Condition=" '$(GtkDir)' == '' ">$(LOCALAPPDATA)\Gtk\4.22.4</GtkDir>

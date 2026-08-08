@@ -29,7 +29,12 @@ namespace Samples
 			// does not allow. The result arrives on the Response signal instead,
 			// so everything after the dialog opens has to move into the handler.
 			fcd.Response += (o, args) => {
-				if (args.ResponseId == (int) ResponseType.Ok) {
+				// ResponseId is a ResponseType: GtkNativeDialog declared the same
+				// values as a bare gint, which collided with GtkDialog's
+				// declaration over the one Gtk.ResponseArgs they share, and the
+				// gint won. The metadata widens the native dialog's parameter to
+				// the enum, so no cast is needed at either end now.
+				if (args.ResponseId == ResponseType.Ok) {
 					// The chooser answers with a GFile now, not a bare path;
 					// a file need not be local, so Path can be null.
 					var file = fcd.File;

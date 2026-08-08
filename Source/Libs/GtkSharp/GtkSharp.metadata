@@ -422,7 +422,12 @@
   <attr path="/api/namespace/object[@cname='GtkTextBuffer']/signal[@name='BeginUserAction']" name="name">UserActionBegun</attr>
   <attr path="/api/namespace/object[@cname='GtkTextBuffer']/signal[@name='EndUserAction']" name="name">UserActionEnded</attr>
   <attr path="/api/namespace/object[@cname='GtkTextBuffer']/signal[@name='InsertChildAnchor']" name="name">ChildAnchorInserted</attr>
-  <attr path="/api/namespace/object[@cname='GtkTextBuffer']/signal[@name='RemoveTag']" name="name">TagRemoved</attr>
+  <!-- Not TagRemoved: GtkTextTagTable already owns TagAdded/TagChanged/TagRemoved,
+       and its tag-removed carries only the tag, while this one carries the range
+       as well. Both asked for Gtk.TagRemovedArgs and the table's one-member shape
+       won, so a buffer handler could not reach Start or End at all. TagUnapplied
+       pairs with TagApplied above, which is this signal's opposite number. -->
+  <attr path="/api/namespace/object[@cname='GtkTextBuffer']/signal[@name='RemoveTag']" name="name">TagUnapplied</attr>
   <attr path="/api/namespace/object[@cname='GtkTextChildAnchor']/method[@name='GetWidgets']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkTextTag']/property[@name='Weight']" name="hidden">1</attr>
   <!-- Gtk 3 needed 27 "*-set" properties added by hand here: gapi2xml.pl parsed
@@ -733,4 +738,69 @@
   <attr path="/api/namespace/boxed[@cname='GtkExpressionWatch']/method[@cname='gtk_expression_watch_evaluate']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkClosureExpression']/constructor[@cname='gtk_closure_expression_new']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkTryExpression']/constructor[@cname='gtk_try_expression_new']" name="hidden">1</attr>
+
+  <!--
+    Signal args classes are named after the signal, so two signals sharing a
+    name in one assembly ask GapiCodegen for the same class and only one shape
+    can have it. Every other user of that name is then handed members that read
+    the wrong Args[] slot: the wrong type, or past the end of the array. It is
+    exactly the collision GioSharp fixed for GFileMonitor::changed, and the
+    block below is the rest of it in Gtk.
+
+    Found by writing SampleApps/GettingStarted: GestureClick.Pressed was
+    reporting GestureLongPress's arguments, so a click's X was really its
+    n_press and nothing on the args held the coordinates.
+
+    The rule, following the GFileMonitor precedent: the less-used side moves and
+    the cname never changes, so nothing about what is connected natively is
+    affected. Where the disagreement is only in a parameter's name or width, the
+    parameter is normalised instead and no signal is renamed at all.
+
+    The audit that produced this list groups every signal in an assembly by name
+    and reports any name with two or more distinct parameter shapes. A signal
+    with no parameters emits System.EventHandler and cannot collide.
+  -->
+
+  <!-- pressed: (n_press, x, y) here, (x, y) on GtkGestureLongPress. -->
+  <attr path="/api/namespace/object[@cname='GtkGestureLongPress']/signal[@cname='pressed']" name="name">LongPressed</attr>
+
+  <!-- prepare: (page) on the assistant, (x, y) on GtkDragSource. The drag
+       source is the one an application reaches for, so the assistant moves. -->
+  <attr path="/api/namespace/object[@cname='GtkAssistant']/signal[@cname='prepare']" name="name">PreparePage</attr>
+
+  <!-- drag-begin/drag-end: (GdkDrag) and (GdkDrag, delete_data) on
+       GtkDragSource, offsets on GtkGestureDrag. The gesture's shape won, so
+       DragSource could not reach the GdkDrag it exists to hand you. -->
+  <attr path="/api/namespace/object[@cname='GtkGestureDrag']/signal[@cname='drag-begin']" name="name">DragStarted</attr>
+  <attr path="/api/namespace/object[@cname='GtkGestureDrag']/signal[@cname='drag-end']" name="name">DragEnded</attr>
+
+  <!-- change-value: (scroll, value) on GtkRange, (scroll) on GtkSpinButton.
+       The spin button's shape won, so a Range handler had no value to read. -->
+  <attr path="/api/namespace/object[@cname='GtkSpinButton']/signal[@cname='change-value']" name="name">ChangeValueByScroll</attr>
+
+  <!-- changed: three different shapes, so two of the three must move and the
+       third would still be ambiguous with the parameterless "changed" every
+       other widget has. All three are named for their owner. -->
+  <attr path="/api/namespace/object[@cname='GtkCellRendererCombo']/signal[@cname='changed']" name="name">ComboChanged</attr>
+  <attr path="/api/namespace/object[@cname='GtkFilter']/signal[@cname='changed']" name="name">FilterChanged</attr>
+  <attr path="/api/namespace/object[@cname='GtkSorter']/signal[@cname='changed']" name="name">SorterChanged</attr>
+
+  <!-- move-cursor: four shapes. FlowBox/IconView/ListBox share one and keep the
+       name; the other three are named for the widget family they belong to. -->
+  <attr path="/api/namespace/object[@cname='GtkLabel']/signal[@cname='move-cursor']" name="name">MoveTextCursor</attr>
+  <attr path="/api/namespace/object[@cname='GtkTextView']/signal[@cname='move-cursor']" name="name">MoveTextCursor</attr>
+  <attr path="/api/namespace/object[@cname='GtkText']/signal[@cname='move-cursor']" name="name">MoveEntryCursor</attr>
+  <attr path="/api/namespace/object[@cname='GtkTreeView']/signal[@cname='move-cursor']" name="name">MoveTreeCursor</attr>
+
+  <!-- move-focus-out and change-current-page disagree only about what to call a
+       parameter of identical type, so renaming the parameter settles it and
+       both signals keep their names. -->
+  <attr path="/api/namespace/object[@cname='GtkScrolledWindow']/signal[@cname='move-focus-out']/parameters/parameter[@name='direction_type']" name="name">direction</attr>
+  <attr path="/api/namespace/object[@cname='GtkShortcutsSection']/signal[@cname='change-current-page']/parameters/parameter[@name='offset']" name="name">page</attr>
+
+  <!-- response: GtkDialog declares GtkResponseType, GtkNativeDialog declares a
+       bare gint for the same values. Same width, so widening the native
+       dialog's declaration to the enum costs nothing and removes the
+       disagreement, and types the member correctly at both ends. -->
+  <attr path="/api/namespace/object[@cname='GtkNativeDialog']/signal[@cname='response']/parameters/parameter[@name='response_id']" name="type">GtkResponseType</attr>
 </metadata>
