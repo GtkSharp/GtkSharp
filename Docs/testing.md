@@ -2979,3 +2979,45 @@ delegate, compared against the fixture's Gtk thread and against the worker that
 called `WakeupMain`. A delegate that ran on the wrong thread — which is the only
 failure that matters for a class whose entire purpose is thread affinity — would
 satisfy any test that merely counted invocations.
+
+## Behaviour worth knowing: what `await` does in a Gtk application
+
+`AsyncContextTests` covers `GLib.GLibSynchronizationContext`, which had no
+coverage at all despite being what makes `await` usable in a Gtk application.
+`Application.Init` installs it on the thread that called it, so an `await` in an
+event handler captures it and resumes on the Gtk thread — which is the only
+reason the code after an `await` may touch a widget.
+
+Nothing here asserts that a continuation *ran*. That is not the question: a
+continuation that resumed on a thread-pool thread satisfies any test that waits
+for a flag, and then corrupts Gtk from a thread that never called `gtk_init`. The
+question is **where**, so every test compares `ManagedThreadId`, and every
+positive is paired with the arrangement that must not come back:
+
+| | resumes on |
+|:--|:--|
+| `await task` | the Gtk thread |
+| `await task.ConfigureAwait(false)` | wherever the task completed |
+| `await task` with the context removed | wherever the task completed |
+| `await Task.CompletedTask` | inline, without the loop turning |
+
+The last is worth knowing on its own: an already-completed task takes the
+awaiter's synchronous path, so code after that `await` runs without a single turn
+of the main loop.
+
+`ConfigureAwait(false)` is the trap that bites hardest, because it is what a
+library author is told to write. Anything after it must not touch a widget, and
+the failure is timing-dependent rather than deterministic.
+
+**Send deadlocks if you call it from the Gtk thread**, and that is deliberately
+not tested: `Send` posts an idle and blocks until it runs, so calling it from the
+thread that would have to dispatch that idle waits forever. A test for it would
+hang the fixture rather than fail, and hanging is the one outcome this suite
+cannot report — see the truncated-total failure mode this document keeps
+returning to. `Send` is for worker threads; the Gtk thread should call the code
+directly, or `Post`.
+
+**Where else to look:** anything that captures `SynchronizationContext.Current`
+and replays it later. The context is installed per *thread* by `Init`, not
+process-wide, so a helper that marshals work by capturing the current context on
+whatever thread happens to construct it will silently do nothing useful.
