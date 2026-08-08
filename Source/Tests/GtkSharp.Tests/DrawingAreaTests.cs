@@ -84,10 +84,43 @@ namespace GtkSharp.Tests
             return condition();
         }
 
+        /// <summary>
+        /// A window that destroys itself when the test is done with it.
+        /// </summary>
+        /// <remarks>
+        /// A shown window keeps a frame clock running, and a frame clock keeps
+        /// queueing sources onto the main loop for as long as it lives. Leaving
+        /// one behind does not fail the test that opened it -- it fails whichever
+        /// later test counts what the loop dispatches, intermittently and
+        /// somewhere else entirely. MainLoopTests.Iterating_the_context_dispatches
+        /// _one_pending_source is exactly that test, and it went red once while
+        /// this file was being written.
+        ///
+        /// Disposing is not enough on its own: Dispose on a GLib.Object drops the
+        /// managed reference, it does not destroy the widget. So Dispose here
+        /// calls Destroy, and does it only once.
+        /// </remarks>
+        sealed class ShownWindow : IDisposable
+        {
+            Gtk.Window window;
+
+            public ShownWindow(Gtk.Window window) { this.window = window; }
+
+            public void Destroy()
+            {
+                if (window == null)
+                    return;
+
+                window.Destroy();
+                window = null;
+            }
+
+            public void Dispose() => Destroy();
+        }
+
         /// <summary>A drawing area of a known size, shown, with
-        /// <paramref name="draw"/> installed. The window is returned so the caller
-        /// can destroy it.</summary>
-        static Gtk.Window Shown(Gtk.DrawingArea area, Gtk.DrawingAreaDrawFunc draw, int size = 16)
+        /// <paramref name="draw"/> installed.</summary>
+        static ShownWindow Shown(Gtk.DrawingArea area, Gtk.DrawingAreaDrawFunc draw, int size = 16)
         {
             area.ContentWidth = size;
             area.ContentHeight = size;
@@ -97,7 +130,7 @@ namespace GtkSharp.Tests
             window.Child = area;
             window.Present();
 
-            return window;
+            return new ShownWindow(window);
         }
 
         // ------------------------------------------------------- the draw call
