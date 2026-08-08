@@ -35,12 +35,26 @@ namespace Gtk {
 				return;
 			}
 
-			IntPtr nmsg = GLib.Marshaller.StringToPtrGStrdup (GLib.Marshaller.StringFormat (format, args));
+			// String.Format, not Marshaller.StringFormat. The latter doubles every
+			// per cent sign, which was the right thing to do while the composed
+			// message was being handed to Gtk as message_format -- printf would
+			// turn "%%" back into "%". Now that the format is a literal "%s" and
+			// the message is the argument behind it, nothing will un-double them,
+			// and the dialog would read "100%% complete".
+			//
+			// Passing text as data rather than as a format is the more robust of
+			// the two arrangements: it cannot be got wrong by a message that
+			// happens to contain a conversion this escaping did not anticipate.
+			IntPtr nmsg = GLib.Marshaller.StringToPtrGStrdup (String.Format (format, args));
+			IntPtr nformat = GLib.Marshaller.StringToPtrGStrdup ("%s");
+
 			if (use_markup)
-				Raw = gtk_message_dialog_new_with_markup (p, flags, type, bt, nmsg, IntPtr.Zero);
+				Raw = gtk_message_dialog_new_with_markup (p, flags, type, bt, nformat, nmsg);
 			else
-				Raw = gtk_message_dialog_new (p, flags, type, bt, nmsg, IntPtr.Zero);
+				Raw = gtk_message_dialog_new (p, flags, type, bt, nformat, nmsg);
+
 			GLib.Marshaller.Free (nmsg);
+			GLib.Marshaller.Free (nformat);
 		}
 
 		public MessageDialog (Gtk.Window parent_window, DialogFlags flags, MessageType type, ButtonsType bt, string format, params object[] args) : this (parent_window, flags, type, bt, true, format, args) {}
