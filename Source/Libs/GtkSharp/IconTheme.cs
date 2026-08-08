@@ -28,28 +28,13 @@ namespace Gtk {
 
 	public partial class IconTheme {
 		// ListIcons: gtk_icon_theme_list_icons is gone in Gtk 4; the generated IconNames property replaces it.
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_icon_theme_get_search_path(IntPtr raw, out IntPtr path, out int n_elements);
-		static d_gtk_icon_theme_get_search_path gtk_icon_theme_get_search_path = FuncLoader.LoadFunction<d_gtk_icon_theme_get_search_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_get_search_path"));
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_icon_theme_set_search_path(IntPtr raw, IntPtr[] path, int n_elements);
-		static d_gtk_icon_theme_set_search_path gtk_icon_theme_set_search_path = FuncLoader.LoadFunction<d_gtk_icon_theme_set_search_path>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_set_search_path"));
+		//
+		// The search path itself is generated: Gtk 4 gave
+		// gtk_icon_theme_{get,set}_search_path the plain strv shape, so the
+		// method pair becomes the SearchPath property. The two delegates that
+		// used to stand here still described Gtk 3's (char ***, int *), and were
+		// dead code holding the metadata rules that hid the real pair in place.
 
-		bool IsWindowsPlatform {
-			get {
-				switch (Environment.OSVersion.Platform) {
-				case PlatformID.Win32NT:
-				case PlatformID.Win32S:
-				case PlatformID.Win32Windows:
-				case PlatformID.WinCE:
-					return true;
-				default:
-					return false;
-				}
-			}
-		}
-
-		// SetSearchPath: superseded by the generated SearchPath property.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_gtk_icon_theme_get_icon_sizes(IntPtr raw, IntPtr icon_name);
 		static d_gtk_icon_theme_get_icon_sizes gtk_icon_theme_get_icon_sizes = FuncLoader.LoadFunction<d_gtk_icon_theme_get_icon_sizes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_icon_theme_get_icon_sizes"));

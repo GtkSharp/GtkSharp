@@ -121,6 +121,18 @@ namespace GLib {
 			g_value_set_pointer (ref this, val);
 		}
 
+		/// <summary>The type this value was initialised to, or <c>GType.Invalid</c> if it was not.</summary>
+		/// <remarks>
+		/// Every branch inside this class already switches on it, but a caller
+		/// handed a GValue by an out-parameter or by a "give me a value of the
+		/// right shape" helper had no way to ask what shape that is - only
+		/// <see cref="Val"/>, which answers with an instance and cannot
+		/// distinguish "an object-typed value holding NULL" from "not an object".
+		/// </remarks>
+		public GType ValueType {
+			get { return new GType (type); }
+		}
+
 		/// <summary>The GType of a GValue itself, G_TYPE_VALUE.</summary>
 		/// <remarks>
 		/// A boxed type whose contents are another GValue. Signals that carry a

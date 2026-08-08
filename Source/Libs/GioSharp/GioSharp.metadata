@@ -108,6 +108,21 @@
   <!-- These two corrected gapi2xml.pl's mangling of GIOStream and GUnixFDList.
        GirToGapi takes the c:type verbatim and already spells them correctly. -->
   <attr path="/api/namespace/object[@cname='GApplication']/method[@cname='g_application_run']" name="hidden">1</attr>
+  <!-- g_application_open takes "GFile **files, gint n_files". The api.xml has no
+       way to tie the two together, so codegen bound files as a single GFile and
+       passed the GObject's own address where Gio dereferences an array of
+       pointers: the first "file" it read was the object's class pointer. The one
+       entry point an application registered with HANDLES_OPEN exists to serve
+       could not be called. Rebound over a real array in Application.cs. -->
+  <attr path="/api/namespace/object[@cname='GApplication']/method[@cname='g_application_open']" name="hidden">1</attr>
+  <!-- g_application_command_line_get_arguments returns "gchar **" with its
+       length in the out-parameter beside it, and the gir says the array is not
+       zero-terminated - so the null_term_array rule cannot be used and codegen
+       fell back to a single string, which is the first argument and a leak of
+       the rest. Reading its own command line is the whole point of an
+       application registered with HANDLES_COMMAND_LINE. Rebound over the count
+       in ApplicationCommandLine.cs. -->
+  <attr path="/api/namespace/object[@cname='GApplicationCommandLine']/method[@name='GetArguments']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GApplication']/signal[@cname='activate']" name="name">Activated</attr>
   <attr path="/api/namespace/object[@cname='GApplication']/signal[@cname='open']" name="name">Opened</attr>
   <attr path="/api/namespace/object[@cname='GAppLaunchContext']/signal[@cname='launch-failed']" name="name">LaunchedFailed</attr>
