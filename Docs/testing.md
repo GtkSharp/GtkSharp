@@ -15,7 +15,7 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 1183 tests both report 1180 passing with 3 skips — the
+so only broke there. At 1236 tests both report 1233 passing with 3 skips — the
 container is run with `GTKSHARP_TESTS_SKIP_WEBKIT=1`, which is why its two
 WebKit skips coincide with gvsbuild's.
 
@@ -2695,3 +2695,79 @@ the delegate's `MethodInfo` — those two signals cannot be handled with one at
 all. `GtkRange::change-value` is the contrast that makes the rule legible: its
 accumulator stops only for a handler returning `true`, so an "after" lambda does
 run there. The distinction is the accumulator, not the return type.
+
+## Fixed: six Gsk render-node APIs that could not be called correctly
+
+`GskRenderNodeTests` went in over the scene graph Gtk 4 actually draws through,
+and every constructor it needed on the way turned out to be one of two shapes
+codegen has no rule for.
+
+**Arrays whose length is a sibling parameter.** The same family as
+`gsk_container_node_new`, already rebound, and `gdk_content_formats_new` before
+it. Five gradient constructors took `(const GskColorStop *stops, gsize n_stops)`
+and came out as *one* `ColorStop` by value plus a count the caller supplied
+separately:
+
+```csharp
+// Before. A gradient needs two stops; there is one struct's worth of memory here.
+new Gsk.LinearGradientNode(bounds, start, end, oneStop, 2);
+```
+
+There was no way to write a correct call — passing the true count read past the
+end of a 20-byte allocation, and passing 1 built a gradient GSK rejects. The
+matching `GetColorStops` wrapped only the first element, so a gradient could not
+be read back either. `gsk_shadow_node_new` had it too, and a drop shadow with two
+shadows is ordinary rather than exotic. All rebound over `ColorStop[]` /
+`Shadow[]` in `GradientNodes.cs` and `ShadowNode.cs`, where the count is the
+array's own length and cannot disagree with it.
+
+**`gsk_stroke_set_dash` was worse than uncallable.** The array parameter became
+an *out* parameter:
+
+```csharp
+public float SetDash(ulong n_dash) {
+    float dash;                                    // four bytes of stack
+    gsk_stroke_set_dash(Handle, out dash, new UIntPtr(n_dash));   // read n_dash floats from it
+    return dash;
+}
+```
+
+So there was no way to set a dash pattern at all, and the obvious call corrupted
+the caller's frame. Rebound as a `float[] Dash` property in `Stroke.cs`.
+
+**Fixed-size arrays returned as scalars.** `gsk_border_node_get_widths` returns
+`const float *` — four floats, one per edge — and the api.xml records the element
+type with no length, so codegen declared the P/Invoke as *returning a `float`*.
+On x86-64 the wrapper read XMM0 while GSK had put the pointer in RAX, so
+`BorderNode.Widths` answered with whatever the last floating-point operation had
+left behind. `get_colors` had the same shape and returned the array's first
+element as the whole answer. Both now return arrays.
+
+**Where else to look:** grep the generated tree for a P/Invoke whose return type
+is a value type where the api.xml says `const-<T>*`, and for a `<parameter>` that
+is an array sitting beside a `gsize`/`guint` count. Neither shape is expressible
+in api.xml, so neither will ever be caught by the build — only by someone trying
+to call it.
+
+## Behaviour worth knowing: only rasterising tests a render node
+
+`GskRenderNodeTests` ends almost every test at `RenderNode.Draw` onto a Cairo
+image surface and reads the pixels back, rather than asserting on the node's
+properties. This is not thoroughness for its own sake: a render node *is* a
+description of drawing, so "was this node built correctly" and "does it describe
+the drawing I asked for" are the same question, and only rasterising answers it.
+
+A property-only test passes just as happily against a node built from the wrong
+arguments — which is precisely the state four of the node types above were in.
+The pattern is cheap:
+
+```csharp
+using var surface = new Cairo.ImageSurface(Cairo.Format.Argb32, 8, 8);
+using (var cr = new Cairo.Context(surface)) node.Draw(cr);
+surface.Flush();
+// ARGB32 is premultiplied BGRA on little-endian: byte 0 B, 1 G, 2 R, 3 A.
+```
+
+Assert on *both* directions — a pixel that should be painted and one that should
+not. Half the assertions in that file would pass against a surface nothing ever
+touched, and the other half are what stop that from being a green run.
