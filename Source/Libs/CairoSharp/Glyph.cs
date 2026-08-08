@@ -68,9 +68,26 @@ namespace Cairo
 			return false;
 		}
 
+		// Folded in order rather than XOR-ed, and over the fields' own hashes
+		// rather than over casts to int. The old
+		//
+		//     return (int) Index ^ (int) X ^ (int) Y;
+		//
+		// was wrong twice. XOR is commutative, so every permutation of the same
+		// three numbers shared one hash -- and a glyph run is mostly permutations
+		// of small numbers, so that is the ordinary case rather than a rare one.
+		// (1, 2, 3) hashed to zero, and so did (3, 2, 1) and (2, 1, 3). The casts
+		// then threw away the fractional part of X and Y, which is precisely what
+		// sub-pixel glyph positioning puts there. Same reasoning as
+		// StructBase.GenHashCode in GapiCodegen.
 		public override int GetHashCode ()
 		{
-			return (int) Index ^ (int) X ^ (int) Y;
+			unchecked {
+				int hash = Index.GetHashCode ();
+				hash = hash * 397 ^ X.GetHashCode ();
+				hash = hash * 397 ^ Y.GetHashCode ();
+				return hash;
+			}
 		}
 
 		internal static IntPtr GlyphsToIntPtr (Glyph[] glyphs)
