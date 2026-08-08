@@ -3500,3 +3500,38 @@ a pointer are skipped, and those are where the last two crashes actually lived
 (`g_ptr_array_copy`'s missing `GCopyFunc`, `g_logv`'s missing `va_list`). Arity
 caught both. Types catch what arity cannot. Neither catches a parameter that is
 the right size and the wrong meaning.
+
+## Checked and correct: the ABI field-offset arithmetic
+
+`GLib.AbiStruct` is how a vfunc gets overridden — the binding computes where a
+function pointer sits inside `GObjectClass` or `GtkWidgetClass` and writes there.
+An offset wrong by one slot overwrites a different vfunc, and what breaks is some
+unrelated widget behaviour much later. 145 hand-written lines, and nothing in the
+suite referenced it by name.
+
+**No defect found.** That is the result, and it is worth recording as one: this
+arithmetic is now pinned rather than merely believed.
+
+What makes the tests worth having is the oracle. Every layout is *also* declared
+as a `[StructLayout(Sequential)]` managed struct, and `AbiStruct`'s answers are
+compared against `Marshal.OffsetOf` and `Marshal.SizeOf` — an independent
+implementation of the same C rules, written by someone else, checking the one
+under test. That is stronger than the test doing its own arithmetic, which would
+only prove the test and the code agree.
+
+Pointer cases take their expected value from `IntPtr.Size` rather than a literal,
+so they mean the same thing on a 32-bit host. And there is a control — two
+`short`s, which must pack tight — so "the offsets are right" is not just
+reporting a rule that always rounds up.
+
+`GHookList` is the only shape in the tree that uses the bitfield path
+(`hook_size : 16` and `is_setup : 1` sharing a storage unit). The assertion is
+what actually has to hold: both bit members start at the same byte, and the first
+ordinary field after them is back on pointer alignment.
+
+**One latent oddity, deliberately not changed.** `AbiStruct.Load` computes the
+total width of a bitfield run into a local `nbits` and then never uses it —
+`bitfields_size` comes from the first field's `Bits` alone. For `GHookList` the
+final offsets come out right anyway, and there is no independent oracle for the
+bitfield path (`Marshal` cannot model bitfields), so changing it would be
+adjusting behaviour that cannot be validated. Recorded here rather than fixed.
