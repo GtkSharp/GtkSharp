@@ -3343,3 +3343,63 @@ A fabricated pointer is only safe in a list whose element type stops anything
 dereferencing it. Where the point of the test *is* the dereferencing path, use
 `IntPtr.Zero`: it exercises the same branch and is the one address that is
 defined to be safe.
+
+## Fixed: `PtrArray.Clone` called an arbitrary address as a function
+
+The `ListBase` pass ended by recording `PtrArray` as unexamined — same
+`DataMarshal`, same `ICollection` surface, same enumerator shape, written
+separately. `GLibContainerTests` is that examination. It shares two of the five
+defects found there, and has a worse one of its own.
+
+```csharp
+delegate IntPtr d_g_ptr_array_copy(IntPtr raw);              // one parameter
+```
+
+The C function has taken three since GLib 2.62:
+
+```c
+GPtrArray *g_ptr_array_copy (GPtrArray *array, GCopyFunc func, gpointer user_data);
+```
+
+So `Clone` left `func` and `user_data` as whatever happened to be in the argument
+registers — and a non-NULL `func` is **called**, once per element. This did not
+return a wrong answer or throw; it jumped to an arbitrary address. The test host
+died with `FailFast` and no managed stack.
+
+Now declared with all three, passing NULL for a shallow copy, and the result is
+marked owned — `g_ptr_array_copy` is transfer full, so the old
+`owned: false` leaked every clone as well.
+
+**The other two are the ones `ListBase` had**, in independently written code:
+`SyncRoot` returned null, and the enumerator restarted after finishing because
+`current = -1` means both "not started" and "ran off the end".
+
+**Where else to look:** every `d_g_*` delegate in the hand-written tree is a
+signature nobody checks. `grep` for delegates whose parameter count differs from
+the gir's, starting with anything added after GLib 2.50 — the older calls have
+had decades of use, these have not. A wrong *type* usually misbehaves; a missing
+**callback** parameter executes data.
+
+## Behaviour worth knowing: the total is the crash detector
+
+Two crashes in two sweeps, and both announced themselves the same way — not as a
+failure, but as a **smaller `Total`**:
+
+```
+Failed:     2, Passed:     7, Total:     9      <- fourteen tests were written
+```
+
+Nine ran. Five never got the chance, because the host was gone. Had the two
+failures not been there, the line would have read `Passed! ... Total: 9` and
+looked like a clean run of a smaller class.
+
+The habit that catches it is counting the tests you wrote and comparing. When the
+total is short, bisect by filter — the crash here was one test, and running the
+six `PtrArray` tests one at a time named it in under a minute:
+
+```sh
+for t in <names>; do dotnet test --filter "FullyQualifiedName~$t"; done
+```
+
+Then read the *class* boundary too: `Argv` passing 5/5 in isolation while the
+combined run died proved the fault was not in the half that looked suspicious.
