@@ -2853,3 +2853,650 @@ bound over `ref this`, which needs no copy at all once the struct is blittable.
 embedded by value in C and cannot be described by the class codegen emits for it.
 `grep` the generated tree for `IntPtr _` fields inside a `[StructLayout]` struct,
 and for `ByValArray` over anything that is not a primitive.
+
+## Fixed: a `.ui` file with a `<signal>` failed in a way that named the wrong thing
+
+`BuilderBindingTests` went in over `Builder.Autoconnect` — binding `[UI]` fields
+from a `.ui` document, which is what the templates generate and what
+`getting-started.md` teaches. `Builder.cs`, `BuilderXml.cs` and
+`BindingAttribute.cs` are entirely hand-written, so none of it was checked by
+compiling, and none of it was covered.
+
+The field binding turned out to be sound: by field name, by explicit name,
+private fields, fields inherited from a base class, static fields via
+`Autoconnect(Type)`, and `throwOnUnknownObject` in both positions. All now
+pinned.
+
+**The signal path was not what anyone thought.** The code and the guide both
+described a document that loads with its handlers unconnected, and an
+`Autoconnect` that throws `NotSupportedException` "deliberately, rather than
+silently ignoring every click". What actually happens is that Gtk 4 resolves a
+`<signal>` handler through `GtkBuilderScope` at **parse** time. The default scope
+is `GtkBuilderCScope`, which looks the name up as an exported C symbol. It never
+finds a managed method, so the document does not load at all:
+
+```
+GLib.GException: No function named `OnClicked`.
+```
+
+`Autoconnect` is never reached, so its `NotSupportedException` never fires — and
+the error the user does get reads as a missing *native* symbol, sending them to
+look for a C function they never wrote.
+
+Two things were wrong at once, which is why neither had been noticed: the guide
+documented an exception the library could not raise, and the check that would
+have raised it only ever ran on the `Stream` constructor. `AddFromString`,
+`AddFromFile` and `AddFromResource` — the three ordinary ways in — never
+inspected the document at all.
+
+All three are now hidden in the metadata and rebound in `Builder.cs`. They
+inspect the XML *before* the native call, and if the call then fails on a
+document that declared a handler, that is what the exception says, with
+GtkBuilder's own error kept as `InnerException`. `Builder.DeclaresSignals` is
+public and is set even when the load fails, so a caller can tell "my XML is
+wrong" from "this is not supported yet".
+
+**The real remedy is still open**: implementing `GtkBuilderScope` so a managed
+method can be resolved. `Gtk.IBuilderScope`, `Gtk.BuilderCScope` and
+`Builder.Scope` are all bound already; what is missing is a scope whose
+`create_closure` returns a `GClosure` over a managed delegate. Until then the
+failure is at least legible.
+
+**Where else to look:** a comment or a doc that describes an exception is a claim
+nobody checks. Grep `Docs/` for exception type names and confirm each one is
+reachable — this one had been wrong since the Gtk 4 port, in the file that
+teaches the binding.
+
+## Behaviour worth knowing: parse the XML, do not grep it
+
+`BuilderXml.DeclaresSignals` parses the document rather than searching for
+`"<signal"`, and the test that matters is a document whose only mention of the
+word is a comment saying it deliberately has none:
+
+```xml
+<!-- No <signal> elements here: handlers are connected in code. -->
+```
+
+Grepping reads that as a declaration and refuses a perfectly good file. Now that
+the string drives an *exception*, getting it wrong turns a working document into
+a rejected one rather than merely producing a spurious warning.
+
+## Fixed: the CSS example in the guide named a type that did not exist
+
+`ThreadAndStyleTests` covers `Gtk.ThreadNotify` and the `Gtk.StyleContext` render
+helpers — two hand-written files with no coverage at all. Writing it turned up a
+second documentation-versus-library mismatch, in the same file as the `<signal>`
+one:
+
+```csharp
+StyleContext.AddProviderForDisplay(Gdk.Display.Default, css,
+                                   Gtk.StyleProviderPriority.Application);
+```
+
+There was no `Gtk.StyleProviderPriority`. `AddProvider` takes a bare `uint`, and
+the only way to call it was to write `600`.
+
+`GTK_STYLE_PROVIDER_PRIORITY_APPLICATION` is a `<constant>` in `Gtk-4.0.gir`, and
+**GirToGapi emits no constants at all** — `grep -c '<constant' Source/Libs/*/*-api.xml`
+is zero everywhere. Gtk has 98, GLib 142, Pango 14, and Gdk 2459. Gdk's are the
+`GDK_KEY_*` keyvals and they are covered only because someone hand-wrote
+`Source/Libs/GdkSharp/Key.cs`; the rest are simply absent.
+
+The five priorities are now declared by hand in `StyleProviderPriority.cs`, as
+`const uint` rather than an enum — `AddProvider` takes a number and any value
+between two named ones is legal, which an enum would deny. Teaching GirToGapi to
+emit `<constant>` remains open, and would rewrite every api.xml, so it belongs to
+its own reviewable pass rather than to a test sweep.
+
+**Where else to look:** the same grep is the audit. A constant that a C
+programmer would reach for by name is one a C# caller currently has to
+hard-code, and hard-coded numbers do not fail loudly when a version changes them.
+
+## Behaviour worth knowing: what makes a drawing test an oracle
+
+The render helpers are the null-delegate trap's natural habitat — several
+`gtk_render_*` functions were removed outright in Gtk 4, and a removed one is a
+`NullReferenceException` at the call site, not a link error. Testing them by
+calling and seeing whether anything was thrown would be the assertion-free sweep
+this document keeps banning.
+
+What makes them testable is that CSS is an oracle the test writes itself:
+
+```csharp
+provider.LoadFromData("label { background-color: rgb(255,0,0); }");
+// ... RenderBackground into an ImageSurface, then assert the pixel is 255,0,0
+```
+
+A themed default cannot be mistaken for success, because the test chose the
+colour. Each of these is paired with its opposite — `background-color:
+transparent`, `border: 0px` — so "something was painted" is reporting the CSS
+rather than the fact that a call happened at all. `RenderLayout` is paired with
+an empty `Pango.Layout` for the same reason.
+
+`ThreadNotify` gets the same treatment. The oracle is not that the delegate ran
+but *which thread it ran on*: `Thread.CurrentThread.ManagedThreadId` inside the
+delegate, compared against the fixture's Gtk thread and against the worker that
+called `WakeupMain`. A delegate that ran on the wrong thread — which is the only
+failure that matters for a class whose entire purpose is thread affinity — would
+satisfy any test that merely counted invocations.
+
+## Behaviour worth knowing: what `await` does in a Gtk application
+
+`AsyncContextTests` covers `GLib.GLibSynchronizationContext`, which had no
+coverage at all despite being what makes `await` usable in a Gtk application.
+`Application.Init` installs it on the thread that called it, so an `await` in an
+event handler captures it and resumes on the Gtk thread — which is the only
+reason the code after an `await` may touch a widget.
+
+Nothing here asserts that a continuation *ran*. That is not the question: a
+continuation that resumed on a thread-pool thread satisfies any test that waits
+for a flag, and then corrupts Gtk from a thread that never called `gtk_init`. The
+question is **where**, so every test compares `ManagedThreadId`, and every
+positive is paired with the arrangement that must not come back:
+
+| | resumes on |
+|:--|:--|
+| `await task` | the Gtk thread |
+| `await task.ConfigureAwait(false)` | wherever the task completed |
+| `await task` with the context removed | wherever the task completed |
+| `await Task.CompletedTask` | inline, without the loop turning |
+
+The last is worth knowing on its own: an already-completed task takes the
+awaiter's synchronous path, so code after that `await` runs without a single turn
+of the main loop.
+
+`ConfigureAwait(false)` is the trap that bites hardest, because it is what a
+library author is told to write. Anything after it must not touch a widget, and
+the failure is timing-dependent rather than deterministic.
+
+**Send deadlocks if you call it from the Gtk thread**, and that is deliberately
+not tested: `Send` posts an idle and blocks until it runs, so calling it from the
+thread that would have to dispatch that idle waits forever. A test for it would
+hang the fixture rather than fail, and hanging is the one outcome this suite
+cannot report — see the truncated-total failure mode this document keeps
+returning to. `Send` is for worker threads; the Gtk thread should call the code
+directly, or `Post`.
+
+**Where else to look:** anything that captures `SynchronizationContext.Current`
+and replays it later. The context is installed per *thread* by `Init`, not
+process-wide, so a helper that marshals work by capturing the current context on
+whatever thread happens to construct it will silently do nothing useful.
+
+## Fixed: `StringList.Splice` deleted rows the caller never asked it to
+
+Found while writing `ListViewTests` over the half of the list pipeline nothing
+covered — `ListView`, `MultiSelection`, `NoSelection`, `ListItem` and `Bitset` had
+no mention in the suite at all, and `ListView` is the widget
+`getting-started.md` tells people to use instead of `TreeView`.
+
+The C function is
+
+```c
+void gtk_string_list_splice (GtkStringList *self, guint position,
+                             guint n_removals, const char * const *additions);
+```
+
+and the api.xml records all three parameters correctly. What came out was
+
+```csharp
+public void Splice(uint position, string[] additions)     // n_removals is gone
+```
+
+with `additions.Length` passed as `n_removals`. So `list.Splice(1, new[] {"a","b"})`
+— which reads as an insertion — removed two rows and added two, and there was no
+way to express a pure insertion at all. Silent, and destructive.
+
+**The cause is a name heuristic with no cross-check.** `Parameter.IsCount` is true
+for *any* integer parameter whose name starts with `n_`, and `Parameters` then
+pairs it with the next parameter if that one `IsArray`. `n_removals` starts with
+`n_`; `additions` is an array; the two got married. But `additions` is
+NULL-terminated — it carries its own length and has no count parameter to pair
+with. `IsArray` was true for both kinds, so the distinction did not exist.
+
+`Parameter.NeedsCount` now makes it: `array` **and not** `null_term_array`. Fixed
+in the generator rather than the metadata, because the misjudgement will recur on
+the next API of this shape.
+
+**How the blast radius was measured**, which matters more than the fix: a
+generator change rewrites every assembly, so the check is to diff the generated
+public surface, not to run the tests and see green.
+
+```sh
+find Source/Libs -path "*/Generated/*" -name "*.cs" -print0 \
+  | xargs -0 grep -hE "^[[:space:]]+public .*\(.*\)" | sed 's/^[[:space:]]*//' | sort > after.txt
+# stash the change, dotnet cake --BuildTarget=Prepare, repeat into before.txt
+diff before.txt after.txt
+```
+
+7844 signatures, one line changed. Do this for any `GapiCodegen` edit — the suite
+passing says nothing about the 7843 signatures no test mentions.
+
+A second bug fell out of the same block: `if (next != null || next.Name == "parameter")`
+dereferences `next` in exactly the case the null check was guarding. `||` for
+`&&`, and it also meant a comment inside `<parameters>` would crash codegen.
+
+## Fixed: a second `<constant>` casualty, and what the first one should have taught
+
+`GTK_INVALID_LIST_POSITION` is what `SingleSelection.Selected` holds when nothing
+is selected and what `StringList.Find` answers when the string is not there. Like
+`GTK_STYLE_PROVIDER_PRIORITY_*` before it, it is a `<constant>` in the gir, so it
+did not exist in the binding and the only way to ask "is anything selected" was
+to compare against `uint.MaxValue` and hope that is what it means. Now
+`Gtk.Global.InvalidListPosition`.
+
+That is two of the 98 found by accident, each while writing a test for something
+else. The rest are still missing, and the way to find them is not to wait for the
+next accident — see the earlier section.
+
+## Behaviour worth knowing: a single selection takes two flags to empty
+
+I expected `CanUnselect = true` to be enough to clear a `SingleSelection`, and it
+is not. There are two independent guards, both defaulting to the value that keeps
+a row selected:
+
+| | |
+|:--|:--|
+| `CanUnselect` (false) | refuses the unselect outright |
+| `Autoselect` (true) | allows it, then immediately picks a row again |
+
+So clearing a selection needs `CanUnselect = true` **and** `Autoselect = false`.
+This is why a `ListView` always has a row highlighted, and why turning off only
+the flag whose name mentions unselecting appears to do nothing at all. The test
+asserts the state after each of the three steps, so the one that works is
+distinguishable from the two that quietly do not.
+
+## Behaviour worth knowing: how to read a widget's own painting back
+
+`DrawingAreaTests` covers the custom-drawing path — `Docs/getting-started.md`
+devotes a section to it and the suite had no mention of `DrawingArea` or
+`SetDrawFunc` at all. It is the most common thing an application does beyond
+arranging widgets, and it crosses every boundary in the binding at once: a
+managed delegate marshalled into Gtk, invoked from native code, handed a
+`Cairo.Context` it did not create.
+
+Counting invocations is not enough. A draw function that *is* called but whose
+context is wrong paints nothing, and an invocation counter calls that a pass. The
+oracle has to be the pixels — but the context belongs to Gtk's surface, so it
+cannot be read directly. The route that works goes through the scene graph Gtk
+itself draws through:
+
+```csharp
+var paintable = new Gtk.WidgetPaintable(widget);
+var snapshot = new Gtk.Snapshot();
+paintable.Snapshot(snapshot, width, height);
+var node = snapshot.ToNode();          // null if the widget painted nothing
+
+using var surface = new Cairo.ImageSurface(Cairo.Format.Argb32, width, height);
+using (var cr = new Cairo.Context(surface)) node.Draw(cr);
+```
+
+This is worth knowing beyond drawing areas: it rasterises **any** widget, so it
+is the general way to assert on what Gtk rendered rather than on what it was
+asked to render. It leans on `RenderNode.Draw`, which `GskRenderNodeTests`
+pins independently.
+
+Each drawing test is paired with a control that must paint nothing — an empty
+draw function, an empty `Pango.Layout` — so "there are pixels" reports the
+drawing rather than the theme, the window background, or anything else that ends
+up in a snapshot.
+
+**And a trap worth stating plainly.** The `width` and `height` a draw function
+receives are the widget's **allocation**, not its `ContentWidth`/`ContentHeight`.
+Those two are a natural-size request; a window stretches its child past them. A
+test that asked for 16 and asserted 16 got 188 — the area filling the smallest
+window the display would make. Asserting the requested size would have been
+asserting a fact about the window manager, which is the class of mistake this
+document keeps coming back to. Compare against `AllocatedWidth`/`AllocatedHeight`
+instead, and assert the *requested* size through `Measure` where it really is the
+contract.
+
+## Fixed: `AttrList.Attributes` handed back a list of nulls
+
+`PangoAttributeTests` covers `Pango.AttrList` and `Pango.AttrIterator` — nearly
+all hand-written, and `AttrIterator` had no mention in the suite at all.
+
+`AttrList.Attributes` was generated as
+
+```csharp
+public GLib.SList Attributes {
+    get { return new GLib.SList (pango_attr_list_get_attributes (Handle)); }
+}
+```
+
+with no element type. `GLib.SList` then marshals each item as a GObject, which a
+`PangoAttribute` is not, so every element came back **null** and touching one
+threw `NullReferenceException`. There was no way to enumerate a list's
+attributes.
+
+What makes this one worth reading is that the fix already existed twelve lines
+away. `AttrIterator.Attrs` is hand-written specifically to avoid this, and says
+so in a comment. The list's own getter had the identical bug and kept it, because
+**nothing called it** — the hand-written file was written in response to a crash
+somebody hit, and the neighbouring method nobody happened to use was never
+looked at. Rebound over `Pango.Attribute[]` in `AttrList.cs`.
+
+**Where else to look:** `grep` the generated tree for `new GLib.SList (` and
+`new GLib.List (` with a single argument. Every one of those is a list whose
+elements will marshal as GObject regardless of what they are.
+
+## Behaviour worth knowing: an attribute iterator has a run after the last attribute
+
+`AttrIterator` does not stop when the attributes do. After the last attributed
+run it yields one more, from the end of the last attribute to `G_MAXINT`,
+carrying no attributes — the unformatted remainder of whatever text the list is
+eventually applied to. The list has no idea how long that text is, which is why
+the end is a sentinel rather than a length.
+
+I expected `Next()` to return false there, and a caller who assumes the same will
+attribute the trailing run's (empty) formatting to the last real run.
+
+Attribute indices are **byte** offsets, not character offsets, which is pinned
+with a two-character, three-byte string. Getting it wrong formats half a letter
+and Pango does not complain.
+
+## And a repeat of a mistake this document already records
+
+The metadata edit for the fix above contained `--` inside an XML comment, which
+is not legal XML. `GapiFixup` failed, codegen produced nothing for the whole of
+PangoSharp, and **MSBuild still printed "0 Error(s)"** — the Cake task failed
+underneath a build that reported success. Grepping the log for `error CS` and
+`Error(s)` found nothing wrong.
+
+This is the third variant of the same failure recorded here: a truncated test
+total, a schema that would not load, and now a metadata file that would not
+parse. The lesson has to be mechanical rather than remembered:
+
+```sh
+dotnet cake build.cake --BuildTarget=Build > build.log 2>&1; echo "EXIT: $?"
+```
+
+**Check the exit code.** Grepping for the word "error" is not a substitute, and
+`0 Error(s)` from MSBuild says nothing about whether the tool that runs before it
+did its job. A cheap second check, since the metadata is XML and XML is
+checkable:
+
+```sh
+python -c "import glob,xml.dom.minidom as m; [m.parse(f) for f in glob.glob('Source/Libs/*/*.metadata')]"
+```
+
+## Fixed: every `Cairo.Glyph` in a run hashed to the same value
+
+`CairoTextTests` covers Cairo's text and glyph API. `CairoSharp` has no
+`.metadata` and nothing generated — every line is hand-written, so nothing about
+it is checked by compiling — and `FontFace`, `Glyph` and `ShowGlyphs` had no
+mention in the suite at all.
+
+`Glyph.GetHashCode` was
+
+```csharp
+return (int) Index ^ (int) X ^ (int) Y;
+```
+
+wrong twice over. XOR is commutative, so every permutation of the same three
+numbers shared one hash: `(1,2,3)`, `(3,2,1)` and `(2,1,3)` all came out as
+**zero**. A glyph run is mostly permutations of small numbers, so that is the
+ordinary case rather than a rare one. And the casts threw away the fractional
+part of `X` and `Y` — which is exactly what sub-pixel glyph positioning puts
+there, so every glyph between two whole numbers hashed alike too.
+
+This is the same defect, with the same reasoning, that `StructBase.GenHashCode`
+in `GapiCodegen` was already fixed for. The generated structs got the fix; the
+hand-written one beside them did not, because nobody was looking at it. That is
+the second time in two sweeps — `AttrList.Attributes` kept the bug its own
+neighbour was hand-written to avoid.
+
+**Where else to look:** `grep` the hand-written tree for `GetHashCode` bodies
+containing `^` without a multiply. A commutative fold is only visible as a bug
+when something hashes a struct whose fields are permutations of each other, which
+is rare enough to survive for years and common enough to matter when it bites.
+
+## Behaviour worth knowing: testing glyph drawing without assuming a font
+
+Glyph indices are a property of the font file, so no particular number can be
+assumed on a machine whose fonts the test did not choose. Scanning for one with
+non-empty extents makes the test independent of what `"sans"` resolves to:
+
+```csharp
+for (long index = 1; index < 300; index++)
+    if (cr.GlyphExtents(new[] { new Cairo.Glyph(index, 0, 0) }).Width > 0)
+        return index;
+throw new InvalidOperationException("no drawable glyph found");
+```
+
+It fails loudly rather than quietly drawing nothing, which is the difference
+between this and hard-coding an index that happens to work here.
+
+With one such index in hand, the oracles are positional rather than absolute: the
+same glyph at `x=2` and `x=40` must leave ink at different places, and three
+glyphs must reach further right than one. Between them those pin the hand-written
+`Glyph[]` copy into unmanaged memory — index, x and y all surviving it, and the
+whole array arriving rather than only its first element, which is the failure
+this repository has hit repeatedly elsewhere.
+
+## Fixed: five defects in the list marshalling every binding call goes through
+
+`GLibListTests` covers `GLib.List`, `GLib.SList` and the `ListBase` beneath
+them — 290 hand-written lines that nothing in the suite referenced by name, and
+the machinery both of this sweep's earlier defects actually lived in. Writing
+sixteen tests against it found five more.
+
+**`Clone` dropped the element type, and cloning a list of strings crashed the
+process.** It was
+
+```csharp
+public override object Clone () => new List (g_list_copy (Handle));
+```
+
+with no element type, so every element of the clone went through `DataMarshal`'s
+last resort — "is this pointer a GObject?" — which dereferences it as a
+`GTypeInstance`. For a list of strings that reads a `char*` as an object header:
+an access violation that took the test host down, not an exception. Now carries
+`element_type` across, `owned: true` (the spine is a copy) and
+`elements_owned: false` (`g_list_copy` is shallow).
+
+**`Count` was cached and never invalidated by a mutation.** `length` was dropped
+only when the list was emptied, so
+
+```csharp
+int before = list.Count;   // walks the chain, caches the answer
+list.Append (item);
+int after = list.Count;    // still the old number
+```
+
+and because LINQ preallocates from `ICollection.Count`, a single `Cast<T>()` was
+enough to leave a list lying about its length for the rest of its life.
+`Append`/`Prepend` now drop the cache.
+
+**The enumerator restarted once it had finished.** `current == IntPtr.Zero` meant
+both "not started" and "ran off the end", so `MoveNext` sent it back to the head
+and answered `true` forever — a loop that kept asking never terminated. Split
+with a `finished` flag that `Reset` clears.
+
+**`SyncRoot` returned null**, so the documented `lock (collection.SyncRoot)` was
+a `NullReferenceException`.
+
+**`Prepend` took only an `IntPtr`** while `Append` had taken a `string` and an
+`object` since the mono era, so building a list front-to-back meant marshalling
+every element by hand. Two overloads added, the `Append` ones with the direction
+changed.
+
+**Where else to look:** `Source/Libs/GLibSharp/PtrArray.cs` has the same
+`DataMarshal` fallthrough at line 193 and was not part of this pass.
+
+## Behaviour worth knowing: `Append(object)` is not `Append(IntPtr)`
+
+`AllocNativeElement` copies a value type into fresh native memory and stores
+*that* address. For a struct that is right; for an `IntPtr` it means the list
+holds a pointer to a copy of your pointer. Two of these tests were written
+against the wrong one and read back addresses nobody recognised.
+
+Use `Append(IntPtr)` when the element *is* the pointer.
+
+## And the crash that made the point again
+
+The first draft of the element-type test built a list holding `new IntPtr(0x1234)`
+and read it back with no element type — which asks GLib whether address `0x1234`
+is a GObject, and GLib reads through it. Access violation, test host gone,
+`Total` down by the rest of the class.
+
+A fabricated pointer is only safe in a list whose element type stops anything
+dereferencing it. Where the point of the test *is* the dereferencing path, use
+`IntPtr.Zero`: it exercises the same branch and is the one address that is
+defined to be safe.
+
+## Fixed: `PtrArray.Clone` called an arbitrary address as a function
+
+The `ListBase` pass ended by recording `PtrArray` as unexamined — same
+`DataMarshal`, same `ICollection` surface, same enumerator shape, written
+separately. `GLibContainerTests` is that examination. It shares two of the five
+defects found there, and has a worse one of its own.
+
+```csharp
+delegate IntPtr d_g_ptr_array_copy(IntPtr raw);              // one parameter
+```
+
+The C function has taken three since GLib 2.62:
+
+```c
+GPtrArray *g_ptr_array_copy (GPtrArray *array, GCopyFunc func, gpointer user_data);
+```
+
+So `Clone` left `func` and `user_data` as whatever happened to be in the argument
+registers — and a non-NULL `func` is **called**, once per element. This did not
+return a wrong answer or throw; it jumped to an arbitrary address. The test host
+died with `FailFast` and no managed stack.
+
+Now declared with all three, passing NULL for a shallow copy, and the result is
+marked owned — `g_ptr_array_copy` is transfer full, so the old
+`owned: false` leaked every clone as well.
+
+**The other two are the ones `ListBase` had**, in independently written code:
+`SyncRoot` returned null, and the enumerator restarted after finishing because
+`current = -1` means both "not started" and "ran off the end".
+
+**Where else to look:** every `d_g_*` delegate in the hand-written tree is a
+signature nobody checks. `grep` for delegates whose parameter count differs from
+the gir's, starting with anything added after GLib 2.50 — the older calls have
+had decades of use, these have not. A wrong *type* usually misbehaves; a missing
+**callback** parameter executes data.
+
+## Behaviour worth knowing: the total is the crash detector
+
+Two crashes in two sweeps, and both announced themselves the same way — not as a
+failure, but as a **smaller `Total`**:
+
+```
+Failed:     2, Passed:     7, Total:     9      <- fourteen tests were written
+```
+
+Nine ran. Five never got the chance, because the host was gone. Had the two
+failures not been there, the line would have read `Passed! ... Total: 9` and
+looked like a clean run of a smaller class.
+
+The habit that catches it is counting the tests you wrote and comparing. When the
+total is short, bisect by filter — the crash here was one test, and running the
+six `PtrArray` tests one at a time named it in under a minute:
+
+```sh
+for t in <names>; do dotnet test --filter "FullyQualifiedName~$t"; done
+```
+
+Then read the *class* boundary too: `Argv` passing 5/5 in isolation while the
+combined run died proved the fault was not in the half that looked suspicious.
+
+## The delegate-arity audit, and the one real defect it found
+
+The `PtrArray` pass ended by saying every `d_g_*` delegate in the hand-written
+tree is a signature nobody checks. That audit is mechanical, so it was worth
+writing rather than describing: extract every `delegate ... d_<c_name>(...)` from
+the non-generated sources, look `<c_name>` up in the girs, and compare the
+parameter count (instance parameter included, `throws` adding one).
+
+**706 delegates checked, five mismatches, one real.**
+
+The four false positives are all variadic C functions where the extra managed
+parameter is the argument behind the format — `gdk_pixbuf_save`,
+`gdk_pixbuf_save_to_stream`, `gtk_message_dialog_new` and its markup twin. An
+arity-only audit cannot know that, so the script reports and a human reads.
+
+The real one was `g_logv`:
+
+```c
+void g_logv (const gchar *domain, GLogLevelFlags level,
+             const gchar *format, va_list args);      /* four */
+```
+
+```csharp
+delegate void d_g_logv(IntPtr log_domain, LogLevelFlags flags, IntPtr message);  // three
+```
+
+Two faults at once. The `va_list` was never passed, so GLib read the argument
+list out of whatever was in the register; and the already-composed message was
+handed over as the **format**, so any per cent sign in it became a conversion
+consuming from that garbage list. `Log.WriteLog(domain, level, "100% complete")`
+was undefined behaviour and `"%s"` was a wild pointer dereference. The test host
+died with a `FailFast` and no managed stack.
+
+Now `g_log` with a literal `"%s"` and the message as the argument behind it.
+
+**The instructive part is the sibling that was fine.** `MessageDialog` passes a
+composed message into the same kind of parameter, and was *safe*, because it
+composed through `Marshaller.StringFormat`, which doubles every per cent sign so
+printf renders one. Two wrappers, the same hazard, opposite outcomes — and the
+protection was three files away from the code that needed it.
+
+`MessageDialog` now passes `"%s"` too, which meant **removing** the escaping:
+doubling and then not un-doubling gave "100%% complete". Passing text as data is
+the more robust arrangement, but the two mechanisms must not be half-applied.
+
+**Why no test caught either:** every existing test of these APIs used a message
+with no per cent sign. `"100% complete"` is an ordinary thing to log.
+
+**Where else to look:** the audit script only compares *counts*. A delegate with
+the right number of parameters and the wrong types is still wrong, and
+`IntPtr`-for-everything hides most of it. The counts are the cheap half; the
+types need reading.
+
+## The type half of the delegate audit
+
+The arity audit compared parameter *counts*, and its own closing note was that
+types need reading. That is also mechanizable, up to a point: compare each
+parameter's gir type against the C# spelling and flag the pairs that cannot
+carry each other. Pointers marshalled as `IntPtr` and enums are out of scope —
+everything else is a width or a kind.
+
+**Five disagreements, three of them noise, two worth fixing.**
+
+The noise is signedness at the same width: `guint` declared `int` in
+`g_closure_new_simple` and `g_object_newv`. A closure size and a parameter count
+do not reach 2^31, and both halves of the register are the same size.
+
+The two that matter are `g_signal_handler_disconnect` and
+`g_signal_handler_is_connected`, whose handler id is a **`gulong`** — 64 bits on
+Linux and macOS, 32 on Windows — declared `uint`:
+
+```csharp
+delegate void d_g_signal_handler_disconnect(IntPtr instance, uint handler);
+```
+
+`SymbolTable.cs` has mapped `gulong` to `LPUGen`, which marshals as `UIntPtr`,
+since the mono era. Every *generated* wrapper gets that right; this hand-written
+file never followed.
+
+**Nothing observable was wrong, and no test here proves otherwise.** Handler ids
+are small sequential counters, so the value has always fitted in 32 bits, and on
+x86-64 a 32-bit move zero-extends. The fix is for the declared ABI, and it is
+worth being plain about that rather than dressing it up: `SignalLifetimeTests`
+pins the behaviour the change had to *preserve* — several handlers on one signal,
+removing one of them, removing one twice, connection order, a hundred
+connect/disconnect cycles — not the truncation, which cannot be reached.
+
+That is a legitimate reason to write tests. A change with no observable effect
+still needs to be shown to have no observable effect.
+
+**Where the audit still cannot help:** it only sees parameters whose gir type is
+a named scalar. Callback parameters, arrays, unions and anything the gir marks as
+a pointer are skipped, and those are where the last two crashes actually lived
+(`g_ptr_array_copy`'s missing `GCopyFunc`, `g_logv`'s missing `va_list`). Arity
+caught both. Types catch what arity cannot. Neither catches a parameter that is
+the right size and the wrong meaning.
