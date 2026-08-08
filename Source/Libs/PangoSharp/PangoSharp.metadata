@@ -14,6 +14,14 @@
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Change']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Filter']/*/*[@name='func']" name="scope">call</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='GetIterator']/return-type" name="owned">true</attr>
+  <!-- pango_attr_list_get_attributes returns a GSList of PangoAttribute, and the
+       api.xml records no element type. GLib.SList then marshals each item as a
+       GObject, which a PangoAttribute is not, so every element came back null
+       and reading one threw NullReferenceException. Exactly the failure
+       AttrIterator.Attrs is hand-written to avoid; this one was missed because
+       nothing called it. The list is (transfer full), so the wrappers own the
+       attributes. Rebound over Pango.Attribute[] in AttrList.cs. -->
+  <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='GetAttributes']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Insert']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='InsertBefore']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Ref']" name="deprecated">1</attr>
