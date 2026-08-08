@@ -70,6 +70,22 @@ namespace Gtk {
 
 		public static bool IsSupported => GLibrary.IsSupported(Library.Gtk);
 
+		/// <summary>
+		/// The position a list model reports when there is no position: no
+		/// selection, an unbound row, a search that found nothing.
+		/// </summary>
+		/// <remarks>
+		/// <c>GTK_INVALID_LIST_POSITION</c>. It is what
+		/// <see cref="SingleSelection.Selected"/> holds when nothing is selected
+		/// and what <see cref="StringList.Find"/> answers when the string is not
+		/// there, so a caller who cannot name it has to compare against
+		/// <c>uint.MaxValue</c> and hope that is what it means.
+		///
+		/// Here by hand for the same reason as
+		/// <see cref="StyleProviderPriority"/>: it is a <c>&lt;constant&gt;</c> in
+		/// Gtk-4.0.gir, and GirToGapi emits none of those. See Docs/testing.md.
+		/// </remarks>
+		public const uint InvalidListPosition = uint.MaxValue;
 	}
 }
 

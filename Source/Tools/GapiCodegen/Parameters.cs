@@ -228,8 +228,11 @@ namespace GtkSharp.Generation {
 					}
 
 					if (i < elem.ChildNodes.Count - 1) {
+						// "next != null || next.Name == ..." was here, which
+						// dereferences next in exactly the case the null check
+						// was guarding against.
 						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
-						if (next != null || next.Name == "parameter") {
+						if (next != null && next.Name == "parameter") {
 							Parameter c = new Parameter (next);
 							if (c.IsCount) {
 								p = new ArrayCountPair (parm, next, false);
@@ -243,7 +246,13 @@ namespace GtkSharp.Generation {
 						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
 						if (next != null && next.Name == "parameter") {
 							Parameter a = new Parameter (next);
-							if (a.IsArray) {
+							// NeedsCount, not IsArray: a NULL-terminated array
+							// carries its own length, so an integer in front of
+							// one is a different quantity that merely happens to
+							// be spelled n_something. Pairing them hides it from
+							// the public signature and then passes the array's
+							// length in its place.
+							if (a.NeedsCount) {
 								p = new ArrayCountPair (next, parm, true);
 								i++;
 							}
