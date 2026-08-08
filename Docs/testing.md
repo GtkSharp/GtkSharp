@@ -3403,3 +3403,56 @@ for t in <names>; do dotnet test --filter "FullyQualifiedName~$t"; done
 
 Then read the *class* boundary too: `Argv` passing 5/5 in isolation while the
 combined run died proved the fault was not in the half that looked suspicious.
+
+## The delegate-arity audit, and the one real defect it found
+
+The `PtrArray` pass ended by saying every `d_g_*` delegate in the hand-written
+tree is a signature nobody checks. That audit is mechanical, so it was worth
+writing rather than describing: extract every `delegate ... d_<c_name>(...)` from
+the non-generated sources, look `<c_name>` up in the girs, and compare the
+parameter count (instance parameter included, `throws` adding one).
+
+**706 delegates checked, five mismatches, one real.**
+
+The four false positives are all variadic C functions where the extra managed
+parameter is the argument behind the format — `gdk_pixbuf_save`,
+`gdk_pixbuf_save_to_stream`, `gtk_message_dialog_new` and its markup twin. An
+arity-only audit cannot know that, so the script reports and a human reads.
+
+The real one was `g_logv`:
+
+```c
+void g_logv (const gchar *domain, GLogLevelFlags level,
+             const gchar *format, va_list args);      /* four */
+```
+
+```csharp
+delegate void d_g_logv(IntPtr log_domain, LogLevelFlags flags, IntPtr message);  // three
+```
+
+Two faults at once. The `va_list` was never passed, so GLib read the argument
+list out of whatever was in the register; and the already-composed message was
+handed over as the **format**, so any per cent sign in it became a conversion
+consuming from that garbage list. `Log.WriteLog(domain, level, "100% complete")`
+was undefined behaviour and `"%s"` was a wild pointer dereference. The test host
+died with a `FailFast` and no managed stack.
+
+Now `g_log` with a literal `"%s"` and the message as the argument behind it.
+
+**The instructive part is the sibling that was fine.** `MessageDialog` passes a
+composed message into the same kind of parameter, and was *safe*, because it
+composed through `Marshaller.StringFormat`, which doubles every per cent sign so
+printf renders one. Two wrappers, the same hazard, opposite outcomes — and the
+protection was three files away from the code that needed it.
+
+`MessageDialog` now passes `"%s"` too, which meant **removing** the escaping:
+doubling and then not un-doubling gave "100%% complete". Passing text as data is
+the more robust arrangement, but the two mechanisms must not be half-applied.
+
+**Why no test caught either:** every existing test of these APIs used a message
+with no per cent sign. `"100% complete"` is an ordinary thing to log.
+
+**Where else to look:** the audit script only compares *counts*. A delegate with
+the right number of parameters and the wrong types is still wrong, and
+`IntPtr`-for-everything hides most of it. The counts are the cheap half; the
+types need reading.
