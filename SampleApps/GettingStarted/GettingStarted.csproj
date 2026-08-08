@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -8,26 +8,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!-- One place to bump. -->
-    <GtkSharpVersion>4.22.4.1</GtkSharpVersion>
+    <GtkSharpVersion>4.22.4.*</GtkSharpVersion>
 
-    <!-- Empty here, because this branch packs the ids unprefixed. The
-         net4x.gtk4 branch publishes the same packages as Net4x.GtkSharp,
-         Net4x.GLibSharp and so on, so building against those is
-
-             dotnet build -p:GtkSharpPackagePrefix=Net4x.
-
-         The prefix is on the FEED ID only either way: the assemblies inside are
-         still GtkSharp.dll, GLibSharp.dll and the namespaces are unprefixed, so
-         not one line of the code below changes between the two. -->
     <GtkSharpPackagePrefix></GtkSharpPackagePrefix>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Net4x.GtkSharp alone would be enough, since GLib, Gio, Gdk, Gsk, Pango
-         and Cairo arrive as its dependencies. They are named explicitly because
-         this tour calls all of them directly, and an explicit reference is
-         what stops a transitive dependency quietly changing underneath it. -->
     <PackageReference Include="$(GtkSharpPackagePrefix)GtkSharp" Version="$(GtkSharpVersion)" />
     <PackageReference Include="$(GtkSharpPackagePrefix)GLibSharp" Version="$(GtkSharpVersion)" />
     <PackageReference Include="$(GtkSharpPackagePrefix)GioSharp" Version="$(GtkSharpVersion)" />
