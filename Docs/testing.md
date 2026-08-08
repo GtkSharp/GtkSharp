@@ -2853,3 +2853,70 @@ bound over `ref this`, which needs no copy at all once the struct is blittable.
 embedded by value in C and cannot be described by the class codegen emits for it.
 `grep` the generated tree for `IntPtr _` fields inside a `[StructLayout]` struct,
 and for `ByValArray` over anything that is not a primitive.
+
+## Fixed: a `.ui` file with a `<signal>` failed in a way that named the wrong thing
+
+`BuilderBindingTests` went in over `Builder.Autoconnect` — binding `[UI]` fields
+from a `.ui` document, which is what the templates generate and what
+`getting-started.md` teaches. `Builder.cs`, `BuilderXml.cs` and
+`BindingAttribute.cs` are entirely hand-written, so none of it was checked by
+compiling, and none of it was covered.
+
+The field binding turned out to be sound: by field name, by explicit name,
+private fields, fields inherited from a base class, static fields via
+`Autoconnect(Type)`, and `throwOnUnknownObject` in both positions. All now
+pinned.
+
+**The signal path was not what anyone thought.** The code and the guide both
+described a document that loads with its handlers unconnected, and an
+`Autoconnect` that throws `NotSupportedException` "deliberately, rather than
+silently ignoring every click". What actually happens is that Gtk 4 resolves a
+`<signal>` handler through `GtkBuilderScope` at **parse** time. The default scope
+is `GtkBuilderCScope`, which looks the name up as an exported C symbol. It never
+finds a managed method, so the document does not load at all:
+
+```
+GLib.GException: No function named `OnClicked`.
+```
+
+`Autoconnect` is never reached, so its `NotSupportedException` never fires — and
+the error the user does get reads as a missing *native* symbol, sending them to
+look for a C function they never wrote.
+
+Two things were wrong at once, which is why neither had been noticed: the guide
+documented an exception the library could not raise, and the check that would
+have raised it only ever ran on the `Stream` constructor. `AddFromString`,
+`AddFromFile` and `AddFromResource` — the three ordinary ways in — never
+inspected the document at all.
+
+All three are now hidden in the metadata and rebound in `Builder.cs`. They
+inspect the XML *before* the native call, and if the call then fails on a
+document that declared a handler, that is what the exception says, with
+GtkBuilder's own error kept as `InnerException`. `Builder.DeclaresSignals` is
+public and is set even when the load fails, so a caller can tell "my XML is
+wrong" from "this is not supported yet".
+
+**The real remedy is still open**: implementing `GtkBuilderScope` so a managed
+method can be resolved. `Gtk.IBuilderScope`, `Gtk.BuilderCScope` and
+`Builder.Scope` are all bound already; what is missing is a scope whose
+`create_closure` returns a `GClosure` over a managed delegate. Until then the
+failure is at least legible.
+
+**Where else to look:** a comment or a doc that describes an exception is a claim
+nobody checks. Grep `Docs/` for exception type names and confirm each one is
+reachable — this one had been wrong since the Gtk 4 port, in the file that
+teaches the binding.
+
+## Behaviour worth knowing: parse the XML, do not grep it
+
+`BuilderXml.DeclaresSignals` parses the document rather than searching for
+`"<signal"`, and the test that matters is a document whose only mention of the
+word is a comment saying it deliberately has none:
+
+```xml
+<!-- No <signal> elements here: handlers are connected in code. -->
+```
+
+Grepping reads that as a declaration and refuses a perfectly good file. Now that
+the string drives an *exception*, getting it wrong turns a working document into
+a rejected one rather than merely producing a spurious warning.

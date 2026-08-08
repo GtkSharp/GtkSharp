@@ -241,11 +241,26 @@ Embed the file in your `.csproj`:
 </ItemGroup>
 ```
 
-**Do not put `<signal>` elements in your `.ui`.** Gtk 4 replaced
-`gtk_builder_connect_signals_full` with `GtkBuilderScope`, which this binding does
-not implement yet. `Autoconnect` binds fields happily, but a document that
-declares signals throws `NotSupportedException` naming the cause — deliberately,
-rather than silently ignoring every click. Connect handlers in C#.
+**Do not put `<signal>` elements in your `.ui`** — such a document does not
+load **at all**, which is stronger than it sounds. Gtk 4 replaced
+`gtk_builder_connect_signals_full` with `GtkBuilderScope`, and the scope resolves
+each handler name while the document is being *parsed*. The default scope looks
+the name up as an exported C symbol, never finds your C# method, and fails the
+whole file:
+
+```
+NotSupportedException: This document declares a <signal> handler. Gtk 4 resolves
+builder signal handlers through GtkBuilderScope at parse time ...
+GtkBuilder reported: No function named `OnClicked`.
+```
+
+That inner sentence is what GtkBuilder says on its own, and it reads like a
+missing native symbol rather than an unsupported feature, so `AddFromString`,
+`AddFromFile`, `AddFromResource` and the `Stream` constructor all explain it
+instead. `Builder.DeclaresSignals` is set even when the load fails, so you can
+tell "my XML is wrong" from "this is not supported yet".
+
+Connect handlers in C#, after `Autoconnect` has bound the fields.
 
 You can also build from a string, which is handy in tests:
 
@@ -518,7 +533,7 @@ Collected from defects the test suite has actually caught. Each of these
 |:--|:--|
 | `+=` with a lambda connects **after** the default handler | your handler sees the operation already done |
 | `DragSource.Prepare` / `DropTarget.Accept` with a lambda | **never runs**; the accumulator ends the emission first. Use a named `[GLib.ConnectBefore]` method |
-| `<signal>` in a `.ui` file | `NotSupportedException` — connect in C# |
+| `<signal>` in a `.ui` file | the document fails to **load**; `NotSupportedException` — connect in C# |
 | `Widget.Activate()` on a button | does **not** raise `Clicked`; Gtk 4 routes presses through a gesture |
 | `SimpleAction.StateChanged` | it is `change-state`; you must apply the state yourself |
 | Leaking a `Cairo.Path` or surface | the finalizer kills the process, far from the cause |
