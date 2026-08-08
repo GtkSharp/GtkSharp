@@ -84,6 +84,22 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		/// <summary>
+		/// True for an array whose length has to be passed alongside it.
+		/// </summary>
+		/// <remarks>
+		/// A NULL-terminated array does not: it carries its own length, and the C
+		/// function has no length parameter to pair with. Distinguishing the two
+		/// is what stops an unrelated integer in front of such an array from being
+		/// mistaken for its count -- see the pairing in Parameters.cs.
+		/// </remarks>
+		public bool NeedsCount {
+			get {
+				return elem.GetAttributeAsBoolean ("array")
+					&& !elem.GetAttributeAsBoolean ("null_term_array");
+			}
+		}
+
 		public bool IsEllipsis {
 			get {
 				return elem.GetAttributeAsBoolean ("ellipsis");

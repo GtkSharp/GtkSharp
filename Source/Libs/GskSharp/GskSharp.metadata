@@ -62,4 +62,93 @@
        gdk_content_formats_builder_free_to_formats does. Rebound in
        PathBuilder.cs so that a method does not destroy its receiver. -->
   <attr path="/api/namespace/*[@cname='GskPathBuilder']/method[@cname='gsk_path_builder_free_to_path']" name="hidden">1</attr>
+
+  <!-- The gradient nodes take (const GskColorStop *stops, gsize n_stops). Codegen
+       has no rule for an array whose length is a sibling parameter, so it emitted
+       a single ColorStop by value plus a caller-supplied count - one struct's
+       worth of memory described to GSK as n. A gradient needs at least two stops,
+       so every correct call read past the end of a 20-byte allocation. Same shape
+       as gsk_container_node_new. Rebound over ColorStop[] in GradientNodes.cs,
+       which is also where the count comes from. -->
+  <attr path="/api/namespace/*[@cname='GskLinearGradientNode']/constructor[@cname='gsk_linear_gradient_node_new']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRepeatingLinearGradientNode']/constructor[@cname='gsk_repeating_linear_gradient_node_new']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRadialGradientNode']/constructor[@cname='gsk_radial_gradient_node_new']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRepeatingRadialGradientNode']/constructor[@cname='gsk_repeating_radial_gradient_node_new']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskConicGradientNode']/constructor[@cname='gsk_conic_gradient_node_new']" name="hidden">1</attr>
+
+  <!-- ...and the matching getters return (const GskColorStop *, out n_stops).
+       Wrapping only the first element silently discarded every stop but one, so
+       a gradient could be built and then never read back. -->
+  <attr path="/api/namespace/*[@cname='GskLinearGradientNode']/method[@cname='gsk_linear_gradient_node_get_color_stops']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRadialGradientNode']/method[@cname='gsk_radial_gradient_node_get_color_stops']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskConicGradientNode']/method[@cname='gsk_conic_gradient_node_get_color_stops']" name="hidden">1</attr>
+
+  <!-- gsk_shadow_node_new (child, const GskShadow *shadows, gsize n_shadows) is
+       the same array-plus-count shape, and a drop shadow with two shadows is the
+       ordinary case rather than an exotic one. -->
+  <attr path="/api/namespace/*[@cname='GskShadowNode']/constructor[@cname='gsk_shadow_node_new']" name="hidden">1</attr>
+
+  <!-- gsk_border_node_get_widths returns "const float *" - four floats, one per
+       edge - and gsk_border_node_get_colors returns four GdkRGBA. The api.xml
+       records the element type with no length, so codegen declared the P/Invoke
+       as *returning a float* and as returning one RGBA: on x86-64 the widths
+       getter read XMM0 while the pointer was in RAX, so it answered with
+       whatever the last float operation had left behind. Rebound over arrays in
+       BorderNode.cs. The constructor is fine - its parameters carry
+       array_len="4", which codegen does understand. -->
+  <attr path="/api/namespace/*[@cname='GskBorderNode']/method[@cname='gsk_border_node_get_widths']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskBorderNode']/method[@cname='gsk_border_node_get_colors']" name="hidden">1</attr>
+
+  <!-- gsk_stroke_set_dash (stroke, const float *dash, gsize n_dash) came out as
+       SetDash(ulong n_dash) returning a float: the array parameter became an
+       "out float", so GSK was handed a pointer to four bytes of stack and told
+       to read n_dash floats from it. There was no way to set a dash pattern at
+       all, and the obvious call corrupted the caller's frame. The getter has the
+       mirror-image problem. Both rebound in Stroke.cs. -->
+  <attr path="/api/namespace/*[@cname='GskStroke']/method[@cname='gsk_stroke_set_dash']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskStroke']/method[@cname='gsk_stroke_get_dash']" name="hidden">1</attr>
+
+  <!--
+    GskRoundedRect is two structs embedded by value:
+
+        struct GskRoundedRect { graphene_rect_t bounds; graphene_size_t corner[4]; }
+
+    which is 48 bytes, all of it floats. But graphene_rect_t and graphene_size_t
+    are bound as opaque boxed *classes*, so SymbolTable had no by-value form for
+    either: the generated struct came out as an IntPtr for the bounds followed by
+    a managed Graphene.Size[] marshalled ByValArray - 40 bytes, in the wrong
+    order, with a pointer where GSK reads four floats. Every rounded rect handed
+    to GSK was therefore garbage, which is why nothing built on one - BorderNode,
+    RoundedClipNode, InsetShadowNode, OutsetShadowNode, PathBuilder.AddRoundedRect
+    or Snapshot.AppendBorder - could be used at all.
+
+    Hiding the whole struct is not an option: dependents that mention
+    const-GskRoundedRect* are then dropped with an "Unknown type" warning rather
+    than kept. So the fields are removed and the type is completed by hand in
+    RoundedRect.cs, which lays out the twelve floats the C struct actually has.
+    noequals/nohash go with them, because a field-less struct would otherwise get
+    an Equals that returns true for every pair.
+  -->
+  <remove-node path="/api/namespace/struct[@cname='GskRoundedRect']/field[@cname='bounds']" />
+  <remove-node path="/api/namespace/struct[@cname='GskRoundedRect']/field[@cname='corner']" />
+  <attr path="/api/namespace/struct[@cname='GskRoundedRect']" name="noequals">1</attr>
+  <attr path="/api/namespace/struct[@cname='GskRoundedRect']" name="nohash">1</attr>
+
+  <!-- The six methods that return GskRoundedRect* return their own receiver, and
+       the generated wrapper freed the copy it had passed in before reading the
+       return value out of it:
+
+           ReadNative (this_as_native, ref this);        // correct
+           Marshal.FreeHGlobal (this_as_native);
+           ret = Gsk.RoundedRect.New (raw_ret);          // raw_ret == this_as_native
+
+       so the receiver ended up right and the returned value was read from freed
+       memory. Rebound in RoundedRect.cs over "ref this", which needs no copy at
+       all now that the struct is blittable. -->
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_init']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_init_copy']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_init_from_rect']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_normalize']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_offset']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_shrink']" name="hidden">1</attr>
 </metadata>
