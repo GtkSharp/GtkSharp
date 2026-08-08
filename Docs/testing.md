@@ -22,7 +22,24 @@ WebKit skips coincide with gvsbuild's.
 ### Running the suite on the Gtk the bindings describe
 
 WSL's Debian is *trixie* — Gtk 4.18.6 — and reports false failures for anything
-the gir marks `version="4.22"`. The container is the reference environment:
+the gir marks `version="4.22"`. At 1247 tests it fails 16 of them, and every one
+is a symbol trixie's Gtk does not export: `gtk_expression_new_try`,
+`gsk_copy_node_new`, `gsk_render_node_get_children`, `gsk_paste_node_new`,
+`gsk_composite_node_new`, and the accessibility and `AdwEnumListModel`
+properties added since 4.18. Confirm before spending time on one:
+
+```sh
+nm -D --defined-only /usr/lib/x86_64-linux-gnu/libgtk-4.so.1 | grep ' T gsk_copy_node_new$'
+```
+
+(`nm` is in `binutils`, which trixie's WSL image does not install — and without
+it that command prints nothing, which reads exactly like a missing symbol. It is
+worth installing rather than trusting the empty output.) A **null delegate**, not
+a link error, is what a missing export becomes, so these arrive as
+`NullReferenceException` from inside a wrapper rather than as anything that names
+the symbol.
+
+The container is the reference environment:
 
 ```sh
 docker run --rm -v /path/to/GtkSharp:/src -w /src debian:forky bash -lc '
