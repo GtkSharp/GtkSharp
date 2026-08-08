@@ -2920,3 +2920,62 @@ word is a comment saying it deliberately has none:
 Grepping reads that as a declaration and refuses a perfectly good file. Now that
 the string drives an *exception*, getting it wrong turns a working document into
 a rejected one rather than merely producing a spurious warning.
+
+## Fixed: the CSS example in the guide named a type that did not exist
+
+`ThreadAndStyleTests` covers `Gtk.ThreadNotify` and the `Gtk.StyleContext` render
+helpers — two hand-written files with no coverage at all. Writing it turned up a
+second documentation-versus-library mismatch, in the same file as the `<signal>`
+one:
+
+```csharp
+StyleContext.AddProviderForDisplay(Gdk.Display.Default, css,
+                                   Gtk.StyleProviderPriority.Application);
+```
+
+There was no `Gtk.StyleProviderPriority`. `AddProvider` takes a bare `uint`, and
+the only way to call it was to write `600`.
+
+`GTK_STYLE_PROVIDER_PRIORITY_APPLICATION` is a `<constant>` in `Gtk-4.0.gir`, and
+**GirToGapi emits no constants at all** — `grep -c '<constant' Source/Libs/*/*-api.xml`
+is zero everywhere. Gtk has 98, GLib 142, Pango 14, and Gdk 2459. Gdk's are the
+`GDK_KEY_*` keyvals and they are covered only because someone hand-wrote
+`Source/Libs/GdkSharp/Key.cs`; the rest are simply absent.
+
+The five priorities are now declared by hand in `StyleProviderPriority.cs`, as
+`const uint` rather than an enum — `AddProvider` takes a number and any value
+between two named ones is legal, which an enum would deny. Teaching GirToGapi to
+emit `<constant>` remains open, and would rewrite every api.xml, so it belongs to
+its own reviewable pass rather than to a test sweep.
+
+**Where else to look:** the same grep is the audit. A constant that a C
+programmer would reach for by name is one a C# caller currently has to
+hard-code, and hard-coded numbers do not fail loudly when a version changes them.
+
+## Behaviour worth knowing: what makes a drawing test an oracle
+
+The render helpers are the null-delegate trap's natural habitat — several
+`gtk_render_*` functions were removed outright in Gtk 4, and a removed one is a
+`NullReferenceException` at the call site, not a link error. Testing them by
+calling and seeing whether anything was thrown would be the assertion-free sweep
+this document keeps banning.
+
+What makes them testable is that CSS is an oracle the test writes itself:
+
+```csharp
+provider.LoadFromData("label { background-color: rgb(255,0,0); }");
+// ... RenderBackground into an ImageSurface, then assert the pixel is 255,0,0
+```
+
+A themed default cannot be mistaken for success, because the test chose the
+colour. Each of these is paired with its opposite — `background-color:
+transparent`, `border: 0px` — so "something was painted" is reporting the CSS
+rather than the fact that a call happened at all. `RenderLayout` is paired with
+an empty `Pango.Layout` for the same reason.
+
+`ThreadNotify` gets the same treatment. The oracle is not that the delegate ran
+but *which thread it ran on*: `Thread.CurrentThread.ManagedThreadId` inside the
+delegate, compared against the fixture's Gtk thread and against the worker that
+called `WakeupMain`. A delegate that ran on the wrong thread — which is the only
+failure that matters for a class whose entire purpose is thread affinity — would
+satisfy any test that merely counted invocations.
