@@ -242,6 +242,7 @@ investigate — not something to relax.
 | `CairoSurfaceTests` | The surfaces that are not `ImageSurface`. The three paginated backends whose whole job is to write somebody else's file format, checked against that format: the SVG parsed as XML and its path data read back as numbers, the PostScript checked against the DSC comments the test asked for and against per-page bounding boxes the test flips itself, the PDF against its version header and the `/MediaBox` entries `SetSize` produces. Then the recording surface — ink extents as arithmetic, replay as pixels, a bounded recording against an unbounded control — the subsurface view, and `Cairo.Device`, which no property had ever handed out. |
 | `TreeModelImplementorTests` | The other end of `GtkTreeModel`: a C# class that **is** one. `Gtk.TreeModelAdapter` writes fifteen managed function pointers into a `GLib.Object` subclass's `GtkTreeModelIface`, so a file tree the test declares is walked by `gtk_tree_model_foreach`, filtered by a `GtkTreeModelFilter` and expanded by a `GtkTreeView`, each of which can only reach a row by calling back into managed code. Depth-first order, path strings both ways, sibling stepping forward and back, indexing against walking, child counts, parent links and the model flags. Then `Gtk.TreeEnumerator`, which is what `foreach` over a `ListStore` runs. Two defects, one of them fatal. |
 | `ApplicationTests` | The application object and the global state around it — the code every program runs before it does anything else, and which the rest of the suite only ever touched by accident. `GLib.Application` registration, the once-only `::startup` against the every-time `::activate`, the id rules, the busy counter and the property that drives it; `g_application_open` end to end; a `GApplicationCommandLine` built by the test, because `::command-line` needs a session bus and Windows re-reads the real process command line anyway. Then `Gtk.Application`'s window list — newest first, which is also what `ActiveWindow` means — accelerators through `SetAccelsForAction`/`GetAccelsForAction`, an `ApplicationWindow` as a `GActionGroup` under `win.` and the `app.` actions its widgets reach; `Gtk.Settings` overridden and reset; `Gtk.IconTheme` search and resource paths and an icon the test wrote; window modality, transient-for, groups, default size and the `::close-request` veto; `HeaderBar`/`WindowControls`; `Gtk.Accelerator`; `Gtk.Global`; and the `GLib.MainLoop` that `Application.Run` became when `gtk_main` was deleted. Five defects. |
+| `SelectionModelImplementorTests` | The Gtk 4 counterpart of `TreeModelImplementorTests`: a C# class that **is** a `GtkSelectionModel`. Nine managed function pointers go into the `GtkSelectionModelInterface` and three more into the `GListModelInterface` of the same object, because the list model is a GInterface *prerequisite* of the selection model. The questions are asked only through C — `gtk_selection_model_get_selection`, which is Gtk's own default implementation over `get_selection_in_range`; `GtkSelectionFilterModel`, a C list model whose contents are decided entirely by asking the managed model which items are selected and listening for `::selection-changed`; and `GtkSingleSelection` built on the managed list model, which is the same boundary crossed the other way. One defect, and it was a class of defect rather than a single call: an interface added before its prerequisite is not added at all. |
 
 ### Guards against vacuous passes
 
@@ -3670,7 +3671,7 @@ dotnet test Source/Tests/GtkSharp.Tests -c Release \
   --filter "FullyQualifiedName!=GtkSharp.Tests.ControlsAndTransferTests.A_popover_pops_up_and_down_and_reports_its_closing"
 ```
 
-which gives 1452 tests, 1450 passing and 2 WebKit skips, twice over.
+which gives 1471 tests, 1469 passing and 2 WebKit skips, twice over.
 
 ## Fixed: connecting to a managed model's `rows-reordered` killed the process
 
@@ -3785,3 +3786,140 @@ handlers only set a `bool`. `ListStore.GetEnumerator` is the only caller, so the
 blast radius is one `foreach` per leak, but a program that redraws a list in a
 loop pays for every pass. The same question applies to `NodeStore`'s
 `GCHandle` list, which is freed only in `Dispose`.
+
+## Fixed: a GInterface added before its prerequisite was not added at all
+
+A `GLib.Object` subclass gets its GInterfaces from
+`Object.ClassInitializer.AddGInterfaces`, which walked `Type.GetInterfaces ()`
+and called `g_type_add_interface_static` for each one in the order reflection
+happened to produce.
+
+GLib will not accept them in that order. An interface may declare
+**prerequisites**, and `g_type_add_interface_static` refuses a type that does not
+already conform to them. `G_DEFINE_INTERFACE (GtkSelectionModel,
+gtk_selection_model, G_TYPE_LIST_MODEL)` is one such declaration, so a managed
+selection model must be a `GListModel` *before* `GtkSelectionModel` can be put on
+it. Refusal is a `g_warning`, not an error: the call returns, the interface is
+simply absent, and nothing downstream says why.
+
+Which meant these two classes did not do the same thing:
+
+```csharp
+class A : GLib.Object, GLib.IListModelImplementor, Gtk.ISelectionModelImplementor  // worked
+class B : GLib.Object, Gtk.ISelectionModelImplementor, GLib.IListModelImplementor  // did not
+```
+
+`B` came out a `GListModel` that is not a `GtkSelectionModel`, and every symptom
+is remote from the cause: `gtk_selection_model_is_selected` returns `FALSE` from
+its `g_return_val_if_fail`, `gtk_selection_filter_model_new` publishes nothing,
+and connecting to `::selection-changed` cannot find the signal, because the
+signal is declared on the interface that was never added.
+
+`AddGInterfaces` now adds them in passes, taking only those whose prerequisites
+the type already satisfies, which is the topological order GLib wants:
+
+```csharp
+if (!PrerequisitesSatisfied (pending [i].GInterfaceGType))
+        continue;
+```
+
+read out of `g_type_interface_prerequisites` and checked with `g_type_is_a`
+against the type as it stands, which changes as each interface goes on. Anything
+still pending when no further progress is possible is added anyway, so a
+genuinely wrong declaration still gets GLib's own diagnostic naming the
+interface and the prerequisite it lacks — swallowing that would hide a real
+mistake.
+
+**The blast radius is wider than selection models.** The vendored girs declare
+37 `<prerequisite>` edges. Most name a *class* (`Gtk.Actionable` and
+`Gtk.Editable` require `GtkWidget`), and those were never at risk, because a C#
+class deriving from `Gtk.Widget` satisfies them before any interface is added.
+The ones that were at risk are the interfaces whose prerequisite is **another
+interface on the same class**, where the order is decided by reflection alone:
+
+| interface | prerequisite |
+|:--|:--|
+| `Gtk.ISelectionModel`, `Gtk.ISectionModel` | `GLib.IListModel` |
+| `Gtk.ITreeSortable` | `Gtk.ITreeModel` |
+| `Gtk.IRoot` | `Gtk.INative` |
+| `GLib.ILoadableIcon` | `GLib.IIcon` |
+| `GLib.ITlsClientConnection`, `GLib.ITlsServerConnection` | `GLib.ITlsConnection` |
+| `GLib.IDtlsClientConnection`, `GLib.IDtlsServerConnection` | `GLib.IDtlsConnection`, `GLib.IDatagramBased` |
+| `GLib.IRemoteActionGroup` | `GLib.IActionGroup` |
+| `Gtk.IAccessibleText`, `Gtk.IAccessibleRange`, `Gtk.IAccessibleHypertext` | `Gtk.IAccessible` |
+
+`Gtk.ITreeSortable` over `Gtk.ITreeModel` is the one this repository already had
+a caller for: a C# sortable tree model — the pairing `TreeViewStackTests` drives
+through `ListStore` — would have registered as a tree model with no sortable
+interface roughly half the time it was written.
+
+## Behaviour worth knowing: what makes a managed selection model testable
+
+The same trap as the tree model one round earlier: a test of an interface you
+implement yourself can end up asserting the C# object against the C# object with
+the binding a spectator. Four things keep it honest here.
+
+- **Only C is asked.** `gtk_selection_model_get_selection` is Gtk's own default
+  implementation and reaches the answer through the vtable; `IsSelected`,
+  `SelectRange` and `SetSelection` are called through the C entry points, never
+  on the implementor.
+- **A second consumer that computes something.**
+  `GtkSelectionFilterModel` is a `GListModel` written entirely in C which
+  publishes exactly the selected items. `{1,3,4}` out of `ABCDEFGH` is `B, D, E`,
+  and that list exists nowhere in the test's own data: it is the intersection of
+  a set this file chose with items this file chose, performed by Gtk, over
+  **both** managed vtables — the selection interface to learn which positions,
+  the list-model interface to fetch the objects.
+- **The mirror image.** `GtkSingleSelection` built on the same managed object
+  keeps *its own* selection and only fetches items, so the test can assert that
+  the managed model saw `get-item` calls and no `is-selected` calls at all.
+- **A mutation check.** Making `GetItem` return the next item and `IsSelected`
+  return the opposite answer fails **7 of the 19** tests, which is the proof that
+  those assertions read through the vtable rather than past it.
+
+Three pieces of behaviour that the obvious expectation gets wrong:
+
+- **The whole selection is not asked for as an unbounded range.** The expectation
+  written first was `get_selection_in_range (0, G_MAXUINT)`, and it was the
+  expectation that was wrong, not the library:
+  `gtk_selection_model_get_selection` passes
+  `g_list_model_get_n_items (model)` as the count. A managed implementor must
+  still clip the window it is handed to the model's length — nothing stops a
+  caller asking for more — but the default path hands it the right number, and
+  it comes out of the managed `GListModel` a moment earlier.
+- **`GtkSelectionFilterModel` does not forward the item type.**
+  `gtk_selection_filter_model_get_item_type` returns `G_TYPE_OBJECT`
+  unconditionally, so the filter's `ItemType` is `GObject` while the model
+  underneath reports `GtkStringObject`. The objects it hands back are
+  `GtkStringObject`s all the same; the type is the only thing that is vague.
+- **The signal is load-bearing, and there is a control that proves it.** The
+  filter model caches the selection as a `GtkBitset` and refreshes it on
+  `::selection-changed`. Mutating the managed set with emission suppressed leaves
+  C holding the old answer — the test asserts exactly that divergence, which is
+  what makes the four positive cases beside it mean something.
+
+One ownership rule an implementor has to follow, and it is not obvious from the
+signature. `get_selection_in_range` is transfer-full, and the adapter returns
+`__result.OwnedCopy`. `GLib.Opaque.Copy` is not overridden by `Gtk.Bitset`, so
+`OwnedCopy` hands over the wrapper's **own** reference and clears its `Owned`
+flag rather than taking a new one. Returning a freshly built bitset each call —
+which is what the natural implementation does — balances exactly. Returning a
+bitset the model keeps in a field does not: Gtk unrefs it and the field is left
+pointing at freed memory.
+
+**Where else to look:** `Gtk.SectionModelAdapter` is the other interface with
+`GListModel` as a prerequisite and has no coverage at all. Its single vfunc,
+`get_section (position, out start, out end)`, writes two caller-allocated
+`guint`s, which is where a long line of the mistakes in this document have lived,
+and Gtk's own `GtkListView` reads it to decide where the section headers go.
+
+Further out, and general to every generated adapter: `Initialize` reads the
+native interface struct, assigns a managed delegate to **every** field, and
+writes it back. A managed implementor therefore replaces whatever the interface's
+`default_init` had put in the slots it did not want to override, rather than
+inheriting them. `GtkSelectionModel` installs no defaults, so nothing here
+notices — but `GActionGroup` does install one for `query_action`, built out of
+the other vfuncs, and a C# `IActionGroupImplementor` overwrites it with a
+delegate that dispatches straight back to managed code. That is only correct as
+long as the generated implementor interface makes every such method mandatory,
+which is worth checking one interface at a time rather than assuming.
