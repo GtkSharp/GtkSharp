@@ -123,8 +123,27 @@ namespace GLib {
 				handlers = new System.Collections.Generic.Dictionary<uint, GCHandle> ();
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_g_logv(IntPtr log_domain, LogLevelFlags flags, IntPtr message);
-		static d_g_logv g_logv = FuncLoader.LoadFunction<d_g_logv>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_logv"));
+		// This used to call g_logv, whose signature is
+		//
+		//     void g_logv (const gchar *domain, GLogLevelFlags level,
+		//                  const gchar *format, va_list args);
+		//
+		// through a delegate declaring three parameters. Two things were wrong.
+		// The va_list was never passed, so GLib read the argument list out of
+		// whatever happened to be in the register; and the already-composed
+		// message was handed over as the *format*, so any per cent sign in it
+		// became a conversion consuming from that garbage list. Logging
+		// "100% complete" was undefined and logging "%s" was a wild pointer
+		// dereference that took the test host down with a FailFast.
+		//
+		// Every existing test used a message with no per cent sign in it, which
+		// is why the suite was green.
+		//
+		// g_log is the variadic form; a literal "%s" with the message behind it
+		// is the standard way to log text that is not a format, and is the same
+		// shape as the gtk_message_dialog_new call in MessageDialog.cs.
+		delegate void d_g_log(IntPtr log_domain, LogLevelFlags flags, IntPtr format, IntPtr arg0);
+		static d_g_log g_log = FuncLoader.LoadFunction<d_g_log>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_log"));
 		
 		// Every other member of this class is static and this one touches no
 		// instance state, so writing a log line meant constructing a Log first.
@@ -132,9 +151,13 @@ namespace GLib {
 		{
 			IntPtr ndom = Marshaller.StringToPtrGStrdup (logDomain);
 			IntPtr nmessage = Marshaller.StringToPtrGStrdup (String.Format (format, args));
-			g_logv (ndom, flags, nmessage);
+			IntPtr nformat = Marshaller.StringToPtrGStrdup ("%s");
+
+			g_log (ndom, flags, nformat, nmessage);
+
 			Marshaller.Free (ndom);
 			Marshaller.Free (nmessage);
+			Marshaller.Free (nformat);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate uint d_g_log_set_handler(IntPtr log_domain, LogLevelFlags flags, LogFuncNative log_func, IntPtr user_data);

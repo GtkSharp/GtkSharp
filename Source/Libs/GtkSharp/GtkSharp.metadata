@@ -150,6 +150,19 @@
   <attr path="/api/namespace/object[@cname='GtkBuilder']/constructor[@cname='gtk_builder_new_from_resource']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkBuilder']/constructor[@cname='gtk_builder_new_from_string']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkBuilder']/method[@name='AddFromFile']/*/*[@name='filename']" name="type">const-gfilename*</attr>
+  <!-- Autoconnect can bind [Object] fields but cannot connect signals: Gtk 4
+       routes builder signals through GtkBuilderScope, which is not bound yet, so
+       it throws rather than silently ignoring every handler in the document. To
+       throw only when the document actually asks for a handler, Builder has to
+       know whether it saw a <signal> - and it only knew when the XML arrived via
+       the hand-written Stream constructor. A document loaded with the ordinary
+       AddFromString/AddFromFile/AddFromResource bound its fields and skipped
+       signal connection without a word, which is exactly the silence the throw
+       exists to prevent. All three are rebound in Builder.cs, which inspects the
+       document before handing it to GtkBuilder. -->
+  <attr path="/api/namespace/object[@cname='GtkBuilder']/method[@cname='gtk_builder_add_from_string']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkBuilder']/method[@cname='gtk_builder_add_from_file']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GtkBuilder']/method[@cname='gtk_builder_add_from_resource']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkBuilder']/method[@name='GetObjects']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='GtkBuilder']/method[@name='GetObjects']/return-type" name="element_type">GObject*</attr>
   <attr path="/api/namespace/object[@cname='GtkBuilder']/method[@name='GetTypeFromName']" name="hidden">1</attr>
