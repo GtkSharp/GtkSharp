@@ -3218,3 +3218,57 @@ checkable:
 ```sh
 python -c "import glob,xml.dom.minidom as m; [m.parse(f) for f in glob.glob('Source/Libs/*/*.metadata')]"
 ```
+
+## Fixed: every `Cairo.Glyph` in a run hashed to the same value
+
+`CairoTextTests` covers Cairo's text and glyph API. `CairoSharp` has no
+`.metadata` and nothing generated — every line is hand-written, so nothing about
+it is checked by compiling — and `FontFace`, `Glyph` and `ShowGlyphs` had no
+mention in the suite at all.
+
+`Glyph.GetHashCode` was
+
+```csharp
+return (int) Index ^ (int) X ^ (int) Y;
+```
+
+wrong twice over. XOR is commutative, so every permutation of the same three
+numbers shared one hash: `(1,2,3)`, `(3,2,1)` and `(2,1,3)` all came out as
+**zero**. A glyph run is mostly permutations of small numbers, so that is the
+ordinary case rather than a rare one. And the casts threw away the fractional
+part of `X` and `Y` — which is exactly what sub-pixel glyph positioning puts
+there, so every glyph between two whole numbers hashed alike too.
+
+This is the same defect, with the same reasoning, that `StructBase.GenHashCode`
+in `GapiCodegen` was already fixed for. The generated structs got the fix; the
+hand-written one beside them did not, because nobody was looking at it. That is
+the second time in two sweeps — `AttrList.Attributes` kept the bug its own
+neighbour was hand-written to avoid.
+
+**Where else to look:** `grep` the hand-written tree for `GetHashCode` bodies
+containing `^` without a multiply. A commutative fold is only visible as a bug
+when something hashes a struct whose fields are permutations of each other, which
+is rare enough to survive for years and common enough to matter when it bites.
+
+## Behaviour worth knowing: testing glyph drawing without assuming a font
+
+Glyph indices are a property of the font file, so no particular number can be
+assumed on a machine whose fonts the test did not choose. Scanning for one with
+non-empty extents makes the test independent of what `"sans"` resolves to:
+
+```csharp
+for (long index = 1; index < 300; index++)
+    if (cr.GlyphExtents(new[] { new Cairo.Glyph(index, 0, 0) }).Width > 0)
+        return index;
+throw new InvalidOperationException("no drawable glyph found");
+```
+
+It fails loudly rather than quietly drawing nothing, which is the difference
+between this and hard-coding an index that happens to work here.
+
+With one such index in hand, the oracles are positional rather than absolute: the
+same glyph at `x=2` and `x=40` must leave ink at different places, and three
+glyphs must reach further right than one. Between them those pin the hand-written
+`Glyph[]` copy into unmanaged memory — index, x and y all surviving it, and the
+whole array arriving rather than only its first element, which is the failure
+this repository has hit repeatedly elsewhere.
