@@ -227,7 +227,10 @@ namespace GtkSharp.Tests
                 dialog.AddButton("_Cancel", ResponseType.Cancel);
                 dialog.AddButton("_Open", ResponseType.Ok);
 
-                int seen = int.MinValue;
+                // ResponseId is a ResponseType now: GtkNativeDialog used to
+                // declare these values as a bare gint and win the Gtk.ResponseArgs
+                // both dialogs share, which left GtkDialog's handler untyped.
+                ResponseType seen = (ResponseType) int.MinValue;
                 dialog.Response += (o, args) => seen = args.ResponseId;
 
                 dialog.Present();
@@ -239,7 +242,7 @@ namespace GtkSharp.Tests
                 dialog.Respond((int) ResponseType.Cancel);
 #pragma warning restore CS0618
 
-                Assert.Equal((int) ResponseType.Cancel, seen);
+                Assert.Equal(ResponseType.Cancel, seen);
 
                 dialog.Destroy();
             });
