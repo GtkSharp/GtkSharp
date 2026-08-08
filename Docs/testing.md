@@ -239,6 +239,7 @@ investigate — not something to relax.
 | `ControlsAndTransferTests` | The controls an application is built out of, and the two subsystems Gtk 4 replaced wholesale. Entry and `GtkEditable` over non-ASCII text (a position is characters, a length is bytes); adjustment clamping and the two signals that separate a change of range from a change of value; spin button stepping, wrapping and snapping; scale marks; level-bar offsets; progress-bar pulse; calendar; notebook reordering; `Gtk.Stack.Pages` as a list model; expander, popover, drop-down, scrolled window, search entry and search bar. Then `Gdk.Clipboard` — set, read back asynchronously, and the mime types Gdk negotiates around a `GValue` — and `GtkDragSource`/`GtkDropTarget`, whose signals are emitted directly against a subclass's vfuncs, because no drag can be started without a pointer device. Five defects. |
 | `DesktopIntegrationTests` | Everything that talks to the desktop rather than to the screen, none of which had a test. The Gtk 4 async dialogs — `FileDialog`, `AlertDialog`, `ColorDialog`, `FontDialog` — driven to their Finish methods the only way a test without a user can, by cancelling the `GCancellable` they were started with; `FileFilter` matching a `GFileInfo` by suffix, pattern and content type, serialised through a `GVariant` and built from a `GtkFileFilter` buildable description; the launchers, held but never launched; the legacy `GtkFileChooser`; and the printing stack, which is nearly all pure data — `PaperSize`, `PageSetup` and `PrintSettings` through key files, every typed accessor and every unit, and a `PrintOperation` exported to a PDF so the whole signal chain runs with no printer. The oracles are ISO 216, ANSI, the definition of a point, and the file on disk. Three defects. |
 | `AccessibilityTests` | `GtkAccessible`, which is where Gtk 4 put ATK and which nothing had ever called. The role every widget class declares, checked twice over — the property, and Gtk's own `gtk_test_accessible_has_role` — against the ARIA names, which are the fixed point when a member is inserted into the middle of `GtkAccessibleRole`; a role reassigned, and one named in a `.ui` file. Then the accessible tree, which is not the widget tree: a composite widget's parts, a parent assigned without reparenting, the sibling that only `SetAccessibleParent` can set. Then states, properties and relations set through the rebound update API and read back through Gtk's test API, the value type each attribute wants, the `<accessibility>` block in a `.ui` file, and `AccessibleList`. Three defects; `GtkAccessibleText` and `GtkAccessibleRange` pinned as unreachable. |
+| `CairoSurfaceTests` | The surfaces that are not `ImageSurface`. The three paginated backends whose whole job is to write somebody else's file format, checked against that format: the SVG parsed as XML and its path data read back as numbers, the PostScript checked against the DSC comments the test asked for and against per-page bounding boxes the test flips itself, the PDF against its version header and the `/MediaBox` entries `SetSize` produces. Then the recording surface — ink extents as arithmetic, replay as pixels, a bounded recording against an unbounded control — the subsurface view, and `Cairo.Device`, which no property had ever handed out. |
 | `ApplicationTests` | The application object and the global state around it — the code every program runs before it does anything else, and which the rest of the suite only ever touched by accident. `GLib.Application` registration, the once-only `::startup` against the every-time `::activate`, the id rules, the busy counter and the property that drives it; `g_application_open` end to end; a `GApplicationCommandLine` built by the test, because `::command-line` needs a session bus and Windows re-reads the real process command line anyway. Then `Gtk.Application`'s window list — newest first, which is also what `ActiveWindow` means — accelerators through `SetAccelsForAction`/`GetAccelsForAction`, an `ApplicationWindow` as a `GActionGroup` under `win.` and the `app.` actions its widgets reach; `Gtk.Settings` overridden and reset; `Gtk.IconTheme` search and resource paths and an icon the test wrote; window modality, transient-for, groups, default size and the `::close-request` veto; `HeaderBar`/`WindowControls`; `Gtk.Accelerator`; `Gtk.Global`; and the `GLib.MainLoop` that `Application.Run` became when `gtk_main` was deleted. Five defects. |
 
 ### Guards against vacuous passes
@@ -3535,3 +3536,137 @@ total width of a bitfield run into a local `nbits` and then never uses it —
 final offsets come out right anyway, and there is no independent oracle for the
 bitfield path (`Marshal` cannot model bitfields), so changing it would be
 adjusting behaviour that cannot be validated. Recorded here rather than fixed.
+
+## Fixed: cairo's surface type enum stopped six years short of cairo's
+
+Everything in `CairoSharp` outside `ImageSurface` was untested, and two of the
+four backends cairo builds by default were not bound at all.
+
+`SurfaceType` listed eleven members, ending at `Svg = 10`. `cairo_surface_type_t`
+has twenty-five. So `cairo_surface_get_type` on a recording surface returned 16
+and on a script surface 14, and the property handed the caller an integer no
+member named — a `switch` over it falls through, `ToString()` prints the number,
+and `Surface.Lookup`, whose entire job is to build the right wrapper for a
+handle, dropped both to the base class. `DeviceType` was short in the same way
+(no `Cogl`, no `Win32`, and no `Invalid = -1`, which is what a device in an error
+state reports).
+
+`Each_backend_reports_its_own_surface_type` asserts the *numbers* as well as the
+names, because the enum is positional: a member inserted in the middle silently
+renumbers every later one, and the value 16 is the fixed point.
+
+**Two backends had no binding.** `cairo_recording_surface_create`,
+`_ink_extents` and `_get_extents` were commented-out `DllImport` lines left over
+from the mono era, as were `cairo_surface_create_for_rectangle`,
+`cairo_pdf_surface_restrict_to_version`, `cairo_ps_surface_{get,set}_eps`,
+`cairo_svg_surface_{get,set}_document_unit` and the whole script backend. They
+are bound now, with `RecordingSurface`, `ScriptSurface` and `Script` (the script
+*device*) as the new wrapper types.
+
+**`Cairo.Device` could not be reached by any caller.** Its only constructor is
+`internal`, and no property in the assembly returned one, so the class was
+public, complete and unreachable — 100 lines of dead code. `Surface.Device` now
+wraps `cairo_surface_get_device`, returning null for the backends that have none.
+The constructor grew an `owner` overload at the same time, because
+`cairo_script_create` hands over a reference while `cairo_surface_get_device`
+lends one, and the old constructor referenced unconditionally.
+
+## Behaviour worth knowing: what makes a vector-surface test an oracle
+
+A paginated backend is the easiest thing in this repository to test well and the
+easiest to test vacuously. "The file was created and is not empty" is a `Try`
+sweep with extra steps. The file is only an oracle when it is read against the
+format's own rules:
+
+- **SVG is XML, so parse it.** `XDocument` gives the root's `width`, `height` and
+  `viewBox`, and the path element's `d`; pulling the numbers out of `d` with a
+  regex makes the assertion "the four corners the test drew are in there",
+  immune to how cairo spaces its output. The control is a second document of the
+  same size with nothing drawn — it has no `<path>` at all, so "there is a path"
+  is a fact about the drawing and not about the backend's boilerplate.
+- **PostScript pages carry their own bounding box, in flipped coordinates.**
+  PostScript's origin is bottom-left, so a rectangle at user y in [t, b] on a
+  surface h tall is written at `%%PageBoundingBox` y in [h − b, h − t]. The test
+  does that arithmetic; mutating the flip out of it fails, which is what makes
+  the assertion the oracle rather than a transcription.
+- **A DSC comment needs a document without it beside it.** `%%Title:` appears in
+  the header whether or not anyone asked, if cairo decides to write one.
+- **PDF 1.4 keeps its page tree as plain text.** Restricting to 1.4 is what makes
+  `/MediaBox [ 0 0 200 100 ]` and `/MediaBox [ 0 0 300 400 ]` readable straight
+  out of the bytes, which is the only way to see that `SetSize` applied to the
+  page that had not been emitted yet. Read the file through `Latin1`, not UTF-8:
+  it maps every byte to the code point of the same value, so the binary sections
+  cannot throw the search off.
+- **The script backend writes a transcript.** `3 4 5 6 rectangle` and `fill+` are
+  literally in the file, which makes it the one backend where the assertion is
+  what the context did rather than what it produced.
+
+For the recording surface the oracle is arithmetic the test owns. The ink extents
+of a filled rectangle are that rectangle; the ink extents of a stroke are the
+segment grown by half the pen on each side, so a vertical line from (50,50) to
+(50,80) with pen w gives exactly `(50 − w/2, 50, w, 30)` with butt caps. Two pen
+widths are measured, so the assertion pins the relationship and not a number, and
+the four out-parameters cannot be permuted without failing because x differs from
+y and width from height.
+
+Every one of the seventeen test methods in the file was then shown to fail under
+a deliberately wrong expectation, in three batches. That check is worth the ten
+minutes here in particular: a file-writing test that is accidentally asserting
+the backend's boilerplate passes for the wrong reason and looks identical from
+the outside. One mutation was instructive by *not* failing — moving the surface
+height from 100 to 101 changes the surface and the expected bounding box
+together, which is fine, so the flip itself had to be mutated separately to prove
+the arithmetic was load-bearing.
+
+**One expectation here was wrong, and it was mine, not the library's.** A
+subsurface does not report `SurfaceType.Subsurface`. cairo's
+`_cairo_surface_create_for_rectangle_int` copies the *target's* type onto the new
+surface, so a view onto an image surface says `Image`. The type therefore cannot
+be used to tell a subsurface from what it views, and
+`A_subsurface_reports_the_type_of_the_surface_it_views` pins that rather than the
+value 23. The subsurface is still proved to be one, by drawing: painting the
+whole of a (10,10,20,20) view fills exactly that rectangle of the parent, with a
+control pixel before the origin and another past the far corner, because a
+dropped offset and a dropped clip fail differently.
+
+The SVG document unit is worth the same warning. It does **not** convert: setting
+`SvgUnit.Mm` on a 100-wide surface writes `width="100mm"`, not the 35.28mm that
+100 points are. It relabels the two size attributes and leaves user space alone —
+which is why the test asserts the `viewBox` and the path data are byte-identical
+between the two documents. Working the conversion out from the definition of a
+point would have produced a confident, wrong test.
+
+**Where else to look:** cairo's filename parameters are marshalled as plain
+`string`, which is `UnmanagedType.LPStr` — the system ANSI code page. cairo
+expects UTF-8 and converts to UTF-16 itself on Windows (`_cairo_fopen`), so a
+path with a character outside the host's ANSI page cannot reach it; the surface
+goes into an error state and `WriteToPng` writes nothing without throwing. Every
+test here uses an ASCII temporary directory, so none of them would notice. The
+same question applies to `cairo_ps_surface_dsc_comment` and to anything else in
+`NativeMethods.cs` declared `string`.
+
+## Open: `Gtk.Popover.Popup` takes the test host down on Windows
+
+Not a finding of this work, but it was in the way of verifying it, and it is not
+recorded anywhere else. `ControlsAndTransferTests.A_popover_pops_up_and_down_and_reports_its_closing`
+aborts the process with an access violation inside `gtk_popover_popup` on the
+gvsbuild 4.22.4 runtime:
+
+```text
+Fatal error. 0xC0000005
+   at Gtk.Popover.Popup()
+```
+
+It reproduces with that test as the only one selected, and it reproduces on a
+clean checkout of `HEAD` with none of this work applied, so it is the runtime or
+the test and not the Cairo changes here. Its cost is the failure mode this
+document keeps returning to: the run prints **`Passed!` with `Total: 405`** out
+of 1435 and exits non-zero, and the truncation is the only sign anything is
+wrong. Until it is diagnosed, a full Windows run needs
+
+```sh
+dotnet test Source/Tests/GtkSharp.Tests -c Release \
+  --filter "FullyQualifiedName!=GtkSharp.Tests.ControlsAndTransferTests.A_popover_pops_up_and_down_and_reports_its_closing"
+```
+
+which gives 1435 tests, 1433 passing and 2 WebKit skips, twice over.
