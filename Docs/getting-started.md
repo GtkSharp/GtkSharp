@@ -184,6 +184,26 @@ A `DeleteRange` handler attached with a lambda reads the **empty string** out of
 the range it was handed, because the iterators have already collapsed onto the
 deletion point. Nothing errors; you just get the wrong half of the transaction.
 
+**For a few signals it is worse than that: the lambda never runs at all.** A
+signal whose accumulator stops the emission as soon as the class handler has
+answered never reaches an "after" handler. `GtkDragSource::prepare` and
+`GtkDropTarget::accept` — the two signals a drag-and-drop implementation is built
+on — are exactly those, so they cannot be handled with a lambda:
+
+```csharp
+// Never invoked. No error, no warning: the emission is over before it gets here.
+source.Prepare += (o, args) => args.RetVal = MakeContentProvider();
+
+// Right:
+[GLib.ConnectBefore]
+void OnPrepare(object o, PrepareArgs args) { args.RetVal = MakeContentProvider(); }
+source.Prepare += OnPrepare;
+```
+
+`GtkRange::change-value` is the contrast: its accumulator stops only for a
+handler that returns `true`, so an "after" lambda does run there. When a handler
+you connected appears to be ignored, this is the first thing to check.
+
 ---
 
 ## Building UI from `.ui` files
@@ -443,14 +463,22 @@ buffer.Text = "Hello, world";
 buffer.GetBounds(out var start, out var end);
 Console.WriteLine(buffer.GetText(start, end, includeHiddenChars: false));
 
-var bold = buffer.TagTable.Lookup("bold")
-           ?? buffer.CreateTag("bold", "weight", (int) Pango.Weight.Bold);
-buffer.GetIterAtOffset(out var from, 0);
-buffer.GetIterAtOffset(out var to, 5);
-buffer.ApplyTag(bold, from, to);
+var bold = buffer.TagTable.Lookup("bold");
+if (bold == null)
+{
+    // gtk_text_buffer_create_tag is variadic, so it is not bound. Build the tag
+    // and register it: the two steps that call rolls into one.
+    bold = new TextTag("bold") { Weight = Pango.Weight.Bold };
+    buffer.TagTable.Add(bold);
+}
+
+buffer.ApplyTag(bold, buffer.GetIterAtOffset(0), buffer.GetIterAtOffset(5));
 ```
 
-Two things surprise people:
+`GetIterAtOffset` returns the iterator rather than filling an `out` parameter —
+the `TextIter`-returning shape is the one this binding emits.
+
+Three things surprise people:
 
 - **A left-gravity `TextMark` is the one that does *not* move** when text is
   inserted at its position; the right-gravity mark is pushed along. The name
@@ -458,6 +486,9 @@ Two things surprise people:
 - **`ForwardWordEnd` returns `false` at the end of the buffer**, even though the
   last word ends there — so `while (iter.ForwardWordEnd())` silently drops the
   final word.
+- **`Weight` is `Pango.Weight`, not an `int`.** The generated `gint` property is
+  hidden in favour of a hand-written typed one, so `tag.Weight =
+  Pango.Weight.Bold` is the whole of it.
 
 ---
 
@@ -486,6 +517,7 @@ Collected from defects the test suite has actually caught. Each of these
 | Trap | What happens |
 |:--|:--|
 | `+=` with a lambda connects **after** the default handler | your handler sees the operation already done |
+| `DragSource.Prepare` / `DropTarget.Accept` with a lambda | **never runs**; the accumulator ends the emission first. Use a named `[GLib.ConnectBefore]` method |
 | `<signal>` in a `.ui` file | `NotSupportedException` — connect in C# |
 | `Widget.Activate()` on a button | does **not** raise `Clicked`; Gtk 4 routes presses through a gesture |
 | `SimpleAction.StateChanged` | it is `change-state`; you must apply the state yourself |
@@ -498,6 +530,18 @@ Collected from defects the test suite has actually caught. Each of these
 ---
 
 ## Where to look next
+
+- **`SampleApps/GettingStarted`** — **this document as a running application.**
+  One page per section above, including the traps, demonstrated by doing rather
+  than describing: the two InsertText handlers side by side, the stateful action
+  that does and does not apply its own state, the list pipeline reporting what
+  each stage holds, `Activate()` failing to raise `Clicked`. It is a standalone
+  solution consuming the NuGet packages, so it also exercises the packaging:
+
+  ```sh
+  dotnet cake build.cake --BuildTarget=PackageNuGet --Configuration=Release
+  cd SampleApps && dotnet run --project GettingStarted
+  ```
 
 - **`Source/Samples`** — a browsable application with a section per widget. Run it
   with `dotnet cake build.cake --BuildTarget=RunSamples`. It is the widest worked

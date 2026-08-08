@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <!-- The window shell is described here rather than built in C#, to exercise
+       the Builder path Docs/getting-started.md documents.
+
+       There is deliberately no <signal> element anywhere in this file. Gtk 4
+       replaced gtk_builder_connect_signals_full with GtkBuilderScope, which
+       GtkSharp does not bind yet, and a document that declares signals throws
+       NotSupportedException at construction. Field binding still works, so the
+       ids below reach the [UI] fields in MainWindow.cs and every handler is
+       connected in C#. -->
+  <object class="GtkWindow" id="MainWindow">
+    <property name="title">GtkSharp — Getting Started Tour</property>
+    <property name="default-width">960</property>
+    <property name="default-height">640</property>
+    <child>
+      <object class="GtkBox" id="_root">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox" id="_body">
+            <property name="orientation">horizontal</property>
+            <property name="vexpand">true</property>
+            <child>
+              <object class="GtkStackSidebar" id="_sidebar">
+                <property name="stack">_stack</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparator" id="_vrule">
+                <property name="orientation">vertical</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="_scroller">
+                <property name="hexpand">true</property>
+                <property name="vexpand">true</property>
+                <child>
+                  <object class="GtkStack" id="_stack">
+                    <property name="hexpand">true</property>
+                    <property name="vexpand">true</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkSeparator" id="_hrule">
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+        <!-- Gtk 4 kept GtkStatusbar only as a deprecated shell; a label in the
+             same place is the whole of what applications used it for. -->
+        <child>
+          <object class="GtkLabel" id="_status">
+            <property name="xalign">0</property>
+            <property name="ellipsize">end</property>
+            <property name="margin-start">8</property>
+            <property name="margin-end">8</property>
+            <property name="margin-top">4</property>
+            <property name="margin-bottom">4</property>
+            <property name="label">Ready.</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
