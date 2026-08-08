@@ -15,8 +15,9 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 951 tests Windows reports 948 passing with 3 skips, and
-the forky container 950 passing with 1.
+so only broke there. At 1183 tests both report 1180 passing with 3 skips — the
+container is run with `GTKSHARP_TESTS_SKIP_WEBKIT=1`, which is why its two
+WebKit skips coincide with gvsbuild's.
 
 ### Running the suite on the Gtk the bindings describe
 
@@ -29,7 +30,7 @@ docker run --rm -v /path/to/GtkSharp:/src -w /src debian:forky bash -lc '
   apt-get install -y -qq --no-install-recommends ca-certificates curl git dbus \
     libicu-dev libgtk-4-1 libadwaita-1-0 libgtksourceview-5-0 \
     libwebkitgtk-6.0-4 libjavascriptcoregtk-6.0-1 xvfb xauth &&
-  curl -sSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel 8.0 --install-dir /usr/local/dotnet &&
+  curl -sSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel 10.0 --install-dir /usr/local/dotnet &&
   export PATH=/usr/local/dotnet:$PATH &&
   WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1 \
     dbus-run-session -- xvfb-run -a dotnet test Source/Tests/GtkSharp.Tests -c Release'
@@ -217,7 +218,11 @@ investigate — not something to relax.
 | `GrapheneMathTests` | Graphene, and the arithmetic half of Gsk — the corner of the tree with the best oracles there are, because every answer can be worked out in the test: a matrix times its inverse, a 3-4-5 triangle's area, a ray entering a box spanning [-1,1] at t=4, the six planes of a 60-degree frustum meeting the axis at 30 degrees. Matrix multiply/invert/decompose/transpose/interpolate/project, the vectors, rectangle intersection and the in-place trap, quad, triangle and barycentric coordinates, box, sphere, plane, ray, frustum, euler and quaternion; then `GskTransform`'s conversions and render-node bounds. Four codegen defects and a heap corruption; four pieces of graphene behaviour pinned because the obvious expectation is wrong. |
 | `ExpressionTests` | `GtkExpression`: how the Gtk 4 list stack reads a value out of an item, and how a property is kept in step with one on another object. Property, constant, object, closure, cclosure and try expressions; evaluation against a this-object and the GValue it fills; watches and their invalidation; `Bind` and what a failed evaluation does to the target; expression-driven `StringSorter`, `NumericSorter`, `StringFilter` and `BoolFilter` over a list model. Four defects; the oracles are the length of a word, an alphabet and a set of ages chosen here. |
 | `TreeViewStackTests` | The legacy tree *view*, where the largest block of untested hand-written `GtkSharp` was: `TreeViewColumn`'s attribute mapping and cell data funcs proved through `CellSetCellData`, the column list and its reordering, a header click driving the model's sortable interface, `TreeSelection` including a select function that vetoes, `TreeRowReference` against a `TreePath` that does not move, expansion and `MapExpandedRows`, a managed `CellRenderer` subclass measured and snapshotted *by Gtk*, `CellArea`/`ICellLayout`, the toggle and accel renderers, and a row moved between positions through `TreeDragSource`/`TreeDragDest` end to end. One use-after-free; three pieces of behaviour pinned. |
+| `PangoShapingTests` | The half of Pango that turns text into glyphs, where `PangoTests` stops at attributes and measurement: itemization, shaping, the Unicode break algorithm, bidi, the layout iterator, `ScriptIter`, `AttrList` splice/filter/update, tab arrays, coverage, font families and faces, `Matrix`, cursor movement and layout serialisation. The oracles are outside the library — Unicode says where the word boundaries are, the bidi algorithm says which run gets an odd embedding level, a cluster's widths have to add up to the run's width, and index-to-position has to invert position-to-index. Eleven array parameters bound as scalars, a double free on every borrowed attribute, a mutable static identity matrix, and a field holding a struct by value that was read as a pointer to one. |
 | `ControlsAndTransferTests` | The controls an application is built out of, and the two subsystems Gtk 4 replaced wholesale. Entry and `GtkEditable` over non-ASCII text (a position is characters, a length is bytes); adjustment clamping and the two signals that separate a change of range from a change of value; spin button stepping, wrapping and snapping; scale marks; level-bar offsets; progress-bar pulse; calendar; notebook reordering; `Gtk.Stack.Pages` as a list model; expander, popover, drop-down, scrolled window, search entry and search bar. Then `Gdk.Clipboard` — set, read back asynchronously, and the mime types Gdk negotiates around a `GValue` — and `GtkDragSource`/`GtkDropTarget`, whose signals are emitted directly against a subclass's vfuncs, because no drag can be started without a pointer device. Five defects. |
+| `DesktopIntegrationTests` | Everything that talks to the desktop rather than to the screen, none of which had a test. The Gtk 4 async dialogs — `FileDialog`, `AlertDialog`, `ColorDialog`, `FontDialog` — driven to their Finish methods the only way a test without a user can, by cancelling the `GCancellable` they were started with; `FileFilter` matching a `GFileInfo` by suffix, pattern and content type, serialised through a `GVariant` and built from a `GtkFileFilter` buildable description; the launchers, held but never launched; the legacy `GtkFileChooser`; and the printing stack, which is nearly all pure data — `PaperSize`, `PageSetup` and `PrintSettings` through key files, every typed accessor and every unit, and a `PrintOperation` exported to a PDF so the whole signal chain runs with no printer. The oracles are ISO 216, ANSI, the definition of a point, and the file on disk. Three defects. |
+| `AccessibilityTests` | `GtkAccessible`, which is where Gtk 4 put ATK and which nothing had ever called. The role every widget class declares, checked twice over — the property, and Gtk's own `gtk_test_accessible_has_role` — against the ARIA names, which are the fixed point when a member is inserted into the middle of `GtkAccessibleRole`; a role reassigned, and one named in a `.ui` file. Then the accessible tree, which is not the widget tree: a composite widget's parts, a parent assigned without reparenting, the sibling that only `SetAccessibleParent` can set. Then states, properties and relations set through the rebound update API and read back through Gtk's test API, the value type each attribute wants, the `<accessibility>` block in a `.ui` file, and `AccessibleList`. Three defects; `GtkAccessibleText` and `GtkAccessibleRange` pinned as unreachable. |
+| `ApplicationTests` | The application object and the global state around it — the code every program runs before it does anything else, and which the rest of the suite only ever touched by accident. `GLib.Application` registration, the once-only `::startup` against the every-time `::activate`, the id rules, the busy counter and the property that drives it; `g_application_open` end to end; a `GApplicationCommandLine` built by the test, because `::command-line` needs a session bus and Windows re-reads the real process command line anyway. Then `Gtk.Application`'s window list — newest first, which is also what `ActiveWindow` means — accelerators through `SetAccelsForAction`/`GetAccelsForAction`, an `ApplicationWindow` as a `GActionGroup` under `win.` and the `app.` actions its widgets reach; `Gtk.Settings` overridden and reset; `Gtk.IconTheme` search and resource paths and an icon the test wrote; window modality, transient-for, groups, default size and the `::close-request` veto; `HeaderBar`/`WindowControls`; `Gtk.Accelerator`; `Gtk.Global`; and the `GLib.MainLoop` that `Application.Run` became when `gtk_main` was deleted. Five defects. |
 
 ### Guards against vacuous passes
 
@@ -1518,34 +1523,40 @@ EOF
 Ranked by *uncovered lines*, that list is a work queue. Every defect found in
 §"Fixed" below came off it.
 
-At 766 tests, measured on Windows (so the two WebKit tests are skipped and
+At 1183 tests, measured on Windows (so the two WebKit tests are skipped and
 those two assemblies are understated):
 
 | | line rate |
 |:--|--:|
-| **hand-written (Generated and Samples excluded)** | **58.6%** (12034/20540) |
-| overall, including generated | 12.8% (32950/256816) |
+| **hand-written (Generated and Samples excluded)** | **62.1%** (13480/21706) |
+| overall, including generated | 17.7% (45702/257906) |
 
 Per assembly, hand-written only, ordered by how much hand-written code there is
 to cover — which is the ordering that says where the work is:
 
 | assembly | covered / total | line rate |
 |:--|--:|--:|
-| `GLibSharp` | 6418 / 9516 | 67.4% |
-| `GtkSharp` | 1596 / 4002 | 39.9% |
-| `CairoSharp` | 2048 / 3204 | 63.9% |
-| `GdkSharp` | 602 / 1084 | 55.5% |
-| `PangoSharp` | 414 / 980 | 42.2% |
-| `GioSharp` | 296 / 568 | 52.1% |
-| `GskSharp` | 184 / 280 | 65.7% |
+| `GLibSharp` | 6642 / 9656 | 68.8% |
+| `GtkSharp` | 2264 / 4590 | 49.3% |
+| `CairoSharp` | 2050 / 3204 | 64.0% |
+| `PangoSharp` | 764 / 1226 | 62.3% |
+| `GdkSharp` | 624 / 1110 | 56.2% |
+| `GioSharp` | 372 / 630 | 59.0% |
+| `GskSharp` | 190 / 280 | 67.9% |
+| `GrapheneSharp` | 186 / 272 | 68.4% |
 | `AdwaitaSharp` | 128 / 214 | 59.8% |
 | `GtkSourceSharp` | 90 / 180 | 50.0% |
-| `GrapheneSharp` | 88 / 168 | 52.4% |
 | `WebkitGtkSharp` | 86 / 174 | 49.4% |
 | `JavaScriptCoreSharp` | 84 / 170 | 49.4% |
 
+The hand-written totals grow as well as the covered counts, because each sweep
+rebinds what it found broken — `GtkSharp` and `PangoSharp` are 588 and 246
+hand-written lines larger than when this table was last measured. A rate can
+therefore move less than the work behind it suggests, which is another reason to
+read the covered/total column rather than the percentage.
+
 `GtkSharp` is the lowest of the large ones and has by far the most hand-written
-lines left uncovered — 2406 — which is where the next pass belongs.
+lines left uncovered — 2326 — which is where the next pass belongs.
 
 `Gtk/SignalConnector.cs` will not move: `ConnectSignals` throws
 `NotSupportedException` because Gtk 4 replaced
@@ -2034,3 +2045,563 @@ back as `7:7:7:7`, the churn's value, rather than crashing some tests later.
   leaves the renderer packed, so the cell keeps whatever it was last given
   rather than being reset — a column that has gone stale on screen is what that
   produces.
+
+## Fixed: eleven Pango arrays whose length is a separate argument
+
+The `gsk_container_node_new` family again, and the largest single instance of it
+in the tree. Codegen has a rule for a NULL-terminated array and none for
+"pointer plus count" — or for "one entry per character of the text", which is
+what Pango's break and shaping functions take — so each of these came out taking
+or returning a **single value**, and Pango wrote the rest past the end of it:
+
+| function | what it came out as | what happened |
+|:--|:--|:--|
+| `pango_get_log_attrs` | `PangoLogAttr attrs, int attrs_len` | one four-byte struct marshalled, `attrs_len` of them written through it |
+| `pango_default_break`, `pango_break`, `pango_tailor_break` | the same | the same |
+| `pango_glyph_string_get_logical_widths` | `out int` | one width per character written through a four-byte stack slot |
+| `pango_glyph_item_get_logical_widths` | `out int` | as above, `item->num_chars` of them |
+| `pango_glyph_string_index_to_x_full` | `PangoLogAttr attrs` | read past the end of one struct for any index beyond the first cluster |
+| `pango_glyph_item_letter_space` | `PangoLogAttr log_attrs` | as above |
+| `pango_language_get_scripts` | `PangoScript` | the low 32 bits of the array's address returned as a script |
+| `pango_font_face_list_sizes` | `out int` | an eight-byte address written through a four-byte slot |
+| `pango_log2vis_get_embedding_levels` | `byte` | the low eight bits of the array's address returned as a level, array leaked |
+| `pango_coverage_from_bytes` | `out byte` | the *input* array bound as an out-parameter, so the one thing the caller had to supply could not be supplied |
+
+`pango_default_break` is the one that explains why none of this had ever
+surfaced: its `attrs_len` argument is `G_GNUC_UNUSED`, so the overrun is silent
+and the first entries are even correct.
+
+All eleven are `hidden` in `PangoSharp.metadata` and rebound over real arrays in
+`Source/Libs/PangoSharp/{Global,GlyphString,GlyphItem,Language,FontFace,Coverage}.cs`,
+with the length computed **by the binding** from the text — `g_utf8_strlen`'s
+count, not `string.Length`, because a character outside the BMP is two UTF-16
+units and one code point.
+
+`PangoGlyphString`'s two array *fields*, `glyphs` and `log_clusters`, were
+already hidden with nothing in their place, so the glyphs a shaping run produced
+and the character each one came from could not be reached from managed code at
+all. They are properties over `abi_info`'s offsets now, sized by `num_glyphs`.
+
+## Fixed: a field holding a struct by value, read as a pointer to one
+
+`FieldBase`'s ABI-offset accessor reads the machine word at the field's offset
+and hands it to `FromNative`. For a `T *` field that is right. For a struct
+embedded **by value** the offset *is* the address, and reading the first word of
+the struct as though it were the address of the struct is not:
+
+```csharp
+IntPtr* raw_ptr = (IntPtr*)(((byte*)Handle) + abi_info.GetFieldOffset ("analysis"));
+return Pango.Analysis.New ((*raw_ptr));       // *raw_ptr is analysis.shape_engine
+```
+
+`PangoAnalysis` begins with the two deprecated engine pointers, which are always
+NULL, and `StructBase.FromNative` maps NULL to `Zero` — so **every `PangoItem`
+reported a zeroed analysis**: script `Common`, no language, no font, bidi level
+0, and no error anywhere. Shaping still worked, because `pango_shape` is handed
+the analysis straight back and never looks at the managed copy; only a caller
+*reading* it saw nothing, and reading it is how a caller finds out what script
+or direction the itemizer decided on.
+
+`FieldBase.IsEmbeddedStruct` now takes the offset as the address in both the
+getter and the setter. **Regenerating all eleven assemblies changes exactly one
+field** — `Pango.Item.analysis` is the only struct-by-value field with a public
+accessor in the tree — which is the check to re-run before touching this: the
+generic path is the right one for every other field, and a wrong
+`IsEmbeddedStruct` would silently turn a pointer field into a garbage read.
+
+`An_items_analysis_reports_the_script_language_and_bidi_level` is the test; the
+whole shaping half of `PangoShapingTests` fails without the fix, because
+`Pango.Global.Shape (text, item.Analysis)` would be handed a zeroed analysis.
+
+## Fixed: Pango.Attribute destroyed whatever it was handed
+
+`Pango.Attribute` is hand-written, wraps a bare `PangoAttribute *`, and its
+finalizer called `pango_attribute_destroy` unconditionally. A `PangoAttribute *`
+arriving from C says nothing about who owns it, and four of the five places one
+arrives are **borrowed**:
+
+- the attribute a `PangoAttrFilterFunc` is handed — which a `PangoAttrList` is
+  about to move into the list `Filter` returns, or to keep;
+- the attribute a `PangoShapeRendererFunc` and `PangoRenderer::draw_shape` are
+  handed;
+- `pango_attr_iterator_get`'s return, which belongs to the list;
+- the attributes hanging off a `PangoAnalysis`.
+
+So each of those was freed under the list that still owned it, and the *second*
+free landed wherever the allocator handed the block out again. `AttrList.Filter`
+reproduces it every time.
+
+Borrowed is therefore the default and the transfer-full callers ask —
+`pango_attr_iterator_get_attrs` and `get_font`'s extra attributes, both of which
+are documented as needing `pango_attribute_destroy` per item, and
+`pango_attribute_copy`. `pango_attr_font_features_new` is the one generated
+function that allocates, so it is hidden and rebound in `AttrFontFeatures.cs`;
+the other four call sites of the manual symbol's `from_fmt` are all borrowed.
+
+`GetAttribute (IntPtr.Zero)` also returned a live-looking wrapper whose `Type`
+read `Invalid` and whose `StartIndex` read address zero. NULL is how
+`pango_attr_iterator_get` says "no attribute of that kind here", so the null
+check every caller writes never fired. It returns `null` now.
+
+## Fixed: a static field that every caller could rotate
+
+`Pango.Matrix.Identity` was a **static field**, and every `PangoMatrix`
+operation mutates in place. `Pango.Matrix.Identity.Rotate (90)` compiles, reads
+like arithmetic on a constant, and leaves the identity permanently rotated for
+every other caller in the process. It is a get-only property handing back a
+fresh value now, so the mutation lands on the temporary.
+`The_identity_matrix_survives_being_rotated_where_it_stands` pins it.
+
+## Pango: behaviour worth knowing
+
+- **A font's coverage is read-only on the fontconfig backend.**
+  `pango_coverage_set` is a vfunc and `PangoFcCoverage` overrides it with an
+  empty body, so a `Set`/`Get` round trip on the coverage
+  `pango_font_get_coverage` returns succeeds under gvsbuild's win32 backend and
+  silently does nothing on Debian. Which of the two happens is a fact about the
+  host; the round trip belongs on a coverage the caller made with
+  `pango_coverage_new`, which is Pango's own class either way.
+- **Coverage serialisation is inert, not broken.** Pango 1.44 reimplemented
+  coverage over `hb_set`: `pango_coverage_to_bytes` writes NULL and 0, and
+  `pango_coverage_from_bytes` returns NULL for any input. The binding has to
+  guard, because `Marshal.Copy` rejects a null source whatever the length —
+  otherwise "nothing to serialise" arrives as an `ArgumentNullException`. 1.44
+  also folded every level other than `NONE` into `EXACT`, so asking for
+  `APPROXIMATE` and reading back `EXACT` is the answer rather than a fault.
+- **Face names are not unique within a family.** `pango_font_family_get_face` is
+  a linear search that stops at the first match, so on a machine carrying a
+  family with two faces called "Thin" — this one does — the third and fourth
+  faces cannot be looked up at all. A test that asserted `GetFace (f.FaceName)`
+  is `f` for every face was one font install away from failing, and the order
+  `list_families` returns is the order the platform enumerated its fonts, so
+  indexing into it asserts something about the machine too.
+- **`pango_layout_move_cursor_visually` reports running off the layout with two
+  different sentinels**: `-1` at the beginning and `G_MAXINT` at the end.
+  Neither is a byte offset, and a loop written as `while (index >= 0)` therefore
+  does not terminate going forwards — it feeds `G_MAXINT` back in for ever. That
+  is what the test that pins it was written as first, and it hung.
+- **A layout's line box is not `ascent + descent`.** Measured at Sans 12 it is
+  21504 against 19776, because the line box is rounded up to whole pixels while
+  the context's metrics are not — and how much hinting rounds is a property of
+  the backend. What holds everywhere is proportion: the same family at twice the
+  size gives twice the ascent, twice the descent and twice the line.
+- **`pango_attribute_equal` ignores the range.** It compares the value, because
+  it is what an attr list uses to decide two runs can be merged — so "bold here"
+  and "bold there" are equal, and code that de-duplicates attributes with it
+  loses every range but the first.
+- **`pango_glyph_item_letter_space` puts the space between clusters, not around
+  them.** *n* clusters grow the run by *n-1* spacings and a one-letter run does
+  not grow at all, so text set with letter spacing measures narrower than
+  "characters times spacing" predicts. Its two array arguments are also indexed
+  differently and neither says so: `text` is the whole paragraph, while
+  `log_attrs` starts at *this item's* first character. The same split runs
+  through the two logical-width calls — a glyph string is given only the text it
+  shaped, a glyph item the whole paragraph and its own `Item.Offset`.
+- **The layout iterator hands back a null run once it has passed the last one**,
+  and the wrapper turns that into a zeroed `GlyphItem` rather than into null, so
+  a `do … while (NextRun ())` loop reads `Item` and gets nothing on its last
+  turn. `run.Item == null` is the test.
+- **`PangoLanguage` values are interned**, so `Language.FromString ("en-gb")`
+  and `("EN-GB")` are the same pointer — which is what lets the itemizer compare
+  them by pointer. A language Pango has no table entry for answers **every**
+  script to `IncludesScript`, because the empty script list means "unknown"
+  rather than "none": a caller filtering fonts by script gets everything through
+  and nothing looks wrong.
+- **A tab whose decimal point was never set reports U+0000**, not `'.'`, so
+  reading it as a character and printing it produces a NUL.
+
+## Fixed: a file chooser that still spoke Gtk 3's filenames
+
+Two metadata rules in `GtkSharp.metadata` retyped `GtkFileChooser`'s folders as
+filenames:
+
+```xml
+<attr path="…/method[@name='GetCurrentFolder']/return-type" name="type">gfilename*</attr>
+<attr path="…/method/parameters/*[@name='folder']" name="type">const-gfilename*</attr>
+```
+
+That was true of **Gtk 3**, where a chooser spoke in paths. Gtk 4 takes and
+returns `GFile *`, and nothing failed when the API changed underneath, because a
+pointer is a pointer:
+
+- `IFileChooser.CurrentFolder` came out as a `string`, so the getter took the
+  `GFile *` that `gtk_file_chooser_get_current_folder` hands back, read the
+  object's memory as a NUL-terminated string, and then **`g_free`d the GObject**
+  — the return value is transfer-full, so the binding "owned" it. An application
+  that set a folder and read it back corrupted the heap.
+- `AddShortcutFolder (string)` and `RemoveShortcutFolder (string)` marshalled a
+  `char *` into a parameter Gtk dereferences as a `GFile *`.
+
+The rules are deleted; the interface now says `GLib.IFile` in all three places.
+The half of the pair that was already right — `SetCurrentFolder (GLib.IFile)`,
+whose parameter is named `file` rather than `folder` — is what made the mismatch
+survive: setting worked, so only a program that read back was hurt.
+
+Worth knowing while testing it: a `GtkFileChooserWidget` loads its folder
+through the main loop, so `CurrentFolder` is **null** until the loop has turned.
+A test that reads it straight after setting it concludes the getter is broken.
+
+## Fixed: page ranges nobody could read past the first
+
+`gtk_print_settings_get_page_ranges` returns a `GtkPageRange *` array plus a
+count, transfer full; `gtk_print_settings_set_page_ranges` takes the same pair.
+The api.xml has no way to say "array whose length is that other argument", so
+codegen bound **both** over a single `GtkPageRange`:
+
+- the getter marshalled the first element and leaked the rest of the `g_malloc`
+  block on every call;
+- the setter marshalled one struct and told Gtk to read `num_ranges` of them.
+
+"Pages 1-3, 6 and 10-12" is the ordinary thing to type into a print dialog, and
+only the first range ever arrived. Both are hidden in the metadata and rebound
+over real arrays in `Source/Libs/GtkSharp/PrintSettings.cs`, the same shape as
+the eleven Pango array parameters above.
+
+## Fixed: the dialog that replaced GtkMessageDialog had no constructor
+
+`GtkAlertDialog`'s only C constructor is
+`gtk_alert_dialog_new (const char *format, ...)`, and codegen emits nothing for
+an ellipsis. With `ctors.Count == 0`, `ObjectGen` falls back to the **protected**
+void constructor it gives an abstract base class like `GtkFilter` — so
+`new Gtk.AlertDialog ()` did not compile for anyone outside the assembly, and
+the type Gtk 4 offers in place of `GtkMessageDialog` could not be used at all.
+
+`disable_void_ctor="1"` turns the fallback off and `AlertDialog.cs` writes the
+constructors by hand. They go through `g_object_new` rather than the varargs
+entry point on purpose: `gtk_alert_dialog_new` runs its first argument through
+`g_strdup_vprintf`, so binding it directly would make
+`new AlertDialog ("Copied 50% of the files")` undefined behaviour — the hazard
+`Gtk.MessageDialog` still carries.
+
+## The desktop dialogs and the print stack: behaviour worth knowing
+
+- **Rotating a sheet changes which margins bound the page.** A margin belongs to
+  the sheet and never moves — `GetLeftMargin` is 15mm in every orientation — but
+  `gtk_page_setup_get_page_width` subtracts *left and right* in portrait and
+  *top and bottom* in landscape. So the formula the accessor names invite,
+  `paper width − left − right`, is silently wrong in landscape by the difference
+  between the two pairs. A test whose four margins are chosen so that
+  left+right equals top+bottom cannot tell the two apart; the one here uses four
+  different numbers.
+- **`GtkFileDialog.InitialFile` does not round-trip.** `set_initial_file` is
+  documented as a shortcut for `set_initial_folder` + `set_initial_name`, and
+  that is all it is: it stores nothing of its own, so reading the property back
+  returns **null** while the other two hold the answer.
+- **The 4.10 dialog family does not agree on what a cancel is.**
+  `GtkAlertDialog` answers with `G_IO_ERROR_CANCELLED` (19);
+  `GtkFileDialog` and `GtkColorDialog` answer with `GTK_DIALOG_ERROR_CANCELLED`,
+  a different domain whose code is **1**. Comparing the code without the domain
+  mistakes the second for `G_IO_ERROR_NOT_FOUND`.
+- **A content type is not a mime type.** `gtk_file_filter_add_mime_type` stores
+  `g_content_type_from_mime_type` of what it was given, and matching compares
+  content types — which are the mime strings themselves on Linux and registry
+  entries like `".png"` on Windows. Putting a mime type straight into a
+  `GFileInfo`'s `standard::content-type` therefore matches on one platform and
+  not the other; converting on both sides, as Gtk does internally, is portable.
+  The same asymmetry makes a **mime rule lossy through a `GVariant`**:
+  `to_gvariant` writes the stored *content* type and `new_from_gvariant` feeds it
+  back to `add_mime_type`, which converts again — on Windows the rule comes back
+  as `"*"` and matches everything.
+- **`gtk_paper_size_is_equal` is a `strcmp` on the names.** A custom sheet cut to
+  exactly 210×297mm is not equal to `iso_a4`, and two independently constructed
+  A4s are.
+- **A standard paper size is written to a key file under its *PPD* name**, and
+  its own name is left out entirely — there is no `iso_a5` anywhere in the file,
+  only `PPDName=A5`, and the name is recovered from Gtk's table on the way back
+  in.
+- **A print settings paper *format* and paper *width* are independent keys.**
+  Naming a standard sheet records the name and nothing else, so
+  `GetPaperWidth` answers **0** right after `PaperSize` was assigned. Only
+  `PaperSize` knows how to look a name up.
+- **`set_resolution_xy (300, 1200)` leaves the plain `resolution` key on the
+  horizontal one**, so reading `Resolution` back gives 300 — not 1200, and not
+  an average.
+- **An exported print operation never reaches `Finished`.** That status comes
+  from a print backend watching a spooled job and there is no backend behind
+  `GTK_PRINT_OPERATION_ACTION_EXPORT`, so the operation sits at
+  `GeneratingData` with `IsFinished` false even though `::done` has run and the
+  PDF is complete. Waiting on `IsFinished` after an export waits for ever.
+- **An export with no `export-filename` fails through the return value only.**
+  Gtk fails a `g_return_val_if_fail` and hands back
+  `GTK_PRINT_OPERATION_RESULT_ERROR` **without** filling in the `GError`, so a
+  caller that only catches `GException` sees an export that silently did
+  nothing.
+
+
+## Fixed: the whole GtkAccessible update API, and a registry that bootstrapped itself
+
+`GtkAccessible` is how Gtk 4 replaced ATK, and setting a state, a property or a
+relation on a widget could not be done at all.
+
+Gtk offers each of the three twice. The varargs spelling —
+`gtk_accessible_update_state (self, GTK_ACCESSIBLE_STATE_BUSY, TRUE, -1)` — is
+what the documentation shows and what no binding can call; codegen drops it, as
+it should. The other spelling is
+
+```c
+void gtk_accessible_update_state_value (GtkAccessible      *self,
+                                        int                 n_states,
+                                        GtkAccessibleState  states[],
+                                        const GValue        values[]);
+```
+
+— **two parallel arrays behind one count**, which the api.xml has no way to say
+and codegen has no rule for. So `states` was read as a pointer-to-enum and
+emitted as the method's *return value*, and `values` as one `GValue` by value:
+
+```csharp
+public Gtk.AccessibleProperty UpdatePropertyValue (int n_properties, GLib.Value values) {
+        int native_properties;                               // uninitialised
+        gtk_accessible_update_property_value (Handle, n_properties, out native_properties, …);
+```
+
+Gtk then read `native_properties[0]` — a stack slot nothing had written — as
+*which* property to set. Being interface methods, the three appeared on
+`IAccessible`, on the adapter, and on all 190-odd widget classes at once.
+
+They are hidden in the metadata and rebound in `Source/Libs/GtkSharp/Accessible.cs`
+as extension methods on `IAccessible` taking real arrays, plus the single-attribute
+form every caller actually wants.
+
+Beside them, **`gtk_accessible_{state,property,relation}_init_value` are now
+bound by hand.** Gtk's documentation says of them "this function is mostly meant
+for language bindings", and this language binding could not reach them: the gir
+attaches them to the *enum* (`moved-to="AccessibleState.init_value"`) and gapi
+enums carry no methods, so they never appeared in the api.xml. Without them a
+caller has to know that `checked` is a tristate, `invalid` is its own enum,
+`expanded` is an int, and a reference relation is a bare `gpointer`.
+
+`GLib.Value` gained `ValueType` for the same reason: `Val` answers with an
+instance, and an object-typed value holding NULL is indistinguishable from a
+value of some other type that way. The relation API needs the distinction to
+tell `active-descendant`, which points at one accessible, from every other
+reference relation, which points at a list.
+
+### `gtk_accessible_list_new_from_array` cannot be used at all
+
+Its own constructor had the same shape — `GtkAccessible **` plus a count, bound
+as one `GtkAccessible` — but rebinding it over an array does not help, because
+Gtk 4.22 guards it with
+
+```c
+g_return_val_if_fail (accessibles == NULL || n_accessibles == 0, NULL);
+```
+
+an inverted assertion that rejects every non-empty array and returns NULL. (The
+string is in the shipped library; that is how it was confirmed rather than
+inferred.) `AccessibleList (IAccessible[])` therefore goes through
+`gtk_accessible_list_new_from_list`, which has no such guard.
+
+### A registry that only a program already using the type could install
+
+`GtkSharp.GtkSharp.ObjectManager.Initialize ()` maps GType to managed type for
+the types whose managed name `GType.LookupType`'s mangler cannot guess, and
+`ObjectGen` emits the call into the static constructor of *each such type*:
+
+```csharp
+if (cs_parent != String.Empty && GetExpected (CName) != QualifiedName) { … }
+```
+
+In `GtkSharp` there is exactly one such type — `GtkText`, bound as
+`Gtk.TextWidget` because `Gtk.Text` cannot also carry `GtkEditable`'s `Text`
+member — so the registry was populated only by a program that had **already
+named `Gtk.TextWidget`**. Until then every `GtkText*` Gtk handed back came out
+as a bare `Gtk.Widget`: the mangler turns `GtkText` into `Gtk.Text`, finds
+nothing, and walks up to the parent GType. A `GtkSpinButton`'s inner text
+widget, reached through `GetFirstAccessibleChild`, is how this surfaced.
+
+`GtkSourceSharp`, `WebkitGtkSharp` and `JavaScriptCoreSharp` are not affected —
+nearly every type in them is renamed, so any one of them bootstraps the
+registry. It is the assembly with *one* renamed type that cannot. `Gtk.Widget`'s
+hand-written partial now carries the call, since Widget is the root of
+everything Gtk hands out.
+
+## GtkAccessibleText and GtkAccessibleRange cannot be reached from managed code
+
+Not fixed, and pinned by a test so that fixing it is noticed.
+
+`InterfaceVM.Validate` drops a vfunc that has no C function to invoke:
+
+```csharp
+if (target == null && !(container_type as InterfaceGen).IsConsumeOnly) {
+        log.Warn ("No matching target method to invoke. Add target_method attribute with fixup.");
+        return false;
+}
+```
+
+That is right for an interface whose vfuncs mirror public functions, and wrong
+for one that is *only* a vfunc table. `GtkAccessibleText` has ten vfuncs —
+`get_contents`, `get_caret_position`, `get_selection`, `get_attributes` — and
+Gtk exports no function that calls any of them; `GtkAccessibleRange` has one,
+`set_current_value`; `GtkAccessibleHypertext` has three. All are dropped, and
+the generated `IAccessibleTextImplementor`, `IAccessibleRangeImplementor` and
+`IAccessibleHypertextImplementor` are **empty interfaces**.
+
+So a managed widget cannot tell an assistive technology what its text is, and no
+managed caller can ask another widget. The consumer half is bound and the
+widgets do implement the interfaces — `GtkLabel`, `GtkTextView`, `GtkText` and
+`GtkInscription` are `IAccessibleText` — but the only members on it are the
+three `update_*` notifications, which are real C functions.
+
+Fixing it means falling back to the vm's own name when there is no target, which
+is a change to how every interface in eleven assemblies is emitted, and it
+cannot be verified from a test: there is no public function that invokes these
+vfuncs, so a managed implementation would have no observable effect.
+
+## Accessibility: behaviour worth knowing
+
+- **A widget and its AT context do not report the same role.** A role that comes
+  from the widget class is applied when the context is *realized*, which for a
+  widget that was never shown never happens, so `GetAtContext ().AccessibleRole`
+  is `Widget` while `GetAccessibleRole ()` is `Label`. Only a role that was
+  explicitly assigned appears in both.
+- **Assigning `AccessibleRole.Widget` is not a change.** It is the abstract "some
+  widget" role; the widget goes on reporting what its class declared, with no
+  warning. Clearing a role by assigning the base one silently keeps the old one.
+- **`gtk_test_accessible_has_state` means "is this attribute present", not "is it
+  true".** A `GtkCheckButton` publishes `checked=false` from the moment it is
+  built, so it *has* the checked state while `Active` is false. Meanwhile a
+  sensitive button does not have the disabled state at all.
+- **Gtk maintains part of the accessible description itself** — insensitive
+  becomes `disabled`, `GtkToggleButton:active` becomes `pressed`,
+  `GtkExpander:expanded` becomes `expanded`, a `GtkRange` publishes
+  `value-now`/`value-min`/`value-max`, a placeholder becomes `placeholder`, and
+  `gtk_label_set_mnemonic_widget` sets `labelled-by` **on the target**. What it
+  does not do is publish a button's own label as the accessible label: that is
+  computed when an AT asks, so `has_property (LABEL)` is false on a
+  `Button ("press me")`.
+- **`active-descendant` is the only reference relation that takes one
+  accessible.** Every other one is a `GList` of them behind a `gpointer` —
+  including `error-message`, which reads like a single thing. Passing the wrong
+  shape sets nothing and reports nothing.
+- **Gtk 4.22 has no `init_value` case for `GTK_ACCESSIBLE_STATE_VISITED`**, added
+  in 4.12. The GValue comes back uninitialised, and assigning `Val` to one of
+  those throws rather than doing nothing. A plain boolean works.
+- **A `GValue` of the wrong type is refused silently.** No exception, no return
+  value: `UpdateProperty (Label, new GLib.Value (42))` logs a critical and leaves
+  the property unset, so the only way to know is to ask afterwards.
+- **`SetAccessibleParent` works in one direction only.** The child reports the
+  new parent, and the parent goes on reporting the children it really has. The
+  next sibling has to be passed to `SetAccessibleParent` too —
+  `UpdateNextAccessibleSibling` on a widget whose accessible parent was never set
+  does nothing at all.
+- **A widget's accessible id is its `GtkBuilder` id**, and a widget nothing named
+  has **null**, not the empty string.
+- **`gtk_accessible_get_bounds` is not `gtk_widget_get_width`.** It reports the
+  widget's border box, which for a window's child came out as the surface width
+  where `get_width` gave the content width — 220 against 186 under gvsbuild's
+  client-side decorations. Neither number is portable, so the test asserts
+  geometry it arranged itself: two buttons stacked in a spacing-free box are the
+  same width, and the second starts exactly where the first ends.
+
+
+## Fixed: five more arrays, and a property emitted as the wrong type
+
+All in the layer an application crosses before it draws anything, and none of it
+had ever been called.
+
+- **`g_application_open` could not be called at all.** It takes
+  `GFile **files, gint n_files`, and the api.xml has no way to tie the two
+  together, so codegen bound `files` as a single `GFile` and passed the
+  GObject's own address where Gio dereferences an array of pointers — the first
+  "file" it read was that object's class pointer. This is the one entry point
+  `G_APPLICATION_HANDLES_OPEN` exists to serve. Rebound in
+  `Source/Libs/GioSharp/Application.cs`, with the count taken from the array,
+  which is the only place it can be right.
+
+- **`g_application_command_line_get_arguments` returned the program name and
+  leaked the rest.** It is `gchar **` with its length in an out-parameter and,
+  says the gir, *without* a terminating NULL — the one array shape codegen has
+  no rule for, so the return value came out as a single string. Reading its own
+  command line is the whole point of an application registered with
+  `HANDLES_COMMAND_LINE`.
+
+- **`Gtk.IconTheme.SearchPath` was a `string`, and worked in neither
+  direction.** `GetSearchPath`/`SetSearchPath` were hidden by a mono-era
+  metadata rule, written when they took Gtk 3's `(char ***, int *)` and
+  `IconTheme.cs` bound them by hand. Gtk 4 gives them the plain strv shape, but
+  with the methods hidden `PropertyBase.Getter` found nothing and the
+  `search-path` *GObject property* was emitted instead — as a `string`, because
+  that is what `SymbolTable` makes of `const-gchar**` with no array rule. The
+  value holds a `G_TYPE_STRV`, so the getter read **null** and the setter asked
+  GObject to transform a string into a strv and was silently refused.
+  `ResourcePath`, whose methods were never hidden, sat right beside it working
+  perfectly. Both metadata rules are gone, and the two dead Gtk 3 delegates that
+  were the reason for them.
+
+- **`gtk_accelerator_parse_with_keycode` wrote a pointer through a four-byte
+  slot.** `accelerator_codes` is a `guint **` out-parameter for a
+  zero-terminated array the caller must free; bound as `out uint` it gave Gtk
+  four bytes to write an eight-byte pointer into, reported the low half of an
+  address as a keycode, and leaked the array. Rebound in
+  `Source/Libs/GtkSharp/Accelerator.cs`.
+
+- **`gtk_distribute_natural_allocation` threw its own answer away.** It reads
+  `n_requested_sizes` structs and writes each one's allocation *back* into
+  `MinimumSize`. Codegen marshalled one struct by value into memory it freed on
+  return, so with more than one size Gtk wrote past a 24-byte block and with
+  exactly one the result was unreachable. Rebound over a real array in
+  `Source/Libs/GtkSharp/Global.cs` — and note that a **blittable managed array
+  is not enough**: the first attempt passed `Gtk.RequestedSize[]` straight to the
+  delegate on the assumption that the runtime would pin it, and the distribution
+  came back unchanged. It copies in and out explicitly.
+
+While there, `gtk_widget_get_settings` was un-hidden. Nothing replaced it and
+nothing explained the rule, so the widget-level way to reach the settings an
+application reads did not exist. It is `Widget.Settings` now.
+
+## The application object: behaviour worth knowing
+
+- **`gtk_application_get_windows` runs newest first**, because it prepends — and
+  `gtk_application_get_active_window` is *defined* as the head of that list, not
+  as whatever has the pointer focus. So `Windows[0]` is the last window added,
+  and `ActiveWindow` is deterministic with no window manager present. Reading
+  `Windows[0]` as "the window I added first" is the natural mistake.
+- **An accelerator's action name is stored normalised.** What goes in as
+  `app.open('x')` comes back out of `GetActionsForAccel` as `app.open::x`, and
+  the untargeted `app.open` is a different action with no accelerator at all.
+- **`gtk_accelerator_valid` is about the key, not about the shortcut.** A bare
+  letter with no modifier passes; only a key that cannot be an accelerator at
+  all — a modifier key — is refused.
+- **A `GtkHeaderBar`'s packed children are not its children.** Everything goes
+  behind a `GtkWindowHandle`, so that a drag on the bar moves the window — and
+  so walking `FirstChild`/`NextSibling` for a packed button finds the handle.
+- **Registration is idempotent and activation is not.** `Register` twice emits
+  `::startup` once; `Activate` twice emits `::activate` twice, which is the
+  point — a second launch of a running application arrives as a second
+  activation. And `gtk_application_add_window` does nothing whatsoever before
+  registration: it logs a critical and returns.
+- **Busy is a counter and a hold is not part of it.** Two `MarkBusy` calls need
+  two `UnmarkBusy` calls, and `Hold` — which is what keeps `g_application_run`
+  from returning — leaves `IsBusy` false.
+- **`gtk_check_version`'s message is written from the caller's point of view.**
+  Asking for a *lower* major version than the one running reports the library as
+  "too new".
+- **`gtk_window_close` destroys the window** when the `::close-request` handler
+  does not veto it, so the managed wrapper is left pointing at freed memory:
+  asking it `Visible` afterwards is a use-after-free that shows up only as a
+  `GTK_IS_WIDGET` critical. `gtk_window_list_toplevels` is the thing left to ask,
+  and it is also how `DestroyWithParent` can be tested at all.
+- **Replacing an icon theme's search path can make a missing icon uncatchable.**
+  A lookup never returns null — it falls back to `image-missing`, which is itself
+  an icon that has to be found somewhere. A display-less `GtkIconTheme` whose
+  `SearchPath` has been *assigned* one directory has nowhere to find it, and Gtk
+  4.22 blows the stack rather than giving up. Appending with `AddSearchPath`,
+  which is what an application shipping its own icons does, is safe — so this is
+  arranged so it cannot happen rather than pinned by a test, because a stack
+  overflow takes the host with it.
+- **Starting a `GtkApplication` registers `<resource-base-path>/icons/` with the
+  display's icon theme.** That is the only part of `gtk_application`'s
+  `::startup` observable from managed code, and it is why an application's own
+  icons are found by name with no code at all.
+- **A `GApplicationCommandLine` can be constructed.** Its `arguments` property
+  is construct-only and write-only and holds an `aay` — an array of
+  NUL-terminated byte strings, which is what an argv is and what a C# string is
+  not. That is the only way to reach a command-line reader without a second
+  process, because `::command-line` is emitted by the primary instance over
+  D-Bus and Windows ignores the argv passed to `g_application_run` entirely in
+  favour of the real process command line.
+- **`g_application_get_default` is a bare static pointer.** GLib stores it
+  without taking a reference and never clears it, so a `GApplication` collected
+  while it is the process default leaves the next caller holding freed memory.
+  Anything creating applications in a long-lived process has to keep them alive.
