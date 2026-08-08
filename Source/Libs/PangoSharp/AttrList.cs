@@ -32,6 +32,41 @@ namespace Pango {
 		delegate void d_pango_attr_list_change(IntPtr raw, IntPtr attr);
 		static d_pango_attr_list_change pango_attr_list_change = FuncLoader.LoadFunction<d_pango_attr_list_change>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_list_change"));
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_pango_attr_list_get_attributes(IntPtr raw);
+		static d_pango_attr_list_get_attributes pango_attr_list_get_attributes = FuncLoader.LoadFunction<d_pango_attr_list_get_attributes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_attr_list_get_attributes"));
+
+		/// <summary>Every attribute in the list, in no particular order.</summary>
+		/// <remarks>
+		/// The generated property returned a <see cref="GLib.SList"/> built with no
+		/// element type, so each item was marshalled as a GObject -- which a
+		/// PangoAttribute is not -- and came back null. The same mistake
+		/// AttrIterator.Attrs exists to avoid; it survived here because nothing
+		/// called it.
+		///
+		/// The list is (transfer full), so these wrappers own the attributes and
+		/// the spine is freed once they have been taken out of it.
+		/// </remarks>
+		public Pango.Attribute[] Attributes {
+			get {
+				IntPtr raw_ret = pango_attr_list_get_attributes (Handle);
+				if (raw_ret == IntPtr.Zero)
+					return new Pango.Attribute [0];
+
+				GLib.SList list = new GLib.SList (raw_ret, typeof (IntPtr), true, false);
+				try {
+					Pango.Attribute[] attrs = new Pango.Attribute [list.Count];
+					int i = 0;
+					foreach (IntPtr raw_attr in list)
+						attrs [i++] = Pango.Attribute.GetAttribute (raw_attr, true);
+
+					return attrs;
+				} finally {
+					list.Dispose ();
+				}
+			}
+		}
+
 		public void Change (Pango.Attribute attr)
 		{
 			pango_attr_list_change (Handle, pango_attribute_copy (attr.Handle));
