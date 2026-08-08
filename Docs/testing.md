@@ -15,14 +15,31 @@ container under `xvfb-run`.
 **Run it on both platforms before trusting a change.** Windows and Linux each
 see defects the other structurally cannot: gvsbuild ships no WebKit, so two
 tests skip there, while the `g_spawn_*_utf8` symbols only exist on Windows and
-so only broke there. At 1183 tests both report 1180 passing with 3 skips — the
+so only broke there. At 1236 tests both report 1233 passing with 3 skips — the
 container is run with `GTKSHARP_TESTS_SKIP_WEBKIT=1`, which is why its two
 WebKit skips coincide with gvsbuild's.
 
 ### Running the suite on the Gtk the bindings describe
 
 WSL's Debian is *trixie* — Gtk 4.18.6 — and reports false failures for anything
-the gir marks `version="4.22"`. The container is the reference environment:
+the gir marks `version="4.22"`. At 1247 tests it fails 16 of them, and every one
+is a symbol trixie's Gtk does not export: `gtk_expression_new_try`,
+`gsk_copy_node_new`, `gsk_render_node_get_children`, `gsk_paste_node_new`,
+`gsk_composite_node_new`, and the accessibility and `AdwEnumListModel`
+properties added since 4.18. Confirm before spending time on one:
+
+```sh
+nm -D --defined-only /usr/lib/x86_64-linux-gnu/libgtk-4.so.1 | grep ' T gsk_copy_node_new$'
+```
+
+(`nm` is in `binutils`, which trixie's WSL image does not install — and without
+it that command prints nothing, which reads exactly like a missing symbol. It is
+worth installing rather than trusting the empty output.) A **null delegate**, not
+a link error, is what a missing export becomes, so these arrive as
+`NullReferenceException` from inside a wrapper rather than as anything that names
+the symbol.
+
+The container is the reference environment:
 
 ```sh
 docker run --rm -v /path/to/GtkSharp:/src -w /src debian:forky bash -lc '
@@ -2695,3 +2712,440 @@ the delegate's `MethodInfo` — those two signals cannot be handled with one at
 all. `GtkRange::change-value` is the contrast that makes the rule legible: its
 accumulator stops only for a handler returning `true`, so an "after" lambda does
 run there. The distinction is the accumulator, not the return type.
+
+## Fixed: six Gsk render-node APIs that could not be called correctly
+
+`GskRenderNodeTests` went in over the scene graph Gtk 4 actually draws through,
+and every constructor it needed on the way turned out to be one of two shapes
+codegen has no rule for.
+
+**Arrays whose length is a sibling parameter.** The same family as
+`gsk_container_node_new`, already rebound, and `gdk_content_formats_new` before
+it. Five gradient constructors took `(const GskColorStop *stops, gsize n_stops)`
+and came out as *one* `ColorStop` by value plus a count the caller supplied
+separately:
+
+```csharp
+// Before. A gradient needs two stops; there is one struct's worth of memory here.
+new Gsk.LinearGradientNode(bounds, start, end, oneStop, 2);
+```
+
+There was no way to write a correct call — passing the true count read past the
+end of a 20-byte allocation, and passing 1 built a gradient GSK rejects. The
+matching `GetColorStops` wrapped only the first element, so a gradient could not
+be read back either. `gsk_shadow_node_new` had it too, and a drop shadow with two
+shadows is ordinary rather than exotic. All rebound over `ColorStop[]` /
+`Shadow[]` in `GradientNodes.cs` and `ShadowNode.cs`, where the count is the
+array's own length and cannot disagree with it.
+
+**`gsk_stroke_set_dash` was worse than uncallable.** The array parameter became
+an *out* parameter:
+
+```csharp
+public float SetDash(ulong n_dash) {
+    float dash;                                    // four bytes of stack
+    gsk_stroke_set_dash(Handle, out dash, new UIntPtr(n_dash));   // read n_dash floats from it
+    return dash;
+}
+```
+
+So there was no way to set a dash pattern at all, and the obvious call corrupted
+the caller's frame. Rebound as a `float[] Dash` property in `Stroke.cs`.
+
+**Fixed-size arrays returned as scalars.** `gsk_border_node_get_widths` returns
+`const float *` — four floats, one per edge — and the api.xml records the element
+type with no length, so codegen declared the P/Invoke as *returning a `float`*.
+On x86-64 the wrapper read XMM0 while GSK had put the pointer in RAX, so
+`BorderNode.Widths` answered with whatever the last floating-point operation had
+left behind. `get_colors` had the same shape and returned the array's first
+element as the whole answer. Both now return arrays.
+
+**Where else to look:** grep the generated tree for a P/Invoke whose return type
+is a value type where the api.xml says `const-<T>*`, and for a `<parameter>` that
+is an array sitting beside a `gsize`/`guint` count. Neither shape is expressible
+in api.xml, so neither will ever be caught by the build — only by someone trying
+to call it.
+
+## Behaviour worth knowing: only rasterising tests a render node
+
+`GskRenderNodeTests` ends almost every test at `RenderNode.Draw` onto a Cairo
+image surface and reads the pixels back, rather than asserting on the node's
+properties. This is not thoroughness for its own sake: a render node *is* a
+description of drawing, so "was this node built correctly" and "does it describe
+the drawing I asked for" are the same question, and only rasterising answers it.
+
+A property-only test passes just as happily against a node built from the wrong
+arguments — which is precisely the state four of the node types above were in.
+The pattern is cheap:
+
+```csharp
+using var surface = new Cairo.ImageSurface(Cairo.Format.Argb32, 8, 8);
+using (var cr = new Cairo.Context(surface)) node.Draw(cr);
+surface.Flush();
+// ARGB32 is premultiplied BGRA on little-endian: byte 0 B, 1 G, 2 R, 3 A.
+```
+
+Assert on *both* directions — a pixel that should be painted and one that should
+not. Half the assertions in that file would pass against a surface nothing ever
+touched, and the other half are what stop that from being a green run.
+
+## Fixed: GskRoundedRect was 40 bytes where GSK reads 48
+
+The single defect that had blocked the most surface. `GskRoundedRect` is two
+structs embedded by value:
+
+```c
+struct GskRoundedRect {
+    graphene_rect_t bounds;      /* 16 bytes: x, y, width, height       */
+    graphene_size_t corner[4];   /* 32 bytes: 4 x (width, height)       */
+};                               /* 48 bytes, all of it floats          */
+```
+
+`graphene_rect_t` and `graphene_size_t` are bound as opaque boxed **classes**, so
+`SymbolTable` had no by-value form for either. The generated struct came out as
+an `IntPtr` for the bounds followed by a managed `Graphene.Size[]` marshalled
+`ByValArray` — 40 bytes on Windows, and on Linux not marshallable at all
+("Type 'Gsk.RoundedRect' cannot be marshaled as an unmanaged structure"). Every
+method then did `AllocHGlobal(Marshal.SizeOf<Gsk.RoundedRect>())` and handed that
+to a function reading and writing 48 bytes through it.
+
+Nothing built on a rounded rectangle worked: `BorderNode`, `RoundedClipNode`,
+`InsetShadowNode`, `OutsetShadowNode`, `PathBuilder.AddRoundedRect` and
+`Snapshot.AppendBorder`. That is four of the thirty-eight render-node types.
+
+**Hiding the struct is not the fix.** Tried first, and codegen then drops every
+dependent that mentions `const-GskRoundedRect*` with an "Unknown type" warning
+rather than keeping it — `BorderNode.New`, `RoundedClipNode.New`,
+`Snapshot.AppendBorder` and the rest simply vanish from the binding. What works
+is removing the two *fields* and declaring them by hand:
+
+```xml
+<remove-node path="/api/namespace/struct[@cname='GskRoundedRect']/field[@cname='bounds']" />
+<remove-node path="/api/namespace/struct[@cname='GskRoundedRect']/field[@cname='corner']" />
+<attr path="/api/namespace/struct[@cname='GskRoundedRect']" name="noequals">1</attr>
+<attr path="/api/namespace/struct[@cname='GskRoundedRect']" name="nohash">1</attr>
+```
+
+`noequals`/`nohash` are load-bearing, and the reason is worth remembering:
+`StructBase.GenEqualsAndHash` builds `Equals` by folding the field list, so a
+struct with no api.xml fields gets `return true;` — every rounded rectangle equal
+to every other. The two attributes already existed for other reasons; without
+them this fix would have traded a crash for a silent wrong answer.
+
+`RoundedRect.cs` then declares the twelve floats. Because it is the *only* file
+that declares any, sequential layout is that file's declaration order and nothing
+else — which is what makes hand-completing a generated struct safe at all.
+
+**And a use-after-free that fell out on the way.** The six methods returning
+`GskRoundedRect*` return their own receiver, and the wrapper freed its copy
+before reading the return value out of it:
+
+```csharp
+ReadNative (this_as_native, ref this);          // correct: the receiver is updated
+Marshal.FreeHGlobal (this_as_native);
+ret = Gsk.RoundedRect.New (raw_ret);            // raw_ret == this_as_native
+```
+
+So `rect.InitFromRect(bounds, 5)` left `rect` right and returned garbage. Now
+bound over `ref this`, which needs no copy at all once the struct is blittable.
+
+**Where else to look:** any api.xml `<field>` whose type is a boxed opaque is
+embedded by value in C and cannot be described by the class codegen emits for it.
+`grep` the generated tree for `IntPtr _` fields inside a `[StructLayout]` struct,
+and for `ByValArray` over anything that is not a primitive.
+
+## Fixed: a `.ui` file with a `<signal>` failed in a way that named the wrong thing
+
+`BuilderBindingTests` went in over `Builder.Autoconnect` — binding `[UI]` fields
+from a `.ui` document, which is what the templates generate and what
+`getting-started.md` teaches. `Builder.cs`, `BuilderXml.cs` and
+`BindingAttribute.cs` are entirely hand-written, so none of it was checked by
+compiling, and none of it was covered.
+
+The field binding turned out to be sound: by field name, by explicit name,
+private fields, fields inherited from a base class, static fields via
+`Autoconnect(Type)`, and `throwOnUnknownObject` in both positions. All now
+pinned.
+
+**The signal path was not what anyone thought.** The code and the guide both
+described a document that loads with its handlers unconnected, and an
+`Autoconnect` that throws `NotSupportedException` "deliberately, rather than
+silently ignoring every click". What actually happens is that Gtk 4 resolves a
+`<signal>` handler through `GtkBuilderScope` at **parse** time. The default scope
+is `GtkBuilderCScope`, which looks the name up as an exported C symbol. It never
+finds a managed method, so the document does not load at all:
+
+```
+GLib.GException: No function named `OnClicked`.
+```
+
+`Autoconnect` is never reached, so its `NotSupportedException` never fires — and
+the error the user does get reads as a missing *native* symbol, sending them to
+look for a C function they never wrote.
+
+Two things were wrong at once, which is why neither had been noticed: the guide
+documented an exception the library could not raise, and the check that would
+have raised it only ever ran on the `Stream` constructor. `AddFromString`,
+`AddFromFile` and `AddFromResource` — the three ordinary ways in — never
+inspected the document at all.
+
+All three are now hidden in the metadata and rebound in `Builder.cs`. They
+inspect the XML *before* the native call, and if the call then fails on a
+document that declared a handler, that is what the exception says, with
+GtkBuilder's own error kept as `InnerException`. `Builder.DeclaresSignals` is
+public and is set even when the load fails, so a caller can tell "my XML is
+wrong" from "this is not supported yet".
+
+**The real remedy is still open**: implementing `GtkBuilderScope` so a managed
+method can be resolved. `Gtk.IBuilderScope`, `Gtk.BuilderCScope` and
+`Builder.Scope` are all bound already; what is missing is a scope whose
+`create_closure` returns a `GClosure` over a managed delegate. Until then the
+failure is at least legible.
+
+**Where else to look:** a comment or a doc that describes an exception is a claim
+nobody checks. Grep `Docs/` for exception type names and confirm each one is
+reachable — this one had been wrong since the Gtk 4 port, in the file that
+teaches the binding.
+
+## Behaviour worth knowing: parse the XML, do not grep it
+
+`BuilderXml.DeclaresSignals` parses the document rather than searching for
+`"<signal"`, and the test that matters is a document whose only mention of the
+word is a comment saying it deliberately has none:
+
+```xml
+<!-- No <signal> elements here: handlers are connected in code. -->
+```
+
+Grepping reads that as a declaration and refuses a perfectly good file. Now that
+the string drives an *exception*, getting it wrong turns a working document into
+a rejected one rather than merely producing a spurious warning.
+
+## Fixed: the CSS example in the guide named a type that did not exist
+
+`ThreadAndStyleTests` covers `Gtk.ThreadNotify` and the `Gtk.StyleContext` render
+helpers — two hand-written files with no coverage at all. Writing it turned up a
+second documentation-versus-library mismatch, in the same file as the `<signal>`
+one:
+
+```csharp
+StyleContext.AddProviderForDisplay(Gdk.Display.Default, css,
+                                   Gtk.StyleProviderPriority.Application);
+```
+
+There was no `Gtk.StyleProviderPriority`. `AddProvider` takes a bare `uint`, and
+the only way to call it was to write `600`.
+
+`GTK_STYLE_PROVIDER_PRIORITY_APPLICATION` is a `<constant>` in `Gtk-4.0.gir`, and
+**GirToGapi emits no constants at all** — `grep -c '<constant' Source/Libs/*/*-api.xml`
+is zero everywhere. Gtk has 98, GLib 142, Pango 14, and Gdk 2459. Gdk's are the
+`GDK_KEY_*` keyvals and they are covered only because someone hand-wrote
+`Source/Libs/GdkSharp/Key.cs`; the rest are simply absent.
+
+The five priorities are now declared by hand in `StyleProviderPriority.cs`, as
+`const uint` rather than an enum — `AddProvider` takes a number and any value
+between two named ones is legal, which an enum would deny. Teaching GirToGapi to
+emit `<constant>` remains open, and would rewrite every api.xml, so it belongs to
+its own reviewable pass rather than to a test sweep.
+
+**Where else to look:** the same grep is the audit. A constant that a C
+programmer would reach for by name is one a C# caller currently has to
+hard-code, and hard-coded numbers do not fail loudly when a version changes them.
+
+## Behaviour worth knowing: what makes a drawing test an oracle
+
+The render helpers are the null-delegate trap's natural habitat — several
+`gtk_render_*` functions were removed outright in Gtk 4, and a removed one is a
+`NullReferenceException` at the call site, not a link error. Testing them by
+calling and seeing whether anything was thrown would be the assertion-free sweep
+this document keeps banning.
+
+What makes them testable is that CSS is an oracle the test writes itself:
+
+```csharp
+provider.LoadFromData("label { background-color: rgb(255,0,0); }");
+// ... RenderBackground into an ImageSurface, then assert the pixel is 255,0,0
+```
+
+A themed default cannot be mistaken for success, because the test chose the
+colour. Each of these is paired with its opposite — `background-color:
+transparent`, `border: 0px` — so "something was painted" is reporting the CSS
+rather than the fact that a call happened at all. `RenderLayout` is paired with
+an empty `Pango.Layout` for the same reason.
+
+`ThreadNotify` gets the same treatment. The oracle is not that the delegate ran
+but *which thread it ran on*: `Thread.CurrentThread.ManagedThreadId` inside the
+delegate, compared against the fixture's Gtk thread and against the worker that
+called `WakeupMain`. A delegate that ran on the wrong thread — which is the only
+failure that matters for a class whose entire purpose is thread affinity — would
+satisfy any test that merely counted invocations.
+
+## Behaviour worth knowing: what `await` does in a Gtk application
+
+`AsyncContextTests` covers `GLib.GLibSynchronizationContext`, which had no
+coverage at all despite being what makes `await` usable in a Gtk application.
+`Application.Init` installs it on the thread that called it, so an `await` in an
+event handler captures it and resumes on the Gtk thread — which is the only
+reason the code after an `await` may touch a widget.
+
+Nothing here asserts that a continuation *ran*. That is not the question: a
+continuation that resumed on a thread-pool thread satisfies any test that waits
+for a flag, and then corrupts Gtk from a thread that never called `gtk_init`. The
+question is **where**, so every test compares `ManagedThreadId`, and every
+positive is paired with the arrangement that must not come back:
+
+| | resumes on |
+|:--|:--|
+| `await task` | the Gtk thread |
+| `await task.ConfigureAwait(false)` | wherever the task completed |
+| `await task` with the context removed | wherever the task completed |
+| `await Task.CompletedTask` | inline, without the loop turning |
+
+The last is worth knowing on its own: an already-completed task takes the
+awaiter's synchronous path, so code after that `await` runs without a single turn
+of the main loop.
+
+`ConfigureAwait(false)` is the trap that bites hardest, because it is what a
+library author is told to write. Anything after it must not touch a widget, and
+the failure is timing-dependent rather than deterministic.
+
+**Send deadlocks if you call it from the Gtk thread**, and that is deliberately
+not tested: `Send` posts an idle and blocks until it runs, so calling it from the
+thread that would have to dispatch that idle waits forever. A test for it would
+hang the fixture rather than fail, and hanging is the one outcome this suite
+cannot report — see the truncated-total failure mode this document keeps
+returning to. `Send` is for worker threads; the Gtk thread should call the code
+directly, or `Post`.
+
+**Where else to look:** anything that captures `SynchronizationContext.Current`
+and replays it later. The context is installed per *thread* by `Init`, not
+process-wide, so a helper that marshals work by capturing the current context on
+whatever thread happens to construct it will silently do nothing useful.
+
+## Fixed: `StringList.Splice` deleted rows the caller never asked it to
+
+Found while writing `ListViewTests` over the half of the list pipeline nothing
+covered — `ListView`, `MultiSelection`, `NoSelection`, `ListItem` and `Bitset` had
+no mention in the suite at all, and `ListView` is the widget
+`getting-started.md` tells people to use instead of `TreeView`.
+
+The C function is
+
+```c
+void gtk_string_list_splice (GtkStringList *self, guint position,
+                             guint n_removals, const char * const *additions);
+```
+
+and the api.xml records all three parameters correctly. What came out was
+
+```csharp
+public void Splice(uint position, string[] additions)     // n_removals is gone
+```
+
+with `additions.Length` passed as `n_removals`. So `list.Splice(1, new[] {"a","b"})`
+— which reads as an insertion — removed two rows and added two, and there was no
+way to express a pure insertion at all. Silent, and destructive.
+
+**The cause is a name heuristic with no cross-check.** `Parameter.IsCount` is true
+for *any* integer parameter whose name starts with `n_`, and `Parameters` then
+pairs it with the next parameter if that one `IsArray`. `n_removals` starts with
+`n_`; `additions` is an array; the two got married. But `additions` is
+NULL-terminated — it carries its own length and has no count parameter to pair
+with. `IsArray` was true for both kinds, so the distinction did not exist.
+
+`Parameter.NeedsCount` now makes it: `array` **and not** `null_term_array`. Fixed
+in the generator rather than the metadata, because the misjudgement will recur on
+the next API of this shape.
+
+**How the blast radius was measured**, which matters more than the fix: a
+generator change rewrites every assembly, so the check is to diff the generated
+public surface, not to run the tests and see green.
+
+```sh
+find Source/Libs -path "*/Generated/*" -name "*.cs" -print0 \
+  | xargs -0 grep -hE "^[[:space:]]+public .*\(.*\)" | sed 's/^[[:space:]]*//' | sort > after.txt
+# stash the change, dotnet cake --BuildTarget=Prepare, repeat into before.txt
+diff before.txt after.txt
+```
+
+7844 signatures, one line changed. Do this for any `GapiCodegen` edit — the suite
+passing says nothing about the 7843 signatures no test mentions.
+
+A second bug fell out of the same block: `if (next != null || next.Name == "parameter")`
+dereferences `next` in exactly the case the null check was guarding. `||` for
+`&&`, and it also meant a comment inside `<parameters>` would crash codegen.
+
+## Fixed: a second `<constant>` casualty, and what the first one should have taught
+
+`GTK_INVALID_LIST_POSITION` is what `SingleSelection.Selected` holds when nothing
+is selected and what `StringList.Find` answers when the string is not there. Like
+`GTK_STYLE_PROVIDER_PRIORITY_*` before it, it is a `<constant>` in the gir, so it
+did not exist in the binding and the only way to ask "is anything selected" was
+to compare against `uint.MaxValue` and hope that is what it means. Now
+`Gtk.Global.InvalidListPosition`.
+
+That is two of the 98 found by accident, each while writing a test for something
+else. The rest are still missing, and the way to find them is not to wait for the
+next accident — see the earlier section.
+
+## Behaviour worth knowing: a single selection takes two flags to empty
+
+I expected `CanUnselect = true` to be enough to clear a `SingleSelection`, and it
+is not. There are two independent guards, both defaulting to the value that keeps
+a row selected:
+
+| | |
+|:--|:--|
+| `CanUnselect` (false) | refuses the unselect outright |
+| `Autoselect` (true) | allows it, then immediately picks a row again |
+
+So clearing a selection needs `CanUnselect = true` **and** `Autoselect = false`.
+This is why a `ListView` always has a row highlighted, and why turning off only
+the flag whose name mentions unselecting appears to do nothing at all. The test
+asserts the state after each of the three steps, so the one that works is
+distinguishable from the two that quietly do not.
+
+## Behaviour worth knowing: how to read a widget's own painting back
+
+`DrawingAreaTests` covers the custom-drawing path — `Docs/getting-started.md`
+devotes a section to it and the suite had no mention of `DrawingArea` or
+`SetDrawFunc` at all. It is the most common thing an application does beyond
+arranging widgets, and it crosses every boundary in the binding at once: a
+managed delegate marshalled into Gtk, invoked from native code, handed a
+`Cairo.Context` it did not create.
+
+Counting invocations is not enough. A draw function that *is* called but whose
+context is wrong paints nothing, and an invocation counter calls that a pass. The
+oracle has to be the pixels — but the context belongs to Gtk's surface, so it
+cannot be read directly. The route that works goes through the scene graph Gtk
+itself draws through:
+
+```csharp
+var paintable = new Gtk.WidgetPaintable(widget);
+var snapshot = new Gtk.Snapshot();
+paintable.Snapshot(snapshot, width, height);
+var node = snapshot.ToNode();          // null if the widget painted nothing
+
+using var surface = new Cairo.ImageSurface(Cairo.Format.Argb32, width, height);
+using (var cr = new Cairo.Context(surface)) node.Draw(cr);
+```
+
+This is worth knowing beyond drawing areas: it rasterises **any** widget, so it
+is the general way to assert on what Gtk rendered rather than on what it was
+asked to render. It leans on `RenderNode.Draw`, which `GskRenderNodeTests`
+pins independently.
+
+Each drawing test is paired with a control that must paint nothing — an empty
+draw function, an empty `Pango.Layout` — so "there are pixels" reports the
+drawing rather than the theme, the window background, or anything else that ends
+up in a snapshot.
+
+**And a trap worth stating plainly.** The `width` and `height` a draw function
+receives are the widget's **allocation**, not its `ContentWidth`/`ContentHeight`.
+Those two are a natural-size request; a window stretches its child past them. A
+test that asked for 16 and asserted 16 got 188 — the area filling the smallest
+window the display would make. Asserting the requested size would have been
+asserting a fact about the window manager, which is the class of mistake this
+document keeps coming back to. Compare against `AllocatedWidth`/`AllocatedHeight`
+instead, and assert the *requested* size through `Measure` where it really is the
+contract.
