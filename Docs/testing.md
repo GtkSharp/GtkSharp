@@ -3272,3 +3272,74 @@ glyphs must reach further right than one. Between them those pin the hand-writte
 `Glyph[]` copy into unmanaged memory — index, x and y all surviving it, and the
 whole array arriving rather than only its first element, which is the failure
 this repository has hit repeatedly elsewhere.
+
+## Fixed: five defects in the list marshalling every binding call goes through
+
+`GLibListTests` covers `GLib.List`, `GLib.SList` and the `ListBase` beneath
+them — 290 hand-written lines that nothing in the suite referenced by name, and
+the machinery both of this sweep's earlier defects actually lived in. Writing
+sixteen tests against it found five more.
+
+**`Clone` dropped the element type, and cloning a list of strings crashed the
+process.** It was
+
+```csharp
+public override object Clone () => new List (g_list_copy (Handle));
+```
+
+with no element type, so every element of the clone went through `DataMarshal`'s
+last resort — "is this pointer a GObject?" — which dereferences it as a
+`GTypeInstance`. For a list of strings that reads a `char*` as an object header:
+an access violation that took the test host down, not an exception. Now carries
+`element_type` across, `owned: true` (the spine is a copy) and
+`elements_owned: false` (`g_list_copy` is shallow).
+
+**`Count` was cached and never invalidated by a mutation.** `length` was dropped
+only when the list was emptied, so
+
+```csharp
+int before = list.Count;   // walks the chain, caches the answer
+list.Append (item);
+int after = list.Count;    // still the old number
+```
+
+and because LINQ preallocates from `ICollection.Count`, a single `Cast<T>()` was
+enough to leave a list lying about its length for the rest of its life.
+`Append`/`Prepend` now drop the cache.
+
+**The enumerator restarted once it had finished.** `current == IntPtr.Zero` meant
+both "not started" and "ran off the end", so `MoveNext` sent it back to the head
+and answered `true` forever — a loop that kept asking never terminated. Split
+with a `finished` flag that `Reset` clears.
+
+**`SyncRoot` returned null**, so the documented `lock (collection.SyncRoot)` was
+a `NullReferenceException`.
+
+**`Prepend` took only an `IntPtr`** while `Append` had taken a `string` and an
+`object` since the mono era, so building a list front-to-back meant marshalling
+every element by hand. Two overloads added, the `Append` ones with the direction
+changed.
+
+**Where else to look:** `Source/Libs/GLibSharp/PtrArray.cs` has the same
+`DataMarshal` fallthrough at line 193 and was not part of this pass.
+
+## Behaviour worth knowing: `Append(object)` is not `Append(IntPtr)`
+
+`AllocNativeElement` copies a value type into fresh native memory and stores
+*that* address. For a struct that is right; for an `IntPtr` it means the list
+holds a pointer to a copy of your pointer. Two of these tests were written
+against the wrong one and read back addresses nobody recognised.
+
+Use `Append(IntPtr)` when the element *is* the pointer.
+
+## And the crash that made the point again
+
+The first draft of the element-type test built a list holding `new IntPtr(0x1234)`
+and read it back with no element type — which asks GLib whether address `0x1234`
+is a GObject, and GLib reads through it. Access violation, test host gone,
+`Total` down by the rest of the class.
+
+A fabricated pointer is only safe in a list whose element type stops anything
+dereferencing it. Where the point of the test *is* the dereferencing path, use
+`IntPtr.Zero`: it exercises the same branch and is the one address that is
+defined to be safe.
