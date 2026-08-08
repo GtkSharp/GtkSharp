@@ -107,4 +107,48 @@
        mirror-image problem. Both rebound in Stroke.cs. -->
   <attr path="/api/namespace/*[@cname='GskStroke']/method[@cname='gsk_stroke_set_dash']" name="hidden">1</attr>
   <attr path="/api/namespace/*[@cname='GskStroke']/method[@cname='gsk_stroke_get_dash']" name="hidden">1</attr>
+
+  <!--
+    GskRoundedRect is two structs embedded by value:
+
+        struct GskRoundedRect { graphene_rect_t bounds; graphene_size_t corner[4]; }
+
+    which is 48 bytes, all of it floats. But graphene_rect_t and graphene_size_t
+    are bound as opaque boxed *classes*, so SymbolTable had no by-value form for
+    either: the generated struct came out as an IntPtr for the bounds followed by
+    a managed Graphene.Size[] marshalled ByValArray - 40 bytes, in the wrong
+    order, with a pointer where GSK reads four floats. Every rounded rect handed
+    to GSK was therefore garbage, which is why nothing built on one - BorderNode,
+    RoundedClipNode, InsetShadowNode, OutsetShadowNode, PathBuilder.AddRoundedRect
+    or Snapshot.AppendBorder - could be used at all.
+
+    Hiding the whole struct is not an option: dependents that mention
+    const-GskRoundedRect* are then dropped with an "Unknown type" warning rather
+    than kept. So the fields are removed and the type is completed by hand in
+    RoundedRect.cs, which lays out the twelve floats the C struct actually has.
+    noequals/nohash go with them, because a field-less struct would otherwise get
+    an Equals that returns true for every pair.
+  -->
+  <remove-node path="/api/namespace/struct[@cname='GskRoundedRect']/field[@cname='bounds']" />
+  <remove-node path="/api/namespace/struct[@cname='GskRoundedRect']/field[@cname='corner']" />
+  <attr path="/api/namespace/struct[@cname='GskRoundedRect']" name="noequals">1</attr>
+  <attr path="/api/namespace/struct[@cname='GskRoundedRect']" name="nohash">1</attr>
+
+  <!-- The six methods that return GskRoundedRect* return their own receiver, and
+       the generated wrapper freed the copy it had passed in before reading the
+       return value out of it:
+
+           ReadNative (this_as_native, ref this);        // correct
+           Marshal.FreeHGlobal (this_as_native);
+           ret = Gsk.RoundedRect.New (raw_ret);          // raw_ret == this_as_native
+
+       so the receiver ended up right and the returned value was read from freed
+       memory. Rebound in RoundedRect.cs over "ref this", which needs no copy at
+       all now that the struct is blittable. -->
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_init']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_init_copy']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_init_from_rect']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_normalize']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_offset']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='GskRoundedRect']/method[@cname='gsk_rounded_rect_shrink']" name="hidden">1</attr>
 </metadata>
