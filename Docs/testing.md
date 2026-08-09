@@ -21,15 +21,30 @@ WebKit skips coincide with gvsbuild's.
 
 ### Running the suite on the Gtk the bindings describe
 
-WSL's Debian is *trixie* — Gtk 4.18.6 — and reports false failures for anything
-the gir marks `version="4.22"`. At 1501 tests it fails 18 of them, and every one
-is a symbol trixie's Gtk does not export: `gtk_expression_new_try`,
-`gsk_copy_node_new`, `gsk_render_node_get_children`, `gsk_paste_node_new`,
-`gsk_composite_node_new`, `gdk_rgba_print`, `gsk_path_equal`, and the
-accessibility and `AdwEnumListModel` properties added since 4.18.
+WSL's Debian is *trixie* — Gtk 4.18.6 — and the api.xml describes 4.22, so a
+generated wrapper can name a function that Gtk does not export. That is a null
+delegate rather than a link error, and it used to surface as eighteen
+`NullReferenceException` failures that read exactly like defects.
 
-The count grows as the suite reaches further into 4.22, so treat it as a list to
-check against rather than a number to match. Confirm before spending time on one:
+**They now skip instead**, each naming what it needs:
+
+```
+Skipped ... A_TryExpression_yields_the_first_branch_that_evaluates
+  gtk_expression_new_try arrived in Gtk 4.22; this is 4.18.6.
+```
+
+`TestEnvironment.GtkAtLeast(4, 22)` guards them, so trixie reports **1528 passed,
+18 skipped, 0 failed** and Windows — which is 4.22.4 — runs all eighteen. A guard
+that fired on the reference environment would be hiding something; these do not.
+
+The rule for adding one: guard on the version *the symbol appeared in*, name the
+symbol in the reason, and never guard a test merely because it fails somewhere.
+The symbols currently behind a guard are `gtk_expression_new_try`,
+`gsk_copy_node_new`, `gsk_render_node_get_children`, `gdk_rgba_print`,
+`gsk_path_equal`, the `GtkATContext:realized` property, `AdwEnumListModel:n-items`,
+and the identity `GskTransform` being a null pointer.
+
+Confirm a suspected version gap before spending time on it:
 
 ```sh
 nm -D --defined-only /usr/lib/x86_64-linux-gnu/libgtk-4.so.1 | grep ' T gsk_copy_node_new$'
@@ -4216,3 +4231,41 @@ read as though the library had mis-sorted.
 about twenty exercised. `Completion`, `PrintCompositor`, `Gutter`, `Hover`,
 `SpaceDrawer` and `VimIMContext` are untouched, and `Completion` is the one an
 editor actually leans on.
+
+
+## Making an old Gtk skip rather than fail
+
+The suite is generated from an api.xml describing Gtk 4.22 and is expected to run
+against exactly that. Anything older can be *missing a symbol the binding names*,
+and the binding cannot tell: `FuncLoader` hands back `default(T)`, so the call
+site throws `NullReferenceException` with nothing naming the function.
+
+Eighteen tests hit that on Debian trixie (4.18.6). They were correct tests
+failing for an environmental reason, which is the same category as WebKit not
+being installed — and the suite already had the right shape for it:
+
+```csharp
+[SkippableFact]
+public void A_TryExpression_yields_the_first_branch_that_evaluates()
+{
+    Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+               TestEnvironment.NeedsGtk(4, 22, "gtk_expression_new_try"));
+```
+
+Three rules, and the third is the one that keeps this honest:
+
+1. **Guard on the version the symbol appeared in**, not on the version you happen
+   to be running. The gir's `version` attribute is the source, though it is not
+   always present and is not always right — `GtkATContext:realized` is marked
+   4.24 there and works on 4.22.4, so check against a Gtk that has it.
+2. **Name the symbol in the reason.** "Requires a newer Gtk" tells the next
+   person nothing; `gsk_path_equal arrived in Gtk 4.22; this is 4.18.6` tells them
+   what to look for and what they have.
+3. **Never guard a test because it fails.** A guard is a claim that the
+   environment cannot run it, and it has to be checked on an environment that
+   can. All eighteen still run on Windows at 4.22.4 — if a guard silently started
+   firing there, it would be hiding a real regression, which is worse than the
+   red it replaced.
+
+The counterpart is that a green run on trixie now means something it did not
+before: everything that *could* run, did.

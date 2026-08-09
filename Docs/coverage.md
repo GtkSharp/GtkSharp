@@ -1,6 +1,6 @@
 # Coverage of the hand-written code
 
-Measured at **1513 tests** (1511 passing, 2 skipped) on Windows, `Release`,
+Measured at **1546 tests** (1531 passing, 15 skipped) on Windows, `Release`,
 with generated code excluded by the collector.
 
 ```sh
