@@ -44,6 +44,30 @@ The symbols currently behind a guard are `gtk_expression_new_try`,
 `gsk_path_equal`, the `GtkATContext:realized` property, `AdwEnumListModel:n-items`,
 and the identity `GskTransform` being a null pointer.
 
+### Which Linux, if you get to choose
+
+Not Ubuntu. The vendored girs carry a `version` attribute on 7 721 API elements,
+and counting how many postdate each distribution's Gtk says how much of the
+binding that distribution cannot run:
+
+| distribution | Gtk | bound API it lacks |
+|:--|:--|--:|
+| Debian forky (CI, the reference) | 4.22.4 | 0 |
+| Debian trixie (WSL here) | 4.18.6 | 230 |
+| Ubuntu 22.04 | 4.6.9 | **1 161** |
+
+Ubuntu 22.04 is five times further from the bindings than trixie, and its archive
+has no Gtk 4 installed at all — it would be a full setup for a materially worse
+result. Newer Ubuntus close some of the gap (24.04 is 4.14) but none of them
+reaches 4.22, so none of them removes the need for the forky container.
+
+Count it yourself when a new distribution is proposed, rather than guessing from
+release dates:
+
+```sh
+grep -ohE ' version="4\.[0-9]+"' Source/Gir/*.gir | sort | uniq -c
+```
+
 Confirm a suspected version gap before spending time on it:
 
 ```sh
