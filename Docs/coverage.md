@@ -1,6 +1,7 @@
 # Coverage of the hand-written code
 
-Measured at **1513 tests** (1511 passing, 2 skipped) on Windows, `Release`.
+Measured at **1513 tests** (1511 passing, 2 skipped) on Windows, `Release`,
+with generated code excluded by the collector.
 
 ```sh
 dotnet test Source/Tests/GtkSharp.Tests -c Release --collect:"XPlat Code Coverage" \
@@ -18,14 +19,18 @@ code promises, not from raising a percentage.
 
 | | covered / total | rate |
 |:--|--:|--:|
-| **hand-written** | **14 966 / 22 512** | **66.5%** |
-| generated | 33 038 / 233 316 | 14.2% |
+| **hand-written** | **14 486 / 21 970** | **65.9%** |
+| generated, still reported | 1 190 / 1 282 | 92.8% |
 
-The generated number is close to meaningless and including it in a headline is
-actively misleading. `Generated/` is a mechanical rendering of the `api.xml`: it
-contains a wrapper for every function in every bound library, most of which no
-application will ever call, and covering it would mean calling all of Gtk. Its
-14% is not a gap to close.
+**The generated code is now excluded by the collector itself**, so these are the
+only numbers a run produces. Before that exclusion the report carried 233 316
+generated lines at 14.2%, which dragged the headline figure from 66% to 17% and
+buried the one that can be acted on. `Generated/` is a mechanical rendering of
+the `api.xml`: a wrapper for every function in every bound library, most of which
+no application will ever call. Covering it would mean calling all of Gtk.
+
+The 1 282 lines still reported are explained under
+[what still gets through](#what-still-gets-through) below.
 
 The hand-written code is different in kind. Somebody typed it, usually *because*
 codegen could not express something — an array whose length is a sibling
@@ -42,16 +47,16 @@ is. A rate on its own hides how much code is behind it.
 
 | assembly | covered / total | rate | uncovered |
 |:--|--:|--:|--:|
-| `GLibSharp` | 6 974 / 9 662 | 72.2% | **2 688** |
-| `GtkSharp` | 2 584 / 4 532 | 57.0% | **1 948** |
+| `GLibSharp` | 6 860 / 9 518 | 72.1% | **2 658** |
+| `GtkSharp` | 2 412 / 4 340 | 55.6% | **1 928** |
 | `Shared` | 1 056 / 2 016 | 52.4% | **960** |
-| `CairoSharp` | 2 270 / 3 168 | 71.7% | **898** |
-| `GdkSharp` | 536 / 942 | 56.9% | 406 |
-| `PangoSharp` | 716 / 1 084 | 66.1% | 368 |
-| `GioSharp` | 284 / 462 | 61.5% | 178 |
-| `GskSharp` | 396 / 476 | 83.2% | 80 |
+| `CairoSharp` | 2 242 / 3 136 | 71.5% | **894** |
+| `GdkSharp` | 488 / 886 | 55.1% | 398 |
+| `PangoSharp` | 672 / 1 040 | 64.6% | 368 |
+| `GioSharp` | 280 / 458 | 61.1% | 178 |
+| `GskSharp` | 330 / 410 | 80.5% | 80 |
 | `GtkSourceSharp` | 2 / 12 | 16.7% | 10 |
-| `AdwaitaSharp` | 40 / 46 | 87.0% | 6 |
+| `AdwaitaSharp` | 36 / 42 | 85.7% | 6 |
 | `WebkitGtkSharp` | 2 / 6 | 33.3% | 4 |
 | `GrapheneSharp` | 104 / 104 | 100.0% | 0 |
 | `JavaScriptCoreSharp` | 2 / 2 | 100.0% | 0 |
@@ -66,7 +71,7 @@ see `SatelliteAssemblyTests` — just not *here*.
 
 ---
 
-## What 66.5% does not mean
+## What 65.9% does not mean
 
 About **a sixth of the uncovered lines cannot be covered by this suite at all**,
 and reading the number without that is how a coverage target turns into busywork.
@@ -83,9 +88,9 @@ The honest measurement would union a Windows run with a Linux one. Until that
 exists, treat `Shared` as **not a gap** — and note that its code *is* exercised,
 constantly, by every other test in the suite.
 
-### Dead code — 242 lines
+### Dead code, about 240 lines
 
-`GtkSharp/SignalConnector.cs` (178 lines, 0%) and
+`GtkSharp/SignalConnector.cs` (174 lines, 0%) and
 `GtkSharp/HandlerNotFoundException.cs` (64 lines, 0%) are unreachable.
 
 Gtk 4 removed `gtk_builder_connect_signals_full`, so both public entry points of
@@ -110,8 +115,8 @@ by design.
 `GLibSharp.Source*Native.cs` files are mostly field declarations and native
 callback shims that exist to describe a layout, not to be called.
 
-**Adjusted, the reachable hand-written rate is closer to 71%** — 14 966 of about
-21 100 lines. That is the number worth moving.
+**Adjusted, the reachable hand-written rate is closer to 71%**: 14 486 of about
+20 500 lines. That is the number worth moving.
 
 ---
 
@@ -124,28 +129,29 @@ column is the judgement, not the tool's.
 |:--|--:|--:|:--|
 | `Shared/FuncLoader.cs` | 246 / 792 | 546 | platform-split; not a gap |
 | `Shared/GLibrary.cs` | 810 / 1 224 | 414 | platform-split; not a gap |
-| `CairoSharp/Context.cs` | 562 / 850 | 288 | **real** — the drawing API's breadth |
-| `GLibSharp/Value.cs` | 574 / 806 | 232 | **real** — GValue conversions per type |
-| `GtkSharp/TreeStore.cs` | 178 / 366 | 188 | **real**, but deprecated in Gtk 4 |
-| `GdkSharp/Pixbuf.cs` | 206 / 386 | 180 | **real** — save/load formats |
-| `GLibSharp/Object.cs` | 1 038 / 1 216 | 178 | **real** — property and vfunc plumbing |
-| `GtkSharp/SignalConnector.cs` | 0 / 178 | 178 | dead; see above |
-| `GLibSharp/Source.cs` | 152 / 310 | 158 | **real** — custom GSource subclassing |
-| `GLibSharp/KeyFile.cs` | 614 / 756 | 142 | mostly covered already |
-| `GtkSharp/ListStore.cs` | 152 / 294 | 142 | **real**, deprecated |
-| `GLibSharp/Date.cs` | 206 / 344 | 138 | **real** — calendar arithmetic |
-| `GLibSharp/DateTime.cs` | 250 / 382 | 132 | **real** — timezones, formatting |
-| `GtkSharp/TreeModelFilter.cs` | 50 / 182 | 132 | **real**, deprecated |
-| `GtkSharp/TreeModelSort.cs` | 38 / 164 | 126 | **real**, deprecated |
-| `GLibSharp/Log.cs` | 88 / 206 | 118 | **real** — handlers, fatal masks |
-| `GioSharp/GioStream.cs` | 188 / 298 | 110 | **real** — Stream adapter seek/length |
-| `GLibSharp/Spawn.cs` | 106 / 196 | 90 | **real** — process spawning |
-| `GLibSharp/IOChannel.cs` | 216 / 304 | 88 | mostly covered |
-| `GLibSharp/Signal.cs` | 268 / 350 | 82 | mostly covered |
-| `GtkSharp/TextBuffer.cs` | 18 / 100 | 82 | **real** — serialise/deserialise |
-| `CairoSharp/Surface.cs` | 128 / 206 | 78 | **real** — surface types |
+| `CairoSharp/Context.cs` | 560 / 848 | 288 | **real**: the drawing API's breadth |
+| `GLibSharp/Value.cs` | 574 / 806 | 232 | **real**: GValue conversions per type |
+| `GtkSharp/TreeStore.cs` | 148 / 336 | 188 | **real**, but deprecated in Gtk 4 |
+| `GLibSharp/Object.cs` | 1 024 / 1 202 | 178 | **real**: property and vfunc plumbing |
+| `GdkSharp/Pixbuf.cs` | 166 / 342 | 176 | **real**: save and load formats |
+| `GtkSharp/SignalConnector.cs` | 0 / 174 | 174 | dead; see above |
+| `GLibSharp/Source.cs` | 150 / 308 | 158 | **real**: custom GSource subclassing |
+| `GLibSharp/KeyFile.cs` | 610 / 752 | 142 | mostly covered already |
+| `GtkSharp/ListStore.cs` | 144 / 286 | 142 | **real**, deprecated |
+| `GLibSharp/Date.cs` | 204 / 342 | 138 | **real**: calendar arithmetic |
+| `GLibSharp/DateTime.cs` | 248 / 380 | 132 | **real**: timezones, formatting |
+| `GtkSharp/TreeModelFilter.cs` | 42 / 174 | 132 | **real**, deprecated |
+| `GtkSharp/TreeModelSort.cs` | 34 / 160 | 126 | **real**, deprecated |
+| `GLibSharp/Log.cs` | 88 / 200 | 112 | **real**: handlers, fatal masks |
+| `GioSharp/GioStream.cs` | 188 / 298 | 110 | **real**: Stream adapter seek and length |
+| `GLibSharp/Spawn.cs` | 102 / 192 | 90 | **real**: process spawning |
+| `GLibSharp/IOChannel.cs` | 214 / 298 | 84 | mostly covered |
+| `GtkSharp/TextBuffer.cs` | 8 / 90 | 82 | **real**: serialise and deserialise |
+| `GLibSharp/Signal.cs` | 262 / 342 | 80 | mostly covered |
 | `GLibSharp/TimeVal.cs` | 0 / 78 | 78 | deprecated in GLib itself |
+| `CairoSharp/Surface.cs` | 126 / 202 | 76 | **real**: surface types |
 | `GtkSharp/NodeStore.cs` | 344 / 416 | 72 | mostly covered |
+| `GLibSharp/ValueArray.cs` | 92 / 160 | 68 | **real**, and small |
 
 ### The three worth doing next
 
@@ -176,12 +182,12 @@ part that still matters — implementing a model from C#.
 
 ## Files with no coverage at all
 
-51 files, 1 274 lines. Ordered by size; the triage above accounts for the top of
+53 files, 1 272 lines. Ordered by size; the triage above accounts for the top of
 the list.
 
 | file | lines | |
 |:--|--:|:--|
-| `GtkSharp/SignalConnector.cs` | 178 | dead |
+| `GtkSharp/SignalConnector.cs` | 174 | dead |
 | `GLibSharp/TimeVal.cs` | 78 | deprecated in GLib |
 | `GLibSharp/GLibSharp.SourceDummyMarshalNative.cs` | 70 | callback shim |
 | `GLibSharp/GLibSharp.SourceFuncNative.cs` | 70 | callback shim |
@@ -206,6 +212,68 @@ small enough to be cheap.
 
 ---
 
+## How the exclusion works
+
+Two separate mechanisms, and conflating them is the usual mistake.
+
+### `// <auto-generated />`
+
+Every file `GapiCodegen` writes now begins with
+
+```csharp
+// <auto-generated />
+// This file was generated by the Gtk# code generator.
+// Any changes made will be lost if regenerated.
+```
+
+Roslyn decides a file is generated by looking at that leading comment, and skips
+**analyser** diagnostics for it. That is worth having on its own: 2 100 files
+nobody can edit should not be producing suggestions.
+
+It does **not** suppress compiler warnings, which is why the `#pragma warning
+disable CS0612, CS0618` underneath it is still load-bearing. And it does **not**
+exclude anything from coverage. Coverlet has never read it, and neither does any
+other collector in this pipeline.
+
+### `coverlet.runsettings`
+
+Coverage exclusion is a separate thing, configured in
+`Source/Tests/GtkSharp.Tests/coverlet.runsettings`:
+
+```xml
+<ExcludeByFile>**/Generated/**/*.cs</ExcludeByFile>
+<ExcludeByAttribute>GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+<SkipAutoProps>true</SkipAutoProps>
+```
+
+`GtkSharp.Tests.csproj` points `RunSettingsFilePath` at it, so any `dotnet test`
+run picks it up without a command-line flag. That is what "automatically" means
+here: there is nothing to remember.
+
+`SkipAutoProps` is why the hand-written totals in this document are slightly
+smaller than they were before the change (21 970 rather than 22 512). Trivial
+property accessors were being counted, and counting them flatters the number.
+
+> **Editing that file**: an XML comment may not contain two consecutive hyphens.
+> VSTest rejects the whole settings file if it does, reporting "Settings file
+> provided does not conform to required format" — and then runs the tests anyway
+> with **no coverage configuration at all**, which looks like the exclusion
+> silently not working. This repository has now been bitten by the same rule
+> three times, in a `.props` file, a `.metadata` file, and this one.
+
+### What still gets through
+
+35 generated files, 1 282 lines, remain in the report. Every one of them is the
+generated half of a **partial class whose other half is hand-written** —
+`Gtk/Button.cs`, `Graphene/Rect.cs`, `GLib/FileAdapter.cs` and so on. Coverlet
+filters whole documents, and it will not drop a class that is partly defined in a
+file it was told to keep.
+
+That is 0.5% of what used to be reported, it is confined to types that genuinely
+have hand-written behaviour attached, and it is counted separately above rather
+than folded into the hand-written figure. Removing it would mean instrumenting
+per-method rather than per-document, which is not worth the machinery.
+
 ## Reproducing this
 
 ```sh
@@ -214,9 +282,12 @@ dotnet test Source/Tests/GtkSharp.Tests -c Release --no-build \
   --collect:"XPlat Code Coverage" --results-directory BuildOutput/Coverage
 ```
 
-Then read `BuildOutput/Coverage/*/coverage.cobertura.xml`, keeping only classes
-whose `filename` starts with `Libs/` and does **not** contain `/Generated/`.
+The runsettings is applied automatically, so the report already excludes
+`Generated/`. Read `BuildOutput/Coverage/*/coverage.cobertura.xml`; to split
+hand-written from the partial-class residue described above, keep classes whose
+`filename` starts with `Libs/` and does not contain `/Generated/`.
 
 Note that cobertura's `filename` is relative to `Source/` and uses backslashes on
-Windows — a filter written for forward slashes silently matches nothing and
-reports a coverage of zero over zero lines.
+Windows. A filter written for forward slashes silently matches nothing and
+reports a coverage of zero over zero lines, which is how the first version of
+this analysis died.
