@@ -4346,3 +4346,48 @@ and a user namespace for its sandbox, so it runs on a Linux desktop and skips in
 a container. **JavaScriptCore** needs none of that — only the shared library. Any
 Linux with `libjavascriptcoregtk-6.0-1` installed runs all twenty-one of these,
 including CI, where WebKit itself is deliberately skipped.
+
+## Checked and correct: GLib.Value's conversions
+
+`GLibValueTests` covers the box every property read and write in the binding
+passes through — 806 hand-written lines, roughly twenty constructors against
+roughly twenty explicit conversions, and the file `coverage.md` names as the
+first place worth more tests.
+
+**No defect found in the conversions.** Every scalar, string, string array,
+enum, flags and variant survives a round trip.
+
+What makes that worth having is *where* the round trips are taken. Storing 1 and
+reading 1 back proves almost nothing: a `long` kept in a 32-bit slot survives it
+and loses `long.MaxValue`. So every numeric test uses the extremes —
+`long.MinValue`, `ulong.MaxValue`, `uint.MaxValue` above where a signed slot goes
+negative, `byte`/`sbyte`/`ushort` at both ends — which is where a wrong GType
+shows. `NaN` and the infinities are there for the same reason: they are what a
+conversion routed through a string or an int destroys.
+
+A wrong conversion here is **silent**. You get a default or a truncated number,
+never an error, and it surfaces much later as a property that will not take the
+value you gave it. That is why the last test drives four of them through a real
+`Gtk.Label` property: a conversion that works standalone but disagrees with what
+GObject stores would show up there and nowhere else.
+
+## Behaviour worth knowing: you cannot build a GType-valued GLib.Value
+
+`new GLib.Value(someGType)` does **not** make a value holding that GType. It
+makes an *empty value of* that type — `new GLib.Value(GType.String)` is an empty
+string value — which `ObjectAndValueTests` already pins and which the first draft
+of this test got wrong, reading `null` back and briefly looking like a defect.
+
+There is no other constructor for it, so the `explicit operator GLib.GType`
+exists in one direction only: a GType-valued `Value` can be *read* but not
+*built*. The constructor overload it would need is taken by the empty-value one,
+so closing the gap means a static factory, and nothing in the tree currently
+needs it. Recorded rather than invented.
+
+The read path is still worth testing, and the way to get such a value is from
+something that already holds one:
+
+```csharp
+var store = new GLib.ListStore((GLib.GType) typeof(Row));
+var held = (GLib.GType) store.GetProperty("item-type");
+```
