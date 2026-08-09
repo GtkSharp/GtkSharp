@@ -4146,3 +4146,73 @@ the next unrelated build failed with twenty errors in a test file nobody had
 touched. Always finish that experiment with a full `--BuildTarget=Build`, and
 treat a compile error in an untouched file as a sign that `Generated/` is stale
 rather than as a real break.
+
+## WebKit, actually run for the first time
+
+`WebkitGtkSharp` binds 178 types and the suite named three of them — and only to
+check that a `WebView` could be constructed. `WebKitTests` loads real documents
+into a real engine, runs script in them, and reads the results back through
+`JavaScriptCore`.
+
+**What made this possible was checking the machine rather than assuming.** WSL's
+Debian has `libwebkitgtk-6.0-4` installed *and* permits the user namespace
+WebKit's sandbox needs:
+
+```sh
+dpkg-query -W -f='${Version}' libwebkitgtk-6.0-4     # 2.52.5
+unshare --user --pid true && echo "userns OK"
+```
+
+Both are required, and the second is the one that is usually false. A container
+generally cannot create a user namespace, which is why CI sets
+`GTKSHARP_TESTS_SKIP_WEBKIT=1` rather than disabling the sandbox — see the
+section above. A WSL distribution is not a container in that sense.
+
+Running them needs a session bus as well as a display, because WebKit talks to
+its own subprocesses over one:
+
+```sh
+dbus-run-session -- xvfb-run -a dotnet vstest BuildOutput/Tests/Release/GtkSharp.Tests.dll
+```
+
+with `GTKSHARP_TESTS_SKIP_WEBKIT` **unset**. All thirteen pass. On Windows they
+skip, because gvsbuild ships no WebKit.
+
+**The loads are all local.** `LoadHtml` and `LoadPlainText` take content
+directly, and the one `LoadUri` test points at a `file://` URI the test wrote. A
+test that fetched a page would be testing the internet, and in CI it would be
+doing so from a job holding a token.
+
+The oracles are what the engine reports about a document this file wrote: the
+title it parsed out, the `LoadEvent` sequence ending at `Finished`, a DOM
+mutation read back by a second evaluation, `null` and `undefined` staying
+distinguishable, and a JSON round trip compared against the string the test
+supplied. Two settings tests are paired with a control that proves a setting
+*reaches the engine* rather than merely being stored: `navigator.userAgent`
+reads back what was set, and turning JavaScript off stops an inline script
+changing the title.
+
+## GtkSourceView beyond the samples
+
+`GtkSourceTests` covers source marks, style schemes, context classes, line
+operations, and loading and saving through `GtkSource.File` — where the oracle is
+bytes on disk that the test wrote and read back without asking the library
+anything.
+
+**Two of my expectations were wrong, and both are worth knowing.**
+
+`GtkSource.Buffer` has `ImplicitTrailingNewline` **on by default**. The buffer's
+text never ends in a newline, and the saver adds one — so text that already ended
+in a newline is written with two, and a file that ended with one is loaded
+without it. That is GtkSourceView working as designed and exactly what an editor
+wants, and it looks like an off-by-one until you know. Both directions are pinned,
+with a third test that turns the setting off and gets the bytes through unchanged.
+
+`SortLines` and the other range operations take an **exclusive** end iterator.
+Passing the start of line 3 sorts lines 1 and 2. The test that got this wrong
+read as though the library had mis-sorted.
+
+**Where else to look:** `GtkSourceSharp` still has 102 generated types against
+about twenty exercised. `Completion`, `PrintCompositor`, `Gutter`, `Hover`,
+`SpaceDrawer` and `VimIMContext` are untouched, and `Completion` is the one an
+editor actually leans on.
