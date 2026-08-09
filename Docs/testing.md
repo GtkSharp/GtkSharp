@@ -4103,3 +4103,46 @@ nm -D --defined-only /usr/lib/x86_64-linux-gnu/libgtk-4.so.1 | grep ' T gsk_path
 
 Both turned out to be version gaps (`gdk_rgba_print` and `gsk_path_equal`, added
 after 4.18), so the tests are correct and trixie is simply the wrong Gtk.
+
+## Checked and correct: the fixed-size vertex arrays
+
+`FixedVertexArrays.cs` bridges the one array shape GapiCodegen cannot express.
+Every graphene type is bound as an opaque *class*, so a `Graphene.Vec2[]`
+marshals as an array of pointers — and what `graphene_rect_get_vertices` wants is
+four `graphene_vec2_t` structures laid end to end. 189 hand-written lines,
+covering `Rect.GetVertices`, `Box.GetVertices`, `Frustum.GetPlanes` and
+`Quad.InitFromPoints`, and nothing referenced it by name.
+
+**No defect found.** The arithmetic and the ownership are both right.
+
+The oracle is the test's own arithmetic: a rectangle's four corners follow from
+its origin and size, and a box's eight are the combinations of its two extremes,
+which the test enumerates without needing to know graphene's ordering.
+
+**Reading every element is the point.** A wrapper pointing at the start of the
+buffer gives a correct first element and garbage afterwards — the exact way this
+shape has failed elsewhere here — so each test checks all four or all eight, and
+the box tests count *distinct* corners, which catches both a stride of zero
+(eight copies of one corner) and a stride wrong by a few bytes.
+
+Two ownership claims in that file are also pinned, because they are the kind that
+fail long after the call: each returned vertex is its own allocation (writing one
+must not disturb its neighbour), and the vertices outlive the rectangle they came
+from and a garbage collection, since `Split` frees the buffer before returning.
+
+`Quad.InitFromPoints` is the packing direction, and its guards matter: three
+points would otherwise have a fourth read from past the end of the buffer, so the
+count and the null check are asserted rather than assumed.
+
+## And a self-inflicted footgun worth writing down
+
+Measuring a generator change's blast radius means reverting the generator,
+running `Prepare`, snapshotting, and restoring. Restoring the *source* files is
+not enough: `Generated/` still holds the output of the reverted generator until
+something regenerates it.
+
+The suite had already passed before the experiment, so nothing looked wrong — and
+the next unrelated build failed with twenty errors in a test file nobody had
+touched. Always finish that experiment with a full `--BuildTarget=Build`, and
+treat a compile error in an untouched file as a sign that `Generated/` is stale
+rather than as a real break.
