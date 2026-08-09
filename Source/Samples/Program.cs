@@ -89,7 +89,7 @@ namespace Samples
                 Comments = "A sample application for the GtkSharp project.",
                 LogoIconName = "system-run-symbolic",
                 License = "This sample application is licensed under public domain.",
-                Website = "https://www.github.com/GtkSharp/GtkSharp",
+                Website = "https://www.github.com/pieroviano/GtkSharp",
                 WebsiteLabel = "GtkSharp Website"
             };
             // Gtk 4 removed gtk_dialog_run, which spun a nested main loop.

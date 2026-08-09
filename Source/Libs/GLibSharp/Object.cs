@@ -269,20 +269,79 @@ namespace GLib {
 
 			private void AddGInterfaces ()
 			{
+				// GLib refuses to add a GInterface to a type that does not already
+				// conform to that interface's prerequisites -- GtkSelectionModel
+				// has G_TYPE_LIST_MODEL as one, GtkNative has GtkWidget -- and the
+				// refusal is a g_warning, not an error: the interface is simply
+				// absent afterwards, and every call through it fails its
+				// GTK_IS_* check somewhere far away.
+				//
+				// Type.GetInterfaces() promises no order at all, so adding them as
+				// reflection lists them was correct only by luck. They are added
+				// here in passes: an interface waits until the type satisfies its
+				// prerequisites, which is exactly the topological order GLib wants.
+				List<GInterfaceAdapter> pending = new List<GInterfaceAdapter> ();
+
 				foreach (Type iface in Type.GetInterfaces ()) {
 					if (!iface.IsDefined (typeof (GInterfaceAttribute), true))
 						continue;
+					if (iface.IsAssignableFrom (Type.BaseType))
+						continue;
 
 					GInterfaceAttribute attr = iface.GetCustomAttributes (typeof (GInterfaceAttribute), false) [0] as GInterfaceAttribute;
-					GInterfaceAdapter adapter = Activator.CreateInstance (attr.AdapterType, null) as GInterfaceAdapter;
-
-					if (!iface.IsAssignableFrom (Type.BaseType)) {
-						GInterfaceInfo info = adapter.Info;
-						info.Data = gtype.Val;
-						g_type_add_interface_static (gtype.Val, adapter.GInterfaceGType.Val, ref info);
-						adapters.Add (adapter);
-					}
+					pending.Add (Activator.CreateInstance (attr.AdapterType, null) as GInterfaceAdapter);
 				}
+
+				while (pending.Count > 0) {
+					int added = 0;
+
+					for (int i = pending.Count - 1; i >= 0; i--) {
+						if (!PrerequisitesSatisfied (pending [i].GInterfaceGType))
+							continue;
+
+						AddGInterface (pending [i]);
+						pending.RemoveAt (i);
+						added++;
+					}
+
+					if (added == 0)
+						break;
+				}
+
+				// Anything still pending has a prerequisite this type genuinely does
+				// not meet. Add it anyway so that GLib emits its own diagnostic,
+				// which names the interface and the prerequisite; swallowing it here
+				// would hide a real mistake in the managed type's declaration.
+				foreach (GInterfaceAdapter adapter in pending)
+					AddGInterface (adapter);
+			}
+
+			private void AddGInterface (GInterfaceAdapter adapter)
+			{
+				GInterfaceInfo info = adapter.Info;
+				info.Data = gtype.Val;
+				g_type_add_interface_static (gtype.Val, adapter.GInterfaceGType.Val, ref info);
+				adapters.Add (adapter);
+			}
+
+			private bool PrerequisitesSatisfied (GType iface)
+			{
+				uint count;
+				IntPtr raw = g_type_interface_prerequisites (iface.Val, out count);
+				if (raw == IntPtr.Zero)
+					return true;
+
+				try {
+					for (int i = 0; i < count; i++) {
+						IntPtr prerequisite = Marshal.ReadIntPtr (raw, i * IntPtr.Size);
+						if (!GType.Is (gtype.Val, new GType (prerequisite)))
+							return false;
+					}
+				} finally {
+					Marshaller.Free (raw);
+				}
+
+				return true;
 			}
 
 			private void ClassInit (IntPtr gobject_class_handle)
@@ -636,6 +695,10 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_type_add_interface_static(IntPtr gtype, IntPtr iface_type, ref GInterfaceInfo info);
 		static d_g_type_add_interface_static g_type_add_interface_static = FuncLoader.LoadFunction<d_g_type_add_interface_static>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_add_interface_static"));
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_g_type_interface_prerequisites(IntPtr iface_type, out uint n_prerequisites);
+		static d_g_type_interface_prerequisites g_type_interface_prerequisites = FuncLoader.LoadFunction<d_g_type_interface_prerequisites>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_type_interface_prerequisites"));
 
 		protected internal static GType RegisterGType (System.Type t)
 		{

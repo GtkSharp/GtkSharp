@@ -126,6 +126,9 @@ namespace GtkSharp.Generation {
 
 				if (IsDeprecated)
 					sw.WriteLine("\t\t[Obsolete]");
+			string coverage_attr = CoverageExclusion.ForMemberOf (gen_info, container_type.Name);
+			if (coverage_attr != null)
+				sw.WriteLine ("\t\t" + coverage_attr);
 
 				sw.WriteLine("\t\t{0} {1}{2} ({3}) {4}", Protection, Safety, name, Signature.ToString(), needs_chaining ? ": base (IntPtr.Zero)" : "");
 				sw.WriteLine("\t\t{");

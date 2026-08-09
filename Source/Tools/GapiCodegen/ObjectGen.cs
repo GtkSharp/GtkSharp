@@ -163,6 +163,11 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t[Obsolete]");
 			foreach (string attr in custom_attrs)
 				sw.WriteLine ("\t" + attr);
+			// Only when nothing extends this type by hand; otherwise the members
+			// carry it instead. See CoverageExclusion.
+			string coverage_attr = CoverageExclusion.ForType (gen_info, Name);
+			if (coverage_attr != null)
+				sw.WriteLine ("\t" + coverage_attr);
 			sw.Write ("\t{0} {1}partial class " + Name, IsInternal ? "internal" : "public", IsAbstract ? "abstract " : "");
 			string cs_parent = table.GetCSType(Elem.GetAttribute("parent"));
 
@@ -517,6 +522,9 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine ("namespace GtkSharp." + Studlify (dir_info.assembly_name) + " {");
 			sw.WriteLine ();
+			string manager_coverage_attr = CoverageExclusion.ForType (gen_info, "ObjectManager");
+			if (manager_coverage_attr != null)
+				sw.WriteLine ("\t" + manager_coverage_attr);
 			sw.WriteLine ("\tpublic partial class ObjectManager {");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tstatic bool initialized = false;");

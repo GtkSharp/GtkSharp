@@ -1,10 +1,5 @@
 //
-// Mono.Cairo.SvgSurface.cs
-//
-// Authors:
-//    John Luke
-//
-// (C) John Luke, 2006.
+// Cairo.SvgUnit.cs
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -13,10 +8,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -30,38 +25,23 @@ using System;
 
 namespace Cairo {
 
-	public class SvgSurface : Surface
+	/// <summary>
+	/// Mirrors <c>cairo_svg_unit_t</c> — the unit the emitted document's
+	/// <c>width</c> and <c>height</c> attributes are expressed in. It changes
+	/// only how the size is written, never the user-space geometry inside.
+	/// </summary>
+	[Serializable]
+	public enum SvgUnit
 	{
-		internal SvgSurface (IntPtr handle, bool owns) : base (handle, owns)
-		{
-		}
-
-		public SvgSurface (string filename, double width, double height)
-			: base (NativeMethods.cairo_svg_surface_create (filename, width, height), true)
-		{
-		}
-
-		public void RestrictToVersion (SvgVersion version)
-		{
-			CheckDisposed ();
-			NativeMethods.cairo_svg_surface_restrict_to_version (Handle, version);
-		}
-
-		/// <summary>
-		/// The unit the document's <c>width</c> and <c>height</c> attributes
-		/// are written in. Setting it rescales those two numbers only; user
-		/// space, and so every coordinate drawn, is unaffected.
-		/// </summary>
-		public SvgUnit DocumentUnit {
-			get {
-				CheckDisposed ();
-				return NativeMethods.cairo_svg_surface_get_document_unit (Handle);
-			}
-			set {
-				CheckDisposed ();
-				NativeMethods.cairo_svg_surface_set_document_unit (Handle, value);
-			}
-		}
+		User = 0,
+		Em,
+		Ex,
+		Px,
+		In,
+		Cm,
+		Mm,
+		Pt,
+		Pc,
+		Percent,
 	}
 }
-

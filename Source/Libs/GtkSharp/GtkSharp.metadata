@@ -126,6 +126,16 @@
   <attr path="/api/namespace/interface[@cname='GtkTreeModel']/method[@name='RowsReordered']" name="name">EmitRowsReordered</attr>
   <attr path="/api/namespace/interface[@cname='GtkTreeModel']/method[@name='EmitRowsReordered']/parameters/parameter[@name='new_order']" name="array">1</attr>
   <attr path="/api/namespace/interface[@cname='GtkTreeModel']/signal[@name='RowsReordered']" name="hidden">1</attr>
+  <!-- gtk_tree_model_rows_reordered_with_length (path, iter, int *new_order, int length)
+       is the introspectable form of the call above: the gir gives new_order an
+       <array length="3"> and the api.xml can only say "int*". Codegen has a rule
+       for `n_something` in front of an array and none for a parameter called
+       `length` behind one, so new_order came out as a single `out int` that the
+       method returned, and GTK read `length` integers from the address of one
+       uninitialised stack slot. Naming the count `n_new_order` is what pairs the
+       two into one int[] parameter. -->
+  <attr path="/api/namespace/interface[@cname='GtkTreeModel']/method[@name='RowsReorderedWithLength']/parameters/parameter[@name='new_order']" name="array">1</attr>
+  <attr path="/api/namespace/interface[@cname='GtkTreeModel']/method[@name='RowsReorderedWithLength']/parameters/parameter[@name='length']" name="name">n_new_order</attr>
   <attr path="/api/namespace/interface[@cname='GtkTreeSortable']/method[@name='SortColumnChanged']" name="name">ChangeSortColumn</attr>
   <attr path="/api/namespace/object/implements/interface[@cname='GtkBuildable']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkAboutDialog']/method[@name='GetArtists']/return-type" name="null_term_array">1</attr>
