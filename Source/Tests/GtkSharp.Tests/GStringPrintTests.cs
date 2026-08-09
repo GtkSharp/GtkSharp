@@ -231,9 +231,12 @@ namespace GtkSharp.Tests
 
         // ----------------------------------------------------------- gdk: RGBA
 
-        [Fact]
+        [SkippableFact]
         public void Printing_an_RGBA_fills_the_callers_buffer_and_hands_it_straight_back()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "gdk_rgba_print"));
+
             Run(() =>
             {
                 var red = new Gdk.RGBA { Red = 1f, Green = 0f, Blue = 0f, Alpha = 1f };
@@ -284,9 +287,12 @@ namespace GtkSharp.Tests
 
         // -------------------------------------------------------- gsk: geometry
 
-        [Fact]
+        [SkippableFact]
         public void A_path_printed_into_a_buffer_parses_back_to_the_same_path()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "gsk_path_equal"));
+
             Run(() =>
             {
                 var triangle = Gsk.Path.Parse("M 0 0 L 10 0 L 10 10 Z");

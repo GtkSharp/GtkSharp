@@ -234,9 +234,12 @@ namespace GtkSharp.Tests
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void A_copy_node_draws_the_same_thing_as_its_child()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "gsk_copy_node_new"));
+
             Run(() =>
             {
                 var node = new Gsk.CopyNode(Color(Blue, 0, 0, 4, 8));
@@ -251,9 +254,12 @@ namespace GtkSharp.Tests
 
         // ------------------------------------------------- the combining nodes
 
-        [Fact]
+        [SkippableFact]
         public void A_container_node_holds_its_children_in_order_and_draws_them_all()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "gsk_render_node_get_children"));
+
             Run(() =>
             {
                 var left = Color(Red, 0, 0, 4, 8);
@@ -886,9 +892,12 @@ namespace GtkSharp.Tests
 
         // ---------------------------------------------------------- the tree
 
-        [Fact]
+        [SkippableFact]
         public void Children_are_reported_for_a_node_that_has_them_and_not_for_one_that_does_not()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "gsk_render_node_get_children"));
+
             Run(() =>
             {
                 var leaf = Color(Red, 0, 0, 4, 8);
