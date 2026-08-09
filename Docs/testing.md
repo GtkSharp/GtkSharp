@@ -4032,6 +4032,37 @@ return would free what its caller still holds.
 `Gtk.NamedAction` and `Gtk.NothingAction` had no test of any kind before this;
 they are the vehicle for half of these, so they get their first coverage here.
 
+### The same shape without a GString: `g_date_strftime`
+
+`GLib.Date.Strftime` is the eleventh member of this family and was missed by the
+sweep above, because its buffer is a plain `gchar *` rather than a `GString *`:
+
+```c
+gsize g_date_strftime (gchar *s, gsize slen, const gchar *format, const GDate *date);
+```
+
+`s` is the **output**. The binding took it as a C# string, `g_strdup`ed it into
+native memory, let GLib write over it, freed it, and returned the byte count — so
+the formatted date, the one thing the call produces, could not be read from
+managed code at all, and the number it returned described a string nobody could
+see. Nothing failed and nothing logged.
+
+There is now a `Strftime (format, date)` overload that allocates the buffer and
+returns the text; the old signature stays for source compatibility, marked
+`[Obsolete]` with the reason.
+
+The retry loop in it is worth a second look, because it is where this call is
+genuinely awkward: **`g_date_strftime` returns 0 both when the buffer was too
+small and when the result was legitimately empty**, and the two are not
+distinguishable from the return value. So the wrapper grows the buffer and
+retries — except for an empty format, which will never write anything however
+large the buffer gets. Both branches have a test, and the growing one uses a
+format that repeats `%Y` two hundred times to land past the first buffer.
+
+**When looking for more of these, do not search for `GString`.** Search for a
+parameter that C names `s`, `buf`, `buffer` or `dest` next to a length, bound
+here as a C# `string`.
+
 ## Behaviour worth knowing: what makes a print-into-a-buffer test an oracle
 
 "It printed something" is not an assertion, and neither is comparing `Print`
@@ -4346,3 +4377,416 @@ and a user namespace for its sandbox, so it runs on a Linux desktop and skips in
 a container. **JavaScriptCore** needs none of that — only the shared library. Any
 Linux with `libjavascriptcoregtk-6.0-1` installed runs all twenty-one of these,
 including CI, where WebKit itself is deliberately skipped.
+
+## Checked and correct: GLib.Value's conversions
+
+`GLibValueTests` covers the box every property read and write in the binding
+passes through — 806 hand-written lines, roughly twenty constructors against
+roughly twenty explicit conversions, and the file `coverage.md` names as the
+first place worth more tests.
+
+**No defect found in the conversions.** Every scalar, string, string array,
+enum, flags and variant survives a round trip.
+
+What makes that worth having is *where* the round trips are taken. Storing 1 and
+reading 1 back proves almost nothing: a `long` kept in a 32-bit slot survives it
+and loses `long.MaxValue`. So every numeric test uses the extremes —
+`long.MinValue`, `ulong.MaxValue`, `uint.MaxValue` above where a signed slot goes
+negative, `byte`/`sbyte`/`ushort` at both ends — which is where a wrong GType
+shows. `NaN` and the infinities are there for the same reason: they are what a
+conversion routed through a string or an int destroys.
+
+A wrong conversion here is **silent**. You get a default or a truncated number,
+never an error, and it surfaces much later as a property that will not take the
+value you gave it. That is why the last test drives four of them through a real
+`Gtk.Label` property: a conversion that works standalone but disagrees with what
+GObject stores would show up there and nowhere else.
+
+## Behaviour worth knowing: you cannot build a GType-valued GLib.Value
+
+`new GLib.Value(someGType)` does **not** make a value holding that GType. It
+makes an *empty value of* that type — `new GLib.Value(GType.String)` is an empty
+string value — which `ObjectAndValueTests` already pins and which the first draft
+of this test got wrong, reading `null` back and briefly looking like a defect.
+
+There is no other constructor for it, so the `explicit operator GLib.GType`
+exists in one direction only: a GType-valued `Value` can be *read* but not
+*built*. The constructor overload it would need is taken by the empty-value one,
+so closing the gap means a static factory, and nothing in the tree currently
+needs it. Recorded rather than invented.
+
+The read path is still worth testing, and the way to get such a value is from
+something that already holds one:
+
+```csharp
+var store = new GLib.ListStore((GLib.GType) typeof(Row));
+var held = (GLib.GType) store.GetProperty("item-type");
+```
+
+## Fixed: the custom-GSource constructor corrupted the main loop
+
+`SourceLifetimeTests` covers `GLib.Source` beyond the idles and timeouts
+`MainLoopTests` already exercises. The scheduling controls turned out to be fine;
+the way to make a source of your own did not.
+
+```csharp
+public Source (GLib.SourceFuncs source_funcs, uint struct_size)
+{
+    IntPtr native = GLib.Marshaller.StructureToPtrAlloc (source_funcs);
+    Raw = g_source_new (native, struct_size);
+    source_funcs = GLib.SourceFuncs.New (native);
+    Marshal.FreeHGlobal (native);          // GLib still holds it
+}
+```
+
+Two faults, either of which is fatal on its own.
+
+**The vtable is the wrong shape.** `GSourceFuncs` is six function pointers:
+
+```c
+gboolean (*prepare)  (GSource *, gint *timeout);
+gboolean (*check)    (GSource *);
+gboolean (*dispatch) (GSource *, GSourceFunc, gpointer);
+void     (*finalize) (GSource *);
+GSourceFunc         closure_callback;
+GSourceDummyMarshal closure_marshal;
+```
+
+`GLib.SourceFuncs` binds **only the last two**, so they sit where `prepare` and
+`check` belong, and the main loop reads `dispatch` and `finalize` from past the
+end of a sixteen-byte allocation and calls whatever is there.
+
+**And the vtable is freed while in use.** `g_source_new` keeps the pointer for
+the source's lifetime and dereferences it on every iteration; the constructor
+released it before returning.
+
+It now throws, with a message naming what is missing and pointing at
+`GLib.Idle`/`GLib.Timeout`. Throwing is strictly better than what it did, and it
+is a thing a test can assert — calling the old version could not be tested at
+all, because an aborted host prints "Passed!" with a smaller total.
+
+**The same defect, from the other end.** `Source.AddChildSource` is bound and is
+*unreachable*: a child must not already be attached to a context, and the only
+way to obtain an unattached source is the constructor above. Everything else the
+binding offers attaches on creation, and detaching means `Destroy`, after which
+the source is dead. Binding the four missing members makes both usable at once.
+
+**Where else to look:** a `[StructLayout(Sequential)]` struct standing in for a C
+one is only ever as good as its field list, and nothing checks it. `GskRoundedRect`
+was 40 bytes where GSK reads 48; this one is 16 where GLib reads 48. Both were
+found by reading the C declaration beside the C# one, which is a five-minute
+exercise per struct and has now paid twice.
+
+## Behaviour worth knowing: ReadyTime overrides a source's own schedule
+
+The scheduling controls do work, and `ReadyTime` is the useful one: setting it to
+0 makes a source dispatch on the next iteration whatever its own timing said. The
+oracle is a ten-second timeout firing immediately, which cannot happen by
+waiting — and the control is a ready time a minute out, which must not fire.
+
+## The struct-layout audit, and the two more it found
+
+`GskRoundedRect` was 40 bytes where GSK reads 48. `GLib.SourceFuncs` is 16 where
+GLib reads 48. Both were found by reading the C declaration beside the C# one, so
+the third time it was worth writing down as a sweep rather than waiting for
+another crash: take every hand-written `[StructLayout(Sequential)]` struct, find
+the record of the same name in the girs, and compare the field lists.
+
+**Six hand-written structs map to a gir record. Three counts disagreed, and one
+of those was the audit's own fault:**
+
+| struct | C# fields | gir fields | |
+|:--|--:|--:|:--|
+| `SourceFuncs` | 2 | 6 | real; already neutralised |
+| `SourceCallbackFuncs` | 0 | 3 | **real, and new** |
+| `Value` | 0 | 2 | false positive |
+
+`GLib.Value` declares `IntPtr type; long pad1; long pad2;` with **no access
+modifier**, which the audit's field pattern required. Its layout is correct — 24
+bytes, matching `GValue` — and had it not been, 1 595 tests would be failing
+rather than one grep. Worth stating because a script like this is only as good as
+its regex, and the failure direction was towards a false alarm rather than a
+missed defect.
+
+`SourceCallbackFuncs` is the same double fault as the constructor:
+`GSourceCallbackFuncs` is three function pointers — `ref`, `unref`, `get` — and
+the binding declares **none of them**, so `SetCallbackIndirect` handed
+`g_source_set_callback_indirect` an empty allocation and then freed it while GLib
+kept the pointer. `Source.Funcs` (`g_source_set_funcs`) takes the same broken
+`SourceFuncs` as the constructor. Both now throw, naming what is missing.
+
+That is the whole of GLib's custom-source vtable surface — the constructor,
+`SetCallbackIndirect`, and `Funcs` — and all three were memory-corrupting and
+uncalled.
+
+**Run the audit after touching any hand-written struct.** It takes seconds:
+
+```sh
+python Source/Tools/Audits/audit_structs.py   # field counts only
+```
+
+Counts are the cheap half. A count that matches can still have the wrong types,
+and the three that matched — `MarkupParser`, `PollFD` and `TimeVal` — were then
+read field by field against the C declaration. Two were right and the third was
+not:
+
+| struct | C | C# | |
+|:--|:--|:--|:--|
+| `MarkupParser` | 5 function pointers | 5 × `IntPtr` | correct |
+| `PollFD` | `gint`, `gushort`, `gushort` | `int`, `ushort`, `ushort` | correct |
+| `TimeVal` | `glong`, `glong` | `IntPtr`, `IntPtr` | **wrong on win-x64** |
+
+**`glong` is not `IntPtr`.** It is 32 bits on 64-bit Windows (LLP64) and 64 bits
+on 64-bit Linux and macOS (LP64). `IntPtr` is 64 bits on all three. So
+`GTimeVal` is 8 bytes on win-x64 and the binding read 16, which is why this is
+the one defect in the tree that is invisible on the platform CI runs on.
+
+The damage was not a crash. `g_time_val_from_iso8601` wrote 8 bytes and the
+struct read 16, so the seconds field absorbed the microseconds and the
+microseconds field read whatever the allocation happened to contain:
+
+```
+"1970-01-01T00:00:01.500000Z"  ->  TvSec  1  became  2147483648000001
+"1970-01-01T00:00:01Z"         ->  TvUsec 0  became  3832627278715826992
+```
+
+Note which of those two is the trap. **With whole seconds the wrong layout reads
+the seconds back correctly**, because the upper half is zero — a test that
+parsed `...:01Z` and checked only `TvSec` would have passed on a broken binding.
+The microseconds have to be non-zero for the fault to surface, and
+`GLibTimeTests` keeps both cases side by side for that reason.
+
+`TimeVal` now lays its two members out at the width the platform's `glong`
+actually has (`TimeVal.Alloc` / `TimeVal.New`), and the four call sites outside
+it — `Date.TimeVal`, `DateTime.ToTimeval`, `DateTime(TimeVal)` and
+`NewFromTimevalUtc` — go through it instead of marshalling the struct directly.
+Where `glong` is 32 bits the write is a *checked* cast: `GTimeVal` genuinely
+cannot carry a date past 2038 there, and an `OverflowException` is a better
+answer than a silent truncation.
+
+The general lesson is wider than one struct: **every `glong`, `gulong` and
+`gsize` in a hand-written struct is suspect on Windows.** `SymbolTable.cs` maps
+`glong` to `IntPtr` tree-wide (the `#else` branch — `WIN64LONGS` is defined
+nowhere in this build), which is right for a *pointer-sized* type and wrong for
+`glong`. It happens to be harmless everywhere else so far only because no other
+hand-written struct has a `glong` member.
+
+### The tree already knew, in one place
+
+`GLib.Value` has four helpers — `GetLongForPlatform`, `GetULongForPlatform`,
+`SetLongForPlatform`, `SetULongForPlatform` — that branch on the platform and
+call `g_value_get_long_as_int` on Windows against `g_value_get_long` elsewhere.
+Somebody understood this exactly, in 2004, and it did not reach `TimeVal`.
+
+All four reported **zero coverage**, and the reason is worth keeping: nothing
+reaches them. `new GLib.Value (42L)` builds a `G_TYPE_INT64`, not a
+`G_TYPE_LONG`, so every `long` test in `GLibValueTests` went down a different
+path. `G_TYPE_LONG` is what a property declared `glong` produces, and a value has
+to be built from the GType to get one:
+
+```csharp
+var value = new GLib.Value (GLib.GType.Long);   // not new GLib.Value (42L)
+value.Val = 42L;
+```
+
+Reaching them found one thing wrong. The Windows store was `(int) val`,
+unchecked, so `1L << 40` — which has no low 32 bits — was stored as **0**, read
+back as 0, and reported nothing. It is now `checked`, and the test asserts the
+`OverflowException` on Windows and asserts the same number survives on Linux,
+where `glong` really does hold it. **The two branches assert different things
+because the type is different**; asserting `long.MaxValue` on both would be
+asserting that Windows has a 64-bit `glong`.
+
+## Fixed: a static property handed out a shared object the caller could dispose
+
+`Gtk.PaperSize.A4` — and its six siblings — looked like this:
+
+```csharp
+static PaperSize a4;
+public static PaperSize A4 {
+    get {
+        if (a4 == null)
+            a4 = new PaperSize ("iso_a4");
+        return a4;
+    }
+}
+```
+
+A lazily created singleton, cached in a static field. `PaperSize` is
+`IDisposable`. So the obvious thing to write —
+
+```csharp
+using (var paper = Gtk.PaperSize.A4) { ... }
+```
+
+— freed the shared `GtkPaperSize` and left the static field pointing at it.
+**Every later read of `Gtk.PaperSize.A4` anywhere in the process then returned a
+dangling handle**, and the next call through one was an access violation:
+`0xC0000005`, the test host gone, no managed exception to catch.
+
+That is how it was found. The test wrote `using var a4 = Gtk.PaperSize.A4;` in
+one case and read `Gtk.PaperSize.A4` in another, and the run died in
+`GetWidth` — with the crash landing in a *different* test from the one that
+caused it, which is the signature of this whole class of fault.
+
+The fix is not to document the sharing. A caller cannot be expected to know that
+a property is secretly a singleton, and there is nothing gained by sharing:
+`gtk_paper_size_new` is cheap and the result is small. Each read now returns a
+paper size of its own, which the caller owns and may dispose.
+
+**Look for the same shape elsewhere.** The dangerous combination is precise:
+*a static or cached property* + *a type implementing `IDisposable`*. Either alone
+is fine. Together they hand the caller ownership of something they do not own,
+and the damage lands arbitrarily far away from the `using` that caused it.
+
+That sweep has been run over the hand-written tree — a `static T cache;` field
+backing a `public static T Prop { get {` — and `PaperSize` was the only case.
+The two other matches are in `GLibSharp/DestroyNotify.cs`, where the cached type
+is a delegate and nothing can dispose it. Worth re-running after adding any
+cached static property:
+
+```python
+r'static\s+(\w[\w\.]*)\s+(\w+)\s*;\s*(?:\[[^\]]*\]\s*)*public\s+static\s+\1\s+(\w+)\s*\{\s*get\s*\{'
+```
+
+### What the test asserts
+
+Not "A4 is 210 mm" — that would have passed before the fix too, as long as it ran
+first. It disposes one and then reads another:
+
+```csharp
+using (var first = Gtk.PaperSize.A4)
+    Assert.Equal (210.0, first.GetWidth (Gtk.Unit.Mm), 0.05);
+
+using var second = Gtk.PaperSize.A4;          // reached only if that was safe
+Assert.Equal (210.0, second.GetWidth (Gtk.Unit.Mm), 0.05);
+
+using var third = Gtk.PaperSize.A4;
+Assert.NotSame (second, third);               // separate objects...
+Assert.True (second.IsEqual (third));         // ...of the same paper
+```
+
+### A tolerance, not a rounded comparison
+
+The dimensions are checked against ISO 216 and the US paper sizes with an
+explicit tolerance rather than `Assert.Equal (expected, actual, decimals)`, and
+that is not fussiness. Gtk keeps these as floats, so Executive's 7.25 in comes
+back as `184.14999` mm. Rounded to one decimal place that is `184.1`, while the
+published `184.15` rounds to `184.2` — so the two identical papers compare
+*unequal* at one decimal and equal at zero. **A rounded comparison has a cliff
+inside it**; a tolerance does not.
+
+## Fixed: two bindings of the same C function, one of which crashed
+
+`pango_itemize` and `pango_itemize_with_base_dir` are the same function with one
+extra argument. Both return a `GList*` of `PangoItem*`. Both had the same
+`api.xml` entry:
+
+```xml
+<return-type type="GList*" owned="true" />
+```
+
+Neither records an element type — the `.gir` does not carry one — so it has to
+come from the metadata. Only one of them had it:
+
+```xml
+<attr path="…method[@name='ItemizeWithBaseDir']/return-type" name="element_type">PangoItem*</attr>
+```
+
+So the two siblings were bound completely differently:
+
+| | binding | reading it |
+|:--|:--|:--|
+| `ItemizeWithBaseDir` | `Pango.Item[]` | works |
+| `Itemize` | `GLib.List`, no element type | **access violation** |
+
+`GLib.ListBase.DataMarshal` falls back to `GLib.Object.IsObject` when it has no
+element type, and a `PangoItem` is a boxed type, not a GObject. Dereferencing one
+as a `GObject` takes the process down: `0xC0000005`, host gone, no managed
+exception. **`Pango.Global.Itemize` could not be called at all** — not "returned
+something odd", could not be called — and nothing said so, because nothing had
+ever called it.
+
+The fix is three lines of metadata giving `Itemize` what its sibling already had.
+It changes the return type from `GLib.List` to `Pango.Item[]`, which is a
+breaking change in the sense that matters least: from crashing to working.
+
+### The general shape
+
+**A `GList*` or `GSList*` return with no `element_type` is a latent crash, not a
+cosmetic gap.** This is the third instance in this tree — `pango_attr_list_get_attributes`
+and `Pango.AttrIterator.Attrs` were the first two, both written up above. The
+symptom differs by what the elements actually are: a boxed type crashes, a
+non-GObject pointer comes back as `null`.
+
+They are findable mechanically. Every `new GLib.List (raw_ret)` or
+`new GLib.SList (raw_ret)` in `Generated/` with a single argument is one:
+
+```sh
+grep -rn "new GLib\.S\?List(raw_ret)" Source/Libs/*/Generated/
+```
+
+The single-argument constructor is the whole tell — the safe form always passes a
+type.
+
+### The backlog this found, and what is still open
+
+**32 sites match, and 11 of them hold elements that are not GObjects.** Those 11
+have exactly the `pango_itemize` fault and are listed here rather than fixed,
+because several need a decision beyond adding metadata. This is a *known open
+item*, not a solved one.
+
+| binding | elements | why it is not a one-liner |
+|:--|:--|:--|
+| `g_io_extension_point_get_extensions` | `GIOExtension` (record) | metadata only |
+| `g_resolver_lookup_records` (+ `_finish`) | `GVariant` | metadata only |
+| `g_dtls_client_connection_get_accepted_cas` | `GByteArray` | element type is barely bound |
+| `webkit_cookie_manager_get_all_cookies_finish` (+ `_cookies_finish`) | `Soup.Cookie` | **libsoup is not bound in this tree** |
+| `webkit_itp_third_party_get_first_parties` | `WebKitITPFirstParty` | metadata only |
+| `webkit_network_session_get_itp_summary_finish` | `WebKitITPThirdParty` | metadata only |
+| `webkit_website_data_manager_fetch_finish` | `WebKitWebsiteData` | metadata only |
+| `webkit_website_data_manager_get_itp_summary_finish` | `WebKitITPThirdParty` | metadata only |
+
+The two `Soup.Cookie` ones are the awkward pair: there is no `Soup` binding here,
+so there is no element type to name. Those want *hiding* rather than typing —
+a method that cannot return anything readable is worse than a method that is not
+there.
+
+The other 21 sites hold GObjects or interfaces on one, so `IsObject` does the
+right thing and they iterate safely. They are still untyped, which means callers
+get `object` and cast — untidy, not dangerous.
+
+The classifier is in `Source/Tools/Audits/audit_lists.py`: it reads each site's C function
+out of the generated source, looks the return element up in the `.gir`, and
+splits on whether that element is a `<class>`/`<interface>` or a `<record>`.
+**Re-run it after any `RegenerateApi`.**
+
+### Two tests, because one would not have caught it
+
+An untyped list cannot be asserted against — reading one element ends the
+process — so the regression test pins the *shape* of the return and the
+*agreement* between the two siblings:
+
+```csharp
+Assert.Equal (11, items.Sum (i => i.Length));          // the runs cover the text
+Assert.Equal (plain.Select (i => i.Offset),
+              directed.Select (i => i.Offset));        // and the siblings agree
+```
+
+The second is the one that stops this recurring. The two functions drifted apart
+for years because nothing compared them; now something does.
+
+## Behaviour worth knowing: what Pango puts in `Analysis.ExtraAttrs`
+
+Reaching `ExtraAttrs` with a populated list is the only way to test the GSList
+walk inside it, and the obvious attributes to use do not work.
+
+**Pango folds anything that affects font selection into `analysis.font`** —
+weight, style, family, size — and carries only the rest as extra. A test written
+with `AttrWeight (Bold)` and `AttrStyle (Italic)` gets an empty array back and
+looks exactly like a broken accessor.
+
+`AttrUnderline` and `AttrStrikethrough` do not affect which font is chosen, so
+they arrive in `ExtraAttrs`. The empty case is worth keeping alongside as its own
+test, because an implementation returning `null` for an empty GSList fails
+differently from one returning a wrong length.
