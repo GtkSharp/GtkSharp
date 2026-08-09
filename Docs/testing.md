@@ -22,11 +22,14 @@ WebKit skips coincide with gvsbuild's.
 ### Running the suite on the Gtk the bindings describe
 
 WSL's Debian is *trixie* — Gtk 4.18.6 — and reports false failures for anything
-the gir marks `version="4.22"`. At 1247 tests it fails 16 of them, and every one
+the gir marks `version="4.22"`. At 1501 tests it fails 18 of them, and every one
 is a symbol trixie's Gtk does not export: `gtk_expression_new_try`,
 `gsk_copy_node_new`, `gsk_render_node_get_children`, `gsk_paste_node_new`,
-`gsk_composite_node_new`, and the accessibility and `AdwEnumListModel`
-properties added since 4.18. Confirm before spending time on one:
+`gsk_composite_node_new`, `gdk_rgba_print`, `gsk_path_equal`, and the
+accessibility and `AdwEnumListModel` properties added since 4.18.
+
+The count grows as the suite reaches further into 4.22, so treat it as a list to
+check against rather than a number to match. Confirm before spending time on one:
 
 ```sh
 nm -D --defined-only /usr/lib/x86_64-linux-gnu/libgtk-4.so.1 | grep ' T gsk_copy_node_new$'
@@ -4076,3 +4079,27 @@ Beyond marshalling, `Gtk.ShortcutController`, `Gtk.Shortcut`,
 trigger subclasses are still untested; `gtk_shortcut_action_activate` is directly
 callable with a widget and a `GVariant`, so the whole action half is testable
 without synthesising a key event, which is the part that is not.
+
+
+## A worked example of confirming one, including getting it wrong
+
+Two failures appeared on trixie that were not there before, both in the
+workflow-written `GStringPrintTests`, both `NullReferenceException` from inside a
+wrapper — this repository's signature for a missing export. The question is
+always whether that is a version gap or a real defect, and the answer is `nm`.
+
+The first probe checked `gsk_path_print`, which was **present** — which looked
+like evidence of a genuine bug. It was not: the stack trace named
+`Gsk.Path.Equal`, not `Print`. The missing symbol was `gsk_path_equal`.
+
+Read the stack before choosing what to probe. A test named
+`A_path_printed_into_a_buffer_parses_back_to_the_same_path` fails on the
+*comparison* at the end, not the printing it is named for, and probing the
+symbol in the test's name confirms nothing.
+
+```sh
+nm -D --defined-only /usr/lib/x86_64-linux-gnu/libgtk-4.so.1 | grep ' T gsk_path_equal$'
+```
+
+Both turned out to be version gaps (`gdk_rgba_print` and `gsk_path_equal`, added
+after 4.18), so the tests are correct and trixie is simply the wrong Gtk.
