@@ -4570,3 +4570,29 @@ The general lesson is wider than one struct: **every `glong`, `gulong` and
 nowhere in this build), which is right for a *pointer-sized* type and wrong for
 `glong`. It happens to be harmless everywhere else so far only because no other
 hand-written struct has a `glong` member.
+
+### The tree already knew, in one place
+
+`GLib.Value` has four helpers — `GetLongForPlatform`, `GetULongForPlatform`,
+`SetLongForPlatform`, `SetULongForPlatform` — that branch on the platform and
+call `g_value_get_long_as_int` on Windows against `g_value_get_long` elsewhere.
+Somebody understood this exactly, in 2004, and it did not reach `TimeVal`.
+
+All four reported **zero coverage**, and the reason is worth keeping: nothing
+reaches them. `new GLib.Value (42L)` builds a `G_TYPE_INT64`, not a
+`G_TYPE_LONG`, so every `long` test in `GLibValueTests` went down a different
+path. `G_TYPE_LONG` is what a property declared `glong` produces, and a value has
+to be built from the GType to get one:
+
+```csharp
+var value = new GLib.Value (GLib.GType.Long);   // not new GLib.Value (42L)
+value.Val = 42L;
+```
+
+Reaching them found one thing wrong. The Windows store was `(int) val`,
+unchecked, so `1L << 40` — which has no low 32 bits — was stored as **0**, read
+back as 0, and reported nothing. It is now `checked`, and the test asserts the
+`OverflowException` on Windows and asserts the same number survives on Linux,
+where `glong` really does hold it. **The two branches assert different things
+because the type is different**; asserting `long.MaxValue` on both would be
+asserting that Windows has a 64-bit `glong`.
