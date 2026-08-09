@@ -370,22 +370,37 @@ namespace GLib {
 		delegate void d_g_source_set_callback_indirect(IntPtr raw, IntPtr callback_data, IntPtr callback_funcs);
 		static d_g_source_set_callback_indirect g_source_set_callback_indirect = FuncLoader.LoadFunction<d_g_source_set_callback_indirect>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_callback_indirect"));
 
+		// Same fault as the SourceFuncs constructor above, and for the same two
+		// reasons: the struct handed over does not describe the C one, and the
+		// allocation is released while GLib keeps the pointer. Neither member has
+		// ever been called from this tree.
+		//
+		// GSourceCallbackFuncs is three function pointers -- ref, unref and get --
+		// and GLib.SourceCallbackFuncs declares no fields at all, so what reaches
+		// g_source_set_callback_indirect is an empty allocation that GLib then
+		// calls through.
 		public void SetCallbackIndirect(IntPtr callback_data, GLib.SourceCallbackFuncs callback_funcs) {
-			IntPtr native_callback_funcs = GLib.Marshaller.StructureToPtrAlloc (callback_funcs);
-			g_source_set_callback_indirect(Handle, callback_data, native_callback_funcs);
-			callback_funcs = GLib.SourceCallbackFuncs.New (native_callback_funcs);
-			Marshal.FreeHGlobal (native_callback_funcs);
+			throw new NotSupportedException (
+				"GLib.SourceCallbackFuncs declares none of the three members of " +
+				"GSourceCallbackFuncs (ref, unref, get), so the struct passed to " +
+				"g_source_set_callback_indirect is empty and was freed while GLib still " +
+				"held it. Use Source.SetCallback, or GLib.Idle and GLib.Timeout.");
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_source_set_funcs(IntPtr raw, IntPtr value);
 		static d_g_source_set_funcs g_source_set_funcs = FuncLoader.LoadFunction<d_g_source_set_funcs>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_set_funcs"));
 
+		// Same fault as the SourceFuncs constructor above, and for the same two
+		// reasons: the struct handed over does not describe the C one, and the
+		// allocation is released while GLib keeps the pointer. Neither member has
+		// ever been called from this tree.
 		public GLib.SourceFuncs Funcs {
 			set {
-				IntPtr native_value = GLib.Marshaller.StructureToPtrAlloc (value);
-				g_source_set_funcs(Handle, native_value);
-				value = GLib.SourceFuncs.New (native_value);
-				Marshal.FreeHGlobal (native_value);
+				throw new NotSupportedException (
+					"GLib.SourceFuncs binds only closure_callback and closure_marshal, not " +
+					"prepare, check, dispatch and finalize, so the vtable passed to " +
+					"g_source_set_funcs is the wrong shape and was freed while GLib still " +
+					"held it. Use GLib.Idle or GLib.Timeout.");
 			}
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
