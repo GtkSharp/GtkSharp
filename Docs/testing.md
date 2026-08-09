@@ -4495,5 +4495,47 @@ python scratchpad/audit_structs.py   # field counts only
 ```
 
 Counts are the cheap half. A count that matches can still have the wrong types,
-and the audit says so rather than implying otherwise — `MarkupParser`, `PollFD`
-and `TimeVal` match on count and have not been checked field by field.
+and the three that matched — `MarkupParser`, `PollFD` and `TimeVal` — were then
+read field by field against the C declaration. Two were right and the third was
+not:
+
+| struct | C | C# | |
+|:--|:--|:--|:--|
+| `MarkupParser` | 5 function pointers | 5 × `IntPtr` | correct |
+| `PollFD` | `gint`, `gushort`, `gushort` | `int`, `ushort`, `ushort` | correct |
+| `TimeVal` | `glong`, `glong` | `IntPtr`, `IntPtr` | **wrong on win-x64** |
+
+**`glong` is not `IntPtr`.** It is 32 bits on 64-bit Windows (LLP64) and 64 bits
+on 64-bit Linux and macOS (LP64). `IntPtr` is 64 bits on all three. So
+`GTimeVal` is 8 bytes on win-x64 and the binding read 16, which is why this is
+the one defect in the tree that is invisible on the platform CI runs on.
+
+The damage was not a crash. `g_time_val_from_iso8601` wrote 8 bytes and the
+struct read 16, so the seconds field absorbed the microseconds and the
+microseconds field read whatever the allocation happened to contain:
+
+```
+"1970-01-01T00:00:01.500000Z"  ->  TvSec  1  became  2147483648000001
+"1970-01-01T00:00:01Z"         ->  TvUsec 0  became  3832627278715826992
+```
+
+Note which of those two is the trap. **With whole seconds the wrong layout reads
+the seconds back correctly**, because the upper half is zero — a test that
+parsed `...:01Z` and checked only `TvSec` would have passed on a broken binding.
+The microseconds have to be non-zero for the fault to surface, and
+`GLibTimeTests` keeps both cases side by side for that reason.
+
+`TimeVal` now lays its two members out at the width the platform's `glong`
+actually has (`TimeVal.Alloc` / `TimeVal.New`), and the four call sites outside
+it — `Date.TimeVal`, `DateTime.ToTimeval`, `DateTime(TimeVal)` and
+`NewFromTimevalUtc` — go through it instead of marshalling the struct directly.
+Where `glong` is 32 bits the write is a *checked* cast: `GTimeVal` genuinely
+cannot carry a date past 2038 there, and an `OverflowException` is a better
+answer than a silent truncation.
+
+The general lesson is wider than one struct: **every `glong`, `gulong` and
+`gsize` in a hand-written struct is suspect on Windows.** `SymbolTable.cs` maps
+`glong` to `IntPtr` tree-wide (the `#else` branch — `WIN64LONGS` is defined
+nowhere in this build), which is right for a *pointer-sized* type and wrong for
+`glong`. It happens to be harmless everywhere else so far only because no other
+hand-written struct has a `glong` member.

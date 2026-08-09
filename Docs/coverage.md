@@ -1,6 +1,6 @@
 # Coverage of the hand-written code
 
-Measured at **1546 tests** (1531 passing, 15 skipped) on Windows, `Release`,
+Measured at **1605 tests** (1569 passing, 36 skipped) on Windows, `Release`,
 with generated code excluded by the collector.
 
 ```sh
@@ -19,7 +19,7 @@ code promises, not from raising a percentage.
 
 | | covered / total | rate |
 |:--|--:|--:|
-| **hand-written** | **14 492 / 21 970** | **66.0%** |
+| **hand-written** | **14 660 / 22 054** | **66.5%** |
 | generated, still reported | 1 190 / 1 282 | 92.8% |
 
 **The generated code is now excluded by the collector itself**, so these are the
@@ -155,7 +155,6 @@ column is the judgement, not the tool's.
 | `GLibSharp/IOChannel.cs` | 214 / 298 | 84 | mostly covered |
 | `GtkSharp/TextBuffer.cs` | 8 / 90 | 82 | **real**: serialise and deserialise |
 | `GLibSharp/Signal.cs` | 262 / 342 | 80 | mostly covered |
-| `GLibSharp/TimeVal.cs` | 0 / 78 | 78 | deprecated in GLib itself |
 | `CairoSharp/Surface.cs` | 126 / 202 | 76 | **real**: surface types |
 | `GtkSharp/NodeStore.cs` | 344 / 416 | 72 | mostly covered |
 | `GLibSharp/ValueArray.cs` | 92 / 160 | 68 | **real**, and small |
@@ -189,28 +188,39 @@ part that still matters — implementing a model from C#.
 
 ## Files with no coverage at all
 
-53 files, 1 272 lines. Ordered by size; the triage above accounts for the top of
+70 files, 1 306 lines. Ordered by size; the triage above accounts for the top of
 the list.
 
 | file | lines | |
 |:--|--:|:--|
 | `GtkSharp/SignalConnector.cs` | 174 | dead |
-| `GLibSharp/TimeVal.cs` | 78 | deprecated in GLib |
-| `GLibSharp/GLibSharp.SourceDummyMarshalNative.cs` | 70 | callback shim |
-| `GLibSharp/GLibSharp.SourceFuncNative.cs` | 70 | callback shim |
+| `GLibSharp/GLibSharp.SourceDummyMarshalNative.cs` | 66 | callback shim |
+| `GLibSharp/GLibSharp.SourceFuncNative.cs` | 66 | callback shim |
 | `GtkSharp/HandlerNotFoundException.cs` | 64 | dead |
 | `CairoSharp/XlibSurface.cs` | 52 | X11 only |
+| `JavaScriptCoreSharp/Value.cs` | 50 | tested, but **not on Windows** — see below |
 | `GtkSharp/Image.cs` | 46 | **worth testing** |
-| `GdkSharp/PixbufAnimation.cs` | 44 | **worth testing** |
 | `GtkSharp/PaperSize.cs` | 42 | **worth testing** |
+| `GdkSharp/PixbufAnimation.cs` | 40 | **worth testing** |
 | `GLibSharp/Cond.cs` | 38 | ABI declaration |
 | `GLibSharp/Mutex.cs` | 32 | ABI declaration |
-| `GLibSharp/PollFD.cs` | 32 | ABI declaration |
+| `GLibSharp/PollFD.cs` | 32 | ABI declaration, layout audited |
 | `GLibSharp/RecMutex.cs` | 32 | ABI declaration |
+| `GLibSharp/FileUtils.cs` | 22 | **worth testing** |
 | `GtkSharp/BindingAttribute.cs` | 22 | reached indirectly by `BuilderBindingTests` |
 | `GtkSharp/CssProvider.cs` | 22 | **worth testing** |
-| `GtkSharp/IconView.cs` | 22 | deprecated |
 | `PangoSharp/Analysis.cs` | 20 | **worth testing** |
+| `GtkSharp/IconView.cs` | 20 | deprecated |
+| `CairoSharp/XcbSurface.cs` | 18 | XCB only |
+
+`JavaScriptCoreSharp/Value.cs` is the row to read twice. It has tests —
+`JavaScriptCoreTests` covers `FunctionCall`, `ConstructorCall` and
+`ObjectInvokeMethod`, the three variadic entry points it exists to provide — and
+it still reports zero, because the gvsbuild bundle carries no JavaScriptCore and
+every one of those tests skips on Windows. **A zero here means "not exercised on
+the platform that was measured", not "not tested."** The same caveat applies to
+`XlibSurface.cs` and `XcbSurface.cs`, and it is the reason this file records the
+platform in its first sentence.
 | `GdkSharp/DisplayManager.cs` | 18 | needs a display server |
 
 A file at 0% is worth a minute of triage before it is worth a test. Roughly half
