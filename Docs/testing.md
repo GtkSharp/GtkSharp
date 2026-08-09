@@ -4293,3 +4293,56 @@ Three rules, and the third is the one that keeps this honest:
 
 The counterpart is that a green run on trixie now means something it did not
 before: everything that *could* run, did.
+
+## Fixed: a JavaScript function could not be called with arguments
+
+`JavaScriptCoreTests` covers `JavaScriptCoreSharp` — thirty bound types, of which
+the suite had named three, and only to check that `21 * 2` came back as 42. JSC
+has the least excuse of any optional assembly for being untested: unlike WebKit
+it needs no display, no session bus and no sandbox, so a `Context` works anywhere
+the library is installed.
+
+Three methods take `(guint n_parameters, JSCValue **parameters)` — an array whose
+length is a sibling parameter, which codegen has no rule for. All three came out
+as
+
+```csharp
+public Value FunctionCallv (uint n_parameters, Value parameters)
+```
+
+passing one Value's handle where an array of handles belongs. **A two-argument
+call was not expressible**, because the signature accepts a single `Value`; a
+one-argument call passed that Value's own GObject header as `parameters[0]`; and
+the count came from the caller rather than from anything real. Zero arguments
+worked by accident, which is presumably why nobody noticed.
+
+`jsc_value_function_callv`, `jsc_value_constructor_callv` and
+`jsc_value_object_invoke_methodv`, all rebound over `Value[]` in
+`Source/Libs/JavaScriptCoreSharp/Value.cs`, where the count is the array's own
+length. Same family as `gsk_container_node_new`, `gtk_string_list_splice` and the
+Gsk gradient constructors — that is now five separate instances of one codegen
+gap.
+
+**The ordering test is the one that matters.** Addition would pass even if the
+array arrived reversed, so the oracle is an operation that is not commutative:
+
+```csharp
+join.FunctionCall(NewString(ctx, "first"), NewString(ctx, "second"), NewString(ctx, "third"))
+    == "first-second-third"
+```
+
+**Where else to look:** `grep` the generated tree for a method whose parameters
+end in a count followed by a single wrapper type. Every one found so far has been
+broken, and none of them fails to compile.
+
+## Behaviour worth knowing: JSC is testable where WebKit is not
+
+`Docs/coverage.md` reports 0 of 590 generated lines for `JavaScriptCoreSharp`,
+and that is an artefact of the coverage run happening on Windows, where gvsbuild
+ships no jsc. It is not a statement about the tests.
+
+The distinction worth keeping straight: **WebKit** needs a display, a session bus
+and a user namespace for its sandbox, so it runs on a Linux desktop and skips in
+a container. **JavaScriptCore** needs none of that — only the shared library. Any
+Linux with `libjavascriptcoregtk-6.0-1` installed runs all twenty-one of these,
+including CI, where WebKit itself is deliberately skipped.
