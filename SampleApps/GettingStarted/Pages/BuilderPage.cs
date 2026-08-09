@@ -47,7 +47,11 @@ namespace GettingStarted.Pages
               + "[UI(\"other-id\")] says otherwise. Connect handlers in C#: gtk_builder_connect_"
               + "signals_full was replaced by GtkBuilderScope, which this binding does not "
               + "implement, so a document declaring signals throws NotSupportedException naming "
-              + "the cause rather than silently ignoring every click."));
+              + "the cause rather than silently ignoring every click. It throws from the Add"
+              + "FromString/AddFromFile call, not from Autoconnect -- Gtk 4 resolves the handler "
+              + "while parsing, so the document never loads. Catch it there, and catch it inside "
+              + "the signal handler that triggered it: an exception that escapes a handler is not "
+              + "reported, it exits the process."));
         }
 
         private Widget FromStringDemo()
@@ -83,14 +87,21 @@ namespace GettingStarted.Pages
             var button = new Button { Label = "Load markup containing <signal>", Halign = Align.Start };
             button.Clicked += (o, e) =>
             {
-                var builder = new Builder();
-                builder.AddFromString(MarkupWithSignal);
-
+                // AddFromString is inside the try, not Autoconnect: the throw
+                // happens while *parsing*, because Gtk 4 resolves a <signal>
+                // handler through GtkBuilderScope at parse time and the document
+                // fails to load at all. Autoconnect is never reached.
+                //
+                // Catching it here is not decoration. This runs in a Clicked
+                // handler, so an escaping exception unwinds into native Gtk,
+                // where SignalClosure hands it to GLib.ExceptionManager -- which,
+                // with nothing subscribed to UnhandledException, calls
+                // Environment.Exit(1). An uncaught exception in a signal handler
+                // does not surface as a stack trace; it ends the application.
                 try
                 {
-                    // The throw is on Autoconnect, not on parsing: binding the
-                    // fields is still useful, so only the half that needs a
-                    // builder scope refuses.
+                    var builder = new Builder();
+                    builder.AddFromString(MarkupWithSignal);
                     builder.Autoconnect(this);
                     output.Text = "no exception -- unexpected";
                 }
