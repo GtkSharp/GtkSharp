@@ -55,16 +55,23 @@ is. A rate on its own hides how much code is behind it.
 | `PangoSharp` | 672 / 1 040 | 64.6% | 368 |
 | `GioSharp` | 280 / 458 | 61.1% | 178 |
 | `GskSharp` | 330 / 410 | 80.5% | 80 |
-| `GtkSourceSharp` | 2 / 12 | 16.7% | 10 |
-| `AdwaitaSharp` | 36 / 42 | 85.7% | 6 |
-| `WebkitGtkSharp` | 2 / 6 | 33.3% | 4 |
+| `GtkSourceSharp` | 2 / 12 | *n/a* | 10 |
+| `AdwaitaSharp` | 36 / 42 | *n/a* | 6 |
+| `WebkitGtkSharp` | 2 / 6 | *n/a* | 4 |
 | `GrapheneSharp` | 104 / 104 | 100.0% | 0 |
-| `JavaScriptCoreSharp` | 2 / 2 | 100.0% | 0 |
+| `JavaScriptCoreSharp` | 2 / 2 | *n/a* | 0 |
 
-**The bottom five rates mean nothing.** `GtkSourceSharp` has twelve hand-written
-lines and `JavaScriptCoreSharp` has two; those assemblies are almost entirely
-generated, so their hand-written rate is a rounding artefact. They are tested —
-see `SatelliteAssemblyTests` — just not *here*.
+**Four of these rates are marked *n/a* because they are not measurements.**
+`GtkSourceSharp` has twelve hand-written lines, `WebkitGtkSharp` six,
+`JavaScriptCoreSharp` two. Those assemblies are almost entirely generated, and
+generated code is excluded from this table by design — so their number is
+computed over a handful of lines and **cannot move however many tests are
+added**. `GtkSourceTests` added twenty tests and `WebKitTests` thirteen without
+shifting either figure by a line, which is the clearest possible demonstration
+that the figure is not about them.
+
+For those assemblies, see [the generated surface](#the-generated-surface) below.
+It is the only lens that shows their tests at all.
 
 `GrapheneSharp` at 100% is real but small: 104 lines, all of it
 `FixedVertexArrays.cs`, covered by `GrapheneVertexArrayTests`.
@@ -211,6 +218,62 @@ of these are unreachable, deprecated, or declarations — and the other half are
 small enough to be cheap.
 
 ---
+
+## The generated surface
+
+The table above is deliberately blind to generated code, and for most assemblies
+that is right — the hand-written layer is where the defects are. For the four
+assemblies that are *almost entirely* generated it leaves nothing to look at, so
+this is the other lens: a diagnostic run with the exclusions turned off.
+
+```sh
+# not how coverage is normally collected -- see below
+cat > diag.runsettings <<'XML'
+<RunSettings><DataCollectionRunSettings><DataCollectors>
+  <DataCollector friendlyName="XPlat code coverage">
+    <Configuration><Format>cobertura</Format></Configuration>
+  </DataCollector>
+</DataCollectors></DataCollectionRunSettings></RunSettings>
+XML
+
+dotnet test Source/Tests/GtkSharp.Tests -c Release --no-build \
+  --collect:"XPlat Code Coverage" --settings diag.runsettings
+```
+
+Measured on Windows at 1546 tests:
+
+| assembly | generated lines covered | rate |
+|:--|--:|--:|
+| `GrapheneSharp` | 2 408 / 3 972 | 61% |
+| `PangoSharp` | 1 240 / 3 358 | 37% |
+| `GskSharp` | 502 / 1 728 | 29% |
+| `GtkSharp` | 7 134 / 27 532 | 26% |
+| `AdwaitaSharp` | 186 / 988 | 19% |
+| `GdkSharp` | 564 / 4 620 | 12% |
+| `GioSharp` | 1 010 / 9 258 | 11% |
+| `GtkSourceSharp` | 198 / 2 284 | 9% |
+| `WebkitGtkSharp` | 0 / 2 896 | **0%, and not for the reason it looks** |
+| `JavaScriptCoreSharp` | 0 / 590 | **0%, same** |
+
+**Those two zeroes are an artefact of where the run happened.** gvsbuild ships no
+WebKit, so on Windows the thirteen `WebKitTests` and the two older
+`OptionalLibraryTests` *skip* — the assembly is never loaded, and a line that
+never runs on a machine that cannot run it is not an untested line. On Linux all
+thirteen pass against WebKit 2.52.5. Measuring that surface needs a coverage run
+on Linux, which this analysis does not yet have: `dotnet vstest` runs the suite
+there but does not resolve the coverage collector, and `dotnet test` produces no
+output at all under WSL against a tree restored on Windows. Worth fixing; not
+fixed here, and stated rather than papered over.
+
+`GtkSourceSharp` at 9% *is* a real measurement, and it did move: those 198 lines
+are what `GtkSourceTests` and `SatelliteAssemblyTests` reach between them, out of
+102 bound types.
+
+**Do not turn this into a target.** 27 532 generated lines in `GtkSharp` is a
+wrapper for every function in Gtk, and driving that number up means calling
+functions for the sake of calling them — which is the assertion-free sweep
+`testing.md` bans, wearing a percentage. Read it as *which assemblies are barely
+touched*, and pick the ones an application would actually use.
 
 ## How the exclusion works
 
