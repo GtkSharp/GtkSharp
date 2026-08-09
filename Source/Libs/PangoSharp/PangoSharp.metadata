@@ -78,6 +78,14 @@
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='GetLogAttrs']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='TailorBreak']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ExtentsToPixels']/*/*[@type='PangoRectangle*']" name="pass_as">ref</attr>
+  <!-- pango_itemize and pango_itemize_with_base_dir both return a GList of
+       PangoItem*, and only the second one carried these three rules. Without
+       them the first returned a bare GLib.List with no element type, so
+       iterating it read every PangoItem* as a GObject and took the process
+       down with an access violation. Same C shape, same binding. -->
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Itemize']/return-type" name="element_type">PangoItem*</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Itemize']/return-type" name="owned">true</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Itemize']/return-type" name="elements_owned">true</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ItemizeWithBaseDir']/return-type" name="element_type">PangoItem*</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ItemizeWithBaseDir']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ItemizeWithBaseDir']/return-type" name="elements_owned">true</attr>

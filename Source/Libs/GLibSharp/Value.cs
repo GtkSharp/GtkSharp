@@ -459,7 +459,11 @@ namespace GLib {
 			case PlatformID.Win32S:
 			case PlatformID.Win32Windows:
 			case PlatformID.WinCE:
-				g_value_set_long2 (ref this, (int) val);
+				// glong is 32 bits here, so a value that does not fit cannot be
+				// stored. Checked rather than truncating: the low half of a
+				// number is a worse answer than saying it does not fit, and the
+				// silent version of this returned 0 for 2^40.
+				g_value_set_long2 (ref this, checked ((int) val));
 				break;
 			default:
 				g_value_set_long (ref this, new IntPtr (val));
@@ -474,7 +478,8 @@ namespace GLib {
 			case PlatformID.Win32S:
 			case PlatformID.Win32Windows:
 			case PlatformID.WinCE:
-				g_value_set_ulong2 (ref this, (uint) val);
+				// See SetLongForPlatform: gulong is 32 bits here too.
+				g_value_set_ulong2 (ref this, checked ((uint) val));
 				break;
 			default:
 				g_value_set_ulong (ref this, new UIntPtr (val));
