@@ -4452,3 +4452,48 @@ The scheduling controls do work, and `ReadyTime` is the useful one: setting it t
 0 makes a source dispatch on the next iteration whatever its own timing said. The
 oracle is a ten-second timeout firing immediately, which cannot happen by
 waiting — and the control is a ready time a minute out, which must not fire.
+
+## The struct-layout audit, and the two more it found
+
+`GskRoundedRect` was 40 bytes where GSK reads 48. `GLib.SourceFuncs` is 16 where
+GLib reads 48. Both were found by reading the C declaration beside the C# one, so
+the third time it was worth writing down as a sweep rather than waiting for
+another crash: take every hand-written `[StructLayout(Sequential)]` struct, find
+the record of the same name in the girs, and compare the field lists.
+
+**Six hand-written structs map to a gir record. Three counts disagreed, and one
+of those was the audit's own fault:**
+
+| struct | C# fields | gir fields | |
+|:--|--:|--:|:--|
+| `SourceFuncs` | 2 | 6 | real; already neutralised |
+| `SourceCallbackFuncs` | 0 | 3 | **real, and new** |
+| `Value` | 0 | 2 | false positive |
+
+`GLib.Value` declares `IntPtr type; long pad1; long pad2;` with **no access
+modifier**, which the audit's field pattern required. Its layout is correct — 24
+bytes, matching `GValue` — and had it not been, 1 595 tests would be failing
+rather than one grep. Worth stating because a script like this is only as good as
+its regex, and the failure direction was towards a false alarm rather than a
+missed defect.
+
+`SourceCallbackFuncs` is the same double fault as the constructor:
+`GSourceCallbackFuncs` is three function pointers — `ref`, `unref`, `get` — and
+the binding declares **none of them**, so `SetCallbackIndirect` handed
+`g_source_set_callback_indirect` an empty allocation and then freed it while GLib
+kept the pointer. `Source.Funcs` (`g_source_set_funcs`) takes the same broken
+`SourceFuncs` as the constructor. Both now throw, naming what is missing.
+
+That is the whole of GLib's custom-source vtable surface — the constructor,
+`SetCallbackIndirect`, and `Funcs` — and all three were memory-corrupting and
+uncalled.
+
+**Run the audit after touching any hand-written struct.** It takes seconds:
+
+```sh
+python scratchpad/audit_structs.py   # field counts only
+```
+
+Counts are the cheap half. A count that matches can still have the wrong types,
+and the audit says so rather than implying otherwise — `MarkupParser`, `PollFD`
+and `TimeVal` match on count and have not been checked field by field.
