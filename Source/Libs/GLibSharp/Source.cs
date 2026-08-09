@@ -76,12 +76,49 @@ namespace GLib {
 		delegate IntPtr d_g_source_new(IntPtr source_funcs, uint struct_size);
 		static d_g_source_new g_source_new = FuncLoader.LoadFunction<d_g_source_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_source_new"));
 
+		/// <summary>
+		/// Not usable: <see cref="GLib.SourceFuncs"/> does not describe a
+		/// GSourceFuncs, and this throws rather than corrupting the main loop.
+		/// </summary>
+		/// <remarks>
+		/// <para>The C structure is six function pointers:</para>
+		/// <code>
+		/// struct GSourceFuncs {
+		///     gboolean (*prepare)  (GSource *, gint *timeout);
+		///     gboolean (*check)    (GSource *);
+		///     gboolean (*dispatch) (GSource *, GSourceFunc, gpointer);
+		///     void     (*finalize) (GSource *);
+		///     GSourceFunc         closure_callback;
+		///     GSourceDummyMarshal closure_marshal;
+		/// };
+		/// </code>
+		/// <para>
+		/// GLib.SourceFuncs binds only the last two, so they sit where prepare
+		/// and check belong and the main loop reads dispatch and finalize from
+		/// past the end of a sixteen-byte allocation, then calls whatever is
+		/// there.
+		/// </para>
+		/// <para>
+		/// The allocation was also freed on the way out of this constructor,
+		/// while g_source_new keeps the pointer for the source's lifetime and
+		/// dereferences it on every iteration of the loop.
+		/// </para>
+		/// <para>
+		/// Either fault alone corrupts the process, and nothing in the tree ever
+		/// called this. Throwing is strictly better than what it did: a custom
+		/// GSource needs the four missing members bound, the delegates kept
+		/// alive, and the vtable left allocated for as long as the source lives.
+		/// See Docs/testing.md.
+		/// </para>
+		/// </remarks>
 		public Source (GLib.SourceFuncs source_funcs, uint struct_size)
 		{
-			IntPtr native_source_funcs = GLib.Marshaller.StructureToPtrAlloc (source_funcs);
-			Raw = g_source_new(native_source_funcs, struct_size);
-			source_funcs = GLib.SourceFuncs.New (native_source_funcs);
-			Marshal.FreeHGlobal (native_source_funcs);
+			throw new NotSupportedException (
+				"GLib.SourceFuncs binds only closure_callback and closure_marshal, not " +
+				"prepare, check, dispatch and finalize, so the vtable handed to " +
+				"g_source_new is the wrong shape and was freed while GLib still held it. " +
+				"Building a custom GSource needs those four members bound first; until " +
+				"then use GLib.Idle, GLib.Timeout, or attach to an existing source.");
 		}
 
 		class FinalizerInfo {
