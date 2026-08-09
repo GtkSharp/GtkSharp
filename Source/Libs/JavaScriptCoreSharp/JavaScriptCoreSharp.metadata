@@ -5,4 +5,15 @@
        per-platform filename table, so every symbol loads through Library.JavaScriptCore. -->
   <attr path="/api/namespace" name="library">Library.JavaScriptCore</attr>
 
+  <!-- (guint n_parameters, JSCValue **parameters): an array whose length is a
+       sibling parameter, which codegen has no rule for. All three came out
+       taking a single JSCValue and passing its handle where the array of
+       handles belongs, so JSC read the Value's own GObject header as
+       parameters[0]. Calling a JavaScript function with arguments from C# was
+       not possible at all. Same shape as gsk_container_node_new. Rebound over
+       Value[] in Value.cs, where the count comes from the array. -->
+  <attr path="/api/namespace/object[@cname='JSCValue']/method[@cname='jsc_value_function_callv']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='JSCValue']/method[@cname='jsc_value_constructor_callv']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='JSCValue']/method[@cname='jsc_value_object_invoke_methodv']" name="hidden">1</attr>
+
 </metadata>
