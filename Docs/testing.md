@@ -4391,3 +4391,64 @@ something that already holds one:
 var store = new GLib.ListStore((GLib.GType) typeof(Row));
 var held = (GLib.GType) store.GetProperty("item-type");
 ```
+
+## Fixed: the custom-GSource constructor corrupted the main loop
+
+`SourceLifetimeTests` covers `GLib.Source` beyond the idles and timeouts
+`MainLoopTests` already exercises. The scheduling controls turned out to be fine;
+the way to make a source of your own did not.
+
+```csharp
+public Source (GLib.SourceFuncs source_funcs, uint struct_size)
+{
+    IntPtr native = GLib.Marshaller.StructureToPtrAlloc (source_funcs);
+    Raw = g_source_new (native, struct_size);
+    source_funcs = GLib.SourceFuncs.New (native);
+    Marshal.FreeHGlobal (native);          // GLib still holds it
+}
+```
+
+Two faults, either of which is fatal on its own.
+
+**The vtable is the wrong shape.** `GSourceFuncs` is six function pointers:
+
+```c
+gboolean (*prepare)  (GSource *, gint *timeout);
+gboolean (*check)    (GSource *);
+gboolean (*dispatch) (GSource *, GSourceFunc, gpointer);
+void     (*finalize) (GSource *);
+GSourceFunc         closure_callback;
+GSourceDummyMarshal closure_marshal;
+```
+
+`GLib.SourceFuncs` binds **only the last two**, so they sit where `prepare` and
+`check` belong, and the main loop reads `dispatch` and `finalize` from past the
+end of a sixteen-byte allocation and calls whatever is there.
+
+**And the vtable is freed while in use.** `g_source_new` keeps the pointer for
+the source's lifetime and dereferences it on every iteration; the constructor
+released it before returning.
+
+It now throws, with a message naming what is missing and pointing at
+`GLib.Idle`/`GLib.Timeout`. Throwing is strictly better than what it did, and it
+is a thing a test can assert — calling the old version could not be tested at
+all, because an aborted host prints "Passed!" with a smaller total.
+
+**The same defect, from the other end.** `Source.AddChildSource` is bound and is
+*unreachable*: a child must not already be attached to a context, and the only
+way to obtain an unattached source is the constructor above. Everything else the
+binding offers attaches on creation, and detaching means `Destroy`, after which
+the source is dead. Binding the four missing members makes both usable at once.
+
+**Where else to look:** a `[StructLayout(Sequential)]` struct standing in for a C
+one is only ever as good as its field list, and nothing checks it. `GskRoundedRect`
+was 40 bytes where GSK reads 48; this one is 16 where GLib reads 48. Both were
+found by reading the C declaration beside the C# one, which is a five-minute
+exercise per struct and has now paid twice.
+
+## Behaviour worth knowing: ReadyTime overrides a source's own schedule
+
+The scheduling controls do work, and `ReadyTime` is the useful one: setting it to
+0 makes a source dispatch on the next iteration whatever its own timing said. The
+oracle is a ten-second timeout firing immediately, which cannot happen by
+waiting — and the control is a ready time a minute out, which must not fire.
