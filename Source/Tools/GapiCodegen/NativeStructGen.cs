@@ -99,6 +99,9 @@ namespace GtkSharp.Generation
 			if (IsDeprecated)
 				sw.WriteLine ("\t[Obsolete]");
 			string access = IsInternal ? "internal" : "public";
+			string coverage_attr = CoverageExclusion.ForType (gen_info, Name);
+			if (coverage_attr != null)
+				sw.WriteLine ("\t" + coverage_attr);
 			sw.WriteLine ("\t" + access + " partial class {0} : {1} IEquatable<{0}> {{", Name, Parent == null ? "GLib.IWrapper," : (Parent.QualifiedName + ","));
 			sw.WriteLine ();
 

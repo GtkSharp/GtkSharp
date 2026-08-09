@@ -245,6 +245,11 @@ namespace GtkSharp.Generation {
 
 			if (IsDeprecated)
 				gen_info.Writer.WriteLine("\t\t[Obsolete]");
+			// Present only where the containing type could not take the attribute
+			// itself, because a hand-written partial shares it.
+			string coverage_attr = CoverageExclusion.ForMemberOf (gen_info, container_type.Name);
+			if (coverage_attr != null)
+				gen_info.Writer.WriteLine ("\t\t" + coverage_attr);
 			gen_info.Writer.Write("\t\t");
 			if (Protection != "")
 				gen_info.Writer.Write("{0} ", Protection);

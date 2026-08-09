@@ -166,6 +166,9 @@ namespace GtkSharp.Generation {
 			    (Getter != null && Getter.IsDeprecated) ||
 			    (Setter != null && Setter.IsDeprecated))
 				sw.WriteLine (indent + "[Obsolete]");
+			string coverage_attr = CoverageExclusion.ForMemberOf (gen_info, container_type.Name);
+			if (coverage_attr != null)
+				sw.WriteLine (indent + coverage_attr);
 
 			if (!IsStyle) {
 				sw.WriteLine(indent + PropertyAttribute(qpname));

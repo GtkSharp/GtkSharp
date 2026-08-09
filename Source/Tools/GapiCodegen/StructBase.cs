@@ -251,6 +251,9 @@ namespace GtkSharp.Generation {
 			else
 				sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
 			string access = IsInternal ? "internal" : "public";
+			string coverage_attr = CoverageExclusion.ForType (gen_info, Name);
+			if (coverage_attr != null)
+				sw.WriteLine ("\t" + coverage_attr);
 			sw.WriteLine ("\t" + access + " partial struct {0} : IEquatable<{0}> {{", Name);
 			sw.WriteLine ();
 
