@@ -4032,6 +4032,37 @@ return would free what its caller still holds.
 `Gtk.NamedAction` and `Gtk.NothingAction` had no test of any kind before this;
 they are the vehicle for half of these, so they get their first coverage here.
 
+### The same shape without a GString: `g_date_strftime`
+
+`GLib.Date.Strftime` is the eleventh member of this family and was missed by the
+sweep above, because its buffer is a plain `gchar *` rather than a `GString *`:
+
+```c
+gsize g_date_strftime (gchar *s, gsize slen, const gchar *format, const GDate *date);
+```
+
+`s` is the **output**. The binding took it as a C# string, `g_strdup`ed it into
+native memory, let GLib write over it, freed it, and returned the byte count — so
+the formatted date, the one thing the call produces, could not be read from
+managed code at all, and the number it returned described a string nobody could
+see. Nothing failed and nothing logged.
+
+There is now a `Strftime (format, date)` overload that allocates the buffer and
+returns the text; the old signature stays for source compatibility, marked
+`[Obsolete]` with the reason.
+
+The retry loop in it is worth a second look, because it is where this call is
+genuinely awkward: **`g_date_strftime` returns 0 both when the buffer was too
+small and when the result was legitimately empty**, and the two are not
+distinguishable from the return value. So the wrapper grows the buffer and
+retries — except for an empty format, which will never write anything however
+large the buffer gets. Both branches have a test, and the growing one uses a
+format that repeats `%Y` two hundred times to land past the first buffer.
+
+**When looking for more of these, do not search for `GString`.** Search for a
+parameter that C names `s`, `buf`, `buffer` or `dest` next to a length, bound
+here as a C# `string`.
+
 ## Behaviour worth knowing: what makes a print-into-a-buffer test an oracle
 
 "It printed something" is not an assertion, and neither is comparing `Print`

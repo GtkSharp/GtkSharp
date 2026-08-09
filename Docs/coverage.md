@@ -47,28 +47,35 @@ is. A rate on its own hides how much code is behind it.
 
 | assembly | covered / total | rate | uncovered |
 |:--|--:|--:|--:|
-| `GLibSharp` | 6 866 / 9 518 | 72.1% | **2 652** |
+| `GLibSharp` | 7 032 / 9 552 | 73.6% | **2 520** |
 | `GtkSharp` | 2 412 / 4 340 | 55.6% | **1 928** |
-| `Shared` | 1 056 / 2 016 | 52.4% | **960** |
+| `Shared` | 1 058 / 2 016 | 52.5% | **958** |
 | `CairoSharp` | 2 242 / 3 136 | 71.5% | **894** |
 | `GdkSharp` | 488 / 886 | 55.1% | 398 |
 | `PangoSharp` | 672 / 1 040 | 64.6% | 368 |
 | `GioSharp` | 280 / 458 | 61.1% | 178 |
 | `GskSharp` | 330 / 410 | 80.5% | 80 |
+| `JavaScriptCoreSharp` | 2 / 52 | *n/a* | 50 |
 | `GtkSourceSharp` | 2 / 12 | *n/a* | 10 |
 | `AdwaitaSharp` | 36 / 42 | *n/a* | 6 |
 | `WebkitGtkSharp` | 2 / 6 | *n/a* | 4 |
 | `GrapheneSharp` | 104 / 104 | 100.0% | 0 |
-| `JavaScriptCoreSharp` | 2 / 2 | *n/a* | 0 |
 
 **Four of these rates are marked *n/a* because they are not measurements.**
 `GtkSourceSharp` has twelve hand-written lines, `WebkitGtkSharp` six,
-`JavaScriptCoreSharp` two. Those assemblies are almost entirely generated, and
-generated code is excluded from this table by design — so their number is
-computed over a handful of lines and **cannot move however many tests are
+`JavaScriptCoreSharp` fifty-two. Those assemblies are almost entirely generated,
+and generated code is excluded from this table by design — so their number is
+computed over a handful of lines and **barely moves however many tests are
 added**. `GtkSourceTests` added twenty tests and `WebKitTests` thirteen without
 shifting either figure by a line, which is the clearest possible demonstration
 that the figure is not about them.
+
+`JavaScriptCoreSharp` is the sharpest illustration. It read `2 / 2` until
+`Value.cs` was written to give the three variadic call entry points a binding
+that codegen could not express; that added fifty hand-written lines and the
+assembly's rate *fell* from an unmeasurable 100% to an unmeasurable 3.8% — while
+gaining tests, not losing them. The fifty lines report zero because the Windows
+gvsbuild bundle has no JavaScriptCore and `JavaScriptCoreTests` skips there.
 
 For those assemblies, see [the generated surface](#the-generated-surface) below.
 It is the only lens that shows their tests at all.
@@ -116,14 +123,21 @@ deleted. Counting it as a gap invites somebody to write tests for a dead path.
 types. Nothing on Windows can reach them, and the suite draws to image surfaces
 by design.
 
-### ABI declarations — roughly 134 lines
+### ABI declarations — 266 lines
 
 `Cond.cs`, `Mutex.cs`, `RecMutex.cs`, `PollFD.cs` and the two
 `GLibSharp.Source*Native.cs` files are mostly field declarations and native
 callback shims that exist to describe a layout, not to be called.
 
-**Adjusted, the reachable hand-written rate is closer to 71%**: 14 492 of about
-20 500 lines. That is the number worth moving.
+**Adjusted, the reachable hand-written rate is about 70%**: 13 602 of 19 414
+lines. That is the number worth moving.
+
+The adjustment removes each category from *both* sides — `Shared` (1 058 / 2 016
+covered, platform-split), the dead files (0 / 238), the X11 and XCB surfaces
+(0 / 70), the ABI declarations (0 / 266) and `JavaScriptCoreSharp/Value.cs`
+(0 / 50, no JavaScriptCore on the platform measured). Dropping only the totals
+and keeping the covered lines, which is the easy mistake, flatters the figure by
+about a point.
 
 ---
 
@@ -135,19 +149,19 @@ column is the judgement, not the tool's.
 | file | covered / total | uncovered | what it is |
 |:--|--:|--:|:--|
 | `Shared/FuncLoader.cs` | 246 / 792 | 546 | platform-split; not a gap |
-| `Shared/GLibrary.cs` | 810 / 1 224 | 414 | platform-split; not a gap |
+| `Shared/GLibrary.cs` | 812 / 1 224 | 412 | platform-split; not a gap |
 | `CairoSharp/Context.cs` | 560 / 848 | 288 | **real**: the drawing API's breadth |
-| `GLibSharp/Value.cs` | 574 / 806 | 232 | **real**: GValue conversions per type |
+| `GLibSharp/Value.cs` | 588 / 806 | 218 | **real**: GValue conversions per type |
 | `GtkSharp/TreeStore.cs` | 148 / 336 | 188 | **real**, but deprecated in Gtk 4 |
 | `GLibSharp/Object.cs` | 1 024 / 1 202 | 178 | **real**: property and vfunc plumbing |
 | `GdkSharp/Pixbuf.cs` | 166 / 342 | 176 | **real**: save and load formats |
 | `GtkSharp/SignalConnector.cs` | 0 / 174 | 174 | dead; see above |
-| `GLibSharp/Source.cs` | 150 / 308 | 158 | **real**: custom GSource subclassing |
 | `GLibSharp/KeyFile.cs` | 610 / 752 | 142 | mostly covered already |
 | `GtkSharp/ListStore.cs` | 144 / 286 | 142 | **real**, deprecated |
 | `GLibSharp/Date.cs` | 204 / 342 | 138 | **real**: calendar arithmetic |
-| `GLibSharp/DateTime.cs` | 248 / 380 | 132 | **real**: timezones, formatting |
 | `GtkSharp/TreeModelFilter.cs` | 42 / 174 | 132 | **real**, deprecated |
+| `GLibSharp/DateTime.cs` | 254 / 380 | 126 | **real**: timezones, formatting |
+| `GLibSharp/Source.cs` | 196 / 310 | 114 | partly unreachable; see `testing.md` |
 | `GtkSharp/TreeModelSort.cs` | 34 / 160 | 126 | **real**, deprecated |
 | `GLibSharp/Log.cs` | 88 / 200 | 112 | **real**: handlers, fatal masks |
 | `GioSharp/GioStream.cs` | 188 / 298 | 110 | **real**: Stream adapter seek and length |
@@ -161,16 +175,19 @@ column is the judgement, not the tool's.
 
 ### The three worth doing next
 
-1. **`GLibSharp/Value.cs`** — 232 lines. Every property read and write in the
+1. **`GLibSharp/Value.cs`** — 218 lines. Every property read and write in the
    binding goes through `GValue`, and the conversions are per-type and
    hand-written. A wrong one is silent: you get a default instead of your value.
    `ObjectAndValueTests` covers the common types; the boxed, flags, pointer and
    `GType` paths are thin.
 
-2. **`GLibSharp/Source.cs`** — 158 lines. Subclassing `GSource` from C# means a
-   managed object driving the main loop's dispatch. `MainLoopTests` covers idles
-   and timeouts, which are the *built-in* sources; the custom-source path is the
-   one with a vtable in it.
+2. **`GLibSharp/Source.cs`** — 114 lines, and read this one with care. The
+   custom-`GSource` path is not untested: three of its members are memory-
+   corrupting and now refuse, and `SourceLifetimeTests` asserts the refusal. Much
+   of what remains uncovered is unreachable *because* of that — an unattached
+   `Source` cannot be obtained at all, so `AddChildSource` has no route to it.
+   Covering it means binding the missing `GSourceFuncs` members first, not
+   writing tests.
 
 3. **`CairoSharp/Context.cs`** — 288 lines. Entirely hand-written, no codegen,
    and the pixel-reading technique in `testing.md` gives it real oracles cheaply.
@@ -250,7 +267,9 @@ dotnet test Source/Tests/GtkSharp.Tests -c Release --no-build \
   --collect:"XPlat Code Coverage" --settings diag.runsettings
 ```
 
-Measured on Windows at 1546 tests:
+Measured on Windows at 1546 tests — an **older run than the rest of this file**,
+because it needs the separate `diag.runsettings` invocation above. Treat the
+rates as the shape of the surface, not as current figures:
 
 | assembly | generated lines covered | rate |
 |:--|--:|--:|
