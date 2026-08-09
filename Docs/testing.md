@@ -21,12 +21,54 @@ WebKit skips coincide with gvsbuild's.
 
 ### Running the suite on the Gtk the bindings describe
 
-WSL's Debian is *trixie* — Gtk 4.18.6 — and reports false failures for anything
-the gir marks `version="4.22"`. At 1247 tests it fails 16 of them, and every one
-is a symbol trixie's Gtk does not export: `gtk_expression_new_try`,
-`gsk_copy_node_new`, `gsk_render_node_get_children`, `gsk_paste_node_new`,
-`gsk_composite_node_new`, and the accessibility and `AdwEnumListModel`
-properties added since 4.18. Confirm before spending time on one:
+WSL's Debian is *trixie* — Gtk 4.18.6 — and the api.xml describes 4.22, so a
+generated wrapper can name a function that Gtk does not export. That is a null
+delegate rather than a link error, and it used to surface as eighteen
+`NullReferenceException` failures that read exactly like defects.
+
+**They now skip instead**, each naming what it needs:
+
+```
+Skipped ... A_TryExpression_yields_the_first_branch_that_evaluates
+  gtk_expression_new_try arrived in Gtk 4.22; this is 4.18.6.
+```
+
+`TestEnvironment.GtkAtLeast(4, 22)` guards them, so trixie reports **1528 passed,
+18 skipped, 0 failed** and Windows — which is 4.22.4 — runs all eighteen. A guard
+that fired on the reference environment would be hiding something; these do not.
+
+The rule for adding one: guard on the version *the symbol appeared in*, name the
+symbol in the reason, and never guard a test merely because it fails somewhere.
+The symbols currently behind a guard are `gtk_expression_new_try`,
+`gsk_copy_node_new`, `gsk_render_node_get_children`, `gdk_rgba_print`,
+`gsk_path_equal`, the `GtkATContext:realized` property, `AdwEnumListModel:n-items`,
+and the identity `GskTransform` being a null pointer.
+
+### Which Linux, if you get to choose
+
+Not Ubuntu. The vendored girs carry a `version` attribute on 7 721 API elements,
+and counting how many postdate each distribution's Gtk says how much of the
+binding that distribution cannot run:
+
+| distribution | Gtk | bound API it lacks |
+|:--|:--|--:|
+| Debian forky (CI, the reference) | 4.22.4 | 0 |
+| Debian trixie (WSL here) | 4.18.6 | 230 |
+| Ubuntu 22.04 | 4.6.9 | **1 161** |
+
+Ubuntu 22.04 is five times further from the bindings than trixie, and its archive
+has no Gtk 4 installed at all — it would be a full setup for a materially worse
+result. Newer Ubuntus close some of the gap (24.04 is 4.14) but none of them
+reaches 4.22, so none of them removes the need for the forky container.
+
+Count it yourself when a new distribution is proposed, rather than guessing from
+release dates:
+
+```sh
+grep -ohE ' version="4\.[0-9]+"' Source/Gir/*.gir | sort | uniq -c
+```
+
+Confirm a suspected version gap before spending time on it:
 
 ```sh
 nm -D --defined-only /usr/lib/x86_64-linux-gnu/libgtk-4.so.1 | grep ' T gsk_copy_node_new$'
@@ -239,7 +281,10 @@ investigate — not something to relax.
 | `ControlsAndTransferTests` | The controls an application is built out of, and the two subsystems Gtk 4 replaced wholesale. Entry and `GtkEditable` over non-ASCII text (a position is characters, a length is bytes); adjustment clamping and the two signals that separate a change of range from a change of value; spin button stepping, wrapping and snapping; scale marks; level-bar offsets; progress-bar pulse; calendar; notebook reordering; `Gtk.Stack.Pages` as a list model; expander, popover, drop-down, scrolled window, search entry and search bar. Then `Gdk.Clipboard` — set, read back asynchronously, and the mime types Gdk negotiates around a `GValue` — and `GtkDragSource`/`GtkDropTarget`, whose signals are emitted directly against a subclass's vfuncs, because no drag can be started without a pointer device. Five defects. |
 | `DesktopIntegrationTests` | Everything that talks to the desktop rather than to the screen, none of which had a test. The Gtk 4 async dialogs — `FileDialog`, `AlertDialog`, `ColorDialog`, `FontDialog` — driven to their Finish methods the only way a test without a user can, by cancelling the `GCancellable` they were started with; `FileFilter` matching a `GFileInfo` by suffix, pattern and content type, serialised through a `GVariant` and built from a `GtkFileFilter` buildable description; the launchers, held but never launched; the legacy `GtkFileChooser`; and the printing stack, which is nearly all pure data — `PaperSize`, `PageSetup` and `PrintSettings` through key files, every typed accessor and every unit, and a `PrintOperation` exported to a PDF so the whole signal chain runs with no printer. The oracles are ISO 216, ANSI, the definition of a point, and the file on disk. Three defects. |
 | `AccessibilityTests` | `GtkAccessible`, which is where Gtk 4 put ATK and which nothing had ever called. The role every widget class declares, checked twice over — the property, and Gtk's own `gtk_test_accessible_has_role` — against the ARIA names, which are the fixed point when a member is inserted into the middle of `GtkAccessibleRole`; a role reassigned, and one named in a `.ui` file. Then the accessible tree, which is not the widget tree: a composite widget's parts, a parent assigned without reparenting, the sibling that only `SetAccessibleParent` can set. Then states, properties and relations set through the rebound update API and read back through Gtk's test API, the value type each attribute wants, the `<accessibility>` block in a `.ui` file, and `AccessibleList`. Three defects; `GtkAccessibleText` and `GtkAccessibleRange` pinned as unreachable. |
+| `CairoSurfaceTests` | The surfaces that are not `ImageSurface`. The three paginated backends whose whole job is to write somebody else's file format, checked against that format: the SVG parsed as XML and its path data read back as numbers, the PostScript checked against the DSC comments the test asked for and against per-page bounding boxes the test flips itself, the PDF against its version header and the `/MediaBox` entries `SetSize` produces. Then the recording surface — ink extents as arithmetic, replay as pixels, a bounded recording against an unbounded control — the subsurface view, and `Cairo.Device`, which no property had ever handed out. |
+| `TreeModelImplementorTests` | The other end of `GtkTreeModel`: a C# class that **is** one. `Gtk.TreeModelAdapter` writes fifteen managed function pointers into a `GLib.Object` subclass's `GtkTreeModelIface`, so a file tree the test declares is walked by `gtk_tree_model_foreach`, filtered by a `GtkTreeModelFilter` and expanded by a `GtkTreeView`, each of which can only reach a row by calling back into managed code. Depth-first order, path strings both ways, sibling stepping forward and back, indexing against walking, child counts, parent links and the model flags. Then `Gtk.TreeEnumerator`, which is what `foreach` over a `ListStore` runs. Two defects, one of them fatal. |
 | `ApplicationTests` | The application object and the global state around it — the code every program runs before it does anything else, and which the rest of the suite only ever touched by accident. `GLib.Application` registration, the once-only `::startup` against the every-time `::activate`, the id rules, the busy counter and the property that drives it; `g_application_open` end to end; a `GApplicationCommandLine` built by the test, because `::command-line` needs a session bus and Windows re-reads the real process command line anyway. Then `Gtk.Application`'s window list — newest first, which is also what `ActiveWindow` means — accelerators through `SetAccelsForAction`/`GetAccelsForAction`, an `ApplicationWindow` as a `GActionGroup` under `win.` and the `app.` actions its widgets reach; `Gtk.Settings` overridden and reset; `Gtk.IconTheme` search and resource paths and an icon the test wrote; window modality, transient-for, groups, default size and the `::close-request` veto; `HeaderBar`/`WindowControls`; `Gtk.Accelerator`; `Gtk.Global`; and the `GLib.MainLoop` that `Application.Run` became when `gtk_main` was deleted. Five defects. |
+| `SelectionModelImplementorTests` | The Gtk 4 counterpart of `TreeModelImplementorTests`: a C# class that **is** a `GtkSelectionModel`. Nine managed function pointers go into the `GtkSelectionModelInterface` and three more into the `GListModelInterface` of the same object, because the list model is a GInterface *prerequisite* of the selection model. The questions are asked only through C — `gtk_selection_model_get_selection`, which is Gtk's own default implementation over `get_selection_in_range`; `GtkSelectionFilterModel`, a C list model whose contents are decided entirely by asking the managed model which items are selected and listening for `::selection-changed`; and `GtkSingleSelection` built on the managed list model, which is the same boundary crossed the other way. One defect, and it was a class of defect rather than a single call: an interface added before its prerequisite is not added at all. |
 
 ### Guards against vacuous passes
 
@@ -3218,3 +3263,1086 @@ checkable:
 ```sh
 python -c "import glob,xml.dom.minidom as m; [m.parse(f) for f in glob.glob('Source/Libs/*/*.metadata')]"
 ```
+
+## Fixed: every `Cairo.Glyph` in a run hashed to the same value
+
+`CairoTextTests` covers Cairo's text and glyph API. `CairoSharp` has no
+`.metadata` and nothing generated — every line is hand-written, so nothing about
+it is checked by compiling — and `FontFace`, `Glyph` and `ShowGlyphs` had no
+mention in the suite at all.
+
+`Glyph.GetHashCode` was
+
+```csharp
+return (int) Index ^ (int) X ^ (int) Y;
+```
+
+wrong twice over. XOR is commutative, so every permutation of the same three
+numbers shared one hash: `(1,2,3)`, `(3,2,1)` and `(2,1,3)` all came out as
+**zero**. A glyph run is mostly permutations of small numbers, so that is the
+ordinary case rather than a rare one. And the casts threw away the fractional
+part of `X` and `Y` — which is exactly what sub-pixel glyph positioning puts
+there, so every glyph between two whole numbers hashed alike too.
+
+This is the same defect, with the same reasoning, that `StructBase.GenHashCode`
+in `GapiCodegen` was already fixed for. The generated structs got the fix; the
+hand-written one beside them did not, because nobody was looking at it. That is
+the second time in two sweeps — `AttrList.Attributes` kept the bug its own
+neighbour was hand-written to avoid.
+
+**Where else to look:** `grep` the hand-written tree for `GetHashCode` bodies
+containing `^` without a multiply. A commutative fold is only visible as a bug
+when something hashes a struct whose fields are permutations of each other, which
+is rare enough to survive for years and common enough to matter when it bites.
+
+## Behaviour worth knowing: testing glyph drawing without assuming a font
+
+Glyph indices are a property of the font file, so no particular number can be
+assumed on a machine whose fonts the test did not choose. Scanning for one with
+non-empty extents makes the test independent of what `"sans"` resolves to:
+
+```csharp
+for (long index = 1; index < 300; index++)
+    if (cr.GlyphExtents(new[] { new Cairo.Glyph(index, 0, 0) }).Width > 0)
+        return index;
+throw new InvalidOperationException("no drawable glyph found");
+```
+
+It fails loudly rather than quietly drawing nothing, which is the difference
+between this and hard-coding an index that happens to work here.
+
+With one such index in hand, the oracles are positional rather than absolute: the
+same glyph at `x=2` and `x=40` must leave ink at different places, and three
+glyphs must reach further right than one. Between them those pin the hand-written
+`Glyph[]` copy into unmanaged memory — index, x and y all surviving it, and the
+whole array arriving rather than only its first element, which is the failure
+this repository has hit repeatedly elsewhere.
+
+## Fixed: five defects in the list marshalling every binding call goes through
+
+`GLibListTests` covers `GLib.List`, `GLib.SList` and the `ListBase` beneath
+them — 290 hand-written lines that nothing in the suite referenced by name, and
+the machinery both of this sweep's earlier defects actually lived in. Writing
+sixteen tests against it found five more.
+
+**`Clone` dropped the element type, and cloning a list of strings crashed the
+process.** It was
+
+```csharp
+public override object Clone () => new List (g_list_copy (Handle));
+```
+
+with no element type, so every element of the clone went through `DataMarshal`'s
+last resort — "is this pointer a GObject?" — which dereferences it as a
+`GTypeInstance`. For a list of strings that reads a `char*` as an object header:
+an access violation that took the test host down, not an exception. Now carries
+`element_type` across, `owned: true` (the spine is a copy) and
+`elements_owned: false` (`g_list_copy` is shallow).
+
+**`Count` was cached and never invalidated by a mutation.** `length` was dropped
+only when the list was emptied, so
+
+```csharp
+int before = list.Count;   // walks the chain, caches the answer
+list.Append (item);
+int after = list.Count;    // still the old number
+```
+
+and because LINQ preallocates from `ICollection.Count`, a single `Cast<T>()` was
+enough to leave a list lying about its length for the rest of its life.
+`Append`/`Prepend` now drop the cache.
+
+**The enumerator restarted once it had finished.** `current == IntPtr.Zero` meant
+both "not started" and "ran off the end", so `MoveNext` sent it back to the head
+and answered `true` forever — a loop that kept asking never terminated. Split
+with a `finished` flag that `Reset` clears.
+
+**`SyncRoot` returned null**, so the documented `lock (collection.SyncRoot)` was
+a `NullReferenceException`.
+
+**`Prepend` took only an `IntPtr`** while `Append` had taken a `string` and an
+`object` since the mono era, so building a list front-to-back meant marshalling
+every element by hand. Two overloads added, the `Append` ones with the direction
+changed.
+
+**Where else to look:** `Source/Libs/GLibSharp/PtrArray.cs` has the same
+`DataMarshal` fallthrough at line 193 and was not part of this pass.
+
+## Behaviour worth knowing: `Append(object)` is not `Append(IntPtr)`
+
+`AllocNativeElement` copies a value type into fresh native memory and stores
+*that* address. For a struct that is right; for an `IntPtr` it means the list
+holds a pointer to a copy of your pointer. Two of these tests were written
+against the wrong one and read back addresses nobody recognised.
+
+Use `Append(IntPtr)` when the element *is* the pointer.
+
+## And the crash that made the point again
+
+The first draft of the element-type test built a list holding `new IntPtr(0x1234)`
+and read it back with no element type — which asks GLib whether address `0x1234`
+is a GObject, and GLib reads through it. Access violation, test host gone,
+`Total` down by the rest of the class.
+
+A fabricated pointer is only safe in a list whose element type stops anything
+dereferencing it. Where the point of the test *is* the dereferencing path, use
+`IntPtr.Zero`: it exercises the same branch and is the one address that is
+defined to be safe.
+
+## Fixed: `PtrArray.Clone` called an arbitrary address as a function
+
+The `ListBase` pass ended by recording `PtrArray` as unexamined — same
+`DataMarshal`, same `ICollection` surface, same enumerator shape, written
+separately. `GLibContainerTests` is that examination. It shares two of the five
+defects found there, and has a worse one of its own.
+
+```csharp
+delegate IntPtr d_g_ptr_array_copy(IntPtr raw);              // one parameter
+```
+
+The C function has taken three since GLib 2.62:
+
+```c
+GPtrArray *g_ptr_array_copy (GPtrArray *array, GCopyFunc func, gpointer user_data);
+```
+
+So `Clone` left `func` and `user_data` as whatever happened to be in the argument
+registers — and a non-NULL `func` is **called**, once per element. This did not
+return a wrong answer or throw; it jumped to an arbitrary address. The test host
+died with `FailFast` and no managed stack.
+
+Now declared with all three, passing NULL for a shallow copy, and the result is
+marked owned — `g_ptr_array_copy` is transfer full, so the old
+`owned: false` leaked every clone as well.
+
+**The other two are the ones `ListBase` had**, in independently written code:
+`SyncRoot` returned null, and the enumerator restarted after finishing because
+`current = -1` means both "not started" and "ran off the end".
+
+**Where else to look:** every `d_g_*` delegate in the hand-written tree is a
+signature nobody checks. `grep` for delegates whose parameter count differs from
+the gir's, starting with anything added after GLib 2.50 — the older calls have
+had decades of use, these have not. A wrong *type* usually misbehaves; a missing
+**callback** parameter executes data.
+
+## Behaviour worth knowing: the total is the crash detector
+
+Two crashes in two sweeps, and both announced themselves the same way — not as a
+failure, but as a **smaller `Total`**:
+
+```
+Failed:     2, Passed:     7, Total:     9      <- fourteen tests were written
+```
+
+Nine ran. Five never got the chance, because the host was gone. Had the two
+failures not been there, the line would have read `Passed! ... Total: 9` and
+looked like a clean run of a smaller class.
+
+The habit that catches it is counting the tests you wrote and comparing. When the
+total is short, bisect by filter — the crash here was one test, and running the
+six `PtrArray` tests one at a time named it in under a minute:
+
+```sh
+for t in <names>; do dotnet test --filter "FullyQualifiedName~$t"; done
+```
+
+Then read the *class* boundary too: `Argv` passing 5/5 in isolation while the
+combined run died proved the fault was not in the half that looked suspicious.
+
+## The delegate-arity audit, and the one real defect it found
+
+The `PtrArray` pass ended by saying every `d_g_*` delegate in the hand-written
+tree is a signature nobody checks. That audit is mechanical, so it was worth
+writing rather than describing: extract every `delegate ... d_<c_name>(...)` from
+the non-generated sources, look `<c_name>` up in the girs, and compare the
+parameter count (instance parameter included, `throws` adding one).
+
+**706 delegates checked, five mismatches, one real.**
+
+The four false positives are all variadic C functions where the extra managed
+parameter is the argument behind the format — `gdk_pixbuf_save`,
+`gdk_pixbuf_save_to_stream`, `gtk_message_dialog_new` and its markup twin. An
+arity-only audit cannot know that, so the script reports and a human reads.
+
+The real one was `g_logv`:
+
+```c
+void g_logv (const gchar *domain, GLogLevelFlags level,
+             const gchar *format, va_list args);      /* four */
+```
+
+```csharp
+delegate void d_g_logv(IntPtr log_domain, LogLevelFlags flags, IntPtr message);  // three
+```
+
+Two faults at once. The `va_list` was never passed, so GLib read the argument
+list out of whatever was in the register; and the already-composed message was
+handed over as the **format**, so any per cent sign in it became a conversion
+consuming from that garbage list. `Log.WriteLog(domain, level, "100% complete")`
+was undefined behaviour and `"%s"` was a wild pointer dereference. The test host
+died with a `FailFast` and no managed stack.
+
+Now `g_log` with a literal `"%s"` and the message as the argument behind it.
+
+**The instructive part is the sibling that was fine.** `MessageDialog` passes a
+composed message into the same kind of parameter, and was *safe*, because it
+composed through `Marshaller.StringFormat`, which doubles every per cent sign so
+printf renders one. Two wrappers, the same hazard, opposite outcomes — and the
+protection was three files away from the code that needed it.
+
+`MessageDialog` now passes `"%s"` too, which meant **removing** the escaping:
+doubling and then not un-doubling gave "100%% complete". Passing text as data is
+the more robust arrangement, but the two mechanisms must not be half-applied.
+
+**Why no test caught either:** every existing test of these APIs used a message
+with no per cent sign. `"100% complete"` is an ordinary thing to log.
+
+**Where else to look:** the audit script only compares *counts*. A delegate with
+the right number of parameters and the wrong types is still wrong, and
+`IntPtr`-for-everything hides most of it. The counts are the cheap half; the
+types need reading.
+
+## The type half of the delegate audit
+
+The arity audit compared parameter *counts*, and its own closing note was that
+types need reading. That is also mechanizable, up to a point: compare each
+parameter's gir type against the C# spelling and flag the pairs that cannot
+carry each other. Pointers marshalled as `IntPtr` and enums are out of scope —
+everything else is a width or a kind.
+
+**Five disagreements, three of them noise, two worth fixing.**
+
+The noise is signedness at the same width: `guint` declared `int` in
+`g_closure_new_simple` and `g_object_newv`. A closure size and a parameter count
+do not reach 2^31, and both halves of the register are the same size.
+
+The two that matter are `g_signal_handler_disconnect` and
+`g_signal_handler_is_connected`, whose handler id is a **`gulong`** — 64 bits on
+Linux and macOS, 32 on Windows — declared `uint`:
+
+```csharp
+delegate void d_g_signal_handler_disconnect(IntPtr instance, uint handler);
+```
+
+`SymbolTable.cs` has mapped `gulong` to `LPUGen`, which marshals as `UIntPtr`,
+since the mono era. Every *generated* wrapper gets that right; this hand-written
+file never followed.
+
+**Nothing observable was wrong, and no test here proves otherwise.** Handler ids
+are small sequential counters, so the value has always fitted in 32 bits, and on
+x86-64 a 32-bit move zero-extends. The fix is for the declared ABI, and it is
+worth being plain about that rather than dressing it up: `SignalLifetimeTests`
+pins the behaviour the change had to *preserve* — several handlers on one signal,
+removing one of them, removing one twice, connection order, a hundred
+connect/disconnect cycles — not the truncation, which cannot be reached.
+
+That is a legitimate reason to write tests. A change with no observable effect
+still needs to be shown to have no observable effect.
+
+**Where the audit still cannot help:** it only sees parameters whose gir type is
+a named scalar. Callback parameters, arrays, unions and anything the gir marks as
+a pointer are skipped, and those are where the last two crashes actually lived
+(`g_ptr_array_copy`'s missing `GCopyFunc`, `g_logv`'s missing `va_list`). Arity
+caught both. Types catch what arity cannot. Neither catches a parameter that is
+the right size and the wrong meaning.
+
+## Checked and correct: the ABI field-offset arithmetic
+
+`GLib.AbiStruct` is how a vfunc gets overridden — the binding computes where a
+function pointer sits inside `GObjectClass` or `GtkWidgetClass` and writes there.
+An offset wrong by one slot overwrites a different vfunc, and what breaks is some
+unrelated widget behaviour much later. 145 hand-written lines, and nothing in the
+suite referenced it by name.
+
+**No defect found.** That is the result, and it is worth recording as one: this
+arithmetic is now pinned rather than merely believed.
+
+What makes the tests worth having is the oracle. Every layout is *also* declared
+as a `[StructLayout(Sequential)]` managed struct, and `AbiStruct`'s answers are
+compared against `Marshal.OffsetOf` and `Marshal.SizeOf` — an independent
+implementation of the same C rules, written by someone else, checking the one
+under test. That is stronger than the test doing its own arithmetic, which would
+only prove the test and the code agree.
+
+Pointer cases take their expected value from `IntPtr.Size` rather than a literal,
+so they mean the same thing on a 32-bit host. And there is a control — two
+`short`s, which must pack tight — so "the offsets are right" is not just
+reporting a rule that always rounds up.
+
+`GHookList` is the only shape in the tree that uses the bitfield path
+(`hook_size : 16` and `is_setup : 1` sharing a storage unit). The assertion is
+what actually has to hold: both bit members start at the same byte, and the first
+ordinary field after them is back on pointer alignment.
+
+**One latent oddity, deliberately not changed.** `AbiStruct.Load` computes the
+total width of a bitfield run into a local `nbits` and then never uses it —
+`bitfields_size` comes from the first field's `Bits` alone. For `GHookList` the
+final offsets come out right anyway, and there is no independent oracle for the
+bitfield path (`Marshal` cannot model bitfields), so changing it would be
+adjusting behaviour that cannot be validated. Recorded here rather than fixed.
+
+## Fixed: cairo's surface type enum stopped six years short of cairo's
+
+Everything in `CairoSharp` outside `ImageSurface` was untested, and two of the
+four backends cairo builds by default were not bound at all.
+
+`SurfaceType` listed eleven members, ending at `Svg = 10`. `cairo_surface_type_t`
+has twenty-five. So `cairo_surface_get_type` on a recording surface returned 16
+and on a script surface 14, and the property handed the caller an integer no
+member named — a `switch` over it falls through, `ToString()` prints the number,
+and `Surface.Lookup`, whose entire job is to build the right wrapper for a
+handle, dropped both to the base class. `DeviceType` was short in the same way
+(no `Cogl`, no `Win32`, and no `Invalid = -1`, which is what a device in an error
+state reports).
+
+`Each_backend_reports_its_own_surface_type` asserts the *numbers* as well as the
+names, because the enum is positional: a member inserted in the middle silently
+renumbers every later one, and the value 16 is the fixed point.
+
+**Two backends had no binding.** `cairo_recording_surface_create`,
+`_ink_extents` and `_get_extents` were commented-out `DllImport` lines left over
+from the mono era, as were `cairo_surface_create_for_rectangle`,
+`cairo_pdf_surface_restrict_to_version`, `cairo_ps_surface_{get,set}_eps`,
+`cairo_svg_surface_{get,set}_document_unit` and the whole script backend. They
+are bound now, with `RecordingSurface`, `ScriptSurface` and `Script` (the script
+*device*) as the new wrapper types.
+
+**`Cairo.Device` could not be reached by any caller.** Its only constructor is
+`internal`, and no property in the assembly returned one, so the class was
+public, complete and unreachable — 100 lines of dead code. `Surface.Device` now
+wraps `cairo_surface_get_device`, returning null for the backends that have none.
+The constructor grew an `owner` overload at the same time, because
+`cairo_script_create` hands over a reference while `cairo_surface_get_device`
+lends one, and the old constructor referenced unconditionally.
+
+## Behaviour worth knowing: what makes a vector-surface test an oracle
+
+A paginated backend is the easiest thing in this repository to test well and the
+easiest to test vacuously. "The file was created and is not empty" is a `Try`
+sweep with extra steps. The file is only an oracle when it is read against the
+format's own rules:
+
+- **SVG is XML, so parse it.** `XDocument` gives the root's `width`, `height` and
+  `viewBox`, and the path element's `d`; pulling the numbers out of `d` with a
+  regex makes the assertion "the four corners the test drew are in there",
+  immune to how cairo spaces its output. The control is a second document of the
+  same size with nothing drawn — it has no `<path>` at all, so "there is a path"
+  is a fact about the drawing and not about the backend's boilerplate.
+- **PostScript pages carry their own bounding box, in flipped coordinates.**
+  PostScript's origin is bottom-left, so a rectangle at user y in [t, b] on a
+  surface h tall is written at `%%PageBoundingBox` y in [h − b, h − t]. The test
+  does that arithmetic; mutating the flip out of it fails, which is what makes
+  the assertion the oracle rather than a transcription.
+- **A DSC comment needs a document without it beside it.** `%%Title:` appears in
+  the header whether or not anyone asked, if cairo decides to write one.
+- **PDF 1.4 keeps its page tree as plain text.** Restricting to 1.4 is what makes
+  `/MediaBox [ 0 0 200 100 ]` and `/MediaBox [ 0 0 300 400 ]` readable straight
+  out of the bytes, which is the only way to see that `SetSize` applied to the
+  page that had not been emitted yet. Read the file through `Latin1`, not UTF-8:
+  it maps every byte to the code point of the same value, so the binary sections
+  cannot throw the search off.
+- **The script backend writes a transcript.** `3 4 5 6 rectangle` and `fill+` are
+  literally in the file, which makes it the one backend where the assertion is
+  what the context did rather than what it produced.
+
+For the recording surface the oracle is arithmetic the test owns. The ink extents
+of a filled rectangle are that rectangle; the ink extents of a stroke are the
+segment grown by half the pen on each side, so a vertical line from (50,50) to
+(50,80) with pen w gives exactly `(50 − w/2, 50, w, 30)` with butt caps. Two pen
+widths are measured, so the assertion pins the relationship and not a number, and
+the four out-parameters cannot be permuted without failing because x differs from
+y and width from height.
+
+Every one of the seventeen test methods in the file was then shown to fail under
+a deliberately wrong expectation, in three batches. That check is worth the ten
+minutes here in particular: a file-writing test that is accidentally asserting
+the backend's boilerplate passes for the wrong reason and looks identical from
+the outside. One mutation was instructive by *not* failing — moving the surface
+height from 100 to 101 changes the surface and the expected bounding box
+together, which is fine, so the flip itself had to be mutated separately to prove
+the arithmetic was load-bearing.
+
+**One expectation here was wrong, and it was mine, not the library's.** A
+subsurface does not report `SurfaceType.Subsurface`. cairo's
+`_cairo_surface_create_for_rectangle_int` copies the *target's* type onto the new
+surface, so a view onto an image surface says `Image`. The type therefore cannot
+be used to tell a subsurface from what it views, and
+`A_subsurface_reports_the_type_of_the_surface_it_views` pins that rather than the
+value 23. The subsurface is still proved to be one, by drawing: painting the
+whole of a (10,10,20,20) view fills exactly that rectangle of the parent, with a
+control pixel before the origin and another past the far corner, because a
+dropped offset and a dropped clip fail differently.
+
+The SVG document unit is worth the same warning. It does **not** convert: setting
+`SvgUnit.Mm` on a 100-wide surface writes `width="100mm"`, not the 35.28mm that
+100 points are. It relabels the two size attributes and leaves user space alone —
+which is why the test asserts the `viewBox` and the path data are byte-identical
+between the two documents. Working the conversion out from the definition of a
+point would have produced a confident, wrong test.
+
+**Where else to look:** cairo's filename parameters are marshalled as plain
+`string`, which is `UnmanagedType.LPStr` — the system ANSI code page. cairo
+expects UTF-8 and converts to UTF-16 itself on Windows (`_cairo_fopen`), so a
+path with a character outside the host's ANSI page cannot reach it; the surface
+goes into an error state and `WriteToPng` writes nothing without throwing. Every
+test here uses an ASCII temporary directory, so none of them would notice. The
+same question applies to `cairo_ps_surface_dsc_comment` and to anything else in
+`NativeMethods.cs` declared `string`.
+
+## Open: `Gtk.Popover.Popup` takes the test host down on Windows
+
+Not a finding of this work, but it was in the way of verifying it, and it is not
+recorded anywhere else. `ControlsAndTransferTests.A_popover_pops_up_and_down_and_reports_its_closing`
+aborts the process with an access violation inside `gtk_popover_popup` on the
+gvsbuild 4.22.4 runtime:
+
+```text
+Fatal error. 0xC0000005
+   at Gtk.Popover.Popup()
+```
+
+It reproduces with that test as the only one selected, and it reproduces on a
+clean checkout of `HEAD` with none of this work applied, so it is the runtime or
+the test and not the Cairo changes here. Its cost is the failure mode this
+document keeps returning to: the run prints **`Passed!` with `Total: 405`** out
+of 1435 and exits non-zero, and the truncation is the only sign anything is
+wrong. Until it is diagnosed, a full Windows run needs
+
+```sh
+dotnet test Source/Tests/GtkSharp.Tests -c Release \
+  --filter "FullyQualifiedName!=GtkSharp.Tests.ControlsAndTransferTests.A_popover_pops_up_and_down_and_reports_its_closing"
+```
+
+which gives 1471 tests, 1469 passing and 2 WebKit skips, twice over.
+
+## Fixed: connecting to a managed model's `rows-reordered` killed the process
+
+`Gtk.TreeModelAdapter` is what wraps a `GtkTreeModel` whose GType this binding
+does not know — above all a C# `ITreeModelImplementor`, which is the only way to
+write a tree model in managed code. Its hand-written `RowsReordered` event runs
+this callback:
+
+```csharp
+TreeModelFilter sender = GLib.Object.GetObject (arg0) as TreeModelFilter;
+...
+int child_cnt = arg2 == IntPtr.Zero ? sender.IterNChildren () : sender.IterNChildren (iter);
+```
+
+The file it was copied from is `TreeModelFilter.cs`, where that cast is right.
+Here it is the one thing the emitter can never be: `GtkTreeModelFilter` is
+generated as a concrete `ITreeModel`, so `TreeModelAdapter.GetObject` hands it
+back directly and it never reaches an adapter at all. The cast therefore always
+produced `null` and the next line always threw.
+
+**And "always threw" is not "the handler did not run".** The `catch` calls
+`ExceptionManager.RaiseUnhandledException (e, false)`, and with no
+`UnhandledException` handler installed that prints and calls
+`Environment.Exit (1)`. Reordering the rows of a managed tree model with anything
+connected to `RowsReordered` **took the process down**, in the shape this
+document keeps returning to: the run below printed `Passed!` with `Total: 9`.
+
+```text
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Gtk.TreeModelAdapter.RowsReorderedSignalCallback(...)
+   at Gtk.TreeModelAdapter.EmitRowsReordered(TreePath path, TreeIter iter, Int32[] new_order)
+```
+
+The sender is now built with `TreeModelAdapter.GetObject (arg0, false)`, which
+returns an `ITreeModel` — the interface that carries both `IterNChildren ()` and
+`IterNChildren (iter)`, so both branches of the count still work. The other four
+copies of this callback (`ListStore`, `TreeStore`, `TreeModelSort`,
+`TreeModelFilter`) each cast to their own type and are correct; the adapter was
+the only one that had been left pointing at its donor.
+
+## Fixed: a reorder that could not name more than one row
+
+`gtk_tree_model_rows_reordered_with_length (path, iter, int *new_order, int length)`
+is the introspectable half of the pair above, and it is the
+`gsk_container_node_new` family one more time. The gir gives `new_order` an
+`<array length="3">`; the api.xml can only say `int*`; codegen has a rule for
+`n_something` in front of an array and none for a parameter called `length`
+behind one. So it came out as
+
+```csharp
+public int RowsReorderedWithLength (TreePath path, TreeIter iter, int length)
+```
+
+— the array bound as a scalar `out` and returned, meaning the call passed GTK the
+address of **one uninitialised stack slot** and told it to read `length`
+integers from it. A permutation could not be expressed at all, and asking for one
+was an out-of-bounds read.
+
+Two metadata lines fix it without a hand-written rebind: `array="1"` on
+`new_order`, and renaming `length` to `n_new_order` so `Parameters.Validate`
+pairs them into the `ArrayCountPair` it already knows how to emit. The result is
+`void RowsReorderedWithLength (TreePath, TreeIter, int[])`, and the length GTK
+receives is now the array's own.
+
+This is worth stating as a rule, because it is the fourth time it has appeared:
+**codegen recognises a count only when it is named `n_*` and only when it comes
+first.** Every `(T *items, int length)` and `(T *items, gsize n)` spelled any
+other way is silently a scalar. `Parameter.IsLength` exists and matches `*len`
+and `*length`, and nothing in `Parameters.Validate` consults it.
+
+## Behaviour worth knowing: what makes a managed tree model testable
+
+The trap in testing an interface you implement yourself is that the test can end
+up asserting the C# object against the C# object, with the binding a spectator.
+Three things keep it honest here:
+
+- **Only Gtk's own walkers are asked the questions.** `gtk_tree_model_foreach` is
+  C: it reaches the six rows of the sample tree only by calling `GetIterFirst`,
+  `IterChildren`, `IterHasChild`, `IterNext` and `GetPath` through the vtable,
+  and it visits them depth-first. The expected list is written out of the tree
+  literal in the test, so it fails if any one of those five is wrong.
+- **A second, independent consumer.** `GtkTreeModelFilter` builds a parallel tree
+  by interrogating the managed model, and `GtkTreeView` decides on its own which
+  rows are expandable. Hiding the files leaves `docs`, `notes` and `src` and
+  hides `notes`'s child with it; expanding everything opens exactly `0` and
+  `0:1`, because `src` is an empty folder and `LICENSE` is a file. Neither answer
+  exists anywhere in the test's own data structure.
+- **A mutation check.** Making the model's `IterNChildren` return 0 for every row
+  fails five of the seventeen tests, which is the proof that those assertions are
+  reading through the vtable rather than past it.
+
+`RefNode`/`UnrefNode` are the pair a model "may ignore"; the tree-view test
+counts the calls and requires at least one, which is the cheapest available proof
+that Gtk really is holding rows through the managed interface.
+
+Two smaller things the sample model has to get right, and both are properties of
+`Gtk.TreeIter` rather than of any one model. `Stamp` and `UserData` are the only
+fields a managed implementor can use — `_user_data2` and `_user_data3` are
+private — so a row id has to be **one-based**, because `TreeIter.Zero` is how the
+adapter spells "the invisible root" when C passes `NULL` for a parent. And
+`TreeModelAdapter.IterChildren (out iter)`, `IterNChildren ()` and
+`IterNthChild (out iter, n)` are hand-written precisely because they pass
+`IntPtr.Zero` rather than a zeroed iter: a zeroed `GtkTreeIter*` is not `NULL`,
+and the generated overloads cannot ask about the roots.
+
+**Where else to look:** `Gtk.TreeEnumerator` — what `foreach` over a `ListStore`
+runs — subscribes to `RowChanged`, `RowDeleted`, `RowInserted` and
+`RowsReordered` in its constructor and **never unsubscribes**. Every enumeration
+of a store therefore adds four permanent signal connections to it and leaves an
+enumerator that can never be collected, which is invisible to a test because the
+handlers only set a `bool`. `ListStore.GetEnumerator` is the only caller, so the
+blast radius is one `foreach` per leak, but a program that redraws a list in a
+loop pays for every pass. The same question applies to `NodeStore`'s
+`GCHandle` list, which is freed only in `Dispose`.
+
+## Fixed: a GInterface added before its prerequisite was not added at all
+
+A `GLib.Object` subclass gets its GInterfaces from
+`Object.ClassInitializer.AddGInterfaces`, which walked `Type.GetInterfaces ()`
+and called `g_type_add_interface_static` for each one in the order reflection
+happened to produce.
+
+GLib will not accept them in that order. An interface may declare
+**prerequisites**, and `g_type_add_interface_static` refuses a type that does not
+already conform to them. `G_DEFINE_INTERFACE (GtkSelectionModel,
+gtk_selection_model, G_TYPE_LIST_MODEL)` is one such declaration, so a managed
+selection model must be a `GListModel` *before* `GtkSelectionModel` can be put on
+it. Refusal is a `g_warning`, not an error: the call returns, the interface is
+simply absent, and nothing downstream says why.
+
+Which meant these two classes did not do the same thing:
+
+```csharp
+class A : GLib.Object, GLib.IListModelImplementor, Gtk.ISelectionModelImplementor  // worked
+class B : GLib.Object, Gtk.ISelectionModelImplementor, GLib.IListModelImplementor  // did not
+```
+
+`B` came out a `GListModel` that is not a `GtkSelectionModel`, and every symptom
+is remote from the cause: `gtk_selection_model_is_selected` returns `FALSE` from
+its `g_return_val_if_fail`, `gtk_selection_filter_model_new` publishes nothing,
+and connecting to `::selection-changed` cannot find the signal, because the
+signal is declared on the interface that was never added.
+
+`AddGInterfaces` now adds them in passes, taking only those whose prerequisites
+the type already satisfies, which is the topological order GLib wants:
+
+```csharp
+if (!PrerequisitesSatisfied (pending [i].GInterfaceGType))
+        continue;
+```
+
+read out of `g_type_interface_prerequisites` and checked with `g_type_is_a`
+against the type as it stands, which changes as each interface goes on. Anything
+still pending when no further progress is possible is added anyway, so a
+genuinely wrong declaration still gets GLib's own diagnostic naming the
+interface and the prerequisite it lacks — swallowing that would hide a real
+mistake.
+
+**The blast radius is wider than selection models.** The vendored girs declare
+37 `<prerequisite>` edges. Most name a *class* (`Gtk.Actionable` and
+`Gtk.Editable` require `GtkWidget`), and those were never at risk, because a C#
+class deriving from `Gtk.Widget` satisfies them before any interface is added.
+The ones that were at risk are the interfaces whose prerequisite is **another
+interface on the same class**, where the order is decided by reflection alone:
+
+| interface | prerequisite |
+|:--|:--|
+| `Gtk.ISelectionModel`, `Gtk.ISectionModel` | `GLib.IListModel` |
+| `Gtk.ITreeSortable` | `Gtk.ITreeModel` |
+| `Gtk.IRoot` | `Gtk.INative` |
+| `GLib.ILoadableIcon` | `GLib.IIcon` |
+| `GLib.ITlsClientConnection`, `GLib.ITlsServerConnection` | `GLib.ITlsConnection` |
+| `GLib.IDtlsClientConnection`, `GLib.IDtlsServerConnection` | `GLib.IDtlsConnection`, `GLib.IDatagramBased` |
+| `GLib.IRemoteActionGroup` | `GLib.IActionGroup` |
+| `Gtk.IAccessibleText`, `Gtk.IAccessibleRange`, `Gtk.IAccessibleHypertext` | `Gtk.IAccessible` |
+
+`Gtk.ITreeSortable` over `Gtk.ITreeModel` is the one this repository already had
+a caller for: a C# sortable tree model — the pairing `TreeViewStackTests` drives
+through `ListStore` — would have registered as a tree model with no sortable
+interface roughly half the time it was written.
+
+## Behaviour worth knowing: what makes a managed selection model testable
+
+The same trap as the tree model one round earlier: a test of an interface you
+implement yourself can end up asserting the C# object against the C# object with
+the binding a spectator. Four things keep it honest here.
+
+- **Only C is asked.** `gtk_selection_model_get_selection` is Gtk's own default
+  implementation and reaches the answer through the vtable; `IsSelected`,
+  `SelectRange` and `SetSelection` are called through the C entry points, never
+  on the implementor.
+- **A second consumer that computes something.**
+  `GtkSelectionFilterModel` is a `GListModel` written entirely in C which
+  publishes exactly the selected items. `{1,3,4}` out of `ABCDEFGH` is `B, D, E`,
+  and that list exists nowhere in the test's own data: it is the intersection of
+  a set this file chose with items this file chose, performed by Gtk, over
+  **both** managed vtables — the selection interface to learn which positions,
+  the list-model interface to fetch the objects.
+- **The mirror image.** `GtkSingleSelection` built on the same managed object
+  keeps *its own* selection and only fetches items, so the test can assert that
+  the managed model saw `get-item` calls and no `is-selected` calls at all.
+- **A mutation check.** Making `GetItem` return the next item and `IsSelected`
+  return the opposite answer fails **7 of the 19** tests, which is the proof that
+  those assertions read through the vtable rather than past it.
+
+Three pieces of behaviour that the obvious expectation gets wrong:
+
+- **The whole selection is not asked for as an unbounded range.** The expectation
+  written first was `get_selection_in_range (0, G_MAXUINT)`, and it was the
+  expectation that was wrong, not the library:
+  `gtk_selection_model_get_selection` passes
+  `g_list_model_get_n_items (model)` as the count. A managed implementor must
+  still clip the window it is handed to the model's length — nothing stops a
+  caller asking for more — but the default path hands it the right number, and
+  it comes out of the managed `GListModel` a moment earlier.
+- **`GtkSelectionFilterModel` does not forward the item type.**
+  `gtk_selection_filter_model_get_item_type` returns `G_TYPE_OBJECT`
+  unconditionally, so the filter's `ItemType` is `GObject` while the model
+  underneath reports `GtkStringObject`. The objects it hands back are
+  `GtkStringObject`s all the same; the type is the only thing that is vague.
+- **The signal is load-bearing, and there is a control that proves it.** The
+  filter model caches the selection as a `GtkBitset` and refreshes it on
+  `::selection-changed`. Mutating the managed set with emission suppressed leaves
+  C holding the old answer — the test asserts exactly that divergence, which is
+  what makes the four positive cases beside it mean something.
+
+One ownership rule an implementor has to follow, and it is not obvious from the
+signature. `get_selection_in_range` is transfer-full, and the adapter returns
+`__result.OwnedCopy`. `GLib.Opaque.Copy` is not overridden by `Gtk.Bitset`, so
+`OwnedCopy` hands over the wrapper's **own** reference and clears its `Owned`
+flag rather than taking a new one. Returning a freshly built bitset each call —
+which is what the natural implementation does — balances exactly. Returning a
+bitset the model keeps in a field does not: Gtk unrefs it and the field is left
+pointing at freed memory.
+
+**Where else to look:** `Gtk.SectionModelAdapter` is the other interface with
+`GListModel` as a prerequisite and has no coverage at all. Its single vfunc,
+`get_section (position, out start, out end)`, writes two caller-allocated
+`guint`s, which is where a long line of the mistakes in this document have lived,
+and Gtk's own `GtkListView` reads it to decide where the section headers go.
+
+Further out, and general to every generated adapter: `Initialize` reads the
+native interface struct, assigns a managed delegate to **every** field, and
+writes it back. A managed implementor therefore replaces whatever the interface's
+`default_init` had put in the slots it did not want to override, rather than
+inheriting them. `GtkSelectionModel` installs no defaults, so nothing here
+notices — but `GActionGroup` does install one for `query_action`, built out of
+the other vfuncs, and a C# `IActionGroupImplementor` overwrites it with a
+delegate that dispatches straight back to managed code. That is only correct as
+long as the generated implementor interface makes every such method mandatory,
+which is worth checking one interface at a time rather than assuming.
+
+## Fixed: ten methods that printed into a buffer nobody could read
+
+`GLib.GString` was described in its own header as a "marshaler for GStrings", and
+that is all it was: a handle, a constructor from a C# string, a finalizer, and a
+static `PtrToString`. `SymbolTable` bound the C type accordingly —
+
+```csharp
+AddType (new MarshalGen ("GString", "string", "IntPtr",
+                         "new GLib.GString ({0}).Handle",
+                         "GLib.GString.PtrToString ({0})"));
+```
+
+— which is the wrong shape for what a `GString *` parameter **is** in this API.
+Every one of them is an *output accumulator*: the caller allocates the buffer,
+the callee appends to it, and the caller reads it back afterwards. There are ten,
+spread across four libraries:
+
+| method | library |
+|:--|:--|
+| `Gdk.ContentFormats.Print`, `Gdk.RGBA.Print` | gdk |
+| `GLib.DBusNodeInfo.GenerateXml`, `GLib.DBusInterfaceInfo.GenerateXml` | gio |
+| `Gsk.Path.Print`, `Gsk.Transform.Print` | gsk |
+| `Gtk.CssSection.Print`, `Gtk.ShortcutAction.Print`, `Gtk.ShortcutTrigger.Print`, `Gtk.ShortcutTrigger.PrintLabel` | gtk |
+
+Bound through that `MarshalGen`, each took a C# `string`, built a **fresh**
+`GString` out of it, handed the callee that, and then let it go. The text the
+callee wrote went into a buffer the caller had no reference to and no way to
+read, and the buffer leaked. Ten methods whose entire purpose is to produce text
+produced none, and not one of them failed, threw, or logged anything.
+
+`Gdk.RGBA.Print` failed twice over, because it is the one of the ten that
+*returns* the buffer. The return came back through `GLib.GString.PtrToString`,
+which was
+
+```csharp
+public static string PtrToString (IntPtr ptr)
+{
+        return Marshaller.Utf8PtrToString (ptr);   // ptr is a GString*, not a char*
+}
+```
+
+`struct GString { gchar *str; gsize len; gsize allocated_len; }`, so decoding the
+`GString *` as UTF-8 decodes the **bytes of a heap pointer**. What `Print`
+returned was whatever those eight bytes happened to spell — usually nothing
+printable, occasionally a fragment of another allocation, never the colour.
+
+Both halves are fixed. `GLib.GString` is now a wrapper a caller can keep: `Str`,
+`Length` (bytes, read out of the struct's `len` field), `Append`, `Truncate`,
+`ToString`, `IDisposable`, an ownership flag so it only frees what it allocated —
+the old finalizer freed unconditionally, including `IntPtr.Zero` — and a
+`PtrToString` that reads the `str` field. `SymbolTable` binds the C type as the
+wrapper:
+
+```csharp
+AddType (new ManualGen ("GString", "GLib.GString", "new GLib.GString ({0}, false)"));
+```
+
+Never owning, and the test proves that is the right call rather than assuming it:
+`gdk_rgba_print` hands back **the very buffer it was given** —
+`Assert.Equal (buffer.Handle, returned.Handle)` — so an owning wrapper over the
+return would free what its caller still holds.
+
+`Gtk.ShortcutTrigger`, `Gtk.KeyvalTrigger`, `Gtk.ShortcutAction`,
+`Gtk.NamedAction` and `Gtk.NothingAction` had no test of any kind before this;
+they are the vehicle for half of these, so they get their first coverage here.
+
+## Behaviour worth knowing: what makes a print-into-a-buffer test an oracle
+
+"It printed something" is not an assertion, and neither is comparing `Print`
+against `ToString` on its own — the two could agree by both being empty.
+`GStringPrintTests` asks four things of each of the ten, and the first two cannot
+pass at all against a binding that allocates its own buffer:
+
+- **A prefix already in the buffer survives.** The buffer is created as
+  `new GLib.GString ("keys: ")` and has to read `"keys: <Control>a"` afterwards.
+  A binding that builds its own buffer cannot produce the prefix.
+- **Printing twice appends twice.** `first + first`, arithmetic the test does
+  itself. This is what separates "wrote into my buffer" from "wrote into some
+  buffer and I happened to be shown the result".
+- **The text agrees with the independent `to_string` sibling** — two different
+  native entry points that must say the same thing — and, where the syntax is
+  documented, with a literal: `"<Control>a"`, `"rgb(255,0,0)"`,
+  `"action(win.close)"`, `"nothing"`. `Gtk.Accelerator.Name` is asked for the
+  same pair as a third way in.
+- **A second object must print differently.** `<Control>b` beside `<Control>a`,
+  `rgb(0,0,255)` beside `rgb(255,0,0)`, `scale(2)` beside `translate(10, 20)`,
+  a 20-unit line beside a triangle.
+
+Three of them get a full round trip on top of that, through a parser that never
+sees the managed object:
+
+- `Gsk.Path.Parse (printed)` and `gsk_path_equal` against the path it was printed
+  from, with a different path as the negative.
+- `new Gtk.ShortcutTrigger (printed)` compared with `gtk_shortcut_trigger_equal`
+  and `_hash` against the trigger, and against a trigger differing only in the
+  shift bit. The control that keeps it honest is
+  `new Gtk.ShortcutTrigger ("<NotAModifier>notakey")`, whose `Handle` is
+  `IntPtr.Zero`: parsing is what decides the printed text meant anything, and it
+  can say no.
+- `new GLib.DBusNodeInfo (buffer.Str)` — generate the XML, parse it back, and
+  find the interface, its method and its property again by name, with
+  `LookupInterface`/`LookupMethod` for names that were never in the document
+  returning null. A serialisation round trip this binding did not write.
+
+The `indent` argument of `GenerateXml` is the one part of these calls the caller
+chooses, so it is checked as arithmetic rather than by eye: the document is
+generated at indent 0 and at indent 4, the two are split into lines, and every
+non-empty line of the second must be four spaces plus the corresponding line of
+the first.
+
+## Behaviour worth knowing, found by an assertion that was wrong
+
+`gtk_shortcut_trigger_parse_string` and `gtk_shortcut_action_parse_string` return
+*derived* types — a `GtkKeyvalTrigger`, a `GtkNamedAction` — and the api.xml binds
+each as a **constructor on the base class**. So
+
+```csharp
+var parsed = new Gtk.ShortcutAction ("action(win.close)");
+Assert.IsType<Gtk.NamedAction> (parsed);            // fails
+```
+
+The expectation was wrong, not the library. `Raw`'s setter registers the wrapper
+in `GLib.Object.Objects` under the type that is being constructed, and it does so
+before anything can ask GObject what was really built; `GLib.Object.GetObject` on
+the same handle afterwards returns that same base-typed wrapper, because the
+identity map is consulted first. The native object is unaffected and is the thing
+worth asserting about:
+
+```csharp
+Assert.Equal (Gtk.NamedAction.GType, parsed.NativeType);
+Assert.Equal ("win.close", parsed.GetProperty ("action-name").Val);
+```
+
+Both read out of GObject, neither through the C# type. A caller who needs the
+concrete managed class has to go the long way round — construct
+`Gtk.NamedAction` directly, or take the handle before any wrapper exists — and
+that is a real limitation of binding a factory function as a base-class
+constructor, not something this pass changed.
+
+**Where else to look:** the `MarshalGen` that caused this is one line in
+`SymbolTable.cs`, and it is not the only entry there that turns a *by-reference
+buffer* into a by-value C# type. `GTimeVal`, `GError`, `GClosure`, `GArray`,
+`GByteArray` and `GParamSpec` are all bound as bare `IntPtr` under a
+"FIXME: These ought to be handled properly" comment; each is a place where a
+caller is handed an address with no way to read what is behind it, and
+`pango_scan_string`, `pango_scan_word` and `pango_read_line` show the same
+accumulator shape in api.xml entries codegen currently drops for other reasons.
+Beyond marshalling, `Gtk.ShortcutController`, `Gtk.Shortcut`,
+`Gtk.CallbackAction`, `Gtk.SignalAction`, `Gtk.ActivateAction` and the remaining
+trigger subclasses are still untested; `gtk_shortcut_action_activate` is directly
+callable with a widget and a `GVariant`, so the whole action half is testable
+without synthesising a key event, which is the part that is not.
+
+
+## A worked example of confirming one, including getting it wrong
+
+Two failures appeared on trixie that were not there before, both in the
+workflow-written `GStringPrintTests`, both `NullReferenceException` from inside a
+wrapper — this repository's signature for a missing export. The question is
+always whether that is a version gap or a real defect, and the answer is `nm`.
+
+The first probe checked `gsk_path_print`, which was **present** — which looked
+like evidence of a genuine bug. It was not: the stack trace named
+`Gsk.Path.Equal`, not `Print`. The missing symbol was `gsk_path_equal`.
+
+Read the stack before choosing what to probe. A test named
+`A_path_printed_into_a_buffer_parses_back_to_the_same_path` fails on the
+*comparison* at the end, not the printing it is named for, and probing the
+symbol in the test's name confirms nothing.
+
+```sh
+nm -D --defined-only /usr/lib/x86_64-linux-gnu/libgtk-4.so.1 | grep ' T gsk_path_equal$'
+```
+
+Both turned out to be version gaps (`gdk_rgba_print` and `gsk_path_equal`, added
+after 4.18), so the tests are correct and trixie is simply the wrong Gtk.
+
+## Checked and correct: the fixed-size vertex arrays
+
+`FixedVertexArrays.cs` bridges the one array shape GapiCodegen cannot express.
+Every graphene type is bound as an opaque *class*, so a `Graphene.Vec2[]`
+marshals as an array of pointers — and what `graphene_rect_get_vertices` wants is
+four `graphene_vec2_t` structures laid end to end. 189 hand-written lines,
+covering `Rect.GetVertices`, `Box.GetVertices`, `Frustum.GetPlanes` and
+`Quad.InitFromPoints`, and nothing referenced it by name.
+
+**No defect found.** The arithmetic and the ownership are both right.
+
+The oracle is the test's own arithmetic: a rectangle's four corners follow from
+its origin and size, and a box's eight are the combinations of its two extremes,
+which the test enumerates without needing to know graphene's ordering.
+
+**Reading every element is the point.** A wrapper pointing at the start of the
+buffer gives a correct first element and garbage afterwards — the exact way this
+shape has failed elsewhere here — so each test checks all four or all eight, and
+the box tests count *distinct* corners, which catches both a stride of zero
+(eight copies of one corner) and a stride wrong by a few bytes.
+
+Two ownership claims in that file are also pinned, because they are the kind that
+fail long after the call: each returned vertex is its own allocation (writing one
+must not disturb its neighbour), and the vertices outlive the rectangle they came
+from and a garbage collection, since `Split` frees the buffer before returning.
+
+`Quad.InitFromPoints` is the packing direction, and its guards matter: three
+points would otherwise have a fourth read from past the end of the buffer, so the
+count and the null check are asserted rather than assumed.
+
+## And a self-inflicted footgun worth writing down
+
+Measuring a generator change's blast radius means reverting the generator,
+running `Prepare`, snapshotting, and restoring. Restoring the *source* files is
+not enough: `Generated/` still holds the output of the reverted generator until
+something regenerates it.
+
+The suite had already passed before the experiment, so nothing looked wrong — and
+the next unrelated build failed with twenty errors in a test file nobody had
+touched. Always finish that experiment with a full `--BuildTarget=Build`, and
+treat a compile error in an untouched file as a sign that `Generated/` is stale
+rather than as a real break.
+
+## WebKit, actually run for the first time
+
+`WebkitGtkSharp` binds 178 types and the suite named three of them — and only to
+check that a `WebView` could be constructed. `WebKitTests` loads real documents
+into a real engine, runs script in them, and reads the results back through
+`JavaScriptCore`.
+
+**What made this possible was checking the machine rather than assuming.** WSL's
+Debian has `libwebkitgtk-6.0-4` installed *and* permits the user namespace
+WebKit's sandbox needs:
+
+```sh
+dpkg-query -W -f='${Version}' libwebkitgtk-6.0-4     # 2.52.5
+unshare --user --pid true && echo "userns OK"
+```
+
+Both are required, and the second is the one that is usually false. A container
+generally cannot create a user namespace, which is why CI sets
+`GTKSHARP_TESTS_SKIP_WEBKIT=1` rather than disabling the sandbox — see the
+section above. A WSL distribution is not a container in that sense.
+
+Running them needs a session bus as well as a display, because WebKit talks to
+its own subprocesses over one:
+
+```sh
+dbus-run-session -- xvfb-run -a dotnet vstest BuildOutput/Tests/Release/GtkSharp.Tests.dll
+```
+
+with `GTKSHARP_TESTS_SKIP_WEBKIT` **unset**. All thirteen pass. On Windows they
+skip, because gvsbuild ships no WebKit.
+
+**The loads are all local.** `LoadHtml` and `LoadPlainText` take content
+directly, and the one `LoadUri` test points at a `file://` URI the test wrote. A
+test that fetched a page would be testing the internet, and in CI it would be
+doing so from a job holding a token.
+
+The oracles are what the engine reports about a document this file wrote: the
+title it parsed out, the `LoadEvent` sequence ending at `Finished`, a DOM
+mutation read back by a second evaluation, `null` and `undefined` staying
+distinguishable, and a JSON round trip compared against the string the test
+supplied. Two settings tests are paired with a control that proves a setting
+*reaches the engine* rather than merely being stored: `navigator.userAgent`
+reads back what was set, and turning JavaScript off stops an inline script
+changing the title.
+
+## GtkSourceView beyond the samples
+
+`GtkSourceTests` covers source marks, style schemes, context classes, line
+operations, and loading and saving through `GtkSource.File` — where the oracle is
+bytes on disk that the test wrote and read back without asking the library
+anything.
+
+**Two of my expectations were wrong, and both are worth knowing.**
+
+`GtkSource.Buffer` has `ImplicitTrailingNewline` **on by default**. The buffer's
+text never ends in a newline, and the saver adds one — so text that already ended
+in a newline is written with two, and a file that ended with one is loaded
+without it. That is GtkSourceView working as designed and exactly what an editor
+wants, and it looks like an off-by-one until you know. Both directions are pinned,
+with a third test that turns the setting off and gets the bytes through unchanged.
+
+`SortLines` and the other range operations take an **exclusive** end iterator.
+Passing the start of line 3 sorts lines 1 and 2. The test that got this wrong
+read as though the library had mis-sorted.
+
+**Where else to look:** `GtkSourceSharp` still has 102 generated types against
+about twenty exercised. `Completion`, `PrintCompositor`, `Gutter`, `Hover`,
+`SpaceDrawer` and `VimIMContext` are untouched, and `Completion` is the one an
+editor actually leans on.
+
+
+## Making an old Gtk skip rather than fail
+
+The suite is generated from an api.xml describing Gtk 4.22 and is expected to run
+against exactly that. Anything older can be *missing a symbol the binding names*,
+and the binding cannot tell: `FuncLoader` hands back `default(T)`, so the call
+site throws `NullReferenceException` with nothing naming the function.
+
+Eighteen tests hit that on Debian trixie (4.18.6). They were correct tests
+failing for an environmental reason, which is the same category as WebKit not
+being installed — and the suite already had the right shape for it:
+
+```csharp
+[SkippableFact]
+public void A_TryExpression_yields_the_first_branch_that_evaluates()
+{
+    Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+               TestEnvironment.NeedsGtk(4, 22, "gtk_expression_new_try"));
+```
+
+Three rules, and the third is the one that keeps this honest:
+
+1. **Guard on the version the symbol appeared in**, not on the version you happen
+   to be running. The gir's `version` attribute is the source, though it is not
+   always present and is not always right — `GtkATContext:realized` is marked
+   4.24 there and works on 4.22.4, so check against a Gtk that has it.
+2. **Name the symbol in the reason.** "Requires a newer Gtk" tells the next
+   person nothing; `gsk_path_equal arrived in Gtk 4.22; this is 4.18.6` tells them
+   what to look for and what they have.
+3. **Never guard a test because it fails.** A guard is a claim that the
+   environment cannot run it, and it has to be checked on an environment that
+   can. All eighteen still run on Windows at 4.22.4 — if a guard silently started
+   firing there, it would be hiding a real regression, which is worse than the
+   red it replaced.
+
+The counterpart is that a green run on trixie now means something it did not
+before: everything that *could* run, did.
+
+## Fixed: a JavaScript function could not be called with arguments
+
+`JavaScriptCoreTests` covers `JavaScriptCoreSharp` — thirty bound types, of which
+the suite had named three, and only to check that `21 * 2` came back as 42. JSC
+has the least excuse of any optional assembly for being untested: unlike WebKit
+it needs no display, no session bus and no sandbox, so a `Context` works anywhere
+the library is installed.
+
+Three methods take `(guint n_parameters, JSCValue **parameters)` — an array whose
+length is a sibling parameter, which codegen has no rule for. All three came out
+as
+
+```csharp
+public Value FunctionCallv (uint n_parameters, Value parameters)
+```
+
+passing one Value's handle where an array of handles belongs. **A two-argument
+call was not expressible**, because the signature accepts a single `Value`; a
+one-argument call passed that Value's own GObject header as `parameters[0]`; and
+the count came from the caller rather than from anything real. Zero arguments
+worked by accident, which is presumably why nobody noticed.
+
+`jsc_value_function_callv`, `jsc_value_constructor_callv` and
+`jsc_value_object_invoke_methodv`, all rebound over `Value[]` in
+`Source/Libs/JavaScriptCoreSharp/Value.cs`, where the count is the array's own
+length. Same family as `gsk_container_node_new`, `gtk_string_list_splice` and the
+Gsk gradient constructors — that is now five separate instances of one codegen
+gap.
+
+**The ordering test is the one that matters.** Addition would pass even if the
+array arrived reversed, so the oracle is an operation that is not commutative:
+
+```csharp
+join.FunctionCall(NewString(ctx, "first"), NewString(ctx, "second"), NewString(ctx, "third"))
+    == "first-second-third"
+```
+
+**Where else to look:** `grep` the generated tree for a method whose parameters
+end in a count followed by a single wrapper type. Every one found so far has been
+broken, and none of them fails to compile.
+
+## Behaviour worth knowing: JSC is testable where WebKit is not
+
+`Docs/coverage.md` reports 0 of 590 generated lines for `JavaScriptCoreSharp`,
+and that is an artefact of the coverage run happening on Windows, where gvsbuild
+ships no jsc. It is not a statement about the tests.
+
+The distinction worth keeping straight: **WebKit** needs a display, a session bus
+and a user namespace for its sandbox, so it runs on a Linux desktop and skips in
+a container. **JavaScriptCore** needs none of that — only the shared library. Any
+Linux with `libjavascriptcoregtk-6.0-1` installed runs all twenty-one of these,
+including CI, where WebKit itself is deliberately skipped.
