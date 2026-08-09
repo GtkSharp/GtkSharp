@@ -8,6 +8,36 @@ namespace GtkSharp.Tests
     /// </summary>
     public static class TestEnvironment
     {
+        /// <summary>The Gtk actually loaded, as "major.minor.micro".</summary>
+        public static string GtkVersion { get; } =
+            $"{Gtk.Global.MajorVersion}.{Gtk.Global.MinorVersion}.{Gtk.Global.MicroVersion}";
+
+        /// <summary>
+        /// Whether the Gtk in use is at least <paramref name="major"/>.<paramref name="minor"/>.
+        /// </summary>
+        /// <remarks>
+        /// The api.xml describes Gtk 4.22, so a wrapper generated from it can name
+        /// a function an older Gtk does not export. That is a null delegate rather
+        /// than a link error, and it surfaces as a NullReferenceException from
+        /// inside the wrapper with nothing naming the symbol.
+        ///
+        /// A test that needs such a function guards on this, so that an older Gtk
+        /// reports "this Gtk is too old" instead of a failure that reads like a
+        /// defect. Debian trixie ships 4.18 and is the case this exists for; the
+        /// reference environment is a forky container at 4.22.
+        ///
+        /// Guard on the *version the symbol appeared in*, taken from the gir's
+        /// version attribute, and name the symbol in the reason. Never guard a
+        /// test merely because it fails somewhere.
+        /// </remarks>
+        public static bool GtkAtLeast(uint major, uint minor)
+            => Gtk.Global.MajorVersion > major
+               || (Gtk.Global.MajorVersion == major && Gtk.Global.MinorVersion >= minor);
+
+        /// <summary>A skip reason naming the symbol and the Gtk that lacks it.</summary>
+        public static string NeedsGtk(uint major, uint minor, string symbol)
+            => $"{symbol} arrived in Gtk {major}.{minor}; this is {GtkVersion}.";
+
         /// <summary>
         /// Whether a <c>WebKit.WebView</c> can be constructed here.
         /// </summary>

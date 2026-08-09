@@ -199,7 +199,7 @@ namespace GtkSharp.Tests
                     ProgramName = "GtkSharp Sample Application",
                     Version = "1.0.0.0",
                     LogoIconName = "system-run-symbolic",
-                    Website = "https://www.github.com/GtkSharp/GtkSharp",
+                    Website = "https://www.github.com/pieroviano/GtkSharp",
                 };
 
                 Assert.IsAssignableFrom<Window>(dialog);

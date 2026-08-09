@@ -80,9 +80,12 @@ namespace GtkSharp.Tests
 
         // ================================================================= Gsk
 
-        [Fact]
+        [SkippableFact]
         public void A_container_node_hands_back_the_children_it_was_built_from()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "gsk_render_node_get_children"));
+
             // Two array-shaped calls that codegen had no rule for, because the
             // length is a separate parameter rather than a NULL terminator:
             // gsk_container_node_new (GskRenderNode **, guint) came out taking a
@@ -141,9 +144,12 @@ namespace GtkSharp.Tests
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void A_node_tree_survives_serialisation_and_deserialisation()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "gsk_render_node_get_children"));
+
             // gsk_render_node_serialize/deserialize exist for testing and
             // debugging, and the format is textual, so the round trip is the one
             // thing GSK guarantees about it: the same version of GTK reads back
@@ -206,9 +212,12 @@ namespace GtkSharp.Tests
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void Deserialising_something_that_is_not_a_node_still_hands_back_a_node()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "gsk_render_node_get_children"));
+
             // The failure path is the only reason ParseErrorFunc is bound at all,
             // and a null delegate there would be reached by nothing else. What is
             // surprising is the return value: gsk_render_node_deserialize reports
@@ -336,9 +345,12 @@ namespace GtkSharp.Tests
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void The_identity_transform_is_a_null_pointer_and_so_is_a_failure()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "the identity GskTransform being a null pointer"));
+
             // The obvious expectation -- transform.With(transform.Invert()) is an
             // identity transform -- is wrong, and wrong in the direction that
             // crashes. GSK represents the identity as a NULL GskTransform*, and
@@ -469,9 +481,12 @@ namespace GtkSharp.Tests
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void A_path_parses_back_from_the_svg_it_prints()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "gsk_path_equal"));
+
             Run(() =>
             {
                 using var builder = new Gsk.PathBuilder();
@@ -1164,9 +1179,12 @@ namespace GtkSharp.Tests
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void An_enum_list_model_holds_one_item_per_value_of_the_enum()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "AdwEnumListModel:n-items"));
+
             // The oracle is the enum declaration itself: AdwColorScheme has five
             // values, numbered 0 to 4, and their nicks are fixed by libadwaita.
             Run(() =>

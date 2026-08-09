@@ -199,9 +199,12 @@ namespace GtkSharp.Tests
         // the widget class is applied when the context is realized, which for a
         // widget that was never shown never happens. So GetAtContext().Role is
         // not a shortcut for GetAccessibleRole().
-        [Fact]
+        [SkippableFact]
         public void An_unrealized_context_reports_the_generic_role_until_one_is_assigned()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "GtkATContext:realized"));
+
             Run(() =>
             {
                 var label = new Label("x");
@@ -229,9 +232,12 @@ namespace GtkSharp.Tests
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void A_context_built_by_hand_carries_the_role_it_was_built_with()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "GtkATContext:realized"));
+
             Run(() =>
             {
                 var button = new Button("ok");
@@ -398,9 +404,12 @@ namespace GtkSharp.Tests
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void The_id_in_a_ui_file_is_the_accessible_id()
         {
+            Skip.IfNot(TestEnvironment.GtkAtLeast(4, 22),
+                       TestEnvironment.NeedsGtk(4, 22, "GtkATContext:realized"));
+
             Run(() =>
             {
                 var builder = new Builder();
