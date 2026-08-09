@@ -1,6 +1,6 @@
 # Coverage of the hand-written code
 
-Measured at **1605 tests** (1569 passing, 36 skipped) on Windows, `Release`,
+Measured at **1695 tests** (1659 passing, 36 skipped) on Windows, `Release`,
 with generated code excluded by the collector.
 
 ```sh
@@ -19,7 +19,7 @@ code promises, not from raising a percentage.
 
 | | covered / total | rate |
 |:--|--:|--:|
-| **hand-written** | **14 660 / 22 054** | **66.5%** |
+| **hand-written** | **14 906 / 22 064** | **67.6%** |
 | generated, still reported | 1 190 / 1 282 | 92.8% |
 
 **The generated code is now excluded by the collector itself**, so these are the
@@ -47,8 +47,8 @@ is. A rate on its own hides how much code is behind it.
 
 | assembly | covered / total | rate | uncovered |
 |:--|--:|--:|--:|
-| `GLibSharp` | 7 032 / 9 552 | 73.6% | **2 520** |
-| `GtkSharp` | 2 412 / 4 340 | 55.6% | **1 928** |
+| `GLibSharp` | 7 198 / 9 590 | 75.1% | **2 392** |
+| `GtkSharp` | 2 492 / 4 312 | 57.8% | **1 820** |
 | `Shared` | 1 058 / 2 016 | 52.5% | **958** |
 | `CairoSharp` | 2 242 / 3 136 | 71.5% | **894** |
 | `GdkSharp` | 488 / 886 | 55.1% | 398 |
@@ -85,7 +85,7 @@ It is the only lens that shows their tests at all.
 
 ---
 
-## What 66.5% does not mean
+## What 67.6% does not mean
 
 About **a sixth of the uncovered lines cannot be covered by this suite at all**,
 and reading the number without that is how a coverage target turns into busywork.
@@ -129,7 +129,7 @@ by design.
 `GLibSharp.Source*Native.cs` files are mostly field declarations and native
 callback shims that exist to describe a layout, not to be called.
 
-**Adjusted, the reachable hand-written rate is about 70%**: 13 602 of 19 414
+**Adjusted, the reachable hand-written rate is about 71%**: 13 848 of 19 424
 lines. That is the number worth moving.
 
 The adjustment removes each category from *both* sides — `Shared` (1 058 / 2 016
@@ -151,18 +151,17 @@ column is the judgement, not the tool's.
 | `Shared/FuncLoader.cs` | 246 / 792 | 546 | platform-split; not a gap |
 | `Shared/GLibrary.cs` | 812 / 1 224 | 412 | platform-split; not a gap |
 | `CairoSharp/Context.cs` | 560 / 848 | 288 | **real**: the drawing API's breadth |
-| `GLibSharp/Value.cs` | 588 / 806 | 218 | **real**: GValue conversions per type |
+| `GLibSharp/Value.cs` | 618 / 806 | 188 | **real**: GValue conversions per type |
 | `GtkSharp/TreeStore.cs` | 148 / 336 | 188 | **real**, but deprecated in Gtk 4 |
 | `GLibSharp/Object.cs` | 1 024 / 1 202 | 178 | **real**: property and vfunc plumbing |
 | `GdkSharp/Pixbuf.cs` | 166 / 342 | 176 | **real**: save and load formats |
 | `GtkSharp/SignalConnector.cs` | 0 / 174 | 174 | dead; see above |
 | `GLibSharp/KeyFile.cs` | 610 / 752 | 142 | mostly covered already |
 | `GtkSharp/ListStore.cs` | 144 / 286 | 142 | **real**, deprecated |
-| `GLibSharp/Date.cs` | 204 / 342 | 138 | **real**: calendar arithmetic |
 | `GtkSharp/TreeModelFilter.cs` | 42 / 174 | 132 | **real**, deprecated |
 | `GLibSharp/DateTime.cs` | 254 / 380 | 126 | **real**: timezones, formatting |
-| `GLibSharp/Source.cs` | 196 / 310 | 114 | partly unreachable; see `testing.md` |
 | `GtkSharp/TreeModelSort.cs` | 34 / 160 | 126 | **real**, deprecated |
+| `GLibSharp/Source.cs` | 196 / 310 | 114 | partly unreachable; see `testing.md` |
 | `GLibSharp/Log.cs` | 88 / 200 | 112 | **real**: handlers, fatal masks |
 | `GioSharp/GioStream.cs` | 188 / 298 | 110 | **real**: Stream adapter seek and length |
 | `GLibSharp/Spawn.cs` | 102 / 192 | 90 | **real**: process spawning |
@@ -175,7 +174,7 @@ column is the judgement, not the tool's.
 
 ### The three worth doing next
 
-1. **`GLibSharp/Value.cs`** — 218 lines. Every property read and write in the
+1. **`GLibSharp/Value.cs`** — 188 lines. Every property read and write in the
    binding goes through `GValue`, and the conversions are per-type and
    hand-written. A wrong one is silent: you get a default instead of your value.
    `ObjectAndValueTests` covers the common types; the boxed, flags, pointer and
@@ -205,7 +204,7 @@ part that still matters — implementing a model from C#.
 
 ## Files with no coverage at all
 
-70 files, 1 306 lines. Ordered by size; the triage above accounts for the top of
+66 files, 1 174 lines. Ordered by size; the triage above accounts for the top of
 the list.
 
 | file | lines | |
@@ -216,19 +215,23 @@ the list.
 | `GtkSharp/HandlerNotFoundException.cs` | 64 | dead |
 | `CairoSharp/XlibSurface.cs` | 52 | X11 only |
 | `JavaScriptCoreSharp/Value.cs` | 50 | tested, but **not on Windows** — see below |
-| `GtkSharp/Image.cs` | 46 | **worth testing** |
-| `GtkSharp/PaperSize.cs` | 42 | **worth testing** |
 | `GdkSharp/PixbufAnimation.cs` | 40 | **worth testing** |
 | `GLibSharp/Cond.cs` | 38 | ABI declaration |
 | `GLibSharp/Mutex.cs` | 32 | ABI declaration |
 | `GLibSharp/PollFD.cs` | 32 | ABI declaration, layout audited |
 | `GLibSharp/RecMutex.cs` | 32 | ABI declaration |
-| `GLibSharp/FileUtils.cs` | 22 | **worth testing** |
 | `GtkSharp/BindingAttribute.cs` | 22 | reached indirectly by `BuilderBindingTests` |
-| `GtkSharp/CssProvider.cs` | 22 | **worth testing** |
-| `PangoSharp/Analysis.cs` | 20 | **worth testing** |
 | `GtkSharp/IconView.cs` | 20 | deprecated |
+| `PangoSharp/Analysis.cs` | 20 | **worth testing** |
 | `CairoSharp/XcbSurface.cs` | 18 | XCB only |
+| `GdkSharp/DisplayManager.cs` | 18 | needs a display server |
+| `GtkSharp/NodeCellDataFunc.cs` | 18 | deprecated tree layer |
+| `GLibSharp/Markup.cs` | 16 | **worth testing** |
+| `GtkSharp/ComboBoxText.cs` | 16 | **worth testing** |
+
+Four files left this table by being tested rather than by being reclassified:
+`GtkSharp/CssProvider.cs` and `GtkSharp/PaperSize.cs` are now fully covered,
+`GtkSharp/Image.cs` reads 44 / 46 and `GLibSharp/FileUtils.cs` 16 / 22.
 
 `JavaScriptCoreSharp/Value.cs` is the row to read twice. It has tests —
 `JavaScriptCoreTests` covers `FunctionCall`, `ConstructorCall` and
@@ -238,7 +241,6 @@ every one of those tests skips on Windows. **A zero here means "not exercised on
 the platform that was measured", not "not tested."** The same caveat applies to
 `XlibSurface.cs` and `XcbSurface.cs`, and it is the reason this file records the
 platform in its first sentence.
-| `GdkSharp/DisplayManager.cs` | 18 | needs a display server |
 
 A file at 0% is worth a minute of triage before it is worth a test. Roughly half
 of these are unreachable, deprecated, or declarations — and the other half are

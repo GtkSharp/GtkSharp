@@ -4596,3 +4596,82 @@ back as 0, and reported nothing. It is now `checked`, and the test asserts the
 where `glong` really does hold it. **The two branches assert different things
 because the type is different**; asserting `long.MaxValue` on both would be
 asserting that Windows has a 64-bit `glong`.
+
+## Fixed: a static property handed out a shared object the caller could dispose
+
+`Gtk.PaperSize.A4` — and its six siblings — looked like this:
+
+```csharp
+static PaperSize a4;
+public static PaperSize A4 {
+    get {
+        if (a4 == null)
+            a4 = new PaperSize ("iso_a4");
+        return a4;
+    }
+}
+```
+
+A lazily created singleton, cached in a static field. `PaperSize` is
+`IDisposable`. So the obvious thing to write —
+
+```csharp
+using (var paper = Gtk.PaperSize.A4) { ... }
+```
+
+— freed the shared `GtkPaperSize` and left the static field pointing at it.
+**Every later read of `Gtk.PaperSize.A4` anywhere in the process then returned a
+dangling handle**, and the next call through one was an access violation:
+`0xC0000005`, the test host gone, no managed exception to catch.
+
+That is how it was found. The test wrote `using var a4 = Gtk.PaperSize.A4;` in
+one case and read `Gtk.PaperSize.A4` in another, and the run died in
+`GetWidth` — with the crash landing in a *different* test from the one that
+caused it, which is the signature of this whole class of fault.
+
+The fix is not to document the sharing. A caller cannot be expected to know that
+a property is secretly a singleton, and there is nothing gained by sharing:
+`gtk_paper_size_new` is cheap and the result is small. Each read now returns a
+paper size of its own, which the caller owns and may dispose.
+
+**Look for the same shape elsewhere.** The dangerous combination is precise:
+*a static or cached property* + *a type implementing `IDisposable`*. Either alone
+is fine. Together they hand the caller ownership of something they do not own,
+and the damage lands arbitrarily far away from the `using` that caused it.
+
+That sweep has been run over the hand-written tree — a `static T cache;` field
+backing a `public static T Prop { get {` — and `PaperSize` was the only case.
+The two other matches are in `GLibSharp/DestroyNotify.cs`, where the cached type
+is a delegate and nothing can dispose it. Worth re-running after adding any
+cached static property:
+
+```python
+r'static\s+(\w[\w\.]*)\s+(\w+)\s*;\s*(?:\[[^\]]*\]\s*)*public\s+static\s+\1\s+(\w+)\s*\{\s*get\s*\{'
+```
+
+### What the test asserts
+
+Not "A4 is 210 mm" — that would have passed before the fix too, as long as it ran
+first. It disposes one and then reads another:
+
+```csharp
+using (var first = Gtk.PaperSize.A4)
+    Assert.Equal (210.0, first.GetWidth (Gtk.Unit.Mm), 0.05);
+
+using var second = Gtk.PaperSize.A4;          // reached only if that was safe
+Assert.Equal (210.0, second.GetWidth (Gtk.Unit.Mm), 0.05);
+
+using var third = Gtk.PaperSize.A4;
+Assert.NotSame (second, third);               // separate objects...
+Assert.True (second.IsEqual (third));         // ...of the same paper
+```
+
+### A tolerance, not a rounded comparison
+
+The dimensions are checked against ISO 216 and the US paper sizes with an
+explicit tolerance rather than `Assert.Equal (expected, actual, decimals)`, and
+that is not fussiness. Gtk keeps these as floats, so Executive's 7.25 in comes
+back as `184.14999` mm. Rounded to one decimal place that is `184.1`, while the
+published `184.15` rounds to `184.2` — so the two identical papers compare
+*unequal* at one decimal and equal at zero. **A rounded comparison has a cliff
+inside it**; a tolerance does not.
