@@ -308,7 +308,7 @@ namespace GLib {
 		static d_g_date_time_to_timeval g_date_time_to_timeval = FuncLoader.LoadFunction<d_g_date_time_to_timeval>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_date_time_to_timeval"));
 
 		public bool ToTimeval(GLib.TimeVal tv) {
-			IntPtr native_tv = GLib.Marshaller.StructureToPtrAlloc (tv);
+			IntPtr native_tv = tv.Alloc ();
 			bool raw_ret = g_date_time_to_timeval(Handle, native_tv);
 			bool ret = raw_ret;
 			tv = GLib.TimeVal.New (native_tv);
@@ -387,7 +387,7 @@ namespace GLib {
 
 		public DateTime (GLib.TimeVal tv) 
 		{
-			IntPtr native_tv = GLib.Marshaller.StructureToPtrAlloc (tv);
+			IntPtr native_tv = tv.Alloc ();
 			Raw = g_date_time_new_from_timeval_local(native_tv);
 			tv = GLib.TimeVal.New (native_tv);
 			Marshal.FreeHGlobal (native_tv);
@@ -398,7 +398,7 @@ namespace GLib {
 
 		public static DateTime NewFromTimevalUtc(GLib.TimeVal tv)
 		{
-			IntPtr native_tv = GLib.Marshaller.StructureToPtrAlloc (tv);
+			IntPtr native_tv = tv.Alloc ();
 			DateTime result = new DateTime (g_date_time_new_from_timeval_utc(native_tv));
 			tv = GLib.TimeVal.New (native_tv);
 			Marshal.FreeHGlobal (native_tv);

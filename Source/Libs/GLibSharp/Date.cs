@@ -269,7 +269,7 @@ namespace GLib {
 
 		public GLib.TimeVal TimeVal { 
 			set {
-				IntPtr native_value = GLib.Marshaller.StructureToPtrAlloc (value);
+				IntPtr native_value = value.Alloc ();
 				g_date_set_time_val(Handle, native_value);
 				value = GLib.TimeVal.New (native_value);
 				Marshal.FreeHGlobal (native_value);
