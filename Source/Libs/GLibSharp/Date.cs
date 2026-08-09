@@ -352,6 +352,55 @@ namespace GLib {
 		delegate UIntPtr d_g_date_strftime(IntPtr s, UIntPtr slen, IntPtr format, IntPtr date);
 		static d_g_date_strftime g_date_strftime = FuncLoader.LoadFunction<d_g_date_strftime>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_date_strftime"));
 
+		/// <summary>Formats a date with a strftime(3) format string.</summary>
+		/// <remarks>
+		/// The overload below takes the output buffer as its first argument,
+		/// because that is what the C parameter is: g_date_strftime writes into
+		/// <c>s</c> and returns how many bytes it wrote. Binding it as a C#
+		/// string meant the buffer was copied in, written over by GLib, and then
+		/// freed — so the formatted date, the only thing the call produces,
+		/// could not be read from managed code at all, and the return value was
+		/// the length of a string nobody could see.
+		///
+		/// This overload allocates the buffer, and returns the text.
+		/// </remarks>
+		public static string Strftime (string format, GLib.Date date)
+		{
+			if (format == null)
+				throw new ArgumentNullException ("format");
+
+			IntPtr native_format = GLib.Marshaller.StringToPtrGStrdup (format);
+			try {
+				// A zero return means the buffer was too small *or* the result
+				// was genuinely empty, and the two are not distinguishable, so
+				// grow a few times before believing it. %c on a long locale is
+				// the realistic worst case; the cap is well past it.
+				for (int size = 256; size <= 16384; size *= 4) {
+					IntPtr buffer = Marshal.AllocHGlobal (size);
+					try {
+						ulong written = (ulong) g_date_strftime (
+							buffer, new UIntPtr ((ulong) size), native_format,
+							date == null ? IntPtr.Zero : date.Handle);
+
+						if (written > 0)
+							return GLib.Marshaller.Utf8PtrToString (buffer);
+
+						// An empty format has nothing to write and never will,
+						// however large the buffer gets.
+						if (format.Length == 0)
+							return String.Empty;
+					} finally {
+						Marshal.FreeHGlobal (buffer);
+					}
+				}
+
+				return null;
+			} finally {
+				GLib.Marshaller.Free (native_format);
+			}
+		}
+
+		[Obsolete ("Takes the output buffer as a string and discards it; use Strftime (format, date).")]
 		public static ulong Strftime(string s, string format, GLib.Date date) {
 			IntPtr native_s = GLib.Marshaller.StringToPtrGStrdup (s);
 			IntPtr native_format = GLib.Marshaller.StringToPtrGStrdup (format);
