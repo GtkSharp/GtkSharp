@@ -188,6 +188,34 @@ namespace GtkSharp.Tests
         }
 
         [Fact]
+        public void The_other_two_vtable_members_refuse_for_the_same_reason()
+        {
+            // A struct-layout audit over every hand-written sequential struct
+            // found two more members with the identical double fault: a C
+            // structure the binding does not describe, allocated and then freed
+            // while GLib keeps the pointer.
+            //
+            // GSourceCallbackFuncs is three function pointers -- ref, unref, get
+            // -- and GLib.SourceCallbackFuncs declares none of them, so the
+            // allocation handed over was empty. g_source_set_funcs takes the same
+            // SourceFuncs as the constructor.
+            Run(() =>
+            {
+                var source = SourceOfTimeout(10_000, () => false, out uint id);
+
+                var indirect = Assert.Throws<NotSupportedException>(
+                    () => source.SetCallbackIndirect(IntPtr.Zero, GLib.SourceCallbackFuncs.Zero));
+                Assert.Contains("ref, unref, get", indirect.Message);
+
+                var funcs = Assert.Throws<NotSupportedException>(
+                    () => source.Funcs = GLib.SourceFuncs.Zero);
+                Assert.Contains("prepare", funcs.Message);
+
+                GLib.Source.Remove(id);
+            });
+        }
+
+        [Fact]
         public void The_sources_GLib_makes_for_you_still_work()
         {
             // The counterpart to the refusal above: the supported route has to
