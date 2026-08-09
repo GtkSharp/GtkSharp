@@ -334,5 +334,117 @@ namespace GtkSharp.Tests
                 Assert.Equal(long.MaxValue, new GLib.Value(long.MaxValue).Val);
             });
         }
+
+        // -------------------------------------------------- G_TYPE_LONG, which
+        //                                                     is not System.Int64
+
+        /// <summary>True where C's <c>glong</c> is 32 bits: 64-bit Windows.</summary>
+        static bool NarrowLong => IntPtr.Size == 8 && OperatingSystem.IsWindows();
+
+        [Fact]
+        public void A_value_typed_G_TYPE_LONG_round_trips_through_the_platform_path()
+        {
+            // None of the tests above reach this code. `new GLib.Value(42L)`
+            // builds a G_TYPE_INT64, so the four *ForPlatform helpers -- the
+            // ones that know glong is 32 bits on Windows and 64 elsewhere --
+            // were never called by anything, on any platform.
+            //
+            // A G_TYPE_LONG value is what a property declared `glong` produces,
+            // and it is reached by constructing the value from the GType.
+            Run(() =>
+            {
+                var value = new GLib.Value(GLib.GType.Long);
+                value.Val = 42L;
+
+                Assert.Equal(42L, (long)value);
+                Assert.Equal(42L, Convert.ToInt64(value.Val));
+
+                value.Val = -42L;
+                Assert.Equal(-42L, (long)value);
+
+                var unsigned = new GLib.Value(GLib.GType.ULong);
+                unsigned.Val = 42UL;
+
+                Assert.Equal(42UL, (ulong)unsigned);
+            });
+        }
+
+        [Fact]
+        public void A_G_TYPE_LONG_keeps_the_edges_of_the_platform_s_own_glong()
+        {
+            // The edges are different on the two platforms, because the type is.
+            // Asserting long.MaxValue everywhere would be asserting that Windows
+            // has a 64-bit glong, which it does not.
+            Run(() =>
+            {
+                var value = new GLib.Value(GLib.GType.Long);
+
+                if (NarrowLong)
+                {
+                    value.Val = (long)int.MaxValue;
+                    Assert.Equal(int.MaxValue, (long)value);
+
+                    value.Val = (long)int.MinValue;
+                    Assert.Equal(int.MinValue, (long)value);
+                }
+                else
+                {
+                    value.Val = long.MaxValue;
+                    Assert.Equal(long.MaxValue, (long)value);
+
+                    value.Val = long.MinValue;
+                    Assert.Equal(long.MinValue, (long)value);
+                }
+            });
+        }
+
+        [Fact]
+        public void A_number_too_large_for_a_32_bit_glong_is_refused_rather_than_truncated()
+        {
+            // Where glong is 32 bits, 2^40 cannot be stored. The cast used to be
+            // unchecked, so it stored the low half -- 2^40 has none, so the
+            // value read back as 0 and nothing reported a problem.
+            //
+            // Where glong is 64 bits there is nothing to refuse, and the same
+            // number has to survive; that half of the test is the control.
+            Run(() =>
+            {
+                var value = new GLib.Value(GLib.GType.Long);
+
+                if (NarrowLong)
+                {
+                    Assert.Throws<OverflowException>(() => value.Val = 1L << 40);
+
+                    var unsigned = new GLib.Value(GLib.GType.ULong);
+                    Assert.Throws<OverflowException>(() => unsigned.Val = 1UL << 40);
+                }
+                else
+                {
+                    value.Val = 1L << 40;
+                    Assert.Equal(1L << 40, (long)value);
+
+                    var unsigned = new GLib.Value(GLib.GType.ULong);
+                    unsigned.Val = 1UL << 40;
+                    Assert.Equal(1UL << 40, (ulong)unsigned);
+                }
+            });
+        }
+
+        [Fact]
+        public void A_G_TYPE_LONG_is_a_different_type_from_a_G_TYPE_INT64()
+        {
+            // The distinction the platform helpers exist for. If these two were
+            // the same GType the helpers would be dead code rather than
+            // untested code.
+            Run(() =>
+            {
+                var glong = new GLib.Value(GLib.GType.Long);
+                var int64 = new GLib.Value(42L);
+
+                Assert.Equal(GLib.GType.Long, glong.ValueType);
+                Assert.Equal(GLib.GType.Int64, int64.ValueType);
+                Assert.NotEqual(glong.ValueType, int64.ValueType);
+            });
+        }
     }
 }
