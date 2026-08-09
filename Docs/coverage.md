@@ -78,7 +78,7 @@ It is the only lens that shows their tests at all.
 
 ---
 
-## What 66.0% does not mean
+## What 66.5% does not mean
 
 About **a sixth of the uncovered lines cannot be covered by this suite at all**,
 and reading the number without that is how a coverage target turns into busywork.
