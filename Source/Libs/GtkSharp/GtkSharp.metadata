@@ -561,6 +561,9 @@
   <attr path="/api/namespace/object[@cname='GtkWindowGroup']/method[@name='ListWindows']/return-type" name="element_type">GtkWindow*</attr>
   <attr path="/api/namespace/object[@cname='GtkWindowGroup']/method[@name='ListWindows']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='GtkWindow']/method[@name='IsActive']" name="hidden">1</attr>
+  <!-- Destroy is hand-written in Window.cs to be idempotent: gtk_window_destroy on an already-freed
+       window trips "gtk_window_destroy: assertion 'GTK_IS_WINDOW (window)' failed" and can crash. -->
+  <attr path="/api/namespace/object[@cname='GtkWindow']/method[@name='Destroy']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GtkWindow']/method[@name='ListToplevels']/return-type" name="element_type">GtkWindow*</attr>
   <attr path="/api/namespace/object[@cname='GtkWindow']/method[@name='ListToplevels']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='GtkWindow']/signal[@name='ActivateDefault']" name="name">DefaultActivated</attr>

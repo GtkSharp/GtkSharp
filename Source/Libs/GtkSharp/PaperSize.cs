@@ -21,67 +21,46 @@ namespace Gtk {
 
 	public partial class PaperSize {
 
-		static PaperSize letter;
+		// Each of these used to hand back a lazily created *singleton*, cached in a
+		// static field. PaperSize is IDisposable, so
+		//
+		//     using (var paper = Gtk.PaperSize.A4) { ... }
+		//
+		// -- the obvious thing to write -- freed the shared GtkPaperSize and left
+		// the static field pointing at it. Every later read of Gtk.PaperSize.A4 in
+		// the process then returned a dangling handle, and the next call through it
+		// was an access violation rather than an exception.
+		//
+		// A caller cannot be expected to know that a property is secretly shared,
+		// and there is nothing to gain by sharing it: gtk_paper_size_new is cheap
+		// and the result is small. So each read now returns a paper size of its
+		// own, which the caller owns and may dispose.
 		public static PaperSize Letter {
-			get {
-				if (letter == null)
-					letter = new PaperSize ("na_letter");
-				return letter;
-			}
+			get { return new PaperSize ("na_letter"); }
 		}
 
-		static PaperSize executive;
 		public static PaperSize Executive {
-			get {
-				if (executive == null)
-					executive = new PaperSize ("na_executive");
-				return executive;
-			}
+			get { return new PaperSize ("na_executive"); }
 		}
 
-		static PaperSize legal;
 		public static PaperSize Legal {
-			get {
-				if (legal == null)
-					legal = new PaperSize ("na_legal");
-				return legal;
-			}
+			get { return new PaperSize ("na_legal"); }
 		}
 
-		static PaperSize a3;
 		public static PaperSize A3 {
-			get {
-				if (a3 == null)
-					a3 = new PaperSize ("iso_a3");
-				return a3;
-			}
+			get { return new PaperSize ("iso_a3"); }
 		}
 
-		static PaperSize a4;
 		public static PaperSize A4 {
-			get {
-				if (a4 == null)
-					a4 = new PaperSize ("iso_a4");
-				return a4;
-			}
+			get { return new PaperSize ("iso_a4"); }
 		}
 
-		static PaperSize a5;
 		public static PaperSize A5 {
-			get {
-				if (a5 == null)
-					a5 = new PaperSize ("iso_a5");
-				return a5;
-			}
+			get { return new PaperSize ("iso_a5"); }
 		}
 
-		static PaperSize b5;
 		public static PaperSize B5 {
-			get {
-				if (b5 == null)
-					b5 = new PaperSize ("iso_b5");
-				return b5;
-			}
+			get { return new PaperSize ("iso_b5"); }
 		}
 	}
 }
