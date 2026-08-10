@@ -280,11 +280,64 @@ namespace GtkSharp.Tests
                 // No display to synthesise events through, so the signal is
                 // emitted directly -- which still proves the argument
                 // marshalling, which is the part that can be wrong.
+                //
+                // It proves nothing about *delivery*, and that gap has bitten:
+                // this test passed while a controller attached exactly like the
+                // one above never fired for a real keystroke, because emitting
+                // on the controller skips propagation entirely. The two tests
+                // below pin the propagation side of it.
                 GLib.Signal.Emit(controller, "key-pressed",
                                  (uint) Gdk.Key.a, 38u, Gdk.ModifierType.ControlMask);
 
                 Assert.Equal((uint) Gdk.Key.a, seen);
                 Assert.Equal(Gdk.ModifierType.ControlMask, state);
+            });
+        }
+
+        [Fact]
+        public void An_entry_delegates_keys_to_an_internal_text_child()
+        {
+            // Half of why a key controller on an Entry never fires: the Entry is
+            // not what the key event targets. It is a shell around a GtkText,
+            // and that child is what takes the focus -- so a controller on the
+            // Entry is already one widget outwards from the target, and the
+            // default Bubble phase only reaches it if the GtkText declines the
+            // key. It does not: it inserts the character and returns true.
+            Run(() =>
+            {
+                var entry = new Entry();
+
+                var inner = entry.FirstChild;
+
+                Assert.NotNull(inner);
+                // GtkText is bound as Gtk.TextWidget; see GtkSharp.metadata.
+                Assert.IsType<TextWidget>(inner);
+                Assert.True(inner.CanFocus, "the GtkText child is what takes the focus");
+            });
+        }
+
+        [Fact]
+        public void A_controller_propagates_in_the_bubble_phase_unless_told_otherwise()
+        {
+            // The other half. Bubble runs from the event's target outwards, so
+            // any widget in between that handles the event ends the emission
+            // before an ancestor's controller is reached. Capture runs root to
+            // target instead, which is the fix for the case above.
+            Run(() =>
+            {
+                var controller = new EventControllerKey();
+
+                Assert.Equal(PropagationPhase.Bubble, controller.PropagationPhase);
+
+                controller.PropagationPhase = PropagationPhase.Capture;
+
+                Assert.Equal(PropagationPhase.Capture, controller.PropagationPhase);
+
+                // Attaching must not reset it -- the order the two are written in
+                // is not something a caller should have to think about.
+                new Entry().AddController(controller);
+
+                Assert.Equal(PropagationPhase.Capture, controller.PropagationPhase);
             });
         }
 
