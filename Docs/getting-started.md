@@ -204,6 +204,41 @@ source.Prepare += OnPrepare;
 handler that returns `true`, so an "after" lambda does run there. When a handler
 you connected appears to be ignored, this is the first thing to check.
 
+### An exception you do not catch ends the process
+
+A handler runs on a native stack, called by GLib. An exception that escapes it
+cannot be propagated back through those frames, so the binding catches it and
+hands it to `GLib.ExceptionManager`. With nothing subscribed to
+`ExceptionManager.UnhandledException`, that prints the exception to **stderr**
+and calls `Environment.Exit(1)`.
+
+For a GUI application that means the window vanishes mid-click with no dialog and
+no visible stack trace — it reads as a native crash, and the first place people
+look is the binding. Catch inside the handler:
+
+```csharp
+button.Clicked += (o, e) =>
+{
+    try { DoTheWork(); }
+    catch (Exception ex) { ShowTheProblem(ex); }
+};
+```
+
+Or install a process-wide policy. Subscribing at all is what keeps the
+application alive — the exit is what happens when *nobody* is listening:
+
+```csharp
+GLib.ExceptionManager.UnhandledException += args =>
+{
+    Console.Error.WriteLine(args.ExceptionObject);
+    // args.ExitApplication = true;  // opt back in to exiting, per exception
+};
+```
+
+`ExitApplication` is one-way: the setter accepts `true` and ignores `false`, so a
+handler can decide to end the process but cannot un-decide it. Throwing from
+inside this handler exits, unconditionally.
+
 ---
 
 ## Building UI from `.ui` files
@@ -260,6 +295,11 @@ missing native symbol rather than an unsupported feature, so `AddFromString`,
 instead. `Builder.DeclaresSignals` is set even when the load fails, so you can
 tell "my XML is wrong" from "this is not supported yet".
 
+**The throw comes from the load call, not from `Autoconnect`.** Parsing is when
+the handler is resolved, so the builder gives up before `Autoconnect` is ever
+reached — put the `try` around `AddFromString`/`AddFromFile`, not around the
+line you would expect to be responsible for signals.
+
 Connect handlers in C#, after `Autoconnect` has bound the fields.
 
 You can also build from a string, which is handy in tests:
@@ -295,6 +335,33 @@ window.AddController(keys);
 `EventControllerMotion`, `EventControllerFocus`, `EventControllerScroll`,
 `DropTarget` and `DragSource` follow the same shape. `RemoveController` detaches
 one, and `controller.Widget` tells you what it is attached to.
+
+**A controller that never fires is usually the propagation phase.** A key event
+targets the *focus* widget, and `PropagationPhase` defaults to `Bubble`, which
+runs from that target outwards. Any widget along the way that handles the event
+and returns `true` ends the emission, and every controller further out is simply
+never reached.
+
+Composite widgets make this the normal case rather than the exception. A Gtk 4
+`Entry` is a shell around an internal `GtkText`, and it is the `GtkText` that
+holds the focus — so a controller on the `Entry` is already one step outwards,
+and `GtkText` hands the key to the input method, inserts the character and
+returns `true`. Nothing errors; the character appears and your handler never
+runs. The key controller in the sketch above has the same problem: the window is
+further out still, so `Escape` reaches it only while no text widget has focus.
+
+`Capture` runs the other way, root down to the target, so an ancestor sees the
+event first:
+
+```csharp
+var keys = new EventControllerKey();
+keys.PropagationPhase = PropagationPhase.Capture;   // before GtkText swallows it
+keys.KeyPressed += (o, args) => { …; args.RetVal = false; };
+entry.AddController(keys);
+```
+
+Keep returning `false`: capture only moves *when* you see the event, and `true`
+still consumes it, so the character would never be typed.
 
 Keyboard shortcuts go through a `ShortcutController`:
 
@@ -526,14 +593,16 @@ the SDK integration.
 
 ## Traps
 
-Collected from defects the test suite has actually caught. Each of these
-*compiles cleanly*.
+Collected from defects actually caught, by the test suite or by walking through
+the `GettingStarted` tour. Each of these *compiles cleanly*.
 
 | Trap | What happens |
 |:--|:--|
 | `+=` with a lambda connects **after** the default handler | your handler sees the operation already done |
 | `DragSource.Prepare` / `DropTarget.Accept` with a lambda | **never runs**; the accumulator ends the emission first. Use a named `[GLib.ConnectBefore]` method |
-| `<signal>` in a `.ui` file | the document fails to **load**; `NotSupportedException` — connect in C# |
+| `<signal>` in a `.ui` file | the document fails to **load**; `NotSupportedException` from `AddFromString`/`AddFromFile`, not from `Autoconnect` |
+| An exception escaping a signal handler | `Environment.Exit(1)`; the window vanishes and the trace goes to stderr |
+| An `EventControllerKey` on an `Entry` | never fires: the internal `GtkText` is the target and consumes the key. Use `PropagationPhase.Capture` |
 | `Widget.Activate()` on a button | does **not** raise `Clicked`; Gtk 4 routes presses through a gesture |
 | `SimpleAction.StateChanged` | it is `change-state`; you must apply the state yourself |
 | Leaking a `Cairo.Path` or surface | the finalizer kills the process, far from the cause |

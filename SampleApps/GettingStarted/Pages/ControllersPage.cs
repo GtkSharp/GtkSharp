@@ -86,6 +86,18 @@ namespace GettingStarted.Pages
             var entry = new Entry { PlaceholderText = "type here (Escape is reported specially)" };
 
             var keys = new EventControllerKey();
+
+            // Capture, not the default Bubble -- otherwise this handler never
+            // runs at all. A Gtk 4 Entry is a shell around an internal GtkText
+            // child, and that child is what holds the focus, so it is the key
+            // event's target rather than the Entry. GtkText's own controller
+            // hands the key to the input method, inserts the character and
+            // returns true, which ends propagation: the bubble phase never
+            // climbs back out to the Entry. Capture runs from the root down to
+            // the target instead, so the Entry sees the key on the way in,
+            // before the GtkText has had the chance to swallow it.
+            keys.PropagationPhase = PropagationPhase.Capture;
+
             keys.KeyPressed += (o, args) =>
             {
                 var name = Gdk.Keyval.Name(args.Keyval) ?? args.Keyval.ToString();
@@ -102,6 +114,13 @@ namespace GettingStarted.Pages
 
             column.Append(entry);
             column.Append(output);
+            column.Append(Note(
+                "PropagationPhase is why this one reports anything. A controller defaults to "
+              + "Bubble, which climbs from the event's target outwards -- and the target here is "
+              + "the Entry's internal GtkText, which consumes the key and stops the climb before "
+              + "the Entry is reached. Capture runs the other way, root to target, so the Entry "
+              + "sees it first. A controller that never fires on a composite widget is usually "
+              + "this, not a broken binding."));
             return column;
         }
     }
