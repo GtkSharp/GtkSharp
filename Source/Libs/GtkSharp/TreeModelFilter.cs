@@ -93,7 +93,7 @@ namespace Gtk {
 		delegate void d_gtk_tree_model_filter_set_modify_func(IntPtr raw, int n_columns, IntPtr[] types, GtkSharp.TreeModelFilterModifyFuncNative func, IntPtr data, GLib.DestroyNotify destroy);
 		static d_gtk_tree_model_filter_set_modify_func gtk_tree_model_filter_set_modify_func = FuncLoader.LoadFunction<d_gtk_tree_model_filter_set_modify_func>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_tree_model_filter_set_modify_func"));
 
-		public void SetModifyFunc (int n_columns, GLib.GType[] types, TreeModelFilterModifyFunc func) 
+		public void SetModifyFunc (int n_columns, GLib.GType[] types, TreeModelFilterModifyFunc func)
 		{
 			GtkSharp.TreeModelFilterModifyFuncWrapper func_wrapper = new GtkSharp.TreeModelFilterModifyFuncWrapper (func);
 			IntPtr[] native_types = new IntPtr [types.Length];
@@ -101,6 +101,16 @@ namespace Gtk {
 				native_types [i] = types [i].Val;
 			GCHandle gch = GCHandle.Alloc (func_wrapper);
 			gtk_tree_model_filter_set_modify_func (Handle, n_columns, native_types, func_wrapper.NativeDelegate, (IntPtr) gch, GLib.DestroyHelper.NotifyHandler);
+		}
+		// The generated binding declares the gtk_tree_model_filter_set_visible_func P/Invoke but omits a
+		// public wrapper for it (deprecated callback method). Restore the public overload, reusing the
+		// generated P/Invoke and mirroring SetModifyFunc above: the func selects which child rows the filter
+		// shows, and Refilter re-evaluates it.
+		public void SetVisibleFunc (TreeModelFilterVisibleFunc func)
+		{
+			GtkSharp.TreeModelFilterVisibleFuncWrapper func_wrapper = new GtkSharp.TreeModelFilterVisibleFuncWrapper (func);
+			GCHandle gch = GCHandle.Alloc (func_wrapper);
+			gtk_tree_model_filter_set_visible_func (Handle, func_wrapper.NativeDelegate, (IntPtr) gch, GLib.DestroyHelper.NotifyHandler);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_gtk_tree_model_filter_convert_child_iter_to_iter(IntPtr raw, out Gtk.TreeIter filter_iter, ref Gtk.TreeIter child_iter);
