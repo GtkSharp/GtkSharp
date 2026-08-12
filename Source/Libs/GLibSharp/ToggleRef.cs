@@ -28,6 +28,9 @@ namespace GLib {
 	internal class ToggleRef : IDisposable {
 
 		bool hardened;
+		// Set by the weak notify when the native object is finalized behind our back (see WeakNotify below).
+		// volatile because the notify may run on the GTK/main thread while Free() runs on the GC finalizer thread.
+		volatile bool objectFinalized;
 		IntPtr handle;
 		object reference;
 		GCHandle gch;
@@ -38,6 +41,13 @@ namespace GLib {
 			gch = GCHandle.Alloc (this);
 			reference = target;
 			g_object_add_toggle_ref (target.Handle, ToggleNotifyCallback, (IntPtr) gch);
+			// A weak ref does NOT change the refcount (purely additive to the toggle ref), but its notify
+			// fires if the native object is ever finalized without going through our Free(). That is the
+			// "torn down behind its back" case (Widget.Destroy / an unexpected extra unref): the wrapper's
+			// handle would otherwise stay non-zero and dangling, so any later operation on it dereferences
+			// freed -- and possibly address-reused -- memory (GTK_IS_WINDOW/GTK_IS_WIDGET failed, 0xC0000005).
+			// WeakNotify zeros the wrapper's handle so those stale operations hit a null handle instead.
+			g_object_weak_ref (target.Handle, WeakNotifyCallback, (IntPtr) gch);
 			g_object_unref (target.Handle);
 		}
 
@@ -67,10 +77,16 @@ namespace GLib {
 
   		void Free ()
   		{
-			if (hardened)
-				g_object_unref (handle);
-			else
-				g_object_remove_toggle_ref (handle, ToggleNotifyCallback, (IntPtr) gch);
+			// If the native object was already finalized behind our back, the weak notify has fired and the
+			// object is gone -- the weak ref auto-removed itself and touching the (freed) handle would crash.
+			// Skip every native call; just drop the managed bookkeeping.
+			if (!objectFinalized) {
+				g_object_weak_unref (handle, WeakNotifyCallback, (IntPtr) gch);
+				if (hardened)
+					g_object_unref (handle);
+				else
+					g_object_remove_toggle_ref (handle, ToggleNotifyCallback, (IntPtr) gch);
+			}
 
 			reference = null;
 
@@ -89,6 +105,7 @@ namespace GLib {
 			// with program duration persistence, who cares.
 
 			g_object_ref (handle);
+			g_object_weak_unref (handle, WeakNotifyCallback, (IntPtr) gch);
 			g_object_remove_toggle_ref (handle, ToggleNotifyCallback, (IntPtr) gch);
 			if (reference is WeakReference)
 				reference = (reference as WeakReference).Target;
@@ -126,6 +143,42 @@ namespace GLib {
 				if (toggle_notify_callback == null)
 					toggle_notify_callback = new ToggleNotifyHandler (RefToggled);
 				return toggle_notify_callback;
+			}
+		}
+
+		// GWeakNotify: void (*)(gpointer data, GObject *where_the_object_was)
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+		delegate void WeakNotifyHandler (IntPtr data, IntPtr where_the_object_was);
+
+		static void WeakNotified (IntPtr data, IntPtr where_the_object_was)
+		{
+			// The native object has been finalized (freed) without going through our Free(). Zero the
+			// wrapper's handle so any lingering reference to it (e.g. a leaked GLib timer still holding the
+			// managed wrapper) sees IntPtr.Zero and no longer dereferences the freed -- possibly
+			// address-reused -- native pointer. Also flag the toggle ref so its eventual Free() skips the
+			// now-invalid native calls.
+			try {
+				GCHandle gch = (GCHandle) data;
+				if (!gch.IsAllocated)
+					return;
+				ToggleRef tref = gch.Target as ToggleRef;
+				if (tref == null)
+					return;
+				tref.objectFinalized = true;
+				GLib.Object target = tref.Target;
+				if (target != null)
+					target.InvalidateHandle (where_the_object_was);
+			} catch (Exception e) {
+				ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		static WeakNotifyHandler weak_notify_callback;
+		static WeakNotifyHandler WeakNotifyCallback {
+			get {
+				if (weak_notify_callback == null)
+					weak_notify_callback = new WeakNotifyHandler (WeakNotified);
+				return weak_notify_callback;
 			}
 		}
 
@@ -202,6 +255,12 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_unref(IntPtr raw);
 		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_g_object_weak_ref(IntPtr raw, WeakNotifyHandler notify_cb, IntPtr data);
+		static d_g_object_weak_ref g_object_weak_ref = FuncLoader.LoadFunction<d_g_object_weak_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_weak_ref"));
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void d_g_object_weak_unref(IntPtr raw, WeakNotifyHandler notify_cb, IntPtr data);
+		static d_g_object_weak_unref g_object_weak_unref = FuncLoader.LoadFunction<d_g_object_weak_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_weak_unref"));
 
 	}
 }

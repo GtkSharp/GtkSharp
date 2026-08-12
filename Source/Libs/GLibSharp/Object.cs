@@ -130,6 +130,24 @@ namespace GLib {
 			disposed = true;
 		}
 
+		// Called by ToggleRef's weak notify when the native object is finalized behind our back (an unexpected
+		// free -- Widget.Destroy or an extra unref -- rather than through this wrapper's Dispose). Zero the
+		// handle so any lingering reference to this wrapper (e.g. a leaked GLib timer) sees IntPtr.Zero and
+		// stops dereferencing the freed, possibly address-reused, native pointer. Only act while the handle
+		// still matches the address that was freed and the map entry is still ours -- addresses get reused, so
+		// the entry may already belong to a different object.
+		internal void InvalidateHandle (IntPtr freedHandle)
+		{
+			if (handle != freedHandle)
+				return;
+			lock (Objects) {
+				if (handle != IntPtr.Zero && Objects.TryGetValue (handle, out var t) && ReferenceEquals (t.Target, this))
+					Objects.Remove (handle);
+			}
+			handle = IntPtr.Zero;
+			signals = null;
+		}
+
 		public static bool WarnOnFinalize { get; set; }
 
 		// Whether the runtime is tearing down, so a finalizer must avoid calling into native GTK/GLib.
