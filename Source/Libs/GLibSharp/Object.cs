@@ -59,6 +59,23 @@ namespace GLib {
 
 		protected virtual void Dispose (bool disposing)
 		{
+			// Finalizers run on the GC finalizer thread (not the GTK thread), and at process/AppDomain
+			// shutdown the native GTK/GLib libraries may already be torn down. Touching native objects from a
+			// finalizer at that point -- unref, toggle-ref removal, queuing a GLib timeout -- crashes the host
+			// with an access violation as it exits (the common GtkSharp teardown fault that aborts a whole
+			// test assembly). The OS reclaims everything on exit, so during shutdown just drop the managed
+			// bookkeeping and return without calling into native code.
+			if (!disposing && RuntimeShuttingDown ()) {
+				lock (Objects) {
+					if (Objects.TryGetValue (Handle, out var shutdownTref) && ReferenceEquals (shutdownTref.Target, this))
+						Objects.Remove (Handle);
+				}
+				handle = IntPtr.Zero;
+				signals = null;
+				disposed = true;
+				return;
+			}
+
 			ToggleRef tref;
 			lock (Objects) {
 				if (Objects.TryGetValue (Handle, out tref)) {
@@ -113,7 +130,33 @@ namespace GLib {
 			disposed = true;
 		}
 
+		// Called by ToggleRef's weak notify when the native object is finalized behind our back (an unexpected
+		// free -- Widget.Destroy or an extra unref -- rather than through this wrapper's Dispose). Zero the
+		// handle so any lingering reference to this wrapper (e.g. a leaked GLib timer) sees IntPtr.Zero and
+		// stops dereferencing the freed, possibly address-reused, native pointer. Only act while the handle
+		// still matches the address that was freed and the map entry is still ours -- addresses get reused, so
+		// the entry may already belong to a different object.
+		internal void InvalidateHandle (IntPtr freedHandle)
+		{
+			if (handle != freedHandle)
+				return;
+			lock (Objects) {
+				if (handle != IntPtr.Zero && Objects.TryGetValue (handle, out var t) && ReferenceEquals (t.Target, this))
+					Objects.Remove (handle);
+			}
+			handle = IntPtr.Zero;
+			signals = null;
+		}
+
 		public static bool WarnOnFinalize { get; set; }
+
+		// Whether the runtime is tearing down, so a finalizer must avoid calling into native GTK/GLib.
+		// Public (like WarnOnFinalize) so it is overridable for tests -- the real predicate
+		// (HasShutdownStarted / IsFinalizingForUnload) cannot be triggered on demand.
+		public static Func<bool> RuntimeShuttingDown = DefaultRuntimeShuttingDown;
+
+		static bool DefaultRuntimeShuttingDown ()
+			=> Environment.HasShutdownStarted || AppDomain.CurrentDomain.IsFinalizingForUnload ();
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_object_ref(IntPtr raw);
 		static d_g_object_ref g_object_ref = FuncLoader.LoadFunction<d_g_object_ref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_ref"));
