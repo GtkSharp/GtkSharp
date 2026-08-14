@@ -266,7 +266,14 @@
   <attr path="/api/namespace/object[@cname='GtkImage']/constructor[@cname='gtk_image_new_from_file']/*/*[@name='filename']" name="property_name">file</attr>
   <attr path="/api/namespace/object[@cname='GtkImage']/constructor[@cname='gtk_image_new_from_icon_name']" name="shared">true</attr>
   <attr path="/api/namespace/object[@cname='GtkImage']/method[@name='SetFromFile']" name="name">SetFile</attr>
-  <attr path="/api/namespace/object[@cname='GtkImage']/method[@name='SetFromPixbuf']" name="name">SetPixbuf</attr>
+  <!--
+    SetPixbufSource, not SetPixbuf: the latter generates a set-only property called Pixbuf, and
+    Compat/Members.Compat.cs needs that name for a property with a GETTER - Gtk 4's
+    gtk_image_set_from_pixbuf is write-only, so the Gtk 3 binding's getter has to be re-provided
+    by remembering what was set. A partial class cannot shadow its own generated member, so the
+    generated one moves aside rather than being hidden behind a `new`.
+  -->
+  <attr path="/api/namespace/object[@cname='GtkImage']/method[@name='SetFromPixbuf']" name="name">SetPixbufSource</attr>
   <attr path="/api/namespace/object[@cname='GtkImage']/method[@cname='gtk_image_get_gicon']" name="name">GetIcon</attr>
   <attr path="/api/namespace/object[@cname='GtkImage']/method[@cname='gtk_image_set_from_gicon']" name="name">SetFromIcon</attr>
   <attr path="/api/namespace/object[@cname='GtkImage']/property[@cname='gicon']" name="name">Icon</attr>
@@ -543,6 +550,25 @@
   <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='CreatePangoLayout']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='GetAllocation']/parameters/parameter[@name='allocation']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='GetMapped']" name="name">GetIsMapped</attr>
+  <!--
+    GetColor -> GetStyleColor, so the generated property is StyleColor rather than Color.
+
+    gtk_widget_get_color is new in Gtk 4.10 and returns the widget's current CSS foreground
+    colour. Bound under its own name it puts an instance property called "Color" on the ROOT of
+    the widget hierarchy - and in C#, an inherited member beats a type of the same name during
+    simple-name resolution. So inside any Widget subclass, the identifier Color stops meaning
+    the type and starts meaning this property: Color.Black, Color.FromRgb(...), even a field
+    declaration's initializer, all fail with errors that name Gdk.RGBA and point nowhere near
+    the cause.
+
+    That hits essentially every GUI codebase, since a type named Color is near-universal
+    (Cairo.Color, System.Drawing.Color, Xamarin.Forms.Color). MEASURED on the Xamarin.Forms Gtk
+    backend: 52 errors across 14 files, all of them this.
+
+    StyleColor also says what it returns more honestly - it is the style's colour, not "the
+    widget's colour". GetColor remains reachable as a method name nowhere; callers use StyleColor.
+  -->
+  <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='GetColor']" name="name">GetStyleColor</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='GetPreferredSize']/*/*[@type='GtkRequisition*']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='GetRealized']" name="name">GetIsRealized</attr>
   <attr path="/api/namespace/object[@cname='GtkWidget']/method[@name='HasDefault']" name="name">GetHasDefault</attr>
