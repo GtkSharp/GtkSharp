@@ -139,7 +139,9 @@ namespace GtkSharp.Tests
                     label.AddCssClass("gtksharp-test-marker");
                     Assert.Contains("gtksharp-test-marker", label.CssClasses);
 
-                    var styled = label.Color;
+                    // StyleColor, not Color: gtk_widget_get_color is bound under a name that does
+                    // not shadow the type "Color" in every Widget subclass. See GtkSharp.metadata.
+                    var styled = label.StyleColor;
 
                     // rgb(12, 34, 56) as Gdk.RGBA's 0..1 floats.
                     Assert.Equal(12 / 255.0, styled.Red, 2);
