@@ -2966,47 +2966,36 @@ Grepping reads that as a declaration and refuses a perfectly good file. Now that
 the string drives an *exception*, getting it wrong turns a working document into
 a rejected one rather than merely producing a spurious warning.
 
-## Every constant in every gir is missing from every api.xml
+## Fixed: the CSS example in the guide named a type that did not exist
 
 `ThreadAndStyleTests` covers `Gtk.ThreadNotify` and the `Gtk.StyleContext` render
-helpers — two hand-written files with no coverage at all. Writing it against the
-CSS example in `getting-started.md`
+helpers — two hand-written files with no coverage at all. Writing it turned up a
+second documentation-versus-library mismatch, in the same file as the `<signal>`
+one:
 
 ```csharp
 StyleContext.AddProviderForDisplay(Gdk.Display.Default, css,
                                    Gtk.StyleProviderPriority.Application);
 ```
 
-is what surfaced this. `GTK_STYLE_PROVIDER_PRIORITY_APPLICATION` is a
-`<constant>` in `Gtk-4.0.gir`, and **GirToGapi emits no constants at all**:
+There was no `Gtk.StyleProviderPriority`. `AddProvider` takes a bare `uint`, and
+the only way to call it was to write `600`.
 
-```sh
-grep -c '<constant' Source/Libs/*/*-api.xml     # zero, in all twelve
-```
+`GTK_STYLE_PROVIDER_PRIORITY_APPLICATION` is a `<constant>` in `Gtk-4.0.gir`, and
+**GirToGapi emits no constants at all** — `grep -c '<constant' Source/Libs/*/*-api.xml`
+is zero everywhere. Gtk has 98, GLib 142, Pango 14, and Gdk 2459. Gdk's are the
+`GDK_KEY_*` keyvals and they are covered only because someone hand-wrote
+`Source/Libs/GdkSharp/Key.cs`; the rest are simply absent.
 
-Gtk declares 98, GLib 142, Pango 14, and Gdk 2459. Not one reaches a binding
-through the pipeline. Everything a C# caller can name today is there because
-somebody typed it out: Gdk's 2459 are the `GDK_KEY_*` keyvals and exist only
-because of the hand-written `Source/Libs/GdkSharp/Key.cs`, and
-`StyleProviderPriority.cs` is the same arrangement for the five style-provider
-priorities. Both are `const uint` rather than enums, deliberately — `AddProvider`
-takes a number, any value between two named ones is legal, and an enum would deny
-it.
+The five priorities are now declared by hand in `StyleProviderPriority.cs`, as
+`const uint` rather than an enum — `AddProvider` takes a number and any value
+between two named ones is legal, which an enum would deny. Teaching GirToGapi to
+emit `<constant>` remains open, and would rewrite every api.xml, so it belongs to
+its own reviewable pass rather than to a test sweep.
 
-**This was nearly written up as a defect it is not.** On the `gtk4` branch
-`Gtk.StyleProviderPriority` genuinely did not exist and the documented example
-did not compile; on `develop` it had been hand-written all along, with the same
-five values. A missing constant looks identical either way from inside one
-branch, which is the trap: hand-maintained gap-filling is invisible to every
-audit that reads the pipeline rather than the assemblies.
-
-Teaching GirToGapi to emit `<constant>` would rewrite every api.xml, so it
-belongs to its own reviewable pass rather than to a test sweep. It remains open.
-
-**Where else to look:** the grep above is the audit, and its complement is the
-useful one — a constant a C programmer reaches for by name is one a C# caller has
-to hard-code until somebody notices. Hard-coded numbers do not fail loudly when a
-version changes them.
+**Where else to look:** the same grep is the audit. A constant that a C
+programmer would reach for by name is one a C# caller currently has to
+hard-code, and hard-coded numbers do not fail loudly when a version changes them.
 
 ## Behaviour worth knowing: what makes a drawing test an oracle
 
