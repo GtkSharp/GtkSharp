@@ -60,6 +60,16 @@ is fine, but the provenance table above must be kept accurate.
 
 ## Reproducing
 
-`Docs/gir-gapi-coverage.md` records how these were obtained. The short version: read the
-`Filename`/`SHA256` fields out of `dists/forky/main/binary-amd64/Packages.xz`, fetch each `.deb`,
-unpack the `ar` container by hand, and read `data.tar.xz` — no Debian host required.
+`fetch-gir.py` in this directory re-fetches every file above from the pinned packages, checking
+each download against the sha256 recorded here:
+
+```sh
+python fetch-gir.py
+```
+
+It is deliberately dependency-free and OS-independent — it unpacks the Debian `ar` container and
+its `data.tar` payload in pure Python, so no `dpkg`, `ar` or Debian host is required.
+
+To move to a newer upstream: read the `Filename`/`SHA256` fields for the new versions out of
+`dists/forky/main/binary-amd64/Packages.xz`, update `PACKAGES` in `fetch-gir.py`, re-run it, and
+update the provenance table above in the same commit.
