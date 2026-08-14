@@ -95,7 +95,21 @@ namespace Gtk {
 		protected override void OnSizeAllocate(int width, int height, int baseline)
 		{
 			base.OnSizeAllocate(width, height, baseline);
-			OnSizeAllocated(CompatVFunc.Allocation(width, height));
+
+			var allocation = CompatVFunc.Allocation(width, height);
+
+			OnSizeAllocated(allocation);
+
+			if (_sizeAllocated != null)
+				_sizeAllocated(this, new SizeAllocatedArgs { Allocation = allocation });
+		}
+
+		SizeAllocatedHandler _sizeAllocated;
+
+		/// <summary>Stands in for GtkWidget::size-allocate, which Gtk 4 removed as a signal.</summary>
+		public event SizeAllocatedHandler SizeAllocated {
+			add { _sizeAllocated += value; }
+			remove { _sizeAllocated -= value; }
 		}
 	}
 
@@ -124,7 +138,21 @@ namespace Gtk {
 			// from the base implementation. A handler that inspects child geometry would
 			// otherwise see the previous frame's.
 			base.OnSizeAllocate(width, height, baseline);
-			OnSizeAllocated(CompatVFunc.Allocation(width, height));
+
+			var allocation = CompatVFunc.Allocation(width, height);
+
+			OnSizeAllocated(allocation);
+
+			if (_sizeAllocated != null)
+				_sizeAllocated(this, new SizeAllocatedArgs { Allocation = allocation });
+		}
+
+		SizeAllocatedHandler _sizeAllocated;
+
+		/// <summary>Stands in for GtkWidget::size-allocate, which Gtk 4 removed as a signal.</summary>
+		public event SizeAllocatedHandler SizeAllocated {
+			add { _sizeAllocated += value; }
+			remove { _sizeAllocated -= value; }
 		}
 	}
 
@@ -150,7 +178,21 @@ namespace Gtk {
 		protected override void OnSizeAllocate(int width, int height, int baseline)
 		{
 			base.OnSizeAllocate(width, height, baseline);
-			OnSizeAllocated(CompatVFunc.Allocation(width, height));
+
+			var allocation = CompatVFunc.Allocation(width, height);
+
+			OnSizeAllocated(allocation);
+
+			if (_sizeAllocated != null)
+				_sizeAllocated(this, new SizeAllocatedArgs { Allocation = allocation });
+		}
+
+		SizeAllocatedHandler _sizeAllocated;
+
+		/// <summary>Stands in for GtkWidget::size-allocate, which Gtk 4 removed as a signal.</summary>
+		public event SizeAllocatedHandler SizeAllocated {
+			add { _sizeAllocated += value; }
+			remove { _sizeAllocated -= value; }
 		}
 	}
 
@@ -176,7 +218,21 @@ namespace Gtk {
 		protected override void OnSizeAllocate(int width, int height, int baseline)
 		{
 			base.OnSizeAllocate(width, height, baseline);
-			OnSizeAllocated(CompatVFunc.Allocation(width, height));
+
+			var allocation = CompatVFunc.Allocation(width, height);
+
+			OnSizeAllocated(allocation);
+
+			if (_sizeAllocated != null)
+				_sizeAllocated(this, new SizeAllocatedArgs { Allocation = allocation });
+		}
+
+		SizeAllocatedHandler _sizeAllocated;
+
+		/// <summary>Stands in for GtkWidget::size-allocate, which Gtk 4 removed as a signal.</summary>
+		public event SizeAllocatedHandler SizeAllocated {
+			add { _sizeAllocated += value; }
+			remove { _sizeAllocated -= value; }
 		}
 	}
 
@@ -240,7 +296,21 @@ namespace Gtk {
 		protected override void OnSizeAllocate(int width, int height, int baseline)
 		{
 			base.OnSizeAllocate(width, height, baseline);
-			OnSizeAllocated(CompatVFunc.Allocation(width, height));
+
+			var allocation = CompatVFunc.Allocation(width, height);
+
+			OnSizeAllocated(allocation);
+
+			if (_sizeAllocated != null)
+				_sizeAllocated(this, new SizeAllocatedArgs { Allocation = allocation });
+		}
+
+		SizeAllocatedHandler _sizeAllocated;
+
+		/// <summary>Stands in for GtkWidget::size-allocate, which Gtk 4 removed as a signal.</summary>
+		public event SizeAllocatedHandler SizeAllocated {
+			add { _sizeAllocated += value; }
+			remove { _sizeAllocated -= value; }
 		}
 	}
 }

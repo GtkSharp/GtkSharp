@@ -135,12 +135,6 @@ namespace Gtk {
 		/// <inheritdoc cref="Button.ImagePosition"/>
 		public PositionType ImagePosition { get; set; }
 
-		/// <inheritdoc cref="Button.ImagePosition"/>
-		public void SetImagePosition(PositionType position)
-		{
-			ImagePosition = position;
-		}
-
 		/// <inheritdoc cref="EventBox.OnDrawn"/>
 		/// <remarks>
 		/// Here rather than on <see cref="CheckButton"/>: this class is the Gtk 3 compatibility

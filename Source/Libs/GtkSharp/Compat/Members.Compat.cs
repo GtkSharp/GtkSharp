@@ -53,7 +53,9 @@ namespace Gtk {
 					StyleContext.AddProvider(_borderWidthProvider, StyleProviderPriority.Application);
 				}
 
-				_borderWidthProvider.LoadFromData(
+				// LoadFromString, not LoadFromData: Gtk 4.12 deprecated the latter (it took a
+				// length that the managed binding never used).
+				_borderWidthProvider.LoadFromString(
 					string.Format(System.Globalization.CultureInfo.InvariantCulture,
 						"* {{ padding: {0}px; }}", value));
 			}
@@ -253,13 +255,13 @@ namespace Gtk {
 		/// and an icon beside a label is a GtkBox you build yourself, where the order IS the
 		/// position. There is nothing left for this to set.
 		/// </remarks>
+		/// <remarks>
+		/// A property only, with no SetImagePosition method: Gtk 3's binding had both, and
+		/// consumers that subclass Button routinely define their own setter - two of them do in
+		/// Xamarin.Forms - so shipping one here only produces a member-hiding warning at every such
+		/// subclass.
+		/// </remarks>
 		public PositionType ImagePosition { get; set; }
-
-		/// <inheritdoc cref="ImagePosition"/>
-		public void SetImagePosition(PositionType position)
-		{
-			ImagePosition = position;
-		}
 	}
 
 	public partial class Label {

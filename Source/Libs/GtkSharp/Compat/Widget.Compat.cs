@@ -436,7 +436,10 @@ namespace Gtk {
 		/// </remarks>
 		public void ShowAll()
 		{
-			Show();
+			// Visible = true, not Show(): Gtk 4.10 deprecated gtk_widget_show in favour of the
+			// property, which is the same operation without the "show" verb's Gtk 3 connotation of
+			// mapping a toplevel.
+			Visible = true;
 		}
 
 		// Destroy() is NOT here. Widget.cs already has it - virtual, and already routing a
