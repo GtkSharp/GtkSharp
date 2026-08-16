@@ -11,7 +11,8 @@ dotnet add package Net4x.AdwaitaSharp
 
 ## What it needs
 
-Targets `net10.0` and `netstandard2.0`.
+Targets `netstandard2.0`, so one build serves every consumer: .NET 10,
+.NET Framework 4.x and Mono alike.
 
 At run time it needs the native library it wraps, **`libadwaita-1.so.0`**
 (Debian and Ubuntu: `libadwaita-1-0`). The binding does not carry a copy of it.

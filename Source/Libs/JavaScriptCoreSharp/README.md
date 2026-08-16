@@ -11,7 +11,8 @@ dotnet add package Net4x.JavaScriptCoreSharp
 
 ## What it needs
 
-Targets `net10.0` and `netstandard2.0`.
+Targets `netstandard2.0`, so one build serves every consumer: .NET 10,
+.NET Framework 4.x and Mono alike.
 
 At run time it needs the native library it wraps, **`libjavascriptcoregtk-6.0.so.1`**
 (Debian and Ubuntu: `libjavascriptcoregtk-6.0-1`). The binding does not carry a copy of it.
