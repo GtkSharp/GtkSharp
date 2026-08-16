@@ -31,6 +31,69 @@ namespace Gtk {
 		}
 	}
 
+	/// <summary>
+	/// Decides whether a child may be attached, and detaches it from a previous parent first.
+	/// </summary>
+	/// <remarks>
+	/// <para>Every Gtk 4 attach primitive - gtk_box_append, gtk_fixed_put, gtk_grid_attach - asserts
+	/// that the child has no parent, and <b>does nothing at all when the assertion fails</b>. The
+	/// child is then silently missing from the tree, which surfaces much later as content that does
+	/// not render rather than as an error at the call site.</para>
+	/// <para>gtk_container_add, which these shims stand in for, did not behave that way: re-adding a
+	/// child to the container it was already in was a warned no-op, so Gtk 3 code treats a repeat
+	/// Add as harmless. That case is preserved exactly here.</para>
+	/// <para>The other case - the child is parented somewhere ELSE - is deliberately an improvement
+	/// on Gtk 3 rather than a copy of it. Gtk 3 refused and warned, leaving the caller with a child
+	/// still in its old parent; here it is detached and moved, which is what a caller writing
+	/// <c>newParent.Add(child)</c> plainly means. Detaching goes through the owning widget's own
+	/// remove where there is one, not gtk_widget_unparent, because a container keeps bookkeeping of
+	/// its own that unparent would leave stale.</para>
+	/// <para><see cref="Container.Add"/> has always had the first half of this guard; these
+	/// partials simply never did.</para>
+	/// </remarks>
+	static class ChildAttach {
+
+		/// <summary>
+		/// True when the caller should go ahead and attach <paramref name="child"/>.
+		/// </summary>
+		public static bool Prepare(Widget child, Widget newParent)
+		{
+			if (child == null)
+				return false;
+
+			Widget parent = child.Parent;
+
+			if (parent == newParent)
+				return false;
+
+			if (parent != null)
+				Detach(parent, child);
+
+			return true;
+		}
+
+		static void Detach(Widget parent, Widget child)
+		{
+			switch (parent) {
+			case Container container:
+				container.Remove(child);
+				break;
+			case Box box:
+				box.Remove(child);
+				break;
+			case Grid grid:
+				grid.Remove(child);
+				break;
+			case Fixed fixd:
+				fixd.Remove(child);
+				break;
+			default:
+				child.Unparent();
+				break;
+			}
+		}
+	}
+
 	public partial class Box {
 
 		/// <summary>Appends a child, as gtk_box_pack_start did.</summary>
@@ -46,7 +109,7 @@ namespace Gtk {
 		/// </remarks>
 		public void PackStart(Widget child, bool expand, bool fill, uint padding)
 		{
-			if (child == null)
+			if (!ChildAttach.Prepare(child, this))
 				return;
 
 			ApplyPacking(child, expand, fill, padding);
@@ -56,7 +119,7 @@ namespace Gtk {
 		/// <summary>Prepends a child, as gtk_box_pack_end did.</summary>
 		public void PackEnd(Widget child, bool expand, bool fill, uint padding)
 		{
-			if (child == null)
+			if (!ChildAttach.Prepare(child, this))
 				return;
 
 			ApplyPacking(child, expand, fill, padding);
@@ -82,7 +145,7 @@ namespace Gtk {
 		/// <summary>Appends a child, as gtk_container_add did for a box.</summary>
 		public void Add(Widget widget)
 		{
-			if (widget != null)
+			if (ChildAttach.Prepare(widget, this))
 				Append(widget);
 		}
 
@@ -132,7 +195,7 @@ namespace Gtk {
 		/// </remarks>
 		public void Add(Widget widget)
 		{
-			if (widget != null)
+			if (ChildAttach.Prepare(widget, this))
 				Put(widget, 0, 0);
 		}
 
@@ -149,7 +212,7 @@ namespace Gtk {
 		/// </summary>
 		public void Add(Widget widget)
 		{
-			if (widget == null)
+			if (!ChildAttach.Prepare(widget, this))
 				return;
 
 			Attach(widget, 0, ChildEnumerator.ChildrenOf(this).Length, 1, 1);

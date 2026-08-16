@@ -477,11 +477,24 @@ namespace Gtk {
 		/// Stands in for gtk_widget_size_allocate's Gtk 3 signature.
 		/// </summary>
 		/// <remarks>
-		/// Gtk 3 allocated a rectangle in the PARENT's coordinates; Gtk 4 allocates a size in the
-		/// widget's own, with the position carried by a transform the parent supplies. X and Y are
-		/// therefore honoured as a translation, so that a caller positioning a child by allocation
-		/// still gets it positioned - but a parent that lays out its children properly should be
-		/// calling <c>Allocate</c> itself.
+		/// <para>Gtk 3 allocated a rectangle in the PARENT's coordinates; Gtk 4 allocates a size in
+		/// the widget's own, with the position carried by a transform the parent supplies. X and Y
+		/// are therefore honoured as a translation, so that a caller positioning a child by
+		/// allocation still gets it positioned - but a parent that lays out its children properly
+		/// should be calling <c>Allocate</c> itself.</para>
+		/// <para>MEASURED: the widget is measured here first, and that is load-bearing rather than
+		/// tidiness. Gtk 4 requires gtk_widget_measure() before gtk_widget_allocate(); when it is
+		/// skipped, Gtk logs "Allocating size to &lt;widget&gt; without calling gtk_widget_measure().
+		/// How does the code know the size to allocate?" and <b>the allocation silently does not
+		/// propagate</b> - the subtree keeps whatever geometry it had, so it lays out as if the call
+		/// had never happened. Gtk 3's gtk_widget_size_allocate carried no such precondition; it
+		/// performed the size request itself. Callers written against Gtk 3 therefore do not
+		/// measure, and cannot be expected to, so this shim has to satisfy the precondition on their
+		/// behalf or it is not standing in for the function it claims to.</para>
+		/// <para>Measuring the child that is about to fill this widget is NOT a substitute: the
+		/// precondition is on the widget being allocated. The height pass is given the allocated
+		/// width, because height-for-width is the direction Gtk measures in, matching what
+		/// <c>Container.AllocateChildren</c> already does.</para>
 		/// </remarks>
 		public void SizeAllocate(Gdk.Rectangle allocation)
 		{
@@ -492,6 +505,10 @@ namespace Gtk {
 				offset.Init(allocation.X, allocation.Y);
 				transform = new Gsk.Transform().Translate(offset);
 			}
+
+			int ignored;
+			Measure(Orientation.Horizontal, -1, out ignored, out ignored, out ignored, out ignored);
+			Measure(Orientation.Vertical, allocation.Width, out ignored, out ignored, out ignored, out ignored);
 
 			Allocate(allocation.Width, allocation.Height, -1, transform);
 		}
