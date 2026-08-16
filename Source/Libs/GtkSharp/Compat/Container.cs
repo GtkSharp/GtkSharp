@@ -204,8 +204,25 @@ namespace Gtk {
 		}
 
 		/// <summary>
-		/// Allocates every child at its recorded position, at the size it asks for. Subclasses
-		/// that override <see cref="OnSizeAllocated"/> and do their own layout need not call this.
+		/// The size a child is given: false - GtkFixed's answer, whatever the child asks for - by
+		/// default, true for the space left inside this widget.
+		/// </summary>
+		/// <remarks>
+		/// Gtk 3 had both answers, and the difference is load-bearing. GtkFixed gave a child its own
+		/// request, which is what code positioning children by hand relies on, so it stays the
+		/// default here; the GtkBin subclasses - GtkEventBox, GtkFrame, GtkViewport - gave their
+		/// single child the bin's whole allocation. <see cref="EventBox"/> is one of the latter and
+		/// overrides this.
+		/// </remarks>
+		protected virtual bool ChildrenFillAllocation {
+			get { return false; }
+		}
+
+		/// <summary>
+		/// Allocates every child at its recorded position, at the size it asks for - or, when
+		/// <see cref="ChildrenFillAllocation"/> is set, at the space left inside this widget.
+		/// Subclasses that override <see cref="OnSizeAllocated"/> and do their own layout need not
+		/// call this.
 		/// </summary>
 		protected void AllocateChildren()
 		{
@@ -214,8 +231,22 @@ namespace Gtk {
 					continue;
 
 				int width, height, ignored;
-				placement.Child.Measure(Orientation.Horizontal, -1, out ignored, out width, out ignored, out ignored);
-				placement.Child.Measure(Orientation.Vertical, width, out ignored, out height, out ignored, out ignored);
+
+				if (ChildrenFillAllocation) {
+					// Width/Height, not the child's request: gtk_widget_allocate stores this widget's
+					// size before it invokes the size_allocate vfunc, so these are the allocation
+					// currently being handed out.
+					width = Math.Max(0, Width - placement.X);
+					height = Math.Max(0, Height - placement.Y);
+
+					// Measured anyway, and not optionally: Gtk 4 refuses to propagate an allocation to
+					// a widget it has not measured, whatever size the caller chose.
+					placement.Child.Measure(Orientation.Horizontal, -1, out ignored, out ignored, out ignored, out ignored);
+					placement.Child.Measure(Orientation.Vertical, width, out ignored, out ignored, out ignored, out ignored);
+				} else {
+					placement.Child.Measure(Orientation.Horizontal, -1, out ignored, out width, out ignored, out ignored);
+					placement.Child.Measure(Orientation.Vertical, width, out ignored, out height, out ignored, out ignored);
+				}
 
 				Gsk.Transform transform = null;
 
