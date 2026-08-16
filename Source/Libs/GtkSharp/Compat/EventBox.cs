@@ -44,6 +44,28 @@ namespace Gtk {
 		}
 
 		/// <summary>
+		/// True: a GtkEventBox filled itself with its child.
+		/// </summary>
+		/// <remarks>
+		/// <para>GtkEventBox was a GtkBin, and gtk_event_box_size_allocate handed the child the box's
+		/// whole allocation less the border width. <see cref="Container"/> defaults to GtkFixed's
+		/// answer instead - the child's own request - which for an event box leaves content pinned at
+		/// its natural size inside a correctly sized parent, and content laid out far too small reads
+		/// as content that is not there at all.</para>
+		/// <para>MEASURED: a window of 800x600 holding an event box holding an event box holding a
+		/// Grid allocated the outer box 800x561 and the inner one 44x88 - its natural size - and
+		/// everything below collapsed to match. The collapse is the lesser half: deriving a child's
+		/// size request from its own allocation is an ordinary pattern for a framework that owns its
+		/// layout, and it becomes self-amplifying the moment the parent's allocation is a function of
+		/// the child's request. Measured against a consumer that does exactly that, a page's height
+		/// climbed 4048 -> 8440 -> 12832 -> 17224, 72px a frame, with no upper bound, inside a window
+		/// that stayed 600px tall.</para>
+		/// </remarks>
+		protected override bool ChildrenFillAllocation {
+			get { return true; }
+		}
+
+		/// <summary>
 		/// Stands in for GtkWidget::draw, the Gtk 3 drawing vfunc, and receives a Cairo context
 		/// in the widget's own coordinates.
 		/// </summary>
