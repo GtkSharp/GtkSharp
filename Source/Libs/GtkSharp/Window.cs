@@ -40,8 +40,12 @@ namespace Gtk {
 		/// close path or at finalization. It skips when the handle is already cleared, then Dispose()s to
 		/// clear it (Dispose is designed to be safe on an object torn down behind the wrapper's back — see
 		/// GLib.Object.Dispose).
+		///
+		/// It overrides Widget.Destroy (Compat/Widget.Compat.cs), which stands in for the removed
+		/// gtk_widget_destroy by unparenting. A toplevel has no parent to be removed from, so this
+		/// is the case that still needs a real destroy call.
 		/// </summary>
-		public void Destroy ()
+		public override void Destroy ()
 		{
 			if (Handle == IntPtr.Zero)
 				return;
