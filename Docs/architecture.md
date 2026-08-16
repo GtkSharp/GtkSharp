@@ -302,11 +302,22 @@ you go looking for the metadata rule that does not exist:
 
 ## Packaging
 
-- `Source/Libs/Directory.Build.props` — `net10.0;netstandard2.0`, `LangVersion 9`,
+- `Source/Libs/Directory.Build.props` — `$(_GtkSharpLibTfm)`, `LangVersion 9`,
   `AllowUnsafeBlocks`, strong-name signing with `GtkSharp.snk`. **New code must
-  compile as C# 9 against both target frameworks.**
+  compile as C# 9 against `netstandard2.0`.** The wrappers are P/Invoke over Gtk
+  and use nothing outside `netstandard2.0`, so they build once and that one build
+  serves .NET 10, .NET Framework 4.x and Mono. `net10.0`
+  (`$(_GtkSharpNetVersion)`, `Source/Directory.Build.props`) is the framework of
+  the *consumers* — tests, samples, templates, and the `net10.0-gtk4.22` workload
+  TFM — not of the bindings.
 - `Source/Workload/` — the .NET `gtk` workload: ref pack, runtime pack, SDK pack
-  and manifest, packed once per SDK feature band.
+  and manifest, packed once per SDK feature band. `GtkSharp.Ref` and
+  `GtkSharp.Runtime` take the assemblies out of
+  `BuildOutput/$(Configuration)/$(_GtkSharpLibTfm)` and ship them under
+  `ref/`&`lib/net10.0-gtk4.22`. They name the wrappers off their
+  `ProjectReference` list rather than globbing `*.dll`, because that output
+  directory is shared with everything else built for the same framework — the
+  template projects land there too.
 - `Source/Templates/` — standalone `dotnet new gtkapp` templates, independent of
   the workload.
 - `Source/Libs/GtkSharp/GtkSharp.targets` — ships inside the NuGet package and, on

@@ -141,6 +141,8 @@ git checkout -b gtk4 develop
 
 **Keep both TFMs and keep `LangVersion 9`.** Nothing about GTK4 requires newer, and the workload ref pack (`Microsoft.DotNet.SharedFramework.Sdk`) depends on the current shape. Revisit only if generated GTK4 code needs `nint`/function pointers — `LPGen.cs`/`LPUGen.cs` already handle native ints without C# 9+ syntax.
 
+**Amended after Phase 5.** The `net$(_GtkSharpNetVersion)` TFM was dropped: the wrappers are P/Invoke over Gtk and use nothing outside `netstandard2.0`, so the second target compiled the same sources into an assembly indistinguishable from the first. The wrappers now build only for `$(_GtkSharpLibTfm)` (`netstandard2.0`, `Source/Directory.Build.props`), and `GtkSharp.Ref`/`GtkSharp.Runtime` ship that output under `net10.0-gtk4.22` — the ref pack's shape is unchanged, which is what the concern above was about. `LangVersion 9` stands. The one behavioural consequence is `GType.cs`'s `#if NET6_0_OR_GREATER` guard around `RuntimeFeature.IsDynamicCodeSupported`, which no longer compiles in: the reflective assembly-loading fallback now runs unconditionally, as it did before that check was added.
+
 ### 1.5 New directories
 
 ```

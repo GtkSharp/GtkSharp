@@ -25,8 +25,9 @@ widget signals.
 
 Two things:
 
-- **The .NET 10 SDK.** The package also targets `netstandard2.0`, so an older
-  runtime still resolves an assembly — it simply gets that one.
+- **The .NET 10 SDK.** The package itself is built for `netstandard2.0` and
+  nothing else, so an older runtime — .NET Framework 4.x, Mono — resolves the
+  same assembly a .NET 10 project does.
 - **A GTK 4 runtime.** The binding calls into the real native libraries; it does
   not bundle them.
 

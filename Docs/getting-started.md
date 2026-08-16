@@ -28,8 +28,9 @@ through gesture controllers rather than widget signals.
 
 ## What you need
 
-- **.NET 10 SDK**. The package also targets `netstandard2.0`, so a project on
-  an older runtime still resolves an assembly — it simply gets that one.
+- **.NET 10 SDK**. The packages themselves are built for `netstandard2.0` and
+  nothing else, so a project on an older runtime — .NET Framework 4.x, Mono —
+  resolves the same assembly a .NET 10 project does.
 - **A Gtk 4 runtime.** The binding calls into the real libraries; it does not
   bundle them.
 

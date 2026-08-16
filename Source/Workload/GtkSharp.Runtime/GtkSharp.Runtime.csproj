@@ -22,12 +22,17 @@
         <Description>GtkSharp runtime pack</Description>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="$(_GtkSharpBuildOutputDirectory)$(Configuration)\net$(_GtkSharpNetVersion)\*.dll" />
-        <None Update="@(None)" CopyToOutputDirectory="PreserveNewest" Visible="false" Link="lib\$(_GtkSharpFullTfm)\%(FileName)%(Extension)" />
-        <_PackageFiles Include="@(None)" PackagePath="lib\$(_GtkSharpFullTfm)" TargetPath="lib\$(_GtkSharpFullTfm)" />
+        <ProjectReference Include="$(_GtkSharpSourceDirectory)Libs\**\*.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="$(_GtkSharpSourceDirectory)Libs\**\*.csproj" />
+        <!-- Named off the wrapper projects rather than globbed out of the output
+             directory: the wrappers build once, for $(_GtkSharpLibTfm), and that
+             directory is shared with anything else built for the same framework
+             (the template projects land there too). The pack still ships them
+             under the net$(_GtkSharpNetVersion)-gtk TFM consumers reference. -->
+        <None Include="@(ProjectReference->'$(_GtkSharpBuildOutputDirectory)$(Configuration)\$(_GtkSharpLibTfm)\%(FileName).dll')" />
+        <None Update="@(None)" CopyToOutputDirectory="PreserveNewest" Visible="false" Link="lib\$(_GtkSharpFullTfm)\%(FileName)%(Extension)" />
+        <_PackageFiles Include="@(None)" PackagePath="lib\$(_GtkSharpFullTfm)" TargetPath="lib\$(_GtkSharpFullTfm)" />
     </ItemGroup>
     <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
        condition is on the build host, so packages published by CI (which packs
