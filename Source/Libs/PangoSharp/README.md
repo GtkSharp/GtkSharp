@@ -12,7 +12,9 @@ Depends on: GLibSharp, CairoSharp
 
 ## Requirements
 
-- **.NET 10** (the package also targets `netstandard2.0`).
+- **.NET 10** — or any runtime that resolves `netstandard2.0`: the package is
+  built for that and nothing else, so .NET Framework 4.x and Mono get the same
+  assembly.
 - **A Gtk 4 runtime must be installed.** This package binds the real libraries;
   it does not contain them. On Windows the `GtkSharp` package downloads a
   gvsbuild runtime into `%LOCALAPPDATA%\Gtk\4.22.4` on first build; on Linux and
