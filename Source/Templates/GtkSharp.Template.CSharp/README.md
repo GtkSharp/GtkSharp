@@ -1,4 +1,4 @@
-# Net4x.GtkSharp.Template.CSharp
+# GtkSharp4.Template.CSharp
 
 C# templates for Gtk 4 applications, built on
 [GtkSharp](https://github.com/pieroviano/GtkSharp).
@@ -6,7 +6,7 @@ C# templates for Gtk 4 applications, built on
 ## Installing
 
 ```sh
-dotnet new install Net4x.GtkSharp.Template.CSharp
+dotnet new install GtkSharp4.Template.CSharp
 ```
 
 ## Templates
@@ -22,7 +22,7 @@ dotnet new install Net4x.GtkSharp.Template.CSharp
 dotnet new gtkapp -o MyApp
 ```
 
-The generated project references `Net4x.GtkSharp` directly, so it needs
+The generated project references `GtkSharp4` directly, so it needs
 no workload. It still needs a Gtk 4 runtime present; on Windows the
 package installs one on first build.
 

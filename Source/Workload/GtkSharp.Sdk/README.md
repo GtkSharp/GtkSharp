@@ -1,4 +1,4 @@
-# Net4x.GtkSharp.Sdk
+# GtkSharp4.Sdk
 
 The SDK pack for the `gtk` workload. It registers the `gtk` platform, defines the `GTK` compilation constant, wires up the framework reference, and carries the targets that install a Gtk runtime on Windows.
 
@@ -19,7 +19,7 @@ A project then opts in through the target framework:
 ```
 
 To use the bindings without the workload, reference
-[`Net4x.GtkSharp`](https://www.nuget.org/packages/Net4x.GtkSharp) instead.
+[`GtkSharp4`](https://www.nuget.org/packages/GtkSharp4) instead.
 
 ## Licence
 

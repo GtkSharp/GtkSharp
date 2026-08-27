@@ -1,4 +1,4 @@
-# Net4x.GtkSharp.Runtime
+# GtkSharp4.Runtime
 
 The runtime pack for the `gtk` workload: the implementation assemblies that ship with an application targeting `net10.0-gtk4.22`.
 
@@ -19,7 +19,7 @@ A project then opts in through the target framework:
 ```
 
 To use the bindings without the workload, reference
-[`Net4x.GtkSharp`](https://www.nuget.org/packages/Net4x.GtkSharp) instead.
+[`GtkSharp4`](https://www.nuget.org/packages/GtkSharp4) instead.
 
 ## Licence
 

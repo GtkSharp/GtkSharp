@@ -9,7 +9,7 @@ are calling the same C library that shipped with the operating system.
 
 The code in this article targets the GTK 4.22 binding on the
 [`net4x.gtk4`](https://github.com/pieroviano/GtkSharp/tree/net4x.gtk4) branch,
-which is what the `Net4x.*` packages below are built from.
+which is what the `4` packages suffix below are built from.
 
 This article walks through building a GTK 4 application in C#: the first window,
 layout, signals, UI files, input, actions, lists, custom drawing and CSS. It also
@@ -41,25 +41,25 @@ Two things:
 Then add the binding to your project:
 
 ```sh
-dotnet add package Net4x.GtkSharp
+dotnet add package GtkSharp4
 ```
 
-**Note the `Net4x.` prefix — it is on the NuGet id only.** The assembly inside the
+**Note the `4` suffix — it is on the NuGet id only.** The assembly inside the
 package is still `GtkSharp.dll` and the namespaces are unchanged, so your code
 says `using Gtk;` exactly as you would expect. The same rule applies across the
-whole family: `Net4x.GLibSharp`, `Net4x.GioSharp`, `Net4x.GdkSharp`,
-`Net4x.CairoSharp`, `Net4x.PangoSharp`, `Net4x.AdwaitaSharp`,
-`Net4x.GtkSourceSharp` and so on. In most cases you only reference
-`Net4x.GtkSharp` and the rest arrive as dependencies.
+whole family: `GLibSharp4`, `GioSharp4`, `GdkSharp4`,
+`CairoSharp4`, `PangoSharp4`, `AdwaitaSharp4`,
+`GtkSourceSharp4` and so on. In most cases you only reference
+`GtkSharp4` and the rest arrive as dependencies.
 
 One caveat worth knowing up front: **WebKit is not available on Windows.** The
-gvsbuild bundle ships no WebKit, so `Net4x.WebkitGtkSharp` and
-`Net4x.JavaScriptCoreSharp` are Linux/macOS in practice. Guard any use of them.
+gvsbuild bundle ships no WebKit, so `WebkitGtkSharp4` and
+`JavaScriptCoreSharp4` are Linux/macOS in practice. Guard any use of them.
 
 The quickest way to see something on screen:
 
 ```sh
-dotnet new install Net4x.GtkSharp.Template.CSharp
+dotnet new install GtkSharp4.Template.CSharp
 dotnet new gtkapp -o HelloGtk
 cd HelloGtk
 dotnet run
@@ -406,12 +406,12 @@ The GTK runtime is **not** included — your users need it installed, or you shi
 alongside. On Windows, the gvsbuild tree downloaded at build time is what you would
 redistribute.
 
-There is also a .NET workload — `Net4x.GtkSharp.Ref`, `Net4x.GtkSharp.Runtime` and
-`Net4x.GtkSharp.Sdk`, published through the `Net4x.GtkSharp.NET.Sdk.Gtk` manifest —
+There is also a .NET workload — `GtkSharp4.Ref`, `GtkSharp4.Runtime` and
+`GtkSharp4.Sdk`, published through the `GtkSharp4.NET.Sdk.Gtk` manifest —
 if you prefer
 
 ```xml
-<Project Sdk="Net4x.GtkSharp.NET.Sdk.Gtk">
+<Project Sdk="GtkSharp4.NET.Sdk.Gtk">
 ```
 
 to a `PackageReference`. Installing it mutates your SDK directory, so prefer the

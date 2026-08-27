@@ -1,4 +1,4 @@
-# Net4x.GtkSharp.Workload.Template.CSharp
+# GtkSharp4.Workload.Template.CSharp
 
 C# templates for Gtk 4 applications, built on
 [GtkSharp](https://github.com/pieroviano/GtkSharp).
@@ -29,7 +29,7 @@ dotnet new gtk -o MyApp
 The generated project targets `net10.0-gtk4.22` and gets the bindings
 from the workload's packs, with no PackageReference of its own. Note the
 application template is `gtk` here, where the standalone
-`Net4x.GtkSharp.Template.*` packages call it `gtkapp`.
+`GtkSharp4.Template.*` packages call it `gtkapp`.
 
 ## Licence
 

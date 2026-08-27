@@ -38,8 +38,8 @@ from your distribution.
 
 ## The package-id prefix
 
-This branch packs the package ids unprefixed (`GtkSharp`, `GLibSharp`, …). The
-`net4x.gtk4` branch publishes the same packages with a `Net4x.` prefix on the
+This branch packs the package ids unprefixed (`GtkSharp4`, `GLibSharp4`, …). The
+`net4x.gtk4` branch publishes the same packages with a `4` suffix on the
 feed id. **Only the id differs** — the assemblies inside are `GtkSharp.dll`,
 `GLibSharp.dll` and so on, and the namespaces are unprefixed, so not a line of
 sample code changes between the two.
@@ -48,7 +48,7 @@ The projects here reference `$(GtkSharpPackagePrefix)GtkSharp`, with the
 property empty by default. To build against the prefixed packages:
 
 ```sh
-dotnet build GettingStarted.slnx -p:GtkSharpPackagePrefix=Net4x.
+dotnet build GettingStarted.slnx
 ```
 
 Set `$(GtkSharpVersion)` in the `.csproj` to move to another release.

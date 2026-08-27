@@ -1,4 +1,4 @@
-# Net4x.GtkSharp.Ref
+# GtkSharp4.Ref
 
 The targeting pack for the `gtk` workload: the reference assemblies a project compiles against when it targets `net10.0-gtk4.22`.
 
@@ -19,7 +19,7 @@ A project then opts in through the target framework:
 ```
 
 To use the bindings without the workload, reference
-[`Net4x.GtkSharp`](https://www.nuget.org/packages/Net4x.GtkSharp) instead.
+[`GtkSharp4`](https://www.nuget.org/packages/GtkSharp4) instead.
 
 ## Licence
 
