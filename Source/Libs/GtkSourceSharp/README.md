@@ -1,12 +1,12 @@
-# Net4x.GtkSourceSharp
+# GtkSourceSharp4
 
-GtkSourceSharp is a C# wrapper for GtkSourceView: a source-code editing widget with syntax highlighting, completion and search.
+GtkSourceSharp4 is a C# wrapper for GtkSourceView: a source-code editing widget with syntax highlighting, completion and search.
 
-Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
+Part of [GtkSharp4](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
 libraries.
 
 ```sh
-dotnet add package Net4x.GtkSourceSharp
+dotnet add package GtkSourceSharp4
 ```
 
 ## What it needs

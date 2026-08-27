@@ -1,12 +1,12 @@
-# Net4x.WebkitGtkSharp
+# WebkitGtkSharp4
 
-WebkitGtkSharp is a C# wrapper for WebKitGTK 6.0: an embeddable browser engine widget for Gtk 4.
+WebkitGtkSharp4 is a C# wrapper for WebKitGTK 6.0: an embeddable browser engine widget for Gtk 4.
 
-Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
+Part of [GtkSharp4](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
 libraries.
 
 ```sh
-dotnet add package Net4x.WebkitGtkSharp
+dotnet add package WebkitGtkSharp4
 ```
 
 ## What it needs

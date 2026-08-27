@@ -1,12 +1,12 @@
-# Net4x.GLibSharp
+# GLibSharp4
 
-GLibSharp is a C# wrapper for GLib and GObject: the type system, main loop, and the primitives every other binding here is built on.
+GLibSharp4 is a C# wrapper for GLib and GObject: the type system, main loop, and the primitives every other binding here is built on.
 
-Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
+Part of [GtkSharp4](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
 libraries.
 
 ```sh
-dotnet add package Net4x.GLibSharp
+dotnet add package GLibSharp4
 ```
 
 ## What it needs
@@ -18,7 +18,7 @@ At run time it needs the native library it wraps, **`libglib-2.0.so.0`**
 (Debian and Ubuntu: `libglib2.0-0`). The binding does not carry a copy of it.
 
 This package does not install a Windows runtime of its own. Reference
-`Net4x.GtkSharp` as well if you want the gvsbuild download it brings,
+`GtkSharp4` as well if you want the gvsbuild download it brings,
 or put the library on the loader's search path yourself.
 
 ## How it binds

@@ -1,12 +1,12 @@
-# Net4x.GskSharp
+# GskSharp4
 
-GskSharp is a C# wrapper for Gsk, the Gtk 4 render-node scene graph and its renderers.
+GskSharp4 is a C# wrapper for Gsk, the Gtk 4 render-node scene graph and its renderers.
 
-Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
+Part of [GtkSharp4](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
 libraries.
 
 ```sh
-dotnet add package Net4x.GskSharp
+dotnet add package GskSharp4
 ```
 
 ## What it needs
@@ -18,7 +18,7 @@ At run time it needs the native library it wraps, **`libgtk-4.so.1`**
 (Debian and Ubuntu: `libgtk-4-1`). The binding does not carry a copy of it.
 
 This package does not install a Windows runtime of its own. Reference
-`Net4x.GtkSharp` as well if you want the gvsbuild download it brings,
+`GtkSharp4` as well if you want the gvsbuild download it brings,
 or put the library on the loader's search path yourself.
 
 Like Gdk, Gsk is not a separate shared library in Gtk 4: it lives inside `libgtk-4`.

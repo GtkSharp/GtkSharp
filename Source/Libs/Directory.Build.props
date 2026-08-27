@@ -1,40 +1,39 @@
 <Project>
-  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..\'))" />
+	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..\'))" />
 
-  <PropertyGroup>
-    <!-- The binding necessarily references its own deprecated types: a
+	<PropertyGroup>
+		<!-- The binding necessarily references its own deprecated types: a
          deprecated class still has properties, its methods still take and
          return it, and the hand-written layer wraps the same APIs. Warning
          about that here produces noise no consumer can act on and buries the
          [Obsolete] warnings aimed at them. Consumer code still warns. -->
-    <NoWarn>$(NoWarn);CS0612;CS0618</NoWarn>
+		<NoWarn>$(NoWarn);CS0612;CS0618</NoWarn>
 
-    <!-- The package is Net4x.GtkSharp; the assembly inside it is still
+		<!-- The package is GtkSharp4; the assembly inside it is still
          GtkSharp.dll. Only the id on the feed carries the prefix, because the
          assembly name and namespaces are what the generated code and the
          native symbol lookups are written against. -->
-    <PackageId>Net4x.$(MSBuildProjectName)</PackageId>
-
-    <TargetFramework>$(_GtkSharpLibTfm)</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>$(_GtkSharpBuildOutputDirectory)\$(Configuration)</OutputPath>
-    <!--  
+		<PackageId>$([System.String]::Copy('$(MSBuildProjectName)').Replace('Sharp', 'Sharp4'))</PackageId>
+		<TargetFramework>$(_GtkSharpLibTfm)</TargetFramework>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<OutputPath>$(_GtkSharpBuildOutputDirectory)\$(Configuration)</OutputPath>
+		<!--  
       Microsoft.DotNet.SharedFramework.Sdk requires our framework assemblies to be signed 
       (to have a "public key token")
     -->
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\GtkSharp.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>9</LangVersion>
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\GtkSharp.snk</AssemblyOriginatorKeyFile>
+		<LangVersion>9</LangVersion>
 
-    <!-- Every wrapper has a README.md beside its .csproj describing what it
+		<!-- Every wrapper has a README.md beside its .csproj describing what it
          binds and what it depends on; nuget.org shows it on the package page.
          Set here rather than in twelve project files, which means a new wrapper
          has to have one too: pack fails when the file is missing, which is the
          right way round. -->
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 </Project>

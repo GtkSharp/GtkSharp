@@ -1,12 +1,12 @@
-# Net4x.JavaScriptCoreSharp
+# JavaScriptCoreSharp4
 
-JavaScriptCoreSharp is a C# wrapper for JavaScriptCore, the JavaScript engine behind WebKitGTK, including the JSCValue bridge for reading results.
+JavaScriptCoreSharp4 is a C# wrapper for JavaScriptCore, the JavaScript engine behind WebKitGTK, including the JSCValue bridge for reading results.
 
-Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
+Part of [GtkSharp4](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
 libraries.
 
 ```sh
-dotnet add package Net4x.JavaScriptCoreSharp
+dotnet add package JavaScriptCoreSharp4
 ```
 
 ## What it needs
@@ -18,7 +18,7 @@ At run time it needs the native library it wraps, **`libjavascriptcoregtk-6.0.so
 (Debian and Ubuntu: `libjavascriptcoregtk-6.0-1`). The binding does not carry a copy of it.
 
 This package does not install a Windows runtime of its own. Reference
-`Net4x.GtkSharp` as well if you want the gvsbuild download it brings,
+`GtkSharp4` as well if you want the gvsbuild download it brings,
 or put the library on the loader's search path yourself.
 
 The gvsbuild bundle used on Windows ships no JavaScriptCore, so in practice this package is used on Linux and macOS. `JavaScriptCore.Global.IsSupported` reports whether the library could be loaded.
