@@ -1,12 +1,12 @@
-# CairoSharp4
+# CairoSharp
 
-CairoSharp4 is a C# wrapper for Cairo, the 2D vector drawing library Gtk renders through.
+CairoSharp is a C# wrapper for Cairo, the 2D vector drawing library Gtk renders through.
 
 Part of [GtkSharp](https://github.com/GtkSharp/GtkSharp), a C# binding for Gtk 4.22 and its companion
 libraries.
 
 ```sh
-dotnet add package CairoSharp4
+dotnet add package CairoSharp
 ```
 
 ## What it needs
@@ -18,7 +18,7 @@ At run time it needs the native library it wraps, **`libcairo.so.2`**
 (Debian and Ubuntu: `libcairo2`). The binding does not carry a copy of it.
 
 This package does not install a Windows runtime of its own. Reference
-`GtkSharp4` as well if you want the gvsbuild download it brings,
+`GtkSharp` as well if you want the gvsbuild download it brings,
 or put the library on the loader's search path yourself.
 
 CairoSharp stands on its own: it does not depend on Gtk and can be used for drawing without it.
