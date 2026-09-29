@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using P = System.IO.Path;
 using F = System.IO.File;
 
@@ -15,12 +16,32 @@ public class GAssembly
     public string Metadata { get; private set; }
 
     public string[] Deps { get; set; }
+
+    // Vendored GObject-Introspection inputs, e.g. "Source/Gir/Gtk-4.0.gir".
+    // Each one becomes a <namespace> in the assembly's api.xml; GdkSharp binds
+    // Gdk and GdkPixbuf together and so lists two.
+    //
+    // Only consumed by the RegenerateApi target, never by a normal build: the
+    // api.xml it produces is checked in, so building stays hermetic and needs
+    // no Gtk installed. No assembly lists any yet -- the Gtk 4 wiring arrives
+    // with the regenerated bindings.
+    public string[] Gir { get; set; }
+
+    // Extra .gir files passed to the converter for type resolution that are not
+    // themselves wrapper assemblies -- GObject-2.0.gir is the standard case,
+    // since GObject types are bound inside GLibSharp rather than separately.
+    public string[] GirIncludes { get; set; }
+
+    // Extra flags for GirToGapi, e.g. --group-prefix=.
+    public string ExtraGirArgs { get; set; }
     public string ExtraArgs { get; set; }
 
     public GAssembly(string name)
     {
         Cake = Settings.Cake;
         Deps = new string[0];
+        Gir = new string[0];
+        GirIncludes = new string[0];
 
         Name = name;
         Dir = P.Combine("Source", "Libs", name);
@@ -30,6 +51,61 @@ public class GAssembly
         Csproj = temppath + ".csproj";
         RawApi = temppath + "-api.xml";
         Metadata = temppath + ".metadata";
+    }
+
+    // Rewrites the CHECKED-IN api.xml from the vendored .gir. Deliberately not
+    // part of Prepare: regenerating an api.xml is an explicit, reviewable,
+    // committed act, the same discipline the repository already had when the
+    // files came from gapi2xml.pl by hand.
+    public void RegenerateApi()
+    {
+        if (Gir.Length == 0)
+            return;
+
+        // No .metadata means the assembly is hand-written and Prepare generates
+        // nothing from its api.xml, so there is nothing to regenerate either.
+        if (!Cake.FileExists(Metadata))
+        {
+            Cake.Information(Name + ": hand-written, api.xml left alone");
+            return;
+        }
+
+        foreach (var gir in Gir)
+        {
+            if (!Cake.FileExists(gir))
+            {
+                Cake.Error("Missing gir input for " + Name + ": " + gir);
+                throw new Exception("Missing gir input: " + gir);
+            }
+        }
+
+        // Dependencies are passed for type resolution only; they are not emitted.
+        var includes = string.Empty;
+        foreach (var dep in Deps)
+        {
+            var depAssembly = Settings.AssemblyList.FirstOrDefault(a => a.Name == dep);
+
+            if (depAssembly == null)
+                continue;
+
+            foreach (var gir in depAssembly.Gir)
+                includes += " --include=" + gir;
+        }
+
+        foreach (var extra in GirIncludes)
+            includes += " --include=" + extra;
+
+        var inputs = string.Empty;
+        foreach (var gir in Gir)
+            inputs += "--gir=" + gir + " ";
+
+        Cake.DotNetExecute("BuildOutput/Tools/GirToGapi.dll",
+            inputs +
+            "--out=" + RawApi + " " +
+            "--assembly-name=" + Name + " " +
+            (ExtraGirArgs ?? string.Empty) +
+            includes
+        );
     }
 
     public void Prepare()
