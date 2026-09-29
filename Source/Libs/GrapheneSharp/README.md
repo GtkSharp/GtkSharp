@@ -2,7 +2,7 @@
 
 GrapheneSharp4 is a C# wrapper for Graphene, the SIMD-backed types Gsk uses for points, rectangles, matrices and vectors.
 
-Part of [GtkSharp4](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
+Part of [GtkSharp4](https://github.com/GtkSharp/GtkSharp), a C# binding for Gtk 4.22 and its companion
 libraries.
 
 ```sh
@@ -34,4 +34,4 @@ when it is first called, not when the assembly loads.
 ## Licence
 
 GNU Library General Public License v2. Sources, samples and the full
-licence text are in the [repository](https://github.com/pieroviano/GtkSharp).
+licence text are in the [repository](https://github.com/GtkSharp/GtkSharp).
