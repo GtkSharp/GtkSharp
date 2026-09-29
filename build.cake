@@ -156,6 +156,19 @@ Task("Build")
     }
 });
 
+Task("Test")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
+    // Needs a Gtk 4 runtime: the tests call into it rather than merely
+    // compiling against it, which is the point -- a missing native export is a
+    // null delegate, not a link error, so only calling finds it.
+    DotNetTest("Source/Tests/GtkSharp.Tests/GtkSharp.Tests.csproj", new DotNetTestSettings
+    {
+        Configuration = configuration
+    });
+});
+
 Task("RunSamples")
     .IsDependentOn("Build")
     .Does(() =>
