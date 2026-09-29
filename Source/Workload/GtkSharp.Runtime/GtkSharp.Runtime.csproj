@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.Build.NoTargets">
-    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
     <PropertyGroup>
         <PackageOutputPath>$(SolutionDir)BuildOutput/NugetPackages/</PackageOutputPath>
     </PropertyGroup>
@@ -30,7 +30,7 @@
              directory is shared with anything else built for the same framework
              (the template projects land there too). The pack still ships them
              under the net$(_GtkSharpNetVersion)-gtk TFM consumers reference. -->
-        <None Include="@(ProjectReference->'$(_GtkSharpBuildOutputDirectory)$(Configuration)\$(_GtkSharpLibTfm)\%(FileName).dll')" />
+        <None Include="@(ProjectReference-&gt;'$(_GtkSharpBuildOutputDirectory)$(Configuration)\$(_GtkSharpLibTfm)\%(FileName).dll')" />
         <None Update="@(None)" CopyToOutputDirectory="PreserveNewest" Visible="false" Link="lib\$(_GtkSharpFullTfm)\%(FileName)%(Extension)" />
         <_PackageFiles Include="@(None)" PackagePath="lib\$(_GtkSharpFullTfm)" TargetPath="lib\$(_GtkSharpFullTfm)" />
     </ItemGroup>
@@ -40,5 +40,5 @@
     <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
         <PackageReference Include="Net4x.NuGetUtility" Version="1.0.13" PrivateAssets="all" />
     </ItemGroup>
-    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
 </Project>

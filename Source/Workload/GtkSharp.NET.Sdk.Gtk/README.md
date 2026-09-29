@@ -1,6 +1,6 @@
-# GtkSharp4.NET.Sdk.Gtk
+# GtkSharp.NET.Sdk.Gtk
 
-The workload manifest for `gtk`. It is what tells the .NET SDK which packs make up the workload and at which version. It is published once per SDK feature band, as `GtkSharp4.NET.Sdk.Gtk.Manifest-<band>`.
+The workload manifest for `gtk`. It is what tells the .NET SDK which packs make up the workload and at which version. It is published once per SDK feature band, as `GtkSharp.NET.Sdk.Gtk.Manifest-<band>`.
 
 ## Not referenced directly
 
@@ -19,7 +19,7 @@ A project then opts in through the target framework:
 ```
 
 To use the bindings without the workload, reference
-[`GtkSharp4`](https://www.nuget.org/packages/GtkSharp4) instead.
+[`GtkSharp`](https://www.nuget.org/packages/GtkSharp) instead.
 
 ## Licence
 
