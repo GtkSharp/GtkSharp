@@ -1,4 +1,4 @@
-# GtkSharp4.Workload.Template.VBNet
+# GtkSharp.Workload.Template.VBNet
 
 Visual Basic templates for Gtk 4 applications, built on
 [GtkSharp](https://github.com/GtkSharp/GtkSharp).
@@ -29,7 +29,7 @@ dotnet new gtk -o MyApp
 The generated project targets `net10.0-gtk4.22` and gets the bindings
 from the workload's packs, with no PackageReference of its own. Note the
 application template is `gtk` here, where the standalone
-`GtkSharp4.Template.*` packages call it `gtkapp`.
+`GtkSharp.Template.*` packages call it `gtkapp`.
 
 ## Licence
 

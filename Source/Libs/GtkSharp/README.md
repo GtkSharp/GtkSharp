@@ -1,4 +1,4 @@
-# GtkSharp4
+# GtkSharp
 
 GtkSharp is a C# wrapper for Gtk 4, the widget toolkit.
 
@@ -6,7 +6,7 @@ Part of [GtkSharp](https://github.com/GtkSharp/GtkSharp), a C# binding for Gtk 4
 libraries.
 
 ```sh
-dotnet add package GtkSharp4
+dotnet add package GtkSharp
 ```
 
 ## What it needs

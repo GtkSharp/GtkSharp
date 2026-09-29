@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.Build.NoTargets">
-    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
     <PropertyGroup>
         <PackageOutputPath>$(SolutionDir)BuildOutput/NugetPackages/</PackageOutputPath>
     </PropertyGroup>
@@ -11,7 +11,7 @@
     </PropertyGroup>
     <Import Project="..\Shared\Common.targets" />
     <PropertyGroup>
-        <PackageId>$(PackageId).Manifest-$(_GtkSharpManifestVersionBand)</PackageId>
+        <PackageId>$(MSBuildProjectName).Manifest-$(_GtkSharpManifestVersionBand)</PackageId>
         <Description>GtkSharp workload manifest</Description>
     </PropertyGroup>
     <PropertyGroup>
@@ -49,5 +49,5 @@
             <FileWrites Include="$(IntermediateOutputPath)WorkloadManifest.json" />
         </ItemGroup>
     </Target>
-    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
 </Project>

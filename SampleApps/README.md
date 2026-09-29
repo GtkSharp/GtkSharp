@@ -38,7 +38,7 @@ from your distribution.
 
 ## The package-id prefix
 
-This branch packs the package ids unprefixed (`GtkSharp4`, `GLibSharp4`, …). The
+This branch packs the package ids unprefixed (`GtkSharp`, `GLibSharp`, …). The
 `net4x.gtk4` branch publishes the same packages with a `4` suffix on the
 feed id. **Only the id differs** — the assemblies inside are `GtkSharp.dll`,
 `GLibSharp.dll` and so on, and the namespaces are unprefixed, so not a line of
