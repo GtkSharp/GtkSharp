@@ -2,7 +2,7 @@
 
 AdwaitaSharp is a C# wrapper for libadwaita, the GNOME design-language widgets and adaptive layouts built on Gtk 4.
 
-Part of [GtkSharp](https://github.com/pieroviano/GtkSharp), a C# binding for Gtk 4.22 and its companion
+Part of [GtkSharp](https://github.com/GtkSharp/GtkSharp), a C# binding for Gtk 4.22 and its companion
 libraries.
 
 ```sh
@@ -33,4 +33,4 @@ when it is first called, not when the assembly loads.
 ## Licence
 
 GNU Library General Public License v2. Sources, samples and the full
-licence text are in the [repository](https://github.com/pieroviano/GtkSharp).
+licence text are in the [repository](https://github.com/GtkSharp/GtkSharp).
