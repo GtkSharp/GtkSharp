@@ -24,4 +24,4 @@ To use the bindings without the workload, reference
 ## Licence
 
 GNU Library General Public License v2. Sources and the full licence text
-are in the [repository](https://github.com/pieroviano/GtkSharp).
+are in the [repository](https://github.com/GtkSharp/GtkSharp).
