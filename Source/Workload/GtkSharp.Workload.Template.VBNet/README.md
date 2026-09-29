@@ -1,24 +1,37 @@
 # GtkSharp.Workload.Template.VBNet
 
-`dotnet new` templates for Gtk 4 applications in Visual Basic, for use with the `gtk`
-.NET workload.
+Visual Basic templates for Gtk 4 applications, built on
+[GtkSharp](https://github.com/GtkSharp/GtkSharp).
 
-These are the workload-flavoured templates: the project they generate targets
-`net10.0-gtk` and relies on the SDK to resolve the bindings, rather than
-referencing the `GtkSharp` package.
+## Installed with the workload
+
+These templates ship as part of the `gtk` .NET SDK workload rather than
+being installed on their own:
 
 ```sh
 dotnet workload install gtk
 dotnet new gtkapp -o HelloGtk
 ```
 
-If you are not using the workload, install
-[`GtkSharp.Template.VBNet`](https://www.nuget.org/packages/GtkSharp.Template.VBNet)
-instead.
+## Templates
 
-## Links
+| Short name | Creates |
+| --- | --- |
+| `gtk` | A Gtk application, ready to run |
+| `gtkwindow` | A window class |
+| `gtkdialog` | A dialog class |
+| `gtkwidget` | A widget class |
 
-- [Source and issues](https://github.com/GtkSharp/GtkSharp)
-- [Getting started](https://github.com/GtkSharp/GtkSharp/blob/develop/Docs/getting-started.md)
+```sh
+dotnet new gtk -o MyApp
+```
 
-Licensed under the LGPL v2.1.
+The generated project targets `net10.0-gtk4.22` and gets the bindings
+from the workload's packs, with no PackageReference of its own. Note the
+application template is `gtk` here, where the standalone
+`GtkSharp.Template.*` packages call it `gtkapp`.
+
+## Licence
+
+GNU Library General Public License v2. Sources and the full licence text
+are in the [repository](https://github.com/GtkSharp/GtkSharp).

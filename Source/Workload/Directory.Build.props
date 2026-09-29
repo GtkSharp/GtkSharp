@@ -2,7 +2,12 @@
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..\'))" />
 
   <PropertyGroup>
-    <_GtkSharpVersion>$([System.Text.RegularExpressions.Regex]::Match($(Version), '(\d+)\.(\d+)'))</_GtkSharpVersion>
+    <!-- The Gtk release, not the package version. This used to be the first two
+         components of $(Version), which worked only while the package version
+         was itself a Gtk version. It is now a build date, which says nothing
+         about Gtk, so the TFM reads the explicit property instead and
+         net$(_GtkSharpNetVersion)-gtk4.22 stays put for consumers. -->
+    <_GtkSharpVersion>$(_GtkSharpPlatformVersion)</_GtkSharpVersion>
     <_GtkSharpTfm>net$(_GtkSharpNetVersion)-gtk</_GtkSharpTfm>
     <_GtkSharpFullTfm>net$(_GtkSharpNetVersion)-gtk$(_GtkSharpVersion)</_GtkSharpFullTfm>
     <_GtkSharpManifestVersionBand Condition=" '$(_GtkSharpManifestVersionBand)' == '' ">8.0.200</_GtkSharpManifestVersionBand>

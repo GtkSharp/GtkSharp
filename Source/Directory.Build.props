@@ -10,13 +10,58 @@
 		     .NET Framework 4.x, Mono. Building a second, identical net10.0 copy
 		     only doubled the build and put two indistinguishable assemblies in
 		     each package. The workload ref/runtime packs harvest this output and
-		     ship it under net$(_GtkSharpNetVersion)-gtk4.22, which stays the TFM
-		     consumers reference. -->
+		     ship it under net$(_GtkSharpNetVersion)-gtk$(_GtkSharpPlatformVersion),
+		     which stays the TFM consumers reference. -->
 		<_GtkSharpLibTfm>netstandard2.0</_GtkSharpLibTfm>
 		<_GtkSharpSourceDirectory>$(MSBuildThisFileDirectory)</_GtkSharpSourceDirectory>
 		<_GtkSharpBuildOutputDirectory>$(MSBuildThisFileDirectory)..\BuildOutput\</_GtkSharpBuildOutputDirectory>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageProjectUrl>https://github.com/GtkSharp/GtkSharp</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/GtkSharp/GtkSharp</RepositoryUrl>
+
+		<!-- The Gtk release these bindings describe. It is what builds the public
+		     TFM, net$(_GtkSharpNetVersion)-gtk$(_GtkSharpPlatformVersion), and it
+		     is deliberately its own property: it used to be read out of the
+		     package version with a regex, and the package version is now a date,
+		     which shares nothing with the Gtk it binds. Bump this when moving to
+		     a new Gtk, and nothing else. -->
+		<_GtkSharpPlatformVersion>4.22</_GtkSharpPlatformVersion>
+
+		<!-- The first three components of every package version. build.cake holds
+		     the same string in its baseVersion constant; the two have to move
+		     together when the bound Gtk changes. -->
+		<_GtkSharpBaseVersion>4.22.4</_GtkSharpBaseVersion>
+	</PropertyGroup>
+
+	<!-- build.cake owns the package version: Init sets
+	     $(_GtkSharpBaseVersion).<yy><day-of-year> and passes it as -p:Version.
+	     The fallback here is the same expression, so a bare `dotnet build`
+	     agrees with Cake rather than inventing 1.0.0.
+
+	     The split exists because recomputes Version as
+	     $(VersionPrefix).$(VersionSuffix) from inside a target, where even a
+	     global property loses. Splitting the incoming version on its last dot
+	     gives 4.22.4 and the date, so that recomputation rebuilds it exactly,
+	     and a prerelease suffix rides along on the last component. -->
+	<PropertyGroup>
+		<_GtkSharpPackageVersion>$(Version)</_GtkSharpPackageVersion>
+		<_GtkSharpPackageVersion Condition="'$(_GtkSharpPackageVersion)' == ''">$(_GtkSharpBaseVersion).$([System.DateTime]::Now.ToString("yy"))$([System.DateTime]::Now.DayOfYear.ToString("000"))</_GtkSharpPackageVersion>
+		<VersionPrefix>$(_GtkSharpPackageVersion.Substring(0, $(_GtkSharpPackageVersion.LastIndexOf('.'))))</VersionPrefix>
+		<VersionSuffix>$(_GtkSharpPackageVersion.Substring($([MSBuild]::Add($(_GtkSharpPackageVersion.LastIndexOf('.')), 1))))</VersionSuffix>
+	</PropertyGroup>
+
+	<!-- The assemblies keep the Gtk-derived identity. They are strong-named, so
+	     an AssemblyVersion that moved with the package version would mint a new
+	     identity every day the packages are published and break every existing
+	     binding reference. The date stays discoverable through
+	     InformationalVersion. -->
+	<PropertyGroup>
+		<AssemblyVersion>4.22.4.0</AssemblyVersion>
+		<FileVersion>4.22.4.0</FileVersion>
+		<InformationalVersion>$(_GtkSharpPackageVersion)</InformationalVersion>
+	</PropertyGroup>
 	<PropertyGroup>
 		<PackageProjectUrl>https://github.com/GtkSharp/GtkSharp</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/GtkSharp/GtkSharp</RepositoryUrl>

@@ -1,22 +1,27 @@
 # GtkSharp.Runtime
 
-Runtime assemblies for the `gtk` .NET workload — the implementations that ship
-with an application targeting `net10.0-gtk`.
+The runtime pack for the `gtk` workload: the implementation assemblies that ship with an application targeting `net10.0-gtk4.22`.
 
-> **You do not install this package directly.** It is part of the `gtk`
-> .NET workload and is resolved by the SDK. Install the workload instead:
-> 
-> ```sh
-> dotnet workload install gtk
-> ```
-> 
-> If you would rather not use a workload at all, reference the
-> [`GtkSharp`](https://www.nuget.org/packages/GtkSharp) package directly —
-> it needs no SDK integration.
+## Not referenced directly
 
-## Links
+This package is a **runtime pack** of the `gtk` .NET SDK workload. You do not
+add it with `dotnet add package`; the SDK resolves it by name from the
+workload manifest when you install the workload:
 
-- [Source and issues](https://github.com/GtkSharp/GtkSharp)
-- [Getting started](https://github.com/GtkSharp/GtkSharp/blob/develop/Docs/getting-started.md)
+```sh
+dotnet workload install gtk
+```
 
-Licensed under the LGPL v2.1.
+A project then opts in through the target framework:
+
+```xml
+<TargetFramework>net10.0-gtk4.22</TargetFramework>
+```
+
+To use the bindings without the workload, reference
+[`GtkSharp`](https://www.nuget.org/packages/GtkSharp) instead.
+
+## Licence
+
+GNU Library General Public License v2. Sources and the full licence text
+are in the [repository](https://github.com/GtkSharp/GtkSharp).

@@ -1,34 +1,38 @@
 # WebkitGtkSharp
 
-C# bindings for **WebKitGTK 6** — an embeddable web view, user scripts, and two-way messaging with page content.
+WebkitGtkSharp is a C# wrapper for WebKitGTK 6.0: an embeddable browser engine widget for Gtk 4.
 
-## What it binds
+Part of [GtkSharp](https://github.com/GtkSharp/GtkSharp), a C# binding for Gtk 4.22 and its companion
+libraries.
 
-Native library: `libwebkitgtk-6.0`
+```sh
+dotnet add package WebkitGtkSharp
+```
 
-Depends on: GtkSharp and its dependencies, JavaScriptCoreSharp
+## What it needs
 
-> **Not available on Windows.** The gvsbuild runtime ships no WebKit, so guard
-> use with `WebKit.Global.IsSupported`.
+Targets `netstandard2.0`, so one build serves every consumer: .NET 10,
+.NET Framework 4.x and Mono alike.
 
-## Requirements
+At run time it needs the native library it wraps, **`libwebkitgtk-6.0.so.4`**
+(Debian and Ubuntu: `libwebkitgtk-6.0-4`). The binding does not carry a copy of it.
 
-- **.NET 10** — or any runtime that resolves `netstandard2.0`: the package is
-  built for that and nothing else, so .NET Framework 4.x and Mono get the same
-  assembly.
-- **A Gtk 4 runtime must be installed.** This package binds the real libraries;
-  it does not contain them. On Windows the `GtkSharp` package downloads a
-  gvsbuild runtime into `%LOCALAPPDATA%\Gtk\4.22.4` on first build; on Linux and
-  macOS install them from your package manager.
+On Windows that runtime is installed for you: this package pulls in
+`GtkSharp.targets`, which downloads a gvsbuild Gtk 4 build into
+`%LOCALAPPDATA%\Gtk\4.22.4` before the first build. Set
+`SkipGtkInstall=true` to manage it yourself.
 
-Native functions are resolved by **runtime symbol lookup**, not `DllImport`, so a
-missing library or a missing export is not a link error — it surfaces the first
-time the call is reached.
+The gvsbuild bundle used on Windows ships no WebKit, so in practice this package is used on Linux and macOS. `WebKit.Global.IsSupported` reports whether the library could be loaded. WebKit renders in sandboxed helper processes, which need an unprivileged user namespace; inside a container that is often refused, and WebKit aborts the process rather than failing the call.
 
-## Links
+## How it binds
 
-- [Source and issues](https://github.com/GtkSharp/GtkSharp)
-- [Getting started](https://github.com/GtkSharp/GtkSharp/blob/develop/Docs/getting-started.md)
-- [Migrating from gtk-sharp 2 or 3](https://github.com/GtkSharp/GtkSharp/blob/develop/Docs/migrating-to-gtk4.md)
+There is no glue library. Every native entry point is resolved by symbol
+lookup at run time rather than through a fixed `DllImport` library name,
+which is what lets one package work across Windows, Linux and macOS. It
+also means a symbol missing from the installed native library surfaces
+when it is first called, not when the assembly loads.
 
-Licensed under the LGPL v2.1.
+## Licence
+
+GNU Library General Public License v2. Sources, samples and the full
+licence text are in the [repository](https://github.com/GtkSharp/GtkSharp).

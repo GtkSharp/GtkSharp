@@ -1,36 +1,32 @@
 # GtkSharp.Template.VBNet
 
-`dotnet new` templates for writing Gtk 4 applications in Visual Basic.
+Visual Basic templates for Gtk 4 applications, built on
+[GtkSharp](https://github.com/GtkSharp/GtkSharp).
 
-## Install
+## Installing
 
 ```sh
 dotnet new install GtkSharp.Template.VBNet
 ```
 
-## Use
+## Templates
+
+| Short name | Creates |
+| --- | --- |
+| `gtkapp` | A Gtk application, ready to run |
+| `gtkwindow` | A window class |
+| `gtkdialog` | A dialog class |
+| `gtkwidget` | A widget class |
 
 ```sh
-dotnet new gtkapp -o HelloGtk
-cd HelloGtk
-dotnet run
+dotnet new gtkapp -o MyApp
 ```
 
-You get a window with a label and a button that counts clicks, built from an
-embedded `.ui` file and wired up in code.
+The generated project references `GtkSharp` directly, so it needs
+no workload. It still needs a Gtk 4 runtime present; on Windows the
+package installs one on first build.
 
-Item templates are included too: `gtkwindow`, `gtkwidget` and `gtkdialog`.
+## Licence
 
-> The `gtkdialog` item template still contains Gtk 3 markup (`GtkButtonBox`,
-> `internal-child="vbox"`, `use-stock`), all of which Gtk 4 removed. Treat it
-> as unverified; the application template is the one that is known good.
-
-These templates reference the [`GtkSharp`](https://www.nuget.org/packages/GtkSharp)
-package directly and need no workload.
-
-## Links
-
-- [Source and issues](https://github.com/GtkSharp/GtkSharp)
-- [Getting started](https://github.com/GtkSharp/GtkSharp/blob/develop/Docs/getting-started.md)
-
-Licensed under the LGPL v2.1.
+GNU Library General Public License v2. Sources and the full licence text
+are in the [repository](https://github.com/GtkSharp/GtkSharp).

@@ -1,33 +1,35 @@
 # GLibSharp
 
-C# bindings for **GLib** and **GObject** — the object system, main loop, value boxing and data types the whole Gtk stack rests on.
+GLibSharp is a C# wrapper for GLib and GObject: the type system, main loop, and the primitives every other binding here is built on.
 
-Referenced by every other package here. `GLib.Object`, `GLib.Value`, `GLib.Variant`, `GLib.Idle`, `GLib.Timeout`, `GLib.KeyFile`, `GLib.Bytes` and the signal machinery live here.
+Part of [GtkSharp](https://github.com/GtkSharp/GtkSharp), a C# binding for Gtk 4.22 and its companion
+libraries.
 
-## What it binds
+```sh
+dotnet add package GLibSharp
+```
 
-Native library: `libglib-2.0` and `libgobject-2.0`
+## What it needs
 
-Unlike most of this repository, **GLibSharp is written by hand rather than generated** — GLib's introspection data does not describe the parts a binding needs most.
+Targets `netstandard2.0`, so one build serves every consumer: .NET 10,
+.NET Framework 4.x and Mono alike.
 
-## Requirements
+At run time it needs the native library it wraps, **`libglib-2.0.so.0`**
+(Debian and Ubuntu: `libglib2.0-0`). The binding does not carry a copy of it.
 
-- **.NET 10** — or any runtime that resolves `netstandard2.0`: the package is
-  built for that and nothing else, so .NET Framework 4.x and Mono get the same
-  assembly.
-- **A Gtk 4 runtime must be installed.** This package binds the real libraries;
-  it does not contain them. On Windows the `GtkSharp` package downloads a
-  gvsbuild runtime into `%LOCALAPPDATA%\Gtk\4.22.4` on first build; on Linux and
-  macOS install them from your package manager.
+This package does not install a Windows runtime of its own. Reference
+`GtkSharp` as well if you want the gvsbuild download it brings,
+or put the library on the loader's search path yourself.
 
-Native functions are resolved by **runtime symbol lookup**, not `DllImport`, so a
-missing library or a missing export is not a link error — it surfaces the first
-time the call is reached.
+## How it binds
 
-## Links
+There is no glue library. Every native entry point is resolved by symbol
+lookup at run time rather than through a fixed `DllImport` library name,
+which is what lets one package work across Windows, Linux and macOS. It
+also means a symbol missing from the installed native library surfaces
+when it is first called, not when the assembly loads.
 
-- [Source and issues](https://github.com/GtkSharp/GtkSharp)
-- [Getting started](https://github.com/GtkSharp/GtkSharp/blob/develop/Docs/getting-started.md)
-- [Migrating from gtk-sharp 2 or 3](https://github.com/GtkSharp/GtkSharp/blob/develop/Docs/migrating-to-gtk4.md)
+## Licence
 
-Licensed under the LGPL v2.1.
+GNU Library General Public License v2. Sources, samples and the full
+licence text are in the [repository](https://github.com/GtkSharp/GtkSharp).

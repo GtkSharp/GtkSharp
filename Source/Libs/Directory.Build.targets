@@ -1,0 +1,31 @@
+<Project>
+	<!-- MSBuild stops at the first Directory.Build.targets it finds walking up,
+	     so the one beside Source/ has to be imported by hand. It carries
+	     GeneratePackageOnBuild and PackageOutputPath for every project here. -->
+	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildThisFileDirectory)..\'))" />
+
+	<!-- Every wrapper ships a .snupkg beside its .nupkg: these are bindings, and
+	     stepping into one is how a consumer finds out what the P/Invoke layer did
+	     with their arguments.
+
+	     It has to be asserted here rather than in Directory.Build.props, and this
+	     is the whole reason this file exists. Net4x.NuGetUtility's
+	     NuGet.Utility.props is imported at the top of each wrapper .csproj - i.e.
+	     after Directory.Build.props - and sets IncludeSymbols=false whenever the
+	     configuration is not Debug, unconditionally, in a PropertyGroup guarded
+	     only on GeneratePackageOnBuild. The repo-wide IncludeSymbols=true in
+	     Source/Directory.Build.props therefore lost on Windows Release builds, and
+	     silently: pack succeeded and simply produced no symbol package. It still
+	     held on Linux, where that import is skipped, so CI published .snupkg the
+	     local build did not. Directory.Build.targets is imported after the project
+	     body, so here it wins on both.
+
+	     The workload and template packages deliberately keep IncludeSymbols=false
+	     (Source/Workload/Shared/*.targets): they carry no assemblies of their own,
+	     so a symbol package for them would be empty. -->
+	<PropertyGroup>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+
+</Project>

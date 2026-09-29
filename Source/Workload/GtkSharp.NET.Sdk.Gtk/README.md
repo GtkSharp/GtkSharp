@@ -1,26 +1,27 @@
 # GtkSharp.NET.Sdk.Gtk
 
-The workload manifest for `gtk`. It tells the .NET SDK which packs make up the
-workload and what versions to resolve.
+The workload manifest for `gtk`. It is what tells the .NET SDK which packs make up the workload and at which version. It is published once per SDK feature band, as `GtkSharp.NET.Sdk.Gtk.Manifest-<band>`.
 
-A manifest is published once per SDK **feature band**, which is why this package
-appears several times with a band in its version — `10.0.100`, `10.0.200` and so
-on. An SDK only ever reads the manifest matching its own band.
+## Not referenced directly
 
-> **You do not install this package directly.** It is part of the `gtk`
-> .NET workload and is resolved by the SDK. Install the workload instead:
-> 
-> ```sh
-> dotnet workload install gtk
-> ```
-> 
-> If you would rather not use a workload at all, reference the
-> [`GtkSharp`](https://www.nuget.org/packages/GtkSharp) package directly —
-> it needs no SDK integration.
+This package is a **manifest** of the `gtk` .NET SDK workload. You do not
+add it with `dotnet add package`; the SDK resolves it by name from the
+workload manifest when you install the workload:
 
-## Links
+```sh
+dotnet workload install gtk
+```
 
-- [Source and issues](https://github.com/GtkSharp/GtkSharp)
-- [Getting started](https://github.com/GtkSharp/GtkSharp/blob/develop/Docs/getting-started.md)
+A project then opts in through the target framework:
 
-Licensed under the LGPL v2.1.
+```xml
+<TargetFramework>net10.0-gtk4.22</TargetFramework>
+```
+
+To use the bindings without the workload, reference
+[`GtkSharp`](https://www.nuget.org/packages/GtkSharp) instead.
+
+## Licence
+
+GNU Library General Public License v2. Sources and the full licence text
+are in the [repository](https://github.com/GtkSharp/GtkSharp).

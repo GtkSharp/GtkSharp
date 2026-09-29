@@ -1,18 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <Description>GtkSourceSharp is a C# wrapper for the GtkSourceView library.</Description>
-    <PackageTags>sourceview;sourceviewsharp;sourceview-sharp;wrapper</PackageTags>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\Shared\*.cs">
-      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GtkSharp\GtkSharp.csproj" />
-  </ItemGroup>
-
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    
+    <PropertyGroup>
+        <TargetFramework>$(_GtkSharpLibTfm)</TargetFramework>
+        <PackageOutputPath>$(SolutionDir)BuildOutput/NugetPackages/</PackageOutputPath>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <Version>$(VersionPrefix).$(VersionSuffix)</Version>
+        <Description>GtkSourceSharp is a C# wrapper for the GtkSourceView library.</Description>
+        <PackageTags>sourceview;sourceviewsharp;sourceview-sharp;wrapper</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\Shared\*.cs">
+            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GtkSharp\GtkSharp.csproj" />
+    </ItemGroup>
+    <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="README.md" Link="README.md" Pack="true" PackagePath="\README.md" />
+        <Content Include="$(SolutionDir)License.txt" Link="License.txt" Pack="true" PackagePath="\License.txt" Condition="Exists('$(SolutionDir)License.txt')" />
+    </ItemGroup>
+    
 </Project>

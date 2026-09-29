@@ -15,7 +15,30 @@
 // VARS
 
 Settings.Cake = Context;
-Settings.Version = Argument("BuildVersion", "4.22.4.1");
+
+// 4.22.4 is the Gtk release these bindings describe and stays the version's
+// first three components. The fourth is the build date: the last two digits of
+// the year followed by the day of the year, zero padded to three so that
+// 7 January (4.22.4.26007) still sorts below 7 August (4.22.4.26219).
+// Computed on every run rather than written down, so it moves on its own.
+//
+// That shape is also what everything downstream already expects: the workload
+// manifest splits the first three components off with a regex, and
+// rebuilds the version as $(VersionPrefix).$(VersionSuffix),
+// which here is 4.22.4 and the date.
+//
+// Source/Directory.Build.props carries the identical expression as its
+// fallback, so a bare `dotnet build` agrees with what Cake passes. The base
+// below and _GtkSharpBaseVersion there have to move together.
+const string baseVersion = "4.22.4";
+
+static string DateVersion()
+{
+    var today = DateTime.Now;
+    return $"{baseVersion}.{today:yy}{today.DayOfYear:000}";
+}
+
+Settings.Version = Argument("BuildVersion", DateVersion());
 Settings.BuildTarget = Argument("BuildTarget", "Default");
 Settings.Assembly = Argument("Assembly", "");
 var configuration = Argument("Configuration", "Release");
@@ -31,7 +54,14 @@ Task("Init")
 {
     if (!string.IsNullOrEmpty(EnvironmentVariable("GITHUB_ACTIONS")))
     {
-        Settings.Version = "4.22.4." + EnvironmentVariable("GITHUB_RUN_NUMBER");
+        // The date is the version on CI too, so a package built here and one
+        // built locally on the same day are the same version.
+        //
+        // Note what that means for the push step: the date does not change
+        // within a day, so a second publish on the same day is a duplicate and
+        // the feed will reject it. Append the run number here if that becomes a
+        // problem.
+        Settings.Version = DateVersion();
 
         if (EnvironmentVariable("GITHUB_REF") != "refs/heads/gtk4")
             Settings.Version += "-develop";
@@ -216,6 +246,9 @@ const string manifestName = "GtkSharp.NET.Sdk.Gtk";
 var manifestPack = $"{manifestName}.Manifest-{TargetEnvironment.DotNetCliFeatureBand}.{Settings.Version}.nupkg";
 var manifestPackPath = $"BuildOutput/NugetPackages/{manifestPack}";
 
+// These are package ids on the feed and the pack ids the workload manifest
+// resolves by name, so they match PackageId in Source/Workload/Shared/Common.targets
+// and the entries in WorkloadManifest.in.json.
 var packNames = new List<string>()
 {
     "GtkSharp.Ref",
