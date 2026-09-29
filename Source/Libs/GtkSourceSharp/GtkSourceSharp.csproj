@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
+    
     <PropertyGroup>
         <TargetFramework>$(_GtkSharpLibTfm)</TargetFramework>
         <PackageOutputPath>$(SolutionDir)BuildOutput/NugetPackages/</PackageOutputPath>
@@ -17,12 +17,6 @@
     <ItemGroup>
         <ProjectReference Include="..\GtkSharp\GtkSharp.csproj" />
     </ItemGroup>
-    <!-- Build-time only: PrivateAssets keeps it out of the produced package. The
-       condition is on the build host, so packages published by CI (which packs
-       in a debian:forky container) go without it. -->
-    <ItemGroup>
-        <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
-    </ItemGroup>
     <PropertyGroup>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
@@ -30,5 +24,5 @@
         <Content Include="README.md" Link="README.md" Pack="true" PackagePath="\README.md" />
         <Content Include="$(SolutionDir)License.txt" Link="License.txt" Pack="true" PackagePath="\License.txt" Condition="Exists('$(SolutionDir)License.txt')" />
     </ItemGroup>
-    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="$([MSBuild]::IsOSPlatform('Windows')) and Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
+    
 </Project>

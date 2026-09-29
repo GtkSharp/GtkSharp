@@ -24,7 +24,7 @@ Settings.Cake = Context;
 //
 // That shape is also what everything downstream already expects: the workload
 // manifest splits the first three components off with a regex, and
-// Net4x.NuGetUtility rebuilds the version as $(VersionPrefix).$(VersionSuffix),
+// rebuilds the version as $(VersionPrefix).$(VersionSuffix),
 // which here is 4.22.4 and the date.
 //
 // Source/Directory.Build.props carries the identical expression as its

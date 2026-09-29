@@ -20,19 +20,6 @@
 	<PropertyGroup>
 		<PackageProjectUrl>https://github.com/GtkSharp/GtkSharp</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/GtkSharp/GtkSharp</RepositoryUrl>
-		<MinimalDirectoryNuGetProps>true</MinimalDirectoryNuGetProps>
-		<!-- The version the projects' PackageReference and its two Imports both
-		     resolve through. It lives here rather than in the Directory.Nuget.Props
-		     the utility generates, because that file is gitignored (*.nuget.props),
-		     is not a name MSBuild imports on its own, and ends by setting this
-		     property unconditionally to a different version. -->
-		<NuGetUtilityVersion>1.0.13</NuGetUtilityVersion>
-
-		<!-- The utility does not obfuscate these. They are bindings whose type and
-		     member names are the API, and it would only run on a Windows Release
-		     build, so it would also make local packages differ from the ones CI
-		     publishes. -->
-		<DontObfuscate>true</DontObfuscate>
 
 		<!-- The Gtk release these bindings describe. It is what builds the public
 		     TFM, net$(_GtkSharpNetVersion)-gtk$(_GtkSharpPlatformVersion), and it
@@ -53,7 +40,7 @@
 	     The fallback here is the same expression, so a bare `dotnet build`
 	     agrees with Cake rather than inventing 1.0.0.
 
-	     The split exists because Net4x.NuGetUtility recomputes Version as
+	     The split exists because recomputes Version as
 	     $(VersionPrefix).$(VersionSuffix) from inside a target, where even a
 	     global property loses. Splitting the incoming version on its last dot
 	     gives 4.22.4 and the date, so that recomputation rebuilds it exactly,
