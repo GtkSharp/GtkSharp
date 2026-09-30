@@ -29,9 +29,15 @@ namespace GLib {
 		delegate IntPtr d_g_slist_copy(IntPtr l);
 		static d_g_slist_copy g_slist_copy = FuncLoader.LoadFunction<d_g_slist_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_slist_copy"));
 		
+		// g_list_copy copies the spine and not the elements, so the clone owns
+		// the chain it was handed but not what is in it. The element type has to
+		// come across too: without it DataMarshal falls through to asking whether
+		// each pointer is a GObject, and for a list of strings that means
+		// dereferencing a char* as a GTypeInstance. Cloning a list of strings
+		// took the process down with an access violation.
 		public override object Clone ()
 		{
-			return new SList (g_slist_copy (Handle));
+			return new SList (g_slist_copy (Handle), element_type, true, false);
 		}
 		
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]

@@ -16,6 +16,7 @@ public class GAssembly
     public string Metadata { get; private set; }
 
     public string[] Deps { get; set; }
+    public string ExtraArgs { get; set; }
 
     // Vendored GObject-Introspection inputs, e.g. "Source/Gir/Gtk-4.0.gir".
     // Each one becomes a <namespace> in the assembly's api.xml; GdkSharp binds
@@ -23,8 +24,7 @@ public class GAssembly
     //
     // Only consumed by the RegenerateApi target, never by a normal build: the
     // api.xml it produces is checked in, so building stays hermetic and needs
-    // no Gtk installed. No assembly lists any yet -- the Gtk 4 wiring arrives
-    // with the regenerated bindings.
+    // no Gtk installed.
     public string[] Gir { get; set; }
 
     // Extra .gir files passed to the converter for type resolution that are not
@@ -32,9 +32,14 @@ public class GAssembly
     // since GObject types are bound inside GLibSharp rather than separately.
     public string[] GirIncludes { get; set; }
 
+    // Fail the build when a .metadata rule matches nothing. Turned on per
+    // assembly in Phase 4, once that assembly's rules have been triaged --
+    // before then every assembly has known-stale rules and this would just
+    // block the build.
+    public bool StrictMetadata { get; set; }
+
     // Extra flags for GirToGapi, e.g. --group-prefix=.
     public string ExtraGirArgs { get; set; }
-    public string ExtraArgs { get; set; }
 
     public GAssembly(string name)
     {
@@ -64,6 +69,12 @@ public class GAssembly
 
         // No .metadata means the assembly is hand-written and Prepare generates
         // nothing from its api.xml, so there is nothing to regenerate either.
+        // GLibSharp is the case that matters: its api.xml is a small
+        // hand-maintained stub of the few types codegen cannot infer, while
+        // GObject itself is hardcoded in SymbolTable.cs as GLib.Object.
+        // Overwriting it with a full conversion of GLib + GObject introduces a
+        // GObject namespace that nothing implements. Its gir is listed purely so
+        // dependents can --include it.
         if (!Cake.FileExists(Metadata))
         {
             Cake.Information(Name + ": hand-written, api.xml left alone");
@@ -121,7 +132,8 @@ public class GAssembly
             var symfile = P.Combine(Dir, Name + "-symbols.xml");
             Cake.DotNetExecute("BuildOutput/Tools/GapiFixup.dll", 
                 "--metadata=" + Metadata + " " + "--api=" + tempapi + 
-                (Cake.FileExists(symfile) ? " --symbols=" + symfile : string.Empty)
+                (Cake.FileExists(symfile) ? " --symbols=" + symfile : string.Empty) +
+                (StrictMetadata ? " --strict" : string.Empty)
             );
 
             var extraargs = ExtraArgs + " ";

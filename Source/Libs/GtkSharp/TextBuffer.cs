@@ -40,11 +40,7 @@ namespace Gtk {
 			Delete (ref start, ref end);
 		}
 
-		// overload to paste clipboard contents at cursor editable by default.
-		public void PasteClipboard (Gtk.Clipboard clipboard)
-		{
-			gtk_text_buffer_paste_clipboard(Handle, clipboard.Handle, IntPtr.Zero, true);
-		}
+		// PasteClipboard(Clipboard): GtkClipboard is gone; Gtk 4 uses GdkClipboard.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_gtk_text_buffer_insert(IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len);
 		static d_gtk_text_buffer_insert gtk_text_buffer_insert = FuncLoader.LoadFunction<d_gtk_text_buffer_insert>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_insert"));
@@ -140,53 +136,7 @@ namespace Gtk {
 			gtk_text_buffer_insert_at_cursor(Handle, native, -1);
 			GLib.Marshaller.Free (native);
 		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_text_buffer_serialize(IntPtr raw, IntPtr content_buffer, IntPtr format, ref Gtk.TextIter start, ref Gtk.TextIter end, out UIntPtr length);
-		static d_gtk_text_buffer_serialize gtk_text_buffer_serialize = FuncLoader.LoadFunction<d_gtk_text_buffer_serialize>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_serialize"));
 
-		public byte[] Serialize(Gtk.TextBuffer content_buffer, Gdk.Atom format, Gtk.TextIter start, Gtk.TextIter end)
-		{
-			UIntPtr length;
-			IntPtr raw_ret = gtk_text_buffer_serialize (Handle, content_buffer == null ? IntPtr.Zero : content_buffer.Handle, format == null ? IntPtr.Zero : format.Handle, ref start, ref end, out length);
-			if (raw_ret == IntPtr.Zero)
-				return new byte [0];
-			int sz = (int) (uint) length;
-			byte[] ret = new byte [sz];
-			Marshal.Copy (raw_ret, ret, 0, sz);
-			return ret;
-		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_text_buffer_get_serialize_formats(IntPtr raw, out int n_formats);
-		static d_gtk_text_buffer_get_serialize_formats gtk_text_buffer_get_serialize_formats = FuncLoader.LoadFunction<d_gtk_text_buffer_get_serialize_formats>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_get_serialize_formats"));
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_text_buffer_get_deserialize_formats(IntPtr raw, out int n_formats);
-		static d_gtk_text_buffer_get_deserialize_formats gtk_text_buffer_get_deserialize_formats = FuncLoader.LoadFunction<d_gtk_text_buffer_get_deserialize_formats>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_text_buffer_get_deserialize_formats"));
-
-		public Gdk.Atom[] DeserializeFormats {
-			get {
-				int n_formats;
-				IntPtr raw_ret = gtk_text_buffer_get_deserialize_formats(Handle, out n_formats);
-				Gdk.Atom[] result = new Gdk.Atom [n_formats];
-				for (int i = 0; i < n_formats; i++) {
-					IntPtr format = Marshal.ReadIntPtr (raw_ret, i * IntPtr.Size);
-					result [i] = format == IntPtr.Zero ? null : (Gdk.Atom) GLib.Opaque.GetOpaque (format, typeof (Gdk.Atom), false);
-				}
-				return result;
-			}
-		}
-
-		public Gdk.Atom[] SerializeFormats {
-			get {
-				int n_formats;
-				IntPtr raw_ret = gtk_text_buffer_get_serialize_formats(Handle, out n_formats);
-				Gdk.Atom[] result = new Gdk.Atom [n_formats];
-				for (int i = 0; i < n_formats; i++) {
-					IntPtr format = Marshal.ReadIntPtr (raw_ret, i * IntPtr.Size);
-					result [i] = format == IntPtr.Zero ? null : (Gdk.Atom) GLib.Opaque.GetOpaque (format, typeof (Gdk.Atom), false);
-				}
-				return result;
-			}
-		}
 	}
 }
 

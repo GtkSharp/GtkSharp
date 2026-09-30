@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Atk;
 using Gdk;
 using Gtk;
 using WebKit;
@@ -42,7 +41,7 @@ namespace Samples
 				Hexpand = true
 			};
 
-			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> showing html text");
+			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> showing html text", null);
 
 			return ($"{nameof(WebView)} show html text:", webView);
 		}
@@ -82,18 +81,19 @@ namespace Samples
 			
 			userContentManager.AddScript(script2);
 			
-			userContentManager.RegisterScriptMessageHandler(messageHandlerName);
+			userContentManager.RegisterScriptMessageHandler(messageHandlerName, null);
 
 			userContentManager.ScriptMessageReceived += (o, args) => {
-				var value = args.JsResult?.JsValue;
-
-				if (value is { IsString: true } v)
-					ApplicationOutput.WriteLine($"{nameof(userContentManager.ScriptMessageReceived)}:\t{nameof(JavascriptResult.JsValue)}\t{v?.ToString()}");
-
+				// WebKit 6 delivers a JSCValue rather than a WebKitJavascriptResult,
+				// and JavaScriptCoreSharp binds it, so the signal hands over a
+				// typed value that can simply be read.
+				ApplicationOutput.WriteLine(
+					$"{nameof(userContentManager.ScriptMessageReceived)}:\t{args.Value?.ToJson(0)}");
 			};
 
 			webView.LoadHtml($"This is a <b>{nameof(WebView)}</b> with {nameof(UserScript)}" +
-			                 "<br/>Send message <input id=\"clickMeButton\" type=\"button\" value=\"Submit\" class=\"button\" onclick=\"\">");
+			                 "<br/>Send message <input id=\"clickMeButton\" type=\"button\" value=\"Submit\" class=\"button\" onclick=\"\">",
+			                 null);
 
 			webView.LoadChanged += (s, e) => {
 				ApplicationOutput.WriteLine(s, $"{e.LoadEvent}");
@@ -101,25 +101,27 @@ namespace Samples
 				if (e.LoadEvent != LoadEvent.Finished)
 					return;
 
-				webView.RunJavascript("testFunc()", null, HandleJavaScriptResult);
+				// run_javascript became evaluate_javascript, which also takes the
+				// world name and a source URI for attributing errors.
+				webView.EvaluateJavascript("testFunc()", null, null, null, HandleJavaScriptResult);
 
 			};
 
-			void HandleJavaScriptResult(object source_object, IAsyncResult res)
+			void HandleJavaScriptResult(GLib.Object source_object, GLib.IAsyncResult res, IntPtr data)
 			{
 				if (source_object is not WebView view) return;
 
 				try {
-					JavascriptResult js_result = view.RunJavascriptFinish(res);
+					// WebKitJavascriptResult is gone: the finish call returns the
+					// JSCValue itself, which JavaScriptCoreSharp now binds, so
+					// the result can be read rather than merely counted.
+					JavaScriptCore.Value js_value = view.EvaluateJavascriptFinish(res);
 
-					if (js_result.JsValue is { } jsValue) {
-						if (jsValue.IsString) {
-							ApplicationOutput.WriteLine($"{nameof(webView.RunJavascriptFinish)}:\t{nameof(JavascriptResult.JsValue)}\t{jsValue.ToString()}");
-						}
-					}
+					ApplicationOutput.WriteLine(
+						$"{nameof(view.EvaluateJavascriptFinish)}:\tstring={js_value.IsString}\t{js_value.ToJson(0)}");
 
 				} catch (Exception exception) {
-					ApplicationOutput.WriteLine($"{nameof(webView.RunJavascriptFinish)} throws:\n{exception.Message}");
+					ApplicationOutput.WriteLine($"{nameof(view.EvaluateJavascriptFinish)} throws:\n{exception.Message}");
 				}
 			}
 
@@ -135,9 +137,32 @@ namespace Samples
 				Hexpand = true,
 			};
 
-			webView.LoadUri("https://github.com/GtkSharp/GtkSharp#readme");
+			// This used to fetch https://github.com/GtkSharp/GtkSharp#readme,
+			// which made the sample show an error page with no network and, more
+			// to the point, made the test suite render a remote document -- in
+			// CI, inside a job holding a token. LoadUri is what is being
+			// demonstrated, and a file:// URI demonstrates it just as well while
+			// being offline and deterministic.
+			webView.LoadUri(new Uri(WriteLocalPage()).AbsoluteUri);
 
 			return ($"{nameof(WebView)} show uri:", webView);
+		}
+
+		/// <summary>Writes the page ShowUri navigates to, and returns its path.
+		/// Kept beside the running assembly so it is cleaned up with the build
+		/// rather than accumulating in the temp directory.</summary>
+		static string WriteLocalPage()
+		{
+			var path = Path.Combine(
+				Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? Path.GetTempPath(),
+				"webview-sample.html");
+
+			File.WriteAllText(path,
+				"<!doctype html><meta charset=\"utf-8\">" +
+				$"<title>{nameof(WebView)}</title>" +
+				$"<h1>Loaded from a URI</h1><p>This page was fetched by <code>{nameof(WebView.LoadUri)}</code>.</p>");
+
+			return path;
 		}
 
 	}

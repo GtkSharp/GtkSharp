@@ -74,7 +74,8 @@ namespace Gtk {
 			return CollapseRow (store.GetPath (node));
 		}
 		
-		public Cairo.Surface CreateRowDragIcon (ITreeNode node) {
+		// Gtk 4 returns a GdkPaintable here, not a cairo surface.
+		public Gdk.IPaintable CreateRowDragIcon (ITreeNode node) {
 			return CreateRowDragIcon (store.GetPath (node));
 		}
 		

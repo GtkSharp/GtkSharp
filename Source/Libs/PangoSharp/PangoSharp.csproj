@@ -1,23 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <Description>PangoSharp is a C# wrapper for the Pango library.</Description>
-    <PackageTags>pango;pangosharp;pango-sharp;wrapper</PackageTags>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\Shared\*.cs">
-      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GLibSharp\GLibSharp.csproj">
-      <Name>GLibSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CairoSharp\CairoSharp.csproj">
-      <Name>CairoSharp</Name>
-    </ProjectReference>
-  </ItemGroup>
-
+    
+    <PropertyGroup>
+	    <TargetFramework>$(_GtkSharpLibTfm)</TargetFramework>
+        <PackageOutputPath>$(SolutionDir)BuildOutput/NugetPackages/</PackageOutputPath>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <Version>$(VersionPrefix).$(VersionSuffix)</Version>
+        <Description>PangoSharp is a C# wrapper for the Pango library.</Description>
+        <PackageTags>pango;pangosharp;pango-sharp;wrapper</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\Shared\*.cs">
+            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GLibSharp\GLibSharp.csproj">
+            <Name>GLibSharp</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\CairoSharp\CairoSharp.csproj">
+            <Name>CairoSharp</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="README.md" Link="README.md" Pack="true" PackagePath="\README.md" />
+        <Content Include="$(SolutionDir)License.txt" Link="License.txt" Pack="true" PackagePath="\License.txt" Condition="Exists('$(SolutionDir)License.txt')" />
+    </ItemGroup>
+    
 </Project>

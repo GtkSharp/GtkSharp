@@ -10,4 +10,4 @@ type Gtk_Dialog (builder : Builder) as this =
             this.Hide();
         )
 
-    new() = new Gtk_Dialog(new Builder("Gtk_Dialog.glade"))
+    new() = new Gtk_Dialog(new Builder("Gtk_Dialog.ui"))

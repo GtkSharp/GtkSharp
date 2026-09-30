@@ -30,7 +30,13 @@ namespace Gdk {
 
 	using System;
 
-	public partial struct Point {
+	public struct Point {
+
+		// GdkPoint is gone in Gtk 4 -- GDK uses graphene_point_t -- so the fields that
+		// used to come from the generated half are declared here.
+		public int X;
+		public int Y;
+
 
 		public override string ToString ()
 		{

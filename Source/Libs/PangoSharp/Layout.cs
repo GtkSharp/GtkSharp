@@ -93,35 +93,8 @@ namespace Pango {
 			GLib.Marshaller.Free (native_markup);
 		}
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate int d_pango_layout_get_direction(IntPtr raw, int index);
-		static d_pango_layout_get_direction pango_layout_get_direction = FuncLoader.LoadFunction<d_pango_layout_get_direction>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_direction"));
-
-		public Pango.Direction GetDirection(int index)
-		{
-			int raw_ret = pango_layout_get_direction(Handle, index);
-			return (Pango.Direction)raw_ret;
-		}
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate float d_pango_layout_get_line_spacing(IntPtr raw);
-		static d_pango_layout_get_line_spacing pango_layout_get_line_spacing = FuncLoader.LoadFunction<d_pango_layout_get_line_spacing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_get_line_spacing"));
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_pango_layout_set_line_spacing(IntPtr raw, float factor);
-		static d_pango_layout_set_line_spacing pango_layout_set_line_spacing = FuncLoader.LoadFunction<d_pango_layout_set_line_spacing>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_set_line_spacing"));
-
-		public float LineSpacing
-		{
-			get
-			{
-				float raw_ret = pango_layout_get_line_spacing(Handle);
-				return raw_ret;
-			}
-			set
-			{
-				pango_layout_set_line_spacing(Handle, value);
-			}
-		}
+		// GetDirection, LineSpacing: pango_layout_get_direction,
+		// pango_layout_get_line_spacing and pango_layout_set_line_spacing are all
+		// introspected in Pango 1.58, so the generated Layout provides them.
 	}
 }

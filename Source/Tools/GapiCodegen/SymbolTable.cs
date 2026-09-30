@@ -48,6 +48,10 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("gpointer", "IntPtr", "IntPtr.Zero"));
 			AddType (new SimpleGen ("AtkFunction", "IntPtr", "IntPtr.Zero")); // function definition used for padding
 			AddType (new SimpleGen ("gboolean", "bool", "false"));
+			// C99 bool, which graphene's headers use where the rest of the stack
+			// uses gboolean. One byte, not four - see CBoolGen.
+			AddType (new CBoolGen ("bool"));
+			AddType (new CBoolGen ("_Bool"));
 			AddType (new SimpleGen ("gint", "int", "0"));
 			AddType (new SimpleGen ("guint", "uint", "0"));
 			AddType (new SimpleGen ("int", "int", "0"));
@@ -126,8 +130,8 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GList", "GLib.List"));
 			AddType (new ManualGen ("GPtrArray", "GLib.PtrArray"));
 			AddType (new ManualGen ("GSList", "GLib.SList"));
-			AddType (new ManualGen ("GVariant", "GLib.Variant"));
-			AddType (new ManualGen ("GVariantType", "GLib.VariantType"));
+			AddType (new ManualGen ("GVariant", "GLib.Variant") { NullIsNull = true });
+			AddType (new ManualGen ("GVariantType", "GLib.VariantType") { NullIsNull = true });
 			AddType (new ManualGen ("GValueArray", "GLib.ValueArray"));
 			AddType (new ManualGen ("GMutex", "GLib.Mutex",
 						"new GLib.Mutex({0})",
@@ -147,7 +151,17 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GPollFD", "GLib.PollFD", "GLib.PollFD.Zero"));
 			AddType (new MarshalGen ("gunichar", "char", "uint", "GLib.Marshaller.CharToGUnichar ({0})", "GLib.Marshaller.GUnicharToChar ({0})"));
 			AddType (new MarshalGen ("time_t", "System.DateTime", "IntPtr", "GLib.Marshaller.DateTimeTotime_t ({0})", "GLib.Marshaller.time_tToDateTime ({0})"));
-			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
+			// A GString* parameter is an output accumulator: the caller allocates
+			// it, the callee appends to it, the caller reads it. Bound as a
+			// "string" the binding built a fresh GString out of the argument,
+			// let the callee append to it, and dropped it on the floor -- ten
+			// methods across gdk/gio/gsk/gtk whose whole purpose could not be
+			// observed from managed code, and a leaked GString each time.
+			// The caller has to be able to keep the buffer, so it crosses as
+			// the wrapper. Never owning: the one GString-returning method,
+			// gdk_rgba_print, hands back the very buffer it was given, and an
+			// owning wrapper over it would free what its caller still owns.
+			AddType (new ManualGen ("GString", "GLib.GString", "new GLib.GString ({0}, false)"));
 			AddType (new MarshalGen ("GType", "GLib.GType", "IntPtr", "{0}.Val", "new GLib.GType({0})", "GLib.GType.None"));
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
 			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify", "null",

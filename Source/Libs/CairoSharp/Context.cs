@@ -816,8 +816,10 @@ namespace Cairo {
 		public Matrix FontMatrix {
 			get {
 				CheckDisposed ();
-				Matrix m;
-				NativeMethods.cairo_get_font_matrix (handle, out m);
+				// Cairo writes into storage the caller provides, so the matrix
+				// has to exist before the call rather than come back from it.
+				Matrix m = new Matrix ();
+				NativeMethods.cairo_get_font_matrix (handle, m);
 				return m;
 			}
 			set {

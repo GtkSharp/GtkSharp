@@ -202,6 +202,19 @@ namespace GtkSharp.Generation {
 
 			visible = Access != "private";
 
+			// A function-pointer field. ClassBase skips these outright, but a
+			// struct's fields are its layout, so the slot has to stay - as an
+			// opaque pointer, since a callback type has no marshalled field form
+			// and would otherwise be emitted with an empty type ("private  _load;").
+			if (elem.GetAttributeAsBoolean ("is_callback")) {
+				visible = false;
+				// Named the way EqualityName names it, or the generated Equals
+				// refers to a field that does not exist.
+				sw.WriteLine (indent + "private IntPtr {0};",
+					Access == "public" ? StudlyName : Name);
+				return;
+			}
+
 			SymbolTable table = SymbolTable.Table;
 
 			string wrapped = table.GetCSType (CType);
@@ -228,7 +241,12 @@ namespace GtkSharp.Generation {
 
 			if (IsArray && !IsNullTermArray) {
 				sw.WriteLine (indent + "[MarshalAs (UnmanagedType.ByValArray, SizeConst=" + ArrayLength + ")]");
-				sw.WriteLine (indent + "{0} {1} {2};", Access, cstype, studly_name);
+				// Must agree with EqualityName above, which lower-cases private
+				// fields. Declaring StudlyName unconditionally left the generated
+				// Equals referring to a field that does not exist -- only visible
+				// once a struct had a private fixed-size array, which Gtk 3 never
+				// produced but graphene_quad_t does.
+				sw.WriteLine (indent + "{0} {1} {2};", Access, cstype, Access == "public" ? studly_name : name);
 			} else if (IsArray && IsNullTermArray) {
 				sw.WriteLine (indent + "private {0} {1};", "IntPtr", studly_name+ "Ptr");
 				if ((Readable || Writable) && Access == "public") {

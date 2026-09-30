@@ -20,8 +20,12 @@ namespace Samples
                 ColumnSpacing = 6
             };
 
-            PackStart(_grid, false, true, 0);
-            PackStart(new VBox(), true, true, 0);
+            // Gtk 4 has no PackStart: a box appends children, and what used to
+            // be the "expand" packing flag is now the child's own Vexpand or
+            // Hexpand property. The empty expanding box keeps the grid pinned
+            // to the top, exactly as it did under Gtk 3.
+            Append(_grid);
+            Append(new Box(Orientation.Vertical, 0) { Vexpand = true });
         }
 
         public void AddItem((string, Widget) turp)
@@ -38,9 +42,9 @@ namespace Samples
                 Halign = Align.Start
             }, 0, _position, 1, 1);
 
-            var hbox = new HBox();
-            hbox.PackStart(new VBox(), true, true, 0);
-            hbox.PackStart(widget, false, true, 0);
+            var hbox = new Box(Orientation.Horizontal, 0);
+            hbox.Append(new Box(Orientation.Horizontal, 0) { Hexpand = true });
+            hbox.Append(widget);
 
             _grid.Attach(hbox, 1, _position, 1, 1);
             _position++;

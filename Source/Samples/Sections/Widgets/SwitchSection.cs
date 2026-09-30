@@ -17,8 +17,14 @@ namespace Samples
         {
             var btn = new Switch();
 
-            btn.ButtonReleaseEvent += (o, args) =>
-                ApplicationOutput.WriteLine(o, $"Switch is now: {!btn.Active}");
+            // Gtk 4 has no button-release-event on a widget: input arrives
+            // through gestures and event controllers. A switch reports being
+            // flipped with StateSet, whose argument is the state being asked
+            // for -- returning false lets the default handler apply it.
+            btn.StateSet += (o, args) => {
+                ApplicationOutput.WriteLine(o, $"Switch is now: {args.State}");
+                args.RetVal = false;
+            };
 
             return ("Switch:", btn);
         }

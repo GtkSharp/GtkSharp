@@ -1,30 +1,32 @@
-//  Gtk.CellLayout.cs - Gtk CellLayout customizations
-//
-//  Author:  Mike Kestner  <mkestner@novell.com>
-//
-//  Copyright (c) 2005 Novell, Inc.
+// Gtk.ICellLayout.cs - convenience over the generated ICellLayout
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General
 // Public License as published by the Free Software Foundation.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public
-// License along with this program; if not, write to the
-// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-// Boston, MA 02111-1307, USA.
 
 namespace Gtk {
 
 	using System;
 
-	public partial interface ICellLayout {
+	// SetAttributes used to be declared on the interface itself, which left every
+	// implementor owing an implementation. Gtk 4's gir marks more types as
+	// implementing GtkCellLayout -- GtkCellArea among them -- and codegen does not
+	// synthesise the member for them, so the build broke on types that never had
+	// to care. It is written purely in terms of ClearAttributes and AddAttribute,
+	// both of which the interface already has, so an extension method serves every
+	// implementor and works on netstandard2.0, where default interface members do
+	// not.
+	public static class CellLayoutExtensions {
 
-		void SetAttributes (CellRenderer renderer, object[] attrs);
+		public static void SetAttributes (this ICellLayout layout, CellRenderer cell,
+		                                  params object[] attrs)
+		{
+			if (attrs.Length % 2 != 0)
+				throw new ArgumentException ("attrs should contain pairs of attribute/col");
 
+			layout.ClearAttributes (cell);
+			for (int i = 0; i < attrs.Length - 1; i += 2)
+				layout.AddAttribute (cell, (string) attrs [i], (int) attrs [i + 1]);
+		}
 	}
 }

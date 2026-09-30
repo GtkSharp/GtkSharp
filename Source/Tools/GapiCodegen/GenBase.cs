@@ -100,8 +100,26 @@ namespace GtkSharp.Generation {
 			return null;
 		}
 
+		/// <summary>
+		/// The alignment this type imposes on a field of it, when the api.xml
+		/// says so explicitly.
+		/// </summary>
+		/// <remarks>
+		/// Normally the alignment is measured, by asking the runtime where a
+		/// managed replica of the field lands after a leading sbyte. That
+		/// cannot see an alignment C asks for and the members do not imply:
+		/// graphene_simd4f_t is declared GRAPHENE_ALIGN16 and *is* __m128 on
+		/// every SIMD build, so it aligns to 16, while its managed replica is
+		/// four floats and aligns to 4. Everything embedding it was measured
+		/// short as a result - graphene_plane_t, graphene_euler_t and
+		/// graphene_sphere_t are each { 16-byte vector; float } and came out
+		/// 20 bytes against C's 32, so every caller-allocates out parameter of
+		/// those types under-allocated by twelve and let graphene write past
+		/// the end of the block.
+		/// </remarks>
 		public virtual string GenerateAlign () {
-			return null;
+			string align = Elem.GetAttribute ("align");
+			return align == String.Empty ? null : align;
 		}
 
 		public void Generate ()

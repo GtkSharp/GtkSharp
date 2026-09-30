@@ -25,6 +25,13 @@ using System.Runtime.InteropServices;
 
 namespace GLib
 {
+	/// <remarks>
+	/// Every one of these C functions returns a new reference. Passing
+	/// owned: false made GetObject take a second one, so every GFile created
+	/// through this class -- which is how the whole repository makes one --
+	/// was never freed. The generated GLib.File.NewForPath beside it passes
+	/// true, which is the authority for what the ownership is.
+	/// </remarks>
 	public class FileFactory
 	{
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -33,12 +40,12 @@ namespace GLib
 
 		public static IFile NewForUri (string uri)
 		{
-			return GLib.FileAdapter.GetObject (g_file_new_for_uri (uri), false) as IFile;
+			return GLib.FileAdapter.GetObject (g_file_new_for_uri (uri), true) as IFile;
 		}
 
 		public static IFile NewForUri (Uri uri)
 		{
-			return GLib.FileAdapter.GetObject (g_file_new_for_uri (uri.ToString ()), false) as IFile;
+			return GLib.FileAdapter.GetObject (g_file_new_for_uri (uri.ToString ()), true) as IFile;
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_file_new_for_path(string path);
@@ -46,7 +53,7 @@ namespace GLib
 		
 		public static IFile NewForPath (string path)
 		{
-			return GLib.FileAdapter.GetObject (g_file_new_for_path (path), false) as IFile;
+			return GLib.FileAdapter.GetObject (g_file_new_for_path (path), true) as IFile;
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_file_new_for_commandline_arg(string arg);
@@ -54,7 +61,7 @@ namespace GLib
 
 		public static IFile NewFromCommandlineArg (string arg)
 		{
-			return GLib.FileAdapter.GetObject (g_file_new_for_commandline_arg (arg), false) as IFile;
+			return GLib.FileAdapter.GetObject (g_file_new_for_commandline_arg (arg), true) as IFile;
 		}
 	}
 }

@@ -99,6 +99,9 @@ namespace GtkSharp.Generation
 			if (IsDeprecated)
 				sw.WriteLine ("\t[Obsolete]");
 			string access = IsInternal ? "internal" : "public";
+			string coverage_attr = CoverageExclusion.ForType (gen_info, Name);
+			if (coverage_attr != null)
+				sw.WriteLine ("\t" + coverage_attr);
 			sw.WriteLine ("\t" + access + " partial class {0} : {1} IEquatable<{0}> {{", Name, Parent == null ? "GLib.IWrapper," : (Parent.QualifiedName + ","));
 			sw.WriteLine ();
 
@@ -186,12 +189,11 @@ namespace GtkSharp.Generation
 
 		protected void GenEqualsAndHash (StreamWriter sw)
 		{
-			StringBuilder hashcode = new StringBuilder ();
+			List<string> hashterms = new List<string> ();
 			StringBuilder equals = new StringBuilder ();
 
 			sw.WriteLine ("\t\tpublic bool Equals ({0} other)", Name);
 			sw.WriteLine ("\t\t{");
-			hashcode.Append ("this.GetType().FullName.GetHashCode()");
 			equals.Append ("true");
 
 			foreach (StructField field in fields) {
@@ -203,9 +205,7 @@ namespace GtkSharp.Generation
 				equals.Append (".Equals (other.");
 				equals.Append (field.EqualityName);
 				equals.Append (")");
-				hashcode.Append (" ^ ");
-				hashcode.Append (field.EqualityName);
-				hashcode.Append (".GetHashCode ()");
+				hashterms.Add (field.EqualityName);
 			}
 			sw.WriteLine ("\t\t\treturn {0};", equals.ToString ());
 			sw.WriteLine ("\t\t}");
@@ -217,11 +217,7 @@ namespace GtkSharp.Generation
 			sw.WriteLine ();
 			if (Elem.GetAttribute ("nohash") == "true")
 				return;
-			sw.WriteLine ("\t\tpublic override int GetHashCode ()");
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\treturn {0};", hashcode.ToString ());
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
+			StructBase.GenHashCode (sw, hashterms);
 
 		}
 	}

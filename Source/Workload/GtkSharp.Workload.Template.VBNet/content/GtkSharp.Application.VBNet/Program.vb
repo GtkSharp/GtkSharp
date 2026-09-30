@@ -13,7 +13,7 @@ Namespace GtkNamespace
             Dim win as new MainWindow ()
             app.AddWindow (win)
 
-            win.Show ()
+            win.Present ()
             Application.Run ()
         End Sub
         

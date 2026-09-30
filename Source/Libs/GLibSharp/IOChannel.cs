@@ -153,6 +153,10 @@ namespace GLib {
 				if (length == -1)
 					return Marshaller.Utf8PtrToString (raw).ToCharArray ();
 				byte[] buffer = new byte [length];
+				// This decoded the freshly-allocated buffer without ever copying
+				// from raw, so it returned that many NULs whatever the terminator
+				// had been set to.
+				Marshal.Copy (raw, buffer, 0, length);
 				return System.Text.Encoding.UTF8.GetChars (buffer);
 			}
 			set {

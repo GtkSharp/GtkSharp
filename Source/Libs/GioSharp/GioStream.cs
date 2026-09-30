@@ -41,12 +41,51 @@ namespace GLib
 
 		public GioStream (Uri uri, System.IO.FileMode mode)
 		{
-			throw new NotImplementedException ();
+			Open (FileFactory.NewForUri (uri), mode);
 		}
 
 		public GioStream (string filename, System.IO.FileMode mode)
 		{
-			throw new NotImplementedException ();
+			Open (FileFactory.NewForPath (filename), mode);
+		}
+
+		// Both file constructors used to throw NotImplementedException, so a
+		// GioStream could only ever be built around a stream the caller had
+		// already opened -- which is the one case where the class saves nobody
+		// any work.
+		void Open (IFile file, System.IO.FileMode mode)
+		{
+			switch (mode) {
+			case System.IO.FileMode.Open:
+				stream = file.Read (null);
+				can_read = true;
+				break;
+			case System.IO.FileMode.OpenOrCreate:
+				// Read fails if the file is absent, so create it first and reopen
+				// for reading rather than handing back a write-only stream.
+				if (!file.QueryExists (null))
+					file.Create (FileCreateFlags.None, null).Close (null);
+				stream = file.Read (null);
+				can_read = true;
+				break;
+			case System.IO.FileMode.Create:
+			case System.IO.FileMode.Truncate:
+				stream = file.Replace (null, false, FileCreateFlags.None, null);
+				can_write = true;
+				break;
+			case System.IO.FileMode.CreateNew:
+				stream = file.Create (FileCreateFlags.None, null);
+				can_write = true;
+				break;
+			case System.IO.FileMode.Append:
+				stream = file.AppendTo (FileCreateFlags.None, null);
+				can_write = true;
+				break;
+			default:
+				throw new ArgumentOutOfRangeException ("mode", mode, "unsupported file mode");
+			}
+
+			can_seek = stream is ISeekable && (stream as ISeekable).CanSeek;
 		}
 
 		public GioStream (InputStream stream)
@@ -129,8 +168,12 @@ namespace GLib
 		{
 			if (buffer == null)
 				throw new ArgumentNullException ("buffer");
-			if (offset + count - 1 > buffer.Length)
-				throw new ArgumentException ("(offset + count - 1) is greater than the length of buffer");
+			// This read "offset + count - 1", which let a request one byte past
+			// the end through. With offset 0 that reached the native read as a
+			// count larger than the buffer -- an overrun, not an exception.
+			// Write next door had it right.
+			if (offset + count > buffer.Length)
+				throw new ArgumentException ("(offset + count) is greater than the length of buffer");
 			if (offset < 0)
 				throw new ArgumentOutOfRangeException ("offset");
 			if (count < 0)
@@ -152,7 +195,10 @@ namespace GLib
 			else {
 				byte[] buf = new byte[count];
 				int ret = (int)input_stream.Read (buf, (ulong)count, null);
-				buf.CopyTo (buffer, offset);
+				// Copy only what was actually read. CopyTo moved all `count`
+				// bytes, so a short read overwrote bytes past the data with the
+				// zeroes the scratch buffer was created with.
+				Array.Copy (buf, 0, buffer, offset, ret);
 				return ret;
 			}
 		}

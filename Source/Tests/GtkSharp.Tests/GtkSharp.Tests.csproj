@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Test host only, so unlike the wrapper assemblies this is not
+         multi-targeted and is neither packed nor signed. -->
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <SignAssembly>false</SignAssembly>
+    <!-- $(Configuration) matters here. Without it Debug and Release share one
+         directory, so whichever was built last is what `dotnet test` loads and
+         what a coverage run instruments. That is how a coverage comparison came
+         out with Context.cs reporting 838 instrumented lines in one run and
+         1228 in the next, from byte-identical source. -->
+    <OutputPath>..\..\..\BuildOutput\Tests\$(Configuration)</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <!-- Picked up by `dotnet test` without a command-line flag, so a coverage
+         run excludes Generated/ whoever starts it. See coverlet.runsettings. -->
+    <RunSettingsFilePath>$(MSBuildProjectDirectory)\coverlet.runsettings</RunSettingsFilePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Builder(Assembly, resourceName, ...) is the constructor the templates and
+         the getting-started guide use, and it can only be exercised against a
+         real manifest resource. LogicalName is pinned so the test names the
+         resource rather than depending on how the SDK derives one from the path. -->
+    <EmbeddedResource Include="Resources\embedded-window.ui" LogicalName="GtkSharp.Tests.embedded-window.ui" />
+    <!-- Same reasoning for CssProvider.LoadFromResource, which is hand-written
+         and reported no coverage at all. -->
+    <EmbeddedResource Include="Resources\embedded-style.css" LogicalName="GtkSharp.Tests.embedded-style.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <!-- Coverage is measured to find untested areas, never chased as a target;
+         see Docs/testing.md. -->
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <!-- Lets a test skip at runtime with a reason. WebKit and JavaScriptCore
+         are not present in every environment, and a test that silently returns
+         early would be a false pass. -->
+    <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libs\GLibSharp\GLibSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GioSharp\GioSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\CairoSharp\CairoSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\PangoSharp\PangoSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GrapheneSharp\GrapheneSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GdkSharp\GdkSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GskSharp\GskSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GtkSharp\GtkSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\AdwaitaSharp\AdwaitaSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\GtkSourceSharp\GtkSourceSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\JavaScriptCoreSharp\JavaScriptCoreSharp.csproj" />
+    <ProjectReference Include="..\..\Libs\WebkitGtkSharp\WebkitGtkSharp.csproj" />
+    <!-- The samples are the widest exercise of the bindings this repository
+         has, so the section-construction tests drive them directly. -->
+    <ProjectReference Include="..\..\Samples\Samples.csproj" />
+  </ItemGroup>
+
+</Project>

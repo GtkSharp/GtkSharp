@@ -17,18 +17,18 @@ namespace Samples
         public (string, Widget) CreateHorizontalRange()
         {
             var adj = new Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0);
-            var hScale = new HScale(adj);
+            var hScale = new Scale(Orientation.Horizontal, adj);
             hScale.SetSizeRequest(200, -1);
-            hScale.ValueChanged += (sender, e) => ApplicationOutput.WriteLine(sender, $"Value Change: {((HScale)sender).Value}");
+            hScale.ValueChanged += (sender, e) => ApplicationOutput.WriteLine(sender, $"Value Change: {((Scale)sender).Value}");
             return ("Horizontal", hScale);
         }
 
         public (string, Widget) CreateVerticalRange()
         {
             var adj = new Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0);
-            var vScale = new VScale(adj);
+            var vScale = new Scale(Orientation.Vertical, adj);
             vScale.SetSizeRequest(-1, 200);
-            vScale.ValueChanged += (sender, e) => ApplicationOutput.WriteLine(sender, $"Value Change: {((VScale)sender).Value}");
+            vScale.ValueChanged += (sender, e) => ApplicationOutput.WriteLine(sender, $"Value Change: {((Scale)sender).Value}");
             return ("Vertical", vScale);
         }
     }

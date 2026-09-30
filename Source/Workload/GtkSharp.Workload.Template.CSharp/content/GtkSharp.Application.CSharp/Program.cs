@@ -16,7 +16,7 @@ namespace GtkNamespace
             var win = new MainWindow();
             app.AddWindow(win);
 
-            win.Show();
+            win.Present();
             Application.Run();
         }
     }

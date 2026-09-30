@@ -33,18 +33,75 @@ namespace GLib {
 
 		public static GLib.TimeVal Zero = new GLib.TimeVal ();
 
+		// GTimeVal is two glongs, and glong is not IntPtr: it is 32 bits on 64-bit
+		// Windows (LLP64) and 64 bits everywhere else this builds. So the C
+		// structure is 8 bytes on win-x64 and 16 on linux-x64 and osx-x64, while
+		// the fields above are IntPtr and make it 16 in both.
+		//
+		// Marshalling the struct directly therefore read 16 bytes where GLib had
+		// written 8: the seconds absorbed the microseconds, and the microseconds
+		// came back as whatever the allocation happened to contain. Both members
+		// now go through the two helpers below, which lay the fields out at the
+		// width the platform's glong actually has. On 32-bit Windows IntPtr is
+		// already 4 bytes, which is why the test is on the pointer size too.
+		static readonly bool NarrowLong = IntPtr.Size == 8 && IsWindows ();
+
+		static bool IsWindows ()
+		{
+			switch (Environment.OSVersion.Platform) {
+			case PlatformID.Win32NT:
+			case PlatformID.Win32S:
+			case PlatformID.Win32Windows:
+			case PlatformID.WinCE:
+				return true;
+			default:
+				return false;
+			}
+		}
+
+		/// <summary>The size of the C structure, which is not the size of this one.</summary>
+		internal static int NativeSize {
+			get { return NarrowLong ? 8 : IntPtr.Size * 2; }
+		}
+
+		/// <summary>Writes the two members at the width C reads them at.</summary>
+		internal IntPtr Alloc ()
+		{
+			IntPtr native = Marshal.AllocHGlobal (NativeSize);
+			if (NarrowLong) {
+				// A checked cast rather than a silent truncation: where glong is
+				// 32 bits GTimeVal genuinely cannot carry a date past 2038, and
+				// quietly storing the low half would be a worse answer than
+				// saying so.
+				Marshal.WriteInt32 (native, 0, checked ((int) TvSec));
+				Marshal.WriteInt32 (native, 4, checked ((int) TvUsec));
+			} else {
+				Marshal.WriteIntPtr (native, 0, new IntPtr (TvSec));
+				Marshal.WriteIntPtr (native, IntPtr.Size, new IntPtr (TvUsec));
+			}
+			return native;
+		}
+
 		public static GLib.TimeVal New(IntPtr raw) {
 			if (raw == IntPtr.Zero)
 				return GLib.TimeVal.Zero;
-			return (GLib.TimeVal) Marshal.PtrToStructure (raw, typeof (GLib.TimeVal));
+
+			GLib.TimeVal result = new GLib.TimeVal ();
+			if (NarrowLong) {
+				result.TvSec = Marshal.ReadInt32 (raw, 0);
+				result.TvUsec = Marshal.ReadInt32 (raw, 4);
+			} else {
+				result.TvSec = Marshal.ReadIntPtr (raw, 0).ToInt64 ();
+				result.TvUsec = Marshal.ReadIntPtr (raw, IntPtr.Size).ToInt64 ();
+			}
+			return result;
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_time_val_add(IntPtr raw, IntPtr microseconds);
 		static d_g_time_val_add g_time_val_add = FuncLoader.LoadFunction<d_g_time_val_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_add"));
 
 		public void Add(long microseconds) {
-			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf<TimeVal> ());
-			System.Runtime.InteropServices.Marshal.StructureToPtr (this, this_as_native, false);
+			IntPtr this_as_native = Alloc ();
 			g_time_val_add(this_as_native, new IntPtr (microseconds));
 			ReadNative (this_as_native, ref this);
 			System.Runtime.InteropServices.Marshal.FreeHGlobal (this_as_native);
@@ -54,8 +111,7 @@ namespace GLib {
 		static d_g_time_val_to_iso8601 g_time_val_to_iso8601 = FuncLoader.LoadFunction<d_g_time_val_to_iso8601>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_time_val_to_iso8601"));
 
 		public string ToIso8601() {
-			IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf<TimeVal> ());
-			System.Runtime.InteropServices.Marshal.StructureToPtr (this, this_as_native, false);
+			IntPtr this_as_native = Alloc ();
 			IntPtr raw_ret = g_time_val_to_iso8601(this_as_native);
 			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 			ReadNative (this_as_native, ref this);
@@ -68,7 +124,7 @@ namespace GLib {
 
 		public static bool FromIso8601(string iso_date, out GLib.TimeVal time_) {
 			IntPtr native_iso_date = GLib.Marshaller.StringToPtrGStrdup (iso_date);
-			IntPtr native_time_ = Marshal.AllocHGlobal (Marshal.SizeOf<GLib.TimeVal> ());
+			IntPtr native_time_ = GLib.TimeVal.Zero.Alloc ();
 			bool raw_ret = g_time_val_from_iso8601(native_iso_date, native_time_);
 			bool ret = raw_ret;
 			GLib.Marshaller.Free (native_iso_date);

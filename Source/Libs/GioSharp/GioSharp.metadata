@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <metadata>
+  <!-- GirToGapi emits the raw shared-library name; GapiCodegen pastes this
+       value verbatim into GLibrary.Load(...), so it has to be a C# expression. -->
+  <attr path="/api/namespace" name="library">Library.Gio</attr>
   <attr path="/api/namespace/*/*/parameters/parameter[@type='GAsyncReadyCallback']" name="scope">async</attr>
   <attr path="/api/namespace/*/*/parameters/parameter[@type='GFileProgressCallback']" name="scope">call</attr>
   <attr path="/api/namespace/*/*/parameters/parameter[@type='GSettingsGetMapping']" name="scope">call</attr>
@@ -26,7 +29,9 @@
   <attr path="/api/namespace/class[@cname='GContent_']/method[@name='GetRegistered']/return-type" name="elements_owned">true</attr>
   <attr path="/api/namespace/class[@cname='GIo_']" name="name">IOError</attr>
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='ErrorFromErrno']" name="name">FromErrno</attr>
-  <attr path="/api/namespace/class[@cname='GIo_']/method[@name='ErrorFromWin32Error']" name="name">FromWin32Error</attr>
+  <!-- g_io_error_from_win32_error is Windows-only and absent from the vendored
+       Linux-built gir. Same for g_registry_backend_get_type below. If Windows-only
+       GIO surface is ever needed, it has to come from a Windows gir. -->
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='ModulesLoadAllInDirectory']" name="name">LoadAllInDirectory</attr>
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='LoadAllInDirectory']/return-type" name="element_type">GIOModule*</attr>
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='LoadAllInDirectory']/return-type" name="elements_owned">true</attr>
@@ -34,8 +39,9 @@
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='ModulesScanAllInDirectory']" name="name">ScanAllInDirectory</attr>
   <attr path="/api/namespace/class[@cname='GIo_']/method[@name='SchedulerCancelAllJobs']" name="name">CancelAllJobs</attr>
   <attr path="/api/namespace/class[@name='Global']" name="name">GioGlobal</attr>
-  <attr path="/api/namespace/class[@cname='GGlobal']/method[@name='RegistryBackendGetType']" name="hidden">1</attr>
-  <attr path="/api/namespace/class[@cname='GList_']" name="hidden">1</attr>
+  <!-- The GList_ class only ever existed because gapi2xml.pl read
+       g_list_model_get_item as a global function. GIR puts it on GListModel,
+       where it belongs, so there is nothing left to hide. -->
   <attr path="/api/namespace/class[@cname='GSimple_']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GSimple_']/method[@name='AsyncReportGerrorInIdle']" name="name">ReportGerrorInIdle</attr>
   <attr path="/api/namespace/class[@cname='GSimple_']/method[@name='AsyncReportTakeGerrorInIdle']" name="name">ReportTakeGerrorInIdle</attr>
@@ -99,9 +105,24 @@
   <attr path="/api/namespace/interface[@cname='GTlsServerConnection']/property[@cname='authentication-mode']" name="hidden">1</attr>
   <attr path="/api/namespace/interface[@cname='GVolume']" name="consume_only">1</attr>
   <attr path="/api/namespace/interface[@cname='GVolume']/method[@name='GetMount']" name="name">GetMountInstance</attr>
-  <attr path="/api/namespace/object/property[@type='GIoStream']" name="type">GIOStream</attr>
-  <attr path="/api/namespace/object/property[@type='GUnixFdList']" name="type">GUnixFDList</attr>
+  <!-- These two corrected gapi2xml.pl's mangling of GIOStream and GUnixFDList.
+       GirToGapi takes the c:type verbatim and already spells them correctly. -->
   <attr path="/api/namespace/object[@cname='GApplication']/method[@cname='g_application_run']" name="hidden">1</attr>
+  <!-- g_application_open takes "GFile **files, gint n_files". The api.xml has no
+       way to tie the two together, so codegen bound files as a single GFile and
+       passed the GObject's own address where Gio dereferences an array of
+       pointers: the first "file" it read was the object's class pointer. The one
+       entry point an application registered with HANDLES_OPEN exists to serve
+       could not be called. Rebound over a real array in Application.cs. -->
+  <attr path="/api/namespace/object[@cname='GApplication']/method[@cname='g_application_open']" name="hidden">1</attr>
+  <!-- g_application_command_line_get_arguments returns "gchar **" with its
+       length in the out-parameter beside it, and the gir says the array is not
+       zero-terminated - so the null_term_array rule cannot be used and codegen
+       fell back to a single string, which is the first argument and a leak of
+       the rest. Reading its own command line is the whole point of an
+       application registered with HANDLES_COMMAND_LINE. Rebound over the count
+       in ApplicationCommandLine.cs. -->
+  <attr path="/api/namespace/object[@cname='GApplicationCommandLine']/method[@name='GetArguments']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GApplication']/signal[@cname='activate']" name="name">Activated</attr>
   <attr path="/api/namespace/object[@cname='GApplication']/signal[@cname='open']" name="name">Opened</attr>
   <attr path="/api/namespace/object[@cname='GAppLaunchContext']/signal[@cname='launch-failed']" name="name">LaunchedFailed</attr>
@@ -118,6 +139,15 @@
   <attr path="/api/namespace/object[@cname='GFileInfo']/method[@cname='g_file_info_get_attribute_uint32']" name="name">GetAttributeUInt</attr>
   <attr path="/api/namespace/object[@cname='GFileInfo']/method[@cname='g_file_info_set_attribute_uint32']" name="name">SetAttributeUInt</attr>
   <attr path="/api/namespace/object[@cname='GInetAddress']/constructor[@cname='g_inet_address_new_from_bytes']/parameters/parameter[@name='bytes']" name="array">1</attr>
+  <!-- Same treatment as the rule above. A bare guint8* parameter is rendered
+       "out byte" by codegen, which never assigns it; marking it an array gives
+       the byte[] the function actually takes. GIR does say <array> here, but
+       GirToGapi does not emit array="true" on parameters - without a length it
+       makes Parameter.cs throw - so these stay a metadata decision, as they
+       were before. -->
+  <attr path="/api/namespace/object[@cname='GInetAddress']/constructor[@cname='g_inet_address_new_from_bytes_with_ipv6_info']/parameters/parameter[@name='bytes']" name="array">1</attr>
+  <attr path="/api/namespace/object[@cname='GDBusMessage']/constructor[@cname='g_dbus_message_new_from_blob']/parameters/parameter[@name='blob']" name="array">1</attr>
+  <attr path="/api/namespace/object[@cname='GTlsCertificate']/constructor[@cname='g_tls_certificate_new_from_pkcs12']/parameters/parameter[@name='data']" name="array">1</attr>
   <attr path="/api/namespace/object[@cname='GInputStream']/method[@cname='g_input_stream_read']/parameters/parameter[@name='buffer']" name="type">guchar*</attr>
   <attr path="/api/namespace/object[@cname='GInputStream']/method[@cname='g_input_stream_read']/parameters/parameter[@name='buffer']" name="array">1</attr>
   <attr path="/api/namespace/object[@cname='GInputStream']/method[@cname='g_input_stream_read_all']/parameters/parameter[@name='buffer']" name="type">guchar*</attr>
@@ -188,12 +218,115 @@
   <move-node path="/api/namespace/class[@cname='GSimple_']/method[@name='ReportGerrorInIdle']">/api/namespace/object[@cname='GSimpleAsyncResult']</move-node>
   <move-node path="/api/namespace/class[@cname='GSimple_']/method[@name='ReportTakeGerrorInIdle']">/api/namespace/object[@cname='GSimpleAsyncResult']</move-node>
   <remove-node path="/api/namespace/interface[@cname='GTlsBackend']" />
-  <remove-node path="/api/namespace/struct[@cname='GPollableInputStream']" />
+  <!-- gapi2xml.pl emitted a stray <struct> alongside each of these interfaces;
+       GirToGapi does not, so there is nothing to remove. -->
   <attr path="/api/namespace/object[@cname='GMemoryInputStream']/implements/interface[@cname='GPollableInputStream']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GConverterInputStream']/implements/interface[@cname='GPollableInputStream']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GSocketInputStream']/implements/interface[@cname='GPollableInputStream']" name="hidden">1</attr>
-  <remove-node path="/api/namespace/struct[@cname='GPollableOutputStream']" />
+  <!-- GSocketInputStream and GSocketOutputStream are private to GIO and are not
+       introspectable, so they never reach the api.xml. -->
   <attr path="/api/namespace/object[@cname='GConverterOutputStream']/implements/interface[@cname='GPollableOutputStream']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GSocketOutputStream']/implements/interface[@cname='GPollableOutputStream']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GMemoryOutputStream']/implements/interface[@cname='GPollableOutputStream']" name="hidden">1</attr>
+
+  <!--
+    Gtk 4 collision cleanup. gapi2xml.pl emitted "variant" as the type of several
+    properties, which SymbolTable never knew, so codegen dropped them with a
+    warning and their collisions never surfaced. GirToGapi emits the real
+    GVariant*, so they resolve now and have to be dealt with properly.
+
+    Properties whose accessor already comes from a Get vfunc on the same
+    interface. The four GAction rules above are the same fix; only "state"
+    escaped, because that was one of the ones being dropped.
+  -->
+  <attr path="/api/namespace/interface[@cname='GAction']/property[@cname='state']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GDtlsConnection']/property[@cname='advertised-protocols']" name="hidden">1</attr>
+  <attr path="/api/namespace/interface[@cname='GDtlsConnection']/property[@cname='negotiated-protocol']" name="hidden">1</attr>
+
+  <!--
+    Functions that emit a signal of the same name. GMenuModel already had this
+    treatment above; these follow it, spelled Emit* because the function raises
+    the signal rather than setting anything.
+  -->
+  <attr path="/api/namespace/interface[@cname='GListModel']/method[@cname='g_list_model_items_changed']" name="name">EmitItemsChanged</attr>
+  <attr path="/api/namespace/object[@cname='GDBusAuthObserver']/method[@cname='g_dbus_auth_observer_allow_mechanism']" name="name">EmitAllowMechanism</attr>
+  <attr path="/api/namespace/object[@cname='GDBusAuthObserver']/method[@cname='g_dbus_auth_observer_authorize_authenticated_peer']" name="name">EmitAuthorizeAuthenticatedPeer</attr>
+
+  <!-- A "closed" property and a "closed" signal cannot share a name in C#.
+       The signal wins; IsClosed() still reports the state. -->
+  <attr path="/api/namespace/object[@cname='GDBusConnection']/property[@cname='closed']" name="hidden">1</attr>
+
+  <!-- IDBusObject contributes a get-only ObjectPath, and this setter would be a
+       second, set-only property of the same name. The read/write GObjectPath
+       property covers setting it. -->
+  <attr path="/api/namespace/object[@cname='GDBusObjectSkeleton']/method[@cname='g_dbus_object_skeleton_set_object_path']" name="hidden">1</attr>
+
+  <!-- g_application_local_command_line takes gchar*** and GIR marks it inout.
+       gapi has no marshalling for a triple pointer, and "ref string" makes
+       codegen cast a string to IntPtr. gapi2xml.pl carried no direction here at
+       all, which is why Gtk 3 compiled; drop it back to that. -->
+  <remove-attr path="/api/namespace/object[@cname='GApplication']/virtual_method[@cname='local_command_line']/parameters/parameter[@name='arguments']" name="pass_as" />
+
+  <!--
+    GListModel::items-changed and GMenuModel::items-changed are different
+    signals with the same name in the same namespace, and different parameter
+    types: guint on the list model, gint on the menu model. GapiCodegen names
+    the args class after the signal (Signal.EventArgsName = Name + "Args"), so
+    one class had to serve both, and whichever won was wrong for the other.
+
+    GMenuModel lost, which meant GLib.ItemsChangedArgs cast the list model's
+    guint positions to int and threw InvalidCastException inside the signal
+    marshaller, which is fatal because an exception there aborts the process. Every
+    ColumnView and ListView goes through GListModel, so the common case was the
+    broken one.
+
+    The menu model's signal is renamed instead, giving it its own args class.
+  -->
+  <attr path="/api/namespace/object[@cname='GMenuModel']/signal[@cname='items-changed']" name="name">MenuItemsChanged</attr>
+
+  <!--
+    Exactly the same collision, one namespace over: GSettings::changed carries a
+    key name, GFileMonitor::changed carries (GFile *file, GFile *other_file,
+    GFileMonitorEvent event_type). Both are called "changed", so both asked
+    GapiCodegen for a class called GLib.ChangedArgs, and only one of them can
+    have it. GSettings won, so a GFileMonitor handler was handed a ChangedArgs
+    whose single member reads Args[0] as a string, and Args[0] is a GFile.
+    Reading it threw InvalidCastException from inside the signal marshaller,
+    and nothing else on the args object named the file, the event type or the
+    rename destination, so the signal could not be used for anything at all.
+
+    The monitor's signal is renamed, following the GMenuModel precedent: the
+    less-used of the pair moves so the other keeps its natural spelling. The
+    cname stays "changed", so what is connected to native is unchanged.
+  -->
+  <attr path="/api/namespace/object[@cname='GFileMonitor']/signal[@cname='changed']" name="name">FileChanged</attr>
+
+  <!--
+    g_settings_schema_source_list_schemas fills two gchar*** out-parameters,
+    i.e. two NULL-terminated string arrays. SymbolTable has no rule for a triple
+    pointer, so codegen fell back to "out IntPtr" and then read the array of
+    pointers as though it were one UTF-8 string, g_freeing it afterwards. Every
+    call returned the first few bytes of a heap address as text and leaked the
+    strings. Hidden here and rebound over string[] in
+    Source/Libs/GioSharp/SettingsSchemaSource.cs.
+  -->
+  <attr path="/api/namespace/boxed[@cname='GSettingsSchemaSource']/method[@name='ListSchemas']" name="hidden">1</attr>
+
+  <!--
+    The rest of the GFileMonitor::changed collision, found by the audit that
+    followed it: a signal's args class is named after the signal, so two signals
+    of one name in one assembly cannot both have their own shape.
+  -->
+
+  <!-- interface-added/interface-removed: (interface) on GDBusObject,
+       (object, interface) on GDBusObjectManager. The manager's shape won, so a
+       GDBusObject handler read Args[0], its interface, as an object, and
+       looked for an interface in an Args[1] that is not there. -->
+  <attr path="/api/namespace/interface[@cname='GDBusObjectManager']/signal[@cname='interface-added']" name="name">ObjectInterfaceAdded</attr>
+  <attr path="/api/namespace/interface[@cname='GDBusObjectManager']/signal[@cname='interface-removed']" name="name">ObjectInterfaceRemoved</attr>
+
+  <!-- event: (GSocketClientEvent, GSocketConnectable, GIOStream) on
+       GSocketClient, (GSocketListenerEvent, GSocket) on GSocketListener. The
+       listener's shape won, so the client's handler (the one applications
+       actually connect, to watch a connection being established) read its
+       event as the wrong enum and its GSocketConnectable as a GSocket. -->
+  <attr path="/api/namespace/object[@cname='GSocketListener']/signal[@cname='event']" name="name">ListenerEvent</attr>
 </metadata>

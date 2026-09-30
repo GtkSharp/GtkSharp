@@ -247,7 +247,7 @@ namespace GtkSharp.Generation {
 			string finish = GenArgsInitialization (sw, dispose_params);
 			sw.WriteLine("\t\t\t\t{0} handler = ({0}) sig.Handler;", EventHandlerQualifiedName);
 			sw.WriteLine("\t\t\t\thandler (GLib.Object.GetObject (inst), args);");
-			sw.WriteLine("\t\t\t} catch (Exception e) {");
+			sw.WriteLine("\t\t\t} catch (System.Exception e) {");
 			sw.WriteLine("\t\t\t\tGLib.ExceptionManager.RaiseUnhandledException (e, false);");
 			if (dispose_params.Count > 0) {
 				sw.WriteLine ("\t\t\t} finally {");
