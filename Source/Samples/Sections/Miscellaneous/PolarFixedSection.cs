@@ -33,6 +33,18 @@ namespace Samples
             return ("Clock", pf);
         }
 
+        // Gtk 4 removed the stock item registry, so the spiral is drawn from a
+        // fixed list of icon names from the standard icon naming spec instead
+        // of from Gtk.Stock.ListIds.
+        static readonly string[] SpiralIcons = {
+            "document-new", "document-open", "document-save", "document-print",
+            "edit-cut", "edit-copy", "edit-paste", "edit-delete", "edit-undo",
+            "edit-redo", "edit-find", "go-previous", "go-next", "go-up",
+            "go-down", "go-home", "list-add", "list-remove", "media-playback-start",
+            "media-playback-pause", "media-playback-stop", "view-refresh",
+            "window-close", "help-about", "dialog-information", "dialog-warning",
+        };
+
         public (string, Widget) CreateSpiral()
         {
             uint r;
@@ -44,12 +56,9 @@ namespace Samples
             r = 0;
             theta = 0.0;
 
-            foreach (string id in Gtk.Stock.ListIds())
+            foreach (string iconName in SpiralIcons)
             {
-                StockItem item = Gtk.Stock.Lookup(id);
-                if (item.Label == null)
-                    continue;
-                var icon = Gtk.Image.NewFromIconName(item.StockId, IconSize.SmallToolbar);
+                var icon = Gtk.Image.NewFromIconName(iconName);
 
                 pf.Put(icon, theta, r);
 

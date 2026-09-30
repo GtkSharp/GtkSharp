@@ -46,24 +46,29 @@ namespace Gtk
 			this.handler_type = handler_type;
 		}
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_builder_connect_signals_full(IntPtr raw, GtkSharp.BuilderConnectFuncNative func, IntPtr user_data);
-		static d_gtk_builder_connect_signals_full gtk_builder_connect_signals_full = FuncLoader.LoadFunction<d_gtk_builder_connect_signals_full>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_builder_connect_signals_full"));
-	
-		public void ConnectSignals(Builder builder) {
-			GtkSharp.BuilderConnectFuncWrapper func_wrapper = new GtkSharp.BuilderConnectFuncWrapper (new BuilderConnectFunc (ConnectFunc));
-			gtk_builder_connect_signals_full(builder.Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
-		}
+		// Gtk 4 removed gtk_builder_connect_signals_full,
+		// gtk_widget_class_set_connect_func and GtkBuilderConnectFunc outright.
+		// Automatic signal connection now goes through GtkBuilderScope
+		// (gtk_builder_set_scope), which this binding does not implement yet.
+		//
+		// These throw rather than silently doing nothing: a template whose
+		// handlers were never wired reads as a UI that ignores every click, and
+		// that is far harder to diagnose than an exception naming the cause.
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_widget_class_set_connect_func(IntPtr class_ptr, GtkSharp.BuilderConnectFuncNative connect_func, IntPtr data);
-		static d_gtk_widget_class_set_connect_func gtk_widget_class_set_connect_func = FuncLoader.LoadFunction<d_gtk_widget_class_set_connect_func>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), nameof(gtk_widget_class_set_connect_func)));
-
-		public void ConnectSignals(GLib.GType gtype)
+		public void ConnectSignals (Builder builder)
 		{
-			var func_wrapper = new GtkSharp.BuilderConnectFuncWrapper (new BuilderConnectFunc (ConnectFunc));
-			gtk_widget_class_set_connect_func(gtype.GetClassPtr (), func_wrapper.NativeDelegate, IntPtr.Zero);
+			throw new NotSupportedException (
+				"Automatic signal connection needs GtkBuilderScope in Gtk 4, which " +
+				"GtkSharp does not bind yet. Connect handlers explicitly for now.");
 		}
+
+		public void ConnectSignals (GLib.GType gtype)
+		{
+			throw new NotSupportedException (
+				"Template signal connection needs GtkBuilderScope in Gtk 4, which " +
+				"GtkSharp does not bind yet. Connect handlers explicitly for now.");
+		}
+
 	
 		public void ConnectFunc (Builder builder, GLib.Object objekt, string signal_name, string handler_name, GLib.Object connect_object, GLib.ConnectFlags flags)
 		{

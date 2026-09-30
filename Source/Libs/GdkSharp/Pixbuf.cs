@@ -211,25 +211,9 @@ namespace Gdk {
 
 		public Pixbuf(byte [] data, Gdk.Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride) : this (data, colorspace, has_alpha, bits_per_sample, width, height, rowstride, null) {}
 
-		/* gdk_pixbuf_new_from_inline has been deprecated since version 2.32 and should not be used in newly-written code. Use GResource instead */
-		/*
-		public unsafe Pixbuf(byte[] data, bool copy_pixels) : base (IntPtr.Zero)
-		{
-			IntPtr error = IntPtr.Zero;
-			Raw = gdk_pixbuf_new_from_inline(data.Length, (IntPtr) data, copy_pixels, out error);
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-		}
-		*/
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gdk_pixbuf_new_from_inline(int len, IntPtr data, bool copy_pixels, out IntPtr error);
-		static d_gdk_pixbuf_new_from_inline gdk_pixbuf_new_from_inline = FuncLoader.LoadFunction<d_gdk_pixbuf_new_from_inline>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GdkPixbuf), "gdk_pixbuf_new_from_inline"));
+		// gdk_pixbuf_new_from_inline was deprecated in 2.32 and removed in 2.42.
+		// Use GResource instead.
 
-		public unsafe Pixbuf(int data_length, void *data, bool copy_pixels) : base (IntPtr.Zero)
-		{
-			IntPtr error = IntPtr.Zero;
-			Raw = gdk_pixbuf_new_from_inline(data_length, (IntPtr) data, copy_pixels, out error);
-			if (error != IntPtr.Zero) throw new GLib.GException (error);
-		}
 	
 //
 // ICloneable interface

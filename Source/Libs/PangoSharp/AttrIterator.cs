@@ -39,11 +39,17 @@ namespace Pango {
 				extra_attrs = new Pango.Attribute [0];
 				return;
 			}
-			GLib.SList list = new GLib.SList (list_handle);
+			// Without an element type the list marshals each item as a GObject
+			// -- which a PangoAttribute is not -- and hands back null, so
+			// unboxing it to IntPtr threw NullReferenceException.
+			GLib.SList list = new GLib.SList (list_handle, typeof (IntPtr));
 			extra_attrs = new Pango.Attribute [list.Count];
 			int i = 0;
+			// pango_attr_iterator_get_font hands over the extra attributes, so
+			// these wrappers own them. Everything else that reaches
+			// GetAttribute is looking at an attribute a list still holds.
 			foreach (IntPtr raw_attr in list)
-				extra_attrs [i++] = Pango.Attribute.GetAttribute (raw_attr);
+				extra_attrs [i++] = Pango.Attribute.GetAttribute (raw_attr, true);
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_pango_attr_iterator_get_attrs(IntPtr raw);
@@ -54,11 +60,12 @@ namespace Pango {
 				IntPtr list_handle = pango_attr_iterator_get_attrs (Handle);
 				if (list_handle == IntPtr.Zero)
 					return new Pango.Attribute [0];
-				GLib.SList list = new GLib.SList (list_handle);
+				GLib.SList list = new GLib.SList (list_handle, typeof (IntPtr));
 				Pango.Attribute[] attrs = new Pango.Attribute [list.Count];
 				int i = 0;
+				// pango_attr_iterator_get_attrs returns copies, so these are ours.
 				foreach (IntPtr raw_attr in list)
-					attrs [i++] = Pango.Attribute.GetAttribute (raw_attr);
+					attrs [i++] = Pango.Attribute.GetAttribute (raw_attr, true);
 				return attrs;
 			}
 		}

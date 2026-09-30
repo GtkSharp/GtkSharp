@@ -84,6 +84,22 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		/// <summary>
+		/// True for an array whose length has to be passed alongside it.
+		/// </summary>
+		/// <remarks>
+		/// A NULL-terminated array does not: it carries its own length, and the C
+		/// function has no length parameter to pair with. Distinguishing the two
+		/// is what stops an unrelated integer in front of such an array from being
+		/// mistaken for its count -- see the pairing in Parameters.cs.
+		/// </remarks>
+		public bool NeedsCount {
+			get {
+				return elem.GetAttributeAsBoolean ("array")
+					&& !elem.GetAttributeAsBoolean ("null_term_array");
+			}
+		}
+
 		public bool IsEllipsis {
 			get {
 				return elem.GetAttributeAsBoolean ("ellipsis");
@@ -201,8 +217,13 @@ namespace GtkSharp.Generation {
 		public virtual string NativeSignature {
 			get {
 				string sig = MarshalType + " " + Name;
-				if (PassAs != String.Empty)
+
+				// A caller-allocated out parameter is a plain pointer to memory
+				// this side owns, so the import takes it by value; only the
+				// managed-facing signature keeps the "out".
+				if (PassAs != String.Empty && !IsCallerAllocatedOut)
 					sig = PassAs + " " + sig;
+
 				return sig;
 			}
 		}
@@ -278,9 +299,60 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		/// <summary>
+		/// An out parameter whose storage the *caller* provides, wrapped by a
+		/// reference type.
+		/// </summary>
+		/// <remarks>
+		/// C writes the result into memory the caller owns -- graphene_rect_union's
+		/// `res`, gsk_render_node_get_bounds' `bounds`. Passing "out IntPtr" gives
+		/// the callee an 8-byte slot to write a 16-byte struct into, which is
+		/// stack corruption, and the pointer read back afterwards is garbage.
+		///
+		/// Value types are unaffected, because a managed struct already provides
+		/// real storage: Gdk.Rectangle out parameters work, and GdkRectangle is a
+		/// struct only because GdkSharp-symbols.xml overrides it. That is why this
+		/// is keyed off the api.xml attribute rather than off the type.
+		/// </remarks>
+		public bool IsCallerAllocatedOut {
+			get {
+				// StructBase covers <boxed>; OpaqueGen covers <boxed opaque="true">,
+				// which is what most of these are. Both emit abi_info, which is
+				// where the size comes from. Primitive out parameters -- ulong,
+				// IntPtr -- are excluded by the IntPtr marshal-type test, and are
+				// correct as ordinary out parameters.
+				return PassAs == "out"
+					&& elem.GetAttributeAsBoolean ("caller_allocates")
+					&& (Generatable is StructBase || Generatable is OpaqueGen)
+					&& MarshalType == "IntPtr";
+			}
+		}
+
 		public virtual string[] Prepare {
 			get {
 				IGeneratable gen = Generatable;
+
+				if (IsCallerAllocatedOut) {
+					// The block is released by the type's own free function, so
+					// it has to come from the type's own allocator: graphene
+					// allocates everything holding a SIMD vector with
+					// _aligned_malloc and frees it with _aligned_free, and
+					// handing that a g_malloc pointer corrupts the heap on
+					// Windows. AllocateNative uses the type's parameterless
+					// constructor or its static Alloc, and falls back to a
+					// zeroed g_malloc of abi_info.Size -- the type's own
+					// computed C size, which is exactly what the callee writes
+					// -- for the types that have neither.
+					//
+					// Zeroed either way, because a callee does not always write
+					// the whole struct: graphene_sphere_translate sets the
+					// centre and leaves the radius as it found it.
+					return new string [] {
+						"IntPtr native_" + CallName + " = GLib.Opaque.AllocateNative (typeof (" +
+							CSType + "), (ulong) " + CSType + ".abi_info.Size);"
+					};
+				}
+
 				if (gen is IManualMarshaler) {
 					string result = "IntPtr native_" + CallName;
 					if (PassAs != "out")
@@ -291,7 +363,17 @@ namespace GtkSharp.Generation {
 				} else if (PassAs == "ref" && CSType != MarshalType) {
 					return new string [] { gen.MarshalType + " native_" + CallName + " = (" + gen.MarshalType + ") " + CallName + ";" };
 				} else if (gen is OpaqueGen && Owned) {
-					return new string [] { CallName + ".Owned = false;" };
+					// A (transfer full) opaque parameter is very often nullable
+					// as well -- a NULL GskTransform *is* the identity, and
+					// gtk_widget_allocate documents NULL as "no transform" --
+					// so the ownership hand-off has to tolerate a null argument.
+					// The call itself already does (it emits
+					// "x == null ? IntPtr.Zero : x.Handle"), and without this
+					// guard the line above it threw NullReferenceException
+					// before any native code ran: every layout manager that
+					// placed a child at the origin crashed inside
+					// Widget.Allocate.
+					return new string [] { "if (" + CallName + " != null) " + CallName + ".Owned = false;" };
 				}
 
 				return new string [0];
@@ -305,6 +387,9 @@ namespace GtkSharp.Generation {
 				IGeneratable gen = Generatable;
 				if (gen is CallbackGen)
 					return SymbolTable.Table.CallByName (CType, CallName + "_wrapper");
+				else if (IsCallerAllocatedOut)
+					// By value: the pointer *is* the storage, so it is not an out.
+					return "native_" + CallName;
 				else if (PassAs != String.Empty) {
 					call_parm = PassAs + " ";
 					if (CSType != MarshalType)
@@ -324,6 +409,16 @@ namespace GtkSharp.Generation {
 		public virtual string[] Finish {
 			get {
 				IGeneratable gen = Generatable;
+
+				if (IsCallerAllocatedOut) {
+					// Owned: the buffer was allocated here, so the wrapper frees
+					// it through the type's own free function.
+					string wrap = gen is IOwnable
+						? (gen as IOwnable).FromNative ("native_" + CallName, true)
+						: gen.FromNative ("native_" + CallName);
+					return new string [] { CallName + " = " + wrap + ";" };
+				}
+
 				if (gen is IManualMarshaler) {
 					string[] result = new string [PassAs == "ref" ? 2 : 1];
 					int i = 0;

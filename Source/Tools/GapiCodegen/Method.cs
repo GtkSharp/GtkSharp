@@ -245,6 +245,11 @@ namespace GtkSharp.Generation {
 
 			if (IsDeprecated)
 				gen_info.Writer.WriteLine("\t\t[Obsolete]");
+			// Present only where the containing type could not take the attribute
+			// itself, because a hand-written partial shares it.
+			string coverage_attr = CoverageExclusion.ForMemberOf (gen_info, container_type.Name);
+			if (coverage_attr != null)
+				gen_info.Writer.WriteLine ("\t\t" + coverage_attr);
 			gen_info.Writer.Write("\t\t");
 			if (Protection != "")
 				gen_info.Writer.Write("{0} ", Protection);
@@ -294,15 +299,24 @@ namespace GtkSharp.Generation {
 			sw.Write(indent + "\t\t\t");
 			if (retval.IsVoid)
 				sw.WriteLine(CName + call + ";");
-			else {
+			else
 				sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
-				sw.WriteLine(indent + "\t\t\t" + retval.CSType + " ret = " + retval.FromNative ("raw_ret") + ";");
-			}
-			
+
 			if (!IsStatic && implementor != null)
 				implementor.Finish (sw, indent + "\t\t\t");
 			Body.Finish (sw, indent);
+
+			// Before the return value is converted, not after. On failure a C
+			// function's return value is undefined and is routinely NULL, so
+			// converting it first turns the GError that says what happened into
+			// whatever the conversion does with NULL -- for a GValue return,
+			// a NullReferenceException out of Marshal.PtrToStructure, with the
+			// GError leaked. The parameter clean-up above still runs, so
+			// nothing marshalled for the call is leaked by throwing here.
 			Body.HandleException (sw, indent);
+
+			if (!retval.IsVoid)
+				sw.WriteLine(indent + "\t\t\t" + retval.CSType + " ret = " + retval.FromNative ("raw_ret") + ";");
 
 			if (is_get && Parameters.Count > 0)
 				sw.WriteLine (indent + "\t\t\treturn " + Parameters.AccessorName + ";");

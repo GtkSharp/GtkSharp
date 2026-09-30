@@ -41,18 +41,7 @@ namespace Pango {
 			return array;
 		}
 
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_pango_layout_line_get_height(IntPtr raw, out int height);
-		static d_pango_layout_line_get_height pango_layout_line_get_height = FuncLoader.LoadFunction<d_pango_layout_line_get_height>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Pango), "pango_layout_line_get_height"));
-
-		public int Height
-		{
-			get
-			{
-				int height;
-				pango_layout_line_get_height(Handle, out height);
-				return height;
-			}
-		}
+		// Height: pango_layout_line_get_height is introspected in Pango 1.58, so
+		// the generated LayoutLine provides it.
 	}
 }

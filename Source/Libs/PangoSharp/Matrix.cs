@@ -24,17 +24,15 @@ namespace Pango {
 
 	public partial struct Matrix {
 
-		static Matrix ()
-		{
-			Identity.Xx = 1.0;
-			Identity.Xy = 0.0;
-			Identity.Yx = 0.0;
-			Identity.Yy = 1.0;
-			Identity.X0 = 0.0;
-			Identity.Y0 = 0.0;
+		// Every operation on a PangoMatrix mutates it in place, and this used to
+		// be a static *field*: Pango.Matrix.Identity.Rotate (90) compiles, reads
+		// like arithmetic on a constant, and leaves the identity permanently
+		// rotated for every other caller in the process. A get-only property
+		// hands out a fresh copy, so the mutation lands on the temporary.
+		public static Matrix Identity {
+			get {
+				return new Matrix { Xx = 1.0, Xy = 0.0, Yx = 0.0, Yy = 1.0, X0 = 0.0, Y0 = 0.0 };
+			}
 		}
-
-		public static Matrix Identity;
-
 	}
 }

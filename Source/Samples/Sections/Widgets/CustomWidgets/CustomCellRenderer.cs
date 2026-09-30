@@ -26,51 +26,50 @@ namespace Samples
 			set { percent = value; }
 		}
 
-		protected override void OnGetSize (Widget widget, ref Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height)
+		// Gtk 3 answered a single get_size covering both axes and the offsets
+		// within a cell area. Gtk 4 removed that vfunc -- GtkCellRendererClass
+		// has no get_size slot -- in favour of the height-for-width protocol,
+		// one orientation per call, with alignment handled by the cell area.
+
+		protected override void OnGetPreferredWidth (Widget widget, out int minimum_size, out int natural_size)
 		{
-			base.OnGetSize (widget, ref cell_area, out x_offset, out y_offset, out width, out height);
-
-			int calc_width = (int) this.Xpad * 2 + 100;
-			int calc_height = (int) this.Ypad * 2 + 10;
-
-			width = calc_width;
-			height = calc_height;
-
-			x_offset = 0;
-			y_offset = 0;
-			if (!cell_area.Equals (Rectangle.Zero)) {
-				x_offset = (int) (this.Xalign * (cell_area.Width - calc_width));
-				x_offset = Math.Max (x_offset, 0);
-
-				y_offset = (int) (this.Yalign * (cell_area.Height - calc_height));
-				y_offset = Math.Max (y_offset, 0);
-			}
+			minimum_size = natural_size = (int) this.Xpad * 2 + 100;
 		}
 
-		protected override void OnRender (Cairo.Context cr, Widget widget, Rectangle background_area, Rectangle cell_area, CellRendererState flags)
+		protected override void OnGetPreferredHeight (Widget widget, out int minimum_size, out int natural_size)
+		{
+			minimum_size = natural_size = (int) this.Ypad * 2 + 10;
+		}
+
+		// Gtk 4 renders cells into a GtkSnapshot rather than onto a cairo_t.
+		// gtk_render_background and friends became methods on the snapshot,
+		// which is what keeps this a style-driven progress bar rather than a
+		// hand-drawn rectangle.
+		protected override void OnSnapshot (Gtk.Snapshot snapshot, Widget widget,
+		                                    Rectangle background_area, Rectangle cell_area,
+		                                    CellRendererState flags)
 		{
 			int x = (int) (cell_area.X + this.Xpad);
 			int y = (int) (cell_area.Y + this.Ypad);
 			int width = (int) (cell_area.Width - this.Xpad * 2);
 			int height = (int) (cell_area.Height - this.Ypad * 2);
 
-			widget.StyleContext.Save ();
-			widget.StyleContext.AddClass ("trough");
-			widget.StyleContext.RenderBackground (cr, x, y, width, height);
-			widget.StyleContext.RenderFrame (cr, x, y, width, height);
+			var style = widget.StyleContext;
 
-			Border padding = widget.StyleContext.GetPadding (StateFlags.Normal);
-			x += padding.Left;
-			y += padding.Top;
-			width -= padding.Left + padding.Right;
-			height -= padding.Top + padding.Bottom;
+			style.Save ();
+			style.AddClass ("trough");
+			snapshot.RenderBackground (style, x, y, width, height);
+			snapshot.RenderFrame (style, x, y, width, height);
+			style.Restore ();
 
-			widget.StyleContext.Restore ();
-
-			widget.StyleContext.Save ();
-			widget.StyleContext.AddClass ("progressbar");
-			widget.StyleContext.RenderActivity (cr, x, y, (int) (width * Percentage), height);
-			widget.StyleContext.Restore ();
+			// Gtk 3 inset the bar by the trough's CSS padding, read back through
+			// StyleContext.GetPadding. Gtk 4 has no such getter -- padding is
+			// applied by the theme when it renders the background -- so the bar
+			// is drawn across the trough and the theme decides how it insets.
+			style.Save ();
+			style.AddClass ("progressbar");
+			snapshot.RenderBackground (style, x, y, (int) (width * Percentage), height);
+			style.Restore ();
 		}
 	}
 

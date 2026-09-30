@@ -92,14 +92,28 @@ namespace GLib {
 
 	public class Process {
 
+		// The five g_spawn_*_utf8 entry points below are the ones this class uses
+		// on Windows, and they were all looked up in GObject. They are exported
+		// by GLib, so GetProcAddress found none of them and every spawn on
+		// Windows called a null delegate. The plain names next to them were
+		// already right, which is why this only ever broke on one platform.
+
+
 		public const int IgnorePipe = Int32.MaxValue;
 		public const int RequestPipe = 0;
 
 		long pid;
 
-		private Process (int pid) 
+		private Process (int pid)
 		{
 			this.pid = pid;
+		}
+
+		// SpawnAsync's whole purpose is to hand back a handle on the child, and
+		// this class exposed nothing but Close -- there was no way to learn which
+		// process had been started.
+		public int Pid {
+			get { return (int) pid; }
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_spawn_close_pid(int pid);
@@ -114,7 +128,7 @@ namespace GLib {
 		static d_g_spawn_async g_spawn_async = FuncLoader.LoadFunction<d_g_spawn_async>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_async"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_async_utf8(IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, out IntPtr error);
-		static d_g_spawn_async_utf8 g_spawn_async_utf8 = FuncLoader.LoadFunction<d_g_spawn_async_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_async_utf8"));
+		static d_g_spawn_async_utf8 g_spawn_async_utf8 = FuncLoader.LoadFunction<d_g_spawn_async_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_async_utf8"));
 
 		public static bool SpawnAsync (string working_directory, string[] argv, string[] envp, SpawnFlags flags, SpawnChildSetupFunc child_setup, out Process child_process)
 		{
@@ -143,7 +157,7 @@ namespace GLib {
 		static d_g_spawn_async_with_pipes g_spawn_async_with_pipes = FuncLoader.LoadFunction<d_g_spawn_async_with_pipes>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_async_with_pipes"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_async_with_pipes_utf8(IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out int pid, IntPtr stdin, IntPtr stdout, IntPtr stderr, out IntPtr error);
-		static d_g_spawn_async_with_pipes_utf8 g_spawn_async_with_pipes_utf8 = FuncLoader.LoadFunction<d_g_spawn_async_with_pipes_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_async_with_pipes_utf8"));
+		static d_g_spawn_async_with_pipes_utf8 g_spawn_async_with_pipes_utf8 = FuncLoader.LoadFunction<d_g_spawn_async_with_pipes_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_async_with_pipes_utf8"));
 
 		public static bool SpawnAsyncWithPipes (string working_directory, string[] argv, string[] envp, SpawnFlags flags, SpawnChildSetupFunc child_setup, out Process child_process, ref int stdin, ref int stdout, ref int stderr)
 		{
@@ -187,7 +201,7 @@ namespace GLib {
 		static d_g_spawn_sync g_spawn_sync = FuncLoader.LoadFunction<d_g_spawn_sync>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_sync"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_sync_utf8(IntPtr dir, IntPtr[] argv, IntPtr[] envp, int flags, SpawnChildSetupFuncNative func, IntPtr data, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
-		static d_g_spawn_sync_utf8 g_spawn_sync_utf8 = FuncLoader.LoadFunction<d_g_spawn_sync_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_sync_utf8"));
+		static d_g_spawn_sync_utf8 g_spawn_sync_utf8 = FuncLoader.LoadFunction<d_g_spawn_sync_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_sync_utf8"));
 
 		public static bool SpawnSync (string working_directory, string[] argv, string[] envp, SpawnFlags flags, SpawnChildSetupFunc child_setup, out string stdout, out string stderr, out int exit_status)
 		{
@@ -216,7 +230,7 @@ namespace GLib {
 		static d_g_spawn_command_line_async g_spawn_command_line_async = FuncLoader.LoadFunction<d_g_spawn_command_line_async>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_command_line_async"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_command_line_async_utf8(IntPtr cmdline, out IntPtr error);
-		static d_g_spawn_command_line_async_utf8 g_spawn_command_line_async_utf8 = FuncLoader.LoadFunction<d_g_spawn_command_line_async_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_command_line_async_utf8"));
+		static d_g_spawn_command_line_async_utf8 g_spawn_command_line_async_utf8 = FuncLoader.LoadFunction<d_g_spawn_command_line_async_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_command_line_async_utf8"));
 
 		public static bool SpawnCommandLineAsync (string command_line)
 		{
@@ -238,7 +252,7 @@ namespace GLib {
 		static d_g_spawn_command_line_sync g_spawn_command_line_sync = FuncLoader.LoadFunction<d_g_spawn_command_line_sync>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_command_line_sync"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate bool d_g_spawn_command_line_sync_utf8(IntPtr cmdline, out IntPtr stdout, out IntPtr stderr, out int exit_status, out IntPtr error);
-		static d_g_spawn_command_line_sync_utf8 g_spawn_command_line_sync_utf8 = FuncLoader.LoadFunction<d_g_spawn_command_line_sync_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_spawn_command_line_sync_utf8"));
+		static d_g_spawn_command_line_sync_utf8 g_spawn_command_line_sync_utf8 = FuncLoader.LoadFunction<d_g_spawn_command_line_sync_utf8>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_spawn_command_line_sync_utf8"));
 
 		public static bool SpawnCommandLineSync (string command_line, out string stdout, out string stderr, out int exit_status)
 		{

@@ -21,6 +21,24 @@ class TargetEnvironment
     public static string DotNetCliPath { get; private set; }
     public static string DotNetCliFeatureBand { get; private set; }
 
+    static string DotNetExeName() => OperatingSystem.IsWindows() ? "dotnet.exe" : "dotnet";
+
+    static string FindOnPath(string exe)
+    {
+        var path = Environment.GetEnvironmentVariable("PATH") ?? "";
+        foreach (var dir in path.Split(P.PathSeparator))
+        {
+            if (string.IsNullOrWhiteSpace(dir))
+                continue;
+
+            var candidate = P.Combine(dir.Trim(), exe);
+            if (F.Exists(candidate))
+                return candidate;
+        }
+
+        return null;
+    }
+
     static TargetEnvironment()
     {
         DotNetInstallPath = Environment.GetEnvironmentVariable("DOTNET_ROOT");
@@ -40,7 +58,26 @@ class TargetEnvironment
             }
         }
 
-        DotNetCliPath = P.Combine(DotNetInstallPath, "dotnet");
+        DotNetCliPath = P.Combine(DotNetInstallPath, DotNetExeName());
+
+        // The guesses above are only conventions, and they are wrong more often
+        // than not off Windows: Debian's dotnet-sdk package installs to
+        // /usr/lib/dotnet, and dotnet-install.sh puts it wherever it was asked
+        // to. Getting this wrong surfaced as "The type initializer for
+        // 'TargetEnvironment' threw an exception", which says nothing about the
+        // cause, so fall back to whatever `dotnet` is actually on PATH.
+        if (!F.Exists(DotNetCliPath))
+        {
+            var found = FindOnPath(DotNetExeName());
+            if (found != null)
+            {
+                DotNetCliPath = found;
+                DotNetInstallPath = P.GetDirectoryName(found);
+            }
+        }
+
+        if (!F.Exists(DotNetCliPath))
+            throw new Exception($"Could not find the dotnet CLI. Looked in '{DotNetInstallPath}' and on PATH. Set DOTNET_ROOT to the SDK install directory.");
 
         var proc = Pr.Start(new PSI()
         {

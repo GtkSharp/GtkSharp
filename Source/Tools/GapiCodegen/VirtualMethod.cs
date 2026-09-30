@@ -113,7 +113,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t\t\treturn " + retval.ToNative ("__result") + ";");
 
 			bool fatal = parms.HasOutParam || !retval.IsVoid;
-			sw.WriteLine ("\t\t\t} catch (Exception e) {");
+			sw.WriteLine ("\t\t\t} catch (System.Exception e) {");
 			sw.WriteLine ("\t\t\t\tGLib.ExceptionManager.RaiseUnhandledException (e, " + (fatal ? "true" : "false") + ");");
 			if (fatal) {
 				sw.WriteLine ("\t\t\t\t// NOTREACHED: above call does not return.");

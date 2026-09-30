@@ -118,7 +118,30 @@ namespace Cairo
 
 		public override int GetHashCode ()
 		{
-			return Handle.GetHashCode ();
+			// Equals compares the regions cairo-wise, so the hash has to come
+			// from the same thing rather than from the handle: two regions
+			// covering the same ground are equal, and hashing them by address
+			// gave them different hashes, which breaks the one rule a hash has
+			// to keep. A Region could not be used as a dictionary key at all --
+			// the lookup missed even when an equal key was in the table.
+			//
+			// Cairo keeps a region's rectangles in a canonical form, so equal
+			// regions yield the same list and therefore the same hash.
+			if (handle == IntPtr.Zero)
+				return 0;
+
+			unchecked {
+				int count = NumRectangles;
+				int hash = 17 * 31 + count;
+				for (int i = 0; i < count; i++) {
+					RectangleInt r = GetRectangle (i);
+					hash = hash * 31 + r.X;
+					hash = hash * 31 + r.Y;
+					hash = hash * 31 + r.Width;
+					hash = hash * 31 + r.Height;
+				}
+				return hash;
+			}
 		}
 
 		public Status Status {

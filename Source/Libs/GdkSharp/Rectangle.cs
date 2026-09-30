@@ -26,13 +26,11 @@ using System.Runtime.InteropServices;
 
 namespace Gdk {
 
-	[StructLayout(LayoutKind.Sequential)]
-	public struct Rectangle {
+	public partial struct Rectangle {
 
-		public int X;
-		public int Y;
-		public int Width;
-		public int Height;
+		// X, Y, Width, Height and the struct layout come from the generated half:
+		// Gtk 4 introspects GdkRectangle, where Gtk 3 only aliased it to
+		// cairo_rectangle_int_t and left the whole type to this file.
 
 		public Rectangle (int x, int y, int width, int height)
 		{
@@ -49,19 +47,9 @@ namespace Gdk {
 			return new Rectangle (left, top, right - left, bottom - top);
 		}
 
-		public override bool Equals (object o)
-		{
-			if (!(o is Rectangle))
-				return false;
-
-			return (this == (Rectangle) o);
-		}
-
-		public override int GetHashCode ()
-		{
-			return (Height + Width) ^ X + Y;
-		}
-
+		// Equals, GetHashCode and the GLib.Value conversions come from the
+		// generated half; only == and != are kept, since they are defined in
+		// terms of Location and Size, which live here.
 		public static bool operator == (Rectangle r1, Rectangle r2)
 		{
 			return ((r1.Location == r2.Location) && (r1.Size == r2.Size));
@@ -70,19 +58,6 @@ namespace Gdk {
 		public static bool operator != (Rectangle r1, Rectangle r2)
 		{
 			return !(r1 == r2);
-		}
-		
-		public static explicit operator GLib.Value (Gdk.Rectangle boxed)
-		{
-			GLib.Value val = GLib.Value.Empty;
-			val.Init (Gdk.Rectangle.GType);
-			val.Val = boxed;
-			return val;
-		}
-
-		public static explicit operator Gdk.Rectangle (GLib.Value val)
-		{
-			return (Gdk.Rectangle) val.Val;
 		}
 
 		public override string ToString ()
@@ -218,42 +193,10 @@ namespace Gdk {
 		{
 			return Offset (rect, dr.X, dr.Y);
 		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gdk_rectangle_get_type();
-		static d_gdk_rectangle_get_type gdk_rectangle_get_type = FuncLoader.LoadFunction<d_gdk_rectangle_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_rectangle_get_type"));
-
-		public static GLib.GType GType { 
-			get {
-				IntPtr raw_ret = gdk_rectangle_get_type();
-				GLib.GType ret = new GLib.GType(raw_ret);
-				return ret;
-			}
-		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gdk_rectangle_union(ref Rectangle src1, ref Rectangle src2, out Rectangle dest);
-		static d_gdk_rectangle_union gdk_rectangle_union = FuncLoader.LoadFunction<d_gdk_rectangle_union>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_rectangle_union"));
-
-		public Gdk.Rectangle Union (Gdk.Rectangle src)
-		{
-			Gdk.Rectangle dest;
-			gdk_rectangle_union (ref this, ref src, out dest);
-			return dest;
-		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate bool d_gdk_rectangle_intersect(ref Rectangle src1, ref Rectangle src2, out Rectangle dest);
-		static d_gdk_rectangle_intersect gdk_rectangle_intersect = FuncLoader.LoadFunction<d_gdk_rectangle_intersect>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gdk), "gdk_rectangle_intersect"));
-
-		public bool Intersect (Gdk.Rectangle src, out Gdk.Rectangle dest)
-		{
-			return gdk_rectangle_intersect (ref this, ref src, out dest);
-		}
-
-		public static Rectangle New (IntPtr raw)
-		{
-			return (Gdk.Rectangle) Marshal.PtrToStructure (raw, typeof (Gdk.Rectangle));
-		}
-
-		public static Rectangle Zero;
+		// GType, the native Union and Intersect, New and Zero all come from the
+		// generated half now: Gtk 4 introspects GdkRectangle, where Gtk 3 only
+		// aliased it to cairo_rectangle_int_t and left every one of those to be
+		// bound by hand here. What stays is the managed geometry API that has no
+		// C counterpart.
 	}
 }
-

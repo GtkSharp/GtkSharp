@@ -23,7 +23,8 @@ using System;
 
 namespace Gdk {
 	
-	public struct Size { 
+	public struct Size {
+
 		
 		int width, height;
 

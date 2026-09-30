@@ -75,10 +75,10 @@ namespace Samples
                 GC.Collect();
             };
 
-            box.PackStart(btnAddTimer, false, false, 0);
-            box.PackStart(btnRemoveTimer, false, false, 0);
-            box.PackStart(btnRemoveTimerByHandler, false, false, 0);
-            box.PackStart(btnGc, false, false, 0);
+            box.Append(btnAddTimer);
+            box.Append(btnRemoveTimer);
+            box.Append(btnRemoveTimerByHandler);
+            box.Append(btnGc);
         }
     }
 }

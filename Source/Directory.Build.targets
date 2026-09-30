@@ -1,0 +1,24 @@
+<Project>
+
+	<!-- Imported after the project body, which is the point: the Net4x.NuGetUtility
+	     "Prepare" step rewrites each .csproj and writes these two properties into
+	     it, so setting them in Directory.Build.props would simply be overwritten
+	     by the project. Here they win.
+
+	     Packing is build.cake's job, not the build's. PackageNuGet, PackageWorkload
+	     and PackageTemplates each call DotNetPack with their own OutputDirectory,
+	     and letting the build pack as well produced a second, concurrent pack of
+	     the same project. That is where "CS2012: cannot open GLibSharp.dll for
+	     writing, file may be locked by VBCSCompiler" came from.
+
+	     PackageOutputPath here is the fallback for anyone running dotnet pack by
+	     hand. Cake passes an output directory, which becomes a global property and
+	     wins over this one; the value the utility writes,
+	     $(SolutionDir)BuildOutput/NugetPackages/, does not survive being packed
+	     from a .csproj path, where SolutionDir is undefined. -->
+	<PropertyGroup>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageOutputPath>$(_GtkSharpBuildOutputDirectory)NugetPackages\</PackageOutputPath>
+	</PropertyGroup>
+
+</Project>

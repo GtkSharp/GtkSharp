@@ -1,8 +1,27 @@
 <?xml version="1.0"?>
 <metadata>
+  <!-- The FT2, Win32 and CoreText backends live in their own gir files
+       (PangoFT2-1.0, PangoWin32-1.0, PangoCoreText-1.0) which are not vendored,
+       so none of those types reach the api.xml and the rules that hid them have
+       been removed. gapi2xml.pl saw them only because it parsed every Pango
+       header on the machine. -->
+  <!-- Two namespaces: Pango and PangoCairo. They share a C# namespace but not a
+       native library, so set the library before renaming - the rename would
+       otherwise invalidate the selector. -->
+  <attr path="/api/namespace[@name='Pango']" name="library">Library.Pango</attr>
+  <attr path="/api/namespace[@name='PangoCairo']" name="library">Library.PangoCairo</attr>
+  <attr path="/api/namespace[@name='PangoCairo']" name="name">Pango</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Change']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Filter']/*/*[@name='func']" name="scope">call</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='GetIterator']/return-type" name="owned">true</attr>
+  <!-- pango_attr_list_get_attributes returns a GSList of PangoAttribute, and the
+       api.xml records no element type. GLib.SList then marshals each item as a
+       GObject, which a PangoAttribute is not, so every element came back null
+       and reading one threw NullReferenceException. Exactly the failure
+       AttrIterator.Attrs is hand-written to avoid; this one was missed because
+       nothing called it. The list is (transfer full), so the wrappers own the
+       attributes. Rebound over Pango.Attribute[] in AttrList.cs. -->
+  <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='GetAttributes']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Insert']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='InsertBefore']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoAttrList']/method[@name='Ref']" name="deprecated">1</attr>
@@ -18,6 +37,19 @@
   <attr path="/api/namespace/boxed[@cname='PangoGlyphItem']/method[@name='Free']" name="deprecated">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoGlyphString']/field[@name='Glyphs']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoGlyphString']/field[@name='LogClusters']" name="hidden">1</attr>
+  <!-- Arrays whose length is a separate argument, or is implied by the text.
+       The api.xml cannot say so, and codegen has no rule for the shape, so each
+       came out taking or returning a *single* value: an int* the callee fills
+       with one entry per character became "out int", and pango wrote the rest
+       past the end of a four-byte block. Rebound over real arrays in the
+       hand-written partials beside this file. -->
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphItem']/method[@name='GetLogicalWidths']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphItem']/method[@name='LetterSpace']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphString']/method[@name='GetLogicalWidths']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphString']/method[@name='IndexToXFull']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoLanguage']/method[@name='GetScripts']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='PangoFontFace']/method[@name='ListSizes']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoCoverage']/method[@name='FromBytes']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoLayoutIter']/method[@name='Free']" name="deprecated">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoLayoutIter']/method[@name='GetCharExtents']/*/*[@type='PangoRectangle*']" name="pass_as">out</attr>
   <attr path="/api/namespace/boxed[@cname='PangoLayoutIter']/method[@name='GetClusterExtents']/*/*[@type='PangoRectangle*']" name="pass_as">out</attr>
@@ -32,7 +64,6 @@
   <attr path="/api/namespace/boxed[@cname='PangoTabArray']/constructor[@cname='pango_tab_array_new_with_positions']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoTabArray']/method[@name='Free']" name="deprecated">1</attr>
   <attr path="/api/namespace/boxed[@cname='PangoTabArray']/method[@name='GetTabs']" name="hidden">1</attr>
-  <attr path="/api/namespace/callback[@cname='PangoFT2SubstituteFunc']" name="hidden">1</attr>
   <attr path="/api/namespace/class/method[@cname='pango_version_check']" name="name">VersionCheck</attr>
   <attr path="/api/namespace/class/method[@cname='pango_version_string']" name="name">VersionString</attr>
   <attr path="/api/namespace/class[@cname='PangoAttr_']" name="hidden">1</attr>
@@ -42,10 +73,23 @@
   <attr path="/api/namespace/class[@cname='PangoCairo_']/method[@name='ContextSetFontOptions']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoCairo_']/method[@name='CreateContext']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/class[@cname='PangoCairo_']/method[@name='CreateLayout']/return-type" name="owned">true</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Break']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='DefaultBreak']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='GetLogAttrs']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='TailorBreak']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ExtentsToPixels']/*/*[@type='PangoRectangle*']" name="pass_as">ref</attr>
+  <!-- pango_itemize and pango_itemize_with_base_dir both return a GList of
+       PangoItem*, and only the second one carried these three rules. Without
+       them the first returned a bare GLib.List with no element type, so
+       iterating it read every PangoItem* as a GObject and took the process
+       down with an access violation. Same C shape, same binding. -->
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Itemize']/return-type" name="element_type">PangoItem*</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Itemize']/return-type" name="owned">true</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Itemize']/return-type" name="elements_owned">true</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ItemizeWithBaseDir']/return-type" name="element_type">PangoItem*</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ItemizeWithBaseDir']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ItemizeWithBaseDir']/return-type" name="elements_owned">true</attr>
+  <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='Log2visGetEmbeddingLevels']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ParseMarkup']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ReadLine']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='PangoGlobal']/method[@name='ReorderItems']" name="hidden">1</attr>
@@ -56,8 +100,6 @@
   <attr path="/api/namespace/class[@name='Version']" name="hidden">1</attr>
   <attr path="/api/namespace/interface[@cname='PangoCairoFont']" name="hidden">1</attr>
   <attr path="/api/namespace/interface[@cname='PangoCairoFontMap']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='PangoCairoCoreTextFont']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='PangoCairoCoreTextFontMap']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoContext']/method[@name='ListFamilies']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoFont']/method[@name='Describe']/return-type" name="owned">true</attr>
   <attr path="/api/namespace/object[@cname='PangoFont']/method[@name='DescriptionsFree']" name="hidden">1</attr>
@@ -65,7 +107,6 @@
   <attr path="/api/namespace/object[@cname='PangoFontFamily']/method[@name='ListFaces']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoFontMap']/method[@name='ListFamilies']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoFontset']/method[@name='Foreach']/*/*[@name='func']" name="scope">call</attr>
-  <attr path="/api/namespace/object[@cname='PangoFT2FontMap']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='GetCursorPos']/*/*[@type='PangoRectangle*']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='GetExtents']/*/*[@type='PangoRectangle*']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='GetIter']/return-type" name="owned">true</attr>
@@ -82,22 +123,28 @@
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='SetMarkup']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='SetMarkupWithAccel']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='PangoLayout']/method[@name='SetText']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoAttribute']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoAttribute']" name="hidden">1</attr>
+  <!-- Pango.Attribute is a manual symbol whose from_fmt hands back a *borrowed*
+       wrapper, because that is what almost every PangoAttribute* arriving from
+       C is: a callback argument, or something a PangoAttrList still owns. This
+       one allocates, so the wrapper has to own it, and the manual symbol has
+       nowhere to say so. Rebound in AttrFontFeatures.cs. -->
+  <attr path="/api/namespace/struct[@cname='PangoAttrFontFeatures']/method[@name='New']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrClass']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrColor']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrFloat']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrFontDesc']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrInt']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoAttrIterator']/method[@name='Destroy']" name="deprecated">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoAttrIterator']/method[@name='GetAttrs']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoAttrIterator']/method[@name='GetFont']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoAttrIterator']/method[@name='Destroy']" name="deprecated">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoAttrIterator']/method[@name='GetAttrs']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoAttrIterator']/method[@name='GetFont']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrLanguage']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrShape']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrSize']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='PangoAttrString']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoCoverage']/method[@name='Ref']" name="deprecated">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoCoverage']/method[@name='ToBytes']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoCoverage']/method[@name='Unref']" name="deprecated">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoCoverage']/method[@name='Ref']" name="deprecated">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoCoverage']/method[@name='ToBytes']" name="hidden">1</attr>
+  <attr path="/api/namespace/*[@cname='PangoCoverage']/method[@name='Unref']" name="deprecated">1</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/field" name="writeable">false</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/field[@name='Runs']" name="access">private</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/method[@name='GetExtents']/*/*[@type='PangoRectangle*']" name="pass_as">ref</attr>
@@ -105,12 +152,31 @@
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/method[@name='GetXRanges']" name="hidden">1</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/method[@name='Ref']" name="deprecated">1</attr>
   <attr path="/api/namespace/*[@cname='PangoLayoutLine']/method[@name='Unref']" name="deprecated">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoScriptIter']" name="hidden">1</attr>
-  <attr path="/api/namespace/struct[@cname='PangoWin32FontCache']" name="hidden">1</attr>
-  <attr path="/api/namespace/*[@cname='PangoWin32Family']" name="parent">PangoFontFamily</attr>
-  <attr path="/api/namespace/*[@cname='PangoWin32Face']" name="parent">PangoFontFace</attr>
-  <attr path="/api/namespace/*[@cname='PangoCoreTextFamily']" name="parent">PangoFontFamily</attr>
-  <attr path="/api/namespace/*[@cname='PangoCoreTextFace']" name="parent">PangoFontFace</attr>
+  <attr path="/api/namespace/*[@cname='PangoScriptIter']" name="hidden">1</attr>
   <move-node path="/api/namespace/class[@name='Version']/method[@cname='pango_version_check']">/api/namespace/class[@name='Global']</move-node>
   <move-node path="/api/namespace/class[@name='Version']/method[@cname='pango_version_string']">/api/namespace/class[@name='Global']</move-node>
+
+  <!-- Boxed types default to opaque, which generates a class. These four are
+       plain value structs that Gtk 3 exposed by layout and the hand-written
+       partials declare as "partial struct", so they keep their fields. Same
+       mechanism GtkSharp.metadata uses for GtkBorder and GtkRequisition. -->
+  <attr path="/api/namespace/boxed[@cname='PangoColor']" name="opaque">false</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphItem']" name="opaque">false</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoGlyphItemIter']" name="opaque">false</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoMatrix']" name="opaque">false</attr>
+
+  <!-- Pango 1.50+ added getter functions for fields PangoLayoutLine used to
+       expose directly, so the field-derived property and the method-derived one
+       now want the same name. The methods win. Hiding a field still leaves it
+       counted in the ABI struct (ClassBase tallies fields before checking
+       hidden), so offsets are unaffected. -->
+  <attr path="/api/namespace/boxed[@cname='PangoLayoutLine']/field[@cname='layout']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoLayoutLine']/field[@cname='is_paragraph_start']" name="hidden">1</attr>
+  <attr path="/api/namespace/boxed[@cname='PangoLayoutLine']/field[@cname='resolved_dir']" name="hidden">1</attr>
+
+  <!-- Pango 1.44 added is-monospace and is-variable as GObject properties
+       alongside the existing pango_font_family_is_* functions. Both map to the
+       same C# name; the functions win, as they did in Gtk 3. -->
+  <attr path="/api/namespace/object[@cname='PangoFontFamily']/property[@cname='is-monospace']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='PangoFontFamily']/property[@cname='is-variable']" name="hidden">1</attr>
 </metadata>

@@ -121,6 +121,49 @@ namespace GLib {
 			g_value_set_pointer (ref this, val);
 		}
 
+		/// <summary>The type this value was initialised to, or <c>GType.Invalid</c> if it was not.</summary>
+		/// <remarks>
+		/// Every branch inside this class already switches on it, but a caller
+		/// handed a GValue by an out-parameter or by a "give me a value of the
+		/// right shape" helper had no way to ask what shape that is - only
+		/// <see cref="Val"/>, which answers with an instance and cannot
+		/// distinguish "an object-typed value holding NULL" from "not an object".
+		/// </remarks>
+		public GType ValueType {
+			get { return new GType (type); }
+		}
+
+		/// <summary>The GType of a GValue itself, G_TYPE_VALUE.</summary>
+		/// <remarks>
+		/// A boxed type whose contents are another GValue. Signals that carry a
+		/// value of an unknown type declare their parameter this way --
+		/// GtkDropTarget::drop is the one an application meets -- so without a
+		/// way to build one, such a signal could not be emitted at all.
+		/// </remarks>
+		public static GType ValueGType {
+			get { return new GType (g_value_get_type ()); }
+		}
+
+		/// <summary>Boxes <paramref name="inner"/> inside a G_TYPE_VALUE.</summary>
+		/// <remarks>
+		/// Not a constructor overload on purpose: `new Value (someValue)` today
+		/// binds to Value (object) and means something else entirely, and
+		/// silently changing what that call does would be worse than a name.
+		/// g_value_set_boxed duplicates through G_TYPE_VALUE's copy function,
+		/// so the temporary block is the caller's to free.
+		/// </remarks>
+		public static Value NewBoxedValue (Value inner)
+		{
+			Value boxed = new Value (ValueGType);
+			IntPtr native_inner = GLib.Marshaller.StructureToPtrAlloc (inner);
+			try {
+				g_value_set_boxed (ref boxed, native_inner);
+			} finally {
+				Marshal.FreeHGlobal (native_inner);
+			}
+			return boxed;
+		}
+
 		public Value (Variant variant) : this (GType.Variant)
 		{
 			g_value_set_variant (ref this, variant == null ? IntPtr.Zero : variant.Handle);
@@ -276,9 +319,35 @@ namespace GLib {
 			return g_value_get_pointer (ref val);
 		}
 
+		// g_value_get_boxed hands back a pointer the GValue owns: g_value_unset
+		// frees it. A wrapper made over that pointer therefore lives only as
+		// long as the value does -- until the end of a signal emission, or until
+		// the generated property getter three lines below calls Dispose -- and
+		// nothing about the object the caller is holding says so.
+		//
+		// Reading Gtk.RowActivatedArgs.Path after the handler returned was an
+		// access violation out of Gtk.TreePath.ToString, i.e. a dead test host
+		// rather than a failing test, from a line naming nothing.
+		//
+		// Where the type is reference counted, wrapping the pointer already
+		// takes a claim of its own through the Ref hook, so the pointer stays
+		// good and copying as well would leak. Where it is not -- Gtk.TreePath,
+		// Pango.FontDescription, Gtk.PaperSize -- the only way for the wrapper
+		// to outlive the value is to own a copy of what it points at.
 		public static explicit operator GLib.Opaque (Value val)
 		{
-			return GLib.Opaque.GetOpaque (g_value_get_boxed (ref val), (Type) new GType (val.type), false);
+			IntPtr boxed = g_value_get_boxed (ref val);
+			if (boxed == IntPtr.Zero)
+				return null;
+
+			Type type = (Type) new GType (val.type);
+			if (type == null)
+				return null;
+
+			if (GLib.Opaque.WrappingTakesAReference (type))
+				return GLib.Opaque.GetOpaque (boxed, type, false);
+
+			return GLib.Opaque.GetOpaque (g_boxed_copy (val.type, boxed), type, true);
 		}
 
 		public static explicit operator GLib.Variant (Value val)
@@ -390,7 +459,11 @@ namespace GLib {
 			case PlatformID.Win32S:
 			case PlatformID.Win32Windows:
 			case PlatformID.WinCE:
-				g_value_set_long2 (ref this, (int) val);
+				// glong is 32 bits here, so a value that does not fit cannot be
+				// stored. Checked rather than truncating: the low half of a
+				// number is a worse answer than saying it does not fit, and the
+				// silent version of this returned 0 for 2^40.
+				g_value_set_long2 (ref this, checked ((int) val));
 				break;
 			default:
 				g_value_set_long (ref this, new IntPtr (val));
@@ -405,7 +478,8 @@ namespace GLib {
 			case PlatformID.Win32S:
 			case PlatformID.Win32Windows:
 			case PlatformID.WinCE:
-				g_value_set_ulong2 (ref this, (uint) val);
+				// See SetLongForPlatform: gulong is 32 bits here too.
+				g_value_set_ulong2 (ref this, checked ((uint) val));
 				break;
 			default:
 				g_value_set_ulong (ref this, new UIntPtr (val));
@@ -436,7 +510,20 @@ namespace GLib {
 
 			Type t = GType.LookupType (type);
 			if (t == null)
-				throw new Exception ("Unknown type " + new GType (type).ToString ());
+				// A boxed type with no managed counterpart used to throw here.
+				// That is not an error the caller can do anything about, and
+				// because it happens inside a signal marshaller -- where there
+				// is nobody to catch it -- it took the process down.
+				//
+				// GtkCssProvider's parsing-error signal carries a GError, whose
+				// GType resolves by name to "GLib.Error", a type this binding
+				// does not have. So the one signal that tells an application its
+				// stylesheet is broken could not be handled at all.
+				//
+				// The generated argument for an unmapped boxed type is an IntPtr
+				// already, so handing back the pointer is what the surface above
+				// expects, and it lets the handler run.
+				return boxed_ptr;
 			else if (t.IsSubclassOf (typeof (GLib.Opaque)))
 				return (GLib.Opaque) this;
 
@@ -648,6 +735,9 @@ namespace GLib {
 		delegate void d_g_value_set_char(ref Value val, sbyte data);
 		static d_g_value_set_char g_value_set_char = FuncLoader.LoadFunction<d_g_value_set_char>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_char"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_g_value_get_type();
+		static d_g_value_get_type g_value_get_type = FuncLoader.LoadFunction<d_g_value_get_type>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_type"));
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_value_set_boxed(ref Value val, IntPtr data);
 		static d_g_value_set_boxed g_value_set_boxed = FuncLoader.LoadFunction<d_g_value_set_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_set_boxed"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -714,6 +804,9 @@ namespace GLib {
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_value_get_boxed(ref Value val);
 		static d_g_value_get_boxed g_value_get_boxed = FuncLoader.LoadFunction<d_g_value_get_boxed>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_boxed"));
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_g_boxed_copy(IntPtr boxed_type, IntPtr src_boxed);
+		static d_g_boxed_copy g_boxed_copy = FuncLoader.LoadFunction<d_g_boxed_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_boxed_copy"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate double d_g_value_get_double(ref Value val);
 		static d_g_value_get_double g_value_get_double = FuncLoader.LoadFunction<d_g_value_get_double>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_value_get_double"));

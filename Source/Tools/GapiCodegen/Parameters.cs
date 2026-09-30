@@ -213,9 +213,26 @@ namespace GtkSharp.Generation {
 
 				if (p.IsArray) {
 					p = new ArrayParameter (parm);
+
+					// `graphene_vec3_t vertices[8]` is eight structs laid end to
+					// end, and every reference type here marshals as a pointer, so
+					// a T[] would hand the callee an array of addresses instead.
+					// There is no spelling for it, and emitting one anyway is a
+					// buffer overrun rather than a compile error, so the method is
+					// dropped and left to a hand-written partial class.
+					bool marshalsByValue = gen is SimpleGen || gen is EnumGen || gen is StructBase;
+					if (((ArrayParameter) p).FixedArrayLength.HasValue && !marshalsByValue) {
+						log.Warn ("Fixed-size array of reference-typed elements on parameter {0}: hide and bind manually.", p.Name);
+						Clear ();
+						return false;
+					}
+
 					if (i < elem.ChildNodes.Count - 1) {
+						// "next != null || next.Name == ..." was here, which
+						// dereferences next in exactly the case the null check
+						// was guarding against.
 						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
-						if (next != null || next.Name == "parameter") {
+						if (next != null && next.Name == "parameter") {
 							Parameter c = new Parameter (next);
 							if (c.IsCount) {
 								p = new ArrayCountPair (parm, next, false);
@@ -229,7 +246,13 @@ namespace GtkSharp.Generation {
 						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
 						if (next != null && next.Name == "parameter") {
 							Parameter a = new Parameter (next);
-							if (a.IsArray) {
+							// NeedsCount, not IsArray: a NULL-terminated array
+							// carries its own length, so an integer in front of
+							// one is a different quantity that merely happens to
+							// be spelled n_something. Pairing them hides it from
+							// the public signature and then passes the array's
+							// length in its place.
+							if (a.NeedsCount) {
 								p = new ArrayCountPair (next, parm, true);
 								i++;
 							}

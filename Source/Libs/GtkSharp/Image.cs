@@ -27,55 +27,16 @@ namespace Gtk {
 	using System.Runtime.InteropServices;
 
 	public partial class Image {
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_image_new_from_icon_set(IntPtr icon_set, int size);
-		static d_gtk_image_new_from_icon_set gtk_image_new_from_icon_set = FuncLoader.LoadFunction<d_gtk_image_new_from_icon_set>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_icon_set"));
-
-		public Image (Gtk.IconSet icon_set, Gtk.IconSize size) : base (IntPtr.Zero)
-		{
-			if (GetType () != typeof (Image)) {
-				var vals = new List<GLib.Value> ();
-				var names = new List<string> ();
-				names.Add ("icon_set");
-				vals.Add (new GLib.Value (icon_set));
-				names.Add ("icon_size");
-				vals.Add (new GLib.Value ((int)size));
-				CreateNativeObject (names.ToArray (), vals.ToArray ());
-				return;
-			}
-			Raw = gtk_image_new_from_icon_set(icon_set.Handle, (int) size);
-		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_gtk_image_new_from_stock(IntPtr stock_id, int size);
-		static d_gtk_image_new_from_stock gtk_image_new_from_stock = FuncLoader.LoadFunction<d_gtk_image_new_from_stock>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_image_new_from_stock"));
-
-		public Image (string stock_id, Gtk.IconSize size) : base (IntPtr.Zero)
-		{
-			if (GetType () != typeof (Image)) {
-				var vals = new List<GLib.Value> ();
-				var names = new List<string> ();
-				names.Add ("stock");
-				vals.Add (new GLib.Value (stock_id));
-				names.Add ("icon_size");
-				vals.Add (new GLib.Value ((int)size));
-				CreateNativeObject (names.ToArray (), vals.ToArray ());
-				return;
-			}
-			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (stock_id);
-			Raw = gtk_image_new_from_stock(native, (int) size);
-			GLib.Marshaller.Free (native);
-		}
+		// Image(stock_id, size): the stock registry is gone in Gtk 4; use the generated NewFromIconName.
 
 		void LoadFromStream (System.IO.Stream stream)
 		{
+			// Gtk 4's GtkImage has no animation and no stock support: animated
+			// content is a GdkPaintable now, and stock items are gone entirely.
 			try {
-				Gdk.PixbufAnimation anim = new Gdk.PixbufAnimation (stream);
-				if (anim.IsStaticImage)
-					Pixbuf = anim.StaticImage;
-				else
-					PixbufAnimation = anim;
+				Pixbuf = new Gdk.Pixbuf (stream);
 			} catch {
-				Stock = Gtk.Stock.MissingImage;
+				IconName = "image-missing";
 			}
 		}
 
@@ -103,12 +64,7 @@ namespace Gtk {
 			return new Image (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
 
-		[Obsolete ("Use the Animation property instead")]
-		public Gdk.PixbufAnimation FromAnimation {
-			set {
-				gtk_image_set_from_animation(Handle, value == null ? IntPtr.Zero : value.Handle);
-			}
-		}
+		// FromAnimation: gtk_image_set_from_animation is gone; Gtk 4 animates through GdkPaintable.
 
 		[Obsolete ("Use the File property instead")]
 		public string FromFile {

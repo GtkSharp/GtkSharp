@@ -46,6 +46,16 @@ namespace Cairo {
 			CheckDisposed ();
 			NativeMethods.cairo_pdf_surface_set_size (Handle, width, height);
 		}
+
+		/// <summary>
+		/// Caps the PDF version the file will declare. Must be called before
+		/// anything is drawn.
+		/// </summary>
+		public void RestrictToVersion (PdfVersion version)
+		{
+			CheckDisposed ();
+			NativeMethods.cairo_pdf_surface_restrict_to_version (Handle, version);
+		}
 	}
 }
 
