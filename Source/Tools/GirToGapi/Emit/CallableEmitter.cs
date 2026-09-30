@@ -1,0 +1,379 @@
+// CallableEmitter.cs - methods, constructors, signals, virtual methods.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the GNU General Public
+// License as published by the Free Software Foundation.
+
+namespace GtkSharp.GirConversion.Emit {
+
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Xml.Linq;
+	using GtkSharp.GirConversion.Gir;
+	using GtkSharp.GirConversion.Rules;
+
+	/// <summary>
+	/// Emits everything that has a return type and a parameter list. Shared by
+	/// methods, functions, constructors, signals, virtual methods and callbacks
+	/// because gapi gives them all the same body shape.
+	/// </summary>
+	public class CallableEmitter {
+
+		readonly CTypeMapper types;
+
+		public CallableEmitter (CTypeMapper types)
+		{
+			this.types = types;
+		}
+
+		/// <summary>&lt;method&gt; from a GIR method / function.</summary>
+		public XElement Method (XElement gir, bool shared)
+		{
+			var el = new XElement ("method",
+				new XAttribute ("name", NameMangler.StudlyCaps ((string) gir.Attribute ("name"))),
+				new XAttribute ("cname", (string) gir.Attribute (Ns.CIdentifier)));
+
+			if (shared)
+				el.Add (new XAttribute ("shared", "true"));
+
+			AddDeprecated (el, gir);
+			AddBody (el, gir, skipInstance: !shared);
+
+			return el;
+		}
+
+		/// <summary>&lt;constructor&gt;.</summary>
+		/// <remarks>
+		/// gapi2xml.pl emitted no name attribute here and let GapiCodegen derive
+		/// one, but that derivation assumes the cname contains "new"
+		/// ([Ctor.cs:67](../../GapiCodegen/Ctor.cs)) and throws on anything else.
+		/// Graphene's constructors are `graphene_point_alloc` and friends, which
+		/// crash it. GIR knows the name, so pass it and the derivation is never
+		/// reached. For the ordinary `*_new_with_label` case this produces
+		/// exactly the string the old derivation did.
+		/// </remarks>
+		public XElement Constructor (XElement gir)
+		{
+			var el = new XElement ("constructor",
+				new XAttribute ("cname", (string) gir.Attribute (Ns.CIdentifier)),
+				new XAttribute ("name", NameMangler.StudlyCaps ((string) gir.Attribute ("name"))));
+
+			AddDeprecated (el, gir);
+			AddBody (el, gir, skipInstance: true, includeEmptyParameters: false);
+
+			// A constructor's return-type is the type itself; gapi does not
+			// record it, matching gapi2xml.pl.
+			var ret = el.Element ("return-type");
+			if (ret != null)
+				ret.Remove ();
+
+			return el;
+		}
+
+		/// <summary>
+		/// &lt;signal&gt;. <paramref name="fieldName"/> is the class-struct field
+		/// holding the class closure; ObjectBase.cs keys signal_vms on it, so it
+		/// must match the corresponding &lt;method signal_vm=&gt; exactly.
+		/// </summary>
+		public XElement Signal (XElement gir, string fieldName)
+		{
+			var el = new XElement ("signal",
+				new XAttribute ("name", NameMangler.StudlyCaps ((string) gir.Attribute ("name"))),
+				new XAttribute ("cname", (string) gir.Attribute ("name")));
+
+			var when = (string) gir.Attribute ("when");
+			if (!string.IsNullOrEmpty (when))
+				el.Add (new XAttribute ("when", when.ToUpperInvariant ()));
+
+			if (fieldName != null)
+				el.Add (new XAttribute ("field_name", fieldName));
+
+			AddDeprecated (el, gir);
+			// Signals always carry a <parameters> element, even when empty.
+			AddBody (el, gir, skipInstance: true, includeEmptyParameters: true);
+
+			return el;
+		}
+
+		/// <summary>&lt;virtual_method&gt; for a real vfunc slot.</summary>
+		public XElement VirtualMethod (XElement gir, string cname)
+		{
+			var el = new XElement ("virtual_method",
+				new XAttribute ("name", NameMangler.StudlyCaps (cname)),
+				new XAttribute ("cname", cname));
+
+			AddDeprecated (el, gir);
+			AddBody (el, gir, skipInstance: true);
+
+			return el;
+		}
+
+		/// <summary>
+		/// A padding slot: an unused pointer in the class struct that exists only
+		/// to keep the ABI stable. It still needs a virtual_method, because every
+		/// &lt;method vm=&gt; in the class struct is resolved against one.
+		/// </summary>
+		public static XElement PaddingSlot (string cname)
+		{
+			return new XElement ("virtual_method",
+				new XAttribute ("name", NameMangler.StudlyCaps (cname)),
+				new XAttribute ("cname", cname),
+				new XAttribute ("shared", "true"),
+				new XAttribute ("padding", "true"),
+				new XElement ("return-type", new XAttribute ("type", "void")));
+		}
+
+		/// <summary>&lt;callback&gt; at namespace level.</summary>
+		public XElement Callback (XElement gir, string name, string cname)
+		{
+			var el = new XElement ("callback",
+				new XAttribute ("name", name),
+				new XAttribute ("cname", cname));
+
+			AddBody (el, gir, skipInstance: false);
+
+			return el;
+		}
+
+		// ------------------------------------------------------------------
+
+		void AddBody (XElement el, XElement gir, bool skipInstance,
+		              bool includeEmptyParameters = false)
+		{
+			el.Add (ReturnType (gir.Element (Ns.Core + "return-value")));
+
+			var girParams = gir.Element (Ns.Core + "parameters");
+			var list = girParams == null
+				? new List<XElement> ()
+				: girParams.Elements (Ns.Core + "parameter").ToList ();
+
+			// GIR puts throws on the callable, not on its parameter list, and
+			// omits it entirely on callbacks that take a trailing GError**.
+			// gapi keys the whole GError treatment off the attribute --
+			// Parameters.IsHidden only hides a GError** when Throws is set --
+			// so it is taken from the callable and also inferred from the
+			// parameters, rather than trusting either alone.
+			var throws = (string) gir.Attribute ("throws") == "1"
+				|| list.Any (p => {
+					var t = types.Resolve (p);
+					return t != null && t.Type == "GError**";
+				});
+
+			// A method whose only C argument is the GError** has no <parameters>
+			// in GIR at all. Returning early here left gdk_pixbuf_loader_close
+			// and its kind with no error argument, so they too called a
+			// function with one argument fewer than it takes.
+			if (list.Count == 0 && !includeEmptyParameters && !throws)
+				return;
+
+			var parameters = new XElement ("parameters");
+
+			if (throws)
+				parameters.Add (new XAttribute ("throws", "1"));
+
+			foreach (var p in list)
+				parameters.Add (Parameter (p));
+
+			// The throws attribute alone is not enough. GapiCodegen decides
+			// whether a call needs a GError by looking for a trailing GError**
+			// *parameter* -- Parameters.cs turns it into an ErrorParameter, and
+			// MethodBody.ThrowsException walks the parameter list looking for
+			// its CType -- so the attribute only tells codegen to hide the
+			// parameter, never to add one. gapi2xml.pl emitted both, because
+			// the C header it read had the argument written out; GIR states it
+			// as a flag on the callable instead, so it has to be materialised
+			// here.
+			//
+			// Without this the generated P/Invoke declares one argument fewer
+			// than the C function takes: the callee reads whatever happens to
+			// be in the argument register, which is why GLib reported
+			// "assertion 'error == NULL || *error == NULL' failed", and no
+			// GException was ever raised.
+			if (throws && !parameters.Elements ("parameter")
+					.Any (p => (string) p.Attribute ("type") == "GError**")) {
+				parameters.Add (new XElement ("parameter",
+					new XAttribute ("type", "GError**"),
+					new XAttribute ("name", "error")));
+			}
+
+			el.Add (parameters);
+		}
+
+		XElement ReturnType (XElement girReturn)
+		{
+			if (girReturn == null)
+				return new XElement ("return-type", new XAttribute ("type", "void"));
+
+			var t = types.Resolve (girReturn);
+			var el = new XElement ("return-type",
+				new XAttribute ("type", t == null ? "void" : t.Type));
+
+			var transfer = (string) girReturn.Attribute ("transfer-ownership");
+
+			// "full" hands the whole thing over; "container" hands over only the
+			// container, leaving the elements borrowed.
+			if (transfer == "full" || transfer == "container")
+				el.Add (new XAttribute ("owned", "true"));
+
+			if (transfer == "full" && t != null && IsNullTerminatedStringArray (t))
+				el.Add (new XAttribute ("elements_owned", "true"));
+
+			if (t != null && IsNullTerminatedStringArray (t))
+				el.Add (new XAttribute ("null_term_array", "true"));
+
+			// element_type is deliberately not emitted. GapiCodegen only knows how
+			// to use it on GList/GSList/GPtrArray returns (ReturnValue.cs:147-155)
+			// and throws on anything else, so gapi2xml.pl left it to the .metadata
+			// files -- there are twelve hand-added occurrences across the whole
+			// tree. Emitting it here would turn every string array into a crash.
+			return el;
+		}
+
+		XElement Parameter (XElement girParam)
+		{
+			var t = types.Resolve (girParam);
+
+			if (t != null && t.IsEllipsis)
+				return new XElement ("parameter", new XAttribute ("ellipsis", "true"));
+
+			var el = new XElement ("parameter",
+				new XAttribute ("type", t == null ? "gpointer" : t.Type),
+				new XAttribute ("name", (string) girParam.Attribute ("name") ?? "arg"));
+
+			// direction="out" with caller-allocates="1" on an array is a buffer the
+			// caller supplies for the callee to fill -- g_input_stream_read's
+			// `void *buffer` -- not a C# out parameter. Marking it out makes
+			// codegen emit a method that never assigns it. gapi2xml.pl left these
+			// bare too. A caller-allocated *struct* is still a genuine out
+			// parameter, so the exemption is limited to arrays.
+			var direction = (string) girParam.Attribute ("direction");
+
+			// A fixed-size array parameter -- `float v[16]`, `GdkRGBA colour[4]` --
+			// is N elements, and how many is knowable from the gir alone. Without
+			// this it came out as the ELEMENT type, so the binding passed ONE
+			// value where the callee reads or writes N: graphene_matrix_to_float
+			// wrote sixty-four bytes through a float passed in a vector register,
+			// and gsk_border_node_new read four GdkRGBAs out of one. CTypeMapper
+			// deliberately drops to the element type, because that is what a
+			// fixed-size *field* needs; a parameter needs the array as well.
+			var fixedArray = t != null && t.IsArray && t.FixedSize.HasValue;
+
+			// direction="out" with caller-allocates="1" on an array is a buffer the
+			// caller supplies for the callee to fill -- g_input_stream_read's
+			// `void *buffer` -- not a C# out parameter. Marking it out makes
+			// codegen emit a method that never assigns it. gapi2xml.pl left these
+			// bare too. A caller-allocated *struct* is still a genuine out
+			// parameter, so the exemption is limited to arrays.
+			//
+			// A fixed-size one is the exception to the exception: its length is
+			// known, so codegen can allocate the buffer itself and hand it back,
+			// which is a real out parameter.
+			var callerAllocatedBuffer = (string) girParam.Attribute ("caller-allocates") == "1"
+				&& t != null && t.IsArray && !fixedArray;
+
+			if (fixedArray) {
+				el.Add (new XAttribute ("array", "true"));
+				el.Add (new XAttribute ("array_len", t.FixedSize.Value));
+			}
+
+			if (direction == "out" && !callerAllocatedBuffer) {
+				el.Add (new XAttribute ("pass_as", "out"));
+
+				// Whether the caller supplies the storage is not recoverable from
+				// anything else in the api.xml, and it decides how the argument
+				// must be passed. A callee-allocated out parameter hands back a
+				// pointer, so "out IntPtr" is right; a caller-allocated one wants
+				// a pointer to storage the caller owns, and passing "out IntPtr"
+				// there gives the callee an 8-byte slot to write a whole struct
+				// into. Codegen keys off this attribute; see Parameter.cs.
+				// Not for a fixed-size array: caller_allocates means "a pointer to
+				// one struct's worth of storage", and ArrayParameter already sizes
+				// and pins the buffer itself.
+				if ((string) girParam.Attribute ("caller-allocates") == "1" && !fixedArray)
+					el.Add (new XAttribute ("caller_allocates", "1"));
+			}
+			else if (direction == "inout")
+				el.Add (new XAttribute ("pass_as", "ref"));
+
+			if ((string) girParam.Attribute ("transfer-ownership") == "full")
+				el.Add (new XAttribute ("owned", "true"));
+
+			// Scope is emitted verbatim. The XSD says the value should be "notify",
+			// but the generator actually tests for GIR's own "notified"
+			// (ManagedCallString.cs:42, Parameters.cs:250) -- the schema is what is
+			// out of step, and it is corrected rather than obeyed here.
+			//
+			// A scope beyond "call" only means something alongside the indices of
+			// the user_data and destroy-notify parameters it belongs to. Without
+			// them MethodBody.cs guesses that they sit at i+1 and i+2, and where
+			// several callbacks share one user_data -- g_bus_own_name takes three
+			// against a single closure, and GIR annotates only the last -- that
+			// guess lands on the next callback and generates code that does not
+			// compile. Better to leave the parameter a plain delegate than to
+			// claim a lifetime the binding cannot honour.
+			var scope = (string) girParam.Attribute ("scope");
+			var closure = (string) girParam.Attribute ("closure");
+			var destroy = (string) girParam.Attribute ("destroy");
+
+			// The closure index is emitted whenever GIR supplies one, whatever the
+			// scope. Parameters.IsHidden keys off it to drop the user_data
+			// parameter, and every generator that touches the callable consults
+			// the same list -- but only if the index is there. Emitting the scope
+			// while withholding the index hides user_data by one code path's
+			// heuristics and not another's, which is how PangoFontset.for_each
+			// ended up calling OnForeach with two arguments against a
+			// one-argument declaration.
+			//
+			// A scope past "call" still needs the index to mean anything:
+			// g_bus_own_name takes three callbacks against a single user_data and
+			// GIR annotates only the last, so for the others MethodBody would fall
+			// back to guessing i+1 and i+2 and land on the next callback.
+			if (closure != null) {
+				el.Add (new XAttribute ("closure", closure));
+
+				// Only meaningful alongside a closure. g_memory_output_stream_new
+				// carries a destroy index with no user_data at all, and on its own
+				// it just hides the parameter from the signature while the call
+				// site still names it.
+				if (destroy != null)
+					el.Add (new XAttribute ("destroy", destroy));
+			}
+
+			if (scope == "call" || (!string.IsNullOrEmpty (scope) && closure != null))
+				el.Add (new XAttribute ("scope", scope));
+
+			// As with return types, only the null-terminated string-array shape is
+			// marshallable without a metadata-supplied length parameter. A bare
+			// array="true" with no count parameter makes Parameter.cs throw.
+			if (t != null && IsNullTerminatedStringArray (t))
+				el.Add (new XAttribute ("null_term_array", "true"));
+
+			return el;
+		}
+
+		/// <summary>
+		/// The one array shape GapiCodegen can marshal unaided:
+		/// GLib.Marshaller.NullTermPtrToStringArray. Everything else needs a count
+		/// parameter that only .metadata can point at.
+		/// </summary>
+		static bool IsNullTerminatedStringArray (GirTypeRef t)
+		{
+			if (!t.IsArray || !t.NullTerminated || t.Type == null)
+				return false;
+
+			return t.Type == "gchar**" || t.Type == "char**"
+				|| t.Type == "const-gchar**" || t.Type == "const-char**";
+		}
+
+		/// <summary>
+		/// Copies GIR's deprecation flag across. GapiCodegen turns it into
+		/// [Obsolete], which is the only warning a consumer porting from Gtk 3
+		/// gets that an API is on its way out.
+		/// </summary>
+		public static void AddDeprecated (XElement el, XElement gir)
+		{
+			if ((string) gir.Attribute ("deprecated") == "1")
+				el.Add (new XAttribute ("deprecated", "1"));
+		}
+	}
+}

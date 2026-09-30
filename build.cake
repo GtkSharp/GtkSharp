@@ -71,6 +71,24 @@ Task("Clean")
         gassembly.Clean();
 });
 
+// Rewrites the checked-in Source/Libs/<Name>/<Name>-api.xml from the vendored
+// .gir files in Source/Gir. Deliberately NOT in the Default chain: a normal
+// build stays hermetic and offline, and regenerating an api.xml stays an
+// explicit, reviewable, committed act.
+Task("RegenerateApi")
+    .IsDependentOn("Init")
+    .Does(() =>
+{
+    DotNetRestore("Source/Tools/Tools.sln");
+    DotNetBuild("Source/Tools/Tools.sln", new DotNetBuildSettings {
+        Verbosity = DotNetVerbosity.Minimal,
+        Configuration = configuration
+    });
+
+    foreach(var gassembly in list)
+        gassembly.RegenerateApi();
+});
+
 Task("FullClean")
     .IsDependentOn("Clean")
     .Does(() =>
