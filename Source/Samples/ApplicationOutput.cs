@@ -13,31 +13,41 @@ namespace Samples
 
         static ApplicationOutput()
         {
-            var vbox = new VBox();
+            var vbox = new Box(Orientation.Vertical, 0);
 
             var labelTitle = new Label
             {
                 Text = "Application Output:",
-                Margin = 4,
+                MarginTop = 4,
+                MarginBottom = 4,
+                MarginStart = 4,
+                MarginEnd = 4,
                 Xalign = 0f
             };
-            vbox.PackStart(labelTitle, false, true, 0);
+            vbox.Append(labelTitle);
 
             _scrolledWindow = new ScrolledWindow();
             _textView = new TextView();
             _scrolledWindow.Child = _textView;
-            vbox.PackStart(_scrolledWindow, true, true, 0);
+            _scrolledWindow.Vexpand = true;
+            vbox.Append(_scrolledWindow);
 
             Widget = vbox;
-
-            _textView.SizeAllocated += TextView_SizeAllocated;
         }
 
         public static Widget Widget { get; set; }
 
-        private static void TextView_SizeAllocated(object o, SizeAllocatedArgs args)
+        // Gtk 3 kept the view pinned to the bottom by scrolling on every
+        // size-allocate, which fired as appended text grew the view. Gtk 4 has
+        // no such signal, so scrolling happens where the text is actually
+        // appended. A mark is used rather than an iterator because the scroll
+        // has to survive until layout has run; an iterator would be invalidated
+        // by the next edit.
+        private static void ScrollToEnd()
         {
-            _textView.ScrollToIter(_textView.Buffer.EndIter, 0, false, 0, 0);
+            var endMark = _textView.Buffer.CreateMark(null, _textView.Buffer.EndIter, false);
+            _textView.ScrollMarkOnscreen(endMark);
+            _textView.Buffer.DeleteMark(endMark);
         }
 
         public static void WriteLine(object o, string e)
@@ -51,7 +61,7 @@ namespace Samples
             if (_textView.Buffer.Text.Length > 0)
                 line = Environment.NewLine + line;
             _textView.Buffer.Insert(ref enditer, line);
-
+            ScrollToEnd();
         }
     }
 }

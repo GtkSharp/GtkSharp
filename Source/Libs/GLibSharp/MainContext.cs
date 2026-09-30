@@ -142,6 +142,22 @@ namespace GLib {
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate IntPtr d_g_main_context_find_source_by_id(IntPtr context, uint source_id);
+		static d_g_main_context_find_source_by_id g_main_context_find_source_by_id = FuncLoader.LoadFunction<d_g_main_context_find_source_by_id>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_context_find_source_by_id"));
+
+		// Idle.Add and Timeout.Add return an id, and GLib.Source has properties
+		// for priority, name, recursion and the rest -- but nothing turned one
+		// into the other, so almost none of Source was reachable from a source
+		// this library had created. Returns null rather than a dead wrapper when
+		// the source has already been removed.
+		public Source FindSourceById (uint source_id)
+		{
+			IntPtr raw = g_main_context_find_source_by_id (Handle, source_id);
+
+			return raw == IntPtr.Zero ? null : new Source (raw);
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate int d_g_main_depth();
 		static d_g_main_depth g_main_depth = FuncLoader.LoadFunction<d_g_main_depth>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_main_depth"));
 		public static int Depth {

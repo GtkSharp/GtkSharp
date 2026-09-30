@@ -117,7 +117,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t}");
 			if (Elem.HasAttribute ("gtype")) {
 				sw.WriteLine ();
-				sw.WriteLine ("\tinternal class " + Name + "GType {");
+				// Public, not internal: a signal in another assembly that carries
+				// this enum needs its GType. GtkSharp reaches for Gdk enum GTypes
+				// in the drag-and-drop signal marshalling, and internal put them
+				// out of reach across the assembly boundary.
+				sw.WriteLine ("\tpublic class " + Name + "GType {");
                 var funcname = Elem.GetAttribute("gtype");
                 sw.WriteLine ("\t\t[UnmanagedFunctionPointer (CallingConvention.Cdecl)]");
                 sw.WriteLine ("\t\tdelegate IntPtr d_" + funcname + "();");

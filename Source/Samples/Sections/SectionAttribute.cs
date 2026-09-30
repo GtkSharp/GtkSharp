@@ -5,7 +5,8 @@ using System;
 
 namespace Samples
 {
-    class SectionAttribute : Attribute
+    // Public so the test project can enumerate the sections.
+    public class SectionAttribute : Attribute
     {
         public Type ContentType { get; set; }
 

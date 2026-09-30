@@ -16,7 +16,7 @@ Namespace GtkNamespace
         End Sub
         
         Public Sub New ()
-            Me.New (new Builder ("Gtk_Dialog.glade"))
+            Me.New (new Builder ("Gtk_Dialog.ui"))
         End Sub
         
         Private Sub Dialog_OnResponse (ByVal sender As Object, ByVal args As ResponseArgs)

@@ -46,6 +46,22 @@ namespace Cairo {
 			CheckDisposed ();
 			NativeMethods.cairo_svg_surface_restrict_to_version (Handle, version);
 		}
+
+		/// <summary>
+		/// The unit the document's <c>width</c> and <c>height</c> attributes
+		/// are written in. Setting it rescales those two numbers only; user
+		/// space, and so every coordinate drawn, is unaffected.
+		/// </summary>
+		public SvgUnit DocumentUnit {
+			get {
+				CheckDisposed ();
+				return NativeMethods.cairo_svg_surface_get_document_unit (Handle);
+			}
+			set {
+				CheckDisposed ();
+				NativeMethods.cairo_svg_surface_set_document_unit (Handle, value);
+			}
+		}
 	}
 }
 

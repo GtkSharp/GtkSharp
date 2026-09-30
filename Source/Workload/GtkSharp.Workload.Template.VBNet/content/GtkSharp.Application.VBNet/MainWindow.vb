@@ -15,17 +15,18 @@ Namespace GtkNamespace
 
             builder.Autoconnect (Me)
             
-            AddHandler MyBase.DeleteEvent, AddressOf Window_Delete
+            ' Gtk 4 removed delete-event; CloseRequest is its replacement.
+            AddHandler MyBase.CloseRequest, AddressOf Window_Delete
             AddHandler _button1.Clicked, AddressOf Button1_Clicked
         End Sub
         
         Public Sub New ()
-            Me.New(new Builder("MainWindow.glade"))
+            Me.New(new Builder("MainWindow.ui"))
         End Sub
         
-        Private Sub Window_Delete (ByVal sender As Object, ByVal a As DeleteEventArgs)
+        Private Sub Window_Delete (ByVal sender As Object, ByVal a As CloseRequestArgs)
             Application.Quit ()
-            a.RetVal = true
+            a.RetVal = false
         End Sub
 
         Private Sub Button1_Clicked (ByVal sender As Object, ByVal a As EventArgs)

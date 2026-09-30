@@ -82,7 +82,7 @@ namespace Samples
 
             entry.IconRelease += (o, args) =>
             {
-                switch (args.P0)
+                switch (args.IconPos)
                 {
                     case EntryIconPosition.Primary:
                         ApplicationOutput.WriteLine(o, "Clicked Search Icon");

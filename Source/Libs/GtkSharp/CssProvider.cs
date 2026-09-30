@@ -23,7 +23,10 @@ namespace Gtk
 			using (var reader = new StreamReader(stream))
 			{
 				string data = reader.ReadToEnd();
-				return LoadFromData(data);
+				// Gtk 4's gtk_css_provider_load_from_data returns void and reports
+				// problems through the ::parsing-error signal instead.
+				LoadFromData(data);
+				return true;
 			}
 		}
 	}

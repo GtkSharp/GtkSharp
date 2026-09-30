@@ -16,7 +16,11 @@ namespace Samples
 
         public (string, Widget) CreateLinkButton()
         {
-            var btn = new LinkButton("A simple link button");
+            // The single-argument constructor takes the URI, not the label --
+            // gtk_link_button_new(uri) -- so passing a caption made Gtk refuse
+            // to follow the link: "URI 'A simple link button' is not an
+            // absolute URI".
+            var btn = new LinkButton("https://github.com/GtkSharp/GtkSharp", "A simple link button");
             btn.Clicked += (sender, e) => ApplicationOutput.WriteLine(sender, "Link button Clicked");
 
             return ("Link button:", btn);

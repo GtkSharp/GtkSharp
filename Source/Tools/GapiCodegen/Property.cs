@@ -73,21 +73,40 @@ namespace GtkSharp.Generation {
 			return "[GLib.Property (" + qpname + ")]";
 		}
 
+		// True only while generating the GInterfaceAdapter, which holds the
+		// wrapped object in a field called "implementor". An interface property
+		// is also emitted into every implementing class (ObjectGen.cs:232), and
+		// there the object IS the implementor, so the plain accessor is right --
+		// keying off "container_type is InterfaceGen" alone put a reference to a
+		// non-existent field into every implementor.
+		bool emittingAdapter;
+
 		protected virtual string RawGetter (string qpname) {
-            if (container_type is InterfaceGen)
-                return "implementor.GetProperty (" + qpname + ")";
+			if (emittingAdapter)
+				return "implementor.GetProperty (" + qpname + ")";
 			return "GetProperty (" + qpname + ")";
 		}
 
 		protected virtual string RawSetter (string qpname) {
-            if (container_type is InterfaceGen)
-                return "implementor.SetProperty(" + qpname + ", val)";
+			if (emittingAdapter)
+				return "implementor.SetProperty(" + qpname + ", val)";
 			return "SetProperty(" + qpname + ", val)";
+		}
+
+		// A property that GObject reports as neither readable nor writable can
+		// still have a real accessor: g_file_enumerator_get_container reads a
+		// "container" that is declared construct-only and write-only. Bailing
+		// out on the GObject flags alone dropped the property AND, because
+		// ClassBase.IgnoreMethod suppresses a GetX method whenever a property
+		// called X exists, the method with it -- so the accessor could not be
+		// reached from managed code at all.
+		bool Generates {
+			get { return !Hidden && (Readable || Writable || Getter != null || Setter != null); }
 		}
 
 		public void GenerateDecl (StreamWriter sw, string indent)
 		{
-			if (Hidden || (!Readable && !Writable))
+			if (!Generates)
 				return;
 
 			string name = Name;
@@ -106,10 +125,12 @@ namespace GtkSharp.Generation {
 
 		public void Generate (GenerationInfo gen_info, string indent, ClassBase implementor)
 		{
+			emittingAdapter = container_type is InterfaceGen && implementor == null;
+
 			SymbolTable table = SymbolTable.Table;
 			StreamWriter sw = gen_info.Writer;
 
-			if (Hidden || (!Readable && !Writable))
+			if (!Generates)
 				return;
 
 			string modifiers = "";
@@ -120,7 +141,12 @@ namespace GtkSharp.Generation {
 				modifiers = "new ";
 
 			string name = Name;
-			if (name == container_type.Name) {
+			// container_type is the type that DECLARES the property, which for an
+			// interface property is the interface. The clash is with the type the
+			// member is emitted into, so the implementor has to be checked too:
+			// Gtk.Text implements Gtk.Editable, and Editable's "text" property
+			// lands on a class called Text.
+			if (name == container_type.Name || (implementor != null && name == implementor.Name)) {
 				name += "Prop";
 			}
 			string qpname = "\"" + CName + "\"";
@@ -140,6 +166,9 @@ namespace GtkSharp.Generation {
 			    (Getter != null && Getter.IsDeprecated) ||
 			    (Setter != null && Setter.IsDeprecated))
 				sw.WriteLine (indent + "[Obsolete]");
+			string coverage_attr = CoverageExclusion.ForMemberOf (gen_info, container_type.Name);
+			if (coverage_attr != null)
+				sw.WriteLine (indent + coverage_attr);
 
 			if (!IsStyle) {
 				sw.WriteLine(indent + PropertyAttribute(qpname));

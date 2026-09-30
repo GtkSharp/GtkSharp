@@ -308,7 +308,7 @@ namespace GLib {
 		static d_g_date_time_to_timeval g_date_time_to_timeval = FuncLoader.LoadFunction<d_g_date_time_to_timeval>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_date_time_to_timeval"));
 
 		public bool ToTimeval(GLib.TimeVal tv) {
-			IntPtr native_tv = GLib.Marshaller.StructureToPtrAlloc (tv);
+			IntPtr native_tv = tv.Alloc ();
 			bool raw_ret = g_date_time_to_timeval(Handle, native_tv);
 			bool ret = raw_ret;
 			tv = GLib.TimeVal.New (native_tv);
@@ -370,7 +370,9 @@ namespace GLib {
 			return ret;
 		}
 
-		public DateTime(IntPtr raw) : base(raw) {}
+		// "new DateTime (2)" reads as a Unix time and binds here instead, because
+		// int converts to IntPtr implicitly since .NET 7. See ValueArray.CheckRaw.
+		public DateTime(IntPtr raw) : base(CheckRaw (raw, "raw")) {}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_date_time_new(IntPtr tz, int year, int month, int day, int hour, int minute, double seconds);
 		static d_g_date_time_new g_date_time_new = FuncLoader.LoadFunction<d_g_date_time_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_date_time_new"));
@@ -385,7 +387,7 @@ namespace GLib {
 
 		public DateTime (GLib.TimeVal tv) 
 		{
-			IntPtr native_tv = GLib.Marshaller.StructureToPtrAlloc (tv);
+			IntPtr native_tv = tv.Alloc ();
 			Raw = g_date_time_new_from_timeval_local(native_tv);
 			tv = GLib.TimeVal.New (native_tv);
 			Marshal.FreeHGlobal (native_tv);
@@ -396,7 +398,7 @@ namespace GLib {
 
 		public static DateTime NewFromTimevalUtc(GLib.TimeVal tv)
 		{
-			IntPtr native_tv = GLib.Marshaller.StructureToPtrAlloc (tv);
+			IntPtr native_tv = tv.Alloc ();
 			DateTime result = new DateTime (g_date_time_new_from_timeval_utc(native_tv));
 			tv = GLib.TimeVal.New (native_tv);
 			Marshal.FreeHGlobal (native_tv);

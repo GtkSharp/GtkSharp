@@ -51,7 +51,32 @@ namespace GtkSharp.Generation {
 
 		public override string FromNative (string var_name)
 		{
+			// Marshal.PtrToStructure throws NullReferenceException on a NULL
+			// pointer, and NULL is a normal answer here rather than a fault:
+			// gtk_drop_target_get_value returns it whenever no drag is in
+			// progress, and every *_finish returns it when the operation
+			// failed. Without the guard the caller got an exception naming
+			// nothing, in place of either an empty value or the GError that
+			// says what went wrong.
+			//
+			// Only when the source is a plain identifier, because the guard
+			// names it twice; DefaultSignalHandler passes a call expression.
+			if (IsIdentifier (var_name))
+				return String.Format ("{1} == IntPtr.Zero ? default({0}) : ({0}) Marshal.PtrToStructure ({1}, typeof ({0}))", QualifiedName, var_name);
+
 			return String.Format ("({0}) Marshal.PtrToStructure ({1}, typeof ({0}))", QualifiedName, var_name);
+		}
+
+		static bool IsIdentifier (string expression)
+		{
+			if (String.IsNullOrEmpty (expression))
+				return false;
+
+			foreach (char c in expression)
+				if (!Char.IsLetterOrDigit (c) && c != '_')
+					return false;
+
+			return true;
 		}
 
 		public string ReleaseNative (string var_name)

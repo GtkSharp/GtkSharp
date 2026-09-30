@@ -67,6 +67,7 @@ namespace GLib {
 		public void Append (IntPtr raw)
 		{
 			list_ptr = Append (list_ptr, raw);
+			length = -1;
 		}
 
 		public void Append (string item)
@@ -82,9 +83,37 @@ namespace GLib {
 		public void Prepend (IntPtr raw)
 		{
 			list_ptr = Prepend (list_ptr, raw);
+			length = -1;
+		}
+
+		// Append has taken a string and an object since the mono era; Prepend
+		// only ever took the raw pointer, so building a list front-to-back meant
+		// marshalling every element by hand. The two overloads below are the
+		// Append ones with the direction changed, and nothing else.
+
+		public void Prepend (string item)
+		{
+			this.Prepend (Marshaller.StringToPtrGStrdup (item));
+		}
+
+		public void Prepend (object item)
+		{
+			this.Prepend (AllocNativeElement (item));
 		}
 
 		// ICollection
+
+		// Cached because Length walks the whole chain, and dropped by every
+		// method that changes it. It used to be dropped only when the list was
+		// emptied, so
+		//
+		//     int before = list.Count;    // walks, and caches
+		//     list.Append (item);
+		//     int after = list.Count;     // the cached answer, now wrong
+		//
+		// quietly returned the old number. Anything that had read Count once --
+		// LINQ preallocating from ICollection.Count, for instance -- left the
+		// list lying about its length for the rest of its life.
 		public int Count {
 			get {
 				if (length == -1)
@@ -107,8 +136,13 @@ namespace GLib {
 			get { return false; }
 		}
 
+		readonly object sync_root = new object ();
+
+		// ICollection.SyncRoot is documented as an object that can be used to
+		// synchronise access, and callers write lock (collection.SyncRoot).
+		// Returning null made that a NullReferenceException.
 		public object SyncRoot {
-			get { return null; }
+			get { return sync_root; }
 		}
 
 		public void CopyTo (Array array, int index)
@@ -226,6 +260,7 @@ namespace GLib {
 		private class ListEnumerator : IEnumerator
 		{
 			private IntPtr current = IntPtr.Zero;
+			private bool finished;
 			private ListBase list;
 
 			public ListEnumerator (ListBase list)
@@ -242,18 +277,29 @@ namespace GLib {
 				}
 			}
 
+			// "current == IntPtr.Zero" means both "not started" and "ran off the
+			// end", so walking past the last element used to send the enumerator
+			// back to the head and start again -- MoveNext answered true forever,
+			// and a loop that kept asking never terminated. The flag separates
+			// the two states; Reset clears it, which is what Reset is for.
 			public bool MoveNext ()
 			{
+				if (finished)
+					return false;
+
 				if (current == IntPtr.Zero)
 					current = list.list_ptr;
 				else
 					current = list.Next (current);
-				return (current != IntPtr.Zero);
+
+				finished = current == IntPtr.Zero;
+				return !finished;
 			}
 
 			public void Reset ()
 			{
 				current = IntPtr.Zero;
+				finished = false;
 			}
 		}
 		

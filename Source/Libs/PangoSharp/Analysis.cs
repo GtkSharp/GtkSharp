@@ -35,21 +35,10 @@ namespace Pango {
 			}
 		}
 
-		[Obsolete ("Replaced by ShapeEngine property")]
-		public Pango.EngineShape shape_engine {
-			get { 
-				return _shape_engine == IntPtr.Zero ? null : new Pango.EngineShape(_shape_engine);
-			}
-			set { _shape_engine = value == null ? IntPtr.Zero : value.Handle; }
-		}
-
-		[Obsolete ("Replaced by LangEngine property")]
-		public Pango.EngineLang lang_engine {
-			get { 
-				return _lang_engine == IntPtr.Zero ? null : new Pango.EngineLang(_lang_engine);
-			}
-			set { _lang_engine = value == null ? IntPtr.Zero : value.Handle; }
-		}
+		// Pango removed the shape/lang engine API; PangoEngineShape and
+		// PangoEngineLang no longer exist. The struct still carries the two
+		// pointers for layout, but there is nothing to wrap them in. The
+		// accessors that used to sit here were already [Obsolete].
 
 		[Obsolete ("Replaced by Font property")]
 		public Pango.Font font {

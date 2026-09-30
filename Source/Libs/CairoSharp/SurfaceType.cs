@@ -30,6 +30,11 @@ using System;
 
 namespace Cairo {
 
+	/// <summary>
+	/// Mirrors <c>cairo_surface_type_t</c>. The order is the C enum's order and
+	/// the values are what <c>cairo_surface_get_type</c> returns, so a member
+	/// may only ever be appended.
+	/// </summary>
 	[Serializable]
 	public enum SurfaceType
 	{
@@ -44,5 +49,19 @@ namespace Cairo {
 		BeOS,
 		DirectFB,
 		Svg,
+		Os2,
+		Win32Printing,
+		QuartzImage,
+		Script,
+		Qt,
+		Recording,
+		Vg,
+		GL,
+		Drm,
+		Tee,
+		Xml,
+		Skia,
+		Subsurface,
+		Cogl,
 	}
 }

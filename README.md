@@ -1,12 +1,19 @@
 # GtkSharp
 
-GtkSharp is a C# wrapper for Gtk and its related components. The component list includes the following libraries: glib, gio, cairo, pango, atk, gdk. This is a fork of https://github.com/mono/gtk-sharp and is maintained completely separately from that project.
+GtkSharp is a C# wrapper for Gtk and its related components. The component list includes the following libraries: glib, gio, cairo, pango, graphene, gdk, gsk. This is a fork of https://github.com/mono/gtk-sharp and is maintained completely separately from that project.
+
+## Versions
+
+`develop` targets **Gtk 4.22.4**, published as the `4.22.4.x` package line. The
+previously published `3.24.x` packages target Gtk 3.22.
+
+The Gtk 4 line is a hard break: same assembly names and namespaces, so it cannot be installed side by side with the 3.24.x packages.
 
 Differences can be seen with the following table:
 
 |               | Target framework   | Target Gtk Version                                 | Extra notes                   |
 |:--------------|:-------------------|:---------------------------------------------------|:------------------------------|
-| GtkSharp      | .NET Standard 2.0  | Gtk 3.22                                           | Does not need glue libraries. |
+| GtkSharp      | .NET Standard 2.0  | Gtk 4.22                                           | Does not need glue libraries. |
 | mono/gtksharp | .NET Framework 4.5 | Gtk 2 (also Gtk 3.0 but never officially released) |                               |
 
 * [Building from source](#building-from-source)
@@ -41,12 +48,19 @@ Available NuGet packages:
 
 * [GtkSharp](https://www.nuget.org/packages/GtkSharp/)
 * [GdkSharp](https://www.nuget.org/packages/GdkSharp/)
+* [GskSharp](https://www.nuget.org/packages/GskSharp/)
+* [GrapheneSharp](https://www.nuget.org/packages/GrapheneSharp/)
 * [GioSharp](https://www.nuget.org/packages/GioSharp/)
 * [GLibSharp](https://www.nuget.org/packages/GLibSharp/)
-* [AtkSharp](https://www.nuget.org/packages/AtkSharp/)
 * [PangoSharp](https://www.nuget.org/packages/PangoSharp/)
 * [CairoSharp](https://www.nuget.org/packages/CairoSharp/)
+* [AdwaitaSharp](https://www.nuget.org/packages/AdwaitaSharp/)
 * [GtkSourceSharp](https://www.nuget.org/packages/GtkSourceSharp/)
+* [WebkitGtkSharp](https://www.nuget.org/packages/WebkitGtkSharp/)
+
+`AtkSharp` is gone: Gtk 4 dropped ATK in favour of the accessibility
+interfaces built into Gtk itself. `GskSharp`, `GrapheneSharp` and
+`AdwaitaSharp` are new in the 4.x line.
 
 To create a new gtk app project, simply use `dotnet new` templating engine:
 

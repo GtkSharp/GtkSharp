@@ -26,8 +26,7 @@ namespace Gtk {
 		
 	public partial class ScrolledWindow {
 			
-		public ScrolledWindow () : this (null, null) {
-			SetPolicy (PolicyType.Automatic, PolicyType.Automatic);
-		}
+		// The parameterless constructor is generated now: Gtk 4's
+		// gtk_scrolled_window_new takes no adjustments.
 	}
 }

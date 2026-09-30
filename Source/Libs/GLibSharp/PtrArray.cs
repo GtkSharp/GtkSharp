@@ -31,9 +31,15 @@ namespace GLib {
 		private bool managed = false;
 		internal bool elements_owned = false;
 		protected System.Type element_type = null;
+
+		// Every g_ptr_array_ symbol below used to be looked up in GObject. They
+		// live in GLib, so GetProcAddress found none of them and FuncLoader
+		// handed back null delegates -- every constructor threw
+		// NullReferenceException the moment it was called, with nothing naming
+		// the missing symbol. The class could not be used at all.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_ptr_array_sized_new(uint n_preallocs);
-		static d_g_ptr_array_sized_new g_ptr_array_sized_new = FuncLoader.LoadFunction<d_g_ptr_array_sized_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_sized_new"));
+		static d_g_ptr_array_sized_new g_ptr_array_sized_new = FuncLoader.LoadFunction<d_g_ptr_array_sized_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_ptr_array_sized_new"));
 
 		public PtrArray (uint n_preallocs, System.Type element_type, bool owned, bool elements_owned)
 		{
@@ -44,7 +50,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate IntPtr d_g_ptr_array_new();
-		static d_g_ptr_array_new g_ptr_array_new = FuncLoader.LoadFunction<d_g_ptr_array_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_new"));
+		static d_g_ptr_array_new g_ptr_array_new = FuncLoader.LoadFunction<d_g_ptr_array_new>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_ptr_array_new"));
 
 		public PtrArray (System.Type element_type, bool owned, bool elements_owned)
 		{
@@ -78,10 +84,12 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_ptr_array_free(IntPtr raw, bool free_seg);
-		static d_g_ptr_array_free g_ptr_array_free = FuncLoader.LoadFunction<d_g_ptr_array_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_free"));
+		static d_g_ptr_array_free g_ptr_array_free = FuncLoader.LoadFunction<d_g_ptr_array_free>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_ptr_array_free"));
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_object_unref(IntPtr item);
-		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_object_unref"));
+		// g_object_unref is in GObject, not GLib -- looked up here it was another
+		// null delegate, so disposing an owning array of GObjects threw.
+		static d_g_object_unref g_object_unref = FuncLoader.LoadFunction<d_g_object_unref>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_unref"));
 
 		void Dispose (bool disposing)
 		{
@@ -118,7 +126,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_ptr_array_add(IntPtr raw, IntPtr val);
-		static d_g_ptr_array_add g_ptr_array_add = FuncLoader.LoadFunction<d_g_ptr_array_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_add"));
+		static d_g_ptr_array_add g_ptr_array_add = FuncLoader.LoadFunction<d_g_ptr_array_add>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_ptr_array_add"));
 
 		public void Add (IntPtr val)
 		{
@@ -126,7 +134,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_ptr_array_remove(IntPtr raw, IntPtr data);
-		static d_g_ptr_array_remove g_ptr_array_remove = FuncLoader.LoadFunction<d_g_ptr_array_remove>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_remove"));
+		static d_g_ptr_array_remove g_ptr_array_remove = FuncLoader.LoadFunction<d_g_ptr_array_remove>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_ptr_array_remove"));
 
 		public void Remove (IntPtr data)
 		{
@@ -134,7 +142,7 @@ namespace GLib {
 		}
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void d_g_ptr_array_remove_range(IntPtr raw, uint index, uint length);
-		static d_g_ptr_array_remove_range g_ptr_array_remove_range = FuncLoader.LoadFunction<d_g_ptr_array_remove_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_remove_range"));
+		static d_g_ptr_array_remove_range g_ptr_array_remove_range = FuncLoader.LoadFunction<d_g_ptr_array_remove_range>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_ptr_array_remove_range"));
 
 		public void RemoveRange (IntPtr data, uint index, uint length)
 		{
@@ -198,8 +206,12 @@ namespace GLib {
 			get { return false; }
 		}
 
+		readonly object sync_root = new object ();
+
+		// ICollection.SyncRoot is documented as an object a caller can lock, and
+		// lock (null) is a NullReferenceException. Same hole ListBase had.
 		public object SyncRoot {
-			get { return null; }
+			get { return sync_root; }
 		}
 
 		public void CopyTo (Array array, int index)
@@ -220,6 +232,7 @@ namespace GLib {
 		private class ListEnumerator : IEnumerator
 		{
 			private int current = -1;
+			private bool finished;
 			private PtrArray vals;
 
 			public ListEnumerator (PtrArray vals)
@@ -235,10 +248,18 @@ namespace GLib {
 				}
 			}
 
+			// Running off the end used to put the cursor back to -1, which is
+			// also "not started" -- so the next MoveNext began again and answered
+			// true, and a loop that kept asking never terminated. Same defect as
+			// ListBase's enumerator, written separately and fixed separately.
 			public bool MoveNext ()
 			{
+				if (finished)
+					return false;
+
 				if (++current >= vals.Count) {
 					current = -1;
+					finished = true;
 					return false;
 				}
 
@@ -248,6 +269,7 @@ namespace GLib {
 			public void Reset ()
 			{
 				current = -1;
+				finished = false;
 			}
 		}
 		
@@ -256,14 +278,24 @@ namespace GLib {
 		{
 			return new ListEnumerator (this);
 		}
+		// g_ptr_array_copy (GPtrArray *array, GCopyFunc func, gpointer user_data)
+		// since GLib 2.62. The delegate declared one parameter, so the call left
+		// func and user_data as whatever happened to be in the argument
+		// registers -- and a non-NULL func is *called*, once per element. Clone
+		// did not return a wrong answer; it jumped to an arbitrary address and
+		// took the process with it.
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate IntPtr d_g_ptr_array_copy(IntPtr raw);
-		static d_g_ptr_array_copy g_ptr_array_copy = FuncLoader.LoadFunction<d_g_ptr_array_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_ptr_array_copy"));
+		delegate IntPtr d_g_ptr_array_copy(IntPtr raw, IntPtr func, IntPtr user_data);
+		static d_g_ptr_array_copy g_ptr_array_copy = FuncLoader.LoadFunction<d_g_ptr_array_copy>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GLib), "g_ptr_array_copy"));
 
 		// ICloneable
 		public object Clone ()
 		{
-			return new PtrArray (g_ptr_array_copy (Handle), element_type, false, false);
+			// A NULL copy function is a shallow copy: the new array holds the
+			// same pointers, so it owns the array it was handed (transfer full)
+			// but not the elements, which the original still owns.
+			IntPtr copy = g_ptr_array_copy (Handle, IntPtr.Zero, IntPtr.Zero);
+			return new PtrArray (copy, element_type, true, false);
 		}
 	}
 }

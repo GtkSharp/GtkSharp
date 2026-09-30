@@ -39,14 +39,7 @@ namespace Gtk {
 			var ret = (ICellEditable) GLib.Object.GetObject (raw_ret);
 			return ret;
 		}
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void d_gtk_cell_renderer_render2(IntPtr handle, IntPtr drawable, IntPtr widget, ref Gdk.Rectangle bg_area, ref Gdk.Rectangle cell_area, ref Gdk.Rectangle expose_area, int flags);
-		static d_gtk_cell_renderer_render2 gtk_cell_renderer_render2 = FuncLoader.LoadFunction<d_gtk_cell_renderer_render2>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_cell_renderer_render"));
-		
-		public void Render (Cairo.Context context, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, CellRendererState flags)
-		{
-			gtk_cell_renderer_render2 (Handle, context == null ? IntPtr.Zero : context.Handle, widget == null ? IntPtr.Zero : widget.Handle, ref background_area, ref cell_area, ref expose_area, (int) flags);
-		}
+		// Render: gtk_cell_renderer_render is gone in Gtk 4; cells render into a GtkSnapshot.
 
 	}
 }

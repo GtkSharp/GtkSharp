@@ -54,17 +54,44 @@ namespace GtkSharp.Generation {
 
 		public int? FixedArrayLength { get; private set; }
 
+		string MarshalElement {
+			get { return MarshalType.TrimEnd ('[', ']'); }
+		}
+
+		string CSElement {
+			get { return CSType.TrimEnd ('[', ']'); }
+		}
+
+		/// <summary>
+		/// A fixed-size array parameter is a buffer of N elements the C
+		/// declaration sizes itself -- `float v[16]`, `GdkRGBA colour[4]`.
+		/// </summary>
+		/// <remarks>
+		/// It is never passed as a C# <c>out</c> to the native call, whichever
+		/// direction it has: the callee wants a pointer to N elements, and a
+		/// pinned managed array already is one. `out T[]` would hand it a
+		/// <c>T**</c>. The managed signature still says <c>out</c> for a buffer
+		/// the callee fills, because the array is allocated here.
+		/// </remarks>
+		public override string NativeSignature {
+			get {
+				if (FixedArrayLength.HasValue)
+					return MarshalType + " " + Name;
+
+				return base.NativeSignature;
+			}
+		}
+
 		public override string[] Prepare {
 			get {
-				if (CSType == MarshalType && !FixedArrayLength.HasValue)
+				if (FixedArrayLength.HasValue)
+					return PrepareFixed ();
+
+				if (CSType == MarshalType)
 					return new string [0];
 
 				var result = new List<string> ();
 
-				if (FixedArrayLength.HasValue) {
-					result.Add (String.Format ("{0} = new {1}[{2}];", Name, MarshalType.TrimEnd ('[', ']'), FixedArrayLength));
-					return result.ToArray ();
-				}
 				result.Add (String.Format ("int cnt_{0} = {0} == null ? 0 : {0}.Length;", CallName));
 				result.Add (String.Format ("{0}[] native_{1} = new {0} [cnt_{1}" + (NullTerminated ? " + 1" : "") + "];", MarshalType.TrimEnd('[', ']'), CallName));
 				result.Add (String.Format ("for (int i = 0; i < cnt_{0}; i++)", CallName));
@@ -80,12 +107,43 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		string[] PrepareFixed ()
+		{
+			var result = new List<string> ();
+			int n = FixedArrayLength.Value;
+
+			if (PassAs == "out") {
+				// The callee fills the buffer, so this side sizes it. The C
+				// declaration is the only thing that says how big, which is why
+				// the length has to survive into the api.xml.
+				if (CSType == MarshalType)
+					return new string [] { String.Format ("{0} = new {1} [{2}];", CallName, MarshalElement, n) };
+
+				return new string [] { String.Format ("{0}[] native_{1} = new {0} [{2}];", MarshalElement, CallName, n) };
+			}
+
+			// An input buffer: the callee reads exactly n elements and there is no
+			// count argument to tell it otherwise, so a short array is an overrun
+			// with nothing to catch it. C cannot check this; managed code can.
+			result.Add (String.Format (
+				"if ({0} == null || {0}.Length != {1}) throw new ArgumentException (\"must have exactly {1} elements\", \"{0}\");",
+				CallName, n));
+
+			if (CSType != MarshalType) {
+				result.Add (String.Format ("{0}[] native_{1} = new {0} [{2}];", MarshalElement, CallName, n));
+				result.Add (String.Format ("for (int i = 0; i < {0}; i++)", n));
+				result.Add (String.Format ("\tnative_{0} [i] = {1};", CallName, Generatable.CallByName (CallName + "[i]")));
+			}
+
+			return result.ToArray ();
+		}
+
 		public override string CallString {
 			get {
-				if (CSType != MarshalType)
+				if (FixedArrayLength.HasValue)
+					return CSType == MarshalType ? CallName : "native_" + CallName;
+				else if (CSType != MarshalType)
 					return "native_" + CallName;
-				else if (FixedArrayLength.HasValue)
-					return base.CallString;
 				else
 					return CallName;
 			}
@@ -95,6 +153,18 @@ namespace GtkSharp.Generation {
 			get {
 				if (CSType == MarshalType)
 					return new string [0];
+
+				if (FixedArrayLength.HasValue) {
+					if (PassAs != "out")
+						return new string [0];
+
+					int n = FixedArrayLength.Value;
+					return new string [] {
+						String.Format ("{0} = new {1} [{2}];", CallName, CSElement, n),
+						String.Format ("for (int i = 0; i < {0}; i++)", n),
+						String.Format ("\t{0} [i] = {1};", CallName, Generatable.FromNative ("native_" + CallName + "[i]"))
+					};
+				}
 
 				IGeneratable gen = Generatable;
 				if (gen is IManualMarshaler) {

@@ -80,6 +80,19 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		// A field whose type is a struct held *by value* rather than a pointer to
+		// one. The generic path below reads the pointer-sized word at the field's
+		// offset and treats it as the address of the struct; for an embedded one
+		// the offset *is* the address, so that path returned whatever the first
+		// member of the struct happened to hold. PangoItem.analysis starts with a
+		// NULL shape_engine, so every PangoItem reported a zeroed PangoAnalysis --
+		// no script, no language, no bidi level -- and said nothing about it.
+		public bool IsEmbeddedStruct {
+			get {
+				return SymbolTable.Table[CType] is StructGen && !CType.Trim ().EndsWith ("*");
+			}
+		}
+
 		public bool IsBitfield {
 			get {
 				return elem.HasAttribute("bits");
@@ -211,6 +224,10 @@ namespace GtkSharp.Generation {
 					sw.WriteLine (indent + "\t\t\t {0} del = ({0})Marshal.GetDelegateForFunctionPointer(*raw_ptr, typeof({0}));", table.GetMarshalType (CType));
 					sw.WriteLine (indent + "\t\t\treturn " + table.FromNative (ctype, "(del)") + ";");
 				}
+				else if (IsEmbeddedStruct) {
+					sw.WriteLine (indent + "\t\t\tIntPtr raw_ptr = (IntPtr)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
+					sw.WriteLine (indent + "\t\t\treturn " + table.FromNative (ctype, "raw_ptr") + ";");
+				}
 				else {
 					sw.WriteLine (indent + "\t\t\t" + table.GetMarshalType (CType) + "* raw_ptr = (" + table.GetMarshalType (CType) + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
 					sw.WriteLine (indent + "\t\t\treturn " + table.FromNative (ctype, "(*raw_ptr)") + ";");
@@ -238,6 +255,10 @@ namespace GtkSharp.Generation {
 					sw.WriteLine (indent + "\t\t\t{0} wrapper = new {0} (value);", ((CallbackGen)gen).WrapperName);
 					sw.WriteLine (indent + "\t\t\tIntPtr* raw_ptr = (IntPtr*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
 					sw.WriteLine (indent + "\t\t\t*raw_ptr = Marshal.GetFunctionPointerForDelegate (wrapper.NativeDelegate);");
+				}
+				else if (IsEmbeddedStruct) {
+					sw.WriteLine (indent + "\t\t\tIntPtr raw_ptr = (IntPtr)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
+					sw.WriteLine (indent + "\t\t\tMarshal.StructureToPtr (value, raw_ptr, false);");
 				}
 				else {
 					sw.WriteLine (indent + "\t\t\t" + table.GetMarshalType (CType) + "* raw_ptr = (" + table.GetMarshalType (CType) + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");

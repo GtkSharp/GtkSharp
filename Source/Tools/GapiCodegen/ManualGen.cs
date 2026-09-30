@@ -29,6 +29,22 @@ namespace GtkSharp.Generation {
 		string from_fmt;
 		string abi_type;
 
+		/// <summary>
+		/// True when a NULL pointer of this type means "there is no value", so
+		/// the binding has to hand back null rather than a wrapper around
+		/// IntPtr.Zero.
+		/// </summary>
+		/// <remarks>
+		/// It is opt-in because it is not true of every manual type: a NULL
+		/// <c>GList *</c> IS the empty list, and turning that into null would
+		/// break every caller that iterates the result. It is true of GVariant,
+		/// where g_settings_get_user_value returns NULL to say the key has never
+		/// been written -- and the wrapper built over IntPtr.Zero looked like a
+		/// value, compared non-null, and made g_variant_ref_sink log a CRITICAL
+		/// on the way in.
+		/// </remarks>
+		public bool NullIsNull { get; set; }
+
 		public ManualGen (string ctype, string type) : base (ctype, type, "null")
 		{
 			from_fmt = "new " + QualifiedName + "({0})";
@@ -64,7 +80,29 @@ namespace GtkSharp.Generation {
 		
 		public override string FromNative(string var)
 		{
-			return String.Format (from_fmt, var);
+			string expr = String.Format (from_fmt, var);
+
+			// The guard names the source twice, so it is only safe when the
+			// source is a plain identifier. Every path that matters -- a return
+			// value, a signal argument, an out-parameter's scratch variable --
+			// passes one; FieldBase and DefaultSignalHandler pass a call
+			// expression, and those keep the unguarded form.
+			if (!NullIsNull || !IsIdentifier (var))
+				return expr;
+
+			return "(" + var + " == IntPtr.Zero ? null : " + expr + ")";
+		}
+
+		static bool IsIdentifier (string s)
+		{
+			if (String.IsNullOrEmpty (s) || !(Char.IsLetter (s [0]) || s [0] == '_'))
+				return false;
+
+			foreach (char c in s)
+				if (!Char.IsLetterOrDigit (c) && c != '_')
+					return false;
+
+			return true;
 		}
 
 		public override string GenerateGetSizeOf () {
