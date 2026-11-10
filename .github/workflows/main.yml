@@ -34,3 +34,32 @@ jobs:
         run: dotnet nuget push BuildOutput/NugetPackages/**/*.nupkg --source https://nuget.pkg.github.com/$GITHUB_REPOSITORY_OWNER/index.json --api-key ${GITHUB_TOKEN}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  arm64-smoke:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify ARM64 runner
+        run: test "$(uname -m)" = "aarch64"
+
+      - name: Install GTK dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgtk-3-dev
+
+      - name: Install .NET SDK 8.0.200
+        run: |
+          curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
+          bash /tmp/dotnet-install.sh --version 8.0.200 --install-dir "$HOME/dotnet" --no-path
+          echo "$HOME/dotnet" >> "$GITHUB_PATH"
+          echo "DOTNET_ROOT=$HOME/dotnet" >> "$GITHUB_ENV"
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Build and install workload
+        run: dotnet cake build.cake --BuildTarget=InstallWorkload --BuildVersion=3.24.24.1
+
+      - name: Run ARM64 smoke test
+        run: xvfb-run -a dotnet run --project Source/Tests/GtkSharp.SmokeTest/GtkSharp.SmokeTest.csproj -c Release
